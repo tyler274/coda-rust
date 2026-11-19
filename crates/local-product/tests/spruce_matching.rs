@@ -6,6 +6,10 @@
 //! or `PHYSICIAN_DATABASE_URL` is set; panics if neither is set when
 //! `CODA_REQUIRE_POSTGRES_TESTS=1`.
 
+use std::collections::{BTreeMap, BTreeSet, VecDeque};
+use std::path::PathBuf;
+use std::sync::{Arc, Mutex};
+
 use axum::{
     Json, Router,
     extract::State,
@@ -25,13 +29,14 @@ use local_product::runtime::jobs::{PracticeAccessError, PracticeJobError};
 use local_product::runtime::sources::SourcePull;
 use local_product::runtime::spruce_matching::{
     BacklogStanding, ChannelHealth, ChannelStanding, ChannelStopCause, ChannelTieConflict,
-    ChannelTieEvaluation, FIFTEEN_MINUTES_SECONDS, IncomingSpruceItem, LinkOrigin, MatchAssessment,
-    MatchingDecision, MessageRoutingOutcome, MessageStanding, MessageUrgencyChoice,
-    MoveDestination, MoveSpruceConversationCommand, NonPatientCategory, OutsideParticipant,
-    ReadableSpruceItem, RoutingOrigin, SenderAddress, SenderConfirmationPolicy,
-    SpruceAttachmentSummary, SpruceContactPatient, SpruceContactRecord, SpruceEhrLink,
-    SpruceIngestOutcome, SpruceMatchingError, TodayChannelBanner, UnreadableSpruceItem,
-    evaluate_automatic_link, evaluate_channel_tie,
+    ChannelTieEvaluation, ConversationLinkState, FIFTEEN_MINUTES_SECONDS, IncomingSpruceItem,
+    LinkCommandAcceptance, LinkOrigin, MatchAssessment, MatchingDecision, MessageRoutingOutcome,
+    MessageStanding, MessageUrgency, MessageUrgencyChoice, MoveDestination,
+    MoveSpruceConversationCommand, NonPatientCategory, OutsideParticipant, ReadableSpruceItem,
+    RoutingOrigin, SenderAddress, SenderConfirmationPolicy, SpruceAttachmentSummary,
+    SpruceContactPatient, SpruceContactRecord, SpruceEhrLink, SpruceIngestOutcome,
+    SpruceMatchingError, TodayChannelBanner, UnreadableSpruceItem, evaluate_automatic_link,
+    evaluate_channel_tie,
 };
 use local_product::runtime::{Store, async_trait, engine};
 use local_product::spruce_matching_recipe::{
@@ -40,13 +45,10 @@ use local_product::spruce_matching_recipe::{
     ToolDiscoveryDisposition, instructions_sha256, patient_lookup_tool, recipe as matching_recipe,
     run_spruce_message_matching, submit_classification_tool, tools as matching_tools,
 };
-use local_product::{ModelBinding, ModelRoles, sha256_hex};
+use local_product::{ModelBinding, ModelRoles, open_ai_api_key, sha256_hex};
 use patient_work::{ReviewReason, ReviewRequest};
 use physician_auth::{AuthStore, Membership, PhysicianIdentity, PostgresAuthStore, PracticeClock};
 use serde_json::{Value, json};
-use std::collections::{BTreeMap, BTreeSet, VecDeque};
-use std::path::PathBuf;
-use std::sync::{Arc, Mutex};
 use uuid::Uuid;
 
 #[allow(dead_code)]
@@ -1747,6 +1749,309 @@ async fn matching_recipe_runs_on_background_lane_records_provenance_and_handles_
 }
 
 #[tokio::test]
+async fn urgent_unmatched_message_stays_unlinked_cannot_read_charts_and_confirm_replay_emits_one_review()
+ {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let roles = distinct_roles();
+    let now_ts: i64 = 1_762_980_000;
+    let practice = format!("practice-urgent-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+
+    let dr = invite_physician(&auth, &practice, "DrUrgent", now_ts as u64).await;
+    let pw_target = format!("pw-urgent-target-{}", Uuid::new_v4().simple());
+    seed_patient_with_chart(
+        &store,
+        &auth,
+        &practice,
+        &pw_target,
+        "ehr-urgent-1",
+        "Elena Vance",
+        "1965-07-22",
+        SECRET_CHART_SENTINEL,
+        now_ts,
+    )
+    .await;
+    auth.set_membership(&dr, &pw_target, Membership::Allowed)
+        .await
+        .unwrap();
+
+    store
+        .connect_spruce_channel(auth.as_ref(), &dr, 0, None, now_ts)
+        .await
+        .unwrap();
+    let lease = store
+        .acquire_spruce_reader_lease(&practice, "worker-urgent", 300, now_ts)
+        .await
+        .unwrap();
+    let receiver = RecordingReviewReceiver::default();
+
+    // Seed an earlier ordinary waiting message at `now_ts + 1` so we can verify urgent `Now` ordering!
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                1,
+                "msg-routine-first",
+                "conv-routine-first",
+                Some("+14155550301"),
+                Some("Routine Sender"),
+                "Can I get a copy of last year's immunization form?",
+                vec![OutsideParticipant {
+                    display_name: Some("Routine Sender".into()),
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(SenderAddress::parse("+14155550301").unwrap()),
+                    saved_contact_id: None,
+                }],
+            ),
+            now_ts + 1,
+        )
+        .await
+        .unwrap();
+    store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "msg-routine-first",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::NoMatchFound {
+                    evidence_summary: "Unknown sender.".into(),
+                },
+                rationale: "Routine administrative form request.".into(),
+            },
+            Some(&receiver),
+            now_ts + 2,
+        )
+        .await
+        .unwrap();
+
+    // Ingest an URGENT unmatched chest-pain message at `now_ts + 10`:
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                2,
+                "msg-urgent-chest",
+                "conv-urgent-chest",
+                Some("+14155550399"),
+                Some("Elena V."),
+                "Having crushing chest pressure and shortness of breath for the past 20 minutes — Elena.",
+                vec![OutsideParticipant {
+                    display_name: Some("Elena V.".into()),
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(SenderAddress::parse("+14155550399").unwrap()),
+                    saved_contact_id: None,
+                }],
+            ),
+            now_ts + 10,
+        )
+        .await
+        .unwrap();
+
+    // Adversarial provider attempts `read_patient_sources`, `search_patient_information`,
+    // `patient_concerns`, and `patient_memory` before calling `patient_lookup` and `submit_message_classification`!
+    let mut adversarial_provider = ScriptedProvider::new(vec![
+        Ok(engine::Turn {
+            items: vec![
+                engine::Item::Call(engine::Invocation {
+                    id: "illegal-read-chart".into(),
+                    name: READ_TOOL.into(),
+                    arguments: json!({
+                        "references": [{ "candidate_id": "DiagnosticReport/lab-1", "revision": "rev-1", "cursor": null }],
+                        "max_result_bytes": 4096
+                    })
+                    .to_string(),
+                }),
+                engine::Item::Call(engine::Invocation {
+                    id: "illegal-search-chart".into(),
+                    name: SEARCH_TOOL.into(),
+                    arguments: json!({ "query": "biopsy" }).to_string(),
+                }),
+                engine::Item::Call(engine::Invocation {
+                    id: "illegal-concern".into(),
+                    name: CONCERN_TOOL.into(),
+                    arguments: json!({ "operation": "list" }).to_string(),
+                }),
+                engine::Item::Call(engine::Invocation {
+                    id: "illegal-memory".into(),
+                    name: "list_patient_memory".into(),
+                    arguments: json!({}).to_string(),
+                }),
+            ],
+            receipt: json!({ "turn": 1 }),
+            usage: Default::default(),
+        }),
+        call_turn(
+            "lookup-elena",
+            PATIENT_LOOKUP_TOOL,
+            json!({ "query": "Elena" }),
+        ),
+        call_turn(
+            "submit-urgent",
+            SUBMIT_CLASSIFICATION_TOOL,
+            json!({
+                "classification": "patient_mail",
+                "urgency": "urgent",
+                "urgent_reason": "Acute crushing chest pressure with dyspnea.",
+                "match_outcome": "suggested_patient",
+                "suggested_workspace": pw_target,
+                "evidence_summary": "First name Elena matches registered patient Elena Vance; sender phone is unconfirmed.",
+                "rationale": "Acute cardiopulmonary symptoms from unconfirmed phone; flag urgent Now without auto-linking."
+            }),
+        ),
+        done_turn("Flagged urgent unmatched message as Now with suggested patient Elena Vance."),
+    ]);
+
+    let completed_urgent = run_spruce_message_matching(
+        &store,
+        auth.as_ref(),
+        &practice,
+        "msg-urgent-chest",
+        &roles,
+        &skills,
+        &mut adversarial_provider,
+        Some(&receiver),
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+
+    // 1. Every clinical chart and physician-only tool call was REFUSED and recorded on `tool_discoveries`:
+    let refused: Vec<_> = completed_urgent
+        .run
+        .tool_discoveries
+        .iter()
+        .filter(|d| matches!(d.disposition, ToolDiscoveryDisposition::Refused { .. }))
+        .collect();
+    assert_eq!(refused.len(), 4);
+    for expected_refused in [READ_TOOL, SEARCH_TOOL, CONCERN_TOOL, "list_patient_memory"] {
+        assert!(
+            refused.iter().any(|d| d.tool_name == expected_refused),
+            "expected `{expected_refused}` to be recorded as refused"
+        );
+    }
+
+    // 2. Neither provider requests nor run trace contain `SECRET_CHART_SENTINEL`:
+    let urgent_wire = serde_json::to_string(&adversarial_provider.requests).unwrap();
+    let urgent_run_json = serde_json::to_string(&completed_urgent.run).unwrap();
+    assert!(!urgent_wire.contains(SECRET_CHART_SENTINEL));
+    assert!(!urgent_run_json.contains(SECRET_CHART_SENTINEL));
+
+    // 3. Urgent message stays UNLINKED (`Waiting`), zero reviews triggered while unlinked,
+    // and leads Today's `"Messages to match"` as `Now` ahead of the earlier routine message!
+    assert_eq!(
+        completed_urgent.routing_outcome,
+        MessageRoutingOutcome::Waiting {
+            suggested_workspace: Some(pw_target.clone()),
+        }
+    );
+    assert!(receiver.accepted_requests().is_empty());
+
+    let conv_before_confirm = store
+        .spruce_conversation(&practice, "conv-urgent-chest")
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(
+        conv_before_confirm.link_state,
+        ConversationLinkState::Unlinked
+    );
+
+    let today = store
+        .today_spruce_summary_for_physician(auth.as_ref(), &dr)
+        .await
+        .unwrap();
+    assert_eq!(today.messages_to_match.len(), 2);
+    assert_eq!(today.messages_to_match[0].message_id, "msg-urgent-chest");
+    assert!(today.messages_to_match[0].leads_today_as_now);
+    assert!(matches!(
+        &today.messages_to_match[0].urgency,
+        MessageUrgency::Urgent { reason, .. } if reason.contains("chest pressure")
+    ));
+    assert_eq!(today.messages_to_match[1].message_id, "msg-routine-first");
+    assert!(!today.messages_to_match[1].leads_today_as_now);
+
+    // 4. Confirming `msg-urgent-chest` creates ONE link and ONE review request; replaying the same
+    // `command_key` (including after simulated receiver outage + recovery) produces ONE link and ONE review!
+    let confirm_1 = store
+        .confirm_spruce_message_link(
+            auth.as_ref(),
+            &dr,
+            "msg-urgent-chest",
+            &pw_target,
+            SenderConfirmationPolicy::ConfirmSenderForPatient,
+            "cmd-confirm-urgent-elena",
+            Some(&receiver),
+            now_ts + 20,
+        )
+        .await
+        .unwrap();
+    assert_eq!(confirm_1.acceptance, LinkCommandAcceptance::New);
+    assert_eq!(confirm_1.linked_message_ids, vec!["msg-urgent-chest"]);
+    assert_eq!(receiver.accepted_for_workspace(&pw_target).len(), 1);
+    assert!(
+        receiver.accepted_for_workspace(&pw_target)[0]
+            .record_versions
+            .contains_key("spruce:msg-urgent-chest"),
+        "ReviewRequest.record_versions must include the linked Spruce message version"
+    );
+
+    let confirm_replay = store
+        .confirm_spruce_message_link(
+            auth.as_ref(),
+            &dr,
+            "msg-urgent-chest",
+            &pw_target,
+            SenderConfirmationPolicy::ConfirmSenderForPatient,
+            "cmd-confirm-urgent-elena",
+            Some(&receiver),
+            now_ts + 21,
+        )
+        .await
+        .unwrap();
+    assert_eq!(confirm_replay.acceptance, LinkCommandAcceptance::Duplicate);
+    assert_eq!(
+        confirm_replay.review_command_key,
+        confirm_1.review_command_key
+    );
+    assert_eq!(confirm_replay.linked_message_ids, vec!["msg-urgent-chest"]);
+    assert_eq!(
+        receiver.accepted_for_workspace(&pw_target).len(),
+        1,
+        "confirm command replay must produce at most one ReviewRequest"
+    );
+
+    // Different payload under same `command_key` collides cleanly (`IdempotencyCollision`):
+    assert!(matches!(
+        store
+            .confirm_spruce_message_link(
+                auth.as_ref(),
+                &dr,
+                "msg-routine-first",
+                &pw_target,
+                SenderConfirmationPolicy::ConversationOnly,
+                "cmd-confirm-urgent-elena",
+                Some(&receiver),
+                now_ts + 22,
+            )
+            .await,
+        Err(SpruceMatchingError::IdempotencyCollision { .. })
+    ));
+}
+
+#[tokio::test]
 async fn fifteen_minute_fallback_join_siblings_leave_unlinked_channel_lifecycle_moves_isolation_and_review_inputs()
  {
     let Some(url) = database_url() else {
@@ -2678,4 +2983,1279 @@ async fn fifteen_minute_fallback_join_siblings_leave_unlinked_channel_lifecycle_
             .channel_banner,
         TodayChannelBanner::Quiet
     );
+}
+
+#[tokio::test]
+async fn live_openai_spruce_matching_smoke_when_authorized() {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let allow = std::env::var("CODA_ALLOW_MODEL_CALLS").ok();
+    let key = std::env::var("OPENAI_API_KEY").ok();
+    let Ok(api_key) = open_ai_api_key(allow.as_deref(), key.as_deref()) else {
+        return;
+    };
+
+    let (store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let model = std::env::var("CODA_BACKGROUND_MODEL").unwrap_or_else(|_| "gpt-5.4-mini".into());
+    let roles = ModelRoles {
+        chat: ModelBinding {
+            model: model.clone(),
+            effort: "low".into(),
+            context_window_tokens: 128_000,
+            max_input_tokens: 100_000,
+            adapter: "openai-responses".into(),
+        },
+        background: ModelBinding {
+            model,
+            effort: "low".into(),
+            context_window_tokens: 128_000,
+            max_input_tokens: 100_000,
+            adapter: "openai-responses".into(),
+        },
+    };
+
+    let now_ts: i64 = 1_763_000_000;
+    let practice = format!("practice-live-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+    let dr = invite_physician(&auth, &practice, "DrLive", now_ts as u64).await;
+    let pw = format!("pw-live-{}", Uuid::new_v4().simple());
+    seed_patient_with_chart(
+        &store,
+        &auth,
+        &practice,
+        &pw,
+        "ehr-live-1",
+        "Nadia Patel",
+        "1988-09-15",
+        SECRET_CHART_SENTINEL,
+        now_ts,
+    )
+    .await;
+    auth.set_membership(&dr, &pw, Membership::Allowed)
+        .await
+        .unwrap();
+
+    store
+        .connect_spruce_channel(auth.as_ref(), &dr, 0, None, now_ts)
+        .await
+        .unwrap();
+    let lease = store
+        .acquire_spruce_reader_lease(&practice, "worker-live", 300, now_ts)
+        .await
+        .unwrap();
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                1,
+                "msg-live-1",
+                "conv-live-1",
+                Some("+14155550888"),
+                Some("Nadia Patel"),
+                "Hi Dr. Live, this is Nadia Patel (DOB 1988-09-15) texting from a new phone about scheduling my follow-up.",
+                vec![OutsideParticipant {
+                    display_name: Some("Nadia Patel".into()),
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(SenderAddress::parse("+14155550888").unwrap()),
+                    saved_contact_id: None,
+                }],
+            ),
+            now_ts + 1,
+        )
+        .await
+        .unwrap();
+
+    let mut provider = ResponsesProvider::new(
+        harness::responses::ENDPOINT.to_owned(),
+        api_key,
+        Arc::new(store.clone()),
+    )
+    .unwrap();
+    let completed = run_spruce_message_matching(
+        &store,
+        auth.as_ref(),
+        &practice,
+        "msg-live-1",
+        &roles,
+        &skills,
+        &mut provider,
+        None,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    assert_eq!(completed.run.status, MatchingRunStatus::Completed);
+    assert_eq!(
+        completed.routing_outcome,
+        MessageRoutingOutcome::Waiting {
+            suggested_workspace: Some(pw),
+        }
+    );
+}
+
+#[tokio::test]
+async fn wrong_patient_undo_boundaries_access_redaction_multi_participant_recovery_no_match_and_event_replay()
+ {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let roles = distinct_roles();
+    let now_ts: i64 = 1_763_100_000;
+    let practice = format!("practice-reg-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+
+    let dr_full = invite_physician(&auth, &practice, "DrFull", now_ts as u64).await;
+    let dr_limited = invite_physician(&auth, &practice, "DrLimited", now_ts as u64).await;
+
+    let pw_a = format!("pw-reg-a-{}", Uuid::new_v4().simple());
+    let pw_b = format!("pw-reg-b-{}", Uuid::new_v4().simple());
+    let pw_c = format!("pw-reg-c-{}", Uuid::new_v4().simple());
+
+    for (ws, ehr_id, name) in [
+        (&pw_a, "ehr-reg-a", "Patient Alpha"),
+        (&pw_b, "ehr-reg-b", "Patient Bravo"),
+        (&pw_c, "ehr-reg-c", "Patient Charlie"),
+    ] {
+        seed_patient_with_chart(
+            &store,
+            &auth,
+            &practice,
+            ws,
+            ehr_id,
+            name,
+            "1982-04-10",
+            "Clinical chart content.",
+            now_ts,
+        )
+        .await;
+        auth.set_membership(&dr_full, ws, Membership::Allowed)
+            .await
+            .unwrap();
+    }
+    // `dr_limited` has access ONLY to `pw_b`, NOT `pw_a` or `pw_c` (`ClinicDemographic` on `pw_a`):
+    auth.set_membership(&dr_limited, &pw_a, Membership::ClinicDemographic)
+        .await
+        .unwrap();
+    auth.set_membership(&dr_limited, &pw_b, Membership::Allowed)
+        .await
+        .unwrap();
+
+    store
+        .connect_spruce_channel(auth.as_ref(), &dr_full, 0, None, now_ts)
+        .await
+        .unwrap();
+    let lease = store
+        .acquire_spruce_reader_lease(&practice, "worker-reg", 7_200, now_ts)
+        .await
+        .unwrap();
+    let receiver = RecordingReviewReceiver::default();
+    let mut pos_seq: u64 = 1;
+    let mut next_pos = || {
+        let p = pos_seq;
+        pos_seq += 1;
+        p
+    };
+
+    // --- 1. Multi-line / tab failure reasons succeed; empty and NUL reasons fail (`InvalidReasonText`) ---
+    store
+        .record_spruce_channel_failure(
+            &practice,
+            &lease.lease_token,
+            ChannelStopCause::Transient {
+                reason: "Spruce 502 Bad Gateway\r\n\tUpstream trace: req-991".into(),
+            },
+            now_ts + 1,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        store
+            .record_spruce_channel_failure(
+                &practice,
+                &lease.lease_token,
+                ChannelStopCause::Transient {
+                    reason: " \r\n\t ".into(),
+                },
+                now_ts + 2,
+            )
+            .await,
+        Err(SpruceMatchingError::InvalidReasonText { field: "reason" })
+    ));
+    assert!(matches!(
+        store
+            .record_spruce_channel_failure(
+                &practice,
+                &lease.lease_token,
+                ChannelStopCause::Transient {
+                    reason: "bad\0nul".into(),
+                },
+                now_ts + 2,
+            )
+            .await,
+        Err(SpruceMatchingError::InvalidReasonText { field: "reason" })
+    ));
+    store
+        .recover_spruce_channel_reading(&practice, &lease.lease_token, now_ts + 3)
+        .await
+        .unwrap();
+
+    let unreadable_multiline_pos = next_pos();
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &IncomingSpruceItem::Unreadable(UnreadableSpruceItem {
+                message_id: "msg-multiline-err".into(),
+                conversation_id: "unreadable-env-multiline".into(),
+                channel_position: unreadable_multiline_pos,
+                content_version: "ver-unreadable-init".into(),
+                failure_reason: "Fax TIFF decode failed:\n\tpage 2 corrupt strip offset".into(),
+                app_url: Some("https://app.sprucehealth.com/items/multiline".into()),
+                outside_participants: vec![],
+            }),
+            now_ts + 4,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        store
+            .ingest_spruce_item(
+                &practice,
+                &lease.lease_token,
+                &IncomingSpruceItem::Unreadable(UnreadableSpruceItem {
+                    message_id: "msg-nul-err".into(),
+                    conversation_id: "unreadable-env-nul".into(),
+                    channel_position: next_pos(),
+                    content_version: "ver-nul".into(),
+                    failure_reason: "contains\0nul".into(),
+                    app_url: None,
+                    outside_participants: vec![],
+                }),
+                now_ts + 4,
+            )
+            .await,
+        Err(SpruceMatchingError::InvalidReasonText {
+            field: "failure_reason"
+        })
+    ));
+
+    // --- 2. `CantRead -> Readable` (`CodaReadsItNow`) migrates synthetic conversation onto real linked conversation (`Rule 3`) ---
+    // First link `"conv-real-linked-a"` onto `pw_a`:
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                next_pos(),
+                "msg-real-anchor",
+                "conv-real-linked-a",
+                Some("+14155550601"),
+                Some("Patient Alpha"),
+                "Initial message in real conversation.",
+                vec![OutsideParticipant {
+                    display_name: Some("Patient Alpha".into()),
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(SenderAddress::parse("+14155550601").unwrap()),
+                    saved_contact_id: None,
+                }],
+            ),
+            now_ts + 5,
+        )
+        .await
+        .unwrap();
+    store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "msg-real-anchor",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::SuggestedPatient {
+                    workspace: pw_a.clone(),
+                    evidence_summary: "Alpha.".into(),
+                },
+                rationale: "Patient mail.".into(),
+            },
+            None,
+            now_ts + 6,
+        )
+        .await
+        .unwrap();
+    store
+        .confirm_spruce_message_link(
+            auth.as_ref(),
+            &dr_full,
+            "msg-real-anchor",
+            &pw_a,
+            SenderConfirmationPolicy::ConversationOnly,
+            "cmd-confirm-real-anchor",
+            Some(&receiver),
+            now_ts + 7,
+        )
+        .await
+        .unwrap();
+
+    // Invalid `content_version` on recovery must fail with `InvalidIdentifier`:
+    assert!(matches!(
+        store
+            .ingest_spruce_item(
+                &practice,
+                &lease.lease_token,
+                &IncomingSpruceItem::Readable(ReadableSpruceItem {
+                    message_id: "msg-multiline-err".into(),
+                    conversation_id: "conv-real-linked-a".into(),
+                    channel_position: unreadable_multiline_pos,
+                    content_version: "bad\0version".into(),
+                    sender_address: Some(SenderAddress::parse("+14155550601").unwrap()),
+                    author_name: Some("Patient Alpha".into()),
+                    body_text: "Decoded fax body.".into(),
+                    attachments: vec![],
+                    app_url: None,
+                    created_at_spruce: None,
+                    outside_participants: vec![],
+                }),
+                now_ts + 8,
+            )
+            .await,
+        Err(SpruceMatchingError::InvalidIdentifier {
+            field: "content_version"
+        })
+    ));
+
+    // Valid recovery migrates `msg-multiline-err` from `"unreadable-env-multiline"` to `"conv-real-linked-a"`,
+    // cleans up the orphaned synthetic conversation row, updates `content_version`, and joins `pw_a` on classification!
+    let recovered = store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &IncomingSpruceItem::Readable(ReadableSpruceItem {
+                message_id: "msg-multiline-err".into(),
+                conversation_id: "conv-real-linked-a".into(),
+                channel_position: unreadable_multiline_pos,
+                content_version: "ver-recovered-clean".into(),
+                sender_address: Some(SenderAddress::parse("+14155550601").unwrap()),
+                author_name: Some("Patient Alpha".into()),
+                body_text: "Decoded fax body for Alpha.".into(),
+                attachments: vec![],
+                app_url: Some(
+                    "https://app.sprucehealth.com/conversations/conv-real-linked-a".into(),
+                ),
+                created_at_spruce: None,
+                outside_participants: vec![OutsideParticipant {
+                    display_name: Some("Patient Alpha".into()),
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(SenderAddress::parse("+14155550601").unwrap()),
+                    saved_contact_id: None,
+                }],
+            }),
+            now_ts + 9,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        recovered,
+        SpruceIngestOutcome::RecoveredUnreadable { .. }
+    ));
+    assert!(
+        store
+            .spruce_conversation(&practice, "unreadable-env-multiline")
+            .await
+            .unwrap()
+            .is_none(),
+        "orphaned synthetic fallback conversation row should be removed upon recovery"
+    );
+    let saved_recovered = store
+        .spruce_message(&practice, "msg-multiline-err")
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(saved_recovered.conversation_id, "conv-real-linked-a");
+    assert_eq!(saved_recovered.content_version, "ver-recovered-clean");
+
+    let recovered_route = store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "msg-multiline-err",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::NoMatchFound {
+                    evidence_summary: "Follows linked conversation.".into(),
+                },
+                rationale: "Patient fax.".into(),
+            },
+            Some(&receiver),
+            now_ts + 10,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        recovered_route,
+        MessageRoutingOutcome::Linked {
+            ref workspace,
+            origin: LinkOrigin::JoinedExistingConversationLink,
+            ..
+        } if workspace == &pw_a
+    ));
+
+    // --- 3. Multi-outside-participant conversation & participant confirmed-sender conflict withhold `Rule 4` auto-link ---
+    let confirmed_a_phone = SenderAddress::parse("+14155550611").unwrap();
+    let confirmed_b_phone = SenderAddress::parse("+14155550622").unwrap();
+    store
+        .record_spruce_confirmed_sender(
+            &practice,
+            &confirmed_a_phone,
+            &pw_a,
+            &dr_full.physician_id,
+            now_ts + 11,
+        )
+        .await
+        .unwrap();
+    store
+        .record_spruce_confirmed_sender(
+            &practice,
+            &confirmed_b_phone,
+            &pw_b,
+            &dr_full.physician_id,
+            now_ts + 11,
+        )
+        .await
+        .unwrap();
+
+    // 3a. Group thread (`outside_participants.len() == 2` without `saved_contact_id`) from `confirmed_a_phone`
+    // even when model suggests `pw_a` MUST wait for confirmation (`Rule 4: one outside participant`)!
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                next_pos(),
+                "msg-group-2p",
+                "conv-group-2p",
+                Some("+14155550611"),
+                Some("Patient Alpha"),
+                "Group text with caregiver on thread.",
+                vec![
+                    OutsideParticipant {
+                        display_name: Some("Patient Alpha".into()),
+                        endpoint_channel: Some("sms".into()),
+                        endpoint_address: Some(confirmed_a_phone.clone()),
+                        saved_contact_id: None,
+                    },
+                    OutsideParticipant {
+                        display_name: Some("Second Outside Person".into()),
+                        endpoint_channel: Some("sms".into()),
+                        endpoint_address: Some(SenderAddress::parse("+14155550699").unwrap()),
+                        saved_contact_id: None,
+                    },
+                ],
+            ),
+            now_ts + 12,
+        )
+        .await
+        .unwrap();
+    let group_outcome = store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "msg-group-2p",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::SuggestedPatient {
+                    workspace: pw_a.clone(),
+                    evidence_summary: "Alpha is one participant in 2-person group thread.".into(),
+                },
+                rationale: "Group thread.".into(),
+            },
+            Some(&receiver),
+            now_ts + 13,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        group_outcome,
+        MessageRoutingOutcome::Waiting {
+            suggested_workspace: Some(pw_a.clone()),
+        },
+        "Rule 4: conversation with >1 outside participant must never auto-link"
+    );
+
+    // 3b. Single outside participant confirmed for `pw_b` while `msg.sender_address` is confirmed for `pw_a`
+    // unions `{pw_a, pw_b}` and withholds auto-link!
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                next_pos(),
+                "msg-endpoint-mismatch",
+                "conv-endpoint-mismatch",
+                Some("+14155550611"),
+                Some("Mixed Sender"),
+                "Forwarded message.",
+                vec![OutsideParticipant {
+                    display_name: Some("Bravo Endpoint".into()),
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(confirmed_b_phone.clone()),
+                    saved_contact_id: None,
+                }],
+            ),
+            now_ts + 14,
+        )
+        .await
+        .unwrap();
+    let mismatch_outcome = store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "msg-endpoint-mismatch",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::SuggestedPatient {
+                    workspace: pw_a.clone(),
+                    evidence_summary: "Conflicting endpoints.".into(),
+                },
+                rationale: "Conflicting endpoints.".into(),
+            },
+            Some(&receiver),
+            now_ts + 15,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        mismatch_outcome,
+        MessageRoutingOutcome::Waiting { .. }
+    ));
+
+    // --- 4. Confirmed sender writing about an unregistered relative (`NoMatchFound`) withholds `Rule 4` auto-link
+    //        AND `persist_spruce_matching_run_event` enforces replay idempotency, collision check, sequence order, and currency! ---
+    let a_reviews_before_rel = receiver.accepted_for_workspace(&pw_a).len();
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                next_pos(),
+                "msg-unregistered-nephew",
+                "conv-unregistered-nephew",
+                Some("+14155550611"),
+                Some("Patient Alpha"),
+                "Hi doctor, my visiting 6-year-old nephew Leo has a fever — do you see pediatric walk-ins?",
+                vec![OutsideParticipant {
+                    display_name: Some("Patient Alpha".into()),
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(confirmed_a_phone.clone()),
+                    saved_contact_id: None,
+                }],
+            ),
+            now_ts + 16,
+        )
+        .await
+        .unwrap();
+
+    struct ReplayProbeProvider {
+        store: Store,
+        practice: String,
+        message_id: String,
+        turns: VecDeque<engine::Turn>,
+        probed_tool_replay: bool,
+    }
+
+    impl engine::recipe::Provider for ReplayProbeProvider {
+        async fn exchange(
+            &mut self,
+            _request: &engine::recipe::Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            let runs = self
+                .store
+                .spruce_matching_runs_for_message(&self.practice, &self.message_id)
+                .await
+                .unwrap();
+            assert_eq!(runs.len(), 1);
+            let current_run = &runs[0];
+            assert_eq!(current_run.status, MatchingRunStatus::Running);
+
+            // Wrong attempt ID is rejected:
+            let mut wrong_attempt_ev = current_run.events[0].clone();
+            wrong_attempt_ev.attempt_id = "foreign-attempt-id".into();
+            assert!(
+                self.store
+                    .persist_spruce_matching_run_event(
+                        &self.practice,
+                        &current_run.run_id,
+                        &current_run.attempt_id,
+                        wrong_attempt_ev,
+                    )
+                    .await
+                    .is_err()
+            );
+
+            // Sequence gap (`last + 5`) is rejected:
+            let mut gap_ev = current_run.events.last().unwrap().clone();
+            gap_ev.sequence += 5;
+            assert!(
+                self.store
+                    .persist_spruce_matching_run_event(
+                        &self.practice,
+                        &current_run.run_id,
+                        &current_run.attempt_id,
+                        gap_ev,
+                    )
+                    .await
+                    .is_err()
+            );
+
+            // Colliding ordinal at existing sequence is rejected:
+            let mut colliding_ev = current_run.events[0].clone();
+            colliding_ev.ordinal += 999;
+            assert!(
+                self.store
+                    .persist_spruce_matching_run_event(
+                        &self.practice,
+                        &current_run.run_id,
+                        &current_run.attempt_id,
+                        colliding_ev,
+                    )
+                    .await
+                    .is_err()
+            );
+
+            // Once `ToolReturned` has been recorded (turn 2+), replay that exact `ToolReturned` event
+            // and verify neither `events` nor `tool_discoveries` duplicates!
+            if let Some(tool_ev) = current_run
+                .events
+                .iter()
+                .find(|e| matches!(e.kind, engine::EventKind::ToolReturned { .. }))
+                .cloned()
+            {
+                let events_len_before = current_run.events.len();
+                let discoveries_len_before = current_run.tool_discoveries.len();
+                self.store
+                    .persist_spruce_matching_run_event(
+                        &self.practice,
+                        &current_run.run_id,
+                        &current_run.attempt_id,
+                        tool_ev,
+                    )
+                    .await
+                    .expect("idempotent ToolReturned replay must succeed");
+                let after = &self
+                    .store
+                    .spruce_matching_runs_for_message(&self.practice, &self.message_id)
+                    .await
+                    .unwrap()[0];
+                assert_eq!(after.events.len(), events_len_before);
+                assert_eq!(after.tool_discoveries.len(), discoveries_len_before);
+                self.probed_tool_replay = true;
+            }
+
+            Ok(self.turns.pop_front().expect("probe provider turn"))
+        }
+    }
+
+    let mut probe_provider = ReplayProbeProvider {
+        store: store.clone(),
+        practice: practice.clone(),
+        message_id: "msg-unregistered-nephew".into(),
+        turns: VecDeque::from(vec![
+            call_turn("lookup-leo", PATIENT_LOOKUP_TOOL, json!({ "query": "Leo" })).unwrap(),
+            call_turn(
+                "submit-nephew",
+                SUBMIT_CLASSIFICATION_TOOL,
+                json!({
+                    "classification": "patient_mail",
+                    "urgency": "ordinary",
+                    "match_outcome": "no_match_found",
+                    "evidence_summary": "Sender +14155550611 belongs to Patient Alpha, while the message asks about an unregistered nephew Leo not on the practice roster.",
+                    "rationale": "Caregiver message about an unregistered child; keep waiting for physician review rather than linking to Patient Alpha."
+                }),
+            )
+            .unwrap(),
+            done_turn("Held unmatched inquiry about unregistered relative Leo.").unwrap(),
+        ]),
+        probed_tool_replay: false,
+    };
+
+    let completed_nephew = run_spruce_message_matching(
+        &store,
+        auth.as_ref(),
+        &practice,
+        "msg-unregistered-nephew",
+        &roles,
+        &skills,
+        &mut probe_provider,
+        Some(&receiver),
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    assert!(probe_provider.probed_tool_replay);
+    assert_eq!(
+        completed_nephew.routing_outcome,
+        MessageRoutingOutcome::Waiting {
+            suggested_workspace: None,
+        },
+        "confirmed sender writing about an unregistered relative (NoMatchFound) must NOT auto-link to the sender's workspace"
+    );
+    assert_eq!(
+        receiver.accepted_for_workspace(&pw_a).len(),
+        a_reviews_before_rel,
+        "zero reviews may fire on pw_a when NoMatchFound withholds auto-link"
+    );
+
+    // Post-completion currency fence: appending a new non-surviving event after `run` completed is rejected!
+    let mut stale_ev = completed_nephew.run.events[0].clone();
+    stale_ev.sequence = completed_nephew.run.events.last().unwrap().sequence + 1;
+    stale_ev.ordinal = completed_nephew.run.events.last().unwrap().ordinal + 1;
+    assert!(
+        store
+            .persist_spruce_matching_run_event(
+                &practice,
+                &completed_nephew.run.run_id,
+                &completed_nephew.run.attempt_id,
+                stale_ev,
+            )
+            .await
+            .is_err(),
+        "stale non-surviving event after run completion must be refused"
+    );
+
+    // --- 5. `Rule 2` Access Redaction on `mark_spruce_message_as_patient` (Live + Replay) & Undispatched Trigger Retry ---
+    // 5a. Conversation `conv-group-2p` currently has `active_suggestion == Some(pw_a)`.
+    // Add a `Filtered` message `msg-filt-in-suggested` in `conv-group-2p`; `dr_limited` (not allowed on `pw_a`)
+    // clicks `"This is a patient"` -> both live and replay MUST redact `suggested_workspace` to `None`!
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                next_pos(),
+                "msg-filt-in-suggested",
+                "conv-group-2p",
+                Some("+14155550699"),
+                Some("Second Outside Person"),
+                "Follow-up attachment.",
+                vec![],
+            ),
+            now_ts + 20,
+        )
+        .await
+        .unwrap();
+    store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "msg-filt-in-suggested",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::NotPatientMail {
+                category: NonPatientCategory::NonPatientOutreach,
+                rationale: "Filtered initially.".into(),
+            },
+            None,
+            now_ts + 21,
+        )
+        .await
+        .unwrap();
+
+    let limited_wait_live = store
+        .mark_spruce_message_as_patient(
+            auth.as_ref(),
+            &dr_limited,
+            "msg-filt-in-suggested",
+            "cmd-limited-mark-wait",
+            Some(&receiver),
+            now_ts + 22,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        limited_wait_live,
+        MessageRoutingOutcome::Waiting {
+            suggested_workspace: None,
+        },
+        "Rule 2: mark_spruce_message_as_patient must redact unauthorized suggested_workspace"
+    );
+    let limited_wait_replay = store
+        .mark_spruce_message_as_patient(
+            auth.as_ref(),
+            &dr_limited,
+            "msg-filt-in-suggested",
+            "cmd-limited-mark-wait",
+            Some(&receiver),
+            now_ts + 23,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        limited_wait_replay,
+        MessageRoutingOutcome::Waiting {
+            suggested_workspace: None,
+        },
+        "Rule 2: Receipt::Same replay of mark_spruce_message_as_patient must also redact unauthorized suggested_workspace"
+    );
+
+    // 5b. Filtered message `msg-filt-autolink-a` in a conversation uniquely tied to `pw_a` via `confirmed_a_phone`:
+    // `dr_limited` calls `mark_spruce_message_as_patient` first with `review_receiver = None` (leaving trigger undispatched),
+    // then replays with `Some(&receiver)`:
+    // - Both live & replay return `MessageRoutingOutcome::LinkedWithoutViewerAccess` (never exposing `pw_a`!)
+    // - Replay dispatches the previously undispatched review trigger for `pw_a`!
+    let a_reviews_before_limited_link = receiver.accepted_for_workspace(&pw_a).len();
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                next_pos(),
+                "msg-filt-autolink-a",
+                "conv-filt-autolink-a",
+                Some("+14155550611"),
+                Some("Patient Alpha"),
+                "Short note initially misfiltered.",
+                vec![OutsideParticipant {
+                    display_name: Some("Patient Alpha".into()),
+                    endpoint_channel: Some("sms".into()),
+                    endpoint_address: Some(confirmed_a_phone.clone()),
+                    saved_contact_id: None,
+                }],
+            ),
+            now_ts + 24,
+        )
+        .await
+        .unwrap();
+    store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "msg-filt-autolink-a",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::NotPatientMail {
+                category: NonPatientCategory::AdministrativeNotice,
+                rationale: "Misfiltered.".into(),
+            },
+            None,
+            now_ts + 25,
+        )
+        .await
+        .unwrap();
+
+    let limited_link_live = store
+        .mark_spruce_message_as_patient(
+            auth.as_ref(),
+            &dr_limited,
+            "msg-filt-autolink-a",
+            "cmd-limited-mark-link",
+            None,
+            now_ts + 26,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        limited_link_live,
+        MessageRoutingOutcome::LinkedWithoutViewerAccess {
+            origin: LinkOrigin::AutomaticRule4,
+            joined_message_ids: vec!["msg-filt-autolink-a".into()],
+        },
+        "Rule 2: mark_spruce_message_as_patient must return LinkedWithoutViewerAccess when actor lacks access to linked patient"
+    );
+    assert_eq!(
+        receiver.accepted_for_workspace(&pw_a).len(),
+        a_reviews_before_limited_link
+    );
+
+    let limited_link_replay = store
+        .mark_spruce_message_as_patient(
+            auth.as_ref(),
+            &dr_limited,
+            "msg-filt-autolink-a",
+            "cmd-limited-mark-link",
+            Some(&receiver),
+            now_ts + 27,
+        )
+        .await
+        .unwrap();
+    assert_eq!(limited_link_replay, limited_link_live);
+    assert_eq!(
+        receiver.accepted_for_workspace(&pw_a).len(),
+        a_reviews_before_limited_link + 1,
+        "Receipt::Same replay on mark_spruce_message_as_patient must retry undispatched review trigger"
+    );
+
+    // --- 6. Wrong-Patient `Move` / `Undo` Window Lifecycle Boundaries (`Rules 7 & 8`) ---
+    // Seed a clean linked conversation `conv-move-bounds` on `pw_a` with `msg-mb-1`:
+    let t_mv = now_ts + 100;
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                next_pos(),
+                "msg-mb-1",
+                "conv-move-bounds",
+                Some("+14155550680"),
+                Some("Bounds Thread"),
+                "Original message on Alpha.",
+                vec![],
+            ),
+            t_mv,
+        )
+        .await
+        .unwrap();
+    store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "msg-mb-1",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::NoMatchFound {
+                    evidence_summary: "Bounds.".into(),
+                },
+                rationale: "Patient mail.".into(),
+            },
+            None,
+            t_mv + 1,
+        )
+        .await
+        .unwrap();
+    store
+        .confirm_spruce_message_link(
+            auth.as_ref(),
+            &dr_full,
+            "msg-mb-1",
+            &pw_a,
+            SenderConfirmationPolicy::ConversationOnly,
+            "cmd-confirm-mb-1",
+            Some(&receiver),
+            t_mv + 2,
+        )
+        .await
+        .unwrap();
+
+    // 6a. Move `A -> B` (`t_mv + 10`, `expires_at = t_mv + 20`), receive `msg-mb-2` on `B` during `Undo`,
+    // then move back `B -> A` (`returned_to_origin`) -> triggers 1 review on `pw_a` for `msg-mb-2`!
+    let a_reviews_before_return = receiver.accepted_for_workspace(&pw_a).len();
+    store
+        .move_spruce_conversation(
+            auth.as_ref(),
+            &dr_full,
+            MoveSpruceConversationCommand {
+                conversation_id: "conv-move-bounds".into(),
+                destination: MoveDestination::AnotherPatient {
+                    workspace: pw_b.clone(),
+                },
+                undo_window_seconds: 10,
+                command_key: "cmd-mb-a-to-b-1".into(),
+            },
+            Some(&receiver),
+            t_mv + 10,
+        )
+        .await
+        .unwrap();
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                next_pos(),
+                "msg-mb-2",
+                "conv-move-bounds",
+                Some("+14155550680"),
+                Some("Bounds Thread"),
+                "Arrived on B during Undo before moving back to A.",
+                vec![],
+            ),
+            t_mv + 11,
+        )
+        .await
+        .unwrap();
+    store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "msg-mb-2",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::NoMatchFound {
+                    evidence_summary: "Mid-undo.".into(),
+                },
+                rationale: "Patient mail.".into(),
+            },
+            Some(&receiver),
+            t_mv + 12,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        receiver.accepted_for_workspace(&pw_a).len(),
+        a_reviews_before_return
+    );
+
+    store
+        .move_spruce_conversation(
+            auth.as_ref(),
+            &dr_full,
+            MoveSpruceConversationCommand {
+                conversation_id: "conv-move-bounds".into(),
+                destination: MoveDestination::AnotherPatient {
+                    workspace: pw_a.clone(),
+                },
+                undo_window_seconds: 10,
+                command_key: "cmd-mb-return-b-to-a".into(),
+            },
+            Some(&receiver),
+            t_mv + 13,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        receiver.accepted_for_workspace(&pw_a).len(),
+        a_reviews_before_return + 1,
+        "returning B -> A during Undo after a mid-Undo arrival must trigger one review on pw_a"
+    );
+
+    // 6b. Move `A -> B` at `t_mv + 30` (`expires_at = t_mv + 40`, `moved_message_ids = {msg-mb-1, msg-mb-2}`).
+    // - Early `act_on_spruce_conversation_move` at `t_mv + 35` (`< expires_at`) MUST fail (`InvalidTransition`).
+    // - `msg-mb-never-a` arrives on `B` at `t_mv + 36` during active `Undo`.
+    // - Projections show `move_undo` at `t_mv + 38`, and hide `move_undo` at `t_mv + 40` even before sweep!
+    // - `undo_spruce_conversation_move` at `t_mv + 40` (`>= expires_at`) MUST fail (`InvalidTransition`).
+    // - Move `B -> C` at `t_mv + 41` (`>= expires_at`, BEFORE sweep!) settles Move 1 (`A -> B`) first:
+    //   * `entered_in_error` on `pw_a` records ONLY `{msg-mb-1, msg-mb-2}` and NEVER `msg-mb-never-a`!
+    //   * Move 1 reviews fire for `pw_a` and `pw_b`!
+    //   * New `move_undo` has `from_workspace == pw_b` (not `pw_a`)!
+    store
+        .move_spruce_conversation(
+            auth.as_ref(),
+            &dr_full,
+            MoveSpruceConversationCommand {
+                conversation_id: "conv-move-bounds".into(),
+                destination: MoveDestination::AnotherPatient {
+                    workspace: pw_b.clone(),
+                },
+                undo_window_seconds: 10,
+                command_key: "cmd-mb-a-to-b-2".into(),
+            },
+            Some(&receiver),
+            t_mv + 30,
+        )
+        .await
+        .unwrap();
+    store
+        .open_spruce_conversation(auth.as_ref(), &dr_full, "conv-move-bounds", t_mv + 31)
+        .await
+        .unwrap();
+
+    assert!(matches!(
+        store
+            .act_on_spruce_conversation_move(
+                &practice,
+                "conv-move-bounds",
+                Some(&receiver),
+                t_mv + 35,
+            )
+            .await,
+        Err(SpruceMatchingError::InvalidTransition {
+            action: "act_on_move",
+            ..
+        })
+    ));
+
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                next_pos(),
+                "msg-mb-never-a",
+                "conv-move-bounds",
+                Some("+14155550680"),
+                Some("Bounds Thread"),
+                "Arrived on B while Undo active; was NEVER linked to A.",
+                vec![],
+            ),
+            t_mv + 36,
+        )
+        .await
+        .unwrap();
+    store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "msg-mb-never-a",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::NoMatchFound {
+                    evidence_summary: "Destination arrival.".into(),
+                },
+                rationale: "Patient mail.".into(),
+            },
+            Some(&receiver),
+            t_mv + 37,
+        )
+        .await
+        .unwrap();
+
+    assert!(
+        store
+            .authorized_spruce_conversation_for_physician(
+                auth.as_ref(),
+                &dr_full,
+                "conv-move-bounds",
+                t_mv + 38,
+            )
+            .await
+            .unwrap()
+            .move_undo
+            .is_some()
+    );
+    assert!(
+        store
+            .authorized_spruce_conversation_for_physician(
+                auth.as_ref(),
+                &dr_full,
+                "conv-move-bounds",
+                t_mv + 40,
+            )
+            .await
+            .unwrap()
+            .move_undo
+            .is_none(),
+        "expired move_undo must not be displayed by authorized_spruce_conversation_for_physician"
+    );
+    assert!(
+        store
+            .open_spruce_conversations_for_physician(auth.as_ref(), &dr_full, t_mv + 40)
+            .await
+            .unwrap()[0]
+            .move_undo
+            .is_none(),
+        "expired move_undo must not be displayed by open_spruce_conversations_for_physician"
+    );
+
+    assert!(matches!(
+        store
+            .undo_spruce_conversation_move(
+                auth.as_ref(),
+                &dr_full,
+                "conv-move-bounds",
+                "cmd-expired-undo",
+                Some(&receiver),
+                t_mv + 40,
+            )
+            .await,
+        Err(SpruceMatchingError::InvalidTransition {
+            action: "undo_move",
+            ..
+        })
+    ));
+
+    let a_reviews_pre_chain = receiver.accepted_for_workspace(&pw_a).len();
+    let b_reviews_pre_chain = receiver.accepted_for_workspace(&pw_b).len();
+    let moved_post_expiry = store
+        .move_spruce_conversation(
+            auth.as_ref(),
+            &dr_full,
+            MoveSpruceConversationCommand {
+                conversation_id: "conv-move-bounds".into(),
+                destination: MoveDestination::AnotherPatient {
+                    workspace: pw_c.clone(),
+                },
+                undo_window_seconds: 10,
+                command_key: "cmd-mb-post-expiry-b-to-c".into(),
+            },
+            Some(&receiver),
+            t_mv + 41,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        moved_post_expiry
+            .move_undo
+            .as_ref()
+            .map(|u| u.from_workspace.as_str()),
+        Some(pw_b.as_str()),
+        "moving B -> C after A -> B Undo expired must settle A -> B first and start new Undo from B"
+    );
+    assert_eq!(
+        receiver.accepted_for_workspace(&pw_a).len(),
+        a_reviews_pre_chain + 1
+    );
+    assert_eq!(
+        receiver.accepted_for_workspace(&pw_b).len(),
+        b_reviews_pre_chain + 1
+    );
+
+    let eie_a: BTreeSet<String> = store
+        .entered_in_error_spruce_messages(&practice, &pw_a)
+        .await
+        .unwrap()
+        .into_iter()
+        .map(|r| r.message_id)
+        .collect();
+    assert_eq!(
+        eie_a,
+        BTreeSet::from(["msg-mb-1".to_owned(), "msg-mb-2".to_owned()]),
+        "entered_in_error on pw_a must include ONLY messages that were linked to pw_a, never mid-Undo arrivals on pw_b"
+    );
+    assert!(!eie_a.contains("msg-mb-never-a"));
+
+    // 6c. Per-patient failure isolation inside a single 2-patient settlement (`B -> C` where `pw_b` fails):
+    // `pw_c`'s review STILL dispatches immediately even when `pw_b`'s review fails!
+    let c_reviews_pre_settle = receiver.accepted_for_workspace(&pw_c).len();
+    receiver.fail_workspace(&pw_b);
+    assert!(matches!(
+        store
+            .act_on_spruce_conversation_move(
+                &practice,
+                "conv-move-bounds",
+                Some(&receiver),
+                t_mv + 55,
+            )
+            .await,
+        Err(SpruceMatchingError::ReviewHandoff { .. })
+    ));
+    assert_eq!(
+        receiver.accepted_for_workspace(&pw_c).len(),
+        c_reviews_pre_settle + 1,
+        "failure of origin patient pw_b review handoff must not block destination patient pw_c review handoff"
+    );
+    receiver.clear_failures();
 }
