@@ -238,7 +238,7 @@ impl DurableChat {
 /// The current request's W3C trace context, saved with the work it makes
 /// runnable so the attempt that runs it can link back. `None` when the
 /// request has no exported span.
-fn request_context() -> Option<TraceContext> {
+pub(crate) fn request_context() -> Option<TraceContext> {
     let mut carrier = HashMap::new();
     telemetry::propagation::inject_current(&mut carrier);
     Some(TraceContext {

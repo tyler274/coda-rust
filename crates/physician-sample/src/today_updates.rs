@@ -171,21 +171,45 @@ fn map_seen_standing(standing: &SeenStanding) -> SeenStandingWire {
 fn map_failed_parts(parts: &[ProducerFailure]) -> Vec<FailedProducerWire> {
     parts
         .iter()
-        .map(|part| FailedProducerWire {
-            producer: match part.producer {
-                ProducerKind::Concerns => ProducerSliceWire::Concerns,
-                ProducerKind::PatientReviews => ProducerSliceWire::PatientReviews,
-                ProducerKind::VisitPreparation => ProducerSliceWire::VisitPreparation,
-                ProducerKind::PatientUnderstanding => ProducerSliceWire::PatientUnderstanding,
-                ProducerKind::RunningConversations => ProducerSliceWire::RunningConversations,
-                ProducerKind::SourceStatuses => ProducerSliceWire::SourceStatuses,
-                ProducerKind::Messages => ProducerSliceWire::SpruceMessages,
-                ProducerKind::FollowUps => ProducerSliceWire::FollowUps,
-            },
-            label: part.producer.label().to_owned(),
-            message: part.message.clone(),
+        .map(|part| {
+            let (producer, label) = match part.producer {
+                ProducerKind::Concerns => (ProducerSliceWire::Concerns, part.producer.label()),
+                ProducerKind::PatientReviews => {
+                    (ProducerSliceWire::PatientReviews, part.producer.label())
+                }
+                ProducerKind::VisitPreparation => {
+                    (ProducerSliceWire::VisitPreparation, part.producer.label())
+                }
+                ProducerKind::PatientUnderstanding => (
+                    ProducerSliceWire::PatientUnderstanding,
+                    part.producer.label(),
+                ),
+                ProducerKind::RunningConversations => (
+                    ProducerSliceWire::RunningConversations,
+                    part.producer.label(),
+                ),
+                ProducerKind::SourceStatuses => {
+                    (ProducerSliceWire::SourceStatuses, part.producer.label())
+                }
+                ProducerKind::Messages => (ProducerSliceWire::SpruceMessages, "Spruce messages"),
+                ProducerKind::FollowUps => (ProducerSliceWire::FollowUps, "Follow-ups"),
+            };
+            FailedProducerWire {
+                producer,
+                label: label.to_owned(),
+                message: part.message.clone(),
+            }
         })
         .collect()
+}
+
+fn push_unique_failed_part(parts: &mut Vec<FailedProducerWire>, failed: FailedProducerWire) {
+    if !parts
+        .iter()
+        .any(|existing| existing.producer == failed.producer)
+    {
+        parts.push(failed);
+    }
 }
 
 fn map_practice_outage(outage: &PracticeOutageLine) -> PracticeOutageWire {
@@ -258,7 +282,12 @@ fn serialize_today_row(row: &TodayRow) -> Value {
         TodayRowPayload::OpenConcern {
             visit_slot: None, ..
         } => "Flagged concern".to_owned(),
-        _ => row.title.clone(),
+        TodayRowPayload::UnhandledWork { .. }
+        | TodayRowPayload::RunningWork { .. }
+        | TodayRowPayload::MessageThread { .. }
+        | TodayRowPayload::MessageToMatch { .. }
+        | TodayRowPayload::UnreadableMessage { .. }
+        | TodayRowPayload::MessagingChannelProblem { .. } => row.title.clone(),
     };
 
     json!({
@@ -336,9 +365,18 @@ fn map_evidence_wire(evidence: ItemWorkEvidence) -> ItemWorkEvidenceWire {
 }
 
 fn error_response(err: TodayUpdatesError) -> Response {
+    use local_product::runtime::reply::proposals::ReplyProposalError;
+    use local_product::runtime::spruce_matching::SpruceMatchingError;
+
     match err {
         TodayUpdatesError::Session(_) => StatusCode::UNAUTHORIZED.into_response(),
-        TodayUpdatesError::AccessDenied { .. } | TodayUpdatesError::NotFound { .. } => (
+        TodayUpdatesError::AccessDenied { .. }
+        | TodayUpdatesError::NotFound { .. }
+        | TodayUpdatesError::SpruceMatching(SpruceMatchingError::NotFound { .. })
+        | TodayUpdatesError::ReplyProposal(
+            ReplyProposalError::ConversationNotFound { .. }
+            | ReplyProposalError::ConversationNotLinkedToPatient { .. },
+        ) => (
             StatusCode::NOT_FOUND,
             Json(json!({ "detail": "Not found." })),
         )
@@ -346,8 +384,22 @@ fn error_response(err: TodayUpdatesError) -> Response {
         TodayUpdatesError::InvalidInput { .. }
         | TodayUpdatesError::CannotMarkDone { .. }
         | TodayUpdatesError::IdempotencyCollision { .. }
-        | TodayUpdatesError::ConcernInput(_) => (
+        | TodayUpdatesError::ConcernInput(_)
+        | TodayUpdatesError::SpruceMatching(
+            SpruceMatchingError::InvalidTransition { .. }
+            | SpruceMatchingError::ChannelStateRefused { .. },
+        )
+        | TodayUpdatesError::ReplyProposal(
+            ReplyProposalError::ChannelStillConnected { .. }
+            | ReplyProposalError::StaleDraftVersion { .. }
+            | ReplyProposalError::InvalidInput(_),
+        ) => (
             StatusCode::BAD_REQUEST,
+            Json(json!({ "detail": err.to_string() })),
+        )
+            .into_response(),
+        TodayUpdatesError::ReplyProposal(ReplyProposalError::ConversationWithheld { .. }) => (
+            StatusCode::CONFLICT,
             Json(json!({ "detail": err.to_string() })),
         )
             .into_response(),
@@ -382,11 +434,43 @@ async fn directory_patient_names(
         .collect()
 }
 
-fn active_probe(extensions: &Extensions) -> &dyn TodayUpdatesProbe {
-    match extensions.get::<Arc<TodayUpdatesFaultInjection>>() {
+struct SampleTodayUpdatesProbe<'a> {
+    inner: &'a dyn TodayUpdatesProbe,
+    extensions: &'a Extensions,
+}
+
+impl TodayUpdatesProbe for SampleTodayUpdatesProbe<'_> {
+    fn check_producer(&self, producer: ProducerKind) -> Result<(), String> {
+        use crate::matching_reply::{MatchingReplyFollowUpsFault, is_faulted};
+
+        self.inner.check_producer(producer)?;
+        match producer {
+            ProducerKind::Messages
+                if is_faulted(self.extensions, MatchingReplyFollowUpsFault::MatchingRead)
+                    || is_faulted(self.extensions, MatchingReplyFollowUpsFault::ReplyRead) =>
+            {
+                Err("Spruce messages could not be loaded right now.".to_owned())
+            }
+            ProducerKind::FollowUps
+                if is_faulted(self.extensions, MatchingReplyFollowUpsFault::FollowUpRead) =>
+            {
+                Err("Coda couldn't read follow-ups right now.".to_owned())
+            }
+            _ => Ok(()),
+        }
+    }
+
+    fn check_open_item(&self, workspace: &str, item_key: &str) -> Result<(), String> {
+        self.inner.check_open_item(workspace, item_key)
+    }
+}
+
+fn active_probe(extensions: &Extensions) -> SampleTodayUpdatesProbe<'_> {
+    let inner: &dyn TodayUpdatesProbe = match extensions.get::<Arc<TodayUpdatesFaultInjection>>() {
         Some(faults) => faults.as_ref(),
         None => &NoopTodayUpdatesProbe,
-    }
+    };
+    SampleTodayUpdatesProbe { inner, extensions }
 }
 
 /// Serves `GET /today` from the durable `Store` when `Store` and `AuthContext` are attached.
@@ -407,6 +491,25 @@ pub(crate) async fn serve_durable_today(
     let probe = active_probe(extensions);
     let real_now = auth::now();
 
+    let mut extra_failed = Vec::new();
+    let (messages_to_match_count, spruce_rows) =
+        match crate::matching_reply::spruce_today_rows_for_physician(
+            store,
+            ctx,
+            &*directory,
+            extensions,
+            &names,
+            target_workspace,
+        )
+        .await
+        {
+            Ok(pair) => pair,
+            Err(failed) => {
+                extra_failed.push(failed);
+                (0, Vec::new())
+            }
+        };
+
     let projection: TodayProjection = match store
         .read_today_with_probe(
             ctx.auth.store.as_ref(),
@@ -414,7 +517,7 @@ pub(crate) async fn serve_durable_today(
             real_now,
             target_workspace,
             &names,
-            probe,
+            &probe,
         )
         .await
     {
@@ -428,13 +531,55 @@ pub(crate) async fn serve_durable_today(
         .filter(|row| matches!(row.seen_standing, SeenStanding::Seen { .. }))
         .map(|row| row.item_key.as_str().to_owned())
         .collect();
-    let rows: Vec<Value> = projection.rows.iter().map(serialize_today_row).collect();
+    let mut failed_parts = map_failed_parts(projection.completeness.failed_parts());
+    for failed in extra_failed {
+        push_unique_failed_part(&mut failed_parts, failed);
+    }
+    let spruce_covered_conversations: BTreeSet<String> = spruce_rows
+        .iter()
+        .filter_map(|row| row.get("spruce_conversation_id").and_then(Value::as_str))
+        .map(str::to_owned)
+        .collect();
+    let mut rows: Vec<Value> = projection
+        .rows
+        .iter()
+        .filter(|row| match &row.payload {
+            TodayRowPayload::MessageThread {
+                conversation_id,
+                open_concern_ids,
+                ..
+            } => {
+                !spruce_covered_conversations.contains(conversation_id)
+                    && !open_concern_ids.is_empty()
+            }
+            TodayRowPayload::MessageToMatch { .. } | TodayRowPayload::UnreadableMessage { .. } => {
+                false
+            }
+            _ => true,
+        })
+        .map(serialize_today_row)
+        .collect();
+
+    let mut urgent_spruce = Vec::new();
+    let mut ordinary_extra = Vec::new();
+    for extra in spruce_rows {
+        if extra.get("urgency").and_then(Value::as_str) == Some("now") {
+            urgent_spruce.push(extra);
+        } else {
+            ordinary_extra.push(extra);
+        }
+    }
+    if !urgent_spruce.is_empty() {
+        urgent_spruce.append(&mut rows);
+        rows = urgent_spruce;
+    }
+    rows.extend(ordinary_extra);
+
     let practice_outages: Vec<PracticeOutageWire> = projection
         .practice_outages
         .iter()
         .map(map_practice_outage)
         .collect();
-    let failed_parts = map_failed_parts(projection.completeness.failed_parts());
 
     let Ok(setup_connections) =
         crate::source_setup::today_connections(extensions, &ctx.identity.practice_id).await
@@ -448,17 +593,20 @@ pub(crate) async fn serve_durable_today(
             .map(|conn| serde_json::to_value(conn).expect("serialize today connection")),
     );
 
+    let incomplete = !projection.completeness.is_complete() || !failed_parts.is_empty();
+
     Json(json!({
         "date": moment.date_iso,
         "time_zone": moment.time_zone.as_str(),
         "rows": rows,
+        "messages_to_match_count": messages_to_match_count,
         "seen": seen,
         "connections": connections,
         "source_outages": source_outages,
         "cursors": {},
         "as_of": projection.clinical_now_unix,
         "also_reviewed": projection.also_reviewed_today_count,
-        "incomplete": !projection.completeness.is_complete(),
+        "incomplete": incomplete,
         "practice_outages": practice_outages,
         "failed_parts": failed_parts,
     }))
@@ -480,7 +628,13 @@ pub(crate) async fn serve_durable_updates(
     let real_now = auth::now();
 
     let projection: UpdatesProjection = match store
-        .read_updates_with_probe(ctx.auth.store.as_ref(), &ctx.token, real_now, &names, probe)
+        .read_updates_with_probe(
+            ctx.auth.store.as_ref(),
+            &ctx.token,
+            real_now,
+            &names,
+            &probe,
+        )
         .await
     {
         Ok(proj) => proj,
@@ -497,6 +651,7 @@ pub(crate) async fn serve_durable_updates(
             headline: run.label.clone(),
         })
         .collect();
+    let failed_parts = map_failed_parts(projection.completeness.failed_parts());
     let today_items: Vec<UpdateItemWire> = projection
         .today_items
         .iter()
@@ -516,7 +671,6 @@ pub(crate) async fn serve_durable_updates(
             items: group.items.iter().map(map_update_entry).collect(),
         })
         .collect();
-    let failed_parts = map_failed_parts(projection.completeness.failed_parts());
 
     let preview_rows: Vec<Value> = today_items
         .iter()
@@ -632,7 +786,7 @@ pub(crate) async fn open_route(
                     command_key: &cmd_key,
                     patient_names: &names,
                 },
-                probe,
+                &probe,
             )
             .await
         {
@@ -759,7 +913,24 @@ pub(crate) async fn done_route(request: Request<Body>) -> Response {
             err @ (TodayUpdatesError::CannotMarkDone { .. }
             | TodayUpdatesError::IdempotencyCollision { .. }
             | TodayUpdatesError::InvalidInput { .. }
-            | TodayUpdatesError::ConcernInput(_)),
+            | TodayUpdatesError::ConcernInput(_)
+            | TodayUpdatesError::SpruceMatching(
+                local_product::runtime::spruce_matching::SpruceMatchingError::InvalidTransition {
+                    ..
+                }
+                | local_product::runtime::spruce_matching::SpruceMatchingError::ChannelStateRefused {
+                    ..
+                },
+            )
+            | TodayUpdatesError::ReplyProposal(
+                local_product::runtime::reply::proposals::ReplyProposalError::ChannelStillConnected {
+                    ..
+                }
+                | local_product::runtime::reply::proposals::ReplyProposalError::StaleDraftVersion {
+                    ..
+                }
+                | local_product::runtime::reply::proposals::ReplyProposalError::InvalidInput(_),
+            )),
         ) => Json(TodayDoneResponseWire {
             outcome: TodayDoneOutcomeWire::Rejected,
             item_id: payload.item_id,
