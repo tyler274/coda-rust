@@ -1576,7 +1576,17 @@ impl Store {
         practice: &str,
         workspace: &str,
     ) -> Result<PatientStartingContext, DbErr> {
-        let observation = self.sources(workspace).await?;
+        let mut observation = self.sources(workspace).await?;
+        let withdrawal_boundary =
+            super::follow_ups::load_workspace_withdrawal_boundary(&self.db, practice, workspace)
+                .await?;
+        if let Some(boundary) = &withdrawal_boundary {
+            let withdrawn_set: std::collections::BTreeSet<&str> =
+                boundary.candidate_ids.iter().map(String::as_str).collect();
+            observation
+                .sources
+                .retain(|source| !withdrawn_set.contains(source.candidate_id.as_str()));
+        }
         let pulls = self
             .source_pulls(&[workspace.to_owned()])
             .await?
@@ -1660,6 +1670,7 @@ impl Store {
             source_pulls,
             check_standing,
             understanding,
+            withdrawal_boundary,
             memory_standing,
             open_concerns,
             recent_work,

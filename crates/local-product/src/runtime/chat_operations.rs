@@ -811,6 +811,10 @@ pub struct PatientStartingContext {
     /// Saved patient understanding (summary and Coda's private operating index), when initialized.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub understanding: Option<super::understanding::PatientUnderstanding>,
+    /// Active workspace wrong-patient withdrawal boundary, when records or messages
+    /// have been entered in error and held back.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub withdrawal_boundary: Option<super::follow_ups::WorkspaceWithdrawalBoundary>,
     /// Standing of durable patient memory for this workspace.
     pub memory_standing: PatientMemoryStanding,
     /// Open patient concerns on Today.
@@ -910,6 +914,13 @@ impl PatientStartingContext {
                     saved.operating_index.open_threads.join("; ")
                 ));
             }
+        }
+
+        if let Some(boundary) = &self.withdrawal_boundary {
+            lines.push(format!(
+                "Entered-in-error withdrawal boundary: {}",
+                boundary.instruction_line()
+            ));
         }
 
         match &self.memory_standing {
@@ -1131,6 +1142,7 @@ impl Store {
                 Ok(FileRead::Log { markdown }) => Some(markdown),
                 Err(MemoryError::Refused(MemoryRefusal::NoFile(_))) => None,
                 Err(MemoryError::Refused(other)) => return Err(error(&other.to_string())),
+                Err(MemoryError::WithdrawnFence(other)) => return Err(error(&other.to_string())),
                 Err(MemoryError::Database(db_err)) => return Err(db_err),
             }
         } else {
@@ -1142,6 +1154,7 @@ impl Store {
                 Ok(FileRead::Log { markdown }) => Some(markdown),
                 Err(MemoryError::Refused(MemoryRefusal::NoFile(_))) => None,
                 Err(MemoryError::Refused(other)) => return Err(error(&other.to_string())),
+                Err(MemoryError::WithdrawnFence(other)) => return Err(error(&other.to_string())),
                 Err(MemoryError::Database(db_err)) => return Err(db_err),
             }
         } else {
@@ -1204,7 +1217,20 @@ impl Store {
         scope: &Scope,
     ) -> Result<PatientStartingContext, DbErr> {
         scope.validate()?;
-        let observation = self.sources_snapshot(&scope.workspace).await?;
+        let mut observation = self.sources_snapshot(&scope.workspace).await?;
+        let withdrawal_boundary = super::follow_ups::load_workspace_withdrawal_boundary(
+            &self.db,
+            &scope.practice,
+            &scope.workspace,
+        )
+        .await?;
+        if let Some(boundary) = &withdrawal_boundary {
+            let withdrawn_set: std::collections::BTreeSet<&str> =
+                boundary.candidate_ids.iter().map(String::as_str).collect();
+            observation
+                .sources
+                .retain(|source| !withdrawn_set.contains(source.candidate_id.as_str()));
+        }
         let pulls = self
             .source_pulls(std::slice::from_ref(&scope.workspace))
             .await?
@@ -1326,6 +1352,7 @@ impl Store {
             source_pulls,
             check_standing,
             understanding,
+            withdrawal_boundary,
             memory_standing,
             open_concerns,
             recent_work,
@@ -1359,7 +1386,7 @@ impl Store {
         let requested_candidates: Option<Vec<String>> = chart
             .candidates()
             .map(|ids| ids.into_iter().map(str::to_owned).collect());
-        let observation = match self.chart_observation(&scope.workspace, &chart).await {
+        let mut observation = match self.chart_observation(&scope.workspace, &chart).await {
             Ok(obs) => obs,
             Err(db_err) => {
                 if db_err.to_string().contains("corrupt source observation")
@@ -1393,6 +1420,20 @@ impl Store {
                 return Err(persistence_failure(db_err));
             }
         };
+        if let Some(boundary) = super::follow_ups::load_workspace_withdrawal_boundary(
+            &self.db,
+            &scope.practice,
+            &scope.workspace,
+        )
+        .await
+        .map_err(persistence_failure)?
+        {
+            let withdrawn_set: std::collections::BTreeSet<&str> =
+                boundary.candidate_ids.iter().map(String::as_str).collect();
+            observation
+                .sources
+                .retain(|source| !withdrawn_set.contains(source.candidate_id.as_str()));
+        }
 
         let check_standing = self
             .dispatch_check_standing(&scope.practice, &scope.workspace)
@@ -1849,10 +1890,18 @@ impl Store {
     /// reopen to their exact original `(document_id, version, page_number)`.
     pub async fn execute_document_page_tool(
         &self,
-        _practice: &str,
+        practice: &str,
         workspace: &str,
         arguments: &Value,
     ) -> Result<ToolOutcome, engine::ProductError> {
+        let boundary =
+            super::follow_ups::load_workspace_withdrawal_boundary(&self.db, practice, workspace)
+                .await
+                .map_err(persistence_failure)?;
+        let withdrawn_candidates: std::collections::BTreeSet<String> = boundary
+            .map(|b| b.candidate_ids.into_iter().collect())
+            .unwrap_or_default();
+
         let rows = source::Entity::find()
             .filter(source::Column::Workspace.eq(workspace))
             .order_by_asc(source::Column::ObservedAtVersion)
@@ -1869,10 +1918,11 @@ impl Store {
 
         let mut retained = Vec::new();
         for row in rows {
-            if latest_is_withdrawn
-                .get(&row.candidate)
-                .copied()
-                .unwrap_or(false)
+            if withdrawn_candidates.contains(&row.candidate)
+                || latest_is_withdrawn
+                    .get(&row.candidate)
+                    .copied()
+                    .unwrap_or(false)
             {
                 continue;
             }

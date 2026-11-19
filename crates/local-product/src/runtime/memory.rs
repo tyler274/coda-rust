@@ -22,7 +22,7 @@
 //! with, which [`Store::memory_at_start`] builds. The [`edit`] module holds
 //! the edit tool, which chat, reply revisions and patient rounds
 //! ([`super::rounds`]) all run.
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
 
 use chrono::{DateTime, Utc};
@@ -366,9 +366,21 @@ pub enum MemoryError {
     /// The call was refused; nothing was saved.
     #[error(transparent)]
     Refused(#[from] MemoryRefusal),
+    /// Mutation cited or originated from a withdrawn wrong-patient source or fenced run.
+    #[error("{0}")]
+    WithdrawnFence(#[from] super::follow_ups::WithdrawalFenceViolation),
     /// The database refused or failed the operation.
     #[error(transparent)]
     Database(#[from] DbErr),
+}
+
+impl From<super::follow_ups::WithdrawalFenceCheckError> for MemoryError {
+    fn from(err: super::follow_ups::WithdrawalFenceCheckError) -> Self {
+        match err {
+            super::follow_ups::WithdrawalFenceCheckError::Violation(v) => Self::WithdrawnFence(v),
+            super::follow_ups::WithdrawalFenceCheckError::Database(db) => Self::Database(db),
+        }
+    }
 }
 
 /// What a note may carry from the model.
@@ -701,7 +713,7 @@ async fn log_days(
     db: &impl ConnectionTrait,
     key: &PatientKey,
 ) -> Result<BTreeMap<Day, LogDay>, DbErr> {
-    let mut days: BTreeMap<Day, LogDay> = days_of(db, patient_notes(key))
+    let mut days: BTreeMap<Day, LogDay> = days_of(db, key, patient_notes(key))
         .await?
         .into_iter()
         .map(|(day, notes)| {
@@ -726,17 +738,38 @@ async fn log_days(
     Ok(days)
 }
 
-/// The notes `notes` selects, grouped by log day as [`log_days`] groups them.
+async fn withdrawn_note_ids(
+    db: &impl ConnectionTrait,
+    key: &PatientKey,
+) -> Result<BTreeSet<String>, DbErr> {
+    use super::follow_ups::memory_withdrawal_entity as mw;
+    let rows = mw::Entity::find()
+        .filter(mw::Column::Practice.eq(key.practice.as_str()))
+        .filter(mw::Column::Workspace.eq(key.workspace.as_str()))
+        .select_only()
+        .column(mw::Column::MemoryId)
+        .into_tuple::<String>()
+        .all(db)
+        .await?;
+    Ok(rows.into_iter().collect())
+}
+
+/// The non-withdrawn notes `notes` selects, grouped by log day as [`log_days`] groups them.
 async fn days_of(
     db: &impl ConnectionTrait,
+    key: &PatientKey,
     notes: sea_orm::Select<memory_note::Entity>,
 ) -> Result<BTreeMap<Day, Vec<Note>>, DbErr> {
+    let withdrawn = withdrawn_note_ids(db, key).await?;
     let rows = notes
         .order_by_asc(memory_note::Column::Position)
         .all(db)
         .await?;
     let mut days: BTreeMap<Day, Vec<Note>> = BTreeMap::new();
     for row in rows {
+        if withdrawn.contains(&row.note) {
+            continue;
+        }
         let note = stored_note(row)?;
         days.entry(Day::of(note.time)).or_default().push(note);
     }
@@ -838,7 +871,7 @@ async fn read_at_start(
     if let Some(mark) = &last {
         notes = notes.filter(N::SavedAt.gte(mark.started.timestamp()));
     }
-    let days = days_of(db, notes).await?;
+    let days = days_of(db, key, notes).await?;
     Ok(AtStart {
         summary,
         direction,
@@ -930,6 +963,15 @@ impl Store {
         let id = NoteId::of_call(&origin.work, &origin.call);
         let tx = self.db.begin().await?;
         lock_memory(&tx, key).await?;
+        super::follow_ups::check_withdrawal_fence_in_tx(
+            &tx,
+            &key.practice,
+            &key.workspace,
+            &[],
+            Some(&origin.message),
+            Some(&origin.work),
+        )
+        .await?;
         if let Some(saved) = saved_note(&tx, key, &id).await? {
             if saved.text != draft.text {
                 return Err(error("memory note identity collision").into());

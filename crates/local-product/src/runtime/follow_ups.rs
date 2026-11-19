@@ -6,9 +6,9 @@
 //! Every state transition commits atomically with a once-only command receipt
 //! and appends a single change record to `physician_runtime_follow_up_updates`.
 
-use super::concerns::{ExactRecordReference, SourceWork, WorkspaceAccess};
-use super::entities::command;
-use super::{Authority, Scope, Store, conversion_error, error, now, persistence_failure, receipt};
+use std::collections::{BTreeMap, BTreeSet};
+use std::fmt;
+
 use harness::engine::{self, Invocation, Tool, ToolOutcome};
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectionTrait, DatabaseTransaction, DbErr, EntityTrait,
@@ -16,8 +16,18 @@ use sea_orm::{
 };
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
-use std::collections::{BTreeMap, BTreeSet};
-use std::fmt;
+
+use super::concerns::{
+    Concern, ConcernId, ConcernStanding, ExactRecordReference, SourceWork, WorkspaceAccess,
+};
+use super::entities::{
+    command, concern, conversation, memory_note, patient_understanding,
+    patient_understanding_revision, practice_job, source, source_version,
+};
+use super::{
+    Authority, Scope, Store, WorkStatus, control, conversion_error, error, now,
+    persistence_failure, receipt,
+};
 
 pub(super) mod follow_up_entity {
     use sea_orm::entity::prelude::*;
@@ -112,6 +122,88 @@ pub(super) mod source_withdrawal_entity {
         pub actor: String,
         #[sea_orm(column_type = "JsonBinary")]
         pub receipt: Json,
+        pub withdrawn_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+pub(super) mod memory_withdrawal_entity {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_memory_withdrawals")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub memory_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub withdrawal_id: String,
+        pub withdrawal_epoch: i64,
+        #[sea_orm(column_type = "Text")]
+        pub reason: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub snapshot: Json,
+        pub withdrawn_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+pub(super) mod understanding_withdrawal_entity {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_understanding_withdrawals")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub revision: i64,
+        #[sea_orm(column_type = "Text")]
+        pub withdrawal_id: String,
+        pub withdrawal_epoch: i64,
+        #[sea_orm(column_type = "Text")]
+        pub reason: String,
+        pub withdrawn_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+pub(super) mod concern_withdrawal_entity {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_concern_withdrawals")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub concern_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub withdrawal_id: String,
+        pub withdrawal_epoch: i64,
+        #[sea_orm(column_type = "Text")]
+        pub reason: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub concern_snapshot: Json,
         pub withdrawn_at: i64,
     }
 
@@ -1311,6 +1403,112 @@ fn tool_command_key(
 // Wrong-Patient Source Withdrawal Coordinator & Single Fence Owner
 // ============================================================================
 
+/// Request to withdraw wrong-patient message effects across durable memory,
+/// patient understanding, concerns, and follow-ups in one atomic transaction.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct WithdrawWrongPatientRequest {
+    /// Practice tenant owning the patient workspace.
+    pub practice: String,
+    /// Patient workspace from which the wrong-patient message is being removed.
+    pub workspace: String,
+    /// Stable idempotency identifier for this withdrawal operation.
+    pub withdrawal_id: String,
+    /// Exact chart/message candidate identifiers derived from the wrong-patient message.
+    pub candidate_ids: Vec<String>,
+    /// Optional conversation or channel message identifier being withdrawn.
+    pub message_id: Option<String>,
+    /// Explicit pre-withdrawal work identifiers to fence, supplemented automatically
+    /// with any currently active/pending workspace runs at withdrawal time.
+    pub fenced_work_ids: Vec<String>,
+    /// Single-line operator or system explanation recorded in audit logs.
+    pub reason: String,
+    /// Physician, operator, or connector identity executing the removal.
+    pub actor: String,
+}
+
+/// Durable receipt returned when a wrong-patient withdrawal commits.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SourceWithdrawalReceipt {
+    /// Practice tenant.
+    pub practice: String,
+    /// Patient workspace identifier.
+    pub workspace: String,
+    /// Withdrawal identifier.
+    pub withdrawal_id: String,
+    /// Monotonic per-workspace withdrawal epoch (`>= 1`).
+    pub withdrawal_epoch: u64,
+    /// Withdrawn chart/message candidate identifiers.
+    pub candidate_ids: Vec<String>,
+    /// Optional withdrawn message identifier.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message_id: Option<String>,
+    /// All fenced pre-withdrawal work identifiers (caller-supplied + active in-flight runs).
+    pub fenced_work_ids: Vec<String>,
+    /// Memory note identifiers marked `EnteredInError` and excluded from active memory reads.
+    pub withdrawn_memory_ids: Vec<String>,
+    /// Patient understanding revision numbers marked `EnteredInError`.
+    pub withdrawn_understanding_revisions: Vec<u64>,
+    /// Active clean understanding revision retained after rollback (`None` if none existed).
+    pub active_understanding_revision: Option<u64>,
+    /// Concern identifiers held back / withdrawn.
+    pub withdrawn_concern_ids: Vec<ConcernId>,
+    /// Follow-up identifiers held back / withdrawn before acknowledging completion.
+    pub withdrawn_follow_up_ids: Vec<FollowUpId>,
+    /// Single-line withdrawal reason.
+    pub reason: String,
+    /// Actor that recorded the withdrawal.
+    pub actor: String,
+    /// Database-clock Unix timestamp when committed.
+    pub withdrawn_at: i64,
+}
+
+/// Outcome of [`Store::withdraw_wrong_patient_source`].
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum SourceWithdrawalOutcome {
+    /// Withdrawal committed in Postgres across follow-ups, memory, understanding, and concerns.
+    Applied(SourceWithdrawalReceipt),
+    /// Exact `withdrawal_id` already committed earlier; saved receipt returned.
+    Duplicate(SourceWithdrawalReceipt),
+}
+
+impl SourceWithdrawalOutcome {
+    /// Committed withdrawal receipt.
+    pub const fn receipt(&self) -> &SourceWithdrawalReceipt {
+        match self {
+            Self::Applied(receipt) | Self::Duplicate(receipt) => receipt,
+        }
+    }
+}
+
+/// Compact summary of active wrong-patient withdrawal boundaries for a workspace,
+/// injected into starting contexts so subsequent runs never revive withdrawn facts.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct WorkspaceWithdrawalBoundary {
+    /// Highest committed withdrawal epoch for `(practice, workspace)`.
+    pub latest_epoch: u64,
+    /// Sorted withdrawn candidate identifiers.
+    pub candidate_ids: Vec<String>,
+    /// Sorted withdrawn message identifiers.
+    pub message_ids: Vec<String>,
+    /// Sorted understanding revision numbers marked `entered_in_error`.
+    pub withdrawn_understanding_revisions: Vec<u64>,
+}
+
+impl WorkspaceWithdrawalBoundary {
+    /// Model-clean boundary instruction with zero ticket or changelog labels.
+    pub fn instruction_line(&self) -> String {
+        let mut refs = self.candidate_ids.clone();
+        for msg in &self.message_ids {
+            refs.push(format!("message:{msg}"));
+        }
+        format!(
+            "Withdrawn wrong-patient boundary (epoch {}): source record(s) [{}] were removed as wrong-patient and marked entered-in-error; exclude them and never carry forward claims derived from them.",
+            self.latest_epoch,
+            refs.join(", ")
+        )
+    }
+}
+
 /// Single rule owner checking whether a candidate write to durable memory,
 /// patient understanding, concerns, or follow-ups violates a wrong-patient
 /// withdrawal fence in `(practice, workspace)`. Fails closed on any database
@@ -1405,6 +1603,61 @@ async fn ensure_not_withdrawn_follow_up(
     }
     Ok(())
 }
+
+pub(super) async fn load_workspace_withdrawal_boundary(
+    conn: &impl ConnectionTrait,
+    practice: &str,
+    workspace: &str,
+) -> Result<Option<WorkspaceWithdrawalBoundary>, DbErr> {
+    let rows = source_withdrawal_entity::Entity::find()
+        .filter(source_withdrawal_entity::Column::Practice.eq(practice))
+        .filter(source_withdrawal_entity::Column::Workspace.eq(workspace))
+        .order_by_asc(source_withdrawal_entity::Column::WithdrawalEpoch)
+        .all(conn)
+        .await?;
+    if rows.is_empty() {
+        return Ok(None);
+    }
+
+    let mut latest_epoch = 0_u64;
+    let mut candidate_ids = BTreeSet::new();
+    let mut message_ids = BTreeSet::new();
+    for row in rows {
+        let ep = u64::try_from(row.withdrawal_epoch).unwrap_or(1);
+        latest_epoch = latest_epoch.max(ep);
+        let cands: Vec<String> = serde_json::from_value(row.candidate_ids).map_err(
+            conversion_error("source_withdrawal.candidate_ids", "Vec<String>"),
+        )?;
+        candidate_ids.extend(cands);
+        if let Some(msg) = row.message_id {
+            message_ids.insert(msg);
+        }
+    }
+
+    let rev_rows = understanding_withdrawal_entity::Entity::find()
+        .filter(understanding_withdrawal_entity::Column::Practice.eq(practice))
+        .filter(understanding_withdrawal_entity::Column::Workspace.eq(workspace))
+        .order_by_asc(understanding_withdrawal_entity::Column::Revision)
+        .all(conn)
+        .await?;
+    let mut withdrawn_revs = Vec::with_capacity(rev_rows.len());
+    for rev in rev_rows {
+        if let Ok(r) = u64::try_from(rev.revision) {
+            withdrawn_revs.push(r);
+        }
+    }
+
+    Ok(Some(WorkspaceWithdrawalBoundary {
+        latest_epoch,
+        candidate_ids: candidate_ids.into_iter().collect(),
+        message_ids: message_ids.into_iter().collect(),
+        withdrawn_understanding_revisions: withdrawn_revs,
+    }))
+}
+
+// ============================================================================
+// Follow-Up Mutations & Queries on Store
+// ============================================================================
 
 async fn create_follow_up_in_tx(
     tx: &DatabaseTransaction,
@@ -2811,5 +3064,591 @@ impl Store {
             .map(decode_follow_up)
             .collect::<Result<Vec<_>, _>>()
             .map_err(Into::into)
+    }
+
+    /// Atomically withdraws wrong-patient message effects from `(practice, workspace)`:
+    /// - Holds back affected follow-ups and clears pending review actions (`WithdrawnWrongPatient`),
+    ///   preserving unrelated follow-ups on the patient.
+    /// - Marks affected durable `patient_memory` entries `EnteredInError` while preserving immutable audit snapshots.
+    /// - Marks affected `patient_understanding_revisions` `EnteredInError` while keeping revision rows immutable
+    ///   and rolling back the active understanding pointer to the latest clean revision (or clearing it if none).
+    /// - Holds back / withdraws affected concerns into `physician_runtime_concern_withdrawals` while preserving
+    ///   unrelated concerns on the patient and full audit history.
+    /// - Fences all pre-withdrawal in-flight runs and withdrawn candidate/message citations from restoring withdrawn state.
+    pub async fn withdraw_wrong_patient_source(
+        &self,
+        request: &WithdrawWrongPatientRequest,
+    ) -> Result<SourceWithdrawalOutcome, FollowUpError> {
+        let practice = validate_non_empty_field("practice", &request.practice)?;
+        let workspace = validate_non_empty_field("workspace", &request.workspace)?;
+        let withdrawal_id = validate_non_empty_field("withdrawal_id", &request.withdrawal_id)?;
+        let actor = validate_non_empty_field("actor", &request.actor)?;
+        let reason_note = FollowUpChangeNote::new(request.reason.clone())?;
+
+        let mut candidate_set = BTreeSet::new();
+        for cand in &request.candidate_ids {
+            let trimmed = validate_non_empty_field("candidate_id", cand)?;
+            candidate_set.insert(trimmed);
+        }
+        let message_id = match &request.message_id {
+            Some(msg) => Some(validate_non_empty_field("message_id", msg)?),
+            None => None,
+        };
+        if candidate_set.is_empty() && message_id.is_none() {
+            return Err(FollowUpInputError::InvalidField("candidate_ids_or_message_id").into());
+        }
+
+        let requested_fenced: BTreeSet<String> = request
+            .fenced_work_ids
+            .iter()
+            .map(|w| w.trim().to_owned())
+            .filter(|w| !w.is_empty())
+            .collect();
+
+        let tx = self.db.begin().await?;
+
+        if let Some(existing) = source_withdrawal_entity::Entity::find_by_id((
+            practice.clone(),
+            workspace.clone(),
+            withdrawal_id.clone(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?
+        {
+            let existing_candidates: Vec<String> = serde_json::from_value(existing.candidate_ids)
+                .map_err(conversion_error(
+                "source_withdrawal.candidate_ids",
+                "Vec<String>",
+            ))?;
+            let stored_fenced: BTreeSet<String> = serde_json::from_value(existing.fenced_work_ids)
+                .map_err(conversion_error(
+                    "source_withdrawal.fenced_work_ids",
+                    "BTreeSet<String>",
+                ))?;
+            let expected_candidates: Vec<String> = candidate_set.iter().cloned().collect();
+            if existing_candidates != expected_candidates
+                || existing.message_id != message_id
+                || existing.reason != reason_note.as_str()
+                || existing.actor != actor
+                || !requested_fenced.is_subset(&stored_fenced)
+            {
+                tx.rollback().await?;
+                return Err(FollowUpError::IdempotencyCollision { key: withdrawal_id });
+            }
+            let saved: SourceWithdrawalReceipt = serde_json::from_value(existing.receipt).map_err(
+                conversion_error("source_withdrawal.receipt", "SourceWithdrawalReceipt"),
+            )?;
+            tx.commit().await?;
+            return Ok(SourceWithdrawalOutcome::Duplicate(saved));
+        }
+
+        let prior_withdrawals = source_withdrawal_entity::Entity::find()
+            .filter(source_withdrawal_entity::Column::Practice.eq(&practice))
+            .filter(source_withdrawal_entity::Column::Workspace.eq(&workspace))
+            .lock_exclusive()
+            .all(&tx)
+            .await?;
+        let max_epoch = prior_withdrawals
+            .iter()
+            .filter_map(|row| u64::try_from(row.withdrawal_epoch).ok())
+            .max()
+            .unwrap_or(0);
+        let withdrawal_epoch = max_epoch + 1;
+        let epoch_i64 =
+            i64::try_from(withdrawal_epoch).map_err(conversion_error("withdrawal_epoch", "i64"))?;
+        let timestamp = now(&tx).await?;
+
+        // Discover any pre-existing active/pending background jobs and active chat works
+        // in `(practice, workspace)` so old in-flight runs are automatically fenced.
+        let mut fenced_works = requested_fenced;
+
+        let active_jobs = practice_job::Entity::find()
+            .filter(practice_job::Column::Practice.eq(&practice))
+            .filter(practice_job::Column::Workspace.eq(&workspace))
+            .all(&tx)
+            .await?;
+        for job in active_jobs {
+            if matches!(job.status, WorkStatus::Pending | WorkStatus::Active) {
+                if !job.work.trim().is_empty() {
+                    fenced_works.insert(job.work);
+                }
+                if !job.job_id.trim().is_empty() {
+                    fenced_works.insert(job.job_id);
+                }
+            }
+        }
+
+        let active_chats = conversation::Entity::find()
+            .filter(conversation::Column::Practice.eq(&practice))
+            .filter(conversation::Column::Workspace.eq(&workspace))
+            .all(&tx)
+            .await?;
+        for chat_row in active_chats {
+            if matches!(chat_row.status, WorkStatus::Pending | WorkStatus::Active) {
+                let chat_id = chat_row.chat.clone();
+                let state = control::conversation(chat_row, Vec::new())?;
+                if !state.work.trim().is_empty() {
+                    fenced_works.insert(state.work);
+                }
+                if !chat_id.trim().is_empty() {
+                    fenced_works.insert(chat_id);
+                }
+            }
+        }
+
+        // 1. Hold back affected follow-ups and pending review actions before acknowledging completion.
+        let follow_up_rows = follow_up_entity::Entity::find()
+            .filter(follow_up_entity::Column::Practice.eq(&practice))
+            .filter(follow_up_entity::Column::Workspace.eq(&workspace))
+            .lock_exclusive()
+            .all(&tx)
+            .await?;
+        let mut withdrawn_follow_up_ids = Vec::new();
+        for row in follow_up_rows {
+            let current = decode_follow_up(row.clone())?;
+            if matches!(
+                current.standing,
+                FollowUpStanding::WithdrawnWrongPatient { .. }
+            ) {
+                continue;
+            }
+            let cites_withdrawn = current
+                .records
+                .iter()
+                .any(|r| candidate_set.contains(&r.candidate_id));
+            let from_fenced_work = current
+                .origin
+                .work_id()
+                .is_some_and(|w| fenced_works.contains(w));
+            if !cites_withdrawn && !from_fenced_work {
+                continue;
+            }
+            let next_ver = current.version + 1;
+            let next_ver_i64 =
+                i64::try_from(next_ver).map_err(conversion_error("follow_up.version", "i64"))?;
+            let next_standing = FollowUpStanding::WithdrawnWrongPatient {
+                withdrawal_id: withdrawal_id.clone(),
+                reason: reason_note.clone(),
+                withdrawn_at: timestamp,
+            };
+            let standing_json = serde_json::to_value(&next_standing)
+                .map_err(conversion_error("FollowUpStanding", "json"))?;
+            follow_up_entity::ActiveModel {
+                practice: Unchanged(row.practice),
+                workspace: Unchanged(row.workspace),
+                id: Unchanged(row.id),
+                summary: Unchanged(row.summary),
+                status: Set(next_standing.status_str().to_owned()),
+                due_at: Unchanged(row.due_at),
+                standing_detail: Set(standing_json),
+                records: Unchanged(row.records),
+                origin: Unchanged(row.origin),
+                version: Set(next_ver_i64),
+                created_at: Unchanged(row.created_at),
+                updated_at: Set(timestamp),
+            }
+            .update(&tx)
+            .await?;
+
+            let updated = FollowUp {
+                version: next_ver,
+                updated_at: timestamp,
+                standing: next_standing,
+                ..current
+            };
+            let withdrawal_actor = FollowUpActor::Physician {
+                physician_id: actor.clone(),
+            };
+            append_follow_up_update(
+                &tx,
+                &updated,
+                FollowUpUpdateKind::WithdrawnWrongPatient,
+                reason_note.as_str(),
+                &withdrawal_actor,
+            )
+            .await?;
+            withdrawn_follow_up_ids.push(updated.id);
+        }
+
+        // 2. Mark affected durable patient memory notes `EnteredInError` while preserving immutable audit snapshots.
+        let note_rows = memory_note::Entity::find()
+            .filter(memory_note::Column::Practice.eq(&practice))
+            .filter(memory_note::Column::Workspace.eq(&workspace))
+            .order_by_asc(memory_note::Column::Position)
+            .lock_exclusive()
+            .all(&tx)
+            .await?;
+        let mut withdrawn_memory_ids = Vec::new();
+        for row in note_rows {
+            let affected = message_id.as_deref() == Some(row.message.as_str())
+                || candidate_set.contains(row.message.as_str())
+                || fenced_works
+                    .iter()
+                    .any(|w| row.note == *w || row.note.starts_with(&format!("{w}:")));
+            if !affected {
+                continue;
+            }
+            if memory_withdrawal_entity::Entity::find_by_id((
+                practice.clone(),
+                workspace.clone(),
+                row.note.clone(),
+            ))
+            .one(&tx)
+            .await?
+            .is_some()
+            {
+                continue;
+            }
+
+            let snapshot_json = json!({
+                "note": row.note,
+                "position": row.position,
+                "saved_at": row.saved_at,
+                "physician": row.physician,
+                "chat": row.chat,
+                "message": row.message,
+                "text": row.text,
+                "physician_words": row.physician_words,
+                "standing": {
+                    "kind": "entered_in_error",
+                    "withdrawal_id": withdrawal_id,
+                    "reason": reason_note.as_str(),
+                    "withdrawn_at": timestamp,
+                }
+            });
+
+            memory_withdrawal_entity::Entity::insert(memory_withdrawal_entity::ActiveModel {
+                practice: Set(practice.clone()),
+                workspace: Set(workspace.clone()),
+                memory_id: Set(row.note.clone()),
+                withdrawal_id: Set(withdrawal_id.clone()),
+                withdrawal_epoch: Set(epoch_i64),
+                reason: Set(reason_note.as_str().to_owned()),
+                snapshot: Set(snapshot_json),
+                withdrawn_at: Set(timestamp),
+            })
+            .exec_without_returning(&tx)
+            .await?;
+
+            withdrawn_memory_ids.push(row.note);
+        }
+
+        // 3. Mark affected patient_understanding_revisions `EnteredInError`, keeping every
+        // revision row immutable and rolling back the active pointer to the latest clean revision.
+        let current_understanding =
+            patient_understanding::Entity::find_by_id((practice.clone(), workspace.clone()))
+                .lock_exclusive()
+                .one(&tx)
+                .await?;
+
+        let all_revisions = patient_understanding_revision::Entity::find()
+            .filter(patient_understanding_revision::Column::Practice.eq(&practice))
+            .filter(patient_understanding_revision::Column::Workspace.eq(&workspace))
+            .order_by_asc(patient_understanding_revision::Column::Revision)
+            .all(&tx)
+            .await?;
+
+        let existing_u_withdrawals = understanding_withdrawal_entity::Entity::find()
+            .filter(understanding_withdrawal_entity::Column::Practice.eq(&practice))
+            .filter(understanding_withdrawal_entity::Column::Workspace.eq(&workspace))
+            .all(&tx)
+            .await?;
+        let mut withdrawn_rev_set: BTreeSet<i64> =
+            existing_u_withdrawals.iter().map(|r| r.revision).collect();
+        let mut newly_withdrawn_revs = Vec::new();
+
+        for rev_row in &all_revisions {
+            if withdrawn_rev_set.contains(&rev_row.revision) {
+                continue;
+            }
+            let operating_index: crate::initial_understanding::OperatingIndex =
+                serde_json::from_value(rev_row.operating_index.clone()).map_err(
+                    conversion_error(
+                        "patient_understanding_revision.operating_index",
+                        "OperatingIndex",
+                    ),
+                )?;
+            let summary: super::understanding::PatientSummary =
+                serde_json::from_value(rev_row.summary.clone()).map_err(conversion_error(
+                    "patient_understanding_revision.summary",
+                    "PatientSummary",
+                ))?;
+            let origin: super::understanding::RevisionOrigin =
+                serde_json::from_value(rev_row.origin.clone()).map_err(conversion_error(
+                    "patient_understanding_revision.origin",
+                    "RevisionOrigin",
+                ))?;
+            let cites_withdrawn = summary
+                .citations
+                .iter()
+                .any(|c| candidate_set.contains(&c.reference.candidate_id))
+                || summary.claims.iter().any(|claim| {
+                    claim
+                        .citations
+                        .iter()
+                        .any(|r| candidate_set.contains(&r.candidate_id))
+                })
+                || operating_index
+                    .anchors
+                    .iter()
+                    .any(|a| candidate_set.contains(&a.reference.candidate_id));
+            let origin_work = match &origin {
+                super::understanding::RevisionOrigin::PracticeRun { work_id, .. }
+                | super::understanding::RevisionOrigin::PhysicianConversation { work_id, .. } => {
+                    work_id.as_str()
+                }
+            };
+            if !cites_withdrawn && !fenced_works.contains(origin_work) {
+                continue;
+            }
+
+            understanding_withdrawal_entity::Entity::insert(
+                understanding_withdrawal_entity::ActiveModel {
+                    practice: Set(practice.clone()),
+                    workspace: Set(workspace.clone()),
+                    revision: Set(rev_row.revision),
+                    withdrawal_id: Set(withdrawal_id.clone()),
+                    withdrawal_epoch: Set(epoch_i64),
+                    reason: Set(reason_note.as_str().to_owned()),
+                    withdrawn_at: Set(timestamp),
+                },
+            )
+            .exec_without_returning(&tx)
+            .await?;
+            withdrawn_rev_set.insert(rev_row.revision);
+            if let Ok(r_u64) = u64::try_from(rev_row.revision) {
+                newly_withdrawn_revs.push(r_u64);
+            }
+        }
+
+        let latest_clean = all_revisions
+            .iter()
+            .rev()
+            .find(|r| !withdrawn_rev_set.contains(&r.revision));
+        let active_understanding_revision = match (current_understanding, latest_clean) {
+            (Some(_), Some(clean)) => {
+                patient_understanding::ActiveModel {
+                    practice: Unchanged(practice.clone()),
+                    workspace: Unchanged(workspace.clone()),
+                    revision: Set(clean.revision),
+                    source_version: Set(clean.source_version),
+                    evidence_scope: Set(clean.evidence_scope.clone()),
+                    operating_index: Set(clean.operating_index.clone()),
+                    summary: Set(clean.summary.clone()),
+                    origin: Set(clean.origin.clone()),
+                    updated_at: Set(timestamp),
+                }
+                .update(&tx)
+                .await?;
+                u64::try_from(clean.revision).ok()
+            }
+            (Some(_), None) => {
+                patient_understanding::Entity::delete_by_id((practice.clone(), workspace.clone()))
+                    .exec(&tx)
+                    .await?;
+                None
+            }
+            (None, Some(clean)) => u64::try_from(clean.revision).ok(),
+            (None, None) => None,
+        };
+
+        // 4. Hold back / withdraw affected concerns into `physician_runtime_concern_withdrawals`
+        // while preserving unrelated concerns on the patient and full audit history.
+        let concern_rows = concern::Entity::find()
+            .filter(concern::Column::Practice.eq(&practice))
+            .filter(concern::Column::Workspace.eq(&workspace))
+            .lock_exclusive()
+            .all(&tx)
+            .await?;
+        let mut withdrawn_concern_ids = Vec::new();
+        for row in concern_rows {
+            let records: Vec<ExactRecordReference> = serde_json::from_value(row.records.clone())
+                .map_err(conversion_error("concern.records", "ExactRecordReference"))?;
+            let source_work: SourceWork = serde_json::from_value(row.source_work.clone())
+                .map_err(conversion_error("concern.source_work", "SourceWork"))?;
+            let cites_withdrawn = records
+                .iter()
+                .any(|r| candidate_set.contains(&r.candidate_id));
+            let from_fenced_work = fenced_works.contains(source_work.work_id.as_str());
+            if !cites_withdrawn && !from_fenced_work {
+                continue;
+            }
+
+            let concern_id = ConcernId::new(row.id.clone())
+                .map_err(conversion_error("concern.id", "ConcernId"))?;
+            let urgency: super::concerns::ConcernUrgency =
+                serde_json::from_value(Value::String(row.urgency.clone()))
+                    .map_err(conversion_error("concern.urgency", "ConcernUrgency"))?;
+            let rev_u64 =
+                u64::try_from(row.revision).map_err(conversion_error("concern.revision", "u64"))?;
+            let snapshot = Concern {
+                practice: row.practice.clone(),
+                workspace: row.workspace.clone(),
+                id: concern_id.clone(),
+                urgency,
+                reason: row.reason.clone(),
+                records,
+                source_work,
+                revision: rev_u64 + 1,
+                created_at: row.created_at,
+                updated_at: timestamp,
+                standing: ConcernStanding::Withdrawn {
+                    withdrawal_id: withdrawal_id.clone(),
+                    reason: reason_note.as_str().to_owned(),
+                    withdrawn_at: timestamp,
+                },
+            };
+            let snapshot_json =
+                serde_json::to_value(&snapshot).map_err(conversion_error("Concern", "json"))?;
+
+            concern_withdrawal_entity::Entity::insert(concern_withdrawal_entity::ActiveModel {
+                practice: Set(practice.clone()),
+                workspace: Set(workspace.clone()),
+                concern_id: Set(concern_id.as_str().to_owned()),
+                withdrawal_id: Set(withdrawal_id.clone()),
+                withdrawal_epoch: Set(epoch_i64),
+                reason: Set(reason_note.as_str().to_owned()),
+                concern_snapshot: Set(snapshot_json),
+                withdrawn_at: Set(timestamp),
+            })
+            .exec_without_returning(&tx)
+            .await?;
+
+            concern::Entity::delete_by_id((row.practice, row.workspace, row.id))
+                .exec(&tx)
+                .await?;
+            withdrawn_concern_ids.push(concern_id);
+        }
+
+        // 5. Withdraw affected chart source observations in `physician_runtime_sources` by
+        // appending immutable `revision = None` tombstones under the workspace's exclusive
+        // `source_version` lock while keeping all earlier revision rows intact for audit.
+        if !candidate_set.is_empty() {
+            source_version::Entity::insert(source_version::ActiveModel {
+                workspace: Set(workspace.clone()),
+                version: Set(0),
+            })
+            .on_conflict(
+                sea_orm::sea_query::OnConflict::column(source_version::Column::Workspace)
+                    .do_nothing()
+                    .to_owned(),
+            )
+            .exec_without_returning(&tx)
+            .await?;
+
+            let ver_row = source_version::Entity::find_by_id(workspace.clone())
+                .lock_exclusive()
+                .one(&tx)
+                .await?
+                .ok_or_else(|| error("missing source version"))?;
+            let cur_ver = u64::try_from(ver_row.version)
+                .map_err(conversion_error("source_version.version", "u64"))?;
+
+            let cand_list: Vec<String> = candidate_set.iter().cloned().collect();
+            let source_rows = source::Entity::find()
+                .filter(source::Column::Workspace.eq(&workspace))
+                .filter(source::Column::Candidate.is_in(cand_list))
+                .order_by_asc(source::Column::Candidate)
+                .order_by_desc(source::Column::ObservedAtVersion)
+                .all(&tx)
+                .await?;
+
+            let mut latest_by_candidate: BTreeMap<String, bool> = BTreeMap::new();
+            for s_row in source_rows {
+                latest_by_candidate
+                    .entry(s_row.candidate)
+                    .or_insert_with(|| s_row.revision.is_some());
+            }
+            let active_candidates: Vec<String> = latest_by_candidate
+                .into_iter()
+                .filter_map(|(cand, has_revision)| has_revision.then_some(cand))
+                .collect();
+
+            if !active_candidates.is_empty() {
+                let next_ver = cur_ver
+                    .checked_add(1)
+                    .ok_or_else(|| error("source version overflow"))?;
+                let next_ver_i64 = i64::try_from(next_ver)
+                    .map_err(conversion_error("source_version.version", "i64"))?;
+                let tombstones: Vec<source::ActiveModel> = active_candidates
+                    .into_iter()
+                    .map(|cand| source::ActiveModel {
+                        workspace: Set(workspace.clone()),
+                        candidate: Set(cand),
+                        observed_at_version: Set(next_ver_i64),
+                        revision: Set(None),
+                    })
+                    .collect();
+                source::Entity::insert_many(tombstones)
+                    .exec_without_returning(&tx)
+                    .await?;
+                let mut bumped_ver: source_version::ActiveModel = ver_row.into();
+                bumped_ver.version = Set(next_ver_i64);
+                bumped_ver.update(&tx).await?;
+            }
+        }
+
+        let candidate_vec: Vec<String> = candidate_set.into_iter().collect();
+        let fenced_vec: Vec<String> = fenced_works.into_iter().collect();
+        let receipt = SourceWithdrawalReceipt {
+            practice: practice.clone(),
+            workspace: workspace.clone(),
+            withdrawal_id: withdrawal_id.clone(),
+            withdrawal_epoch,
+            candidate_ids: candidate_vec.clone(),
+            message_id: message_id.clone(),
+            fenced_work_ids: fenced_vec.clone(),
+            withdrawn_memory_ids,
+            withdrawn_understanding_revisions: newly_withdrawn_revs,
+            active_understanding_revision,
+            withdrawn_concern_ids,
+            withdrawn_follow_up_ids,
+            reason: reason_note.as_str().to_owned(),
+            actor: actor.clone(),
+            withdrawn_at: timestamp,
+        };
+        let candidates_json = serde_json::to_value(&candidate_vec)
+            .map_err(conversion_error("candidate_ids", "json"))?;
+        let fenced_json = serde_json::to_value(&fenced_vec)
+            .map_err(conversion_error("fenced_work_ids", "json"))?;
+        let receipt_json = serde_json::to_value(&receipt)
+            .map_err(conversion_error("SourceWithdrawalReceipt", "json"))?;
+
+        source_withdrawal_entity::Entity::insert(source_withdrawal_entity::ActiveModel {
+            practice: Set(practice),
+            workspace: Set(workspace),
+            withdrawal_id: Set(withdrawal_id),
+            withdrawal_epoch: Set(epoch_i64),
+            candidate_ids: Set(candidates_json),
+            message_id: Set(message_id),
+            fenced_work_ids: Set(fenced_json),
+            reason: Set(reason_note.into()),
+            actor: Set(actor),
+            receipt: Set(receipt_json),
+            withdrawn_at: Set(timestamp),
+        })
+        .exec_without_returning(&tx)
+        .await?;
+
+        tx.commit().await?;
+        Ok(SourceWithdrawalOutcome::Applied(receipt))
+    }
+
+    /// Reads immutable audit snapshots of memory notes marked `EnteredInError`
+    /// for `(practice, workspace)` (for audit / verification; clinical reads
+    /// use `runtime::memory`).
+    pub async fn memory_withdrawal_snapshots(
+        &self,
+        practice: &str,
+        workspace: &str,
+    ) -> Result<Vec<Value>, DbErr> {
+        let rows = memory_withdrawal_entity::Entity::find()
+            .filter(memory_withdrawal_entity::Column::Practice.eq(practice))
+            .filter(memory_withdrawal_entity::Column::Workspace.eq(workspace))
+            .order_by_asc(memory_withdrawal_entity::Column::WithdrawnAt)
+            .all(&self.db)
+            .await?;
+        Ok(rows.into_iter().map(|r| r.snapshot).collect())
     }
 }

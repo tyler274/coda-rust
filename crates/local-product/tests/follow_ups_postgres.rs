@@ -5,6 +5,8 @@
 //! physician choices without automatic restart, durable commit probing, panel
 //! authorization, and wrong-patient source withdrawal holdbacks.
 
+use std::path::PathBuf;
+
 use local_product::{
     ModelBinding, ModelRoles,
     patient_reviews::{
@@ -30,7 +32,8 @@ use local_product::{
             FollowUpChangeNote, FollowUpCommandKey, FollowUpCommitProbe, FollowUpError, FollowUpId,
             FollowUpMutation, FollowUpReviewOutcome, FollowUpReviewSchedule, FollowUpStanding,
             FollowUpSummary, FollowUpToolCall, FollowUpUpdateKind, PhysicianChangeFollowUp,
-            PhysicianCreateFollowUp, follow_up_tool, is_follow_up_tool,
+            PhysicianCreateFollowUp, SourceWithdrawalOutcome, WithdrawWrongPatientRequest,
+            follow_up_tool, is_follow_up_tool,
         },
         jobs::PracticeJobHost,
         reviews::PatientReviewReceiver,
@@ -41,7 +44,6 @@ use local_product::{
 use physician_auth::{AuthStore, Membership, PhysicianIdentity, PostgresAuthStore, PracticeClock};
 use sea_orm::DbErr;
 use serde_json::{Value, json};
-use std::path::PathBuf;
 
 #[allow(dead_code)]
 #[path = "../../../verification/model_text.rs"]
@@ -1157,6 +1159,251 @@ async fn review_outcomes_commit_durability_probe_and_unauthorized_physician_refu
     assert!(matches!(
         resolved.follow_up().standing,
         FollowUpStanding::Completed { .. }
+    ));
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn removing_wrong_patient_message_holds_back_derived_follow_ups_and_pending_actions_without_touching_unrelated_follow_ups()
+ {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let auth = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+
+    let practice = uuid::Uuid::new_v4().to_string();
+    let workspace = format!("pw-{}", uuid::Uuid::new_v4().simple());
+    let (physician, _token, session_hash) = invite_and_sign_in(&auth, &practice, "dr-lin").await;
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&physician, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let access = WorkspaceAccess {
+        practice: &practice,
+        physician: &physician.physician_id,
+        workspace: &workspace,
+        session_hash: &session_hash,
+    };
+
+    let clean_record = seeded_record(
+        &workspace,
+        "clinic-lab",
+        "cand-clean-a1c",
+        "r1",
+        "2026-11-10",
+        "HbA1c 7.9%",
+    );
+    let wrong_msg_record = seeded_record(
+        &workspace,
+        "spruce",
+        "cand-wrong-spruce-msg",
+        "m1",
+        "2026-11-11",
+        "Wrong-patient message reporting warfarin INR 4.8",
+    );
+    store.record_source(&clean_record).await.unwrap();
+    store.record_source(&wrong_msg_record).await.unwrap();
+
+    let now_ts = i64::try_from(unix_seconds()).unwrap();
+    let due_soon = now_ts - 60;
+
+    // Create unrelated follow-up citing `cand-clean-a1c`.
+    let clean_work = SourceWork::new("patient_review", "work-clean-fu", "attempt-1").unwrap();
+    store
+        .execute_follow_up_tool(
+            &practice,
+            &workspace,
+            &clean_work,
+            &Invocation {
+                id: "call-clean".into(),
+                name: FOLLOW_UP_TOOL.into(),
+                arguments: json!({
+                    "operation": "create",
+                    "follow_up_id": "fu-clean-a1c",
+                    "summary": "Recheck HbA1c in 90 days.",
+                    "due_at": due_soon,
+                    "records": [{"candidate_id": "cand-clean-a1c", "revision": "r1"}]
+                }),
+            },
+        )
+        .await
+        .unwrap();
+
+    // Create follow-up derived from the wrong-patient message AND mark it `DueNow`
+    // so it has an active pending review action when withdrawal starts.
+    let wrong_work = SourceWork::new("patient_review", "work-wrong-msg", "attempt-1").unwrap();
+    let wrong_call = Invocation {
+        id: "call-wrong".into(),
+        name: FOLLOW_UP_TOOL.into(),
+        arguments: json!({
+            "operation": "create",
+            "follow_up_id": "fu-wrong-inr",
+            "summary": "Repeat INR within 48 hours for supratherapeutic reading.",
+            "due_at": due_soon,
+            "records": [{"candidate_id": "cand-wrong-spruce-msg", "revision": "m1"}]
+        }),
+    };
+    store
+        .execute_follow_up_tool(&practice, &workspace, &wrong_work, &wrong_call)
+        .await
+        .unwrap();
+    store
+        .review_follow_up_now_for_physician(
+            &access,
+            &FollowUpCommandKey::new("pending-review-wrong").unwrap(),
+            &FollowUpId::new("fu-wrong-inr").unwrap(),
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+
+    assert_eq!(
+        store
+            .due_follow_ups(&practice, &workspace, now_ts)
+            .await
+            .unwrap()
+            .len(),
+        2
+    );
+
+    // Withdraw the wrong-patient message and verify derived follow-ups + pending review actions
+    // are held back before completion, while `fu-clean-a1c` stays untouched.
+    let withdrawal_req = WithdrawWrongPatientRequest {
+        practice: practice.clone(),
+        workspace: workspace.clone(),
+        withdrawal_id: "withdraw-spruce-msg-1".into(),
+        candidate_ids: vec!["cand-wrong-spruce-msg".into()],
+        message_id: Some("spruce-msg-991".into()),
+        fenced_work_ids: vec!["work-wrong-msg".into()],
+        reason: "Inbound Spruce message belonged to another patient and was unlinked.".into(),
+        actor: physician.physician_id.clone(),
+    };
+    let withdrawal = store
+        .withdraw_wrong_patient_source(&withdrawal_req)
+        .await
+        .unwrap();
+    assert!(matches!(withdrawal, SourceWithdrawalOutcome::Applied(_)));
+    assert_eq!(
+        withdrawal.receipt().withdrawn_follow_up_ids,
+        vec![FollowUpId::new("fu-wrong-inr").unwrap()]
+    );
+
+    // Repeating the withdrawal request with identical payload is idempotent.
+    let dup_withdrawal = store
+        .withdraw_wrong_patient_source(&withdrawal_req)
+        .await
+        .unwrap();
+    assert!(matches!(
+        dup_withdrawal,
+        SourceWithdrawalOutcome::Duplicate(_)
+    ));
+
+    // Reusing `withdrawal_id` with different `candidate_ids` or `reason` fails with `IdempotencyCollision`.
+    let mut colliding_candidates = withdrawal_req.clone();
+    colliding_candidates.candidate_ids = vec!["cand-clean-a1c".into()];
+    assert!(matches!(
+        store
+            .withdraw_wrong_patient_source(&colliding_candidates)
+            .await,
+        Err(FollowUpError::IdempotencyCollision { .. })
+    ));
+    let mut colliding_reason = withdrawal_req.clone();
+    colliding_reason.reason = "Mutated reason for existing withdrawal key.".into();
+    assert!(matches!(
+        store.withdraw_wrong_patient_source(&colliding_reason).await,
+        Err(FollowUpError::IdempotencyCollision { .. })
+    ));
+
+    // Pending due review action on `fu-wrong-inr` is immediately cleared; `fu-clean-a1c` remains due.
+    let due_after = store
+        .due_follow_ups(&practice, &workspace, now_ts)
+        .await
+        .unwrap();
+    assert_eq!(due_after.len(), 1);
+    assert_eq!(due_after[0].id.as_str(), "fu-clean-a1c");
+
+    // Physician-facing clinical follow-up list and Updates feed EXCLUDE `WithdrawnWrongPatient`
+    // items (`fu-wrong-inr`), returning only `fu-clean-a1c`.
+    let physician_items = store
+        .physician_follow_ups(&access, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap();
+    assert_eq!(physician_items.len(), 1);
+    assert_eq!(physician_items[0].id.as_str(), "fu-clean-a1c");
+    assert!(matches!(
+        physician_items[0].standing,
+        FollowUpStanding::Active { .. }
+    ));
+
+    let physician_updates = store
+        .physician_follow_up_updates(&access, &mut PostgresWorkspaceAuthority)
+        .await
+        .unwrap();
+    assert!(
+        !physician_updates
+            .iter()
+            .any(|u| u.follow_up_id.as_str() == "fu-wrong-inr"),
+        "physician Updates must exclude wrong-patient withdrawn follow-up history: {physician_updates:?}"
+    );
+    assert_eq!(physician_updates.len(), 1);
+    assert_eq!(physician_updates[0].follow_up_id.as_str(), "fu-clean-a1c");
+
+    // Internal/audit reads retain `fu-wrong-inr` in `WithdrawnWrongPatient` standing and its audit Updates log.
+    let audit_items = store
+        .workspace_follow_ups(&practice, &workspace)
+        .await
+        .unwrap();
+    assert_eq!(audit_items.len(), 2);
+    let wrong_after = audit_items
+        .iter()
+        .find(|f| f.id.as_str() == "fu-wrong-inr")
+        .unwrap();
+    assert!(matches!(
+        &wrong_after.standing,
+        FollowUpStanding::WithdrawnWrongPatient { withdrawal_id, .. }
+            if withdrawal_id == "withdraw-spruce-msg-1"
+    ));
+    let audit_updates = store
+        .workspace_follow_up_updates_audit(&practice, &workspace)
+        .await
+        .unwrap();
+    assert!(audit_updates.iter().any(|u| {
+        u.follow_up_id.as_str() == "fu-wrong-inr"
+            && u.kind == FollowUpUpdateKind::WithdrawnWrongPatient
+    }));
+
+    // Replay of the earlier `FOLLOW_UP_TOOL` call or a new write citing `cand-wrong-spruce-msg` is refused.
+    let replay_outcome = store
+        .execute_follow_up_tool(&practice, &workspace, &wrong_work, &wrong_call)
+        .await
+        .unwrap();
+    assert!(matches!(replay_outcome, ToolOutcome::Refused(_)));
+
+    let fresh_work_citing_withdrawn = store
+        .execute_follow_up_tool(
+            &practice,
+            &workspace,
+            &SourceWork::new("patient_review", "work-fresh-after", "attempt-1").unwrap(),
+            &Invocation {
+                id: "call-cite-withdrawn".into(),
+                name: FOLLOW_UP_TOOL.into(),
+                arguments: json!({
+                    "operation": "create",
+                    "follow_up_id": "fu-revive-wrong",
+                    "summary": "Attempt to cite withdrawn wrong-patient record.",
+                    "due_at": now_ts + 3600,
+                    "records": [{"candidate_id": "cand-wrong-spruce-msg", "revision": "m1"}]
+                }),
+            },
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        fresh_work_citing_withdrawn,
+        ToolOutcome::Refused(_)
     ));
 }
 

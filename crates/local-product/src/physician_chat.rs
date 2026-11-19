@@ -927,6 +927,7 @@ mod tests {
             source_pulls: Vec::new(),
             check_standing: crate::runtime::chat_operations::DispatchCheckStanding::NotRecorded,
             understanding: None,
+            withdrawal_boundary: None,
             memory_standing: crate::runtime::chat_operations::PatientMemoryStanding::Available {
                 summary_markdown: None,
                 direction_markdown: None,

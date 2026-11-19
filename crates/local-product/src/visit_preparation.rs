@@ -67,7 +67,7 @@ You are Coda, preparing a pre-visit clinical briefing for one upcoming or in-pro
 No physician is signed in to this background run.
 
 Orient the physician so they enter the visit knowing the patient's trajectory, meaningful interval changes, unresolved clinical work, and the concrete decisions the visit can settle:
-- Start from the appointment context and patient starting context, inspect saved understanding (`read_patient_understanding`), active physician corrections (`patient_memory` with `operation: \"read\"`), and prior background work (`retrieve_patient_work`) when helpful.
+- Start from the appointment context and patient starting context, inspect saved understanding (`read_patient_understanding`), active physician corrections (`read_patient_memory` / `search_patient_memory`), and prior background work (`retrieve_patient_work`) when helpful.
 - When source freshness is stale or new external records could change visit preparation, call `refresh_patient_sources`. If a source refresh fails, continue from the available retained records and state the exact freshness and unavailable source limits truthfully in `basis_and_limitations` and `limits`.
 - Discover candidate records with `search_patient_information` and open exact revisions with `read_patient_sources` before relying on or citing patient-specific facts. Every `ExactRecordReference` (`candidate_id` and `revision`) attached to claims, decisions, basis citations, or a pre-visit concern must match a current workspace record read via `read_patient_sources` in this run (or carried forward at a still-current revision from `read_patient_understanding`).
 - When published clinical guidelines or drug labeling materially sharpen a visit decision, search and open passages with `search_clinical_library` and `read_clinical_library` using clinical concepts only — never include patient names, birth dates, medical record numbers, or identifiers.
@@ -1389,6 +1389,7 @@ mod tests {
                     source_pulls: Vec::new(),
                     check_standing: DispatchCheckStanding::NotRecorded,
                     understanding: None,
+                    withdrawal_boundary: None,
                     memory_standing: PatientMemoryStanding::Available {
                         summary_markdown: None,
                         direction_markdown: None,

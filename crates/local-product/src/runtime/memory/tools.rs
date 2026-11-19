@@ -392,7 +392,26 @@ pub(crate) async fn saved_outcome_for_key(
         return Ok(None);
     }
     match store.saved_note(key, work, &call.id).await? {
-        Some(saved) => outcome(Ok(note(&saved))).map(Some),
+        Some(saved) => {
+            if let Err(err) = crate::runtime::follow_ups::check_withdrawal_fence_in_tx(
+                &store.db,
+                &key.practice,
+                &key.workspace,
+                &[],
+                Some(&saved.message),
+                Some(work),
+            )
+            .await
+            {
+                return match err {
+                    crate::runtime::follow_ups::WithdrawalFenceCheckError::Violation(v) => {
+                        Ok(Some(ToolOutcome::refused(format!("withdrawn_fence: {v}"))))
+                    }
+                    crate::runtime::follow_ups::WithdrawalFenceCheckError::Database(db) => Err(db),
+                };
+            }
+            outcome(Ok(note(&saved))).map(Some)
+        }
         None => Ok(None),
     }
 }
@@ -430,6 +449,9 @@ pub(super) fn outcome(result: Result<Value, MemoryError>) -> Result<ToolOutcome,
     match result {
         Ok(value) => Ok(ToolOutcome::Returned(value.to_string())),
         Err(MemoryError::Refused(refusal)) => Ok(ToolOutcome::refused(refusal)),
+        Err(MemoryError::WithdrawnFence(violation)) => Ok(ToolOutcome::refused(format!(
+            "withdrawn_fence: {violation}"
+        ))),
         Err(MemoryError::Database(cause)) => Err(cause),
     }
 }

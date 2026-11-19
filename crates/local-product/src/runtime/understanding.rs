@@ -177,6 +177,35 @@ pub struct UnderstandingRevisionRecord {
     pub saved_at: i64,
 }
 
+/// Audit standing of an immutable [`UnderstandingRevisionRecord`].
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "standing", rename_all = "snake_case")]
+pub enum UnderstandingStanding {
+    /// Revision remains valid clinical history.
+    Active,
+    /// Revision was derived from a wrong-patient message or fenced run and
+    /// marked entered-in-error while keeping its row immutable for audit.
+    EnteredInError {
+        /// Withdrawal receipt identifier.
+        withdrawal_id: String,
+        /// Workspace withdrawal epoch when marked entered-in-error.
+        withdrawal_epoch: u64,
+        /// Single-line withdrawal reason.
+        reason: String,
+        /// Database-clock Unix timestamp when withdrawn.
+        withdrawn_at: i64,
+    },
+}
+
+/// Immutable understanding revision paired with its current [`UnderstandingStanding`].
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct UnderstandingRevisionAudit {
+    /// Immutable revision record as originally saved.
+    pub record: UnderstandingRevisionRecord,
+    /// Standing (`Active` or `EnteredInError`).
+    pub standing: UnderstandingStanding,
+}
+
 /// Physician-facing summary projection that physically omits [`OperatingIndex`].
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct PatientSummaryView {
@@ -1042,16 +1071,78 @@ impl Store {
             .map_err(Into::into)
     }
 
+    /// Reads the append-only revision history for `(practice, workspace)` annotated
+    /// with each revision's [`UnderstandingStanding`] (`Active` vs `EnteredInError`)
+    /// after verifying practice patient membership.
+    pub async fn patient_understanding_revision_audits<A: PracticeAuthority + ?Sized>(
+        &self,
+        practice: &str,
+        workspace: &str,
+        authority: &A,
+    ) -> Result<Vec<UnderstandingRevisionAudit>, UnderstandingError> {
+        use super::follow_ups::understanding_withdrawal_entity::Column as WC;
+
+        let records = self
+            .patient_understanding_revisions(practice, workspace, authority)
+            .await?;
+        let withdrawals = super::follow_ups::understanding_withdrawal_entity::Entity::find()
+            .filter(WC::Practice.eq(practice))
+            .filter(WC::Workspace.eq(workspace))
+            .all(&self.db)
+            .await?;
+        let mut by_revision = BTreeMap::new();
+        for w in withdrawals {
+            if let Ok(rev) = u64::try_from(w.revision) {
+                let epoch = u64::try_from(w.withdrawal_epoch).unwrap_or(1);
+                by_revision.insert(
+                    rev,
+                    UnderstandingStanding::EnteredInError {
+                        withdrawal_id: w.withdrawal_id,
+                        withdrawal_epoch: epoch,
+                        reason: w.reason,
+                        withdrawn_at: w.withdrawn_at,
+                    },
+                );
+            }
+        }
+        Ok(records
+            .into_iter()
+            .map(|record| {
+                let standing = by_revision
+                    .remove(&record.revision)
+                    .unwrap_or(UnderstandingStanding::Active);
+                UnderstandingRevisionAudit { record, standing }
+            })
+            .collect())
+    }
+
     pub(crate) async fn patient_understanding_internal(
         &self,
         practice: &str,
         workspace: &str,
     ) -> Result<Option<PatientUnderstanding>, DbErr> {
-        patient_understanding::Entity::find_by_id((practice.to_owned(), workspace.to_owned()))
-            .one(&self.db)
-            .await?
-            .map(decode_understanding)
-            .transpose()
+        let mut saved =
+            patient_understanding::Entity::find_by_id((practice.to_owned(), workspace.to_owned()))
+                .one(&self.db)
+                .await?
+                .map(decode_understanding)
+                .transpose()?;
+        if let Some(understanding) = saved.as_mut()
+            && let Some(boundary) =
+                super::follow_ups::load_workspace_withdrawal_boundary(&self.db, practice, workspace)
+                    .await?
+        {
+            let instruction = boundary.instruction_line();
+            if !understanding
+                .operating_index
+                .open_threads
+                .iter()
+                .any(|t| t == &instruction)
+            {
+                understanding.operating_index.open_threads.push(instruction);
+            }
+        }
+        Ok(saved)
     }
 
     /// Whether `work_id` has persisted a [`PatientUnderstanding`] revision for
@@ -1236,10 +1327,13 @@ impl Store {
         let saved = self
             .patient_understanding_internal(practice, workspace)
             .await?;
-        if saved.is_none() && !has_memory {
+        let boundary =
+            super::follow_ups::load_workspace_withdrawal_boundary(&self.db, practice, workspace)
+                .await?;
+        if saved.is_none() && boundary.is_none() && !has_memory {
             return Ok(None);
         }
-        let payload = json!({
+        let mut payload = json!({
             "kind": "patient_understanding_context",
             "revision": saved.as_ref().map_or(0, |u| u.revision),
             "source_version": saved.as_ref().map_or(0, |u| u.source_version),
@@ -1258,6 +1352,14 @@ impl Store {
             })),
             "patient_memory": memory_standing,
         });
+        if let Some(boundary_val) = &boundary
+            && let Some(map) = payload.as_object_mut()
+        {
+            map.insert(
+                "withdrawal_boundary".into(),
+                serde_json::to_value(boundary_val).expect("withdrawal boundary serializes"),
+            );
+        }
         let encoded =
             serde_json::to_string(&payload).expect("patient understanding context serializes");
         Ok(Some(format!(
@@ -1354,10 +1456,18 @@ impl Store {
                     .active_memory_standing(&claim.scope.practice, &claim.scope.workspace)
                     .await
                     .map_err(super::persistence_failure)?;
+                let boundary = super::follow_ups::load_workspace_withdrawal_boundary(
+                    &self.db,
+                    &claim.scope.practice,
+                    &claim.scope.workspace,
+                )
+                .await
+                .map_err(super::persistence_failure)?;
                 Ok(ToolOutcome::Returned(render_read_understanding(
                     &claim.scope.workspace,
                     saved.as_ref(),
                     &memory_standing,
+                    boundary.as_ref(),
                 )))
             }
             SAVE_UNDERSTANDING_TOOL => {
@@ -1443,6 +1553,7 @@ impl Store {
         self.saved_understanding_outcome_by_key(
             &claim.scope.practice,
             &claim.scope.workspace,
+            &job.work,
             &idempotency_key,
         )
         .await
@@ -1472,10 +1583,18 @@ impl Store {
                     .active_memory_standing(&claim.scope.practice, &claim.scope.workspace)
                     .await
                     .map_err(super::persistence_failure)?;
+                let boundary = super::follow_ups::load_workspace_withdrawal_boundary(
+                    &self.db,
+                    &claim.scope.practice,
+                    &claim.scope.workspace,
+                )
+                .await
+                .map_err(super::persistence_failure)?;
                 Ok(ToolOutcome::Returned(render_read_understanding(
                     &claim.scope.workspace,
                     saved.as_ref(),
                     &memory_standing,
+                    boundary.as_ref(),
                 )))
             }
             SAVE_UNDERSTANDING_TOOL => {
@@ -1538,6 +1657,7 @@ impl Store {
         self.saved_understanding_outcome_by_key(
             &claim.scope.practice,
             &claim.scope.workspace,
+            &state.work,
             &idempotency_key,
         )
         .await
@@ -1547,6 +1667,7 @@ impl Store {
         &self,
         practice: &str,
         workspace: &str,
+        work_id: &str,
         idempotency_key: &str,
     ) -> Result<Option<ToolOutcome>, engine::ProductError> {
         let Some(existing_rev) = patient_understanding_revision::Entity::find()
@@ -1564,6 +1685,51 @@ impl Store {
         else {
             return Ok(None);
         };
+        match super::follow_ups::check_withdrawal_fence_in_tx(
+            &self.db,
+            practice,
+            workspace,
+            &[],
+            None,
+            Some(work_id),
+        )
+        .await
+        {
+            Ok(()) => {}
+            Err(super::follow_ups::WithdrawalFenceCheckError::Violation(violation)) => {
+                return Ok(Some(ToolOutcome::refused(
+                    json!({
+                        "outcome": "withdrawn_fence",
+                        "message": violation.to_string(),
+                    })
+                    .to_string(),
+                )));
+            }
+            Err(super::follow_ups::WithdrawalFenceCheckError::Database(db_err)) => {
+                return Err(super::persistence_failure(db_err));
+            }
+        }
+        if let Some(withdrawn) =
+            super::follow_ups::understanding_withdrawal_entity::Entity::find_by_id((
+                practice.to_owned(),
+                workspace.to_owned(),
+                existing_rev.revision,
+            ))
+            .one(&self.db)
+            .await
+            .map_err(super::persistence_failure)?
+        {
+            return Ok(Some(ToolOutcome::refused(
+                json!({
+                    "outcome": "withdrawn_fence",
+                    "message": format!(
+                        "understanding revision {} was withdrawn as wrong-patient in `{}` and cannot be restored",
+                        existing_rev.revision, withdrawn.withdrawal_id
+                    ),
+                })
+                .to_string(),
+            )));
+        }
         let decoded = decode_revision_record(existing_rev).map_err(super::persistence_failure)?;
         Ok(Some(render_saved_understanding_receipt(
             workspace,
@@ -1593,7 +1759,43 @@ impl Store {
             .map_err(super::persistence_failure)?;
         let pulls = pulls_map.get(workspace).cloned().unwrap_or_default();
 
+        let mut cited_set = BTreeSet::new();
+        for anchor in &args.operating_index.anchors {
+            cited_set.insert(anchor.reference.candidate_id.clone());
+        }
+        for claim in &args.claims {
+            for r in &claim.citations {
+                cited_set.insert(r.candidate_id.clone());
+            }
+        }
+        let cited_candidates: Vec<String> = cited_set.into_iter().collect();
+
         let tx = self.db.begin().await.map_err(super::persistence_failure)?;
+
+        match super::follow_ups::check_withdrawal_fence_in_tx(
+            &tx,
+            practice,
+            workspace,
+            &cited_candidates,
+            None,
+            Some(origin.work_id()),
+        )
+        .await
+        {
+            Ok(()) => {}
+            Err(super::follow_ups::WithdrawalFenceCheckError::Violation(violation)) => {
+                return Ok(ToolOutcome::refused(
+                    json!({
+                        "outcome": "withdrawn_fence",
+                        "message": violation.to_string(),
+                    })
+                    .to_string(),
+                ));
+            }
+            Err(super::follow_ups::WithdrawalFenceCheckError::Database(db_err)) => {
+                return Err(super::persistence_failure(db_err));
+            }
+        }
 
         if let Some(existing_rev) = patient_understanding_revision::Entity::find()
             .filter(
@@ -1608,6 +1810,27 @@ impl Store {
             .await
             .map_err(super::persistence_failure)?
         {
+            if let Some(withdrawn) =
+                super::follow_ups::understanding_withdrawal_entity::Entity::find_by_id((
+                    practice.to_owned(),
+                    workspace.to_owned(),
+                    existing_rev.revision,
+                ))
+                .one(&tx)
+                .await
+                .map_err(super::persistence_failure)?
+            {
+                return Ok(ToolOutcome::refused(
+                    json!({
+                        "outcome": "withdrawn_fence",
+                        "message": format!(
+                            "understanding revision {} was withdrawn as wrong-patient in `{}` and cannot be restored",
+                            existing_rev.revision, withdrawn.withdrawal_id
+                        ),
+                    })
+                    .to_string(),
+                ));
+            }
             let decoded =
                 decode_revision_record(existing_rev).map_err(super::persistence_failure)?;
             tx.commit().await.map_err(super::persistence_failure)?;
@@ -1653,6 +1876,19 @@ impl Store {
             .into_outcome());
         }
 
+        let max_historical_revision = patient_understanding_revision::Entity::find()
+            .filter(
+                Condition::all()
+                    .add(patient_understanding_revision::Column::Practice.eq(practice))
+                    .add(patient_understanding_revision::Column::Workspace.eq(workspace)),
+            )
+            .order_by_desc(patient_understanding_revision::Column::Revision)
+            .one(&tx)
+            .await
+            .map_err(super::persistence_failure)?
+            .and_then(|row| u64::try_from(row.revision).ok())
+            .unwrap_or(0);
+
         let observation = super::sources::observed(&tx, workspace)
             .await
             .map_err(super::persistence_failure)?;
@@ -1682,6 +1918,7 @@ impl Store {
         };
 
         let next_revision = current_revision
+            .max(max_historical_revision)
             .checked_add(1)
             .ok_or_else(|| error("patient understanding revision overflow"))
             .map_err(super::persistence_failure)?;
@@ -1807,15 +2044,15 @@ fn render_read_understanding(
     workspace: &str,
     saved: Option<&PatientUnderstanding>,
     memory: &super::chat_operations::PatientMemoryStanding,
+    boundary: Option<&super::follow_ups::WorkspaceWithdrawalBoundary>,
 ) -> String {
-    match saved {
+    let mut payload = match saved {
         None => json!({
             "status": "uninitialized",
             "workspace": workspace,
             "revision": 0,
             "patient_memory": memory,
-        })
-        .to_string(),
+        }),
         Some(understanding) => json!({
             "status": "available",
             "workspace": workspace,
@@ -1832,7 +2069,15 @@ fn render_read_understanding(
             },
             "patient_memory": memory,
             "updated_at": understanding.updated_at,
-        })
-        .to_string(),
+        }),
+    };
+    if let Some(boundary_val) = boundary
+        && let Some(map) = payload.as_object_mut()
+    {
+        map.insert(
+            "withdrawal_boundary".into(),
+            serde_json::to_value(boundary_val).expect("withdrawal boundary serializes"),
+        );
     }
+    payload.to_string()
 }
