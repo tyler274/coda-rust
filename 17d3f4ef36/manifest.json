@@ -332,7 +332,8 @@
       ],
       "seconds": 321.9,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "Rebased onto origin/main f4bf2ebfd (reconciled step_projection.rs) and re-ran full clean-HEAD verification at 17d3f4ef3"
     },
     {
       "id": 15,
@@ -354,7 +355,8 @@
       ],
       "seconds": 111.5,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "Rebased onto origin/main f4bf2ebfd (reconciled step_projection.rs) and re-ran full clean-HEAD verification at 17d3f4ef3"
     },
     {
       "id": 16,
@@ -382,7 +384,8 @@
       ],
       "seconds": 74.5,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "Rebased onto origin/main f4bf2ebfd (reconciled step_projection.rs) and re-ran full clean-HEAD verification at 17d3f4ef3"
     },
     {
       "id": 17,
@@ -396,7 +399,11 @@
         "17-01-patient-memory-summary-and-direction.png"
       ],
       "source": "target/verification/captures/pr-e2-patient-memory/01-patient-memory-summary-and-direction.png",
-      "ok": true
+      "ok": true,
+      "kept": {
+        "revision": "17d3f4ef36e4baf579bf56e6288924da71e8ceaa",
+        "reason": "Rebase onto f4bf2ebfd touched only step_projection.rs, physician_chat.rs, and reviews.rs; PatientMemorySection UI and screenshots are unchanged and site_patient_memory re-verified at 17d3f4ef3"
+      }
     },
     {
       "id": 18,
@@ -410,7 +417,11 @@
         "18-02-patient-memory-edit-saved-as-note.png"
       ],
       "source": "target/verification/captures/pr-e2-patient-memory/02-patient-memory-edit-saved-as-note.png",
-      "ok": true
+      "ok": true,
+      "kept": {
+        "revision": "17d3f4ef36e4baf579bf56e6288924da71e8ceaa",
+        "reason": "Rebase onto f4bf2ebfd touched only step_projection.rs, physician_chat.rs, and reviews.rs; PatientMemorySection UI and screenshots are unchanged and site_patient_memory re-verified at 17d3f4ef3"
+      }
     },
     {
       "id": 19,
@@ -424,7 +435,11 @@
         "19-03-patient-memory-after-rounds-folded.png"
       ],
       "source": "target/verification/captures/pr-e2-patient-memory/03-patient-memory-after-rounds-folded.png",
-      "ok": true
+      "ok": true,
+      "kept": {
+        "revision": "17d3f4ef36e4baf579bf56e6288924da71e8ceaa",
+        "reason": "Rebase onto f4bf2ebfd touched only step_projection.rs, physician_chat.rs, and reviews.rs; PatientMemorySection UI and screenshots are unchanged and site_patient_memory re-verified at 17d3f4ef3"
+      }
     },
     {
       "id": 20,
@@ -438,7 +453,11 @@
         "20-04-patient-memory-spa-switch-marcus.png"
       ],
       "source": "target/verification/captures/pr-e2-patient-memory/04-patient-memory-spa-switch-marcus.png",
-      "ok": true
+      "ok": true,
+      "kept": {
+        "revision": "17d3f4ef36e4baf579bf56e6288924da71e8ceaa",
+        "reason": "Rebase onto f4bf2ebfd touched only step_projection.rs, physician_chat.rs, and reviews.rs; PatientMemorySection UI and screenshots are unchanged and site_patient_memory re-verified at 17d3f4ef3"
+      }
     },
     {
       "id": 21,
@@ -464,6 +483,106 @@
         "21-chromium-site-suite.log"
       ],
       "seconds": 263.7,
+      "exit": 0,
+      "ok": true,
+      "superseded": "Rebased onto origin/main f4bf2ebfd (reconciled step_projection.rs) and re-ran full clean-HEAD verification at 17d3f4ef3"
+    },
+    {
+      "id": 22,
+      "claim": "AC1/AC3/AC4 unit suites (incl. step_projection), fmt --check, host + wasm32 clippy -D warnings, and boundaries 25/25 pass at clean HEAD",
+      "label": "unit-clippy-boundaries",
+      "kind": "run",
+      "revision": "17d3f4ef36e4baf579bf56e6288924da71e8ceaa",
+      "dirty": false,
+      "recorded": "2026-11-19T23:42:33+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo fmt --all --check\ncargo clippy -p physician-wire -p physician-client -p local-product -p physician-sample -p physician-app --all-targets -- -D warnings\ncargo clippy -p physician-app --target wasm32-unknown-unknown --lib --bins -- -D warnings\ncargo test -p boundaries\ncargo test -p physician-wire --lib\ncargo test -p physician-app --lib\ncargo test -p physician-sample --lib reviews::\ncargo test -p local-product --lib step_projection::\ncargo test -p local-product --lib physician_chat::\ncargo test -p local-product --lib physician_sources::citations::\ncargo test -p local-product --lib runtime::memory::\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "22-unit-clippy-boundaries.log"
+      ],
+      "seconds": 441.0,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 23,
+      "claim": "Postgres suites prove Memory.Code.20/21/22, rounds folding, K1.3 reply feedback + concern_done export, K1.11 note citations with message provenance, and K1.12 non-approval",
+      "label": "postgres-memory-rounds-feedback",
+      "kind": "run",
+      "revision": "17d3f4ef36e4baf579bf56e6288924da71e8ceaa",
+      "dirty": false,
+      "recorded": "2026-11-19T23:49:54+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo test -p local-product --lib runtime::tests::memory_tests:: -- --ignored\ncargo test -p local-product --lib runtime::tests::memory_edit_tests:: -- --ignored\ncargo test -p local-product --lib runtime::tests::rounds_tests:: -- --ignored\ncargo test -p physician-sample --test feedback -- --test-threads=1\ncargo test -p physician-sample --test feedback -- --ignored --test-threads=1\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "23-postgres-memory-rounds-feedback.log"
+      ],
+      "seconds": 103.3,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 24,
+      "claim": "Headless Chromium + Postgres E2E proves Summary/Direction render, working files stay hidden, inline edit saves note N2, rounds fold Direction v2, and SPA Elena->Marcus switch loads Marcus memory and clears Elena unsaved PHI draft",
+      "label": "chromium-site-patient-memory",
+      "kind": "run",
+      "revision": "17d3f4ef36e4baf579bf56e6288924da71e8ceaa",
+      "dirty": false,
+      "recorded": "2026-11-19T23:51:38+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_patient_memory",
+        "--",
+        "--ignored",
+        "--nocapture"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "24-chromium-site-patient-memory.log"
+      ],
+      "seconds": 87.2,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 25,
+      "claim": "AGENTS.md mandatory physician-site Chromium qualification suite passes at clean HEAD",
+      "label": "chromium-site-suite",
+      "kind": "run",
+      "revision": "17d3f4ef36e4baf579bf56e6288924da71e8ceaa",
+      "dirty": false,
+      "recorded": "2026-11-19T23:53:05+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "25-chromium-site-suite.log"
+      ],
+      "seconds": 256.5,
       "exit": 0,
       "ok": true
     }
