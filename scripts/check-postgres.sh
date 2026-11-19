@@ -35,7 +35,8 @@ shard_1_targets=(--lib --test migrations_postgres --test postgres
   --test redis --test fanout --test worker --test try_again --test pool_budget
   --bin physician-worker)
 shard_2_targets=(--test stop --test chat_draft --test feedback --test reply_revision
-  --test instance_loss --test physician_chat_recipe --test initial_understanding_postgres)
+  --test instance_loss --test physician_chat_recipe --test physician_chat_mid_answer_arrivals
+  --test initial_understanding_postgres)
 
 shard_1() {
   # This ignored test fails closed if its URL is missing. It tests each of the
@@ -114,6 +115,7 @@ shard_2() {
   # when its lease runs out. Exhausted leases fail the turn and announce it.
   pg_test --test instance_loss -- --test-threads=1
   pg_test --test physician_chat_recipe -- --ignored --test-threads=1
+  pg_test --test physician_chat_mid_answer_arrivals -- --ignored --test-threads=1
   pg_test --test initial_understanding_postgres -- --test-threads=1
 }
 
