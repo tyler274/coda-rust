@@ -17,7 +17,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::api::{Client, Error, ListQuery, Order};
 use crate::payload::{
-    Conversation, ConversationEntry, Envelope, Item, ItemEntry, MAX_PAGE_SIZE, TranscriptionState,
+    Attachment, Conversation, ConversationEntry, Envelope, Item, ItemEntry, MAX_PAGE_SIZE,
+    TranscriptionState,
 };
 
 /// How far a later pass reaches back past the boundary.
@@ -134,6 +135,41 @@ pub enum ConversationRead {
     Unavailable,
 }
 
+/// Result of downloading raw attachment or fax bytes for one [`Attachment`].
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum AttachmentBytesOutcome {
+    /// Bytes downloaded cleanly without retaining the ephemeral `signedUrl`.
+    Fetched {
+        /// Attachment descriptor without URL.
+        attachment: Attachment,
+        /// Downloaded raw media bytes.
+        bytes: Vec<u8>,
+    },
+    /// Attachment had no download URL in the Spruce payload.
+    NoDownloadUrl {
+        /// Attachment descriptor.
+        attachment: Attachment,
+    },
+    /// Attachment download failed; parent message remains usable while this attachment is marked unavailable.
+    Unavailable {
+        /// Attachment descriptor.
+        attachment: Attachment,
+        /// Plain-language failure reason.
+        reason: String,
+    },
+}
+
+/// One page of pre-connection historical conversations and items read after backlog acceptance.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct BacklogPage {
+    /// Historical items found at or before the connection boundary.
+    pub items: Vec<Observed>,
+    /// Conversations that failed to read during backlog traversal.
+    pub unread: Vec<Unread>,
+    /// Next conversation pagination token when more backlog pages remain.
+    pub next_page: Option<String>,
+}
+
 /// Result of one change pass.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Outcome {
@@ -178,7 +214,12 @@ impl Reader {
         Ok(self)
     }
 
-    /// The next page of changes.
+    /// Underlying Spruce HTTP client.
+    pub fn client(&self) -> &Client {
+        &self.client
+    }
+
+    /// Reads the next page of changes.
     ///
     /// `cursor` is `None` until the first pass has established a boundary.
     /// [`Error::Contract`] and [`Error::InvalidRequest`] are faults in Spruce's
@@ -196,6 +237,169 @@ impl Reader {
             return self.establish(cursor, &mut org).await;
         }
         self.scan(cursor, &mut org).await
+    }
+
+    /// Reads one page of pre-connection conversations and items created on or before
+    /// `boundary_cursor.floor` after the practice explicitly accepted the backlog offer.
+    pub async fn read_backlog_page(
+        &self,
+        boundary_cursor: &Cursor,
+        page_token: Option<&str>,
+    ) -> Result<Result<BacklogPage, Outcome>, Error> {
+        let mut org = OrgCheck::Unknown;
+        let floor = boundary_cursor
+            .floor
+            .as_deref()
+            .ok_or(Error::InvalidRequest)?;
+        let query = match page_token {
+            Some(token) => ListQuery {
+                page_size: self.page_size,
+                start_from: None,
+                pagination_token: Some(token),
+            },
+            None => ListQuery::first(self.page_size),
+        };
+        let page = match self.client.list_conversations(query).await {
+            Ok(page) => page,
+            Err(error) => {
+                return Ok(Err(self.list_failure(error, &mut org).await?));
+            }
+        };
+        let mut items = Vec::new();
+        let mut unread = Vec::new();
+        for entry in &page.entries {
+            match entry {
+                ConversationEntry::Malformed { id: None } => {}
+                ConversationEntry::Malformed { id: Some(id) } => unread.push(Unread {
+                    conversation_id: id.clone(),
+                    cause: UnreadCause::Undecodable,
+                }),
+                ConversationEntry::Conversation(conversation) => {
+                    let mut item_token: Option<String> = None;
+                    loop {
+                        let item_query = match item_token.as_deref() {
+                            Some(token) => ListQuery {
+                                page_size: self.page_size,
+                                start_from: None,
+                                pagination_token: Some(token),
+                            },
+                            None => ListQuery::first(self.page_size),
+                        };
+                        let item_page = match self
+                            .client
+                            .list_items(&conversation.id, Order::OldestFirst, item_query)
+                            .await
+                        {
+                            Ok(page) => page,
+                            Err(error) => {
+                                if self.refused(&error, &mut org).await? {
+                                    return Ok(Err(Outcome::ReconnectRequired));
+                                }
+                                let cause = match error {
+                                    Error::Contract => UnreadCause::Undecodable,
+                                    _ => UnreadCause::TemporarilyUnavailable,
+                                };
+                                unread.push(Unread {
+                                    conversation_id: conversation.id.clone(),
+                                    cause,
+                                });
+                                break;
+                            }
+                        };
+                        let mut entries = item_page.entries;
+                        if let Err(error) = self.attach_transcriptions(&mut entries, &mut org).await
+                        {
+                            if self.refused(&error, &mut org).await? {
+                                return Ok(Err(Outcome::ReconnectRequired));
+                            }
+                            unread.push(Unread {
+                                conversation_id: conversation.id.clone(),
+                                cause: UnreadCause::TemporarilyUnavailable,
+                            });
+                            break;
+                        }
+                        let observed = observe(&entries);
+                        for obs in observed.items {
+                            let created = match &obs {
+                                Observed::Message(item) => item.envelope.created_at.as_deref(),
+                                Observed::Unreadable(env) => env.created_at.as_deref(),
+                            };
+                            if at_or_before(created, floor) {
+                                items.push(obs);
+                            }
+                        }
+                        if observed.undecodable {
+                            unread.push(Unread {
+                                conversation_id: conversation.id.clone(),
+                                cause: UnreadCause::Undecodable,
+                            });
+                            break;
+                        }
+                        if !item_page.has_more {
+                            break;
+                        }
+                        item_token = item_page.pagination_token;
+                        if item_token.is_none() {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        Ok(Ok(BacklogPage {
+            items,
+            unread,
+            next_page: page.has_more.then_some(page.pagination_token).flatten(),
+        }))
+    }
+
+    /// Downloads attachment and inbound fax media bytes for `item` using transient
+    /// pre-signed URLs without persisting any URL onto [`Item`] or [`Attachment`].
+    pub async fn fetch_item_attachments(
+        &self,
+        item: &Item,
+    ) -> Result<Vec<AttachmentBytesOutcome>, Error> {
+        if item.attachments.is_empty() {
+            return Ok(Vec::new());
+        }
+        let mut org = OrgCheck::Unknown;
+        let descriptors = match self.client.get_item_attachment_downloads(item.id()).await {
+            Ok(descriptors) => descriptors,
+            Err(error) => {
+                if self.refused(&error, &mut org).await? {
+                    return Err(error);
+                }
+                return Ok(item
+                    .attachments
+                    .iter()
+                    .cloned()
+                    .map(|attachment| AttachmentBytesOutcome::Unavailable {
+                        attachment,
+                        reason: error.to_string(),
+                    })
+                    .collect());
+            }
+        };
+        let mut outcomes = Vec::with_capacity(descriptors.len());
+        for desc in descriptors {
+            let Some(url) = desc.signed_url.as_deref() else {
+                outcomes.push(AttachmentBytesOutcome::NoDownloadUrl {
+                    attachment: desc.attachment,
+                });
+                continue;
+            };
+            match self.client.download_attachment_bytes(url).await {
+                Ok(bytes) => outcomes.push(AttachmentBytesOutcome::Fetched {
+                    attachment: desc.attachment,
+                    bytes,
+                }),
+                Err(err) => outcomes.push(AttachmentBytesOutcome::Unavailable {
+                    attachment: desc.attachment,
+                    reason: err.to_string(),
+                }),
+            }
+        }
+        Ok(outcomes)
     }
 
     /// One page of a conversation, newest first, including items from before the boundary.

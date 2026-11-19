@@ -68,6 +68,18 @@ impl PhysicianClient {
             .await
     }
 
+    /// Explicitly resolves an active Spruce release-rollback filing halt (`POST /connections/spruce/rollback/resolve`).
+    pub async fn resolve_spruce_rollback(
+        &self,
+        adopt_running_release: bool,
+    ) -> Result<SourceOperationResponseWire, http::HttpError> {
+        self.post(
+            "/connections/spruce/rollback/resolve",
+            &serde_json::json!({ "adopt_running_release": adopt_running_release }),
+        )
+        .await
+    }
+
     /// Re-authenticates a source after `AccessLost` (`POST /connections/{source}/reconnect`),
     /// restoring current access while preserving previously saved records.
     pub async fn reconnect_source(

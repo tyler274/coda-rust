@@ -413,22 +413,60 @@ pub async fn authed_postgres_router(
 }
 
 async fn health_route(request: Request<Body>) -> Response {
+    let (http_status, status_label, spruce_health) =
+        match sources::registry_from(request.extensions())
+            .and_then(|registry| registry.runtime().cloned())
+        {
+            Some(store) => match store.spruce_rollback_halted_practices().await {
+                Ok(halted_practices) if halted_practices.is_empty() => {
+                    (StatusCode::OK, "ok", json!({ "standing": "healthy" }))
+                }
+                Ok(halted_practices) => (
+                    StatusCode::OK,
+                    "degraded",
+                    json!({
+                        "standing": "rollback_halted",
+                        "halted_practice_count": halted_practices.len(),
+                    }),
+                ),
+                Err(error) => {
+                    tracing::warn!(%error, "health probe failed to query spruce rollback fence");
+                    (
+                        StatusCode::SERVICE_UNAVAILABLE,
+                        "degraded",
+                        json!({ "standing": "unavailable" }),
+                    )
+                }
+            },
+            None => (StatusCode::OK, "ok", json!({ "standing": "healthy" })),
+        };
     if request
         .extensions()
         .get::<auth::AuthRequiredMarker>()
         .is_some()
     {
         let practice_sources = !sources::has_registered_adapters(request.extensions());
-        Json(json!({
-            "status": "ok",
-            "capabilities": {
-                "connection_accounts": true,
-                "practice_sources": practice_sources,
-            }
-        }))
-        .into_response()
+        (
+            http_status,
+            Json(json!({
+                "status": status_label,
+                "spruce_channel": spruce_health,
+                "capabilities": {
+                    "connection_accounts": true,
+                    "practice_sources": practice_sources,
+                }
+            })),
+        )
+            .into_response()
     } else {
-        Json(json!({ "status": "ok" })).into_response()
+        (
+            http_status,
+            Json(json!({
+                "status": status_label,
+                "spruce_channel": spruce_health,
+            })),
+        )
+            .into_response()
     }
 }
 

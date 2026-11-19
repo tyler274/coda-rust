@@ -639,6 +639,185 @@ fn known_entry_for_revision(
     }
 }
 
+/// Returns `true` when `record` belongs to a live clinical domain
+/// (`Medications`, `Allergies`, `Results`, or `Vitals`) whose current orders
+/// or values require re-reading after refreshing connected live sources.
+pub fn record_requires_live_chart_reread(record: &SourceRevision) -> bool {
+    if let Some(env) = &record.envelope {
+        return matches!(
+            env.bucket,
+            Bucket::Medications | Bucket::Allergies | Bucket::Results | Bucket::Vitals
+        );
+    }
+    let kind = record.record_type.to_ascii_lowercase();
+    if matches!(
+        kind.as_str(),
+        "medicationrequest"
+            | "medicationstatement"
+            | "medicationadministration"
+            | "medicationdispense"
+            | "allergyintolerance"
+            | "diagnosticreport"
+    ) {
+        return true;
+    }
+    if kind == "observation" {
+        return record
+            .provenance
+            .get("category")
+            .and_then(|v| v.as_array())
+            .is_some_and(|cats| {
+                cats.iter().any(|c| {
+                    c.get("coding")
+                        .and_then(|arr| arr.as_array())
+                        .into_iter()
+                        .flatten()
+                        .filter_map(|coding| coding.get("code").and_then(|s| s.as_str()))
+                        .any(|code| {
+                            code.eq_ignore_ascii_case("laboratory")
+                                || code.eq_ignore_ascii_case("vital-signs")
+                        })
+                })
+            });
+    }
+    false
+}
+
+/// Enforces `P1.Rule.LiveChartReRead` on chat `finish_answer` when connected
+/// patient sources are configured and the turn relies on medications, allergies,
+/// lab results, or vital values.
+pub fn evaluate_chat_live_chart_reread<'a>(
+    current: &[SourceRevision],
+    records: impl IntoIterator<Item = impl Into<harness::engine::recipe::ReplayEvent<'a>>>,
+    messages: &[harness::engine::ProductMessage],
+    finished: &citations::Finished,
+) -> Result<Option<String>, String> {
+    use harness::engine::{EventKind, results};
+    use std::collections::{BTreeMap, BTreeSet};
+
+    let records: Vec<harness::engine::recipe::ReplayEvent<'a>> =
+        records.into_iter().map(Into::into).collect();
+    let delivery = results::Delivery::from_events(records.iter().copied(), messages)
+        .map_err(|cause| cause.to_string())?;
+    let current_by_id: BTreeMap<&str, &SourceRevision> = current
+        .iter()
+        .map(|src| (src.candidate_id.as_str(), src))
+        .collect();
+
+    let mut cited_live_candidates: BTreeSet<String> = finished
+        .marks()
+        .iter()
+        .chain(finished.basis().marks().iter())
+        .map(|mark| mark.source.candidate_id.as_str())
+        .filter(|cid| {
+            current_by_id
+                .get(cid)
+                .is_some_and(|src| record_requires_live_chart_reread(src))
+        })
+        .map(ToOwned::to_owned)
+        .collect();
+
+    let mut refresh_ordinal: Option<usize> = None;
+    let mut refresh_had_failure = false;
+    let mut read_ordinals: BTreeMap<String, usize> = BTreeMap::new();
+
+    for (idx, record) in records.iter().enumerate() {
+        let event = match *record {
+            harness::engine::recipe::ReplayEvent::Admitted(ev)
+            | harness::engine::recipe::ReplayEvent::EvidenceOnly(ev) => ev,
+        };
+        let EventKind::ToolReturned {
+            call_id,
+            result: results::ToolResult::Original(output),
+        } = &event.kind
+        else {
+            continue;
+        };
+        if !delivery.covers(call_id, None) {
+            continue;
+        }
+        if let Ok(read_receipt) = serde_json::from_str::<chart::ReadReceipt>(output) {
+            for item in read_receipt.results {
+                match item {
+                    chart::RecordReceipt::Available { reference, .. }
+                    | chart::RecordReceipt::Passage { reference, .. } => {
+                        if current_by_id
+                            .get(reference.as_str())
+                            .is_some_and(|src| record_requires_live_chart_reread(src))
+                        {
+                            cited_live_candidates.insert(reference.clone());
+                            read_ordinals.insert(reference, idx);
+                        }
+                    }
+                    chart::RecordReceipt::Unavailable { .. }
+                    | chart::RecordReceipt::OverBudget { .. } => {}
+                }
+            }
+            continue;
+        }
+        if let Ok(val) = serde_json::from_str::<Value>(output) {
+            let looks_like_refresh = val.get("outcome").and_then(Value::as_str)
+                == Some("refreshed")
+                || (val.get("outcome").and_then(Value::as_str) == Some("failed")
+                    && val.get("limits").is_some())
+                || (val.get("sources").and_then(Value::as_array).is_some()
+                    && val.get("workspace_version").is_some());
+            if looks_like_refresh {
+                refresh_ordinal = Some(idx);
+                let any_failed = val
+                    .get("sources")
+                    .and_then(Value::as_array)
+                    .is_some_and(|arr| {
+                        arr.iter().any(|s| {
+                            matches!(
+                                s.get("status").and_then(Value::as_str),
+                                Some("failed" | "partly_updated")
+                            )
+                        })
+                    })
+                    || val.get("outcome").and_then(Value::as_str) == Some("failed");
+                if any_failed {
+                    refresh_had_failure = true;
+                }
+            }
+        }
+    }
+
+    if cited_live_candidates.is_empty() {
+        return Ok(None);
+    }
+
+    let Some(refresh_idx) = refresh_ordinal else {
+        return Ok(Some(
+            json!({
+                "kind": "live_chart_reread_required",
+                "message": "Call `refresh_patient_sources` and re-read current medication, allergy, laboratory, or vital records with `read_patient_sources` before concluding.",
+                "candidates": cited_live_candidates.into_iter().collect::<Vec<_>>(),
+            })
+            .to_string(),
+        ));
+    };
+
+    let all_reread_after_refresh = cited_live_candidates
+        .iter()
+        .all(|cid| read_ordinals.get(cid).is_some_and(|&ord| ord > refresh_idx));
+    if all_reread_after_refresh {
+        return Ok(None);
+    }
+    if refresh_had_failure && !finished.basis().text().trim().is_empty() {
+        return Ok(None);
+    }
+
+    Ok(Some(
+        json!({
+            "kind": "live_chart_reread_required",
+            "message": "After calling `refresh_patient_sources`, re-read the affected medication, allergy, laboratory, or vital records with `read_patient_sources` (or explain the refresh limitation in `basis`) before finishing.",
+            "candidates": cited_live_candidates.into_iter().collect::<Vec<_>>(),
+        })
+        .to_string(),
+    ))
+}
+
 /// Single rule owner checking whether patient chart records were added,
 /// corrected, or withdrawn while a chat answer ran, and whether any corrected
 /// or withdrawn record the run relied on has been read again.

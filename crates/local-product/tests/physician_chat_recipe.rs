@@ -3397,3 +3397,241 @@ async fn chat_receives_initial_understanding_triggers_revision_on_refresh_and_up
     assert!(dev_text_2.contains("PRIVATE_SEAM_OVERVIEW_V2"));
     assert!(dev_text_2.contains("takes amlodipine 5 mg in the evening"));
 }
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn live_chart_reread_enforced_in_physician_chat_when_configured() {
+    use local_product::physician_sources::{
+        Bucket, RecordEnvelope, RecordVersion, SourceRecordKind,
+    };
+    use local_product::runtime::refresh::{FixedSourceCheck, SourceCheckOutcome, SourceId};
+
+    let (base_store, auth, _url) = setup_stores().await;
+    let practice = format!("prac-chat-reread-{}", uuid::Uuid::new_v4().simple());
+    let (physician, _token, session_hash) =
+        invite_and_sign_in(&auth, &practice, "dr-chat-rr").await;
+    let patient = synthetic_patient("pt-chat-rr", "Marcus Vance", "1974-03-02", "MRN-7701");
+    let workspace = workspace_id("clinic-ehr", &patient.source_patient_id);
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&physician, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let med_rev1 = SourceRevision {
+        workspace: workspace.clone(),
+        source_id: "clinic-ehr".into(),
+        candidate_id: "med-lisinopril".into(),
+        revision: "rev-1".into(),
+        record_type: "MedicationRequest".into(),
+        dates: vec![RecordDate {
+            name: "authored".into(),
+            value: "2026-10-15".into(),
+        }],
+        content: "Lisinopril 10 mg oral tablet once daily.".into(),
+        sha256: sha256_hex(b"Lisinopril 10 mg oral tablet once daily."),
+        readable_parts: Vec::new(),
+        provenance: json!({ "resourceType": "MedicationRequest", "id": "med-lisinopril" }),
+        envelope: Some(RecordEnvelope {
+            bucket: Bucket::Medications,
+            source_kind: SourceRecordKind {
+                kind: "MedicationRequest".into(),
+                category: None,
+            },
+            native_id: "med-lisinopril".into(),
+            version: RecordVersion::Source("rev-1".into()),
+            dates: Vec::new(),
+            status: Some("active".into()),
+            codes: Vec::new(),
+            title: Some("Lisinopril 10 mg".into()),
+            native_link: None,
+            unavailable_parts: Vec::new(),
+        }),
+    };
+    let med_rev2 = SourceRevision {
+        revision: "rev-2".into(),
+        content: "Lisinopril 20 mg oral tablet once daily.".into(),
+        sha256: sha256_hex(b"Lisinopril 20 mg oral tablet once daily."),
+        ..med_rev1.clone()
+    };
+    base_store
+        .record_chart(
+            &workspace,
+            std::slice::from_ref(&med_rev1),
+            &SourcePull {
+                source_id: "clinic-ehr".into(),
+                source_label: "Clinic EHR".into(),
+                patient: patient.clone(),
+                pulled_at: Some(1_762_900_000),
+            },
+        )
+        .await
+        .unwrap();
+
+    let checker = FixedSourceCheck::new();
+    checker.set_source_outcome(
+        &practice,
+        &workspace,
+        SourceId::new("clinic-ehr").unwrap(),
+        SourceCheckOutcome::Updated {
+            source_label: "Clinic EHR".into(),
+            patient,
+            pulled_at: 1_762_905_000,
+            records: vec![med_rev2],
+        },
+    );
+    let store = base_store.with_source_refresh(Arc::new(checker));
+    let roles = distinct_model_roles();
+    let skills = load_skills();
+    let scope = Scope {
+        practice: practice.clone(),
+        physician: physician.physician_id.clone(),
+        workspace: workspace.clone(),
+        chat: "chat-live-reread".into(),
+    };
+    let starting = store.patient_starting_context(&scope).await.unwrap();
+    let recipe = ChatAssignment::for_patient(scope.clone(), starting).recipe(&roles, &skills);
+    assert_eq!(
+        store
+            .start_chat_authorized(
+                &scope,
+                &Input {
+                    key: "msg-chat-rr-1".into(),
+                    text: "What dose of lisinopril is Marcus taking now?".into(),
+                    timezone: "UTC".into(),
+                    scenario: None,
+                },
+                session_hash,
+                &skills,
+                &recipe,
+                &mut PostgresWorkspaceAuthority,
+            )
+            .await
+            .unwrap(),
+        Accepted::New
+    );
+    let claim = store.claim(&scope, 60).await.unwrap().unwrap();
+
+    struct LiveRereadChatProvider {
+        step: usize,
+        saw_refusal: bool,
+    }
+    impl Provider for LiveRereadChatProvider {
+        async fn exchange(
+            &mut self,
+            request: &Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn Observer,
+        ) -> Result<Turn, engine::Cause> {
+            self.step += 1;
+            match self.step {
+                1 => Ok(Turn {
+                    items: vec![Item::Call(Invocation {
+                        id: "c1".into(),
+                        name: READ_TOOL.into(),
+                        arguments: json!({
+                            "references": [{ "candidate_id": "med-lisinopril", "revision": "rev-1", "cursor": null }],
+                            "max_result_bytes": 16_384,
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({ "turn": 1 }),
+                    usage: Default::default(),
+                }),
+                2 => Ok(Turn {
+                    items: vec![Item::Call(Invocation {
+                        id: "c2-stale-finish".into(),
+                        name: local_product::physician_sources::citations::FINISH_TOOL.into(),
+                        arguments: json!({
+                            "answer": "Marcus is taking Lisinopril 10 mg daily [S1].",
+                            "quotes": [{ "label": "S1", "quote": "Lisinopril 10 mg oral tablet once daily." }],
+                            "descriptions": [],
+                            "basis": "EHR MedicationRequest [S1].",
+                            "cites_none": false,
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({ "turn": 2 }),
+                    usage: Default::default(),
+                }),
+                3 => {
+                    let outputs = materialized_outputs(request);
+                    let wire = outputs
+                        .get("c2-stale-finish")
+                        .cloned()
+                        .unwrap_or_else(|| serde_json::to_string(&request.items).unwrap());
+                    assert!(
+                        wire.contains("live_chart_reread_required"),
+                        "finish_answer on live MedicationRequest without refresh must be refused: {wire}"
+                    );
+                    self.saw_refusal = true;
+                    Ok(Turn {
+                        items: vec![Item::Call(Invocation {
+                            id: "c3-refresh".into(),
+                            name: REFRESH_SOURCES_TOOL.into(),
+                            arguments: json!({
+                                "source_id": "clinic-ehr",
+                                "reason": "Re-read active medications before answering"
+                            })
+                            .to_string(),
+                        })],
+                        receipt: json!({ "turn": 3 }),
+                        usage: Default::default(),
+                    })
+                }
+                4 => Ok(Turn {
+                    items: vec![Item::Call(Invocation {
+                        id: "c4-reread".into(),
+                        name: READ_TOOL.into(),
+                        arguments: json!({
+                            "references": [{ "candidate_id": "med-lisinopril", "revision": "rev-2", "cursor": null }],
+                            "max_result_bytes": 16_384,
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({ "turn": 4 }),
+                    usage: Default::default(),
+                }),
+                5 => Ok(Turn {
+                    items: vec![Item::Call(Invocation {
+                        id: "c5-fresh-finish".into(),
+                        name: local_product::physician_sources::citations::FINISH_TOOL.into(),
+                        arguments: json!({
+                            "answer": "Marcus is now taking Lisinopril 20 mg once daily [S2].",
+                            "quotes": [{ "label": "S2", "quote": "Lisinopril 20 mg oral tablet once daily." }],
+                            "descriptions": [],
+                            "basis": "Refreshed Clinic EHR MedicationRequest [S2].",
+                            "cites_none": false,
+                        })
+                        .to_string(),
+                    })],
+                    receipt: json!({ "turn": 5 }),
+                    usage: Default::default(),
+                }),
+                other => panic!("unexpected turn {other}"),
+            }
+        }
+    }
+
+    let mut provider = LiveRereadChatProvider {
+        step: 0,
+        saw_refusal: false,
+    };
+    let mut host = PhysicianHost {
+        store: store.clone(),
+        claim,
+        authority: PostgresWorkspaceAuthority,
+        shown_steps: ShownSteps::new(()),
+    };
+    host.run(
+        &mut provider,
+        engine::RunLimits::default(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    assert!(provider.saw_refusal);
+    let conv = store.conversation(&scope).await.unwrap();
+    assert_eq!(conv.status, WorkStatus::Completed);
+    assert!(conv.messages.last().unwrap().text.contains("20 mg"));
+}

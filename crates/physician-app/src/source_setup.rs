@@ -41,6 +41,9 @@ pub(crate) fn standing_badge(standing: &SourceStandingWire) -> (Tone, IconName, 
         SourceStandingWire::UpToDate { .. } => (Tone::Primary, IconName::Check, "Up to date"),
         SourceStandingWire::ReadFailed { .. } => (Tone::Warning, IconName::Alert, "Update failed"),
         SourceStandingWire::AccessLost { .. } => (Tone::Error, IconName::Alert, "Access lost"),
+        SourceStandingWire::RollbackHalted { .. } => {
+            (Tone::Error, IconName::Alert, "Filing halted")
+        }
     }
 }
 
@@ -155,6 +158,14 @@ pub(crate) fn project_today_notice(
             detail,
             action_label: "Reconnect",
             primary_action: true,
+        },
+        TodayConnectionRecoveryWire::OperatorActionRequired => TodaySourceNoticeView {
+            source_id,
+            tone: Tone::Error,
+            title: format!("{label}: Filing halted"),
+            detail,
+            action_label: "Inspect source",
+            primary_action: false,
         },
     })
 }
@@ -376,6 +387,7 @@ fn SourceSetupCard(
         ImportInitial,
         Refresh,
         AcceptSpruceBacklog,
+        ResolveSpruceRollback,
         Reconnect(ConnectSourceBody),
         Disconnect,
     }
@@ -397,6 +409,7 @@ fn SourceSetupCard(
                 SourceMutation::ImportInitial => api.import_source_records(kind).await,
                 SourceMutation::Refresh => api.refresh_source(kind).await,
                 SourceMutation::AcceptSpruceBacklog => api.accept_spruce_backlog().await,
+                SourceMutation::ResolveSpruceRollback => api.resolve_spruce_rollback(false).await,
                 SourceMutation::Reconnect(body) => api.reconnect_source(kind, &body).await,
                 SourceMutation::Disconnect => api.disconnect_source(kind).await,
             };
@@ -777,6 +790,51 @@ fn SourceSetupCard(
                                 }
                             }
                             ActionRow {
+                                Button {
+                                    variant: ButtonVariant::Secondary,
+                                    danger: true,
+                                    disabled: busy(),
+                                    onclick: move |_| run_mutation(SourceMutation::Disconnect),
+                                    "Disconnect"
+                                }
+                            }
+                        }
+                    }
+                    SourceStandingWire::RollbackHalted {
+                        method,
+                        account_label: saved_account,
+                        last_successful_read_at,
+                        running_release,
+                        highest_release,
+                        reason,
+                        ..
+                    } => {
+                        let last_read = format_last_read(
+                            last_successful_read_at.as_deref(),
+                            &practice_zone,
+                            &server_now,
+                        );
+                        rsx! {
+                            Notice {
+                                tone: Tone::Error,
+                                icon: IconName::Alert,
+                                title: format!(
+                                    "Filing halted after release rollback ({running_release} < {highest_release})"
+                                ),
+                                detail: Some(format!(
+                                    "{reason} · {saved_account} ({}) · {last_read}. Saved records remain intact without duplicating or losing messages.",
+                                    method.label()
+                                )),
+                                span {}
+                            }
+                            SpruceRetentionSummary { source: source.clone() }
+                            ActionRow {
+                                Button {
+                                    variant: ButtonVariant::Primary,
+                                    busy: busy(),
+                                    onclick: move |_| run_mutation(SourceMutation::ResolveSpruceRollback),
+                                    "Resolve rollback halt"
+                                }
                                 Button {
                                     variant: ButtonVariant::Secondary,
                                     danger: true,

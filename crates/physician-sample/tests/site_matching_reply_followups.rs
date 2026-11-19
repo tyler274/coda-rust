@@ -2430,6 +2430,18 @@ async fn reply_editor_basis_private_drafts_moves_withheld_and_disconnected() {
         &format!("[data-disconnected-reply-done=\"{conv_id}\"]"),
         Duration::from_secs(10),
     );
+    let disconnected_open_href = tab_a
+        .eval(&format!(
+            "document.querySelector('[data-disconnected-reply-banner=\"{conv_id}\"] [data-open-in-spruce=\"{conv_id}\"]')?.getAttribute('href') ?? ''"
+        ))
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        disconnected_open_href.contains("app.sprucehealth.com")
+            && disconnected_open_href.contains(conv_id),
+        "disconnected reply banner must show Open in Spruce link alongside Done (`MR.Code.8`): {disconnected_open_href:?}"
+    );
     tab_a.save_screenshot("09-reply-disconnected-done");
 
     tab_a.click(&format!("[data-disconnected-reply-done=\"{conv_id}\"]"));

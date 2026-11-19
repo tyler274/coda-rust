@@ -203,6 +203,44 @@ impl Client {
         payload::item_response(&body).ok_or(Error::Contract)
     }
 
+    /// `GET /conversationItems/{id}` returning ephemeral attachment download descriptors
+    /// (`signedUrl` stays local to the returned list and is never stored on [`crate::payload::Item`]).
+    pub async fn get_item_attachment_downloads(
+        &self,
+        id: &str,
+    ) -> Result<Vec<payload::AttachmentDownload>, Error> {
+        let body = self
+            .get(&format!("conversationItems/{}", path_id(id)?), &NoQuery {})
+            .await?;
+        payload::item_attachment_downloads(&body).ok_or(Error::Contract)
+    }
+
+    /// Single bounded `GET` for a transient attachment/fax media URL.
+    pub async fn download_attachment_bytes(&self, signed_url: &str) -> Result<Vec<u8>, Error> {
+        let url = Url::parse(signed_url).map_err(|_| Error::InvalidRequest)?;
+        if !base_ok(&url) {
+            return Err(Error::InvalidRequest);
+        }
+        let mut req = self.http.get(url.clone());
+        if url.origin() == self.base.origin() {
+            req = req.bearer_auth(&self.credential);
+        }
+        let response = req.send().await.map_err(|_| Error::Unavailable)?;
+        let status = response.status();
+        if !status.is_success() {
+            return Err(classify(status.as_u16()));
+        }
+        let mut body = Vec::new();
+        let mut response = response;
+        while let Some(chunk) = response.chunk().await.map_err(|_| Error::Unavailable)? {
+            if body.len().saturating_add(chunk.len()) > self.max_bytes {
+                return Err(Error::Contract);
+            }
+            body.extend_from_slice(&chunk);
+        }
+        Ok(body)
+    }
+
     /// `GET /transcriptions/{id}`.
     pub async fn get_transcription(&self, id: &str) -> Result<Transcription, Error> {
         let body = self

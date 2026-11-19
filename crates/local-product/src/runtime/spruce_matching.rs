@@ -55,6 +55,13 @@ pub(crate) mod entities {
             #[sea_orm(column_type = "JsonBinary", nullable)]
             pub reader_lease: Option<Json>,
             pub updated_at: i64,
+            pub highest_release_generation: i64,
+            #[sea_orm(column_type = "Text")]
+            pub highest_release_label: String,
+            #[sea_orm(column_type = "JsonBinary", nullable)]
+            pub rollback_halt: Option<Json>,
+            #[sea_orm(column_type = "JsonBinary", nullable)]
+            pub channel_config: Option<Json>,
         }
 
         #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
@@ -415,13 +422,30 @@ pub enum BacklogStanding {
         /// Unix second when offered at connection time.
         offered_at: i64,
     },
-    /// A physician accepted the one-time offer to read pre-connection messages.
+    /// A physician accepted the one-time offer to read pre-connection messages; reading pending.
     Accepted {
         /// Unix second when accepted.
         accepted_at: i64,
         /// Physician who accepted the backlog offer.
         accepted_by: String,
     },
+    /// Accepted pre-connection backlog has been completely synced once.
+    Completed {
+        /// Unix second when accepted.
+        accepted_at: i64,
+        /// Physician who accepted the backlog offer.
+        accepted_by: String,
+        /// Unix second when the full backlog sync finished cleanly.
+        completed_at: i64,
+    },
+}
+
+impl BacklogStanding {
+    /// Whether the one-time backlog offer was accepted (still pending or finished).
+    #[must_use]
+    pub const fn is_accepted(&self) -> bool {
+        matches!(self, Self::Accepted { .. } | Self::Completed { .. })
+    }
 }
 
 /// Why reading a connected Spruce channel stopped (`ChannelStops(r)` in `MessageMatching.tla`).
@@ -498,6 +522,119 @@ pub enum ChannelStanding {
     },
 }
 
+/// Default monotonically increasing Spruce channel release generation for this build.
+pub const DEFAULT_SPRUCE_RELEASE_GENERATION: i64 = 1;
+
+/// Default human-readable Spruce release label for this build.
+pub const DEFAULT_SPRUCE_RELEASE_LABEL: &str = concat!("chords-spruce/", env!("CARGO_PKG_VERSION"));
+
+/// Monotonic deployment release stamp used by the rollback fence (`P3.Scope.RollbackStopsFiling`).
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct SpruceReleaseStamp {
+    /// Positive release generation counter (`>= 1`).
+    pub generation: i64,
+    /// Human-readable release tag or SHA label.
+    pub label: String,
+}
+
+impl Default for SpruceReleaseStamp {
+    fn default() -> Self {
+        Self {
+            generation: DEFAULT_SPRUCE_RELEASE_GENERATION,
+            label: DEFAULT_SPRUCE_RELEASE_LABEL.to_owned(),
+        }
+    }
+}
+
+impl SpruceReleaseStamp {
+    /// Reads optional `CODA_SPRUCE_RELEASE_GENERATION` and `CODA_SPRUCE_RELEASE_LABEL`
+    /// overrides from the environment, falling back to this binary's defaults.
+    pub fn from_env() -> Self {
+        let generation = std::env::var("CODA_SPRUCE_RELEASE_GENERATION")
+            .ok()
+            .and_then(|v| v.trim().parse::<i64>().ok())
+            .filter(|&g| g >= 1)
+            .unwrap_or(DEFAULT_SPRUCE_RELEASE_GENERATION);
+        let label = std::env::var("CODA_SPRUCE_RELEASE_LABEL")
+            .ok()
+            .map(|v| v.trim().to_owned())
+            .filter(|v| !v.is_empty())
+            .unwrap_or_else(|| DEFAULT_SPRUCE_RELEASE_LABEL.to_owned());
+        Self { generation, label }
+    }
+}
+
+/// Persisted rollback halt raised when an older release attempts to touch a channel
+/// already processed by a newer release.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct SpruceRollbackHalt {
+    /// Unix second when the rollback halt was recorded.
+    pub detected_at: i64,
+    /// Generation of the older release that hit the fence.
+    pub running_generation: i64,
+    /// Label of the older release that hit the fence.
+    pub running_label: String,
+    /// Highest generation previously recorded on the practice channel.
+    pub highest_generation: i64,
+    /// Label of the highest release previously recorded on the practice channel.
+    pub highest_label: String,
+    /// Operator-facing explanation of why filing is halted.
+    pub reason: String,
+}
+
+/// Persisted connection credentials and endpoint configuration for live Spruce polling.
+///
+/// Custom `Debug` redacts `access_token` so secrets never leak into logs.
+#[derive(Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct SpruceChannelConfig {
+    /// Base URL for the Spruce API (`None` uses the environment/production default).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub api_base: Option<String>,
+    /// Spruce organization identifier associated with this practice channel, when known.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub organization_id: Option<String>,
+    /// Bearer access token for Spruce polling (never logged or returned in API projections).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub access_token: Option<String>,
+}
+
+impl std::fmt::Debug for SpruceChannelConfig {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("SpruceChannelConfig")
+            .field("api_base", &self.api_base)
+            .field("organization_id", &self.organization_id)
+            .field("has_access_token", &self.access_token.is_some())
+            .finish()
+    }
+}
+
+/// Complete channel state snapshot combining standing, lease, release fence, and halt details.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SpruceChannelOverview {
+    /// Practice Spruce channel connection & cursor standing.
+    pub standing: ChannelStanding,
+    /// Active single-reader lease, if any.
+    pub reader_lease: Option<ChannelReaderLease>,
+    /// Highest Spruce release stamp recorded on this channel.
+    pub highest_release: SpruceReleaseStamp,
+    /// Active rollback halt requiring operator resolution before filing resumes, if any.
+    pub rollback_halt: Option<SpruceRollbackHalt>,
+    /// Whether live polling credentials/endpoint config are stored on this channel.
+    pub has_live_config: bool,
+}
+
+impl SpruceChannelOverview {
+    /// Derives Today's channel banner, prioritizing any active rollback halt over reading status.
+    #[must_use]
+    pub fn today_banner(&self) -> TodayChannelBanner {
+        self.standing
+            .today_banner_with_halt(self.rollback_halt.as_ref())
+    }
+}
+
 /// What Today says about the practice's Spruce channel (`Rule 10`).
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "banner", rename_all = "snake_case")]
@@ -524,6 +661,14 @@ pub enum TodayChannelBanner {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         last_read_at: Option<i64>,
     },
+    /// Filing stopped after detecting an older running release behind a newer one; requires operator action.
+    RollbackHalted {
+        /// Recorded halt details (`detected_at`, releases, and reason).
+        halt: SpruceRollbackHalt,
+        /// Unix second when Coda last read the channel cleanly.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        last_read_at: Option<i64>,
+    },
 }
 
 impl ChannelStanding {
@@ -534,9 +679,29 @@ impl ChannelStanding {
         }
     }
 
-    /// Single rule owner deriving Today's channel notice from [`ChannelStanding`] (`Rule 10`).
+    /// Last clean read timestamp recorded on `ChannelStanding`, if connected.
     #[must_use]
-    pub fn today_banner(&self) -> TodayChannelBanner {
+    pub fn last_read_at(&self) -> Option<i64> {
+        match self {
+            Self::Disconnected { .. } => None,
+            Self::Connected { health, .. } => match health {
+                ChannelHealth::Reading { last_read_at }
+                | ChannelHealth::TransientFailure { last_read_at, .. }
+                | ChannelHealth::RevokedOrBlocked { last_read_at, .. } => *last_read_at,
+            },
+        }
+    }
+
+    /// Single rule owner deriving Today's channel notice from [`ChannelStanding`] and
+    /// any active rollback halt (`Rule 10`, `P3.Scope.RollbackStopsFiling`).
+    #[must_use]
+    pub fn today_banner_with_halt(&self, halt: Option<&SpruceRollbackHalt>) -> TodayChannelBanner {
+        if let Some(halt) = halt {
+            return TodayChannelBanner::RollbackHalted {
+                halt: halt.clone(),
+                last_read_at: self.last_read_at(),
+            };
+        }
         match self {
             Self::Disconnected { .. }
             | Self::Connected {
@@ -570,6 +735,12 @@ impl ChannelStanding {
                 last_read_at: *last_read_at,
             },
         }
+    }
+
+    /// Single rule owner deriving Today's channel notice from [`ChannelStanding`] (`Rule 10`).
+    #[must_use]
+    pub fn today_banner(&self) -> TodayChannelBanner {
+        self.today_banner_with_halt(None)
     }
 }
 
@@ -1686,6 +1857,16 @@ pub enum SpruceMatchingError {
         /// Why access was refused.
         reason: &'static str,
     },
+    /// Operation requires an active practice administrator.
+    #[error(
+        "practice admin privilege required for physician `{physician}` in practice `{practice}`"
+    )]
+    AdminRequired {
+        /// Practice identifier.
+        practice: String,
+        /// Physician identifier.
+        physician: String,
+    },
     /// Practice patient authority check refused the workspace.
     #[error("practice workspace access refused: {0}")]
     PracticeAccess(#[from] PracticeAccessError),
@@ -1755,6 +1936,10 @@ pub enum SpruceMatchingError {
         #[source]
         source: PracticeJobError,
     },
+    /// Spruce filing is halted because an older release attempted to touch a channel
+    /// previously handled by a newer release, until an operator explicitly resolves it.
+    #[error("{}", .0.reason)]
+    RollbackHalted(SpruceRollbackHalt),
     /// Database error from SeaORM.
     #[error("spruce matching database failure: {0}")]
     Database(#[from] DbErr),
@@ -1827,6 +2012,14 @@ pub(super) async fn require_active_physician(
     auth: &dyn AuthStore,
     viewer: &PhysicianIdentity,
 ) -> Result<(), SpruceMatchingError> {
+    let _ = require_active_account(auth, viewer).await?;
+    Ok(())
+}
+
+async fn require_active_account(
+    auth: &dyn AuthStore,
+    viewer: &PhysicianIdentity,
+) -> Result<physician_auth::Account, SpruceMatchingError> {
     require_id(&viewer.practice_id, "practice_id")?;
     require_id(&viewer.physician_id, "physician_id")?;
     let Some(account) = auth.account_by_identity(viewer).await else {
@@ -1841,6 +2034,20 @@ pub(super) async fn require_active_physician(
             practice: viewer.practice_id.clone(),
             physician: viewer.physician_id.clone(),
             reason: "physician account is inactive",
+        });
+    }
+    Ok(account)
+}
+
+pub(super) async fn require_active_admin(
+    auth: &dyn AuthStore,
+    viewer: &PhysicianIdentity,
+) -> Result<(), SpruceMatchingError> {
+    let account = require_active_account(auth, viewer).await?;
+    if !account.admin {
+        return Err(SpruceMatchingError::AdminRequired {
+            practice: viewer.practice_id.clone(),
+            physician: viewer.physician_id.clone(),
         });
     }
     Ok(())
@@ -1920,13 +2127,13 @@ pub(super) async fn still_open_viewers(
     retained
 }
 
-fn decode_channel_row(
+fn decode_channel_row_full(
     row: entities::spruce_channel::Model,
-) -> Result<(ChannelStanding, Option<ChannelReaderLease>), DbErr> {
+) -> Result<(SpruceChannelOverview, Option<SpruceChannelConfig>), DbErr> {
     let standing: ChannelStanding = serde_json::from_value(row.standing).map_err(
         conversion_error("spruce_channel.standing", "ChannelStanding"),
     )?;
-    let lease: Option<ChannelReaderLease> = row
+    let reader_lease: Option<ChannelReaderLease> = row
         .reader_lease
         .map(serde_json::from_value)
         .transpose()
@@ -1934,7 +2141,42 @@ fn decode_channel_row(
             "spruce_channel.reader_lease",
             "ChannelReaderLease",
         ))?;
-    Ok((standing, lease))
+    let rollback_halt: Option<SpruceRollbackHalt> = row
+        .rollback_halt
+        .map(serde_json::from_value)
+        .transpose()
+        .map_err(conversion_error(
+            "spruce_channel.rollback_halt",
+            "SpruceRollbackHalt",
+        ))?;
+    let channel_config: Option<SpruceChannelConfig> = row
+        .channel_config
+        .map(serde_json::from_value)
+        .transpose()
+        .map_err(conversion_error(
+            "spruce_channel.channel_config",
+            "SpruceChannelConfig",
+        ))?;
+    let overview = SpruceChannelOverview {
+        standing,
+        reader_lease,
+        highest_release: SpruceReleaseStamp {
+            generation: row.highest_release_generation,
+            label: row.highest_release_label,
+        },
+        rollback_halt,
+        has_live_config: channel_config
+            .as_ref()
+            .is_some_and(|c| c.access_token.is_some() || c.api_base.is_some()),
+    };
+    Ok((overview, channel_config))
+}
+
+fn decode_channel_row(
+    row: entities::spruce_channel::Model,
+) -> Result<(ChannelStanding, Option<ChannelReaderLease>), DbErr> {
+    let (overview, _) = decode_channel_row_full(row)?;
+    Ok((overview.standing, overview.reader_lease))
 }
 
 fn decode_conversation_row(
@@ -2076,6 +2318,10 @@ async fn ensure_channel_row(
         standing: Set(standing_json),
         reader_lease: Set(None),
         updated_at: Set(now_ts),
+        highest_release_generation: Set(DEFAULT_SPRUCE_RELEASE_GENERATION),
+        highest_release_label: Set(DEFAULT_SPRUCE_RELEASE_LABEL.to_owned()),
+        rollback_halt: Set(None),
+        channel_config: Set(None),
     })
     .on_conflict(
         OnConflict::column(entities::spruce_channel::Column::Practice)
@@ -2119,6 +2365,7 @@ async fn save_channel_state_in_tx(
         standing: Set(standing_json),
         reader_lease: Set(lease_json),
         updated_at: Set(now_ts),
+        ..Default::default()
     };
     active.update(tx).await?;
     Ok(())
@@ -2749,6 +2996,243 @@ impl Store {
         }
     }
 
+    /// Reads complete Spruce channel overview including standing, lease, highest
+    /// observed release generation, and any active rollback halt.
+    pub async fn spruce_channel_overview(
+        &self,
+        practice: &str,
+    ) -> Result<SpruceChannelOverview, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let row = entities::spruce_channel::Entity::find_by_id(practice.to_owned())
+            .one(&self.db)
+            .await?;
+        match row {
+            Some(model) => Ok(decode_channel_row_full(model)?.0),
+            None => Ok(SpruceChannelOverview {
+                standing: ChannelStanding::Disconnected {
+                    disconnected_at: None,
+                },
+                reader_lease: None,
+                highest_release: SpruceReleaseStamp::default(),
+                rollback_halt: None,
+                has_live_config: false,
+            }),
+        }
+    }
+
+    /// Reads stored live Spruce channel configuration (`api_base`, `organization_id`,
+    /// `access_token`) for `practice`, when configured.
+    pub async fn spruce_channel_config(
+        &self,
+        practice: &str,
+    ) -> Result<Option<SpruceChannelConfig>, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let row = entities::spruce_channel::Entity::find_by_id(practice.to_owned())
+            .one(&self.db)
+            .await?;
+        match row {
+            Some(model) => Ok(decode_channel_row_full(model)?.1),
+            None => Ok(None),
+        }
+    }
+
+    /// Persists live Spruce channel configuration for `practice`.
+    pub async fn set_spruce_channel_config(
+        &self,
+        practice: &str,
+        config: Option<&SpruceChannelConfig>,
+        now_ts: i64,
+    ) -> Result<(), SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let config_json = config
+            .map(serde_json::to_value)
+            .transpose()
+            .map_err(conversion_error("SpruceChannelConfig", "json"))?;
+        let tx = self.db.begin().await?;
+        let _ = lock_channel_row(&tx, practice, now_ts).await?;
+        entities::spruce_channel::ActiveModel {
+            practice: Set(practice.to_owned()),
+            channel_config: Set(config_json),
+            updated_at: Set(now_ts),
+            ..Default::default()
+        }
+        .update(&tx)
+        .await?;
+        tx.commit().await?;
+        Ok(())
+    }
+
+    /// Lists every practice whose Spruce channel is currently halted after a release rollback.
+    pub async fn spruce_rollback_halted_practices(
+        &self,
+    ) -> Result<Vec<(String, SpruceRollbackHalt)>, SpruceMatchingError> {
+        let rows = entities::spruce_channel::Entity::find()
+            .filter(entities::spruce_channel::Column::RollbackHalt.is_not_null())
+            .order_by_asc(entities::spruce_channel::Column::Practice)
+            .all(&self.db)
+            .await?;
+        let mut halted = Vec::new();
+        for row in rows {
+            let practice = row.practice.clone();
+            let (overview, _) = decode_channel_row_full(row)?;
+            if let Some(halt) = overview.rollback_halt {
+                halted.push((practice, halt));
+            }
+        }
+        Ok(halted)
+    }
+
+    /// Lists every connected practice with stored live Spruce configuration for background polling.
+    pub async fn connected_spruce_practices(
+        &self,
+    ) -> Result<Vec<(String, SpruceChannelConfig)>, SpruceMatchingError> {
+        let rows = entities::spruce_channel::Entity::find()
+            .filter(entities::spruce_channel::Column::StandingKind.eq("connected"))
+            .filter(entities::spruce_channel::Column::ChannelConfig.is_not_null())
+            .order_by_asc(entities::spruce_channel::Column::Practice)
+            .all(&self.db)
+            .await?;
+        let mut out = Vec::new();
+        for row in rows {
+            let practice = row.practice.clone();
+            let (overview, config) = decode_channel_row_full(row)?;
+            if overview.rollback_halt.is_none()
+                && let Some(cfg) = config
+                && cfg
+                    .access_token
+                    .as_deref()
+                    .is_some_and(|t| !t.trim().is_empty())
+            {
+                out.push((practice, cfg));
+            }
+        }
+        Ok(out)
+    }
+
+    /// Checks and advances the release-generation fence on `practice`.
+    ///
+    /// Runs inside its own committed transaction so a newly detected rollback
+    /// durably persists `rollback_halt` even before returning [`SpruceMatchingError::RollbackHalted`].
+    pub async fn enforce_spruce_release_fence(
+        &self,
+        practice: &str,
+        now_ts: i64,
+    ) -> Result<SpruceChannelOverview, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let tx = self.db.begin().await?;
+        let row = lock_channel_row(&tx, practice, now_ts).await?;
+        let (mut overview, _) = decode_channel_row_full(row)?;
+
+        if let Some(halt) = overview.rollback_halt {
+            tx.commit().await?;
+            return Err(SpruceMatchingError::RollbackHalted(halt));
+        }
+
+        let running = &self.spruce_release;
+        if running.generation < overview.highest_release.generation {
+            let halt = SpruceRollbackHalt {
+                detected_at: now_ts,
+                running_generation: running.generation,
+                running_label: running.label.clone(),
+                highest_generation: overview.highest_release.generation,
+                highest_label: overview.highest_release.label.clone(),
+                reason: format!(
+                    "Spruce filing halted: running release `{}` (#{}) is older than recorded release `{}` (#{}).",
+                    running.label,
+                    running.generation,
+                    overview.highest_release.label,
+                    overview.highest_release.generation,
+                ),
+            };
+            let halt_json = serde_json::to_value(&halt)
+                .map_err(conversion_error("SpruceRollbackHalt", "json"))?;
+            entities::spruce_channel::ActiveModel {
+                practice: Set(practice.to_owned()),
+                rollback_halt: Set(Some(halt_json)),
+                updated_at: Set(now_ts),
+                ..Default::default()
+            }
+            .update(&tx)
+            .await?;
+            tx.commit().await?;
+            return Err(SpruceMatchingError::RollbackHalted(halt));
+        }
+
+        if running.generation > overview.highest_release.generation {
+            entities::spruce_channel::ActiveModel {
+                practice: Set(practice.to_owned()),
+                highest_release_generation: Set(running.generation),
+                highest_release_label: Set(running.label.clone()),
+                updated_at: Set(now_ts),
+                ..Default::default()
+            }
+            .update(&tx)
+            .await?;
+            overview.highest_release = running.clone();
+        }
+        tx.commit().await?;
+        Ok(overview)
+    }
+
+    /// Explicitly resolves an active Spruce rollback halt on the actor's practice channel.
+    ///
+    /// When `adopt_running_release` is `false`, resolution is refused if the running binary is
+    /// still older than `highest_release.generation`. Passing `adopt_running_release = true`
+    /// resets the channel floor to the running release after an operator confirms safety.
+    pub async fn resolve_spruce_rollback_halt(
+        &self,
+        auth: &dyn AuthStore,
+        actor: &PhysicianIdentity,
+        adopt_running_release: bool,
+        now_ts: i64,
+    ) -> Result<SpruceChannelOverview, SpruceMatchingError> {
+        require_active_admin(auth, actor).await?;
+        let practice = actor.practice_id.as_str();
+        let tx = self.db.begin().await?;
+        let row = lock_channel_row(&tx, practice, now_ts).await?;
+        let (mut overview, _) = decode_channel_row_full(row)?;
+        let Some(_) = overview.rollback_halt.take() else {
+            tx.commit().await?;
+            return Ok(overview);
+        };
+        let running = &self.spruce_release;
+        if running.generation < overview.highest_release.generation && !adopt_running_release {
+            return Err(SpruceMatchingError::ChannelStateRefused {
+                practice: practice.to_owned(),
+                state: "older_release_still_running".to_owned(),
+                action: "resolve_rollback_halt",
+            });
+        }
+        let next_release = if running.generation < overview.highest_release.generation {
+            running.clone()
+        } else {
+            SpruceReleaseStamp {
+                generation: std::cmp::Ord::max(
+                    running.generation,
+                    overview.highest_release.generation,
+                ),
+                label: if running.generation >= overview.highest_release.generation {
+                    running.label.clone()
+                } else {
+                    overview.highest_release.label.clone()
+                },
+            }
+        };
+        entities::spruce_channel::ActiveModel {
+            practice: Set(practice.to_owned()),
+            highest_release_generation: Set(next_release.generation),
+            highest_release_label: Set(next_release.label.clone()),
+            rollback_halt: Set(None),
+            updated_at: Set(now_ts),
+            ..Default::default()
+        }
+        .update(&tx)
+        .await?;
+        tx.commit().await?;
+        overview.highest_release = next_release;
+        Ok(overview)
+    }
+
     /// Acquires the practice's exclusive Spruce channel reader lease when free
     /// or expired (`README.md`: *"Each practice's channel has one reader at a time"*).
     pub async fn acquire_spruce_reader_lease(
@@ -2898,6 +3382,58 @@ impl Store {
         Ok(updated)
     }
 
+    /// Marks an accepted pre-connection backlog as cleanly completed so subsequent poll passes do not
+    /// re-scan historical pages.
+    pub async fn complete_spruce_backlog(
+        &self,
+        practice: &str,
+        lease_token: &str,
+        now_ts: i64,
+    ) -> Result<ChannelStanding, SpruceMatchingError> {
+        let practice = require_id(practice, "practice")?;
+        let lease_token = require_id(lease_token, "lease_token")?;
+        let tx = self.db.begin().await?;
+        let row = lock_channel_row(&tx, practice, now_ts).await?;
+        let (current, lease) = decode_channel_row(row)?;
+        let Some(active_lease) = lease
+            .as_ref()
+            .filter(|l| l.is_active_at(now_ts) && l.lease_token == lease_token)
+        else {
+            return Err(SpruceMatchingError::InvalidReaderLease {
+                practice: practice.to_owned(),
+            });
+        };
+        let ChannelStanding::Connected {
+            place,
+            start_boundary,
+            spruce_cursor,
+            backlog:
+                BacklogStanding::Accepted {
+                    accepted_at,
+                    accepted_by,
+                },
+            health,
+        } = current
+        else {
+            tx.commit().await?;
+            return Ok(current);
+        };
+        let updated = ChannelStanding::Connected {
+            place,
+            start_boundary,
+            spruce_cursor,
+            backlog: BacklogStanding::Completed {
+                accepted_at,
+                accepted_by,
+                completed_at: now_ts,
+            },
+            health,
+        };
+        save_channel_state_in_tx(&tx, practice, &updated, Some(active_lease), now_ts).await?;
+        tx.commit().await?;
+        Ok(updated)
+    }
+
     /// Records a transient read failure (`ChannelStops(Failing)`) or revoked/blocked
     /// credential (`ChannelStops(Revoked)`) on the practice channel (`Rule 10`).
     pub async fn record_spruce_channel_failure(
@@ -2978,6 +3514,7 @@ impl Store {
     ) -> Result<ChannelStanding, SpruceMatchingError> {
         let practice = require_id(practice, "practice")?;
         let lease_token = require_id(lease_token, "lease_token")?;
+        self.enforce_spruce_release_fence(practice, now_ts).await?;
         let tx = self.db.begin().await?;
         let row = lock_channel_row(&tx, practice, now_ts).await?;
         let (current, lease) = decode_channel_row(row)?;
@@ -3147,7 +3684,19 @@ impl Store {
         let disconnected = ChannelStanding::Disconnected {
             disconnected_at: Some(now_ts),
         };
-        save_channel_state_in_tx(&tx, practice, &disconnected, None, now_ts).await?;
+        let standing_json = serde_json::to_value(&disconnected)
+            .map_err(conversion_error("ChannelStanding", "json"))?;
+        entities::spruce_channel::ActiveModel {
+            practice: Set(practice.to_owned()),
+            standing_kind: Set(disconnected.kind_str().to_owned()),
+            standing: Set(standing_json),
+            reader_lease: Set(None),
+            channel_config: Set(None),
+            updated_at: Set(now_ts),
+            ..Default::default()
+        }
+        .update(&tx)
+        .await?;
         tx.commit().await?;
         Ok(deleted_count)
     }
@@ -3290,6 +3839,7 @@ impl Store {
                 field: "channel_position",
             });
         }
+        self.enforce_spruce_release_fence(practice, now_ts).await?;
 
         let tx = self.db.begin().await?;
         let ch_row = lock_channel_row(&tx, practice, now_ts).await?;
@@ -3319,8 +3869,7 @@ impl Store {
         };
 
         let pos = item.channel_position();
-        let allowed_by_cursor = pos > *place
-            || (matches!(backlog, BacklogStanding::Accepted { .. }) && pos <= *start_boundary);
+        let allowed_by_cursor = pos > *place || (backlog.is_accepted() && pos <= *start_boundary);
 
         if let Some(existing_row) = entities::spruce_message::Entity::find_by_id((
             practice.to_owned(),
@@ -3560,6 +4109,7 @@ impl Store {
     ) -> Result<u64, SpruceMatchingError> {
         let practice = require_id(practice, "practice")?;
         let lease_token = require_id(lease_token, "lease_token")?;
+        self.enforce_spruce_release_fence(practice, now_ts).await?;
         let tx = self.db.begin().await?;
         let row = lock_channel_row(&tx, practice, now_ts).await?;
         let (current, lease) = decode_channel_row(row)?;
@@ -4680,41 +5230,24 @@ impl Store {
             validate_move_departure(auth, actor, conversation_id, &conv, &destination, now_ts)
                 .await?;
 
-        if let Some(existing_undo) = conv.move_undo.clone() {
-            if !existing_undo.is_active_at(now_ts) {
-                tx.commit().await?;
-                let _ = self
-                    .act_on_spruce_conversation_move(
-                        practice,
-                        conversation_id,
-                        review_receiver,
-                        now_ts,
-                    )
-                    .await?;
-                tx = self.db.begin().await?;
-                conv = lock_conversation_in_tx(&tx, practice, conversation_id)
-                    .await?
-                    .ok_or_else(|| SpruceMatchingError::NotFound {
-                        practice: practice.to_owned(),
-                        kind: "conversation",
-                        id: conversation_id.to_owned(),
-                    })?;
-                departed_workspace = validate_move_departure(
-                    auth,
-                    actor,
-                    conversation_id,
-                    &conv,
-                    &destination,
-                    now_ts,
-                )
+        if let Some(existing_undo) = conv.move_undo.clone()
+            && !existing_undo.is_active_at(now_ts)
+        {
+            tx.commit().await?;
+            let _ = self
+                .act_on_spruce_conversation_move(practice, conversation_id, review_receiver, now_ts)
                 .await?;
-            } else if existing_undo.by_physician != actor.physician_id {
-                return Err(SpruceMatchingError::InvalidTransition {
+            tx = self.db.begin().await?;
+            conv = lock_conversation_in_tx(&tx, practice, conversation_id)
+                .await?
+                .ok_or_else(|| SpruceMatchingError::NotFound {
+                    practice: practice.to_owned(),
+                    kind: "conversation",
                     id: conversation_id.to_owned(),
-                    current_state: "move_undo_held_by_other_physician".to_owned(),
-                    action: "move_conversation",
-                });
-            }
+                })?;
+            departed_workspace =
+                validate_move_departure(auth, actor, conversation_id, &conv, &destination, now_ts)
+                    .await?;
         }
 
         let mut pending_triggers = Vec::new();
@@ -4762,11 +5295,10 @@ impl Store {
         let undo_window = undo_window_seconds.max(1);
         let active_prior_undo = conv.move_undo.clone();
         let returned_to_origin = active_prior_undo.as_ref().is_some_and(|u| {
-            u.by_physician == actor.physician_id
-                && matches!(
-                    &destination,
-                    MoveDestination::AnotherPatient { workspace } if workspace == &u.from_workspace
-                )
+            matches!(
+                &destination,
+                MoveDestination::AnotherPatient { workspace } if workspace == &u.from_workspace
+            )
         });
 
         conv.move_undo = if returned_to_origin {
@@ -4973,13 +5505,6 @@ impl Store {
                 id: conversation_id.to_owned(),
                 current_state: "undo_expired".to_owned(),
                 action: "undo_move",
-            });
-        }
-        if undo.by_physician != actor.physician_id {
-            return Err(SpruceMatchingError::AccessDenied {
-                practice: practice.to_owned(),
-                physician: actor.physician_id.clone(),
-                reason: "only the physician who moved the conversation may press Undo",
             });
         }
         require_patient_access(auth, actor, &undo.from_workspace).await?;
@@ -5504,8 +6029,9 @@ impl Store {
     ) -> Result<TodaySpruceSummary, SpruceMatchingError> {
         require_active_physician(auth, viewer).await?;
         let practice = viewer.practice_id.as_str();
-        let (standing, _) = self.spruce_channel_standing(practice).await?;
-        let channel_banner = standing.today_banner();
+        let overview = self.spruce_channel_overview(practice).await?;
+        let standing = overview.standing.clone();
+        let channel_banner = overview.today_banner();
         let backlog_offered = matches!(
             standing,
             ChannelStanding::Connected {

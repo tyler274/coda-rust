@@ -106,7 +106,7 @@ pub struct Envelope {
     pub app_url: Option<String>,
 }
 
-/// A file or card attached to an item. Bytes are not fetched.
+/// A file or card attached to an item. Bytes are not fetched or persisted here.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Attachment {
     /// Spruce's attachment type string.
@@ -117,6 +117,18 @@ pub struct Attachment {
     pub mimetype: Option<String>,
     /// File name Spruce sent.
     pub name: Option<String>,
+}
+
+/// Ephemeral download descriptor extracted from a fresh Spruce item response.
+/// Never persisted on [`Attachment`] or included in [`Item::version`].
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct AttachmentDownload {
+    /// Zero-based index inside the item's `attachments` array.
+    pub index: usize,
+    /// Decoded attachment metadata without signed URLs.
+    pub attachment: Attachment,
+    /// Ephemeral pre-signed URL supplied by Spruce for immediate byte fetch.
+    pub signed_url: Option<String>,
 }
 
 /// A button on an item.
@@ -541,6 +553,36 @@ fn attachment(value: &Value) -> Option<Attachment> {
             .and_then(|data| optional_text(data.get("mimetype"))),
         name: data.and_then(|data| optional_text(data.get("name"))),
     })
+}
+
+/// Extracts transient attachment download URLs from a raw `GET /conversationItems/{id}`
+/// JSON payload without storing `signedUrl` inside [`Attachment`] or [`Item`].
+pub fn item_attachment_downloads(value: &Value) -> Option<Vec<AttachmentDownload>> {
+    let row = record(value)?.get("conversationItem").and_then(record)?;
+    let list = match row.get("attachments") {
+        None | Some(Value::Null) => return Some(Vec::new()),
+        Some(value) => array(value, MAX_PAGE_SIZE)?,
+    };
+    let mut out = Vec::with_capacity(list.len());
+    for (index, raw) in list.iter().enumerate() {
+        let Some(att) = attachment(raw) else {
+            continue;
+        };
+        let signed_url = record(raw)
+            .and_then(|obj| obj.get("data"))
+            .and_then(record)
+            .and_then(|data| data.get("signedUrl").or_else(|| data.get("signedURL")))
+            .and_then(Value::as_str)
+            .map(str::trim)
+            .filter(|s| !s.is_empty())
+            .map(str::to_owned);
+        out.push(AttachmentDownload {
+            index,
+            attachment: att,
+            signed_url,
+        });
+    }
+    Some(out)
 }
 
 fn button(value: &Value) -> Option<Button> {

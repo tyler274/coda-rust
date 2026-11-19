@@ -4025,6 +4025,37 @@ impl Store {
         Ok(conv)
     }
 
+    /// Applies `channel` connection standing across every linked or tracked reply
+    /// conversation in `practice` (`ChannelDisconnects` / `YouReconnect`).
+    pub async fn set_practice_reply_channels_connection(
+        &self,
+        practice: &str,
+        channel: ChannelConnection,
+    ) -> Result<usize, ReplyProposalError> {
+        let practice = validate_identifier("practice", practice)?;
+        let channel = validate_channel(&channel)?;
+        let tx = self.db.begin().await?;
+        let timestamp = now(&tx).await?;
+        let rows = reply_conversation::Entity::find()
+            .filter(reply_conversation::Column::Practice.eq(&practice))
+            .order_by_asc(reply_conversation::Column::ConversationId)
+            .lock_exclusive()
+            .all(&tx)
+            .await?;
+        let mut updated = 0usize;
+        for row in rows {
+            let mut conv = decode_conversation(&tx, row).await?;
+            if conv.channel != channel {
+                conv.channel = channel.clone();
+                conv.updated_at = timestamp;
+                encode_conversation_model(&conv)?.update(&tx).await?;
+                updated += 1;
+            }
+        }
+        tx.commit().await?;
+        Ok(updated)
+    }
+
     /// Projects the reply card (`Card(d)`) for an authorized physician (`Rule 1: OnlyWithAccess`).
     pub async fn reply_card(
         &self,

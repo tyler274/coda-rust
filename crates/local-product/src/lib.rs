@@ -146,6 +146,120 @@ pub fn sha256_hex(bytes: &[u8]) -> String {
     out
 }
 
+/// Sanitizes untrusted channel text (patient messages, sender display names, and
+/// filenames) before embedding it in model prompts.
+///
+/// Strips C0/C1 control characters (preserving tabs and line breaks), Unicode
+/// bidirectional overrides, and active HTML/script blocks or markup tags while
+/// leaving clinical prose and numeric inequalities (`K+ > 5.0 mmol/L`, `A1c < 6.5%`)
+/// intact.
+pub fn sanitize_untrusted_channel_text(raw: &str) -> String {
+    let mut cleaned = String::with_capacity(raw.len());
+    for ch in raw.chars() {
+        let forbidden_override = matches!(
+            ch,
+            '\u{200E}'
+                | '\u{200F}'
+                | '\u{202A}'..='\u{202E}'
+                | '\u{2066}'..='\u{2069}'
+                | '\u{FEFF}'
+        );
+        let allowed_whitespace = matches!(ch, '\n' | '\r' | '\t');
+        if forbidden_override || (ch.is_control() && !allowed_whitespace) {
+            continue;
+        }
+        cleaned.push(ch);
+    }
+    strip_active_html_markup(&cleaned)
+}
+
+fn strip_active_html_markup(input: &str) -> String {
+    const BLOCK_TAGS: &[&str] = &["script", "style", "iframe", "svg", "object", "embed"];
+    let mut out = String::with_capacity(input.len());
+    let mut idx = 0;
+    let bytes = input.as_bytes();
+    while idx < input.len() {
+        let rest = &input[idx..];
+        let Some(rel_lt) = rest.find('<') else {
+            out.push_str(rest);
+            break;
+        };
+        out.push_str(&rest[..rel_lt]);
+        idx += rel_lt;
+
+        let after_lt = &input[idx + 1..];
+        if let Some(after_comment) = after_lt.strip_prefix("!--")
+            && let Some(end_comment) = after_comment.find("-->")
+        {
+            idx += 1 + 3 + end_comment + 3;
+            continue;
+        }
+
+        let lower_prefix: String = after_lt
+            .chars()
+            .take(16)
+            .map(|c| c.to_ascii_lowercase())
+            .collect();
+        let mut matched_block = None;
+        for tag in BLOCK_TAGS {
+            if let Some(after_tag) = lower_prefix.strip_prefix(tag)
+                && after_tag
+                    .chars()
+                    .next()
+                    .is_some_and(|c| c.is_ascii_whitespace() || matches!(c, '>' | '/'))
+            {
+                matched_block = Some(*tag);
+                break;
+            }
+        }
+
+        if let Some(tag) = matched_block
+            && let Some(open_end) = after_lt.find('>')
+        {
+            let body_start = idx + 1 + open_end + 1;
+            let close_needle = format!("</{tag}");
+            let body_lower = input[body_start..].to_ascii_lowercase();
+            if let Some(rel_close) = body_lower.find(&close_needle)
+                && let Some(close_gt) = input[body_start + rel_close..].find('>')
+            {
+                idx = body_start + rel_close + close_gt + 1;
+                continue;
+            }
+            idx = body_start;
+            continue;
+        }
+
+        let is_tag_start = after_lt
+            .as_bytes()
+            .first()
+            .is_some_and(|b| b.is_ascii_alphabetic())
+            || (after_lt.starts_with('/')
+                && after_lt
+                    .as_bytes()
+                    .get(1)
+                    .is_some_and(|b| b.is_ascii_alphabetic()))
+            || (after_lt.starts_with('!')
+                && after_lt
+                    .as_bytes()
+                    .get(1)
+                    .is_some_and(|b| b.is_ascii_alphabetic()));
+
+        if is_tag_start
+            && let Some(rel_gt) = after_lt.find('>')
+            && rel_gt <= 512
+            && !after_lt[..rel_gt].contains('<')
+        {
+            idx += 1 + rel_gt + 1;
+            continue;
+        }
+
+        let _ = bytes;
+        out.push('<');
+        idx += 1;
+    }
+    out
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

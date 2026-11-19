@@ -2694,16 +2694,6 @@ impl Store {
             }
         };
 
-        if let Some(existing_undo) = &conv.move_undo
-            && existing_undo.is_active_at(cmd.now_ts)
-            && existing_undo.by_physician != actor.physician_id
-        {
-            return Err(LinkCorrectionError::InvalidTransition {
-                conversation_id: conversation_id.to_owned(),
-                reason: "Undo window is held by another physician".to_owned(),
-            });
-        }
-
         let current_linked_msgs =
             linked_messages_for_conversation_in_tx(&tx, practice, conversation_id).await?;
         let mut current_linked_ids: BTreeSet<String> = current_linked_msgs
@@ -2752,11 +2742,10 @@ impl Store {
             .clone()
             .filter(|u| u.is_active_at(cmd.now_ts));
         let returned_to_origin = active_prior_undo.as_ref().is_some_and(|u| {
-            u.by_physician == actor.physician_id
-                && matches!(
-                    &cmd.destination,
-                    CorrectionDestination::Patient { workspace } if workspace == &u.from_workspace
-                )
+            matches!(
+                &cmd.destination,
+                CorrectionDestination::Patient { workspace } if workspace == &u.from_workspace
+            )
         });
 
         conv.move_undo = if returned_to_origin {
@@ -2989,13 +2978,6 @@ impl Store {
             return Err(LinkCorrectionError::InvalidTransition {
                 conversation_id: conversation_id.to_owned(),
                 reason: "Undo window has expired".to_owned(),
-            });
-        }
-        if undo.by_physician != actor.physician_id {
-            return Err(LinkCorrectionError::AccessDenied {
-                physician_id: actor.physician_id.clone(),
-                subject: undo.from_workspace,
-                reason: "only the physician who moved the conversation may press Undo",
             });
         }
 

@@ -126,8 +126,47 @@ fn wake_router(wake: Arc<WakeService>) -> Router {
         .with_state(wake)
 }
 
-async fn health() -> Json<Value> {
-    Json(json!({ "status": "ok" }))
+async fn health(State(worker): State<Arc<Worker>>) -> (StatusCode, Json<Value>) {
+    match worker.store.spruce_rollback_halted_practices().await {
+        Ok(halted_practices) if halted_practices.is_empty() => (
+            StatusCode::OK,
+            Json(json!({
+                "status": "ok",
+                "spruce_channel": { "standing": "healthy" },
+            })),
+        ),
+        Ok(halted_practices) => (
+            StatusCode::OK,
+            Json(json!({
+                "status": "degraded",
+                "spruce_channel": {
+                    "standing": "rollback_halted",
+                    "halted_practices": halted_practices
+                        .iter()
+                        .map(|(practice, halt)| {
+                            json!({
+                                "practice": practice,
+                                "detected_at": halt.detected_at,
+                                "running_release": halt.running_label,
+                                "highest_release": halt.highest_label,
+                                "reason": halt.reason,
+                            })
+                        })
+                        .collect::<Vec<_>>(),
+                }
+            })),
+        ),
+        Err(error) => {
+            tracing::warn!(%error, "worker health probe failed to query spruce rollback fence");
+            (
+                StatusCode::SERVICE_UNAVAILABLE,
+                Json(json!({
+                    "status": "degraded",
+                    "spruce_channel": { "standing": "unavailable" },
+                })),
+            )
+        }
+    }
 }
 
 async fn readyz(State(worker): State<Arc<Worker>>) -> StatusCode {
@@ -840,6 +879,79 @@ impl Worker {
             origin,
             simulation_practices,
         })
+    }
+
+    /// Polls configured connected Spruce channels across practices under exclusive leases,
+    /// halting filing automatically if the release fence detects a deployment rollback.
+    async fn poll_spruce_channels(&self) {
+        use physician_auth::AuthStore as _;
+        let Ok(practices) = self.store.connected_spruce_practices().await else {
+            return;
+        };
+        if practices.is_empty() {
+            return;
+        }
+        let Ok(skills) = self.store.resolve_worker_skills(None).await else {
+            return;
+        };
+        let mut provider = self.model.provider(self.quota.clone()).await.ok();
+        let real_now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map_or(0, |d| d.as_secs());
+        let holder_id = format!("physician-worker-{}", std::process::id());
+        let lease_ttl = self.pace.lease.max(30);
+
+        for (practice, cfg) in practices {
+            let Some(token) = cfg
+                .access_token
+                .as_deref()
+                .map(str::trim)
+                .filter(|t| !t.is_empty())
+            else {
+                continue;
+            };
+            let base = cfg
+                .api_base
+                .as_deref()
+                .map(str::trim)
+                .filter(|b| !b.is_empty())
+                .unwrap_or(spruce::api::API_BASE);
+            let Ok(client) = spruce::api::Client::with_base(token, base) else {
+                continue;
+            };
+            let reader = spruce::changes::Reader::new(client);
+            let now_ts = self
+                .auth
+                .practice_clock(&practice)
+                .await
+                .map_or(real_now as i64, |clock| clock.now(real_now) as i64);
+            let receiver = local_product::runtime::reviews::PatientReviewReceiver::new(
+                &self.store,
+                &self.model.roles,
+                &skills,
+                &self.auth,
+            );
+            let pass = local_product::runtime::spruce_sync::SpruceSyncPass {
+                practice: &practice,
+                holder_id: &holder_id,
+                lease_ttl_seconds: lease_ttl,
+                now_ts,
+                roles: &self.model.roles,
+                skills: &skills,
+                review_receiver: &receiver,
+            };
+            if let Err(error) = self
+                .store
+                .sync_spruce_channel_pass(&reader, &self.auth, &pass, provider.as_mut())
+                .await
+            {
+                tracing::warn!(
+                    practice = %practice,
+                    %error,
+                    "spruce channel poll stopped"
+                );
+            }
+        }
     }
 }
 
