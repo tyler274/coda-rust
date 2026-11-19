@@ -4906,7 +4906,7 @@ impl Store {
                             &job.scope.workspace,
                             follow_up_id,
                             &job.work,
-                            reason_label,
+                            &cause.failed_reason_label(),
                             clock,
                         )
                         .await?;
