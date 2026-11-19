@@ -164,8 +164,18 @@ def main():
             else:
                 rounds = json.loads(args.rounds_file.read_text()) if args.rounds_file else args.rounds
                 reply = args.reply_file.read_text() if args.reply_file else args.reply
-                response = {"id": uuid.uuid4().hex, "status": "completed",
-                            "model": body["model"], "output": output_for(body, rounds, reply)}
+                response = {
+                    "id": uuid.uuid4().hex,
+                    "status": "completed",
+                    "model": body["model"],
+                    "output": output_for(body, rounds, reply),
+                    "usage": {
+                        "input_tokens": 500,
+                        "input_tokens_details": {"cached_tokens": 450},
+                        "output_tokens": 50,
+                        "total_tokens": 550,
+                    },
+                }
             stream = body.get("stream")
             wire = encode_stream(response) if stream else json.dumps(response).encode()
             self.send_response(200)
