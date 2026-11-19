@@ -1,0 +1,221 @@
+{
+  "branch": "feat-p3-filtered-chat-and-for-my-doctor",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "Half1",
+      "label": "before the fix (filtered mail chat tools missing)",
+      "kind": "run",
+      "revision": "3f0a934922e288565395e409b79e570805fdb8e4",
+      "dirty": true,
+      "recorded": "2026-11-19T14:17:00+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "filtered_mail_chat_tools_are_offered_and_read_only_checked"
+      ],
+      "expect": "chat must offer list_filtered_messages",
+      "expect_fail": true,
+      "files": [
+        "01-before-the-fix-filtered-mail-chat-tools-missing.log"
+      ],
+      "seconds": 48.2,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "24b195a20332e3b13bb14557d26be1f9b9614185",
+        "reason": "Pre-fix failing baselines before filtered-mail chat tools and For my doctor implementation"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "Half2",
+      "label": "before the fix (/front-door/for-my-doctor route missing)",
+      "kind": "run",
+      "revision": "3f0a934922e288565395e409b79e570805fdb8e4",
+      "dirty": true,
+      "recorded": "2026-11-19T14:17:48+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "front-door",
+        "for_my_doctor_route_requires_consent_and_tracks_sent_status"
+      ],
+      "expect": "404",
+      "expect_fail": true,
+      "files": [
+        "02-before-the-fix-front-door-for-my-doctor-route-mi.log"
+      ],
+      "seconds": 21.9,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "24b195a20332e3b13bb14557d26be1f9b9614185",
+        "reason": "Pre-fix failing baselines before filtered-mail chat tools and For my doctor implementation"
+      }
+    },
+    {
+      "id": 3,
+      "claim": "Half1",
+      "label": "filtered-mail chat tools, connected-care integration, spruce, review, and chat suites",
+      "kind": "run",
+      "revision": "a34492a3d8c4acb842b8abf85431e4e200f092bf",
+      "dirty": false,
+      "recorded": "2026-11-19T20:59:09+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail\n    cargo test -p local-product --lib filtered_mail_chat_tools\n    cargo test -p local-product --test connected_care_and_filtered_chat\n    cargo test -p local-product --test spruce_matching --test message_review_recipe --test message_followup_dispatch_reviews --test link_correction_postgres --test patient_reviews_postgres --test today_updates_postgres\n    cargo test -p local-product --test physician_chat_recipe -- --ignored --test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-filtered-mail-chat-tools-connected-care-integrat.log"
+      ],
+      "seconds": 267.1,
+      "exit": 0,
+      "ok": true,
+      "superseded": "Pre-amend runs replaced by clean amended HEAD proof runs"
+    },
+    {
+      "id": 4,
+      "claim": "Half2",
+      "label": "front-door, patient-work, physician-auth, physician-wire, and local-product unit + migrations",
+      "kind": "run",
+      "revision": "a34492a3d8c4acb842b8abf85431e4e200f092bf",
+      "dirty": false,
+      "recorded": "2026-11-19T21:03:36+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail\n    cargo test -p front-door\n    cargo test -p patient-work\n    cargo test -p physician-auth\n    cargo test -p physician-wire\n    cargo test -p local-product --lib\n    cargo test -p local-product --lib migration_tests -- --ignored --test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-front-door-patient-work-physician-auth-physician.log"
+      ],
+      "seconds": 12.4,
+      "exit": 101,
+      "ok": false,
+      "superseded": "Pre-amend runs replaced by clean amended HEAD proof runs"
+    },
+    {
+      "id": 5,
+      "claim": "Half2",
+      "label": "front-door, patient-work, physician-auth, physician-wire, and local-product unit + migrations",
+      "kind": "run",
+      "revision": "a34492a3d8c4acb842b8abf85431e4e200f092bf",
+      "dirty": false,
+      "recorded": "2026-11-19T21:04:38+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail\n    cargo test -p front-door\n    cargo test -p patient-work\n    cargo test -p physician-auth\n    cargo test -p physician-wire\n    cargo test -p local-product --lib\n    cargo test -p local-product --lib migration_tests -- --ignored --test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-front-door-patient-work-physician-auth-physician.log"
+      ],
+      "seconds": 9.0,
+      "exit": 101,
+      "ok": false,
+      "superseded": "Pre-amend runs replaced by clean amended HEAD proof runs"
+    },
+    {
+      "id": 6,
+      "claim": "Half1",
+      "label": "filtered-mail chat tools, connected-care integration, spruce, review, and chat suites",
+      "kind": "run",
+      "revision": "24b195a20332e3b13bb14557d26be1f9b9614185",
+      "dirty": false,
+      "recorded": "2026-11-19T21:09:48+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail\n    cargo test -p local-product --lib filtered_mail_chat_tools\n    cargo test -p local-product --test connected_care_and_filtered_chat\n    cargo test -p local-product --test spruce_matching --test message_review_recipe --test message_followup_dispatch_reviews --test link_correction_postgres --test patient_reviews_postgres --test today_updates_postgres\n    cargo test -p local-product --test physician_chat_recipe -- --ignored --test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-filtered-mail-chat-tools-connected-care-integrat.log"
+      ],
+      "seconds": 39.9,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 7,
+      "claim": "Half2",
+      "label": "front-door, patient-work, physician-auth, physician-wire, and local-product unit + migrations",
+      "kind": "run",
+      "revision": "24b195a20332e3b13bb14557d26be1f9b9614185",
+      "dirty": false,
+      "recorded": "2026-11-19T21:10:28+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail\n    cargo test -p front-door\n    cargo test -p patient-work\n    cargo test -p physician-auth\n    cargo test -p physician-wire\n    cargo test -p local-product --lib\n    cargo test -p local-product --lib migration_tests -- --ignored --test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "07-front-door-patient-work-physician-auth-physician.log"
+      ],
+      "seconds": 35.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 8,
+      "claim": "Qual",
+      "label": "fmt, host and wasm32 clippy, boundaries, physician-sample lib, source_check_and_reconnect, worker",
+      "kind": "run",
+      "revision": "24b195a20332e3b13bb14557d26be1f9b9614185",
+      "dirty": false,
+      "recorded": "2026-11-19T21:11:03+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail\n    cargo fmt --all --check\n    cargo clippy --workspace --all-targets --quiet -- -D warnings\n    cargo clippy -p physician-app -p duet-app -p mobile -p ui-gallery --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web --quiet -- -D warnings\n    cargo test -p boundaries\n    cargo test -p physician-sample --lib\n    cargo test -p physician-sample --test source_check_and_reconnect\n    cargo test -p physician-sample --test worker -- --test-threads=4"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "08-fmt-host-and-wasm32-clippy-boundaries-physician-.log"
+      ],
+      "seconds": 333.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 9,
+      "claim": "Site",
+      "label": "Chromium browser site_matching_reply_followups and tests/site",
+      "kind": "run",
+      "revision": "24b195a20332e3b13bb14557d26be1f9b9614185",
+      "dirty": false,
+      "recorded": "2026-11-19T21:16:37+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail\n    cargo test -p physician-sample --test site_matching_reply_followups -- --ignored --test-threads=1\n    cargo test -p physician-sample --test site -- --ignored --test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "09-Chromium-browser-site_matching_reply_followups-a.log"
+      ],
+      "seconds": 284.7,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}

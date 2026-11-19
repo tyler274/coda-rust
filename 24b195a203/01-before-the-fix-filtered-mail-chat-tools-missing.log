@@ -1,0 +1,23 @@
+   Compiling front-door v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/front-door)
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 47.86s
+     Running unittests src/lib.rs (target/debug/deps/local_product-75b90368433a4db7)
+
+running 1 test
+test physician_chat::tests::filtered_mail_chat_tools_are_offered_and_read_only_checked ... FAILED
+
+failures:
+
+---- physician_chat::tests::filtered_mail_chat_tools_are_offered_and_read_only_checked stdout ----
+
+thread 'physician_chat::tests::filtered_mail_chat_tools_are_offered_and_read_only_checked' (2349433) panicked at crates/local-product/src/physician_chat.rs:1098:9:
+chat must offer list_filtered_messages
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    physician_chat::tests::filtered_mail_chat_tools_are_offered_and_read_only_checked
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 207 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p local-product --lib`
