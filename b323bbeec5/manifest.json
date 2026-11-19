@@ -1,0 +1,36 @@
+{
+  "branch": "tyler-eng-397-1-message-review-recipe-core",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1-recipe-model",
+      "label": "message_review_recipe unit tests and clippy",
+      "kind": "run",
+      "revision": "91c35e9653aa6e5d214d58d2782d539585a82327",
+      "dirty": false,
+      "recorded": "2026-11-19T00:00:43+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--lib",
+        "message_review_recipe"
+      ],
+      "expect": "test result: ok\\. 2 passed",
+      "expect_fail": false,
+      "files": [
+        "01-message_review_recipe-unit-tests-and-clippy.log"
+      ],
+      "seconds": 71.4,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "b323bbeec59ae83782522ce94bbab5b7674680a0",
+        "reason": "Rebased onto final PR 91 (562055b56d); seam files preserved and full workspace/PG16/Chromium suites verified at PR 104 tip 59829dacb"
+      }
+    }
+  ]
+}
