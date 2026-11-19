@@ -1,0 +1,36 @@
+{
+  "branch": "tyler-eng-429-2-withdrawal-postgres-suite",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC3-postgres-withdrawal-suite",
+      "label": "",
+      "kind": "run",
+      "revision": "207e9ca40ab916f6650399dd7cd9eef623083652",
+      "dirty": false,
+      "recorded": "2026-11-18T23:54:10+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "withdrawal_postgres",
+        "--",
+        "--include-ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-cargo.log"
+      ],
+      "seconds": 23.3,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "fc7251292c0482ed8e1802535f38f91f1e7a43b7",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    }
+  ]
+}
