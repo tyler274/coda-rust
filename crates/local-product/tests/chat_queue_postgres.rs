@@ -254,6 +254,55 @@ async fn queue_edit_withdraw_and_send_now_preserve_order_and_idempotency() {
             .unwrap(),
         QueueMutation::Refused
     );
+    // Retrying a refused key must remain Refused (receipt never committed).
+    assert_eq!(
+        s.edit_queued_message_authorized(&sc, "edit-missing", "no-such-id", "Nope")
+            .await
+            .unwrap(),
+        QueueMutation::Refused
+    );
+    assert_eq!(
+        s.withdraw_queued_message_authorized(&sc, "wd-missing", "no-such-id")
+            .await
+            .unwrap(),
+        QueueMutation::Refused
+    );
+    assert_eq!(
+        s.withdraw_queued_message_authorized(&sc, "wd-missing", "no-such-id")
+            .await
+            .unwrap(),
+        QueueMutation::Refused
+    );
+    assert_eq!(
+        s.send_queued_now_authorized(
+            &sc,
+            "promote-missing",
+            vec![0; 32],
+            "no-such-id",
+            "America/Chicago",
+            &skills(),
+            &recipe(),
+            None,
+        )
+        .await
+        .unwrap(),
+        QueueMutation::Refused
+    );
+    assert_eq!(
+        s.send_queued_now_authorized(
+            &sc,
+            "promote-missing",
+            vec![0; 32],
+            "no-such-id",
+            "America/Chicago",
+            &skills(),
+            &recipe(),
+            None,
+        )
+        .await
+        .unwrap(),
+        QueueMutation::Refused
+    );
 
     // Withdraw third queued message idempotently.
     assert_eq!(

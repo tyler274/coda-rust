@@ -1442,26 +1442,18 @@ impl Store {
         });
         match receipt::record(&tx, &scope.practice, &scope.physician, key, &command).await? {
             receipt::Receipt::New => {}
-            receipt::Receipt::Same => {
-                tx.commit().await?;
-                return Ok(QueueMutation::Duplicate);
-            }
-            receipt::Receipt::Different => {
-                tx.commit().await?;
-                return Ok(QueueMutation::Refused);
-            }
+            receipt::Receipt::Same => return Ok(QueueMutation::Duplicate),
+            receipt::Receipt::Different => return Ok(QueueMutation::Refused),
         }
         let Some(row) = conversation::Entity::find_by_id(keys(scope))
             .lock_exclusive()
             .one(&tx)
             .await?
         else {
-            tx.commit().await?;
             return Ok(QueueMutation::Refused);
         };
         let mut state = Self::conversation_control(&tx, scope, row).await?;
         let Some(queued) = state.queued.iter_mut().find(|item| item.id == message_id) else {
-            tx.commit().await?;
             return Ok(QueueMutation::Refused);
         };
         queued.text = new_text.to_owned();
@@ -1499,28 +1491,20 @@ impl Store {
         });
         match receipt::record(&tx, &scope.practice, &scope.physician, key, &command).await? {
             receipt::Receipt::New => {}
-            receipt::Receipt::Same => {
-                tx.commit().await?;
-                return Ok(QueueMutation::Duplicate);
-            }
-            receipt::Receipt::Different => {
-                tx.commit().await?;
-                return Ok(QueueMutation::Refused);
-            }
+            receipt::Receipt::Same => return Ok(QueueMutation::Duplicate),
+            receipt::Receipt::Different => return Ok(QueueMutation::Refused),
         }
         let Some(row) = conversation::Entity::find_by_id(keys(scope))
             .lock_exclusive()
             .one(&tx)
             .await?
         else {
-            tx.commit().await?;
             return Ok(QueueMutation::Refused);
         };
         let mut state = Self::conversation_control(&tx, scope, row).await?;
         let before = state.queued.len();
         state.queued.retain(|item| item.id != message_id);
         if state.queued.len() == before {
-            tx.commit().await?;
             return Ok(QueueMutation::Refused);
         }
         let now = now(&tx).await?;
@@ -1571,26 +1555,18 @@ impl Store {
         });
         match receipt::record(&tx, &scope.practice, &scope.physician, key, &command).await? {
             receipt::Receipt::New => {}
-            receipt::Receipt::Same => {
-                tx.commit().await?;
-                return Ok(QueueMutation::Duplicate);
-            }
-            receipt::Receipt::Different => {
-                tx.commit().await?;
-                return Ok(QueueMutation::Refused);
-            }
+            receipt::Receipt::Same => return Ok(QueueMutation::Duplicate),
+            receipt::Receipt::Different => return Ok(QueueMutation::Refused),
         }
         let Some(row) = conversation::Entity::find_by_id(keys(scope))
             .lock_exclusive()
             .one(&tx)
             .await?
         else {
-            tx.commit().await?;
             return Ok(QueueMutation::Refused);
         };
         let mut state = Self::conversation_control(&tx, scope, row).await?;
         let Some(pos) = state.queued.iter().position(|item| item.id == message_id) else {
-            tx.commit().await?;
             return Ok(QueueMutation::Refused);
         };
         let queued = state.queued.remove(pos);

@@ -1,7 +1,7 @@
 //! Same-tab recovery of in-flight (`Pending`) and `Unconfirmed` chat commands
 //! so reloading the page restores pending/unconfirmed command state and its
 //! `Check again` action with the original idempotency key (`Chat Command 8`,
-//! `Chat Rule 13`).
+//! `Chat Rule 13`), strictly isolated per `(scope, slot, workspace, chat)`.
 #![cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
 
 use serde::{Deserialize, Serialize};
@@ -26,29 +26,45 @@ pub(crate) struct PersistedCommand {
     pub(crate) stage: PersistedCommandStage,
 }
 
-fn storage_key(scope: &Scope, slot: &str) -> String {
+fn storage_key(scope: &Scope, slot: &str, workspace: &str, chat: &str) -> String {
     let [base, practice, physician] = scope.account_parts();
-    let parts = serde_json::to_string(&[base, practice, physician, slot]).unwrap_or_default();
+    let parts = serde_json::to_string(&[base, practice, physician, slot, workspace, chat])
+        .unwrap_or_default();
     format!("{PREFIX}{parts}")
 }
 
-fn parse(key: &str) -> Option<[String; 4]> {
+fn parse(key: &str) -> Option<[String; 6]> {
     let rest = key.strip_prefix(PREFIX)?;
-    serde_json::from_str::<[String; 4]>(rest).ok()
+    serde_json::from_str::<[String; 6]>(rest).ok()
 }
 
 pub(crate) fn write(backend: &dyn Backend, scope: &Scope, record: &PersistedCommand) {
     if let Ok(encoded) = serde_json::to_string(record) {
-        let _ = backend.set(&storage_key(scope, &record.slot), &encoded);
+        let _ = backend.set(
+            &storage_key(scope, &record.slot, &record.workspace, &record.chat),
+            &encoded,
+        );
     }
 }
 
-pub(crate) fn remove(backend: &dyn Backend, scope: &Scope, slot: &str) {
-    backend.remove(&storage_key(scope, slot));
+pub(crate) fn remove(
+    backend: &dyn Backend,
+    scope: &Scope,
+    slot: &str,
+    workspace: &str,
+    chat: &str,
+) {
+    backend.remove(&storage_key(scope, slot, workspace, chat));
 }
 
-pub(crate) fn read(backend: &dyn Backend, scope: &Scope, slot: &str) -> Option<PersistedCommand> {
-    let raw = backend.get(&storage_key(scope, slot))?;
+pub(crate) fn read(
+    backend: &dyn Backend,
+    scope: &Scope,
+    slot: &str,
+    workspace: &str,
+    chat: &str,
+) -> Option<PersistedCommand> {
+    let raw = backend.get(&storage_key(scope, slot, workspace, chat))?;
     serde_json::from_str::<PersistedCommand>(&raw).ok()
 }
 
@@ -59,10 +75,7 @@ pub(crate) fn forget_workspace(backend: &dyn Backend, scope: &Scope, workspace: 
         if parts[0] == base
             && parts[1] == practice
             && parts[2] == physician
-            && backend
-                .get(&key)
-                .and_then(|raw| serde_json::from_str::<PersistedCommand>(&raw).ok())
-                .is_some_and(|cmd| cmd.workspace == workspace)
+            && parts[4] == workspace
         {
             backend.remove(&key);
         }
@@ -114,22 +127,49 @@ mod tests {
     }
 
     #[test]
-    fn persisted_commands_survive_reload_within_scope_and_clear_on_workspace_removal() {
+    fn persisted_commands_are_isolated_per_workspace_and_chat() {
         let backend = MemBackend::default();
         let scope = Scope::new("https://coda.test", "prac-1", "phys-1").unwrap();
         let other = Scope::new("https://coda.test", "prac-1", "phys-2").unwrap();
-        let rec = PersistedCommand {
+        let rec_a = PersistedCommand {
             slot: "chat-stop".into(),
             workspace: "pw-1".into(),
             chat: "chat-1".into(),
-            command: serde_json::json!({"type": "work.stop", "idempotency_key": "k-1"}),
+            command: serde_json::json!({"type": "work.stop", "idempotency_key": "k-a"}),
             stage: PersistedCommandStage::Unconfirmed,
         };
-        write(&backend, &scope, &rec);
-        assert_eq!(read(&backend, &scope, "chat-stop"), Some(rec.clone()));
-        assert_eq!(read(&backend, &other, "chat-stop"), None);
+        let rec_b = PersistedCommand {
+            slot: "chat-stop".into(),
+            workspace: "pw-2".into(),
+            chat: "chat-2".into(),
+            command: serde_json::json!({"type": "work.stop", "idempotency_key": "k-b"}),
+            stage: PersistedCommandStage::Pending,
+        };
+        write(&backend, &scope, &rec_a);
+        write(&backend, &scope, &rec_b);
+
+        assert_eq!(
+            read(&backend, &scope, "chat-stop", "pw-1", "chat-1"),
+            Some(rec_a)
+        );
+        assert_eq!(
+            read(&backend, &scope, "chat-stop", "pw-2", "chat-2"),
+            Some(rec_b.clone())
+        );
+        assert_eq!(
+            read(&backend, &scope, "chat-stop", "pw-1", "chat-other"),
+            None
+        );
+        assert_eq!(read(&backend, &other, "chat-stop", "pw-1", "chat-1"), None);
 
         forget_workspace(&backend, &scope, "pw-1");
-        assert_eq!(read(&backend, &scope, "chat-stop"), None);
+        assert_eq!(read(&backend, &scope, "chat-stop", "pw-1", "chat-1"), None);
+        assert_eq!(
+            read(&backend, &scope, "chat-stop", "pw-2", "chat-2"),
+            Some(rec_b)
+        );
+
+        forget_all(&backend);
+        assert_eq!(read(&backend, &scope, "chat-stop", "pw-2", "chat-2"), None);
     }
 }
