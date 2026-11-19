@@ -754,13 +754,15 @@ async fn withdrawn_note_ids(
     Ok(rows.into_iter().collect())
 }
 
-/// The non-withdrawn notes `notes` selects, grouped by log day as [`log_days`] groups them.
+/// The non-withdrawn, non-withheld notes `notes` selects, grouped by log day as [`log_days`] groups them.
 async fn days_of(
     db: &impl ConnectionTrait,
     key: &PatientKey,
     notes: sea_orm::Select<memory_note::Entity>,
 ) -> Result<BTreeMap<Day, Vec<Note>>, DbErr> {
     let withdrawn = withdrawn_note_ids(db, key).await?;
+    let withheld =
+        super::link_correction::load_workspace_withheld_state_in_tx(db, &key.workspace).await?;
     let rows = notes
         .order_by_asc(memory_note::Column::Position)
         .all(db)
@@ -769,6 +771,17 @@ async fn days_of(
     for row in rows {
         if withdrawn.contains(&row.note) {
             continue;
+        }
+        if !withheld.is_empty() {
+            let note_work = row.note.split_once(':').map(|(work, _)| work);
+            if withheld.message_ids.contains(&row.message)
+                || withheld.candidate_ids.contains(&row.message)
+                || withheld.work_ids.contains(&row.chat)
+                || withheld.work_ids.contains(&row.note)
+                || note_work.is_some_and(|w| withheld.work_ids.contains(w))
+            {
+                continue;
+            }
         }
         let note = stored_note(row)?;
         days.entry(Day::of(note.time)).or_default().push(note);

@@ -1823,7 +1823,7 @@ async fn project_routing_outcome_for_viewer(
     }
 }
 
-async fn require_active_physician(
+pub(super) async fn require_active_physician(
     auth: &dyn AuthStore,
     viewer: &PhysicianIdentity,
 ) -> Result<(), SpruceMatchingError> {
@@ -1846,7 +1846,7 @@ async fn require_active_physician(
     Ok(())
 }
 
-async fn require_patient_access(
+pub(super) async fn require_patient_access(
     auth: &dyn AuthStore,
     viewer: &PhysicianIdentity,
     workspace: &str,
@@ -1895,7 +1895,7 @@ pub(crate) async fn allowed_workspaces_in_practice(
     Ok(allowed)
 }
 
-async fn still_open_viewers(
+pub(super) async fn still_open_viewers(
     auth: &dyn AuthStore,
     practice: &str,
     viewers: &BTreeSet<String>,
@@ -1983,7 +1983,9 @@ fn decode_conversation_row(
     })
 }
 
-fn decode_message_row(row: entities::spruce_message::Model) -> Result<SavedSpruceMessage, DbErr> {
+pub(super) fn decode_message_row(
+    row: entities::spruce_message::Model,
+) -> Result<SavedSpruceMessage, DbErr> {
     let channel_position = u64::try_from(row.channel_position)
         .map_err(conversion_error("spruce_message.channel_position", "u64"))?;
     let standing: MessageStanding = serde_json::from_value(row.standing).map_err(
@@ -2161,7 +2163,7 @@ async fn ensure_conversation_row(
     Ok(())
 }
 
-async fn lock_conversation_in_tx(
+pub(super) async fn lock_conversation_in_tx(
     tx: &sea_orm::DatabaseTransaction,
     practice: &str,
     conversation_id: &str,
@@ -2177,7 +2179,7 @@ async fn lock_conversation_in_tx(
     .transpose()
 }
 
-async fn save_conversation_in_tx(
+pub(super) async fn save_conversation_in_tx(
     tx: &sea_orm::DatabaseTransaction,
     conv: &SavedSpruceConversation,
 ) -> Result<(), DbErr> {
@@ -2221,7 +2223,7 @@ async fn save_conversation_in_tx(
     Ok(())
 }
 
-async fn save_message_in_tx(
+pub(super) async fn save_message_in_tx(
     tx: &sea_orm::DatabaseTransaction,
     msg: &SavedSpruceMessage,
 ) -> Result<(), DbErr> {
@@ -2376,7 +2378,7 @@ async fn confirmed_workspaces_for_conversation_in_tx(
         .collect())
 }
 
-async fn queue_review_trigger_in_tx(
+pub(super) async fn queue_review_trigger_in_tx(
     tx: &sea_orm::DatabaseTransaction,
     practice: &str,
     conversation_id: &str,
@@ -5784,7 +5786,7 @@ async fn settle_expired_move_in_tx(
     Ok(triggers)
 }
 
-async fn undispatched_triggers_for_conversation_in_tx(
+pub(super) async fn undispatched_triggers_for_conversation_in_tx(
     tx: &impl ConnectionTrait,
     practice: &str,
     conversation_id: &str,
@@ -5800,7 +5802,7 @@ async fn undispatched_triggers_for_conversation_in_tx(
     rows.into_iter().map(decode_trigger_row).collect()
 }
 
-async fn dispatch_trigger_list(
+pub(super) async fn dispatch_trigger_list(
     store: &Store,
     triggers: &[PendingSpruceReviewTrigger],
     review_receiver: Option<&dyn ReviewReceiver>,
@@ -5823,7 +5825,7 @@ async fn dispatch_trigger_list(
     Ok(())
 }
 
-async fn linked_messages_for_conversation_in_tx(
+pub(super) async fn linked_messages_for_conversation_in_tx(
     db: &impl ConnectionTrait,
     practice: &str,
     conversation_id: &str,

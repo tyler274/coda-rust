@@ -20,6 +20,7 @@ mod m20261118_09_conversation_activity;
 mod m20261118_10_spruce_matching;
 mod m20261118_11_reply_proposals;
 mod m20261118_12_follow_ups_withdrawal;
+mod m20261118_13_link_correction;
 
 /// The table this chain records applied migrations in. The runtime shares the
 /// physician database with other chains, and each chain owns its own ledger.
@@ -54,6 +55,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261118_10_spruce_matching::Migration),
             Box::new(m20261118_11_reply_proposals::Migration),
             Box::new(m20261118_12_follow_ups_withdrawal::Migration),
+            Box::new(m20261118_13_link_correction::Migration),
         ]
     }
 }
