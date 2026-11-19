@@ -11,7 +11,7 @@ use crate::broker::Secret;
 pub use self::wire::{Job, JobId, JobStatus, RegisteredRunner, Registration, Runner, RunnerId};
 use self::wire::{JobState, Jobs, Runners, Runs};
 
-pub const REPO: &str = "Coda-Health/coda-rust";
+pub const REPO: &str = "tyler274/coda-rust";
 pub const LABEL: &str = "cyrene-coda";
 pub const DEFAULT_API: &str = "https://api.github.com";
 

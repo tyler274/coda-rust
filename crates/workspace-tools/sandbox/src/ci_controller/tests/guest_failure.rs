@@ -101,16 +101,11 @@ fn runner_is_deleted_after_guest_failure() {
     let fake = FakeGitHub::builder()
         .route(
             "POST",
-            "repos/Coda-Health/coda-rust/actions/runners/generate-jitconfig",
+            &repo_path("actions/runners/generate-jitconfig"),
             201,
             json!({"runner": {"id": 7}, "encoded_jit_config": "jit"}),
         )
-        .route(
-            "DELETE",
-            "repos/Coda-Health/coda-rust/actions/runners/7",
-            204,
-            Value::Null,
-        )
+        .route("DELETE", &repo_path("actions/runners/7"), 204, Value::Null)
         .start();
     let job = Job {
         id: JobId(9),
@@ -125,10 +120,7 @@ fn runner_is_deleted_after_guest_failure() {
     assert!(matches!(error, Error::Guest(_)), "{error}");
     assert_eq!(
         fake.paths().last(),
-        Some(&Call::new(
-            "DELETE",
-            "repos/Coda-Health/coda-rust/actions/runners/7"
-        ))
+        Some(&Call::new("DELETE", &repo_path("actions/runners/7")))
     );
     assert!(listing(&setup.config.jobs()).is_empty());
 }

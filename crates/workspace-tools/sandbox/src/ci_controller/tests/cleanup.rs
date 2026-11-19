@@ -9,8 +9,13 @@ use crate::ci_controller::github::{Job, JobId, JobStatus};
 use crate::ci_controller::guest::GuestFailure;
 use crate::ci_controller::results::GUEST_FAILED;
 
-const JITCONFIG: &str = "repos/Coda-Health/coda-rust/actions/runners/generate-jitconfig";
-const RUNNER: &str = "repos/Coda-Health/coda-rust/actions/runners/7";
+fn jitconfig() -> String {
+    repo_path("actions/runners/generate-jitconfig")
+}
+
+fn runner() -> String {
+    repo_path("actions/runners/7")
+}
 
 fn job() -> Job {
     Job {
@@ -25,20 +30,20 @@ fn github_with_delete(delete_status: u16) -> FakeGitHub {
     FakeGitHub::builder()
         .route(
             "POST",
-            JITCONFIG,
+            &jitconfig(),
             201,
             json!({"runner": {"id": 7}, "encoded_jit_config": "jit"}),
         )
-        .route("DELETE", RUNNER, delete_status, Value::Null)
+        .route("DELETE", &runner(), delete_status, Value::Null)
         .route(
             "GET",
-            RUNNER,
+            &runner(),
             200,
             json!({"id": 7, "name": "cyrene-coda-9-abcdef", "busy": false}),
         )
         .route(
             "GET",
-            "repos/Coda-Health/coda-rust/actions/jobs/9",
+            &repo_path("actions/jobs/9"),
             200,
             json!({"status": "completed"}),
         )
@@ -62,7 +67,7 @@ fn request_sigterm_soon(controller: &Controller<'_>) {
 }
 
 fn assert_runner_deleted(fake: &FakeGitHub) {
-    assert_eq!(fake.paths().last(), Some(&Call::new("DELETE", RUNNER)));
+    assert_eq!(fake.paths().last(), Some(&Call::new("DELETE", &runner())));
 }
 
 #[test]
@@ -99,7 +104,7 @@ fn an_abandoned_runner_stops_the_guest_and_is_deleted() {
         matches!(error, Error::Guest(GuestFailure::RunnerAbandoned)),
         "{error}"
     );
-    assert!(fake.paths().contains(&Call::new("GET", RUNNER)));
+    assert!(fake.paths().contains(&Call::new("GET", &runner())));
     assert_runner_deleted(&fake);
     assert!(listing(&setup.config.jobs()).is_empty());
 }

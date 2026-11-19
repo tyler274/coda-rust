@@ -138,6 +138,11 @@ pub fn api(base: &str) -> Api {
     Api::new(base, Secret::new("token").expect("token"))
 }
 
+/// A GitHub API path under the controller's repository, as the fake sees it.
+pub fn repo_path(rest: &str) -> String {
+    format!("repos/{}/{rest}", super::github::REPO)
+}
+
 /// Write a request as a client does: the bundle, then the sidecar.
 pub fn add_request(requests: &Path, id: &str, job: &str, bundle: &[u8], mtime: Option<u64>) {
     fs::write(requests.join(format!("{id}.bundle")), bundle).expect("bundle");
