@@ -1,0 +1,205 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.29s
+     Running unittests src/lib.rs (target/debug/deps/boundaries-94cce9dbaff1c954)
+
+running 25 tests
+test shared_ui::a_whole_test_file_counts_nothing ... ok
+test shared_ui::a_matching_count_passes ... ok
+test shared_ui::a_count_reaching_zero_says_to_remove_the_entry ... ok
+test shared_ui::a_new_file_counts_as_going_up_from_zero ... ok
+test shared_ui::a_count_going_down_says_to_lower_the_number ... ok
+test shared_ui::a_count_going_up_says_to_use_the_shared_component_or_add_an_exception ... ok
+test tests::duet_screens_do_not_read_device_health_directly ... ok
+test shared_ui::counts_css_rules_naming_library_classes ... ok
+test tests::apps_do_not_import_each_others_clinical_crates ... ok
+test tests::shipping_clients_stay_until_the_rust_journeys_match ... ok
+test shared_ui::ignores_comments_strings_and_lookalikes ... ok
+test shared_ui::counts_rsx_held_in_other_macros_and_nested_rsx ... ok
+test shared_ui::counts_css_rules_naming_control_elements ... ok
+test shared_ui::counts_card_classes_set_apart_by_escaped_whitespace ... ok
+test shared_ui::counts_card_markup_by_class_family_once_per_element ... ok
+test shared_ui::every_table_entry_has_one_row_and_a_reason ... ok
+test shared_ui::counts_each_raw_control_inside_rsx ... ok
+test tests::the_clinical_library_is_product_neutral ... ok
+test tests::gmail_and_spruce_are_product_neutral ... ok
+test shared_ui::ignores_test_code_but_not_code_kept_out_of_tests ... ok
+test shared_ui::the_check_reads_the_real_library ... ok
+test tests::every_ui_behaviour_is_run_as_its_kind ... ok
+test tests::shared_harness_is_product_neutral_and_has_no_product_store ... ok
+test tests::the_ui_library_runs_its_browser_behaviour_without_eval ... ok
+test shared_ui::the_apps_match_the_shared_ui_table ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.63s
+
+   Doc-tests boundaries
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling patient-work v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/patient-work)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.13s
+     Running unittests src/lib.rs (target/debug/deps/patient_work-742232d95e232f75)
+
+running 9 tests
+test tests::default_cadence_checks_daily_and_reviews_weekly ... ok
+test tests::review_reason_serializes_exact_wire_labels ... ok
+test tests::failed_check_records_attempt_without_advancing_last_success_or_next_due ... ok
+test tests::unchanged_sources_within_weekly_window_start_no_review ... ok
+test tests::changed_records_queue_one_new_records_review ... ok
+test tests::elapsed_weekly_window_without_changes_queues_one_periodic_review ... ok
+test tests::linked_message_and_record_change_coalesce_into_one_review ... ok
+test tests::linked_message_starts_one_review_with_message_reason ... ok
+test tests::due_follow_up_starts_one_review_of_current_version_and_inactive_start_none ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests patient_work
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling syn v3.0.9
+   Compiling serde_derive v1.0.229
+   Compiling serde v1.0.229
+   Compiling physician-wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/physician-wire)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 14.00s
+     Running unittests src/lib.rs (target/debug/deps/physician_wire-0dc6345c7a464f38)
+
+running 10 tests
+test reviews::tests::available_control_matches_each_review_lifecycle_state ... ok
+test reviews::tests::control_request_and_response_round_trip_with_review_id_and_version ... ok
+test tests::reads_a_today_list ... ok
+test follow_ups::tests::follow_up_wire_roundtrips_all_standings_and_cannot_restart_resolutions ... ok
+test tests::reads_a_snapshot_whose_feedback_was_unavailable ... ok
+test matching_reply::tests::unmatched_wire_contains_zero_confidence_fields_and_roundtrips ... ok
+test tests::a_search_step_says_which_page_it_got ... ok
+test tests::a_step_names_a_record_by_its_group_and_title ... ok
+test matching_reply::tests::reply_card_wire_roundtrips_withheld_and_coda_revision_states ... ok
+test tests::reads_a_transcript_and_refuses_the_older_shape ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests physician_wire
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.78s
+     Running unittests src/lib.rs (target/debug/deps/physician_auth-2d7140b43adc5a2b)
+
+running 41 tests
+test lifetime::tests::a_fixed_session_ends_on_time_however_much_it_is_used ... ok
+test lifetime::tests::a_dead_session_does_not_renew ... ok
+test lifetime::tests::a_persisted_deadline_past_the_cap_is_clamped ... ok
+test lifetime::tests::renew_skips_a_slide_inside_fifteen_minutes ... ok
+test lifetime::tests::mint_allows_twelve_hours_and_stops_at_seven_days ... ok
+test lifetime::tests::renew_pins_to_the_cap_inside_the_quantum ... ok
+test tests::registered_practice_patients_resolve_clinic_demographic ... ok
+test tests::patient_invitation_links_explicit_roster_patient_and_tracks_versioned_consent ... ok
+test tests::membership_denies_by_default_and_resolves_per_workspace ... ok
+test tests::seeded_sessions_match_the_sign_in_session_shape ... ok
+test tests::a_dead_sessions_note_does_not_move_expires_at ... ok
+test cache::tests::an_offline_feed_reads_through_every_time ... ok
+test tests::a_practice_keeps_the_clock_it_was_created_with ... ok
+test tests::a_wrong_sign_in_token_is_invalid ... ok
+test cache::tests::a_covered_note_skips_the_store_and_an_extension_keeps_other_entries ... ok
+test cache::tests::a_feed_generation_drops_what_another_writer_made_stale ... ok
+test tests::an_expired_sign_in_token_is_invalid ... ok
+test cache::tests::failures_are_not_cached ... ok
+test cache::tests::cached_session_ends_at_its_idle_deadline ... ok
+test tests::account_by_identity_is_absent_when_two_accounts_share_it ... ok
+test tests::an_invitation_creates_the_account_and_one_session ... ok
+test tests::a_burst_of_notes_inside_one_quantum_persists_one_extension ... ok
+test tests::an_issued_token_signs_in_once_and_mints_a_session ... ok
+test tests::activity_inside_twelve_hours_keeps_the_session ... ok
+test tests::deactivation_and_removal_end_every_held_session ... ok
+test tests::continuous_activity_is_refused_seven_days_after_sign_in ... ok
+test tests::repeated_identity_calls_do_not_move_expires_at ... ok
+test tests::a_session_expires_and_ends_on_sign_out ... ok
+test tests::a_deactivated_account_cannot_redeem_or_sign_in_but_reactivation_restores_it ... ok
+test tests::tokens_are_stored_hashed ... ok
+test tests::clinic_admin_or_authorized_physician_assigns_panels_within_the_practice ... ok
+test migration::tests::every_migration_records_a_distinct_name ... ok
+test cache::tests::a_local_write_is_read_back_immediately ... ok
+test cache::tests::repeated_reads_reach_the_store_once_between_changes ... ok
+test tests::create_account_requires_matching_role_name_and_active_standing_for_existing_email ... ok
+test migration::tests::the_chain_records_apart_from_the_shared_default_table ... ok
+test tests::same_second_reactivation_mints_live_session_without_reviving_prior_session ... ok
+test cache::tests::a_patient_whose_practice_could_not_be_read_is_not_kept_as_unregistered ... ok
+test store::query_tests::authority_query_binds_values_and_locks_the_joined_owners ... ok
+test tests::an_unknown_or_inactive_email_never_receives_a_token ... ok
+test tests::practice_time_zone_computes_local_calendar_date_across_midnight ... ok
+
+test result: ok. 41 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+     Running unittests src/bin/physician-auth-migrate.rs (target/debug/deps/physician_auth_migrate-7f7baf57b3b54780)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/migrations.rs (target/debug/deps/migrations-b5b5b17c78f854ee)
+
+running 4 tests
+test names_are_stable_and_distinct ... ok
+test postgres_store_connects ... ok
+test old_thirty_day_sessions_become_twelve_hours_and_updates_do_not_notify ... ok
+test postgres_fresh_upgrade_and_partial_schema_regressions ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.92s
+
+     Running tests/postgres.rs (target/debug/deps/postgres-95bd72c3ab62280e)
+
+running 27 tests
+test a_practice_read_from_a_lost_database_is_unavailable_not_empty ... ok
+test postgres_create_account_rejects_attribute_mismatch_and_handles_concurrent_races ... ok
+test relinking_a_workspace_does_not_transfer_patient_consent ... ok
+test a_cached_read_drops_when_another_replica_writes ... ok
+test an_invitation_redeems_once_and_a_raced_second_redeem_finds_nothing ... ok
+test activity_inside_twelve_hours_keeps_the_session ... ok
+test a_practice_keeps_the_clock_it_was_created_with ... ok
+test membership_denies_by_default_and_round_trips ... ok
+test deactivation_fences_held_sessions_and_removal_deletes_them ... ok
+test ensure_account_seeds_once_and_never_undoes_an_admin_change ... ok
+test concurrent_sign_in_consumes_one_token_and_mints_one_session ... ok
+test concurrent_patient_invitation_keeps_the_winning_account ... ok
+test patient_invitation_and_consent_round_trip ... ok
+test a_dead_sessions_note_does_not_move_expires_at ... ok
+test practice_patients_resolve_clinic_demographic_and_persist_cadence_in_postgres ... ok
+test panel_assignment_requires_admin_permission_in_the_same_practice ... ok
+test a_burst_of_notes_inside_one_quantum_persists_one_extension ... ok
+physician-auth migrations applied
+test distinct_preview_accounts_resolve_their_own_admin_flag_and_panel ... ok
+test a_fixed_session_needs_the_exact_identity_and_ends_however_much_it_is_used ... ok
+test continuous_activity_is_refused_seven_days_after_sign_in ... ok
+test expired_and_replaced_patient_invitations_cannot_link_an_account ... ok
+test failed_revocations_do_not_acknowledge_or_change_access ... ok
+test repeated_identity_calls_do_not_move_expires_at ... ok
+test duplicate_physician_ids_keep_the_earliest_account_and_its_panel ... ok
+test a_patient_whose_practice_could_not_be_read_stays_with_that_practice ... ok
+test a_sign_in_token_verifies_once_and_mints_one_session ... ok
+physician-auth migrations applied
+test runtime_connection_leaves_schema_untouched_and_migration_job_reruns ... ok
+
+test result: ok. 27 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.89s
+
+     Running tests/publication.rs (target/debug/deps/publication-dc386b3afd557864)
+
+running 4 tests
+test memory_direct_mutations_obey_publication_fence ... ok
+test postgres_direct_mutations_obey_publication_fence_across_connections ... ok
+test runtime_authority_locks_all_four_owners_and_refuses_revoked_access ... ok
+test runtime_authority_reads_wall_clock_after_waiting_for_locks ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.29s
+
+   Doc-tests physician_auth
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
