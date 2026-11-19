@@ -507,6 +507,65 @@ impl LibraryPassage {
     }
 }
 
+/// Compact live corpus freshness standing attached to [`LibrarySearchOutcome::Results`].
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "standing", rename_all = "snake_case", deny_unknown_fields)]
+pub enum LibrarySearchFreshness {
+    /// Every source is confirmed current with no pending failures or unpublished lag.
+    Current {
+        /// Currently active serving version identifier, if any.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        active_version: Option<String>,
+        /// ISO-8601 UTC timestamp of the latest recorded nightly run, if any.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        last_night_recorded_at: Option<String>,
+    },
+    /// At least one source or nightly invariant is stale, lagging, or has open alerts.
+    Stale {
+        /// Human-readable reason naming why the library is not current.
+        reason: String,
+        /// Count of open operator alerts.
+        open_alerts: usize,
+        /// Wire source codes whose standing is not `current`.
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        stale_sources: Vec<String>,
+    },
+    /// Freshness endpoint could not be verified (`unconfigured`, unreachable, or non-200).
+    Unavailable {
+        /// Explanation distinct from `current` / `stale`.
+        reason: String,
+    },
+}
+
+impl LibrarySearchFreshness {
+    /// Projects a [`LibraryFreshnessOutcome`] into [`LibrarySearchFreshness`].
+    pub fn from_outcome(outcome: &LibraryFreshnessOutcome) -> Self {
+        match outcome {
+            LibraryFreshnessOutcome::Report(report) => match &report.standing {
+                WireLibraryStanding::Current => Self::Current {
+                    active_version: report.active_version.clone(),
+                    last_night_recorded_at: report.last_night_recorded_at.clone(),
+                },
+                WireLibraryStanding::Stale { reason } => Self::Stale {
+                    reason: reason.clone(),
+                    open_alerts: report.open_alerts,
+                    stale_sources: report
+                        .sources
+                        .iter()
+                        .filter(|src| {
+                            !matches!(src.status, WireSourceFreshnessState::Current { .. })
+                        })
+                        .map(|src| src.source_code.clone())
+                        .collect(),
+                },
+            },
+            LibraryFreshnessOutcome::Unavailable { reason } => Self::Unavailable {
+                reason: reason.clone(),
+            },
+        }
+    }
+}
+
 /// Model-visible result of [`SEARCH_LIBRARY_TOOL`].
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "outcome", rename_all = "snake_case", deny_unknown_fields)]
@@ -515,6 +574,9 @@ pub enum LibrarySearchOutcome {
     Results {
         /// Matching passages with source, date, status, and attribution.
         passages: Vec<LibraryPassage>,
+        /// Live corpus freshness standing checked alongside the search.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        freshness: Option<LibrarySearchFreshness>,
     },
     /// Clinical library service was unconfigured, unreachable, or refused the call.
     Unavailable {
@@ -1701,6 +1763,11 @@ impl ClinicalLibraryClient {
         self.authorized_request(reqwest::Method::POST, path).await
     }
 
+    /// Whether this client is configured with a live HTTP endpoint rather than `Unconfigured`.
+    pub fn is_configured(&self) -> bool {
+        !matches!(self.endpoint, Endpoint::Unconfigured { .. })
+    }
+
     /// Checks live clinical library freshness from `GET /v1/freshness`, failing
     /// visibly as [`LibraryFreshnessOutcome::Unavailable`] when unconfigured or unreachable.
     pub async fn freshness(&self) -> LibraryFreshnessOutcome {
@@ -1871,6 +1938,7 @@ impl ClinicalLibraryClient {
             }
             return LibrarySearchOutcome::Results {
                 passages: Vec::new(),
+                freshness: None,
             };
         }
 
@@ -1939,7 +2007,10 @@ impl ClinicalLibraryClient {
             }
         }
 
-        LibrarySearchOutcome::Results { passages }
+        LibrarySearchOutcome::Results {
+            passages,
+            freshness: None,
+        }
     }
 
     /// Reads one exact passage by [`PassageId`] from `POST /v1/read` using the
@@ -2025,7 +2096,11 @@ impl ClinicalLibraryClient {
                 collection,
                 limit,
             } => {
-                let outcome = self.search(&query, collection, limit).await;
+                let (mut outcome, freshness_outcome) =
+                    tokio::join!(self.search(&query, collection, limit), self.freshness());
+                if let LibrarySearchOutcome::Results { freshness, .. } = &mut outcome {
+                    *freshness = Some(LibrarySearchFreshness::from_outcome(&freshness_outcome));
+                }
                 ToolOutcome::Returned(
                     serde_json::to_string(&outcome).expect("LibrarySearchOutcome serializes"),
                 )

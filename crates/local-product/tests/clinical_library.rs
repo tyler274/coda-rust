@@ -24,8 +24,8 @@ use base64::{Engine as _, engine::general_purpose::URL_SAFE_NO_PAD};
 use local_product::{
     ModelBinding,
     clinical_library::{
-        ClinicalLibraryClient, LibraryCollection, LibraryReadOutcome, LibrarySearchOutcome,
-        PassageId, PublicationStatus, READ_LIBRARY_TOOL, SEARCH_LIBRARY_TOOL,
+        ClinicalLibraryClient, LibraryCollection, LibraryReadOutcome, LibrarySearchFreshness,
+        LibrarySearchOutcome, PassageId, PublicationStatus, READ_LIBRARY_TOOL, SEARCH_LIBRARY_TOOL,
         WireBibliographicObservation, WireBibliographicRelationship, WireCandidate,
         WireEvidenceUnit, WireIdentifier, WireLifecycleState, WireReadItem,
         WireReadUnavailableCause, WireRelationship, WireRelationshipType, WireSearchPage,
@@ -625,7 +625,7 @@ async fn search_returns_passages_with_source_date_status_and_attribution_and_ref
         panic!("expected Returned outcome from search_clinical_library");
     };
     let parsed: LibrarySearchOutcome = serde_json::from_str(&payload).unwrap();
-    let LibrarySearchOutcome::Results { passages } = parsed else {
+    let LibrarySearchOutcome::Results { passages, .. } = parsed else {
         panic!("expected search results, got {parsed:?}");
     };
     assert_eq!(passages.len(), 4);
@@ -669,6 +669,7 @@ async fn search_returns_passages_with_source_date_status_and_attribution_and_ref
     };
     let LibrarySearchOutcome::Results {
         passages: mmwr_passages,
+        ..
     } = serde_json::from_str(&mmwr_payload).unwrap()
     else {
         panic!("expected mmwr search results");
@@ -700,7 +701,8 @@ async fn exact_read_returns_identical_passage_and_reports_not_found_when_absent(
     else {
         panic!("expected search results");
     };
-    let LibrarySearchOutcome::Results { passages } = serde_json::from_str(&search_json).unwrap()
+    let LibrarySearchOutcome::Results { passages, .. } =
+        serde_json::from_str(&search_json).unwrap()
     else {
         panic!("expected Results variant");
     };
@@ -996,7 +998,7 @@ async fn google_metadata_oidc_mints_per_call_jwt_and_surfaces_metadata_failures_
     let oidc_client =
         ClinicalLibraryClient::loopback_google_oidc(&library_url, &metadata_url, audience).unwrap();
 
-    // `search_clinical_library` mints fresh OIDC tokens for `/v1/search` and `/v1/read`.
+    // `search_clinical_library` mints fresh OIDC tokens for `/v1/search`, `/v1/read`, and `/v1/freshness`.
     let engine::ToolOutcome::Returned(search_raw) = oidc_client
         .execute(
             SEARCH_LIBRARY_TOOL,
@@ -1010,12 +1012,12 @@ async fn google_metadata_oidc_mints_per_call_jwt_and_surfaces_metadata_failures_
     else {
         panic!("expected Returned outcome from OIDC-authenticated search");
     };
-    let LibrarySearchOutcome::Results { passages } = serde_json::from_str(&search_raw).unwrap()
+    let LibrarySearchOutcome::Results { passages, .. } = serde_json::from_str(&search_raw).unwrap()
     else {
         panic!("expected OIDC search passages");
     };
     assert_eq!(passages.len(), 4);
-    assert_eq!(metadata_requests.load(Ordering::SeqCst), 2);
+    assert_eq!(metadata_requests.load(Ordering::SeqCst), 3);
     assert_eq!(library_requests.load(Ordering::SeqCst), 2);
 
     // `read_clinical_library` mints a fresh OIDC token for `/v1/read`.
@@ -1035,7 +1037,7 @@ async fn google_metadata_oidc_mints_per_call_jwt_and_surfaces_metadata_failures_
         panic!("expected OIDC read passage");
     };
     assert_eq!(passage.passage_id.as_str(), USPSTF_UNIT_ID);
-    assert_eq!(metadata_requests.load(Ordering::SeqCst), 3);
+    assert_eq!(metadata_requests.load(Ordering::SeqCst), 4);
     assert_eq!(library_requests.load(Ordering::SeqCst), 3);
 
     // Metadata failures (HTTP 500, malformed token, oversized token, unreachable metadata host)
@@ -1428,7 +1430,7 @@ async fn chat_question_needing_literature_searches_reads_and_cites_library_passa
                             _ => None,
                         })
                         .expect("search result delivered");
-                    let LibrarySearchOutcome::Results { passages } =
+                    let LibrarySearchOutcome::Results { passages, .. } =
                         serde_json::from_str(output).unwrap()
                     else {
                         panic!("expected library search hits");
@@ -1774,4 +1776,83 @@ async fn freshness_endpoint_reports_honest_standing_or_unavailable() {
         report.sources[0].status,
         WireSourceFreshnessState::NeverRefreshed
     ));
+}
+
+#[tokio::test]
+async fn search_clinical_library_attaches_live_freshness_standing() {
+    let state = RecordedLibraryState {
+        behavior: ServerBehavior::Healthy {
+            units: recorded_units(),
+            auth: BearerPolicy::Open,
+        },
+        requests: Arc::new(AtomicUsize::new(0)),
+    };
+    let stale_app = Router::new()
+        .route("/v1/search", post(search_handler))
+        .route("/v1/read", post(read_handler))
+        .route(
+            "/v1/freshness",
+            axum::routing::get(|| async {
+                Json(json!({
+                    "standing": "stale",
+                    "reason": "DailyMed exceeded 3-day SLA",
+                    "active_version": "v-2026-11-15",
+                    "sources": [
+                        {
+                            "source_code": "dailymed",
+                            "source_display_name": "DailyMed",
+                            "status": { "state": "never_refreshed" },
+                            "admitted_count": 0
+                        }
+                    ],
+                    "open_alerts": 2,
+                    "search_latency": {
+                        "endpoint": "search",
+                        "sample_count": 1,
+                        "p50_ms": 10.0,
+                        "p95_ms": 10.0,
+                        "p99_ms": 10.0,
+                        "within_targets": true
+                    }
+                }))
+            }),
+        )
+        .with_state(state);
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move {
+        axum::serve(listener, stale_app).await.unwrap();
+    });
+    let client = ClinicalLibraryClient::http(format!("http://{addr}")).unwrap();
+
+    let engine::ToolOutcome::Returned(raw) = client
+        .execute(
+            SEARCH_LIBRARY_TOOL,
+            &json!({
+                "query": "dapagliflozin",
+                "collection": null,
+                "limit": 5
+            }),
+        )
+        .await
+    else {
+        panic!("expected Returned outcome from search_clinical_library");
+    };
+    let parsed: LibrarySearchOutcome = serde_json::from_str(&raw).unwrap();
+    let LibrarySearchOutcome::Results {
+        passages,
+        freshness,
+    } = parsed
+    else {
+        panic!("expected search Results, got {parsed:?}");
+    };
+    assert!(!passages.is_empty());
+    assert_eq!(
+        freshness,
+        Some(LibrarySearchFreshness::Stale {
+            reason: "DailyMed exceeded 3-day SLA".into(),
+            open_alerts: 2,
+            stale_sources: vec!["dailymed".into()],
+        })
+    );
 }

@@ -34,6 +34,7 @@ pub mod migration;
 pub mod night;
 pub mod pubmed;
 pub mod runner;
+pub mod semantic;
 pub mod server;
 pub mod slot;
 pub mod source;
@@ -58,6 +59,9 @@ pub use freshness::{
 };
 pub use night::{DeferralReason, NightOutcome, OutcomeKind, Streak, Succeeded, Tally};
 pub use runner::{Completion, Ending, Failure, FailureDetail, Job, JobError, Night, run_night};
+pub use semantic::{
+    BGE_EMBEDDING_DIM, BgeEmbedding, EmbedError, SubprocessBgeEncoder, TextEmbedder,
+};
 pub use slot::{HolderState, Lease, Platform, RunId, SlotName, SlotWait, Takeover};
 pub use source::{InvalidItemKey, ItemKey, OtherSource, Source};
 pub use sources::{CorpusFeedItem, CorpusJobError, CorpusNightJob, SourceParseError};

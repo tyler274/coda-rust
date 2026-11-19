@@ -397,6 +397,7 @@ pub async fn authed_postgres_router(
     bus: std::sync::Arc<dyn physician_bus::Bus>,
 ) -> Router {
     let stores = hosting::Readiness::shared(&runtime);
+    let health_runtime = runtime.clone();
     let forbid_simulation = std::env::var("CODA_ENVIRONMENT")
         .ok()
         .is_some_and(|env| env.trim() == "prd");
@@ -409,7 +410,58 @@ pub async fn authed_postgres_router(
     )
     .await
     .expect("connect postgres auth router");
-    auth::required_router(base, auth)
+    auth::required_router(base, auth).layer(axum::Extension(health_runtime))
+}
+
+const CLINICAL_LIBRARY_HEALTH_TIMEOUT: std::time::Duration = std::time::Duration::from_millis(500);
+
+async fn clinical_library_health_json(
+    client: &local_product::clinical_library::ClinicalLibraryClient,
+) -> Value {
+    use local_product::clinical_library::{LibraryFreshnessOutcome, WireLibraryStanding};
+
+    if !client.is_configured() {
+        return json!({
+            "configured": false,
+            "standing": "unconfigured",
+        });
+    }
+    let outcome =
+        match tokio::time::timeout(CLINICAL_LIBRARY_HEALTH_TIMEOUT, client.freshness()).await {
+            Ok(outcome) => outcome,
+            Err(_) => {
+                return json!({
+                    "configured": true,
+                    "standing": "unavailable",
+                    "reason": "clinical library freshness probe timed out",
+                });
+            }
+        };
+    match outcome {
+        LibraryFreshnessOutcome::Report(report) => match report.standing {
+            WireLibraryStanding::Current => json!({
+                "configured": true,
+                "standing": "current",
+                "active_version": report.active_version,
+                "last_night_recorded_at": report.last_night_recorded_at,
+                "open_alerts": report.open_alerts,
+                "within_latency_targets": report.search_latency.within_targets,
+            }),
+            WireLibraryStanding::Stale { reason } => json!({
+                "configured": true,
+                "standing": "stale",
+                "reason": reason,
+                "active_version": report.active_version,
+                "open_alerts": report.open_alerts,
+                "within_latency_targets": report.search_latency.within_targets,
+            }),
+        },
+        LibraryFreshnessOutcome::Unavailable { reason } => json!({
+            "configured": true,
+            "standing": "unavailable",
+            "reason": reason,
+        }),
+    }
 }
 
 async fn health_route(request: Request<Body>) -> Response {
@@ -446,6 +498,18 @@ async fn health_route(request: Request<Body>) -> Response {
         .is_some()
     {
         let practice_sources = !sources::has_registered_adapters(request.extensions());
+        let library_health = match request.extensions().get::<local_product::runtime::Store>() {
+            Some(store) => clinical_library_health_json(store.clinical_library()).await,
+            None => match sources::registry_from(request.extensions())
+                .and_then(|registry| registry.runtime())
+            {
+                Some(store) => clinical_library_health_json(store.clinical_library()).await,
+                None => json!({
+                    "configured": false,
+                    "standing": "unconfigured",
+                }),
+            },
+        };
         (
             http_status,
             Json(json!({
@@ -454,7 +518,8 @@ async fn health_route(request: Request<Body>) -> Response {
                 "capabilities": {
                     "connection_accounts": true,
                     "practice_sources": practice_sources,
-                }
+                },
+                "clinical_library": library_health,
             })),
         )
             .into_response()
@@ -2249,5 +2314,121 @@ mod tests {
         )
         .await;
         assert_eq!(pw_status, StatusCode::NOT_FOUND);
+    }
+
+    #[tokio::test]
+    async fn health_route_reports_clinical_library_freshness_standing() {
+        use axum::routing::get;
+
+        async fn spawn_freshness_server(body: Value, status: StatusCode) -> String {
+            let app = Router::new().route(
+                "/v1/freshness",
+                get(move || {
+                    let payload = body.clone();
+                    async move { (status, Json(payload)) }
+                }),
+            );
+            let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+            let addr = listener.local_addr().unwrap();
+            tokio::spawn(async move {
+                let _ = axum::serve(listener, app).await;
+            });
+            format!("http://{addr}")
+        }
+
+        let current_url = spawn_freshness_server(
+            json!({
+                "standing": "current",
+                "active_version": "v-2026-11-19",
+                "last_night_recorded_at": "2026-11-19T03:00:00Z",
+                "last_night_outcome": "completed",
+                "sources": [],
+                "open_alerts": 0,
+                "search_latency": {
+                    "endpoint": "search",
+                    "sample_count": 3,
+                    "p50_ms": 12.0,
+                    "p95_ms": 24.0,
+                    "p99_ms": 28.0,
+                    "within_targets": true
+                }
+            }),
+            StatusCode::OK,
+        )
+        .await;
+        let current_client =
+            local_product::clinical_library::ClinicalLibraryClient::http(&current_url).unwrap();
+        let current_json = clinical_library_health_json(&current_client).await;
+        assert_eq!(current_json["configured"], true);
+        assert_eq!(current_json["standing"], "current");
+        assert_eq!(current_json["active_version"], "v-2026-11-19");
+
+        let stale_url = spawn_freshness_server(
+            json!({
+                "standing": "stale",
+                "reason": "DailyMed exceeded 3-day SLA",
+                "active_version": "v-2026-11-15",
+                "sources": [],
+                "open_alerts": 1,
+                "search_latency": {
+                    "endpoint": "search",
+                    "sample_count": 0,
+                    "p50_ms": 0.0,
+                    "p95_ms": 0.0,
+                    "p99_ms": 0.0,
+                    "within_targets": null
+                }
+            }),
+            StatusCode::OK,
+        )
+        .await;
+        let stale_client =
+            local_product::clinical_library::ClinicalLibraryClient::http(&stale_url).unwrap();
+        let stale_json = clinical_library_health_json(&stale_client).await;
+        assert_eq!(stale_json["standing"], "stale");
+        assert_eq!(stale_json["open_alerts"], 1);
+
+        let down_url = spawn_freshness_server(
+            json!({ "error": "maintenance" }),
+            StatusCode::SERVICE_UNAVAILABLE,
+        )
+        .await;
+        let down_client =
+            local_product::clinical_library::ClinicalLibraryClient::http(&down_url).unwrap();
+        let down_json = clinical_library_health_json(&down_client).await;
+        assert_eq!(down_json["standing"], "unavailable");
+
+        let unconfigured = local_product::clinical_library::ClinicalLibraryClient::unconfigured();
+        let unconf_json = clinical_library_health_json(&unconfigured).await;
+        assert_eq!(unconf_json["configured"], false);
+        assert_eq!(unconf_json["standing"], "unconfigured");
+
+        // Stalled clinical library must fail fast (within CLINICAL_LIBRARY_HEALTH_TIMEOUT) instead
+        // of blocking `/health` liveness probes for the full 15s HTTP client timeout.
+        let stalled_app = Router::new().route(
+            "/v1/freshness",
+            get(|| async {
+                tokio::time::sleep(std::time::Duration::from_secs(5)).await;
+                (StatusCode::OK, Json(json!({ "standing": "current" })))
+            }),
+        );
+        let stalled_listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let stalled_addr = stalled_listener.local_addr().unwrap();
+        tokio::spawn(async move {
+            let _ = axum::serve(stalled_listener, stalled_app).await;
+        });
+        let stalled_client = local_product::clinical_library::ClinicalLibraryClient::http(format!(
+            "http://{stalled_addr}"
+        ))
+        .unwrap();
+        let started = std::time::Instant::now();
+        let stalled_json = clinical_library_health_json(&stalled_client).await;
+        assert!(
+            started.elapsed() < std::time::Duration::from_secs(2),
+            "clinical library health check must time out quickly, took {:?}",
+            started.elapsed()
+        );
+        assert_eq!(stalled_json["configured"], true);
+        assert_eq!(stalled_json["standing"], "unavailable");
     }
 }

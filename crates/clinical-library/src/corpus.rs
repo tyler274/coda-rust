@@ -1,18 +1,20 @@
 //! Searchable clinical evidence documents, passage units, active version
 //! snapshots, active search/read queries, and endpoint latency tracking.
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashMap};
 use std::time::Instant;
 
 use chrono::{DateTime, Utc};
-use sea_orm::sea_query::{Expr, OnConflict};
+use sea_orm::sea_query::{Expr, OnConflict, Order};
 use sea_orm::{
-    ActiveModelTrait, ColumnTrait, DatabaseTransaction, EntityTrait, QueryFilter, QueryOrder, Set,
-    TransactionTrait,
+    ActiveModelTrait, ColumnTrait, ConnectionTrait, DatabaseTransaction, DbBackend, EntityTrait,
+    QueryFilter, QueryOrder, Set, Statement, TransactionTrait,
 };
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use uuid::Uuid;
+
+use crate::semantic::{BGE_EMBEDDING_DIM, BgeEmbedding, fuse_ranked_unit_ids};
 
 use crate::article::ArticleState;
 use crate::candidate::{Activation, Candidate, Checked};
@@ -534,7 +536,9 @@ impl Store {
     /// Upserts an admitted document and its verified passage units under `lease`.
     ///
     /// Preserves existing `unit_id` UUIDs when `(ordinal, content_sha256)` is unchanged so
-    /// cached citation identifiers remain stable across benign re-ingests.
+    /// cached citation identifiers remain stable across benign re-ingests. When a
+    /// [`crate::semantic::TextEmbedder`] is configured on this [`Store`], computes and
+    /// stores 384-dimensional BGE embeddings for each passage unit inside the commit.
     pub async fn store_admitted_document(
         &self,
         lease: &Lease,
@@ -545,11 +549,53 @@ impl Store {
         }
         doc.validate()?;
 
+        let embeddings = if let Some(embedder) = self.embedder() {
+            let texts: Vec<String> = doc
+                .units
+                .iter()
+                .map(|unit| {
+                    match unit
+                        .label
+                        .as_deref()
+                        .map(str::trim)
+                        .filter(|s| !s.is_empty())
+                    {
+                        Some(label) => format!("{label}\n{}", unit.content),
+                        None => unit.content.clone(),
+                    }
+                })
+                .collect();
+            Some(embedder.embed_passages(&texts).await?)
+        } else {
+            None
+        };
+
         let tx = self.db().begin().await?;
         locked_slot(&tx, lease).await?;
         let unit_ids = upsert_document_tx(&tx, doc).await?;
+        if let Some(embeddings) = &embeddings {
+            let vector_schema = resolve_vector_schema(&tx).await?;
+            for (unit_id, embedding) in unit_ids.iter().zip(embeddings.iter()) {
+                write_unit_embedding_in_tx(&tx, &vector_schema, *unit_id, embedding).await?;
+            }
+        }
         tx.commit().await?;
         Ok(unit_ids)
+    }
+
+    /// Writes a precomputed [`BgeEmbedding`] for `unit_id` under `lease`.
+    pub async fn store_unit_embedding(
+        &self,
+        lease: &Lease,
+        unit_id: Uuid,
+        embedding: &BgeEmbedding,
+    ) -> Result<(), StoreError> {
+        let tx = self.db().begin().await?;
+        locked_slot(&tx, lease).await?;
+        let vector_schema = resolve_vector_schema(&tx).await?;
+        write_unit_embedding_in_tx(&tx, &vector_schema, unit_id, embedding).await?;
+        tx.commit().await?;
+        Ok(())
     }
 
     /// Atomically populates `clinical_library_version_units` from every currently
@@ -633,11 +679,36 @@ impl Store {
         })
     }
 
-    /// Searches only the currently active version snapshot using Postgres full-text search
-    /// and records request latency without storing query text.
+    /// Searches only the currently active version snapshot using hybrid BGE semantic
+    /// vector similarity (when a [`crate::semantic::TextEmbedder`] is configured) fused via
+    /// Reciprocal Rank Fusion with Postgres full-text search, recording latency without
+    /// storing query text.
     pub async fn search_active(
         &self,
         query: &str,
+        cursor: Option<&str>,
+        limit: usize,
+    ) -> Result<SearchResult, StoreError> {
+        self.search_active_impl(query, None, cursor, limit).await
+    }
+
+    /// Searches only the currently active version snapshot using an explicit caller-provided
+    /// [`BgeEmbedding`] fused with Postgres full-text search.
+    pub async fn search_active_with_embedding(
+        &self,
+        query: &str,
+        query_embedding: Option<&BgeEmbedding>,
+        cursor: Option<&str>,
+        limit: usize,
+    ) -> Result<SearchResult, StoreError> {
+        self.search_active_impl(query, query_embedding, cursor, limit)
+            .await
+    }
+
+    async fn search_active_impl(
+        &self,
+        query: &str,
+        explicit_embedding: Option<&BgeEmbedding>,
         cursor: Option<&str>,
         limit: usize,
     ) -> Result<SearchResult, StoreError> {
@@ -699,19 +770,68 @@ impl Store {
             });
         }
 
+        let embedded_query = match (explicit_embedding, self.embedder()) {
+            (Some(_), _) | (None, None) => None,
+            (None, Some(embedder)) => Some(embedder.embed_query(trimmed).await?),
+        };
+        let query_vec = explicit_embedding.or(embedded_query.as_ref());
+
         // sea-query has no typed PostgreSQL `@@` tsvector operator; `trimmed` is bound as `$1`
         // (never interpolated as SQL).
         let fts_filter = Expr::cust_with_values(
             "search_tsv @@ websearch_to_tsquery('english', $1)",
             [sea_orm::Value::from(trimmed)],
         );
-        let matched_units = unit::Entity::find()
-            .filter(unit::Column::UnitId.is_in(snapshot_unit_ids))
+        let fts_rank = Expr::cust_with_values(
+            "ts_rank_cd(search_tsv, websearch_to_tsquery('english', $1))",
+            [sea_orm::Value::from(trimmed)],
+        );
+        let fts_units = unit::Entity::find()
+            .filter(unit::Column::UnitId.is_in(snapshot_unit_ids.clone()))
             .filter(fts_filter)
+            .order_by(fts_rank, Order::Desc)
             .order_by_asc(unit::Column::Ordinal)
             .order_by_asc(unit::Column::UnitId)
             .all(self.db())
             .await?;
+
+        let fts_ids: Vec<Uuid> = fts_units.iter().map(|u| u.unit_id).collect();
+        let vector_ids = if let Some(emb) = query_vec {
+            let vector_schema = resolve_vector_schema(self.db()).await?;
+            let fetch_limit = offset
+                .saturating_add(page_limit)
+                .max(DEFAULT_SEARCH_LIMIT)
+                .saturating_mul(4)
+                .clamp(40, 200);
+            query_vector_unit_ids(
+                self.db(),
+                &vector_schema,
+                active_version.as_str(),
+                emb,
+                fetch_limit,
+            )
+            .await?
+        } else {
+            Vec::new()
+        };
+
+        let fused_ids = fuse_ranked_unit_ids(&vector_ids, &fts_ids);
+        let mut units_by_id: HashMap<Uuid, unit::Model> =
+            fts_units.into_iter().map(|u| (u.unit_id, u)).collect();
+        let missing_ids: Vec<Uuid> = fused_ids
+            .iter()
+            .copied()
+            .filter(|id| !units_by_id.contains_key(id))
+            .collect();
+        if !missing_ids.is_empty() {
+            for u in unit::Entity::find()
+                .filter(unit::Column::UnitId.is_in(missing_ids))
+                .all(self.db())
+                .await?
+            {
+                units_by_id.insert(u.unit_id, u);
+            }
+        }
 
         let mut docs_by_key: BTreeMap<(String, String), document::Model> = BTreeMap::new();
         for doc_row in document::Entity::find().all(self.db()).await? {
@@ -720,8 +840,11 @@ impl Store {
 
         let mut available_candidates = Vec::new();
         let mut unavailable_count = 0_usize;
-        let examined_count = matched_units.len();
-        for u in matched_units {
+        let examined_count = fused_ids.len();
+        for unit_id in fused_ids {
+            let Some(u) = units_by_id.get(&unit_id) else {
+                continue;
+            };
             let Some(doc) = docs_by_key.get(&(u.source.clone(), u.item_key.clone())) else {
                 unavailable_count += 1;
                 continue;
@@ -1057,6 +1180,89 @@ fn percentile_sorted(sorted: &[f64], quantile: f64) -> f64 {
     }
     let idx = ((sorted.len() as f64 - 1.0) * quantile).ceil() as usize;
     sorted[idx.min(sorted.len() - 1)]
+}
+
+async fn resolve_vector_schema(db: &impl ConnectionTrait) -> Result<String, StoreError> {
+    let row = db
+        .query_one_raw(Statement::from_string(
+            DbBackend::Postgres,
+            "SELECT n.nspname AS schema_name \
+             FROM pg_extension e \
+             JOIN pg_namespace n ON n.oid = e.extnamespace \
+             WHERE e.extname = 'vector'"
+                .to_owned(),
+        ))
+        .await?
+        .ok_or_else(|| {
+            StoreError::Database(sea_orm::DbErr::Custom(
+                "pgvector extension is not installed".into(),
+            ))
+        })?;
+    let schema_name: String = row.try_get("", "schema_name")?;
+    if !schema_name
+        .chars()
+        .all(|ch| ch.is_ascii_alphanumeric() || ch == '_')
+    {
+        return Err(StoreError::Database(sea_orm::DbErr::Custom(
+            "unexpected pgvector schema identifier".into(),
+        )));
+    }
+    Ok(schema_name)
+}
+
+async fn write_unit_embedding_in_tx(
+    tx: &impl ConnectionTrait,
+    vector_schema: &str,
+    unit_id: Uuid,
+    embedding: &BgeEmbedding,
+) -> Result<(), StoreError> {
+    let vec_val = sea_orm::Value::from(embedding.as_slice().to_vec());
+    let id_val = sea_orm::Value::from(unit_id);
+    let sql = format!(
+        "UPDATE clinical_library_units \
+         SET embedding = ($1::real[])::{vector_schema}.vector({BGE_EMBEDDING_DIM}) \
+         WHERE unit_id = $2"
+    );
+    tx.execute_raw(Statement::from_sql_and_values(
+        DbBackend::Postgres,
+        sql,
+        [vec_val, id_val],
+    ))
+    .await?;
+    Ok(())
+}
+
+async fn query_vector_unit_ids(
+    db: &impl ConnectionTrait,
+    vector_schema: &str,
+    active_version: &str,
+    query_embedding: &BgeEmbedding,
+    limit: usize,
+) -> Result<Vec<Uuid>, StoreError> {
+    let ver_val = sea_orm::Value::from(active_version.to_owned());
+    let vec_val = sea_orm::Value::from(query_embedding.as_slice().to_vec());
+    let limit_val = sea_orm::Value::from(i64::try_from(limit).unwrap_or(100));
+    let sql = format!(
+        "SELECT u.unit_id \
+         FROM clinical_library_units u \
+         JOIN clinical_library_version_units vu ON vu.unit_id = u.unit_id \
+         WHERE vu.version_id = $1 AND u.embedding IS NOT NULL \
+         ORDER BY (u.embedding OPERATOR({vector_schema}.<=>) ($2::real[])::{vector_schema}.vector({BGE_EMBEDDING_DIM})) ASC, \
+                  u.ordinal ASC, u.unit_id ASC \
+         LIMIT $3"
+    );
+    let rows = db
+        .query_all_raw(Statement::from_sql_and_values(
+            DbBackend::Postgres,
+            sql,
+            [ver_val, vec_val, limit_val],
+        ))
+        .await?;
+    let mut ids = Vec::with_capacity(rows.len());
+    for row in rows {
+        ids.push(row.try_get("", "unit_id")?);
+    }
+    Ok(ids)
 }
 
 async fn upsert_document_tx(

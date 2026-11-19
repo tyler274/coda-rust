@@ -8,6 +8,7 @@ mod m20261109_init;
 mod m20261110_pubmed_status;
 mod m20261111_night_runner;
 mod m20261119_corpus_and_freshness;
+mod m20261120_bge_semantic_search;
 
 /// The table this chain records applied migrations in. The library may share
 /// a database with other chains, and each chain owns its own ledger.
@@ -28,6 +29,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261110_pubmed_status::Migration),
             Box::new(m20261111_night_runner::Migration),
             Box::new(m20261119_corpus_and_freshness::Migration),
+            Box::new(m20261120_bge_semantic_search::Migration),
         ]
     }
 }
