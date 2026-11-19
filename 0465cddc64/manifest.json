@@ -1,0 +1,164 @@
+{
+  "branch": "feat-clinical-library-freshness-ocr-citations",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "before the fix: library & document page cite_as rejected",
+      "kind": "run",
+      "revision": "513bd8647381aca33248ae7164eea9e27e127acb",
+      "dirty": true,
+      "recorded": "2026-11-19T11:06:52+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "physician_sources::citations::tests::library_and_document_page_reads_resolve_cite_as_marks_and_quotes",
+        "--",
+        "--exact"
+      ],
+      "expect": "expected L1 and D1 citations to resolve cleanly",
+      "expect_fail": true,
+      "files": [
+        "01-before-the-fix-library-document-page-cite_as-rej.log"
+      ],
+      "seconds": 2.5,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "0465cddc64de874be1ba69f74947b33d2d2b9fed",
+        "reason": "before-the-fix baselines captured on clean 513bd86473 prior to AC1/AC2 implementation"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "before the fix: shifted/scaled scan returns empty OCR",
+      "kind": "run",
+      "revision": "513bd8647381aca33248ae7164eea9e27e127acb",
+      "dirty": true,
+      "recorded": "2026-11-19T11:06:54+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "attachments",
+        "scan_and_fax_ocr_reads_shifted_and_scaled_clinical_images",
+        "--",
+        "--exact"
+      ],
+      "expect": "missing extracted OCR text",
+      "expect_fail": true,
+      "files": [
+        "02-before-the-fix-shifted-scaled-scan-returns-empty.log"
+      ],
+      "seconds": 60.9,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "0465cddc64de874be1ba69f74947b33d2d2b9fed",
+        "reason": "before-the-fix baselines captured on clean 513bd86473 prior to AC1/AC2 implementation"
+      }
+    },
+    {
+      "id": 3,
+      "claim": "AC1",
+      "label": "cite_as L1/D1 citation resolution and chart label numbering tests",
+      "kind": "run",
+      "revision": "0465cddc64de874be1ba69f74947b33d2d2b9fed",
+      "dirty": false,
+      "recorded": "2026-11-19T11:53:16+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "physician_sources::"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-cite_as-L1-D1-citation-resolution-and-chart-labe.log"
+      ],
+      "seconds": 29.9,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC2",
+      "label": "adaptive OCR on shifted/scaled scans, fail-closed blank/noise, and PDF page isolation tests",
+      "kind": "run",
+      "revision": "0465cddc64de874be1ba69f74947b33d2d2b9fed",
+      "dirty": false,
+      "recorded": "2026-11-19T11:53:46+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "attachments"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-adaptive-OCR-on-shifted-scaled-scans-fail-closed.log"
+      ],
+      "seconds": 33.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "AC3",
+      "label": "Postgres library freshness transitions and ClinicalLibraryClient GET /v1/freshness contract",
+      "kind": "run",
+      "revision": "0465cddc64de874be1ba69f74947b33d2d2b9fed",
+      "dirty": false,
+      "recorded": "2026-11-19T11:54:19+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "export CLINICAL_LIBRARY_TEST_DATABASE_URL=postgres://postgres@127.0.0.1:55432/postgres && cargo test -p clinical-library --test corpus_and_server ac3_ && cargo test -p local-product --test clinical_library freshness_endpoint_reports_honest_standing_or_unavailable"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-Postgres-library-freshness-transitions-and-Clini.log"
+      ],
+      "seconds": 31.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 6,
+      "claim": "AC4",
+      "label": "clinical-library nightly suite, multi-source ingestors, active snapshot HTTP search/read, and boundaries",
+      "kind": "run",
+      "revision": "0465cddc64de874be1ba69f74947b33d2d2b9fed",
+      "dirty": false,
+      "recorded": "2026-11-19T11:54:51+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "export CLINICAL_LIBRARY_TEST_DATABASE_URL=postgres://postgres@127.0.0.1:55432/postgres && cargo test -p clinical-library && cargo test -p boundaries"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-clinical-library-nightly-suite-multi-source-inge.log"
+      ],
+      "seconds": 68.6,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}

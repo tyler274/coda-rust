@@ -1,0 +1,21 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.26s
+     Running unittests src/lib.rs (target/debug/deps/local_product-6f36f001022b46cc)
+
+running 1 test
+test physician_sources::citations::tests::library_and_document_page_reads_resolve_cite_as_marks_and_quotes ... FAILED
+
+failures:
+
+---- physician_sources::citations::tests::library_and_document_page_reads_resolve_cite_as_marks_and_quotes stdout ----
+
+thread 'physician_sources::citations::tests::library_and_document_page_reads_resolve_cite_as_marks_and_quotes' (316273) panicked at crates/local-product/src/physician_sources/citations.rs:1292:13:
+expected L1 and D1 citations to resolve cleanly
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    physician_sources::citations::tests::library_and_document_page_reads_resolve_cite_as_marks_and_quotes
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 205 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `-p local-product --lib`
