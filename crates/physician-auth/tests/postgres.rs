@@ -326,6 +326,7 @@ async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
         "physician_memberships",
         "physician_patient_links",
         "physician_patients",
+        "physician_practice_source_setups",
         "physician_practices",
         "physician_sessions",
         "physician_sign_in_tokens",

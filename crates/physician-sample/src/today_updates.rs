@@ -415,6 +415,18 @@ pub(crate) async fn serve_durable_today(
         .collect();
     let failed_parts = map_failed_parts(projection.completeness.failed_parts());
 
+    let Ok(setup_connections) =
+        crate::source_setup::today_connections(extensions, &ctx.identity.practice_id).await
+    else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let mut connections = connections;
+    connections.extend(
+        setup_connections
+            .into_iter()
+            .map(|conn| serde_json::to_value(conn).expect("serialize today connection")),
+    );
+
     Json(json!({
         "date": moment.date_iso,
         "time_zone": moment.time_zone.as_str(),

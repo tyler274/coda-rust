@@ -7,6 +7,7 @@
 #![deny(missing_docs)]
 
 pub mod briefings;
+pub mod source_setup;
 pub mod today_updates;
 
 use serde::{Deserialize, Serialize};
@@ -37,6 +38,9 @@ pub struct HealthCapabilities {
     #[serde(default)]
     /// True when the server can open the Connections accounts dialog.
     pub connection_accounts: bool,
+    #[serde(default)]
+    /// True when the server exposes practice-facing source setup and recovery (`/connections`).
+    pub practice_sources: bool,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
@@ -175,7 +179,7 @@ pub struct ReplyDraftWire {
     pub revision_run: Option<ReplyRevisionRun>,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 /// The `TodayConnection` value exchanged by this crate.
 pub struct TodayConnection {
     /// The `condition` value.
@@ -183,6 +187,33 @@ pub struct TodayConnection {
     #[serde(default)]
     /// The `channel` value.
     pub channel: Option<String>,
+    #[serde(default, deserialize_with = "deserialize_optional_supported_source")]
+    /// Typed source identifier when this Today notice comes from practice source setup.
+    pub source_id: Option<source_setup::SupportedSourceWire>,
+    #[serde(default)]
+    /// Physician-facing source name when reported.
+    pub source_label: Option<String>,
+    #[serde(default)]
+    /// Specific failure or access-loss reason reported by the source.
+    pub reason: Option<String>,
+    #[serde(default)]
+    /// RFC-3339 timestamp of the last successful read before the failure or loss of access.
+    pub last_successful_read_at: Option<String>,
+    #[serde(default)]
+    /// Closed recovery classification (`read_failed` vs `reconnect_required`), when structured.
+    pub recovery: Option<source_setup::TodayConnectionRecoveryWire>,
+}
+
+fn deserialize_optional_supported_source<'de, D>(
+    deserializer: D,
+) -> Result<Option<source_setup::SupportedSourceWire>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let raw = Option::<String>::deserialize(deserializer)?;
+    Ok(raw
+        .as_deref()
+        .and_then(source_setup::SupportedSourceWire::from_slug))
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]

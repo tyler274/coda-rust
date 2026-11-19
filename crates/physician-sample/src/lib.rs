@@ -31,6 +31,7 @@ pub mod rehearsal;
 mod reply;
 mod reviews;
 pub mod schedule;
+pub mod source_setup;
 pub mod sources;
 pub mod staff_setup;
 pub mod synthetic_chart;
@@ -304,6 +305,9 @@ pub fn fixture_site_with_feed(feed: std::sync::Arc<SampleFeed>) -> Router {
         .route("/patient-workspaces/events", get(quiet_events))
         .layer(middleware::from_fn(sources::intercept_reconnect_command))
         .layer(axum::Extension(feed))
+        .layer(axum::Extension(source_setup::FallbackSourceSetup(
+            source_setup::SourceSetupStore::new(),
+        )))
         .layer(axum::Extension(care::ConnectedCare::fixture()))
 }
 
@@ -366,6 +370,9 @@ pub fn durable_site_with_feed(
         .layer(axum::Extension(runtime_store))
         .layer(axum::Extension(std::sync::Arc::clone(&live)))
         .layer(axum::Extension(feed))
+        .layer(axum::Extension(source_setup::FallbackSourceSetup(
+            source_setup::SourceSetupStore::new(),
+        )))
         .layer(axum::Extension(care::ConnectedCare::new()))
         .with_state(live)
 }
@@ -380,10 +387,39 @@ pub async fn authed_postgres_router(
     bus: std::sync::Arc<dyn physician_bus::Bus>,
 ) -> Router {
     let stores = hosting::Readiness::shared(&runtime);
-    let auth = auth::Auth::postgres_with_bus(runtime, &stores, bus, gmail::Delivery::Proof)
-        .await
-        .expect("connect postgres auth router");
+    let forbid_simulation = std::env::var("CODA_ENVIRONMENT")
+        .ok()
+        .is_some_and(|env| env.trim() == "prd");
+    let auth = auth::Auth::postgres_with_bus(
+        runtime,
+        &stores,
+        bus,
+        gmail::Delivery::Proof,
+        forbid_simulation,
+    )
+    .await
+    .expect("connect postgres auth router");
     auth::required_router(base, auth)
+}
+
+async fn health_route(request: Request<Body>) -> Response {
+    if request
+        .extensions()
+        .get::<auth::AuthRequiredMarker>()
+        .is_some()
+    {
+        let practice_sources = !sources::has_registered_adapters(request.extensions());
+        Json(json!({
+            "status": "ok",
+            "capabilities": {
+                "connection_accounts": true,
+                "practice_sources": practice_sources,
+            }
+        }))
+        .into_response()
+    } else {
+        Json(json!({ "status": "ok" })).into_response()
+    }
 }
 
 fn site<S>() -> Router<S>
@@ -391,7 +427,7 @@ where
     S: Clone + Send + Sync + 'static,
 {
     Router::new()
-        .route("/health", get(|| async { Json(json!({"status": "ok"})) }))
+        .route("/health", get(health_route))
         .route("/today", get(today))
         .route("/today-updates/open", post(today_updates::open_route))
         .route("/today-updates/done", post(today_updates::done_route))
@@ -403,12 +439,7 @@ where
         .route("/director/schedule/sync", post(schedule::sync_route))
         .route("/updates", get(updates))
         .route("/recent-conversations", get(recent_conversations))
-        .route("/connections", get(sources::get_connections))
         .route("/connections/{source_id}/check", post(sources::post_check))
-        .route(
-            "/connections/{source_id}/reconnect",
-            post(sources::post_reconnect),
-        )
         .route("/patient-workspaces", get(patient_list))
         .route("/patient-workspaces/{id}", get(workspace))
         .route(
@@ -421,6 +452,7 @@ where
         )
         .route("/patient-roster", get(roster))
         .route("/dictation", post(|| async { dictation_unavailable() }))
+        .merge(source_setup::routes())
         .route("/", get(site_index))
         .route("/index.html", get(site_index))
         .route("/assets/coda-health-logo-transparent.png", get(logo))
@@ -973,6 +1005,7 @@ async fn site_from_env(
         base = base.layer(schedule::schedule_source_layer(source));
     }
     let postgres = runtime.zip(readiness.as_ref());
+    let forbid_simulation = configured(&get, "CODA_ENVIRONMENT").as_deref() == Some("prd");
     let router = auth::authed_router_configured(
         base,
         bus,
@@ -982,6 +1015,7 @@ async fn site_from_env(
         mail,
         rehearsal,
         staff,
+        forbid_simulation,
     )
     .await;
     let router = route_readiness(router, readiness);
@@ -1149,6 +1183,17 @@ async fn today(
         }
         None => (Vec::new(), Vec::new()),
     };
+    let Ok(setup_connections) =
+        source_setup::today_connections(extensions, &identity.practice_id).await
+    else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let mut connections = connections;
+    connections.extend(
+        setup_connections
+            .into_iter()
+            .map(|conn| serde_json::to_value(conn).expect("serialize today connection")),
+    );
     Json(json!({
         "date": moment.date_iso,
         "time_zone": moment.time_zone.as_str(),
@@ -1303,6 +1348,29 @@ async fn patient_list(
     Json(json!({ "patients": rows })).into_response()
 }
 
+fn merge_workspace_reply(enriched: &mut Value, reply: Value) {
+    let reply_id = reply
+        .get("reply_work_id")
+        .and_then(Value::as_str)
+        .unwrap_or_default()
+        .to_owned();
+    match enriched.get_mut("replies").and_then(Value::as_array_mut) {
+        Some(existing) => {
+            if let Some(slot) = existing
+                .iter_mut()
+                .find(|item| item.get("reply_work_id").and_then(Value::as_str) == Some(&reply_id))
+            {
+                *slot = reply;
+            } else {
+                existing.push(reply);
+            }
+        }
+        None => {
+            enriched["replies"] = json!([reply]);
+        }
+    }
+}
+
 async fn workspace(
     axum::extract::Path(id): axum::extract::Path<String>,
     axum::Extension(connected): axum::Extension<care::ConnectedCare>,
@@ -1324,6 +1392,17 @@ async fn workspace(
         registry,
     );
     let mut enriched = care::enrich_workspace(base_body, &id, request.extensions()).await;
+    if source_setup::enrich_workspace(
+        &mut enriched,
+        &id,
+        &moment.now_rfc3339,
+        request.extensions(),
+    )
+    .await
+    .is_err()
+    {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    }
     // A live server lists the signed-in physician's chats. The fixture site
     // has no `Live`.
     if let Some(live) = request.extensions().get::<std::sync::Arc<live::Live>>() {
@@ -1338,7 +1417,7 @@ async fn workspace(
             .unwrap_or_default()
             .to_owned();
         match synthetic_reply::project(live, ctx, &id, &name).await {
-            Ok(Some(reply)) => enriched["replies"] = json!([reply]),
+            Ok(Some(reply)) => merge_workspace_reply(&mut enriched, reply),
             Ok(None) => {}
             Err(()) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
         }

@@ -6,7 +6,8 @@
 use std::time::Duration;
 
 use crate::migration::{
-    Accounts, Invitations, Memberships, PatientLinks, Patients, Practices, Sessions, SignInTokens,
+    Accounts, Invitations, Memberships, PatientLinks, Patients, PracticeSourceSetups, Practices,
+    Sessions, SignInTokens,
 };
 use crate::{
     Account, AccountCreateOutcome, AccountSetupError, AuthStore, INVITATION_TTL_SECONDS,
@@ -101,6 +102,7 @@ impl PostgresAuthStore {
         Memberships::find().one(&self.db).await?;
         PatientLinks::find().one(&self.db).await?;
         Patients::find().one(&self.db).await?;
+        PracticeSourceSetups::find().one(&self.db).await?;
         Practices::find().one(&self.db).await?;
         Sessions::find().one(&self.db).await?;
         SignInTokens::find().one(&self.db).await?;

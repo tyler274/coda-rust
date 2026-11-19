@@ -104,6 +104,7 @@ impl DemoStore {
             held_by_newer_release: Vec::new(),
             capabilities: Some(HealthCapabilities {
                 connection_accounts: false,
+                practice_sources: false,
             }),
         }
     }
@@ -154,6 +155,11 @@ impl DemoStore {
             .map(|c| TodayConnection {
                 condition: "connected".into(),
                 channel: Some(c.into()),
+                source_id: None,
+                source_label: None,
+                reason: None,
+                last_successful_read_at: None,
+                recovery: None,
             })
             .collect();
         Ok(TodayListResponse {
