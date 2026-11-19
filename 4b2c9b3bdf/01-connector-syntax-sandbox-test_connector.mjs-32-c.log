@@ -1,0 +1,204 @@
+{
+  "scope": "VM Chrome API fixture + real loopback HTTP + real MCP stdio; no live Hint or real Chrome",
+  "cases": [
+    {
+      "name": "actual bootstrap script admits sandbox metadata without copying bearer token; connection metadata contains no credentials",
+      "passed": true
+    },
+    {
+      "name": "roster, twelve-section chart, deduplicated pending request and two restart types",
+      "passed": true,
+      "reads": 13
+    },
+    {
+      "name": "successful HTTP201 silent renewal survives receipt delivery and chart acquisition",
+      "passed": true
+    },
+    {
+      "name": "two explicit rotating refresh exchanges and chart reads without a usable website cookie",
+      "passed": true
+    },
+    {
+      "name": "lost completion response, real bridge process restart, idempotent outbox recovery",
+      "passed": true
+    },
+    {
+      "name": "a read still waiting for delivery at Disconnect is delivered on reconnect",
+      "passed": true
+    },
+    {
+      "name": "rejected grant followed by one same-practice silent exchange and a fresh successful chart read",
+      "passed": true
+    },
+    {
+      "name": "chart 401 while token is unexpired reacquires once and completes the same GET under the new token",
+      "passed": true
+    },
+    {
+      "name": "a successful exchange that reissues the rejected bearer cannot replay the GET",
+      "passed": true
+    },
+    {
+      "name": "chart 401 plus invalid grant and explicit login_required stops without a second chart read",
+      "passed": true
+    },
+    {
+      "name": "silent recovery for another tenant stops before any chart read",
+      "passed": true
+    },
+    {
+      "name": "forbidden grant is terminal without another authentication attempt",
+      "passed": true
+    },
+    {
+      "name": "provider login_required stops once, preserves sanitized causes and clears credentials",
+      "passed": true
+    },
+    {
+      "name": "opaque silent 401 stays unattributed and stops without opening anything",
+      "passed": true
+    },
+    {
+      "name": "missing refresh credential is an incomplete auth response, never a connected state",
+      "passed": true
+    },
+    {
+      "name": "changed identity stops acquisition without repeated auth retries",
+      "passed": true
+    },
+    {
+      "name": "a token too close to expiry is an invalid auth response, not a changed account",
+      "passed": true
+    },
+    {
+      "name": "signed-out renewal is auth_required, never generic request_failed",
+      "passed": true
+    },
+    {
+      "name": "chart 401 stops once and clears access token",
+      "passed": true
+    },
+    {
+      "name": "chart 403 stops once and clears access token",
+      "passed": true
+    },
+    {
+      "name": "chart 429 stops once and clears access token",
+      "passed": true
+    },
+    {
+      "name": "chart html stops once and clears access token",
+      "passed": true
+    },
+    {
+      "name": "chart hang stops once and clears access token",
+      "passed": true,
+      "seconds": 15.011197714
+    },
+    {
+      "name": "Stop aborts an in-flight response body and clears Chrome-memory token",
+      "passed": true,
+      "seconds": 0.006585140999999566
+    },
+    {
+      "name": "bridge permission rejection is terminal, not an offline transport retry",
+      "passed": true
+    },
+    {
+      "name": "deadline ends acquisition before another EHR request",
+      "passed": true
+    },
+    {
+      "name": "strict bridge origin/schema and no fake credentials in persisted browser metadata or MCP checkpoint",
+      "passed": true
+    },
+    {
+      "name": "bridge independently validates original JSON hash and fences stale/duplicate section completions",
+      "passed": true
+    },
+    {
+      "name": "real MCP subprocess initialize/list/call retrieves acquired chart JSON",
+      "passed": true
+    },
+    {
+      "name": "the MCP proxy keeps each failure distinct: bad JSON, unknown method, bad params, a bridge refusal, an unreachable bridge",
+      "passed": true
+    },
+    {
+      "name": "one Connect action works with the Hint page open and Disconnect clears credentials",
+      "passed": true
+    },
+    {
+      "name": "status reports where Hint stands from the page check, read fresh and stored nowhere",
+      "passed": true
+    }
+  ],
+  "tested_worker_sha256": "f3d40eae404265fcac77a1627c2629a120c7ee52313f752a0ed2c0292c2b0850",
+  "test_sha256": "2859ed60336e89625f4dcaeb8f4f629931f6c5c45ac13832eccf5fbcc6be698e",
+  "sources": {
+    "../chrome/manifest.json": "958885eddf86aedb6ce3944796cc05d1fdbb241a74c90468c7d4a1585453a585",
+    "../chrome/bootstrap.js": "f86b632f26d86eefbe90184722397679bb35fbde0bd47c912e4105336efed7c3",
+    "../chrome/worker.js": "f3d40eae404265fcac77a1627c2629a120c7ee52313f752a0ed2c0292c2b0850",
+    "../chrome/options.html": "00e9121ecb241447920bc945c470291b5417988c31a09e8cf262013652f1cb93",
+    "../chrome/popup.js": "6fc1ed2f1179613250e217b287f74d390b81d84d1ad5bc82d91dfcc318282f5b",
+    "bridge.py": "9446e38d70c8b9113e9767332289fcbf7f0d6051dfebd53b971e9017aa5909e2"
+  },
+  "passed": true,
+  "auth_requests": 37,
+  "chart_requests": 46,
+  "fixture_workdir": "/tmp/nix-shell.L3dj3D/coda-hint-independent-9i221s"
+}
+    Checking extension-popup v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-integrator-1d35fd3e/crates/extension-popup)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 4.78s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.37s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.49s
+     Running unittests src/lib.rs (target/debug/deps/extension_popup-5c6a76f3b9871b67)
+
+running 12 tests
+test face::tests::a_live_run_reads_quietly_with_disconnect_in_the_menu ... ok
+test face::tests::endpoint_origin_pattern_validates_urls ... ok
+test face::tests::the_worker_reply_parses_as_it_sends_it ... ok
+test face::tests::a_connected_state_without_a_live_run_never_claims_reading ... ok
+test face::tests::readiness_names_the_next_step_and_its_action ... ok
+test face::tests::waiting_on_the_bridge_keeps_disconnect_and_never_claims_reading ... ok
+test face::tests::the_worker_lists_every_request ... ok
+test face::tests::unpaired_reply_asks_to_pair_first ... ok
+test face::tests::every_code_the_popup_names_is_one_the_worker_sends ... ok
+test face::tests::sign_out_and_return_offer_reconnect_and_keep_prior_reads ... ok
+test face::tests::without_readiness_the_popup_claims_no_steps ... ok
+test face::tests::connector_files_name_no_ehr_host_patient_or_chart_part ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.22s
+     Running unittests src/lib.rs (target/debug/deps/boundaries-a7650975ca94826f)
+
+running 25 tests
+test shared_ui::a_count_going_down_says_to_lower_the_number ... ok
+test shared_ui::a_matching_count_passes ... ok
+test shared_ui::a_count_going_up_says_to_use_the_shared_component_or_add_an_exception ... ok
+test shared_ui::a_new_file_counts_as_going_up_from_zero ... ok
+test shared_ui::a_count_reaching_zero_says_to_remove_the_entry ... ok
+test shared_ui::every_table_entry_has_one_row_and_a_reason ... ok
+test shared_ui::counts_css_rules_naming_library_classes ... ok
+test shared_ui::counts_each_raw_control_inside_rsx ... ok
+test shared_ui::counts_card_classes_set_apart_by_escaped_whitespace ... ok
+test shared_ui::a_whole_test_file_counts_nothing ... ok
+test shared_ui::counts_card_markup_by_class_family_once_per_element ... ok
+test shared_ui::counts_css_rules_naming_control_elements ... ok
+test shared_ui::counts_rsx_held_in_other_macros_and_nested_rsx ... ok
+test tests::shipping_clients_stay_until_the_rust_journeys_match ... ok
+test tests::duet_screens_do_not_read_device_health_directly ... ok
+test tests::apps_do_not_import_each_others_clinical_crates ... ok
+test shared_ui::ignores_comments_strings_and_lookalikes ... ok
+test tests::the_clinical_library_is_product_neutral ... ok
+test tests::gmail_and_spruce_are_product_neutral ... ok
+test shared_ui::ignores_test_code_but_not_code_kept_out_of_tests ... ok
+test shared_ui::the_check_reads_the_real_library ... ok
+test tests::every_ui_behaviour_is_run_as_its_kind ... ok
+test tests::shared_harness_is_product_neutral_and_has_no_product_store ... ok
+test tests::the_ui_library_runs_its_browser_behaviour_without_eval ... ok
+test shared_ui::the_apps_match_the_shared_ui_table ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+

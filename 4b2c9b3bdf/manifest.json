@@ -1,0 +1,39 @@
+{
+  "branch": "tyler-eng-366-1-chrome-connector-and-popup",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "connector syntax, sandbox test_connector.mjs (32 cases), workspace + wasm32 clippy, extension-popup and boundaries unit tests",
+      "kind": "run",
+      "revision": "4b2c9b3bdf53bfa31346a1c834f598fc00a562ef",
+      "dirty": false,
+      "recorded": "2026-11-19T03:31:48+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "node --check extension/chrome/connector.js && node extension/sandbox/test_connector.mjs && cargo clippy --workspace --all-targets -- -D warnings && cargo clippy -p physician-app -p duet-app -p mobile -p ui-gallery -p extension-popup --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web,extension-popup/web -- -D warnings && cargo test --locked -p extension-popup --lib && cargo test --locked -p boundaries --lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-connector-syntax-sandbox-test_connector.mjs-32-c.log"
+      ],
+      "seconds": 28.9,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "",
+      "kind": "gap",
+      "revision": "4b2c9b3bdf53bfa31346a1c834f598fc00a562ef",
+      "dirty": false,
+      "recorded": "2026-11-19T03:32:18+00:00",
+      "reason": "extension-popup browser test checks manifest name Coda and optional host permissions deferred to stacked PR #70 with worker.js/bootstrap.js; proven end-to-end in #70",
+      "ok": false,
+      "files": []
+    }
+  ]
+}
