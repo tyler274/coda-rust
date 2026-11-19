@@ -1,0 +1,328 @@
+{
+  "branch": "feat-p1-citations-panel-archive-discuss-dictation",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "gates",
+      "label": "cargo fmt --check, boundaries, host and wasm32 clippy -D warnings",
+      "kind": "run",
+      "revision": "57dd652f6cc0a9a57d39fc84ca6bfd8f811a3229",
+      "dirty": false,
+      "recorded": "2026-11-19T19:54:55+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\n  set -euo pipefail\n  cargo fmt --check\n  cargo test -p boundaries\n  cargo clippy --workspace --all-targets -- -D warnings\n  cargo clippy -p physician-app -p duet-app -p extension-popup --target wasm32-unknown-unknown -- -D warnings\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-cargo-fmt---check-boundaries-host-and-wasm32-cli.log"
+      ],
+      "seconds": 161.5,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+        "reason": "only crates/physician-sample/tests/site.rs readable-body assertion changed; production code identical to 57dd652f6"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC1-AC5",
+      "label": "unit test suites across ui, physician-wire, physician-demo-db, physician-client, physician-app, physician-sample, local-product",
+      "kind": "run",
+      "revision": "57dd652f6cc0a9a57d39fc84ca6bfd8f811a3229",
+      "dirty": false,
+      "recorded": "2026-11-19T19:57:37+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\n  set -euo pipefail\n  cargo test -p ui -p physician-wire -p physician-demo-db -p physician-client -p physician-app -p physician-sample --lib\n  cargo test -p local-product --lib\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-unit-test-suites-across-ui-physician-wire-physic.log"
+      ],
+      "seconds": 239.4,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+        "reason": "only crates/physician-sample/tests/site.rs readable-body assertion changed; production code identical to 57dd652f6"
+      }
+    },
+    {
+      "id": 3,
+      "claim": "AC2",
+      "label": "local-product runtime_postgres archive, restore, busy refusal, and auto-unarchive",
+      "kind": "run",
+      "revision": "57dd652f6cc0a9a57d39fc84ca6bfd8f811a3229",
+      "dirty": false,
+      "recorded": "2026-11-19T20:01:37+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "runtime_postgres",
+        "archive_restore_busy_refusal_and_auto_unarchive_in_postgres",
+        "--",
+        "--ignored",
+        "--nocapture"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-local-product-runtime_postgres-archive-restore-b.log"
+      ],
+      "seconds": 61.5,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+        "reason": "only crates/physician-sample/tests/site.rs readable-body assertion changed; production code identical to 57dd652f6"
+      }
+    },
+    {
+      "id": 4,
+      "claim": "AC1-AC5",
+      "label": "local-product Postgres history, reviews, today_updates, and source_status suites",
+      "kind": "run",
+      "revision": "57dd652f6cc0a9a57d39fc84ca6bfd8f811a3229",
+      "dirty": false,
+      "recorded": "2026-11-19T20:02:39+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\n  set -euo pipefail\n  cargo test -p local-product --test source_status_and_links -- --ignored\n  cargo test -p local-product --test patient_reviews_postgres -- --ignored\n  cargo test -p local-product --test today_updates_postgres -- --ignored\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-local-product-Postgres-history-reviews-today_upd.log"
+      ],
+      "seconds": 53.8,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-run without --ignored so all non-ignored Postgres integration tests actually execute"
+    },
+    {
+      "id": 5,
+      "claim": "AC1-AC5",
+      "label": "local-product Postgres source_status_and_links (16), patient_reviews_postgres (12), today_updates_postgres (5), migration_tests (6)",
+      "kind": "run",
+      "revision": "57dd652f6cc0a9a57d39fc84ca6bfd8f811a3229",
+      "dirty": false,
+      "recorded": "2026-11-19T20:13:51+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\n  set -euo pipefail\n  cargo test -p local-product --test source_status_and_links\n  cargo test -p local-product --test patient_reviews_postgres\n  cargo test -p local-product --test today_updates_postgres\n  cargo test -p local-product --lib migration -- --ignored\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-local-product-Postgres-source_status_and_links-1.log"
+      ],
+      "seconds": 25.5,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+        "reason": "only crates/physician-sample/tests/site.rs readable-body assertion changed; production code identical to 57dd652f6"
+      }
+    },
+    {
+      "id": 6,
+      "claim": "AC1-AC5",
+      "label": "physician-sample --test site -- --ignored (full 25-test Chromium qualification)",
+      "kind": "run",
+      "revision": "57dd652f6cc0a9a57d39fc84ca6bfd8f811a3229",
+      "dirty": false,
+      "recorded": "2026-11-19T20:14:17+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-physician-sample---test-site------ignored-full-2.log"
+      ],
+      "seconds": 445.4,
+      "exit": 101,
+      "ok": false,
+      "superseded": "re-run tests/site after updating site.rs readable-body assertion"
+    },
+    {
+      "id": 7,
+      "claim": "AC1-AC5",
+      "label": "physician-sample --test site -- --ignored (full 25-test Chromium qualification)",
+      "kind": "run",
+      "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+      "dirty": false,
+      "recorded": "2026-11-19T20:25:06+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "07-physician-sample---test-site------ignored-full-2.log"
+      ],
+      "seconds": 314.4,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 8,
+      "claim": "AC1",
+      "label": "Chromium citation side-panel regression suites (shell_states, site_schedule_briefing, site_today_updates, site_link_correction, site_patient_reviews)",
+      "kind": "run",
+      "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+      "dirty": false,
+      "recorded": "2026-11-19T20:30:21+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\n  set -euo pipefail\n  cargo test -p physician-sample --test shell_states -- --ignored\n  cargo test -p physician-sample --test site_schedule_briefing -- --ignored\n  cargo test -p physician-sample --test site_today_updates -- --ignored\n  cargo test -p physician-sample --test site_link_correction -- --ignored\n  cargo test -p physician-sample --test site_patient_reviews -- --ignored\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "08-Chromium-citation-side-panel-regression-suites-s.log"
+      ],
+      "seconds": 389.4,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 9,
+      "claim": "AC1",
+      "label": "Hover CitationPreview popover and AnswerSources pill",
+      "kind": "screenshot",
+      "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+      "dirty": false,
+      "recorded": "2026-11-19T20:37:36+00:00",
+      "files": [
+        "09-p1b2-hover-preview-and-sources.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/target/verification/proof/shots/p1b2-hover-preview-and-sources.png",
+      "ok": true
+    },
+    {
+      "id": 10,
+      "claim": "AC1",
+      "label": "Desktop non-modal citation side panel with highlighted passage and collapsed Technical details",
+      "kind": "screenshot",
+      "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+      "dirty": false,
+      "recorded": "2026-11-19T20:37:36+00:00",
+      "files": [
+        "10-p1b2-citations-panel-desktop.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/target/verification/proof/shots/p1b2-citations-panel-desktop.png",
+      "ok": true
+    },
+    {
+      "id": 11,
+      "claim": "AC1",
+      "label": "Phone (<900px) citation side panel with Back control, flagged status, and unmatched-passage notice",
+      "kind": "screenshot",
+      "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+      "dirty": false,
+      "recorded": "2026-11-19T20:37:36+00:00",
+      "files": [
+        "11-p1b2-citations-panel-phone.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/target/verification/proof/shots/p1b2-citations-panel-phone.png",
+      "ok": true
+    },
+    {
+      "id": 12,
+      "claim": "AC1",
+      "label": "Citation side panel Unavailable transition after panel-access removal",
+      "kind": "screenshot",
+      "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+      "dirty": false,
+      "recorded": "2026-11-19T20:37:36+00:00",
+      "files": [
+        "12-p1b2-citations-panel-revoked.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/target/verification/proof/shots/p1b2-citations-panel-revoked.png",
+      "ok": true
+    },
+    {
+      "id": 13,
+      "claim": "AC2",
+      "label": "Archived conversation removed from sidebar with Undo banner",
+      "kind": "screenshot",
+      "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+      "dirty": false,
+      "recorded": "2026-11-19T20:37:36+00:00",
+      "files": [
+        "13-p1b2-archive-undo-banner.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/target/verification/proof/shots/p1b2-archive-undo-banner.png",
+      "ok": true
+    },
+    {
+      "id": 14,
+      "claim": "AC3",
+      "label": "Discuss stops active turn cleanly and restores queued follow-up to composer",
+      "kind": "screenshot",
+      "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+      "dirty": false,
+      "recorded": "2026-11-19T20:37:37+00:00",
+      "files": [
+        "14-p1b2-discuss-stopped-restored.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/target/verification/proof/shots/p1b2-discuss-stopped-restored.png",
+      "ok": true
+    },
+    {
+      "id": 15,
+      "claim": "AC4",
+      "label": "Ctrl+Shift+Space hold-release dictation transcribed into composer without auto-sending",
+      "kind": "screenshot",
+      "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+      "dirty": false,
+      "recorded": "2026-11-19T20:37:37+00:00",
+      "files": [
+        "15-p1b2-dictation-transcribed.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/target/verification/proof/shots/p1b2-dictation-transcribed.png",
+      "ok": true
+    },
+    {
+      "id": 16,
+      "claim": "AC5",
+      "label": "Shared Find patient component displaying KeywordFallback notice",
+      "kind": "screenshot",
+      "revision": "3fb134901e49ba1de30e92e79a4cd5bf25b70c21",
+      "dirty": false,
+      "recorded": "2026-11-19T20:37:37+00:00",
+      "files": [
+        "16-p1b2-find-patient-fallback.png"
+      ],
+      "source": "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/target/verification/proof/shots/p1b2-find-patient-fallback.png",
+      "ok": true
+    }
+  ]
+}

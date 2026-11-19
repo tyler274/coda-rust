@@ -1,0 +1,70 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.28s
+     Running tests/source_status_and_links.rs (/tmp/coda-target-physician-ui/debug/deps/source_status_and_links-e0e641259c7fb1e5)
+
+running 16 tests
+test pure_standing_and_outage_rules_cover_partial_failed_lapsed_and_majority_thresholds ... ok
+test partial_pull_reports_missing_candidates_for_empty_succeeded_kinds_without_flagging_failed_kinds ... ok
+test partial_and_complete_deliveries_commit_atomically_with_pull_status_and_nullable_pulled_at ... ok
+test pre_reconnect_lapsed_pull_held_across_practice_access_restore_is_superseded_before_catch_up ... ok
+test source_patient_resolves_to_one_chords_patient_across_pulls_and_refuses_other_practice_writes ... ok
+test late_lapsed_check_held_across_reconnect_command_does_not_overwrite_recovery ... ok
+test overdue_scheduled_fetch_reports_couldn_t_update_standing ... ok
+test interrupted_reconnect_before_db_checkpoint_recovers_cached_adapter_receipt_without_second_effect ... ok
+test practice_report_returns_one_outage_instead_of_patient_rows_when_majority_fails ... ok
+test single_patient_lapsed_access_stays_patient_scoped_and_later_success_recovers_cleanly ... ok
+test failed_partial_and_lapsed_pulls_keep_last_good_read_time_and_reconnect_recovers ... ok
+test same_timestamp_practice_check_keeps_third_patient_up_to_date_when_two_colleagues_lapse ... ok
+test initial_onboarding_handles_partial_identity_and_records_initial_failed_or_lapsed_attempts ... ok
+test older_complete_pulls_held_across_newer_check_and_distinct_key_reconnect_do_not_regress_chart_or_timestamps ... ok
+test reconnect_command_serializes_concurrent_duplicates_recovers_interrupted_check_and_preserves_original_receipt ... ok
+test active_slow_reconnect_and_catch_up_renew_lease_while_superseded_fence_cannot_write ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.70s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.24s
+     Running tests/patient_reviews_postgres.rs (/tmp/coda-target-physician-ui/debug/deps/patient_reviews_postgres-bccf532642f854b3)
+
+running 12 tests
+test patient_review_recipe_and_tools_have_clean_model_text_and_valid_skill_tool_references ... ok
+test provider_blocked_hold_preserves_refusal_and_reason_instead_of_stopped ... ok
+test practice_authority_enforced_on_reads_and_stop_atomic_rearm_steering_fences_and_understanding_tool_boundary ... ok
+test saved_review_records_metadata_keeps_unknown_usage_unknown_and_feeds_later_review_reads ... ok
+test dispatch_changed_periodic_and_physician_reviews_reach_model_with_recipe_and_discoverable_capabilities ... ok
+test corrected_evidence_revises_outputs_missing_sources_stay_explicit_limits_and_medication_stays_unapproved_consideration ... ok
+test real_tool_operations_persist_across_restart_and_quiet_saves_nothing_to_do ... ok
+test stop_holds_across_restart_resume_and_try_again_refresh_evidence_and_new_input_access_loss_or_correction_block_stale_completion ... ok
+test mid_run_record_correction_blocks_old_version_and_interrupted_action_is_not_repeated ... ok
+test periodic_reassessment_respects_prior_decisions_avoids_duplicate_alerts_and_updates_memory_only_when_warranted ... ok
+test clinical_cases_urgent_abnormal_nonurgent_change_conflicting_sources_and_normal_quiet_review ... ok
+test new_review_supersedes_incomplete_review_withdrawn_records_fence_recovery_and_completed_sources_baseline_tracks_mid_run_refresh ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.74s
+
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.54s
+     Running tests/today_updates_postgres.rs (/tmp/coda-target-physician-ui/debug/deps/today_updates_postgres-afe25c4ee1ac96f1)
+
+running 5 tests
+test ac4_majority_source_failure_two_of_three_reports_practice_outage ... ok
+test ac3_physician_sees_only_authorized_patients_including_after_access_changes ... ok
+test ac4_partial_producer_failure_practice_source_outage_collapse_and_empty_completeness_rule ... ok
+test ac2_seen_state_is_saved_per_physician_survives_restart_and_changed_item_returns_as_new_with_what_changed ... ok
+test ac1_every_producer_kind_reaches_the_right_list_collapses_unhandled_per_patient_and_hands_off_on_done ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.37s
+     Running unittests src/lib.rs (/tmp/coda-target-physician-ui/debug/deps/local_product-75b90368433a4db7)
+
+running 6 tests
+test runtime::tests::migration_tests::leftover_runtime_tables_fail_the_migration_and_record_nothing ... ok
+test runtime::tests::migration_tests::a_second_migrate_records_nothing_new ... ok
+test runtime::tests::migration_tests::source_pull_missing_candidates_migration_refuses_down_rollback ... ok
+test runtime::tests::migration_tests::conversation_activity_migration_backfills_later_of_open_and_last_activity ... ok
+test runtime::tests::migration_tests::physician_newest_twenty_five_conversations_plan_uses_activity_index ... ok
+test runtime::tests::migration_tests::sending_message_and_publishing_reply_both_advance_activity_column_and_order ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 202 filtered out; finished in 3.95s
+
