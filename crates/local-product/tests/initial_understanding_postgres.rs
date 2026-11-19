@@ -2450,11 +2450,17 @@ fn recipe_instructions_tools_and_skill_catalog_pass_model_text_audit() {
         let schema_text = serde_json::to_string(&tool["parameters"]).expect("schema json");
         model_text::assert_clean_model_text(&schema_text);
     }
-    model_text::assert_skill_tools(
-        &serde_json::to_value(&skills).expect("skills json"),
-        &built.tools,
-        &[],
-    );
+    let preloaded_package = json!({
+        "skills": created
+            .preloaded_skills
+            .iter()
+            .map(|skill| json!({
+                "name": skill.name,
+                "content": skill.content,
+            }))
+            .collect::<Vec<_>>(),
+    });
+    model_text::assert_skill_tools(&preloaded_package, &built.tools, &[]);
 }
 
 #[tokio::test]
