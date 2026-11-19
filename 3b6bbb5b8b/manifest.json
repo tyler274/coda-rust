@@ -1,0 +1,35 @@
+{
+  "branch": "tyler-eng-397-2-message-review-and-revision-hosts",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1-to-AC6-hosts",
+      "label": "local-product unit suite after MessageReviewHost and ReplyRevisionHost",
+      "kind": "run",
+      "revision": "4bb84de8b370b7b8fb8fbe2a256ab70293ac1a6e",
+      "dirty": false,
+      "recorded": "2026-11-19T00:04:34+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--lib"
+      ],
+      "expect": "test result: ok\\. [1-9][0-9]* passed",
+      "expect_fail": false,
+      "files": [
+        "01-local-product-unit-suite-after-MessageReviewHost.log"
+      ],
+      "seconds": 55.9,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "3b6bbb5b8be5f266ca4a6c1bede1a078b60e6500",
+        "reason": "Rebased onto final PR 91 (562055b56d); seam files preserved and full workspace/PG16/Chromium suites verified at PR 104 tip 59829dacb"
+      }
+    }
+  ]
+}
