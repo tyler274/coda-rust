@@ -593,8 +593,31 @@ impl PhysicianClient {
     /// Searches the patient roster.
     pub async fn search(&self, query: &str) -> Result<PatientSearchResponse, http::HttpError> {
         try_demo!(self, s => s.search(query));
-        self.get(&format!("/patient-roster?query={}", query_escape(query)))
-            .await
+        self.search_page(query, None).await
+    }
+
+    /// Reads one page of the patient roster, optionally continuing after `after`.
+    pub async fn search_page(
+        &self,
+        query: &str,
+        after: Option<&str>,
+    ) -> Result<PatientSearchResponse, http::HttpError> {
+        if after.is_none() {
+            try_demo!(self, s => s.search(query));
+        } else {
+            try_demo!(self, _s => async {
+                Ok::<_, physician_demo_db::DbError>(PatientSearchResponse {
+                    patients: Vec::new(),
+                    next_after: None,
+                })
+            });
+        }
+        let mut path = format!("/patient-roster?query={}", query_escape(query));
+        if let Some(cursor) = after.filter(|cursor| !cursor.is_empty()) {
+            path.push_str("&after=");
+            path.push_str(&query_escape(cursor));
+        }
+        self.get(&path).await
     }
 
     /// Reads one patient workspace.

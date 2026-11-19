@@ -305,7 +305,10 @@ impl DemoStore {
                 })
             })
             .await?;
-        Ok(PatientSearchResponse { patients })
+        Ok(PatientSearchResponse {
+            patients,
+            next_after: None,
+        })
     }
 
     /// Reads the complete workspace projection for `workspace_id`.
