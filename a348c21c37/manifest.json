@@ -1,0 +1,123 @@
+{
+  "branch": "tyler-eng-319-1-source-setup-and-spruce-gate",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1-auth-source-setup-migration",
+      "label": "",
+      "kind": "run",
+      "revision": "07ab0ea66e9c5dfe6a602773cbbc8d3b1eba1457",
+      "dirty": false,
+      "recorded": "2026-11-19T00:08:34+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-auth",
+        "--test",
+        "migrations",
+        "--test",
+        "postgres",
+        "runtime_connection_leaves_schema_untouched"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-cargo.log"
+      ],
+      "seconds": 13.7,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "a348c21c374ce3b4a23337989a2f52da953dd8e2",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2-shared-migrations-ledger",
+      "label": "",
+      "kind": "run",
+      "revision": "07ab0ea66e9c5dfe6a602773cbbc8d3b1eba1457",
+      "dirty": false,
+      "recorded": "2026-11-19T00:08:48+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "migrations_postgres",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-cargo.log"
+      ],
+      "seconds": 77.1,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "a348c21c374ce3b4a23337989a2f52da953dd8e2",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    },
+    {
+      "id": 3,
+      "claim": "AC3-physician-sample-unit-routes",
+      "label": "",
+      "kind": "run",
+      "revision": "07ab0ea66e9c5dfe6a602773cbbc8d3b1eba1457",
+      "dirty": false,
+      "recorded": "2026-11-19T00:10:05+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-cargo.log"
+      ],
+      "seconds": 49.9,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "a348c21c374ce3b4a23337989a2f52da953dd8e2",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    },
+    {
+      "id": 4,
+      "claim": "AC4-physician-demo-db-compat",
+      "label": "",
+      "kind": "run",
+      "revision": "07ab0ea66e9c5dfe6a602773cbbc8d3b1eba1457",
+      "dirty": false,
+      "recorded": "2026-11-19T00:10:55+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-demo-db"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-cargo.log"
+      ],
+      "seconds": 14.8,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "a348c21c374ce3b4a23337989a2f52da953dd8e2",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    }
+  ]
+}
