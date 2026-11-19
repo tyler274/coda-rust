@@ -30,7 +30,7 @@
       "expect_matched": true,
       "ok": true,
       "kept": {
-        "revision": "c748980211b1e1f7123a095f4d976d8ac8c3d8e2",
+        "revision": "b16edb55161fb0bc261eeaef45858b5590ac216b",
         "reason": "deliberately before the fix"
       }
     },
@@ -93,7 +93,7 @@
       "expect_matched": true,
       "ok": true,
       "kept": {
-        "revision": "c748980211b1e1f7123a095f4d976d8ac8c3d8e2",
+        "revision": "b16edb55161fb0bc261eeaef45858b5590ac216b",
         "reason": "deliberately before the fix"
       }
     },
@@ -120,7 +120,11 @@
       ],
       "seconds": 39.6,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "kept": {
+        "revision": "b16edb55161fb0bc261eeaef45858b5590ac216b",
+        "reason": "review-fix commit touched only Elation pagination and Hint bridge lease/snapshot paths"
+      }
     },
     {
       "id": 5,
@@ -146,7 +150,11 @@
       ],
       "seconds": 3.8,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "kept": {
+        "revision": "b16edb55161fb0bc261eeaef45858b5590ac216b",
+        "reason": "review-fix commit touched only Elation pagination and Hint bridge lease/snapshot paths"
+      }
     },
     {
       "id": 6,
@@ -172,7 +180,11 @@
       ],
       "seconds": 59.4,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "kept": {
+        "revision": "b16edb55161fb0bc261eeaef45858b5590ac216b",
+        "reason": "review-fix commit touched only Elation pagination and Hint bridge lease/snapshot paths"
+      }
     },
     {
       "id": 7,
@@ -198,7 +210,8 @@
       ],
       "seconds": 4.1,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "re-run after review fixes to Elation pagination and Hint bridge lease/snapshot integrity"
     },
     {
       "id": 8,
@@ -224,7 +237,8 @@
       ],
       "seconds": 3.7,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "re-run after review fixes to Elation pagination and Hint bridge lease/snapshot integrity"
     },
     {
       "id": 9,
@@ -246,7 +260,11 @@
       ],
       "seconds": 115.2,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "kept": {
+        "revision": "b16edb55161fb0bc261eeaef45858b5590ac216b",
+        "reason": "review-fix commit touched only Elation pagination and Hint bridge lease/snapshot paths"
+      }
     },
     {
       "id": 10,
@@ -273,7 +291,11 @@
       ],
       "seconds": 69.0,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "kept": {
+        "revision": "b16edb55161fb0bc261eeaef45858b5590ac216b",
+        "reason": "review-fix commit touched only Elation pagination and Hint bridge lease/snapshot paths"
+      }
     },
     {
       "id": 11,
@@ -287,7 +309,11 @@
         "11-briefing-schedule-10-panel-persisted-after-signout.png"
       ],
       "source": "target/verification/screenshots/briefing-schedule-10-panel-persisted-after-signout.png",
-      "ok": true
+      "ok": true,
+      "kept": {
+        "revision": "b16edb55161fb0bc261eeaef45858b5590ac216b",
+        "reason": "review-fix commit touched only Elation pagination and Hint bridge lease/snapshot paths"
+      }
     },
     {
       "id": 12,
@@ -301,7 +327,11 @@
         "12-briefing-schedule-11-background-live-no-focus-steal.png"
       ],
       "source": "target/verification/screenshots/briefing-schedule-11-background-live-no-focus-steal.png",
-      "ok": true
+      "ok": true,
+      "kept": {
+        "revision": "b16edb55161fb0bc261eeaef45858b5590ac216b",
+        "reason": "review-fix commit touched only Elation pagination and Hint bridge lease/snapshot paths"
+      }
     },
     {
       "id": 13,
@@ -322,6 +352,63 @@
         "13-AGENTS.md-required-physician-site-Chromium-regre.log"
       ],
       "seconds": 260.4,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "b16edb55161fb0bc261eeaef45858b5590ac216b",
+        "reason": "review-fix commit touched only Elation pagination and Hint bridge lease/snapshot paths"
+      }
+    },
+    {
+      "id": 14,
+      "claim": "AC5",
+      "label": "Elation FHIR R4 OAuth2 roster/schedule/chart refresh + Hint parsers + AC7 daily re-pull (after review fixes)",
+      "kind": "run",
+      "revision": "b16edb55161fb0bc261eeaef45858b5590ac216b",
+      "dirty": false,
+      "recorded": "2026-11-19T12:15:49+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "ehr_schedule_roster_and_panels",
+        "ac5_and_ac7_elation_fhir_oauth_roster_schedule_refresh_and_daily_repull"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "14-Elation-FHIR-R4-OAuth2-roster-schedule-chart-ref.log"
+      ],
+      "seconds": 5.4,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 15,
+      "claim": "AC6",
+      "label": "authenticated Hint Chrome connector bridge + review fixes for pagination, atomic leases, expiry, job binding, and last-good snapshot preservation",
+      "kind": "run",
+      "revision": "b16edb55161fb0bc261eeaef45858b5590ac216b",
+      "dirty": false,
+      "recorded": "2026-11-19T12:15:55+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "ehr_schedule_roster_and_panels",
+        "--",
+        "--nocapture"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "15-authenticated-Hint-Chrome-connector-bridge-revie.log"
+      ],
+      "seconds": 3.7,
       "exit": 0,
       "ok": true
     }
