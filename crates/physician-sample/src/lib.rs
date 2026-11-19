@@ -25,6 +25,7 @@ pub mod hosting;
 mod live;
 #[cfg(test)]
 mod live_tests;
+pub mod matching_reply;
 pub mod model;
 pub mod patients;
 pub mod rehearsal;
@@ -453,6 +454,7 @@ where
         .route("/patient-roster", get(roster))
         .route("/dictation", post(|| async { dictation_unavailable() }))
         .merge(source_setup::routes())
+        .merge(matching_reply::routes())
         .route("/", get(site_index))
         .route("/index.html", get(site_index))
         .route("/assets/coda-health-logo-transparent.png", get(logo))
@@ -486,7 +488,7 @@ fn upstream_from_env() -> Option<String> {
 }
 
 pub(crate) fn physician_route(path: &str) -> bool {
-    const PREFIXES: [&str; 15] = [
+    const PREFIXES: [&str; 16] = [
         "/health",
         "/today",
         "/today-updates",
@@ -495,6 +497,7 @@ pub(crate) fn physician_route(path: &str) -> bool {
         "/recent-conversations",
         "/patient-workspaces",
         "/patient-roster",
+        "/spruce-matching",
         "/commands",
         "/dictation",
         "/physician-state",
@@ -1468,6 +1471,9 @@ async fn roster(
     request: Request<Body>,
 ) -> Response {
     let extensions = request.extensions();
+    if matching_reply::is_patient_lookup_faulted(extensions) {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    }
     let store = connected.auth_store(extensions);
     let practice = care::ConnectedCare::identity(extensions).practice_id;
     let Ok(registered) = store.practice_patients(&practice).await else {

@@ -173,6 +173,7 @@ impl DemoStore {
             also_reviewed: 0,
             practice_outages: Vec::new(),
             failed_parts: Vec::new(),
+            messages_to_match_count: 0,
         })
     }
 

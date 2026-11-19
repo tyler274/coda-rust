@@ -635,7 +635,25 @@ impl Patient {
         &self.sources[0].patient
     }
 
-    fn primary_mrn(&self) -> Option<&str> {
+    /// The patient workspace identifier.
+    pub(crate) fn workspace(&self) -> &str {
+        &self.workspace
+    }
+
+    /// The holder's display name as the chart supplies it.
+    pub(crate) fn display_name(&self) -> &str {
+        &self.holder().display_name
+    }
+
+    /// The holder's date of birth, when the chart supplies one.
+    pub(crate) fn birth_date(&self) -> Option<&str> {
+        self.holder()
+            .birth_date
+            .as_deref()
+            .filter(|value| !value.trim().is_empty())
+    }
+
+    pub(crate) fn primary_mrn(&self) -> Option<&str> {
         self.holder()
             .medical_record_numbers
             .first()
