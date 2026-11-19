@@ -689,42 +689,47 @@ fn native_call(request: &str) -> Result<String, String> {
 #[cfg(target_os = "android")]
 fn native_call(request: &str) -> Result<String, String> {
     use jni::objects::{JClass, JObject, JString, JValue};
+    use jni::{jni_sig, jni_str};
+
     let ctx = ndk_context::android_context();
-    let vm =
-        unsafe { jni::JavaVM::from_raw(ctx.vm().cast()) }.map_err(|_| "Native VM unavailable")?;
-    let mut env = vm
-        .attach_current_thread()
-        .map_err(|_| "Native thread unavailable")?;
-    let context = unsafe { JObject::from_raw(ctx.context().cast()) };
-    let result = (|| -> jni::errors::Result<String> {
+    let vm_ptr = ctx.vm();
+    let context_ptr = ctx.context();
+    if vm_ptr.is_null() || context_ptr.is_null() {
+        return Err("Protected storage unavailable".into());
+    }
+    let vm = unsafe { jni::JavaVM::from_raw(vm_ptr.cast()) };
+    vm.attach_current_thread(|env| -> jni::errors::Result<String> {
+        let context = unsafe { JObject::from_raw(env, context_ptr.cast()) };
         let class = env.get_object_class(&context)?;
         let loader = env
-            .call_method(class, "getClassLoader", "()Ljava/lang/ClassLoader;", &[])?
+            .call_method(
+                class,
+                jni_str!("getClassLoader"),
+                jni_sig!("()Ljava/lang/ClassLoader;"),
+                &[],
+            )?
             .l()?;
         let name = env.new_string("coda.duet.SecureRetentionBridge")?;
         let bridge = env
             .call_method(
                 loader,
-                "loadClass",
-                "(Ljava/lang/String;)Ljava/lang/Class;",
+                jni_str!("loadClass"),
+                jni_sig!("(Ljava/lang/String;)Ljava/lang/Class;"),
                 &[JValue::Object(&name)],
             )?
             .l()?;
+        let bridge = env.cast_local::<JClass>(bridge)?;
         let input = env.new_string(request)?;
         let value = env
             .call_static_method(
-                JClass::from(bridge),
-                "call",
-                "(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;",
+                bridge,
+                jni_str!("call"),
+                jni_sig!("(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;"),
                 &[JValue::Object(&context), JValue::Object(&input)],
             )?
             .l()?;
-        let string = JString::from(value);
-        Ok(env.get_string(&string)?.to_string_lossy().into_owned())
-    })();
-    if env.exception_check().unwrap_or(false) {
-        let _ = env.exception_clear();
-    }
-    std::mem::forget(context);
-    result.map_err(|_| "Protected storage unavailable".into())
+        let string = env.cast_local::<JString>(value)?;
+        string.try_to_string(env)
+    })
+    .map_err(|_| "Protected storage unavailable".into())
 }

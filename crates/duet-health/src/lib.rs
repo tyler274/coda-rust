@@ -173,11 +173,11 @@ impl PlatformHealth {
     pub fn snapshot(&self) -> HealthSnapshot {
         #[cfg(target_os = "android")]
         {
-            return android_snapshot();
+            android_snapshot()
         }
         #[cfg(target_os = "ios")]
         {
-            return ios_snapshot();
+            ios_snapshot()
         }
         #[cfg(not(any(target_os = "ios", target_os = "android")))]
         {
@@ -365,17 +365,17 @@ fn unreadable_snapshot() -> HealthSnapshot {
 /// Opens the system permission chooser without reading the Health Connect store.
 #[cfg(target_os = "android")]
 pub fn request_health_connect_permission() -> Result<(), String> {
-    android_call("requestPermission", "()V").map(|_| ())
+    android_invoke(jni::jni_str!("requestPermission"), BridgeCall::Void).map(|_| ())
 }
 
 #[cfg(target_os = "android")]
 fn android_snapshot() -> HealthSnapshot {
-    let state = match android_call("status", "()Ljava/lang/String;") {
+    let state = match android_invoke(jni::jni_str!("status"), BridgeCall::Read(None)) {
         Ok(code) => parse_status(&code),
         Err(_) => StoreState::Unreadable,
     };
     let readings = if state.connected() {
-        match android_call("readings", "()Ljava/lang/String;") {
+        match android_invoke(jni::jni_str!("readings"), BridgeCall::Read(None)) {
             Ok(body) => decode_readings(&body),
             Err(_) => Vec::new(),
         }
@@ -391,104 +391,92 @@ fn android_request() {
 }
 
 #[cfg(target_os = "android")]
-fn android_call(method: &str, signature: &str) -> Result<String, String> {
-    android_invoke(method, signature, None)
+enum BridgeCall<'a> {
+    Void,
+    Read(Option<&'a str>),
 }
 
 /// Calls `HealthConnectBridge.<method>(Context, String): String`.
 #[cfg(target_os = "android")]
-pub(crate) fn android_call_string(method: &str, argument: &str) -> Result<String, String> {
-    android_invoke(
-        method,
-        "(Ljava/lang/String;)Ljava/lang/String;",
-        Some(argument),
-    )
+pub(crate) fn android_call_string(
+    method: &jni::strings::JNIStr,
+    argument: &str,
+) -> Result<String, String> {
+    android_invoke(method, BridgeCall::Read(Some(argument)))
 }
 
 #[cfg(target_os = "android")]
-fn android_invoke(method: &str, signature: &str, argument: Option<&str>) -> Result<String, String> {
+fn android_invoke(method: &jni::strings::JNIStr, call: BridgeCall<'_>) -> Result<String, String> {
     use jni::objects::{JClass, JObject, JString, JValue};
+    use jni::{jni_sig, jni_str};
+
     let ctx = ndk_context::android_context();
-    let vm =
-        unsafe { jni::JavaVM::from_raw(ctx.vm().cast()) }.map_err(|error| error.to_string())?;
-    let mut env = vm
-        .attach_current_thread()
-        .map_err(|error| error.to_string())?;
-    let context = unsafe { JObject::from_raw(ctx.context().cast()) };
-    let result = (|| -> Result<String, String> {
+    let vm_ptr = ctx.vm();
+    let context_ptr = ctx.context();
+    if vm_ptr.is_null() || context_ptr.is_null() {
+        return Err("Android context unavailable".into());
+    }
+    let vm = unsafe { jni::JavaVM::from_raw(vm_ptr.cast()) };
+    vm.attach_current_thread(|env| -> jni::errors::Result<String> {
+        let context = unsafe { JObject::from_raw(env, context_ptr.cast()) };
         // A native thread's FindClass cannot see the app's classes. Load the
         // bridge through the activity class loader instead.
-        let activity_class = env
-            .get_object_class(&context)
-            .map_err(|error| error.to_string())?;
+        let activity_class = env.get_object_class(&context)?;
         let loader = env
             .call_method(
                 activity_class,
-                "getClassLoader",
-                "()Ljava/lang/ClassLoader;",
+                jni_str!("getClassLoader"),
+                jni_sig!("()Ljava/lang/ClassLoader;"),
                 &[],
-            )
-            .map_err(|error| error.to_string())?
-            .l()
-            .map_err(|error| error.to_string())?;
-        let class_name = env
-            .new_string("coda.duet.HealthConnectBridge")
-            .map_err(|error| error.to_string())?;
+            )?
+            .l()?;
+        let class_name = env.new_string("coda.duet.HealthConnectBridge")?;
         let bridge = env
             .call_method(
                 loader,
-                "loadClass",
-                "(Ljava/lang/String;)Ljava/lang/Class;",
+                jni_str!("loadClass"),
+                jni_sig!("(Ljava/lang/String;)Ljava/lang/Class;"),
                 &[JValue::Object(&class_name)],
-            )
-            .map_err(|error| error.to_string())?
-            .l()
-            .map_err(|error| error.to_string())?;
-        let bridge = JClass::from(bridge);
-        if signature.ends_with(")V") {
-            env.call_static_method(
-                bridge,
-                method,
-                "(Landroid/content/Context;)V",
-                &[JValue::Object(&context)],
-            )
-            .map(|_| String::new())
-            .map_err(|error| error.to_string())
-        } else {
-            let value = match argument {
-                Some(argument) => {
-                    let argument = env
-                        .new_string(argument)
-                        .map_err(|error| error.to_string())?;
-                    env.call_static_method(
-                        bridge,
-                        method,
-                        "(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;",
-                        &[JValue::Object(&context), JValue::Object(&argument)],
-                    )
-                }
-                None => env.call_static_method(
+            )?
+            .l()?;
+        let bridge = env.cast_local::<JClass>(bridge)?;
+        match call {
+            BridgeCall::Void => {
+                env.call_static_method(
                     bridge,
                     method,
-                    "(Landroid/content/Context;)Ljava/lang/String;",
+                    jni_sig!("(Landroid/content/Context;)V"),
                     &[JValue::Object(&context)],
-                ),
+                )?;
+                Ok(String::new())
             }
-            .map_err(|error| error.to_string())?;
-            let object = value.l().map_err(|error| error.to_string())?;
-            let jstring = JString::from(object);
-            let text = env
-                .get_string(&jstring)
-                .map_err(|error| error.to_string())?;
-            Ok(text.to_str().map_err(|error| error.to_string())?.to_owned())
+            BridgeCall::Read(argument) => {
+                let value = match argument {
+                    Some(argument) => {
+                        let argument = env.new_string(argument)?;
+                        env.call_static_method(
+                            bridge,
+                            method,
+                            jni_sig!(
+                                "(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;"
+                            ),
+                            &[JValue::Object(&context), JValue::Object(&argument)],
+                        )?
+                    }
+                    None => env.call_static_method(
+                        bridge,
+                        method,
+                        jni_sig!("(Landroid/content/Context;)Ljava/lang/String;"),
+                        &[JValue::Object(&context)],
+                    )?,
+                };
+                let object = value.l()?;
+                let jstring = env.cast_local::<JString>(object)?;
+                jstring.try_to_string(env)
+            }
         }
-    })();
-    if env.exception_check().unwrap_or(false) {
-        env.exception_clear().ok();
-    }
-    // The activity context is a global reference owned by the runtime.
-    std::mem::forget(context);
-    result
+    })
+    .map_err(|error| error.to_string())
 }
 
 #[derive(Debug, Deserialize)]

@@ -970,13 +970,13 @@ pub struct AndroidHealthConnectBridge;
 impl HealthConnectBridge for AndroidHealthConnectBridge {
     fn changes_token(&self, record_types: &[String]) -> Result<String, BridgeError> {
         let request = serde_json::to_string(record_types).unwrap_or_else(|_| "[]".into());
-        let body = crate::android_call_string("getChangesToken", &request)
+        let body = crate::android_call_string(jni::jni_str!("getChangesToken"), &request)
             .map_err(|message| BridgeError::Failed { message })?;
         decode_changes_token_reply(&body)
     }
 
     fn changes(&self, token: &str) -> Result<HealthConnectChanges, BridgeError> {
-        let body = crate::android_call_string("getChanges", token)
+        let body = crate::android_call_string(jni::jni_str!("getChanges"), token)
             .map_err(|message| BridgeError::Failed { message })?;
         decode_changes_reply(&body)
     }
