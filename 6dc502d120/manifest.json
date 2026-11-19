@@ -1,0 +1,66 @@
+{
+  "branch": "tyler-eng-271-2-document-page-tool-and-suite",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC2",
+      "label": "PostgreSQL versioned document archive, host tool, and reader benchmark suite",
+      "kind": "run",
+      "revision": "773640af36d4fa0ab65ae4db704773596d388f8b",
+      "dirty": false,
+      "recorded": "2026-11-18T23:36:45+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "attachments",
+        "--",
+        "--include-ignored",
+        "--nocapture"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-PostgreSQL-versioned-document-archive-host-tool-.log"
+      ],
+      "seconds": 54.5,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "6dc502d12071b62b7e52cdc903da835edebdeee8",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC3",
+      "label": "Unique host tool registration checks across chat and practice job recipes",
+      "kind": "run",
+      "revision": "773640af36d4fa0ab65ae4db704773596d388f8b",
+      "dirty": false,
+      "recorded": "2026-11-18T23:37:40+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "runtime::jobs::tests"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-Unique-host-tool-registration-checks-across-chat.log"
+      ],
+      "seconds": 47.3,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "6dc502d12071b62b7e52cdc903da835edebdeee8",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    }
+  ]
+}
