@@ -1760,11 +1760,14 @@ impl Store {
         }
 
         if crate::attachments::is_document_page_tool(&call.name) {
+            let labels = crate::physician_sources::Labels::of_work(records);
+            let cite_as = labels.document_page_label(&arguments);
             return self
-                .execute_document_page_tool(
+                .execute_document_page_tool_with_cite_as(
                     &claim.scope.practice,
                     &claim.scope.workspace,
                     &arguments,
+                    cite_as.as_deref(),
                 )
                 .await;
         }
@@ -1776,9 +1779,11 @@ impl Store {
         }
 
         if crate::clinical_library::is_library_tool(&call.name) {
+            let labels = crate::physician_sources::Labels::of_work(records);
+            let cite_as = labels.library_label(&arguments);
             let outcome = self
                 .clinical_library()
-                .execute(&call.name, &arguments)
+                .execute_with_cite_as(&call.name, &arguments, cite_as.as_deref())
                 .await;
             if let ToolOutcome::Returned(raw) = &outcome
                 && let Ok(mut parsed) = serde_json::from_str::<Value>(raw)
@@ -2018,6 +2023,17 @@ impl Store {
         workspace: &str,
         arguments: &Value,
     ) -> Result<ToolOutcome, engine::ProductError> {
+        self.execute_document_page_tool_with_cite_as(practice, workspace, arguments, None)
+            .await
+    }
+
+    async fn execute_document_page_tool_with_cite_as(
+        &self,
+        practice: &str,
+        workspace: &str,
+        arguments: &Value,
+        cite_as: Option<&str>,
+    ) -> Result<ToolOutcome, engine::ProductError> {
         let withheld_state =
             super::link_correction::load_workspace_withheld_state_in_tx(&self.db, workspace)
                 .await
@@ -2083,7 +2099,11 @@ impl Store {
                 retained.push(decoded);
             }
         }
-        Ok(crate::attachments::execute_document_page_read_from_revisions(arguments, &retained))
+        Ok(
+            crate::attachments::execute_document_page_read_from_revisions_with_cite_as(
+                arguments, &retained, cite_as,
+            ),
+        )
     }
 
     /// Reconciles an already-committed durable chat tool effect read-only when an

@@ -718,7 +718,7 @@ async fn exact_read_returns_identical_passage_and_reports_not_found_when_absent(
         else {
             panic!("expected Returned outcome from read_clinical_library");
         };
-        let LibraryReadOutcome::Passage { passage } = serde_json::from_str(&read_json).unwrap()
+        let LibraryReadOutcome::Passage { passage, .. } = serde_json::from_str(&read_json).unwrap()
         else {
             panic!("expected exact passage for {}", searched.passage_id);
         };
@@ -1030,7 +1030,8 @@ async fn google_metadata_oidc_mints_per_call_jwt_and_surfaces_metadata_failures_
     else {
         panic!("expected Returned outcome from OIDC-authenticated read");
     };
-    let LibraryReadOutcome::Passage { passage } = serde_json::from_str(&read_raw).unwrap() else {
+    let LibraryReadOutcome::Passage { passage, .. } = serde_json::from_str(&read_raw).unwrap()
+    else {
         panic!("expected OIDC read passage");
     };
     assert_eq!(passage.passage_id.as_str(), USPSTF_UNIT_ID);
@@ -1460,7 +1461,7 @@ async fn chat_question_needing_literature_searches_reads_and_cites_library_passa
                             _ => None,
                         })
                         .expect("exact passage read delivered");
-                    let LibraryReadOutcome::Passage { passage } =
+                    let LibraryReadOutcome::Passage { passage, .. } =
                         serde_json::from_str(output).unwrap()
                     else {
                         panic!("expected exact passage");
@@ -1574,7 +1575,7 @@ async fn chat_question_needing_literature_searches_reads_and_cites_library_passa
     let reopened = library_client
         .read_passage(&PassageId::new(cited_id).unwrap())
         .await;
-    let LibraryReadOutcome::Passage { passage } = reopened else {
+    let LibraryReadOutcome::Passage { passage, .. } = reopened else {
         panic!("expected cited passage to reopen");
     };
     assert_eq!(passage.source.document_id, "setid-88a1bc02-dapagliflozin");
@@ -1672,7 +1673,7 @@ async fn phi_phone_iso_date_notice_relations_and_truncated_scan_behave_closed() 
     let read_notice = client
         .read_passage(&PassageId::new(notice_unit_id).unwrap())
         .await;
-    let LibraryReadOutcome::Passage { passage } = read_notice else {
+    let LibraryReadOutcome::Passage { passage, .. } = read_notice else {
         panic!("expected notice passage to read cleanly");
     };
     assert_eq!(passage.status, PublicationStatus::Current);
@@ -1695,4 +1696,82 @@ async fn phi_phone_iso_date_notice_relations_and_truncated_scan_behave_closed() 
             reason: "clinical_library_collection_scan_truncated".into(),
         }
     );
+}
+
+#[tokio::test]
+async fn freshness_endpoint_reports_honest_standing_or_unavailable() {
+    use local_product::clinical_library::{
+        LibraryFreshnessOutcome, WireLibraryStanding, WireSourceFreshnessState,
+    };
+
+    // Unconfigured client never claims the library is current.
+    let unconfigured = ClinicalLibraryClient::unconfigured();
+    assert!(matches!(
+        unconfigured.freshness().await,
+        LibraryFreshnessOutcome::Unavailable { .. }
+    ));
+
+    // HTTP 404 or 500 surfaces as Unavailable.
+    let err_app = axum::Router::new().route(
+        "/v1/freshness",
+        axum::routing::get(|| async { axum::http::StatusCode::SERVICE_UNAVAILABLE }),
+    );
+    let err_listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let err_addr = err_listener.local_addr().unwrap();
+    tokio::spawn(async move {
+        axum::serve(err_listener, err_app).await.unwrap();
+    });
+    let err_client = ClinicalLibraryClient::http(format!("http://{err_addr}")).unwrap();
+    assert!(matches!(
+        err_client.freshness().await,
+        LibraryFreshnessOutcome::Unavailable { .. }
+    ));
+
+    // Stale report parses cleanly with named reason and NeverRefreshed/Lagging sources.
+    let stale_app = axum::Router::new().route(
+        "/v1/freshness",
+        axum::routing::get(|| async {
+            axum::Json(json!({
+                "standing": "stale",
+                "reason": "DailyMed has not completed refresh",
+                "active_version": null,
+                "last_night_recorded_at": null,
+                "last_night_outcome": null,
+                "sources": [
+                    {
+                        "source_code": "dailymed",
+                        "source_display_name": "DailyMed",
+                        "status": { "state": "never_refreshed" },
+                        "admitted_count": 0
+                    }
+                ],
+                "open_alerts": 0,
+                "search_latency": {
+                    "endpoint": "search",
+                    "sample_count": 0,
+                    "p50_ms": 0.0,
+                    "p95_ms": 0.0,
+                    "p99_ms": 0.0,
+                    "within_targets": null
+                }
+            }))
+        }),
+    );
+    let stale_listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let stale_addr = stale_listener.local_addr().unwrap();
+    tokio::spawn(async move {
+        axum::serve(stale_listener, stale_app).await.unwrap();
+    });
+    let stale_client = ClinicalLibraryClient::http(format!("http://{stale_addr}")).unwrap();
+    let LibraryFreshnessOutcome::Report(report) = stale_client.freshness().await else {
+        panic!("expected parsed freshness report");
+    };
+    assert!(matches!(
+        report.standing,
+        WireLibraryStanding::Stale { ref reason } if reason.contains("DailyMed")
+    ));
+    assert!(matches!(
+        report.sources[0].status,
+        WireSourceFreshnessState::NeverRefreshed
+    ));
 }

@@ -162,19 +162,23 @@ pub(super) struct SearchReceipt {
     pub(super) results: Vec<SearchReceiptHit>,
 }
 
-/// A label such as `S3`: the short name of one version in this work.
+/// A label such as `S3`, `L1`, or `D1`: the short name of one version in this work.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(transparent)]
 pub(super) struct Label(pub(super) String);
 
-/// The labels of one work. The Nth distinct version a chart read of this work
-/// asked for is `S{N}`. Reads ask in their saved `ToolStarted` order, which is
-/// fixed before any read runs, so reads that run together agree. A label
-/// names its version for a citation only once a read of this work returned
-/// that version.
-pub struct Labels(Vec<Version>);
+/// The labels of one work. The Nth distinct version a chart read asks for is `S{N}`,
+/// the Nth clinical library passage read is `L{N}`, and the Nth document page read is
+/// `D{N}`. Reads ask in their saved `ToolStarted` order, which is fixed before any
+/// read runs, so reads that run together agree. A label names its version for a
+/// citation only once a read of this work returned that version.
+pub struct Labels {
+    chart: Vec<Version>,
+    library: Vec<LibraryReadLabel>,
+    document_pages: Vec<DocumentPageReadLabel>,
+}
 
-/// One version a read of this work asked for.
+/// One version a chart read of this work asked for.
 struct Version {
     candidate_id: String,
     revision: String,
@@ -183,10 +187,30 @@ struct Version {
     returned: bool,
 }
 
+/// One clinical library passage a read of this work asked for.
+struct LibraryReadLabel {
+    passage_id: String,
+    revision: String,
+    returned: bool,
+}
+
+/// One document page a read of this work asked for.
+struct DocumentPageReadLabel {
+    document_id: String,
+    requested_version: Option<u64>,
+    page_number: u32,
+    revision: String,
+    returned: bool,
+}
+
 impl Labels {
     /// The labels of the work whose records these are, in any window.
     pub fn of_work<'a>(records: impl IntoIterator<Item = &'a (Event, bool)>) -> Self {
-        let mut labels = Self(Vec::new());
+        let mut labels = Self {
+            chart: Vec::new(),
+            library: Vec::new(),
+            document_pages: Vec::new(),
+        };
         for (event, _) in records {
             if let EventKind::ToolStarted(call) = &event.kind {
                 labels.ask(&call.name, &call.arguments);
@@ -197,17 +221,90 @@ impl Labels {
         labels
     }
 
-    /// Adds each version a chart read asks for that no earlier read asked for.
+    /// Returns the assigned `L{N}` citation label for a `read_clinical_library`
+    /// call whose `ToolStarted` was recorded in this work.
+    pub(crate) fn library_label(&self, arguments: &Value) -> Option<String> {
+        let Ok(crate::clinical_library::ClinicalLibraryRequest::Read { passage_id }) =
+            crate::clinical_library::ClinicalLibraryRequest::parse(
+                crate::clinical_library::READ_LIBRARY_TOOL,
+                arguments,
+            )
+        else {
+            return None;
+        };
+        self.library
+            .iter()
+            .position(|known| known.passage_id == passage_id.as_str())
+            .map(|idx| format!("L{}", idx + 1))
+    }
+
+    /// Returns the assigned `D{N}` citation label for a `read_document_page`
+    /// call whose `ToolStarted` was recorded in this work.
+    pub(crate) fn document_page_label(&self, arguments: &Value) -> Option<String> {
+        let doc_id = arguments.get("document_id").and_then(Value::as_str)?.trim();
+        let requested_version = arguments.get("version").and_then(Value::as_u64);
+        let page_number =
+            u32::try_from(arguments.get("page_number").and_then(Value::as_u64)?).ok()?;
+        if doc_id.is_empty() || page_number == 0 {
+            return None;
+        }
+        self.document_pages
+            .iter()
+            .position(|known| {
+                known.document_id == doc_id
+                    && known.requested_version == requested_version
+                    && known.page_number == page_number
+            })
+            .map(|idx| format!("D{}", idx + 1))
+    }
+
+    /// Adds each version a chart, clinical library, or document-page read asks for
+    /// that no earlier read asked for.
     fn ask(&mut self, name: &str, arguments: &str) {
         let Ok(arguments) = serde_json::from_str::<Value>(arguments) else {
             return;
         };
+        if name == crate::clinical_library::READ_LIBRARY_TOOL {
+            if let Ok(crate::clinical_library::ClinicalLibraryRequest::Read { passage_id }) =
+                crate::clinical_library::ClinicalLibraryRequest::parse(name, &arguments)
+                && self.library_label(&arguments).is_none()
+            {
+                self.library.push(LibraryReadLabel {
+                    passage_id: passage_id.as_str().to_owned(),
+                    revision: String::new(),
+                    returned: false,
+                });
+            }
+            return;
+        }
+        if name == crate::attachments::READ_DOCUMENT_PAGE_TOOL {
+            if let Some(doc_id) = arguments.get("document_id").and_then(Value::as_str)
+                && let Some(page_num_u64) = arguments.get("page_number").and_then(Value::as_u64)
+                && let Ok(page_number) = u32::try_from(page_num_u64)
+            {
+                let doc_id = doc_id.trim();
+                let requested_version = arguments.get("version").and_then(Value::as_u64);
+                if !doc_id.is_empty()
+                    && page_number > 0
+                    && self.document_page_label(&arguments).is_none()
+                {
+                    self.document_pages.push(DocumentPageReadLabel {
+                        document_id: doc_id.to_owned(),
+                        requested_version,
+                        page_number,
+                        revision: String::new(),
+                        returned: false,
+                    });
+                }
+            }
+            return;
+        }
         let Ok(read) = ChartRequest::parse(name, &arguments, ChartScope::Chat) else {
             return;
         };
         for (candidate_id, revision) in read.versions() {
             if self.of(candidate_id, revision).is_none() {
-                self.0.push(Version {
+                self.chart.push(Version {
                     candidate_id: candidate_id.to_owned(),
                     revision: revision.to_owned(),
                     returned: false,
@@ -216,62 +313,117 @@ impl Labels {
         }
     }
 
-    /// Marks returned each version whose label a record or passage of this
-    /// result carries. Only a result's own original counts: a projection of
-    /// an earlier result adds nothing new, and a result that is not a read
-    /// receipt carries no label.
+    /// Marks returned each version whose label a record, passage, library read, or
+    /// document page read carries. Only a result's own original counts.
     fn return_labels(&mut self, result: &ToolResult) {
-        let Some(Ok(receipt)) = result.original().map(serde_json::from_str::<ReadReceipt>) else {
+        let Some(original) = result.original() else {
             return;
         };
-        for record in &receipt.results {
-            let label = match record {
-                RecordReceipt::Available {
-                    cite_as: Some(label),
-                    ..
+        if let Ok(receipt) = serde_json::from_str::<ReadReceipt>(original) {
+            for record in &receipt.results {
+                let label = match record {
+                    RecordReceipt::Available {
+                        cite_as: Some(label),
+                        ..
+                    }
+                    | RecordReceipt::Passage {
+                        cite_as: Some(label),
+                        ..
+                    } => label,
+                    RecordReceipt::Available { cite_as: None, .. }
+                    | RecordReceipt::Passage { cite_as: None, .. }
+                    | RecordReceipt::Unavailable { .. }
+                    | RecordReceipt::OverBudget { .. } => continue,
+                };
+                if let Some(index) = self.chart_index(label) {
+                    self.chart[index].returned = true;
                 }
-                | RecordReceipt::Passage {
-                    cite_as: Some(label),
-                    ..
-                } => label,
-                RecordReceipt::Available { cite_as: None, .. }
-                | RecordReceipt::Passage { cite_as: None, .. }
-                | RecordReceipt::Unavailable { .. }
-                | RecordReceipt::OverBudget { .. } => continue,
-            };
-            if let Some(index) = self.index(label) {
-                self.0[index].returned = true;
             }
+            return;
+        }
+        if let Ok(crate::clinical_library::LibraryReadOutcome::Passage {
+            passage,
+            cite_as: Some(label),
+        }) = serde_json::from_str::<crate::clinical_library::LibraryReadOutcome>(original)
+        {
+            if let Some(idx) = prefixed_index(&label, 'L', self.library.len())
+                && let Some(entry) = self.library.get_mut(idx)
+                && entry.passage_id == passage.passage_id.as_str()
+            {
+                entry.revision = passage.content_sha256;
+                entry.returned = true;
+            }
+            return;
+        }
+        if let Ok(val) = serde_json::from_str::<Value>(original)
+            && val.get("outcome").and_then(Value::as_str) == Some("available")
+            && let Some(label) = val.get("cite_as").and_then(Value::as_str)
+            && let Some(doc_id) = val.get("document_id").and_then(Value::as_str)
+            && let Some(page_number) = val
+                .get("page_number")
+                .and_then(Value::as_u64)
+                .and_then(|n| u32::try_from(n).ok())
+            && let Some(idx) = prefixed_index(label, 'D', self.document_pages.len())
+            && let Some(entry) = self.document_pages.get_mut(idx)
+            && entry.document_id == doc_id
+            && entry.page_number == page_number
+        {
+            let base_rev = val
+                .get("revision")
+                .and_then(Value::as_str)
+                .map(str::to_owned)
+                .or_else(|| {
+                    val.get("version")
+                        .and_then(Value::as_u64)
+                        .map(|v| format!("v{v}"))
+                })
+                .unwrap_or_else(|| "v1".to_owned());
+            entry.revision = format!("{base_rev}:p{page_number}");
+            entry.returned = true;
         }
     }
 
     fn of(&self, candidate_id: &str, revision: &str) -> Option<Label> {
-        self.0
+        self.chart
             .iter()
             .position(|known| known.candidate_id == candidate_id && known.revision == revision)
             .map(label_at)
     }
 
-    /// Where the version `label` names sits, when it names one.
-    fn index(&self, label: &Label) -> Option<usize> {
-        let index = label
-            .0
-            .strip_prefix('S')?
-            .parse::<usize>()
-            .ok()?
-            .checked_sub(1)?;
-        (index < self.0.len() && label_at(index) == *label).then_some(index)
+    /// Where the chart version `label` names sits, when it names one.
+    fn chart_index(&self, label: &Label) -> Option<usize> {
+        prefixed_index(&label.0, 'S', self.chart.len())
     }
 
     /// The version, as `(candidate_id, revision)`, that a read of this work
     /// gave this label, or `None` when no read gave it: no read asked for a
     /// version with this label, or none returned it.
     pub(super) fn version(&self, label: &Label) -> Option<(&str, &str)> {
-        let version = &self.0[self.index(label)?];
-        version
-            .returned
-            .then_some((version.candidate_id.as_str(), version.revision.as_str()))
+        if let Some(index) = self.chart_index(label) {
+            let version = &self.chart[index];
+            return version
+                .returned
+                .then_some((version.candidate_id.as_str(), version.revision.as_str()));
+        }
+        if let Some(index) = prefixed_index(&label.0, 'L', self.library.len()) {
+            let entry = &self.library[index];
+            return (entry.returned && !entry.revision.is_empty())
+                .then_some((entry.passage_id.as_str(), entry.revision.as_str()));
+        }
+        if let Some(index) = prefixed_index(&label.0, 'D', self.document_pages.len()) {
+            let entry = &self.document_pages[index];
+            return (entry.returned && !entry.revision.is_empty())
+                .then_some((entry.document_id.as_str(), entry.revision.as_str()));
+        }
+        None
     }
+}
+
+/// Canonical `{prefix}{1..=len}` index parser (rejects non-canonical forms like `L01`).
+fn prefixed_index(label: &str, prefix: char, len: usize) -> Option<usize> {
+    let rest = label.strip_prefix(prefix)?;
+    let index = rest.parse::<usize>().ok()?.checked_sub(1)?;
+    (index < len && format!("{prefix}{}", index + 1) == label).then_some(index)
 }
 
 /// The label of the version at `index`.

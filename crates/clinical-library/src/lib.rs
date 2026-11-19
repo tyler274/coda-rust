@@ -27,13 +27,17 @@
 pub mod alert;
 pub mod article;
 pub mod candidate;
+pub mod corpus;
 pub mod failure;
+pub mod freshness;
 pub mod migration;
 pub mod night;
 pub mod pubmed;
 pub mod runner;
+pub mod server;
 pub mod slot;
 pub mod source;
+pub mod sources;
 pub mod stop_rule;
 pub mod storage;
 mod store;
@@ -41,10 +45,21 @@ mod store;
 pub use alert::Alert;
 pub use article::{ArticleEvent, ArticleState, InvalidMove, RETRY_LIMIT, Retry, WaitReason};
 pub use candidate::{Activation, Built, Candidate, CheckFailed, Checked, VersionId};
+pub use corpus::{
+    BibliographicObservation, BibliographicRelationship, CorpusError, DEFAULT_SEARCH_LIMIT,
+    DocumentIdentifier, DocumentRelationship, IngestedDocument, IngestedUnit, LatencySummary,
+    LifecycleState, ReadEvidenceUnit, ReadItemOutcome, ReadUnavailableCause, RelationshipType,
+    SearchCandidate, SearchPage, SearchResult, SourceCheckStanding, TARGET_SEARCH_P95_MS,
+    TARGET_SEARCH_P99_MS, sha256_hex, source_wire_identity,
+};
 pub use failure::FailureCode;
+pub use freshness::{
+    LibraryFreshnessReport, LibraryStanding, SourceFreshness, SourceFreshnessState,
+};
 pub use night::{DeferralReason, NightOutcome, OutcomeKind, Streak, Succeeded, Tally};
 pub use runner::{Completion, Ending, Failure, FailureDetail, Job, JobError, Night, run_night};
 pub use slot::{HolderState, Lease, Platform, RunId, SlotName, SlotWait, Takeover};
 pub use source::{InvalidItemKey, ItemKey, OtherSource, Source};
+pub use sources::{CorpusFeedItem, CorpusJobError, CorpusNightJob, SourceParseError};
 pub use stop_rule::{HistoryEntry, Next, StopReason};
 pub use store::{Acquired, Corruption, Store, StoreError};

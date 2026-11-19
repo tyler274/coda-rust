@@ -514,7 +514,7 @@ fn collect_work_observations(attempts: &[Attempt]) -> HashMap<String, WorkObserv
                             .or_else(|| val.get("candidate_id"))
                             .and_then(Value::as_str)
                     {
-                        let revision = val
+                        let base_revision = val
                             .get("revision")
                             .and_then(Value::as_str)
                             .map(str::to_owned)
@@ -526,6 +526,7 @@ fn collect_work_observations(attempts: &[Attempt]) -> HashMap<String, WorkObserv
                             .unwrap_or_else(|| "v1".to_owned());
                         let page_number =
                             val.get("page_number").and_then(Value::as_u64).unwrap_or(1);
+                        let revision = format!("{base_revision}:p{page_number}");
                         let text = val
                             .get("text")
                             .and_then(Value::as_str)
@@ -541,12 +542,53 @@ fn collect_work_observations(attempts: &[Attempt]) -> HashMap<String, WorkObserv
                                 candidate_id: doc_id.to_owned(),
                                 revision,
                                 quote,
-                                fallback_record_type: label,
+                                fallback_record_type: label.clone(),
                                 fallback_body: readable_body,
                                 fallback_raw: text,
                                 fallback_readable_parts: Vec::new(),
                                 fallback_date: None,
-                                fallback_provenance: Value::Null,
+                                fallback_provenance: serde_json::json!({
+                                    "source_id": "chart",
+                                    "source_label": label,
+                                    "title": format!("{doc_id} · page {page_number}"),
+                                }),
+                            });
+                        }
+                    } else if tool_name == crate::clinical_library::READ_LIBRARY_TOOL
+                        && let Ok(crate::clinical_library::LibraryReadOutcome::Passage {
+                            passage,
+                            ..
+                        }) = serde_json::from_str::<crate::clinical_library::LibraryReadOutcome>(
+                            output,
+                        )
+                    {
+                        let passage_id = passage.passage_id.as_str().to_owned();
+                        let revision = passage.content_sha256.clone();
+                        if !entry.reads.iter().any(|existing| {
+                            existing.candidate_id == passage_id && existing.revision == revision
+                        }) {
+                            let title = passage.source.title.clone();
+                            let body = format_cited_source_body(&title, &[], &passage.text);
+                            let quote = truncate_clean(&body, 220);
+                            let passage_text = passage.text.clone();
+                            entry.reads.push(ObservedRead {
+                                candidate_id: passage_id,
+                                revision,
+                                quote,
+                                fallback_record_type: format!(
+                                    "{} · {}",
+                                    passage.source.collection.as_str(),
+                                    passage.source.document_id
+                                ),
+                                fallback_body: body,
+                                fallback_raw: passage_text,
+                                fallback_readable_parts: Vec::new(),
+                                fallback_date: Some(passage.date),
+                                fallback_provenance: serde_json::json!({
+                                    "source_id": "clinical_library",
+                                    "source_label": format!("Clinical library · {}", passage.attribution),
+                                    "title": title,
+                                }),
                             });
                         }
                     }
@@ -880,10 +922,12 @@ fn reconstruct_finished_turn(
                     truncate_clean(&body, 220)
                 }
             });
+            let source_id = provenance_string(&read.fallback_provenance, &["source_id"])
+                .unwrap_or_else(|| "chart".to_owned());
             CitedSourceReadback {
                 source_key: source_key.clone(),
                 number,
-                source_id: "chart".to_owned(),
+                source_id,
                 source_label,
                 candidate_id: read.candidate_id.clone(),
                 revision: read.revision.clone(),
@@ -1822,5 +1866,205 @@ mod unit_tests {
             "Flags: High, Repeat\nPotassium mmol l: 5.4\nTest: Basic metabolic panel\nUrgent: Yes"
         );
         assert!(!rendered.as_str().contains('{') && !rendered.as_str().contains('}'));
+    }
+
+    #[test]
+    fn reconstruct_finished_turn_extracts_exact_quotes_for_library_and_document_page_marks() {
+        use harness::engine::{Event, EventKind, Invocation, results::ToolResult};
+
+        let passage_text = "Initiate 10 mg daily when eGFR >= 25 mL/min/1.73 m2.";
+        let passage_sha = crate::sha256_hex(passage_text.as_bytes());
+        let passage_id = "22222222-2222-4222-8222-222222222202";
+        let page_text = "LVEF 61% preserved systolic function.";
+
+        let lib_started = Event {
+            attempt_id: "att-ld".into(),
+            sequence: 1,
+            ordinal: 1,
+            kind: EventKind::ToolStarted(Invocation {
+                id: "lib-1".into(),
+                name: crate::clinical_library::READ_LIBRARY_TOOL.into(),
+                arguments: serde_json::json!({ "passage_id": passage_id }).to_string(),
+            }),
+        };
+        let lib_json = serde_json::json!({
+            "outcome": "passage",
+            "cite_as": "L1",
+            "passage": {
+                "passage_id": passage_id,
+                "source": {
+                    "collection": "dailymed",
+                    "document_id": "setid-dapa",
+                    "title": "Dapagliflozin prescribing information",
+                    "section": "Dosage and Administration"
+                },
+                "date": "2025-11-03",
+                "status": { "state": "current" },
+                "attribution": "DailyMed",
+                "text": passage_text,
+                "content_sha256": passage_sha,
+            }
+        })
+        .to_string();
+        let lib_returned = Event {
+            attempt_id: "att-ld".into(),
+            sequence: 2,
+            ordinal: 1,
+            kind: EventKind::ToolReturned {
+                call_id: "lib-1".into(),
+                result: ToolResult::Original(lib_json.clone()),
+            },
+        };
+        let doc_started = Event {
+            attempt_id: "att-ld".into(),
+            sequence: 3,
+            ordinal: 1,
+            kind: EventKind::ToolStarted(Invocation {
+                id: "doc-1".into(),
+                name: crate::attachments::READ_DOCUMENT_PAGE_TOOL.into(),
+                arguments: serde_json::json!({
+                    "document_id": "fax-echo",
+                    "version": 1,
+                    "page_number": 2
+                })
+                .to_string(),
+            }),
+        };
+        let doc_json = serde_json::json!({
+            "outcome": "available",
+            "cite_as": "D1",
+            "document_id": "fax-echo",
+            "version": 1,
+            "revision": "v1",
+            "page_number": 2,
+            "page_count": 3,
+            "text": page_text,
+        })
+        .to_string();
+        let doc_returned = Event {
+            attempt_id: "att-ld".into(),
+            sequence: 4,
+            ordinal: 1,
+            kind: EventKind::ToolReturned {
+                call_id: "doc-1".into(),
+                result: ToolResult::Original(doc_json.clone()),
+            },
+        };
+        let finish_turn = harness::engine::Turn {
+            items: vec![harness::engine::Item::Call(Invocation {
+                id: "fin-ld".into(),
+                name: crate::physician_sources::citations::FINISH_TOOL.into(),
+                arguments: serde_json::json!({
+                    "answer": "Echo shows LVEF 61% [D1] and dapagliflozin 10 mg is supported [L1].",
+                    "quotes": [
+                        { "label": "D1", "quote": "LVEF 61%" },
+                        { "label": "L1", "quote": "Initiate 10 mg daily" }
+                    ],
+                    "descriptions": [],
+                    "basis": "Echo fax page 2 [D1] and DailyMed label [L1].",
+                    "cites_none": false
+                })
+                .to_string(),
+            })],
+            receipt: serde_json::json!({}),
+            usage: Default::default(),
+        };
+        let provider_started = Event {
+            attempt_id: "att-ld".into(),
+            sequence: 5,
+            ordinal: 2,
+            kind: EventKind::ProviderStarted {
+                dispatched_at_unix_ms: 5,
+                request: harness::engine::SavedRequest {
+                    added: vec![
+                        harness::engine::Item::Result {
+                            call_id: "lib-1".into(),
+                            output: harness::engine::results::ResultView::whole("lib-1", &lib_json),
+                        },
+                        harness::engine::Item::Result {
+                            call_id: "doc-1".into(),
+                            output: harness::engine::results::ResultView::whole("doc-1", &doc_json),
+                        },
+                    ],
+                    items: vec![
+                        harness::engine::RequestItem::Event {
+                            attempt: "att-ld".into(),
+                            sequence: 5,
+                            index: 0,
+                        },
+                        harness::engine::RequestItem::Event {
+                            attempt: "att-ld".into(),
+                            sequence: 5,
+                            index: 1,
+                        },
+                    ],
+                },
+                context: harness::engine::DispatchContext::default(),
+            },
+        };
+        let provider_returned = Event {
+            attempt_id: "att-ld".into(),
+            sequence: 6,
+            ordinal: 2,
+            kind: EventKind::ProviderReturned(finish_turn.clone()),
+        };
+
+        let records = [
+            (lib_started, true),
+            (lib_returned, true),
+            (doc_started, true),
+            (doc_returned, true),
+            (provider_started, true),
+            (provider_returned, true),
+        ];
+        let crate::physician_sources::citations::Decision::Save { text, finished } =
+            crate::physician_sources::citations::decide(&finish_turn, &records, &[]).unwrap()
+        else {
+            panic!("expected Decision::Save");
+        };
+
+        let events_only: Vec<Event> = records.into_iter().map(|(e, _)| e).collect();
+        let attempts = [Attempt {
+            id: "att-ld".into(),
+            predecessor: None,
+            work: "work-ld".into(),
+            revision: 1,
+            status: crate::runtime::AttemptStatus::Completed,
+            expires: 0,
+            events: events_only,
+        }];
+        let by_work = collect_work_observations(&attempts);
+        let work_obs = by_work.get("work-ld").expect("observed work");
+        let work_reads: HashMap<(String, String), ObservedRead> = work_obs
+            .reads
+            .iter()
+            .map(|r| ((r.candidate_id.clone(), r.revision.clone()), r.clone()))
+            .collect();
+        let saved_revisions = HashMap::new();
+        let tombstones = HashSet::new();
+        let source_labels = HashMap::new();
+        let ctx = TurnCitationContext {
+            reply_id: "work-ld:reply",
+            saved_revisions: &saved_revisions,
+            tombstone_withdrawn_candidates: &tombstones,
+            work_reads: &work_reads,
+            source_labels: &source_labels,
+        };
+        let ReconstructedFinishedTurn {
+            segments, sources, ..
+        } = reconstruct_finished_turn(&text, &finished, &ctx);
+        let quotes: Vec<String> = segments
+            .iter()
+            .filter_map(|seg| match seg {
+                HistorySegment::Citation { source_key, .. } => {
+                    sources.get(source_key).map(|s| s.quote.clone())
+                }
+                HistorySegment::Text { .. } => None,
+            })
+            .collect();
+        assert_eq!(
+            quotes,
+            vec!["LVEF 61%".to_owned(), "Initiate 10 mg daily".to_owned()]
+        );
     }
 }
