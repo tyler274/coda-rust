@@ -1,0 +1,36 @@
+{
+  "branch": "tyler-eng-312-2-reply-proposals-store-core",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "PostgreSQL reply proposals store compilation and migration ledger",
+      "kind": "run",
+      "revision": "04c3368dea33cd95126a4c526a1ed9b86c07e24a",
+      "dirty": false,
+      "recorded": "2026-11-18T23:22:16+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "runtime::tests::migration",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-PostgreSQL-reply-proposals-store-compilation-and.log"
+      ],
+      "seconds": 50.5,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "736882206e4e4e46ab70db8de7e066daba10cc60",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    }
+  ]
+}
