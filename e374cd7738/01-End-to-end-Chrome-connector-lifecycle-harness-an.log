@@ -1,0 +1,66 @@
+{
+  "scope": "VM Chrome API fixture + real loopback HTTP + real Chords bridge & MCP stdio; no live Hint or real Chrome",
+  "cases": [
+    {
+      "name": "connector neutrality: connector files contain zero EHR, host, patient, or chart-part names and manifest is named Coda",
+      "passed": true
+    },
+    {
+      "name": "host permissions & bootstrap: Chrome prompts for Chords and reader hosts on connect; page check copies no bearer token",
+      "passed": true
+    },
+    {
+      "name": "practice roster & whole Hint chart: 106-patient paged roster, dynamically added patient, all 16 sections + full note bodies, billing & Rx price/invoice redaction",
+      "passed": true
+    },
+    {
+      "name": "declared reads only: undeclared read and URL-carrying jobs are refused before any fetch",
+      "passed": true
+    },
+    {
+      "name": "shape guard: response with changed shape is reported as changed, never complete, and subsequent reads continue",
+      "passed": true
+    },
+    {
+      "name": "fault isolation & backoff: single 500 failure and multi-page partial failure are recorded without stopping other reads; 429 Retry-After waits and retries",
+      "passed": true
+    },
+    {
+      "name": "continuous background run & receipts: 9-hour operation without 4-hour stop and once-only outbox delivery across bridge + worker restart",
+      "passed": true
+    },
+    {
+      "name": "passive sign-in catch-up: unrenewable 401 halts reading and clears token; signing back into Hint passively catches up queued reads with zero tab/focus changes",
+      "passed": true
+    },
+    {
+      "name": "Auth replay, 403 access denial, tenant switch fence, and fast Stop abort verified",
+      "passed": true
+    },
+    {
+      "name": "second source reader & source/envelope fences: synthetic reader (acme) runs end-to-end while cross-source and malformed id/lease jobs are refused",
+      "passed": true
+    },
+    {
+      "name": "memory-only credentials: zero sign-in tokens or refresh credentials in chrome.storage.local, chrome.storage.sync, or bridge checkpoint",
+      "passed": true
+    }
+  ],
+  "tested_connector_sha256": "5084a31d9d03479afc7801de73487b9fda6d9c0d1bd184f87a3f9619e7605ea3",
+  "test_sha256": "6de68afb62900ae29991c346a5b14d5fc358c6d3b5a9947d3955aaecaf2146f7",
+  "sources": {
+    "../chrome/manifest.json": "17d39f408a969444637288439f44544caea3796ec9d8c5fa391907b0cb0e98a6",
+    "../chrome/connector.js": "5084a31d9d03479afc7801de73487b9fda6d9c0d1bd184f87a3f9619e7605ea3",
+    "../chrome/worker.js": "4bd271b27ce9c2ff6cd93108735e45fa47142457bf71125aa1cd27bc8f092076",
+    "../chrome/readers/index.js": "33754729494cc465ee79429b33e0c2181db2f50cd99e9be22ab6e45676a675c1",
+    "../chrome/readers/hint.js": "21059c5109a29cc1f915b5861049ee41c47dc231f85e0f93da3f043724e43b33",
+    "../chrome/readers/hint-page.js": "e151a9ed3807259adb98af251e06a5e38eb7da2a45c561f0852ba216cae16def",
+    "../chrome/options.html": "00e9121ecb241447920bc945c470291b5417988c31a09e8cf262013652f1cb93",
+    "../chrome/popup.js": "6fc1ed2f1179613250e217b287f74d390b81d84d1ad5bc82d91dfcc318282f5b",
+    "bridge.py": "b41d55fac7d05ba3a69551f05acf303120c20a11e38ae7e96eefece52d150005"
+  },
+  "passed": true,
+  "auth_requests": 22,
+  "chart_requests": 51,
+  "fixture_workdir": "/tmp/nix-shell.6S3qr6/coda-connector-test-E7begC"
+}
