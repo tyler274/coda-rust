@@ -1,0 +1,75 @@
+{
+  "branch": "tyler-eng-440-duet-typed-privacy-orm",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Duet typed SeaORM privacy unit and PostgreSQL integration tests",
+      "kind": "run",
+      "revision": "29ec123be05d37c9b81c6b6779e8192d6ee109b7",
+      "dirty": false,
+      "recorded": "2026-11-19T00:21:53+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "duet-api",
+        "--lib",
+        "--test",
+        "evidence_cohort",
+        "--test",
+        "durable_owners",
+        "--test",
+        "fresh_producers",
+        "--test",
+        "phone_outbox",
+        "--test",
+        "public_budget",
+        "--test",
+        "health_context_producer"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-Duet-typed-SeaORM-privacy-unit-and-PostgreSQL-in.log"
+      ],
+      "seconds": 57.7,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "b4681b45ddb801ec7545feda45468777fe3b6100",
+        "reason": "Rebased onto fa1ac67bd9; only unrelated upstream physician files changed below duet-api"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Cross-product boundary checks",
+      "kind": "run",
+      "revision": "29ec123be05d37c9b81c6b6779e8192d6ee109b7",
+      "dirty": false,
+      "recorded": "2026-11-19T00:22:51+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "boundaries",
+        "--lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-Cross-product-boundary-checks.log"
+      ],
+      "seconds": 1.8,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "b4681b45ddb801ec7545feda45468777fe3b6100",
+        "reason": "Rebased onto fa1ac67bd9; only unrelated upstream physician files changed below duet-api"
+      }
+    }
+  ]
+}
