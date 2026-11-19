@@ -1,0 +1,94 @@
+{
+  "branch": "tyler-eng-307-1-patient-reviews-routes",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Patient reviews wire types and control unit tests",
+      "kind": "run",
+      "revision": "101c9e62cd85cccf3dca3153d3312b6fed04fced",
+      "dirty": false,
+      "recorded": "2026-11-19T00:13:05+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-wire",
+        "--lib"
+      ],
+      "expect": "\\b[1-9][0-9]* passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "01-Patient-reviews-wire-types-and-control-unit-test.log"
+      ],
+      "seconds": 4.3,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "d13bb709bb57908cb98fd170c74c4e1b45f6ef5e",
+        "reason": "Clean rebase onto #46 (1a93d374c); workspace and wasm32 clippy plus unit checks re-verified"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Patient reviews client and sample route unit tests",
+      "kind": "run",
+      "revision": "101c9e62cd85cccf3dca3153d3312b6fed04fced",
+      "dirty": false,
+      "recorded": "2026-11-19T00:13:09+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--lib",
+        "reviews"
+      ],
+      "expect": "\\b[1-9][0-9]* passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "02-Patient-reviews-client-and-sample-route-unit-tes.log"
+      ],
+      "seconds": 60.6,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "d13bb709bb57908cb98fd170c74c4e1b45f6ef5e",
+        "reason": "Clean rebase onto #46 (1a93d374c); workspace and wasm32 clippy plus unit checks re-verified"
+      }
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "Local-product patient review projection unit tests",
+      "kind": "run",
+      "revision": "101c9e62cd85cccf3dca3153d3312b6fed04fced",
+      "dirty": false,
+      "recorded": "2026-11-19T00:14:10+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "reviews"
+      ],
+      "expect": "\\b[1-9][0-9]* passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "03-Local-product-patient-review-projection-unit-tes.log"
+      ],
+      "seconds": 43.2,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "d13bb709bb57908cb98fd170c74c4e1b45f6ef5e",
+        "reason": "Clean rebase onto #46 (1a93d374c); workspace and wasm32 clippy plus unit checks re-verified"
+      }
+    }
+  ]
+}
