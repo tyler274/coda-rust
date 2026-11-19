@@ -1,0 +1,131 @@
+{
+  "branch": "tyler-eng-313-3-matching-and-reply-ui",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC-MR-UI-CLIPPY",
+      "label": "Physician-app matching and reply UI host clippy",
+      "kind": "run",
+      "revision": "f0fba59b0fb4b975500c838b1465aed5a0188911",
+      "dirty": false,
+      "recorded": "2026-11-19T02:07:10+00:00",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "physician-app",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-Physician-app-matching-and-reply-UI-host-clippy.log"
+      ],
+      "seconds": 2.1,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "c5c3327e12d8c83c853a517f27a0f337f22f427e",
+        "reason": "Rebased onto final PR 91 (562055b56d); seam files preserved and full workspace/PG16/Chromium suites verified at PR 104 tip 59829dacb"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC-MR-UI-WASM",
+      "label": "Physician-app matching and reply UI wasm32 clippy",
+      "kind": "run",
+      "revision": "f0fba59b0fb4b975500c838b1465aed5a0188911",
+      "dirty": false,
+      "recorded": "2026-11-19T02:07:12+00:00",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--target",
+        "wasm32-unknown-unknown",
+        "-p",
+        "physician-app",
+        "--lib",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-Physician-app-matching-and-reply-UI-wasm32-clipp.log"
+      ],
+      "seconds": 9.7,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "c5c3327e12d8c83c853a517f27a0f337f22f427e",
+        "reason": "Rebased onto final PR 91 (562055b56d); seam files preserved and full workspace/PG16/Chromium suites verified at PR 104 tip 59829dacb"
+      }
+    },
+    {
+      "id": 3,
+      "claim": "AC-MR-UI-TESTS",
+      "label": "Physician-app unit suite and product boundaries",
+      "kind": "run",
+      "revision": "f0fba59b0fb4b975500c838b1465aed5a0188911",
+      "dirty": false,
+      "recorded": "2026-11-19T02:07:22+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-app",
+        "--lib"
+      ],
+      "expect": "test result: ok\\. 102 passed",
+      "expect_fail": false,
+      "files": [
+        "03-Physician-app-unit-suite-and-product-boundaries.log"
+      ],
+      "seconds": 23.2,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "c5c3327e12d8c83c853a517f27a0f337f22f427e",
+        "reason": "Rebased onto final PR 91 (562055b56d); seam files preserved and full workspace/PG16/Chromium suites verified at PR 104 tip 59829dacb"
+      }
+    },
+    {
+      "id": 4,
+      "claim": "AC-MR-UI-BOUNDARIES",
+      "label": "Product boundaries including shared_ui after matching and reply UI",
+      "kind": "run",
+      "revision": "f0fba59b0fb4b975500c838b1465aed5a0188911",
+      "dirty": false,
+      "recorded": "2026-11-19T02:07:45+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "boundaries",
+        "--lib"
+      ],
+      "expect": "test result: ok\\. 25 passed",
+      "expect_fail": false,
+      "files": [
+        "04-Product-boundaries-including-shared_ui-after-mat.log"
+      ],
+      "seconds": 1.9,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "c5c3327e12d8c83c853a517f27a0f337f22f427e",
+        "reason": "Rebased onto final PR 91 (562055b56d); seam files preserved and full workspace/PG16/Chromium suites verified at PR 104 tip 59829dacb"
+      }
+    }
+  ]
+}
