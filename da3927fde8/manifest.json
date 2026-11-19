@@ -1,0 +1,36 @@
+{
+  "branch": "tyler-eng-311-2-spruce-channel-ingest-linking",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "PostgreSQL Spruce channel ingest and linking store compilation + migration ledger",
+      "kind": "run",
+      "revision": "9a2e8b7418d048bad6672a7676af6ef65805eccc",
+      "dirty": false,
+      "recorded": "2026-11-18T22:49:58+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "runtime::tests::migration",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-PostgreSQL-Spruce-channel-ingest-and-linking-sto.log"
+      ],
+      "seconds": 43.6,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "da3927fde85277c1de65c15e259f0a44317370c5",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    }
+  ]
+}
