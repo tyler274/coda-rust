@@ -1,0 +1,37 @@
+{
+  "branch": "tyler-eng-9-4-link-correction-postgres-part2",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC3",
+      "label": "Undo window, unfinished removal recovery, destination move settlement, and late-run fences (AC3-AC5 + round1)",
+      "kind": "run",
+      "revision": "657fb9e5a31b9151b32a288481e87c347443b7c2",
+      "dirty": false,
+      "recorded": "2026-11-18T23:42:05+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "link_correction_postgres",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": "test result: ok\\. [1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "01-Undo-window-unfinished-removal-recovery-destinat.log"
+      ],
+      "seconds": 34.1,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "a488535b5ae13181279d5586f915c4add4a3877e",
+        "reason": "Rebased cleanly onto patched upstream PR 81; the only downstream adjustment in PR 82..91 adds the PHYSICIAN_TEST_DATABASE_URL fallback in link_correction_postgres.rs (PR 84)."
+      }
+    }
+  ]
+}
