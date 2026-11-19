@@ -75,6 +75,8 @@ pub mod schedule;
 pub mod source_status;
 /// Versioned patient source observations: a stand-in source owner.
 pub mod sources;
+/// Spruce channel reading, patient conversation linking, classification storage, and move controls.
+pub mod spruce_matching;
 #[cfg(test)]
 mod tests;
 /// Cross-producer Today and Updates read model, per-physician seen state, and item detail projection.
