@@ -2277,10 +2277,12 @@ async fn ac9_reset_covers_every_physician_runtime_table_in_postgres() {
     let rows = db
         .query_all_raw(Statement::from_string(
             sea_orm::DatabaseBackend::Postgres,
+            // `physician_runtime_citation_layouts` stores global per-(source_id, record_type)
+            // declarative layouts shared across practices, so practice reset leaves it intact.
             "SELECT table_name FROM information_schema.tables \
              WHERE table_schema = 'public' \
                AND table_name LIKE 'physician_runtime_%' \
-               AND table_name NOT IN ('physician_runtime_migrations', 'physician_runtime_provider_quota') \
+               AND table_name NOT IN ('physician_runtime_migrations', 'physician_runtime_provider_quota', 'physician_runtime_citation_layouts') \
              ORDER BY table_name"
                 .to_owned(),
         ))

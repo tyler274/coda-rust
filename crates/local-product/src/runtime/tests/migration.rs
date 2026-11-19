@@ -81,6 +81,7 @@ async fn a_second_migrate_records_nothing_new() {
             "m20261119_05_practice_cadence",
             "m20261119_06_care_plan_recommendations",
             "m20261119_spruce_release_fence",
+            "m20261120_citation_layouts",
         ]
     );
 }
