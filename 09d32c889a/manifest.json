@@ -1,0 +1,36 @@
+{
+  "branch": "tyler-eng-311-4-spruce-matching-postgres-suite",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC3",
+      "label": "PostgreSQL Spruce linking authority, fallback, undo, and isolation suite",
+      "kind": "run",
+      "revision": "5fdc64ee88f29d30b7c2ddc5037ab811c188a917",
+      "dirty": false,
+      "recorded": "2026-11-18T23:05:05+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "spruce_matching",
+        "--",
+        "--nocapture"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-PostgreSQL-Spruce-linking-authority-fallback-und.log"
+      ],
+      "seconds": 15.7,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "09d32c889a79153e00cd7b8a017fc48556e500f4",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    }
+  ]
+}
