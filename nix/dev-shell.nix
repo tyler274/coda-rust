@@ -210,6 +210,27 @@ PGCTL
     if [ "$(git rev-parse --git-dir 2>/dev/null)" ] && ! git config --get core.hooksPath >/dev/null; then
       git config core.hooksPath .githooks
     fi
+    # Hosts that inject mimalloc via /etc/ld-nix.so.preload break Valkey, which
+    # already links jemalloc: ld.so loads LD_PRELOAD ahead of ld-nix.so.preload,
+    # so preloading Valkey's own libjemalloc keeps it from faulting at startup.
+    coda_valkey_shim="$coda_bin/valkey-server"
+    if [ -f /etc/ld-nix.so.preload ] && grep -q 'mimalloc' /etc/ld-nix.so.preload 2>/dev/null; then
+      coda_jemalloc="$(ldd "${pkgs.valkey}/bin/valkey-server" 2>/dev/null | awk '/libjemalloc/{print $3; exit}')"
+      if [ -n "$coda_jemalloc" ]; then
+        coda_valkey_tmp="$(mktemp "$coda_bin/.valkey-server.XXXXXX")"
+        cat > "$coda_valkey_tmp" <<VALKEY
+#!/bin/sh
+exec env LD_PRELOAD="$coda_jemalloc\''${LD_PRELOAD:+:\$LD_PRELOAD}" "${pkgs.valkey}/bin/valkey-server" "\$@"
+VALKEY
+        chmod +x "$coda_valkey_tmp"
+        mv -f "$coda_valkey_tmp" "$coda_valkey_shim"
+        unset coda_valkey_tmp
+      fi
+      unset coda_jemalloc
+    elif [ -e "$coda_valkey_shim" ]; then
+      rm -f "$coda_valkey_shim"
+    fi
+    unset coda_valkey_shim
     # Set last, after every PATH and linker fix above, so a hook that
     # sees it knows it runs in the complete shell. IN_NIX_SHELL is not
     # enough: any nix shell, or a host swiftly PATH on top, sets it too.
