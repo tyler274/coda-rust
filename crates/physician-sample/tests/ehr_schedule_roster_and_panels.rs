@@ -1092,3 +1092,414 @@ async fn ac6_hint_chrome_bridge_pair_lease_capture_roster_appointments_and_auth(
     drop(auth);
     teardown_postgres(&admin_url, &db_name).await;
 }
+
+#[tokio::test]
+async fn review_fixes_elation_pagination_guards_and_hint_lease_and_snapshot_integrity() {
+    use local_product::physician_sources::elation_fhir::{BEARER_TOKEN_ENV, ElationFhirError};
+    use sea_orm::ConnectionTrait;
+
+    let Some((admin_url, db_name, db_url, store, auth)) = setup_postgres("revfix").await else {
+        return;
+    };
+    let practice = "practice-revfix";
+    auth.ensure_practice(practice, PracticeClock::Fixed(PRACTICE_NOW_UNIX))
+        .await
+        .expect("ensure practice");
+    let admin_id = PhysicianIdentity {
+        practice_id: practice.into(),
+        physician_id: "dr-revfix-admin".into(),
+    };
+    auth.ensure_account(
+        &admin_id.practice_id,
+        &admin_id.physician_id,
+        "admin@revfix.test",
+        "Dr. Revfix",
+        true,
+        PRACTICE_NOW_UNIX,
+    )
+    .await
+    .expect("seed admin");
+
+    // -------------------------------------------------------------------------
+    // Finding 1: Elation FHIR pagination rejects cross-origin `next` links
+    // without leaking the bearer token, resolves relative links, and fails
+    // loudly instead of truncating past MAX_FHIR_PAGES.
+    // -------------------------------------------------------------------------
+    let foreign_hits = Arc::new(AtomicUsize::new(0));
+    let foreign_hits_srv = Arc::clone(&foreign_hits);
+    let foreign_app = Router::new().route(
+        "/steal",
+        get(move || {
+            let hits = Arc::clone(&foreign_hits_srv);
+            async move {
+                hits.fetch_add(1, Ordering::SeqCst);
+                StatusCode::OK
+            }
+        }),
+    );
+    let (foreign_addr, foreign_handle) = spawn_router(foreign_app).await;
+    let foreign_url = format!("http://{foreign_addr}/steal");
+
+    let mode = Arc::new(std::sync::Mutex::new("cross_origin".to_owned()));
+    let mode_srv = Arc::clone(&mode);
+    let foreign_url_srv = foreign_url.clone();
+    let fhir_app = Router::new().route(
+        "/fhir/Patient",
+        get(
+            move |axum::extract::Query(params): axum::extract::Query<BTreeMap<String, String>>| {
+                let mode = Arc::clone(&mode_srv);
+                let foreign_url = foreign_url_srv.clone();
+                async move {
+                    let current_mode = mode.lock().unwrap().clone();
+                    match current_mode.as_str() {
+                        "cross_origin" => Json(json!({
+                            "resourceType": "Bundle",
+                            "type": "searchset",
+                            "link": [{ "relation": "next", "url": foreign_url }],
+                            "entry": []
+                        })),
+                        "relative" => {
+                            if params.get("page").map(String::as_str) == Some("2") {
+                                Json(json!({
+                                    "resourceType": "Bundle",
+                                    "type": "searchset",
+                                    "entry": [{
+                                        "resource": {
+                                            "resourceType": "Patient",
+                                            "id": "rel-pat-2",
+                                            "name": [{ "given": ["Sam"], "family": "Lee" }]
+                                        }
+                                    }]
+                                }))
+                            } else {
+                                Json(json!({
+                                    "resourceType": "Bundle",
+                                    "type": "searchset",
+                                    "link": [{ "relation": "next", "url": "?page=2" }],
+                                    "entry": [{
+                                        "resource": {
+                                            "resourceType": "Patient",
+                                            "id": "rel-pat-1",
+                                            "name": [{ "given": ["Eva"], "family": "Kim" }]
+                                        }
+                                    }]
+                                }))
+                            }
+                        }
+                        _ => {
+                            let next_page = params
+                                .get("page")
+                                .and_then(|p| p.parse::<usize>().ok())
+                                .unwrap_or(1)
+                                + 1;
+                            Json(json!({
+                                "resourceType": "Bundle",
+                                "type": "searchset",
+                                "link": [{ "relation": "next", "url": format!("?page={next_page}") }],
+                                "entry": [{
+                                    "resource": {
+                                        "resourceType": "Patient",
+                                        "id": format!("loop-pat-{next_page}"),
+                                        "name": [{ "given": ["Loop"], "family": "Patient" }]
+                                    }
+                                }]
+                            }))
+                        }
+                    }
+                }
+            },
+        ),
+    );
+    let (fhir_addr, fhir_handle) = spawn_router(fhir_app).await;
+    let env_map: BTreeMap<&str, String> = BTreeMap::from([
+        (BASE_URL_ENV, format!("http://{fhir_addr}/fhir")),
+        (BEARER_TOKEN_ENV, "secret-elation-token".to_owned()),
+    ]);
+    let cfg = ElationFhirConfig::from_env(|k| env_map.get(k).cloned())
+        .unwrap()
+        .unwrap();
+    let elation = ElationFhirClient::new(cfg).unwrap();
+
+    // 1a. Cross-origin `next` rejected BEFORE hitting foreign server.
+    let cross_err = elation
+        .read_roster()
+        .await
+        .expect_err("cross-origin next URL must fail closed");
+    assert!(
+        matches!(cross_err, ElationFhirError::CrossOriginPagination { .. }),
+        "expected CrossOriginPagination, got {cross_err:?}"
+    );
+    assert_eq!(
+        foreign_hits.load(Ordering::SeqCst),
+        0,
+        "bearer token must never be sent to a foreign pagination origin"
+    );
+
+    // 1b. Relative `next` link resolves cleanly against same origin.
+    *mode.lock().unwrap() = "relative".to_owned();
+    let rel_roster = elation.read_roster().await.expect("relative next link");
+    assert_eq!(rel_roster.patients.len(), 2);
+
+    // 1c. Exceeding MAX_FHIR_PAGES returns PaginationLimitExceeded (never silently truncates).
+    *mode.lock().unwrap() = "infinite".to_owned();
+    let trunc_err = elation
+        .read_roster()
+        .await
+        .expect_err("pagination exceeding MAX_FHIR_PAGES must fail instead of truncating");
+    assert!(
+        matches!(trunc_err, ElationFhirError::PaginationLimitExceeded { .. }),
+        "expected PaginationLimitExceeded, got {trunc_err:?}"
+    );
+
+    // -------------------------------------------------------------------------
+    // Findings 2 & 3: Hint bridge atomic lease concurrency, expiry enforcement,
+    // job-binding validation, and last-good schedule preservation on FailedRead.
+    // -------------------------------------------------------------------------
+    let bus: Arc<dyn Bus> = Arc::new(LocalBus::new(32));
+    let chat = Arc::new(DurableChat::new(
+        store.clone(),
+        load_skills(),
+        &test_roles(),
+    ));
+    let app = authed_postgres_router(
+        durable_site(chat, Arc::clone(&bus)),
+        &db_url,
+        store.clone(),
+        bus,
+    )
+    .await;
+    let (addr, server) = spawn_router(app).await;
+    let base = format!("http://{addr}");
+    let client = reqwest::Client::new();
+    let admin_tok = sign_in_email(&client, &base, "admin@revfix.test").await;
+
+    let pair_resp: Value = client
+        .post(format!("{base}/connections/hint/bridge/pair"))
+        .bearer_auth(&admin_tok)
+        .json(&json!({}))
+        .send()
+        .await
+        .unwrap()
+        .error_for_status()
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    let pair_header = format!(
+        "{}:{}",
+        pair_resp["pair_id"].as_str().unwrap(),
+        pair_resp["pair_key"].as_str().unwrap()
+    );
+
+    // Seed a valid Hint roster + appointments snapshot first.
+    let _ = client
+        .post(format!("{base}/connections/hint/bridge/roster"))
+        .header(PAIR_HEADER, &pair_header)
+        .json(&json!({
+            "payload": {
+                "patients": [{
+                    "id": "hint-keep-1",
+                    "first_name": "Clara",
+                    "last_name": "Ng",
+                    "dob": "1979-02-01"
+                }]
+            }
+        }))
+        .send()
+        .await
+        .unwrap()
+        .error_for_status()
+        .unwrap();
+    let _ = client
+        .post(format!("{base}/connections/hint/bridge/appointments"))
+        .header(PAIR_HEADER, &pair_header)
+        .json(&json!({
+            "payload": {
+                "appointments": [{
+                    "id": "hint-keep-appt",
+                    "patient_id": "hint-keep-1",
+                    "status": "scheduled",
+                    "reason": "Annual checkup",
+                    "start_at": "2026-08-27T18:00:00Z",
+                    "end_at": "2026-08-27T18:30:00Z"
+                }]
+            }
+        }))
+        .send()
+        .await
+        .unwrap()
+        .error_for_status()
+        .unwrap();
+
+    // Finding 3a: Two concurrent lease_hint_job calls on ONE pending job lease it at most once.
+    let job_id = store
+        .queue_hint_job(
+            practice,
+            local_product::runtime::hint_bridge::HintBridgeJobKind::ChartCapture,
+            Some("hint-keep-1"),
+        )
+        .await
+        .unwrap();
+    let (lease_a, lease_b) = tokio::join!(
+        store.lease_hint_job(practice, 120),
+        store.lease_hint_job(practice, 120)
+    );
+    let leased_jobs: Vec<_> = [lease_a.unwrap(), lease_b.unwrap()]
+        .into_iter()
+        .flatten()
+        .collect();
+    assert_eq!(
+        leased_jobs.len(),
+        1,
+        "concurrent lease_hint_job must never lease the same job twice"
+    );
+    let leased = &leased_jobs[0];
+    assert_eq!(leased.id, job_id);
+
+    // Finding 3b: Delivery with mismatched read kind or patient_id is rejected (409).
+    let mismatch_read = client
+        .post(format!("{base}/connections/hint/bridge/deliver"))
+        .header(PAIR_HEADER, &pair_header)
+        .json(&json!({
+            "job_id": leased.id,
+            "lease": leased.lease,
+            "read": "roster",
+            "payload": { "patients": [] }
+        }))
+        .send()
+        .await
+        .unwrap()
+        .status();
+    assert_eq!(mismatch_read, StatusCode::CONFLICT);
+
+    let mismatch_patient = client
+        .post(format!("{base}/connections/hint/bridge/deliver"))
+        .header(PAIR_HEADER, &pair_header)
+        .json(&json!({
+            "job_id": leased.id,
+            "lease": leased.lease,
+            "read": "chart_capture",
+            "patient_id": "different-patient",
+            "payload": {}
+        }))
+        .send()
+        .await
+        .unwrap()
+        .status();
+    assert_eq!(mismatch_patient, StatusCode::CONFLICT);
+
+    // Finding 3c: Expired lease fails verify_hint_lease, settle_hint_job, and HTTP /deliver (409).
+    store
+        .connection()
+        .execute_unprepared(&format!(
+            "UPDATE physician_runtime_hint_jobs SET leased_until = 1 WHERE practice = '{practice}' AND job_id = '{}'",
+            leased.id
+        ))
+        .await
+        .unwrap();
+    assert!(
+        store
+            .verify_hint_lease(practice, &leased.id, &leased.lease)
+            .await
+            .unwrap()
+            .is_none(),
+        "expired lease must fail verify_hint_lease"
+    );
+    assert!(
+        !store
+            .settle_hint_job(practice, &leased.id, &leased.lease, true)
+            .await
+            .unwrap(),
+        "expired lease must fail settle_hint_job"
+    );
+    let expired_deliver = client
+        .post(format!("{base}/connections/hint/bridge/deliver"))
+        .header(PAIR_HEADER, &pair_header)
+        .json(&json!({
+            "job_id": leased.id,
+            "lease": leased.lease,
+            "read": "chart_capture",
+            "patient_id": "hint-keep-1",
+            "payload": {}
+        }))
+        .send()
+        .await
+        .unwrap()
+        .status();
+    assert_eq!(expired_deliver, StatusCode::CONFLICT);
+
+    // Re-lease the expired job and fail it cleanly so the queue is empty for the appointments test.
+    let re_leased = store
+        .lease_hint_job(practice, 120)
+        .await
+        .unwrap()
+        .expect("re-lease expired job");
+    assert!(
+        store
+            .settle_hint_job(practice, &re_leased.id, &re_leased.lease, false)
+            .await
+            .unwrap()
+    );
+
+    // Finding 2: Delivering malformed Hint appointments via /deliver returns 502 failed_read,
+    // settles the job as failed (not completed), and preserves the last-good snapshot!
+    let appt_job_id = store
+        .queue_hint_job(
+            practice,
+            local_product::runtime::hint_bridge::HintBridgeJobKind::Appointments,
+            None,
+        )
+        .await
+        .unwrap();
+    let appt_lease = store
+        .lease_hint_job(practice, 120)
+        .await
+        .unwrap()
+        .expect("lease appointments job");
+    assert_eq!(appt_lease.id, appt_job_id);
+
+    let bad_deliver = client
+        .post(format!("{base}/connections/hint/bridge/deliver"))
+        .header(PAIR_HEADER, &pair_header)
+        .json(&json!({
+            "job_id": appt_lease.id,
+            "lease": appt_lease.lease,
+            "read": "appointments",
+            "payload": { "unexpected": "malformed" }
+        }))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(bad_deliver.status(), StatusCode::BAD_GATEWAY);
+    let bad_body: Value = bad_deliver.json().await.unwrap();
+    assert_eq!(bad_body["outcome"], "failed_read");
+    assert_eq!(bad_body["retained_appointments"], 1);
+
+    // Confirm the job is settled as `failed` (cannot be settled again) and last-good Hint snapshot is intact!
+    assert!(
+        store
+            .verify_hint_lease(practice, &appt_lease.id, &appt_lease.lease)
+            .await
+            .unwrap()
+            .is_none()
+    );
+    let hint_source = HintBridgeScheduleSource::new(store.clone(), practice.to_owned());
+    match hint_source
+        .read_schedule()
+        .await
+        .expect("last-good Hint schedule preserved")
+    {
+        ScheduleDelivery::Complete { appointments } => {
+            assert_eq!(appointments.len(), 1);
+            assert_eq!(appointments[0].label(), "Annual checkup");
+        }
+        other => panic!("expected preserved Complete last-good snapshot, got {other:?}"),
+    }
+
+    foreign_handle.abort();
+    fhir_handle.abort();
+    server.abort();
+    drop(store);
+    drop(auth);
+    teardown_postgres(&admin_url, &db_name).await;
+}

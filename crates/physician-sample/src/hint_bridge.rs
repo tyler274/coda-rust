@@ -445,12 +445,12 @@ async fn deliver_job(
         )
             .into_response();
     };
-    match store
+    let leased = match store
         .verify_hint_lease(&practice, &body.job_id, &body.lease)
         .await
     {
-        Ok(true) => {}
-        Ok(false) => {
+        Ok(Some(leased)) => leased,
+        Ok(None) => {
             return (
                 StatusCode::CONFLICT,
                 Json(json!({ "detail": "Hint job lease does not match or has expired." })),
@@ -461,22 +461,40 @@ async fn deliver_job(
             tracing::error!(%error, "hint bridge lease check failed");
             return StatusCode::SERVICE_UNAVAILABLE.into_response();
         }
+    };
+    let requested_patient = body
+        .patient_id
+        .as_deref()
+        .map(str::trim)
+        .filter(|s| !s.is_empty());
+    if body.read != leased.read || requested_patient != leased.patient_id.as_deref() {
+        return (
+            StatusCode::CONFLICT,
+            Json(json!({
+                "detail": "Delivery read kind or patient_id does not match the leased Hint job."
+            })),
+        )
+            .into_response();
     }
     let auth_store = connected.auth_store(&extensions);
-    let response_body = match body.read {
+    let (status_code, succeeded, response_body) = match leased.read {
         HintBridgeJobKind::Roster => match store
             .ingest_hint_roster(&*auth_store, &practice, &payload, read_at)
             .await
         {
             Ok((summary, _workspaces)) => {
                 publish_resync(&extensions, None).await;
-                json!({
-                    "outcome": "delivered",
-                    "read": "roster",
-                    "roster_patients": summary.roster_patients,
-                    "newly_registered": summary.newly_registered,
-                    "seeded_links": summary.seeded_links,
-                })
+                (
+                    StatusCode::OK,
+                    true,
+                    json!({
+                        "outcome": "delivered",
+                        "read": "roster",
+                        "roster_patients": summary.roster_patients,
+                        "newly_registered": summary.newly_registered,
+                        "seeded_links": summary.seeded_links,
+                    }),
+                )
             }
             Err(err) => return bridge_error_response(err),
         },
@@ -484,17 +502,39 @@ async fn deliver_job(
             .ingest_hint_appointments(&*auth_store, &practice, &payload, read_at)
             .await
         {
-            Ok(_) => {
+            Ok(local_product::runtime::schedule::ScheduleSyncOutcome::Applied(summary)) => {
                 publish_resync(&extensions, None).await;
-                json!({
-                    "outcome": "delivered",
-                    "read": "appointments",
-                })
+                (
+                    StatusCode::OK,
+                    true,
+                    json!({
+                        "outcome": "delivered",
+                        "read": "appointments",
+                        "saved_appointments": summary.saved_appointments,
+                        "matched_appointments": summary.matched_appointments,
+                        "unmatched_appointments": summary.unmatched_appointments,
+                    }),
+                )
+            }
+            Ok(local_product::runtime::schedule::ScheduleSyncOutcome::FailedRead {
+                retained_appointments,
+                ..
+            }) => {
+                publish_resync(&extensions, None).await;
+                (
+                    StatusCode::BAD_GATEWAY,
+                    false,
+                    json!({
+                        "outcome": "failed_read",
+                        "read": "appointments",
+                        "retained_appointments": retained_appointments,
+                    }),
+                )
             }
             Err(err) => return bridge_error_response(err),
         },
         HintBridgeJobKind::ChartCapture => {
-            let Some(patient_id) = body.patient_id.as_deref() else {
+            let Some(patient_id) = leased.patient_id.as_deref() else {
                 return (
                     StatusCode::BAD_REQUEST,
                     Json(json!({ "detail": "chart_capture delivery requires patient_id." })),
@@ -507,12 +547,16 @@ async fn deliver_job(
             {
                 Ok(summary) => {
                     publish_resync(&extensions, Some(summary.workspace.clone())).await;
-                    json!({
-                        "outcome": "delivered",
-                        "read": "chart_capture",
-                        "workspace": summary.workspace,
-                        "filed_records": summary.filed_records,
-                    })
+                    (
+                        StatusCode::OK,
+                        true,
+                        json!({
+                            "outcome": "delivered",
+                            "read": "chart_capture",
+                            "workspace": summary.workspace,
+                            "filed_records": summary.filed_records,
+                        }),
+                    )
                 }
                 Err(err) => return bridge_error_response(err),
             }
@@ -520,10 +564,10 @@ async fn deliver_job(
     };
 
     match store
-        .settle_hint_job(&practice, &body.job_id, &body.lease, true)
+        .settle_hint_job(&practice, &body.job_id, &body.lease, succeeded)
         .await
     {
-        Ok(true) => (StatusCode::OK, Json(response_body)).into_response(),
+        Ok(true) => (status_code, Json(response_body)).into_response(),
         Ok(false) => (
             StatusCode::CONFLICT,
             Json(json!({ "detail": "Hint job lease does not match or has expired." })),

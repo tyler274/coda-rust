@@ -12,8 +12,9 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use async_trait::async_trait;
 use physician_auth::AuthStore;
 use sea_orm::{
-    ActiveModelTrait, ColumnTrait, DbErr, EntityTrait, QueryFilter, QueryOrder, Set,
-    sea_query::OnConflict,
+    ActiveModelTrait, ColumnTrait, Condition, DbErr, EntityTrait, QueryFilter, QueryOrder,
+    QuerySelect, Set, TransactionTrait,
+    sea_query::{LockBehavior, LockType, OnConflict},
 };
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -215,6 +216,15 @@ pub struct LeasedHintJob {
     pub patient_id: Option<String>,
 }
 
+/// Authoritative binding of a verified, unexpired Hint connector job lease.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct VerifiedHintLease {
+    /// Declared read kind on the leased job row.
+    pub read: HintBridgeJobKind,
+    /// Optional target patient identifier on the leased job row.
+    pub patient_id: Option<String>,
+}
+
 /// Summary of ingesting one Hint `ChartCapture` payload through [`ChartCapture::file`].
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct HintCaptureIngestSummary {
@@ -369,24 +379,37 @@ impl Store {
         Ok(job_id)
     }
 
-    /// Leases the oldest pending (or lease-expired) Hint connector job for `practice`.
+    /// Atomically leases the oldest pending (or lease-expired) Hint connector job
+    /// for `practice` using `FOR UPDATE SKIP LOCKED` so concurrent polls cannot
+    /// lease the same job twice.
     pub async fn lease_hint_job(
         &self,
         practice: &str,
         lease_seconds: i64,
     ) -> Result<Option<LeasedHintJob>, DbErr> {
-        let ts = now(&self.db).await?;
-        let candidates = tables::hint_job::Entity::find()
+        let tx = self.db.begin().await?;
+        let ts = now(&tx).await?;
+        let claimable = Condition::any()
+            .add(tables::hint_job::Column::State.eq("pending"))
+            .add(
+                Condition::all()
+                    .add(tables::hint_job::Column::State.eq("leased"))
+                    .add(
+                        Condition::any()
+                            .add(tables::hint_job::Column::LeasedUntil.is_null())
+                            .add(tables::hint_job::Column::LeasedUntil.lte(ts)),
+                    ),
+            );
+        let Some(row) = tables::hint_job::Entity::find()
             .filter(tables::hint_job::Column::Practice.eq(practice))
-            .filter(tables::hint_job::Column::State.is_in(["pending", "leased"]))
+            .filter(claimable)
             .order_by_asc(tables::hint_job::Column::CreatedAt)
-            .all(&self.db)
-            .await?;
-
-        let Some(row) = candidates
-            .into_iter()
-            .find(|r| r.state == "pending" || r.leased_until.is_none_or(|until| until <= ts))
+            .limit(1)
+            .lock_with_behavior(LockType::Update, LockBehavior::SkipLocked)
+            .one(&tx)
+            .await?
         else {
+            tx.commit().await?;
             return Ok(None);
         };
         let lease_id = uuid::Uuid::new_v4().to_string();
@@ -405,8 +428,9 @@ impl Store {
             created_at: sea_orm::Unchanged(row.created_at),
             updated_at: Set(ts),
         }
-        .update(&self.db)
+        .update(&tx)
         .await?;
+        tx.commit().await?;
 
         Ok(Some(LeasedHintJob {
             id: job_id,
@@ -417,24 +441,37 @@ impl Store {
         }))
     }
 
-    /// Returns whether `(practice, job_id)` currently holds an active lease matching `lease_id`.
+    /// Verifies that `(practice, job_id)` holds an active, unexpired lease
+    /// matching `lease_id` and returns its authoritative job binding.
     pub async fn verify_hint_lease(
         &self,
         practice: &str,
         job_id: &str,
         lease_id: &str,
-    ) -> Result<bool, DbErr> {
+    ) -> Result<Option<VerifiedHintLease>, DbErr> {
+        let ts = now(&self.db).await?;
         let Some(row) =
             tables::hint_job::Entity::find_by_id((practice.to_owned(), job_id.to_owned()))
                 .one(&self.db)
                 .await?
         else {
-            return Ok(false);
+            return Ok(None);
         };
-        Ok(row.state == "leased" && row.lease_id.as_deref() == Some(lease_id))
+        let active = row.state == "leased"
+            && row.lease_id.as_deref() == Some(lease_id)
+            && row.leased_until.is_some_and(|until| until > ts);
+        if !active {
+            return Ok(None);
+        }
+        let read = HintBridgeJobKind::parse(&row.read_kind)?;
+        Ok(Some(VerifiedHintLease {
+            read,
+            patient_id: row.patient_id,
+        }))
     }
 
-    /// Marks a leased Hint connector job completed or failed if the lease matches.
+    /// Marks a leased Hint connector job completed or failed if the lease is
+    /// still active, matches `lease_id`, and has not expired.
     pub async fn settle_hint_job(
         &self,
         practice: &str,
@@ -442,17 +479,24 @@ impl Store {
         lease_id: &str,
         succeeded: bool,
     ) -> Result<bool, DbErr> {
+        let tx = self.db.begin().await?;
+        let ts = now(&tx).await?;
         let Some(row) =
             tables::hint_job::Entity::find_by_id((practice.to_owned(), job_id.to_owned()))
-                .one(&self.db)
+                .lock_exclusive()
+                .one(&tx)
                 .await?
         else {
+            tx.rollback().await?;
             return Ok(false);
         };
-        if row.lease_id.as_deref() != Some(lease_id) {
+        let active = row.state == "leased"
+            && row.lease_id.as_deref() == Some(lease_id)
+            && row.leased_until.is_some_and(|until| until > ts);
+        if !active {
+            tx.rollback().await?;
             return Ok(false);
         }
-        let ts = now(&self.db).await?;
         tables::hint_job::ActiveModel {
             practice: sea_orm::Unchanged(row.practice),
             job_id: sea_orm::Unchanged(row.job_id),
@@ -464,8 +508,9 @@ impl Store {
             created_at: sea_orm::Unchanged(row.created_at),
             updated_at: Set(ts),
         }
-        .update(&self.db)
+        .update(&tx)
         .await?;
+        tx.commit().await?;
         Ok(true)
     }
 
@@ -593,8 +638,9 @@ impl Store {
         Ok((summary, failures))
     }
 
-    /// Saves a Hint `READS.appointments` payload delivered by the Chrome connector
-    /// and syncs it through [`HintBridgeScheduleSource`] into `practice`'s schedule.
+    /// Validates a Hint `READS.appointments` payload delivered by the Chrome connector,
+    /// preserves any last-good `physician_runtime_hint_schedules` snapshot on invalid
+    /// payloads, and syncs valid payloads into `practice`'s schedule.
     pub async fn ingest_hint_appointments(
         &self,
         auth: &dyn AuthStore,
@@ -605,6 +651,16 @@ impl Store {
         let practice = practice.trim();
         if practice.is_empty() {
             return Err(HintBridgeError::InvalidInput);
+        }
+        let source_id = ScheduleSourceId::new(HINT_SOURCE_ID).expect("static hint source_id");
+        if let Err(err) = parse_hint_appointments(&source_id, appointments_payload) {
+            let failed_source = FailedHintScheduleSource {
+                source_id,
+                reason: err.to_string(),
+            };
+            return Ok(self
+                .sync_practice_schedule(auth, practice, &failed_source, delivered_at)
+                .await?);
         }
         let appointments_json = serde_json::to_string(appointments_payload)
             .map_err(|err| HintBridgeError::InvalidPayload(err.to_string()))?;
@@ -636,6 +692,29 @@ impl Store {
     pub async fn hint_bridge_schedule_practices(&self) -> Result<Vec<String>, DbErr> {
         let rows = tables::hint_schedule::Entity::find().all(&self.db).await?;
         Ok(rows.into_iter().map(|r| r.practice).collect())
+    }
+}
+
+struct FailedHintScheduleSource {
+    source_id: ScheduleSourceId,
+    reason: String,
+}
+
+#[async_trait]
+impl ScheduleSource for FailedHintScheduleSource {
+    fn source_id(&self) -> &ScheduleSourceId {
+        &self.source_id
+    }
+
+    fn source_label(&self) -> &str {
+        HINT_SOURCE_LABEL
+    }
+
+    async fn read_schedule(&self) -> Result<ScheduleDelivery, ScheduleSourceError> {
+        Err(ScheduleSourceError::Unavailable {
+            source_id: self.source_id.clone(),
+            reason: self.reason.clone(),
+        })
     }
 }
 

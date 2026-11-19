@@ -537,6 +537,38 @@ pub enum ElationFhirError {
     /// OAuth2 client-credentials token exchange failed.
     #[error("Elation FHIR token exchange failed: {0}")]
     TokenExchange(String),
+    /// A FHIR Bundle `next` link pointed outside the configured server origin.
+    #[error("Elation FHIR pagination link pointed to a different origin: {url}")]
+    CrossOriginPagination {
+        /// Rejected pagination link target.
+        url: String,
+    },
+    /// A FHIR Bundle still advertised a `next` link after the page ceiling.
+    #[error("Elation FHIR pagination exceeded the maximum of {max_pages} pages")]
+    PaginationLimitExceeded {
+        /// Page limit that was exceeded.
+        max_pages: usize,
+    },
+}
+
+fn resolve_same_origin_next_url(
+    base_url: &reqwest::Url,
+    current_url: &reqwest::Url,
+    raw_next: &str,
+) -> Result<reqwest::Url, ElationFhirError> {
+    let trimmed = raw_next.trim();
+    let resolved = current_url.join(trimmed).map_err(|err| {
+        ElationFhirError::InvalidPayload(format!("invalid FHIR next link `{trimmed}`: {err}"))
+    })?;
+    let same_origin = resolved.scheme() == base_url.scheme()
+        && resolved.host_str() == base_url.host_str()
+        && resolved.port_or_known_default() == base_url.port_or_known_default();
+    if !same_origin {
+        return Err(ElationFhirError::CrossOriginPagination {
+            url: resolved.to_string(),
+        });
+    }
+    Ok(resolved)
 }
 
 #[derive(Clone, Debug)]
@@ -644,15 +676,18 @@ impl ElationFhirClient {
         initial_path: &str,
     ) -> Result<Vec<Value>, ElationFhirError> {
         let token = self.bearer_token().await?;
-        let mut next_url = format!(
+        let mut next_url = reqwest::Url::parse(&format!(
             "{}/{initial_path}",
             self.config.base_url.as_str().trim_end_matches('/')
-        );
+        ))
+        .map_err(|err| {
+            ElationFhirError::InvalidPayload(format!("invalid initial FHIR path: {err}"))
+        })?;
         let mut resources = Vec::new();
-        for _ in 0..MAX_FHIR_PAGES {
+        for page in 0..MAX_FHIR_PAGES {
             let resp = self
                 .http
-                .get(&next_url)
+                .get(next_url.clone())
                 .bearer_auth(&token)
                 .header(
                     reqwest::header::ACCEPT,
@@ -693,13 +728,26 @@ impl ElationFhirClient {
                             .then(|| link.get("url").and_then(Value::as_str))
                             .flatten()
                     })
-                });
+                })
+                .map(str::trim)
+                .filter(|url| !url.is_empty());
             match next_link {
-                Some(url) if !url.trim().is_empty() => next_url = url.trim().to_owned(),
-                _ => break,
+                Some(url) => {
+                    let resolved =
+                        resolve_same_origin_next_url(&self.config.base_url, &next_url, url)?;
+                    if page + 1 >= MAX_FHIR_PAGES {
+                        return Err(ElationFhirError::PaginationLimitExceeded {
+                            max_pages: MAX_FHIR_PAGES,
+                        });
+                    }
+                    next_url = resolved;
+                }
+                None => return Ok(resources),
             }
         }
-        Ok(resources)
+        Err(ElationFhirError::PaginationLimitExceeded {
+            max_pages: MAX_FHIR_PAGES,
+        })
     }
 
     /// Reads the practice's patient roster from `GET {base_url}/Patient`.
