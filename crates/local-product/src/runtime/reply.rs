@@ -44,6 +44,10 @@ use super::{
 };
 use crate::physician_sources::{SourceRefresh, SourceRevision, caught_up_context};
 
+/// Durable reply proposals, conversation review fencing, channel moves and
+/// disconnects, copy attribution, and per-physician draft coordination.
+pub mod proposals;
+
 /// The terminal tool that ends a revision with the complete revised text.
 pub const FINISH_TOOL: &str = "finish_reply_revision";
 
