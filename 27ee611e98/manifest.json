@@ -27,8 +27,8 @@
       "exit": 0,
       "ok": true,
       "kept": {
-        "revision": "aea4fc9d4623beab39acdd0f348bd4dcd53fa521",
-        "reason": "Re-parented cleanly onto updated PR 60 (9147cc48bb); 0-byte tree change"
+        "revision": "27ee611e986590648c1e4a6320208d32345dcb67",
+        "reason": "Amended scripts/check-postgres.sh:47 with FRONT_DOOR_TEST_DATABASE_URL fallback and verified --test migrations (AC5)"
       }
     },
     {
@@ -56,9 +56,31 @@
       "exit": 0,
       "ok": true,
       "kept": {
-        "revision": "aea4fc9d4623beab39acdd0f348bd4dcd53fa521",
-        "reason": "Re-parented cleanly onto updated PR 60 (9147cc48bb); 0-byte tree change"
+        "revision": "27ee611e986590648c1e4a6320208d32345dcb67",
+        "reason": "Amended scripts/check-postgres.sh:47 with FRONT_DOOR_TEST_DATABASE_URL fallback and verified --test migrations (AC5)"
       }
+    },
+    {
+      "id": 3,
+      "claim": "AC5-check-postgres-migrations-env",
+      "label": "",
+      "kind": "run",
+      "revision": "27ee611e986590648c1e4a6320208d32345dcb67",
+      "dirty": false,
+      "recorded": "2026-11-19T04:21:11+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "PHYSICIAN_TEST_DATABASE_URL=\"${PHYSICIAN_TEST_DATABASE_URL:-${PHYSICIAN_DATABASE_URL/postgres:\\/\\//postgresql://}}\" FRONT_DOOR_TEST_DATABASE_URL=\"${FRONT_DOOR_TEST_DATABASE_URL:-${FRONT_DOOR_DATABASE_URL/postgres:\\/\\//postgresql://}}\" cargo test --locked -p physician-sample -p physician-auth -p front-door -p duet-api -p local-product -p physician-bus --test migrations -- --test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-bash.log"
+      ],
+      "seconds": 3.4,
+      "exit": 0,
+      "ok": true
     }
   ]
 }
