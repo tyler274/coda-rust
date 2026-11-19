@@ -27,7 +27,8 @@
       ],
       "seconds": 3.8,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "re-running AC1 without --exact so unit test executes"
     },
     {
       "id": 2,
@@ -175,6 +176,32 @@
         "07-startup-readiness-degraded-503-200-recovery-and-.log"
       ],
       "seconds": 148.9,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 8,
+      "claim": "AC1",
+      "label": "sign-in and invite authorization",
+      "kind": "run",
+      "revision": "4af50989bfa10da0c690bb6da3b9c0e63d53d227",
+      "dirty": false,
+      "recorded": "2026-11-19T21:08:44+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-sample",
+        "--lib",
+        "any_active_practice_member_can_invite_and_a_conflict_answers_409"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "08-sign-in-and-invite-authorization.log"
+      ],
+      "seconds": 3.0,
       "exit": 0,
       "ok": true
     }
