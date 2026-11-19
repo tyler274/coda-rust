@@ -411,6 +411,53 @@ pub fn decode_saved_attachment(
     }
 }
 
+/// Formats one decoded multimodal image [`AttachmentPart`] into a searchable
+/// [`ReadablePart`] and its structured provenance JSON.
+pub(crate) fn image_part_readable_and_provenance(
+    title: &str,
+    part: &AttachmentPart,
+) -> Option<(ReadablePart, Value)> {
+    let AttachmentPart::Image {
+        attachment_id,
+        media_type,
+        width,
+        height,
+        original_sha256,
+        extracted_text,
+        ..
+    } = part
+    else {
+        return None;
+    };
+    let visual_text = if extracted_text.trim().is_empty() {
+        format!(
+            "Multimodal image attachment `{title}` ({media_type}, {width}x{height}px, sha256={original_sha256})."
+        )
+    } else {
+        format!(
+            "Multimodal image attachment `{title}` ({media_type}, {width}x{height}px, sha256={original_sha256}):\n{extracted_text}"
+        )
+    };
+    let readable = ReadablePart {
+        label: format!("image:{attachment_id}"),
+        text: visual_text,
+    };
+    let provenance = json!({
+        "id": attachment_id,
+        "attachment_kind": "image",
+        "media_type": media_type,
+        "width": width,
+        "height": height,
+        "original_file_sha256": original_sha256,
+        "multimodal_part": {
+            "type": "input_image",
+            "media_type": media_type,
+            "blob_uri": format!("urn:sha256:{original_sha256}"),
+        }
+    });
+    Some((readable, provenance))
+}
+
 /// Converts a batch of saved Spruce photo and text attachments into [`SourceRevision`]s
 /// while keeping each attachment's original bytes and SHA-256 intact and isolating
 /// any corrupted attachment from its readable siblings.
@@ -422,43 +469,14 @@ pub fn ingest_attachment_batch(inputs: &[SavedAttachmentInput]) -> AttachmentBat
         let outcome = decode_saved_attachment(input);
 
         let (readable_parts, provenance) = match &outcome {
-            Ok(AttachmentPart::Image {
-                media_type,
-                width,
-                height,
-                original_sha256,
-                extracted_text,
-                ..
-            }) => {
-                let visual_text = if extracted_text.trim().is_empty() {
-                    format!(
-                        "Multimodal image attachment `{}` ({media_type}, {width}x{height}px, sha256={original_sha256}).",
-                        input.title
-                    )
+            Ok(part @ AttachmentPart::Image { .. }) => {
+                if let Some((readable, prov)) =
+                    image_part_readable_and_provenance(&input.title, part)
+                {
+                    (vec![readable], prov)
                 } else {
-                    format!(
-                        "Multimodal image attachment `{}` ({media_type}, {width}x{height}px, sha256={original_sha256}):\n{extracted_text}",
-                        input.title
-                    )
-                };
-                let parts = vec![ReadablePart {
-                    label: format!("image:{}", input.attachment_id),
-                    text: visual_text,
-                }];
-                let prov = json!({
-                    "id": input.attachment_id,
-                    "attachment_kind": "image",
-                    "media_type": media_type,
-                    "width": width,
-                    "height": height,
-                    "original_file_sha256": original_sha256,
-                    "multimodal_part": {
-                        "type": "input_image",
-                        "media_type": media_type,
-                        "blob_uri": format!("urn:sha256:{original_sha256}"),
-                    }
-                });
-                (parts, prov)
+                    (Vec::new(), Value::Null)
+                }
             }
             Ok(AttachmentPart::Text {
                 media_type,

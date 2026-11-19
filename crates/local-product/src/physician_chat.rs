@@ -381,27 +381,31 @@ enum ChatTool {
 
 impl ChatTool {
     fn named(name: &str) -> Option<Self> {
-        use harness::engine::{history, results};
-        match name {
-            crate::physician_sources::SEARCH_TOOL | crate::physician_sources::READ_TOOL => {
-                Some(Self::Chart)
-            }
-            crate::clinical_library::SEARCH_LIBRARY_TOOL
-            | crate::clinical_library::READ_LIBRARY_TOOL => Some(Self::ClinicalLibrary),
-            crate::attachments::READ_DOCUMENT_PAGE_TOOL
-            | crate::runtime::chat_operations::REFRESH_SOURCES_TOOL
-            | crate::runtime::chat_operations::RETRIEVE_PATIENT_WORK_TOOL
-            | crate::runtime::concerns::CONCERN_TOOL
-            | crate::runtime::follow_ups::FOLLOW_UP_TOOL
-            | crate::initial_understanding::READ_UNDERSTANDING_TOOL
-            | crate::initial_understanding::SAVE_UNDERSTANDING_TOOL => Some(Self::PatientWorkspace),
-            history::LIST | history::READ | history::SEARCH => Some(Self::Conversation),
-            SKILL_VIEW => Some(Self::Skill),
-            results::READ => Some(Self::ResultPage),
-            name if crate::runtime::working_notes::is_tool(name) => Some(Self::WorkingNote),
-            citations::FINISH_TOOL => Some(Self::Finish),
-            name if memory::MemoryTool::named(name).is_some() => Some(Self::Memory),
-            _ => None,
+        use crate::step_projection::{ToolClass, classify_tool};
+
+        match classify_tool(name)? {
+            ToolClass::ChartSearch | ToolClass::ChartRead => Some(Self::Chart),
+            ToolClass::ClinicalLibrary => Some(Self::ClinicalLibrary),
+            ToolClass::DocumentPageRead
+            | ToolClass::RefreshSources
+            | ToolClass::PriorPatientWork
+            | ToolClass::PatientConcern
+            | ToolClass::FollowUp
+            | ToolClass::PatientUnderstandingRead
+            | ToolClass::PatientUnderstandingSave => Some(Self::PatientWorkspace),
+            ToolClass::ConversationHistory => Some(Self::Conversation),
+            ToolClass::Skill => Some(Self::Skill),
+            ToolClass::ResultPage => Some(Self::ResultPage),
+            ToolClass::WorkingNote => Some(Self::WorkingNote),
+            ToolClass::MemoryRead | ToolClass::MemoryWrite => Some(Self::Memory),
+            ToolClass::Finish => Some(Self::Finish),
+            ToolClass::PatientReviewsRead
+            | ToolClass::PatientReviewComplete
+            | ToolClass::PatientConversationRead
+            | ToolClass::MessageReply
+            | ToolClass::ReplyRevision
+            | ToolClass::VisitPreparation
+            | ToolClass::SpruceMatching => None,
         }
     }
 }

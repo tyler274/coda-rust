@@ -9,21 +9,17 @@ use axum::body::Body;
 use axum::extract::{Extension, Path, State};
 use axum::http::{Request, StatusCode};
 use axum::response::{IntoResponse, Response};
-use harness::engine::EventKind;
-use harness::engine::results::ToolResult;
 use local_product::patient_reviews::{
-    COMPLETE_PATIENT_REVIEW_TOOL, READ_PATIENT_REVIEWS_TOOL, ReviewCitation, ReviewOutcome,
-    ReviewTrigger, UnfinishedReviewWork,
+    ReviewCitation, ReviewOutcome, ReviewTrigger, UnfinishedReviewWork,
 };
 use local_product::physician_chat::PhysicianSkills;
-use local_product::physician_sources::{SEARCH_TOOL, SourceRevision};
+use local_product::physician_sources::SourceRevision;
 use local_product::runtime::chat_operations::RecordLimitKind;
 use local_product::runtime::concerns::ExactRecordReference;
 use local_product::runtime::history::{
     CitedSourceReadback, HistorySegment, cited_record_title, format_cited_source_body,
 };
 use local_product::runtime::jobs::{PracticeAccessError, PracticeJob, PracticeJobAttempt};
-use local_product::runtime::memory::tools::MemoryTool;
 use local_product::runtime::reviews::{
     PatientReviewError, PatientReviewTarget, RecordedReviewAction, ReviewHoldReason,
     ReviewLifecycleState, ReviewRecipeVersion, ReviewSupersededReason, SavedPatientReview,
@@ -1292,12 +1288,35 @@ fn collect_review_evidence(
     (evidence, sources, readback)
 }
 
+fn to_projected_step_state(
+    state: ReviewStepStateWire,
+) -> local_product::step_projection::ProjectedStepState {
+    use local_product::step_projection::ProjectedStepState;
+    match state {
+        ReviewStepStateWire::Running => ProjectedStepState::Running,
+        ReviewStepStateWire::Done => ProjectedStepState::Done,
+        ReviewStepStateWire::Failed => ProjectedStepState::Failed,
+        ReviewStepStateWire::Stopped => ProjectedStepState::Stopped,
+    }
+}
+
+fn from_projected_step_state(
+    state: local_product::step_projection::ProjectedStepState,
+) -> ReviewStepStateWire {
+    use local_product::step_projection::ProjectedStepState;
+    match state {
+        ProjectedStepState::Running => ReviewStepStateWire::Running,
+        ProjectedStepState::Done => ReviewStepStateWire::Done,
+        ProjectedStepState::Stopped => ReviewStepStateWire::Stopped,
+        ProjectedStepState::Failed | ProjectedStepState::Interrupted => ReviewStepStateWire::Failed,
+    }
+}
+
 fn extract_steps(
     attempts: &[PracticeJobAttempt],
     review_state: &ReviewLifecycleState,
     context: &WorkspaceSourceContext,
 ) -> Vec<ReviewStepWire> {
-    let mut steps: Vec<(String, ReviewStepWire)> = Vec::new();
     let unfinished_step_state = match review_state {
         ReviewLifecycleState::Pending | ReviewLifecycleState::Running { .. } => {
             ReviewStepStateWire::Running
@@ -1314,132 +1333,45 @@ fn extract_steps(
         | ReviewLifecycleState::Superseded { .. } => ReviewStepStateWire::Failed,
         ReviewLifecycleState::Completed { .. } => ReviewStepStateWire::Done,
     };
-
-    for attempt in attempts {
-        for event in &attempt.events {
-            match &event.kind {
-                EventKind::ToolStarted(call) => {
-                    if let Some((label, detail)) =
-                        describe_tool_step(&call.name, &call.arguments, context)
-                    {
-                        steps.push((
-                            call.id.clone(),
-                            ReviewStepWire {
-                                label,
-                                detail,
-                                state: unfinished_step_state,
-                            },
-                        ));
-                    }
-                }
-                EventKind::ToolReturned { call_id, result } => {
-                    let settled = match result {
-                        ToolResult::Original(_) | ToolResult::History(_) | ToolResult::View(_) => {
-                            ReviewStepStateWire::Done
-                        }
-                        ToolResult::Refused(_) => ReviewStepStateWire::Failed,
-                    };
-                    if let Some((_, step)) = steps.iter_mut().rev().find(|(id, _)| id == call_id) {
-                        step.state = settled;
-                    }
-                }
-                EventKind::ProviderStarted { .. }
-                | EventKind::ProviderObservation { .. }
-                | EventKind::ProviderReturned(_)
-                | EventKind::ProviderFailed { .. }
-                | EventKind::TransportRetry { .. }
-                | EventKind::ProviderBlocked { .. }
-                | EventKind::ContextRejected
-                | EventKind::Candidate { .. }
-                | EventKind::WindowOpened { .. }
-                | EventKind::CallBegan { .. } => {}
-            }
-        }
-    }
-    steps.into_iter().map(|(_, step)| step).collect()
+    let unfinished = to_projected_step_state(unfinished_step_state);
+    local_product::step_projection::project_steps_from_events(
+        attempts
+            .iter()
+            .map(|attempt| (unfinished, attempt.events.as_slice())),
+        &|id| {
+            context
+                .latest_by_candidate
+                .get(id)
+                .map(|s| humanize_record_title(&s.provenance, &s.record_type, id))
+        },
+    )
+    .into_iter()
+    .map(|step| ReviewStepWire {
+        label: step.label,
+        detail: step.detail,
+        state: from_projected_step_state(step.state),
+    })
+    .collect()
 }
 
+#[cfg(test)]
 fn describe_tool_step(
     name: &str,
     arguments: &str,
     context: &WorkspaceSourceContext,
 ) -> Option<(String, Option<String>)> {
-    let parsed: Option<Value> = serde_json::from_str(arguments).ok();
-    match name {
-        SEARCH_TOOL => {
-            let query = parsed
-                .as_ref()
-                .and_then(|v| v.get("query"))
-                .and_then(Value::as_str)
-                .map(str::trim)
-                .filter(|s| !s.is_empty())
-                .map(str::to_owned);
-            Some(("Searched patient chart".to_owned(), query))
-        }
-        "read_patient_sources" => {
-            let titles: Vec<String> = parsed
-                .as_ref()
-                .and_then(|v| v.get("references"))
-                .and_then(Value::as_array)
-                .map(|items| {
-                    items
-                        .iter()
-                        .filter_map(|entry| {
-                            let id = entry
-                                .get("candidate_id")
-                                .and_then(Value::as_str)
-                                .or_else(|| entry.get("reference").and_then(Value::as_str))
-                                .or_else(|| entry.as_str())
-                                .map(str::trim)
-                                .filter(|s| !s.is_empty())?;
-                            Some(
-                                context
-                                    .latest_by_candidate
-                                    .get(id)
-                                    .map(|s| {
-                                        humanize_record_title(&s.provenance, &s.record_type, id)
-                                    })
-                                    .unwrap_or_else(|| id.to_owned()),
-                            )
-                        })
-                        .collect()
-                })
-                .unwrap_or_default();
-            let detail = (!titles.is_empty()).then(|| titles.join(", "));
-            Some(("Read chart records".to_owned(), detail))
-        }
-        "refresh_patient_sources" => Some(("Checked connected sources".to_owned(), None)),
-        READ_PATIENT_REVIEWS_TOOL => Some(("Checked prior patient reviews".to_owned(), None)),
-        COMPLETE_PATIENT_REVIEW_TOOL => Some(("Recorded review outcome".to_owned(), None)),
-        "read_patient_understanding" => Some(("Read patient summary".to_owned(), None)),
-        "save_patient_understanding" => Some(("Updated patient summary".to_owned(), None)),
-        "patient_concern" => Some(("Updated Today concern".to_owned(), None)),
-        n if MemoryTool::named(n).is_some_and(MemoryTool::reads) => {
-            Some(("Checked patient clinical memory".to_owned(), None))
-        }
-        n if MemoryTool::named(n).is_some() => {
-            Some(("Updated patient clinical memory".to_owned(), None))
-        }
-        "retrieve_patient_work" => Some(("Checked prior patient conversations".to_owned(), None)),
-        "search_clinical_library" | "read_clinical_library" => {
-            Some(("Checked clinical guidance".to_owned(), None))
-        }
-        "select_visit_preparations" | "save_visit_briefing" => {
-            Some(("Prepared visit briefing".to_owned(), None))
-        }
-        "finish_reply_revision" => Some(("Updated patient reply draft".to_owned(), None)),
-        "skill_view"
-        | "save_working_note"
-        | "working_notes"
-        | "read_tool_result"
-        | "list_conversation_history"
-        | "read_conversation_message"
-        | "search_conversation_history"
-        | "history_list"
-        | "history_read"
-        | "history_search" => None,
-        _ => Some(("Checked clinical context".to_owned(), None)),
-    }
+    local_product::step_projection::project_tool_step(
+        name,
+        arguments,
+        local_product::step_projection::ProjectedStepState::Running,
+        &|id| {
+            context
+                .latest_by_candidate
+                .get(id)
+                .map(|s| humanize_record_title(&s.provenance, &s.record_type, id))
+        },
+    )
+    .map(|step| (step.label, step.detail))
 }
 
 fn project_action(action: &RecordedReviewAction) -> ReviewActionWire {

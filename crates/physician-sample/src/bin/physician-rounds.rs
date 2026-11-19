@@ -13,8 +13,12 @@ use std::sync::Arc;
 use chrono::{DateTime, Utc};
 use local_product::physician_chat::{PhysicianSkills, SkillsError};
 use local_product::runtime::Store;
+use local_product::runtime::engine::Event;
 use local_product::runtime::memory::{PatientKey, RoundsMark};
 use local_product::runtime::rounds::{self, Ending, RoundsRun};
+use local_product::step_projection::{
+    ProjectedStepState, extract_reasoning_summaries, project_steps_from_events,
+};
 use physician_sample::hosting::{self, StartupError};
 use physician_sample::model::{self, ModelSource, ModelTransport, configured};
 use sea_orm::{DbErr, TransactionTrait};
@@ -38,8 +42,10 @@ async fn main() -> ExitCode {
 /// Why the command could not run.
 #[derive(Debug, thiserror::Error)]
 enum RoundsError {
-    /// The command was not given a practice and a workspace.
-    #[error("usage: physician-rounds <practice> <workspace>")]
+    /// The command was not given a valid practice/workspace pair or inspect path.
+    #[error(
+        "usage: physician-rounds <practice> <workspace> | physician-rounds inspect <record.json>"
+    )]
     Usage,
     /// The command runs only on a developer's machine.
     #[error("physician-rounds runs only on a developer's machine")]
@@ -65,6 +71,14 @@ enum RoundsError {
     /// The model could not be reached.
     #[error("cannot reach the model: {0}")]
     Provider(#[source] harness::engine::Cause),
+    /// A saved run record could not be read or parsed for staff inspection.
+    #[error("cannot inspect {}: {reason}", path.display())]
+    Inspect {
+        /// Path to the saved run record file.
+        path: PathBuf,
+        /// Underlying file or JSON failure.
+        reason: String,
+    },
     /// The run's record could not be written.
     #[error("cannot write {}: {source}", path.display())]
     Evidence {
@@ -76,10 +90,19 @@ enum RoundsError {
     },
 }
 
-/// Runs rounds once; `true` when the run finished.
+/// Runs rounds once (`true` when finished) or inspects a saved rounds record.
 async fn run() -> Result<bool, RoundsError> {
     let get = |key: &str| std::env::var(key).ok();
     let arguments: Vec<String> = std::env::args().skip(1).collect();
+    if let [cmd, path] = &arguments[..]
+        && cmd == "inspect"
+    {
+        if hosting::is_hosted(get) {
+            return Err(RoundsError::Hosted);
+        }
+        inspect_record(Path::new(path))?;
+        return Ok(true);
+    }
     let [practice, workspace] = &arguments[..] else {
         return Err(RoundsError::Usage);
     };
@@ -117,8 +140,16 @@ async fn run() -> Result<bool, RoundsError> {
     )
     .await;
     let after = store.last_rounds(&patient).await?;
-    let evidence = write_evidence(practice, workspace, now, &done, before, after)?;
+    let unfinished = match &done.ending {
+        Ending::Finished { .. } => ProjectedStepState::Done,
+        Ending::Limit { .. } | Ending::Failed(_) => ProjectedStepState::Failed,
+    };
+    let steps = project_steps_from_events([(unfinished, done.events.as_slice())], &|_| None);
+    let evidence = write_evidence(practice, workspace, now, &done, &steps, before, after)?;
     println!("{}", ending_summary(&done.ending));
+    for step in &steps {
+        println!("step: {}", step.display_line());
+    }
     println!("run record: {}", evidence.display());
     match after {
         Some(mark) => println!(
@@ -129,6 +160,55 @@ async fn run() -> Result<bool, RoundsError> {
         None => println!("rounds last finished: never"),
     }
     Ok(done.finished())
+}
+
+fn inspect_record(path: &Path) -> Result<(), RoundsError> {
+    let raw = std::fs::read_to_string(path).map_err(|err| RoundsError::Inspect {
+        path: path.to_path_buf(),
+        reason: err.to_string(),
+    })?;
+    let record: Value = serde_json::from_str(&raw).map_err(|err| RoundsError::Inspect {
+        path: path.to_path_buf(),
+        reason: err.to_string(),
+    })?;
+    let events: Vec<Event> = record
+        .get("events")
+        .cloned()
+        .map(serde_json::from_value)
+        .transpose()
+        .map_err(|err| RoundsError::Inspect {
+            path: path.to_path_buf(),
+            reason: format!("invalid events array: {err}"),
+        })?
+        .unwrap_or_default();
+    let unfinished = if record
+        .get("ending")
+        .and_then(|v| v.get("finished"))
+        .is_some()
+    {
+        ProjectedStepState::Done
+    } else {
+        ProjectedStepState::Failed
+    };
+    let steps = project_steps_from_events([(unfinished, events.as_slice())], &|_| None);
+    let reasoning = extract_reasoning_summaries(&events);
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&json!({
+            "practice": record.get("practice"),
+            "workspace": record.get("workspace"),
+            "started_at": record.get("started_at"),
+            "ending": record.get("ending"),
+            "projected_steps": steps,
+            "reasoning_summaries": reasoning,
+            "event_count": events.len(),
+        }))
+        .map_err(|err| RoundsError::Inspect {
+            path: path.to_path_buf(),
+            reason: err.to_string(),
+        })?
+    );
+    Ok(())
 }
 
 /// How the run ended, as the evidence holds it.
@@ -168,6 +248,7 @@ fn write_evidence(
     workspace: &str,
     start: DateTime<Utc>,
     done: &RoundsRun,
+    steps: &[local_product::step_projection::ProjectedStep],
     before: Option<RoundsMark>,
     after: Option<RoundsMark>,
 ) -> Result<PathBuf, RoundsError> {
@@ -179,6 +260,7 @@ fn write_evidence(
         "last_rounds_before": mark(before),
         "last_rounds_after": mark(after),
         "usage": done.usage(),
+        "steps": steps,
         "events": done.events,
     });
     let file: String = workspace

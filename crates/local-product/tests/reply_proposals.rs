@@ -3629,3 +3629,137 @@ async fn ac5_ask_coda_edge_cases_empty_thread_active_review_handoff_and_answered
     ));
     assert!(final_answered.pending_reply_request.is_none());
 }
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn citations_code21_basis_and_limitations_never_appears_in_draft_text_or_copied_reply() {
+    let (_url, store, auth) = setup_stores().await;
+    let practice = format!("prac-code21-{}", uuid::Uuid::new_v4().simple());
+    let workspace = format!("pw-code21-{}", uuid::Uuid::new_v4().simple());
+    let conversation_id = "conv-code21-1";
+    let (physician, _token, session_hash) = invite_and_sign_in(&auth, &practice, "dr-code21").await;
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.set_membership(&physician, &workspace, Membership::Allowed)
+        .await
+        .unwrap();
+    let mut authority = PostgresWorkspaceAuthority;
+    let access = WorkspaceAccess {
+        session_hash: &session_hash,
+        practice: &practice,
+        physician: &physician.physician_id,
+        workspace: &workspace,
+    };
+
+    store
+        .link_reply_conversation(
+            &practice,
+            conversation_id,
+            ConversationLink::LinkedPatient {
+                workspace: workspace.clone(),
+            },
+        )
+        .await
+        .unwrap();
+    store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: practice.clone(),
+            conversation_id: conversation_id.into(),
+            message_id: "msg-code21-1".into(),
+            sender: MessageSender::Patient,
+            text: "How did my potassium lab look?".into(),
+            sent_at: 1_762_910_000,
+        })
+        .await
+        .unwrap();
+
+    let basis_summary = "Based on Clinic EHR Quest BMP rev-1; over-the-counter supplement adherence is unconfirmed.";
+    let basis_limit = "Outside hospital results are unavailable.";
+    let patient_reply = "Your potassium is normal at 4.1 mmol/L. No changes needed right now.";
+
+    store
+        .start_or_read_reply_review(&practice, conversation_id, "rev-code21-1", "run-code21-1")
+        .await
+        .unwrap();
+    store
+        .complete_reply_review(&CompleteReplyReview {
+            practice: practice.clone(),
+            conversation_id: conversation_id.into(),
+            review_id: "rev-code21-1".into(),
+            run_id: "run-code21-1".into(),
+            completion_key: "comp-code21-1".into(),
+            answered_closures: vec![],
+            decision: ReplyReviewDecision::ProposeReply(ReplyProposalInput {
+                text: patient_reply.into(),
+                basis: ReplyProposalBasisInput {
+                    summary: basis_summary.into(),
+                    limits: vec![basis_limit.into()],
+                    cited_records: vec![],
+                },
+                cited_records: vec![],
+            }),
+            raised_concern_ids: vec![],
+        })
+        .await
+        .unwrap();
+
+    let card = store
+        .reply_card(&access, conversation_id, &mut authority)
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(card.basis.as_ref().unwrap().summary, basis_summary);
+    assert_eq!(card.basis.as_ref().unwrap().limits, vec![basis_limit]);
+
+    let copied_proposal = match store
+        .copy_reply(
+            &access,
+            &CommandKey::new("copy-code21-proposal").unwrap(),
+            conversation_id,
+            ExpectedDraftBase::ProposalVersion(1),
+            &mut authority,
+        )
+        .await
+        .unwrap()
+    {
+        local_product::runtime::reply::proposals::CopyReplyOutcome::Recorded(record) => record,
+        other => panic!("expected Recorded copy outcome, got {other:?}"),
+    };
+    assert_eq!(copied_proposal.copied_text, patient_reply);
+    assert!(
+        !copied_proposal
+            .copied_text
+            .contains("Basis and limitations")
+    );
+    assert!(!copied_proposal.copied_text.contains(basis_summary));
+    assert!(!copied_proposal.copied_text.contains(basis_limit));
+
+    let edited_reply = "Hi there — your potassium looked great at 4.1 mmol/L.";
+    store
+        .edit_reply_proposal_draft(
+            &access,
+            conversation_id,
+            ExpectedDraftBase::ProposalVersion(1),
+            edited_reply,
+            &mut authority,
+        )
+        .await
+        .unwrap();
+    let copied_draft = match store
+        .copy_reply(
+            &access,
+            &CommandKey::new("copy-code21-draft").unwrap(),
+            conversation_id,
+            ExpectedDraftBase::DraftRevision(1),
+            &mut authority,
+        )
+        .await
+        .unwrap()
+    {
+        local_product::runtime::reply::proposals::CopyReplyOutcome::Recorded(record) => record,
+        other => panic!("expected Recorded copy outcome, got {other:?}"),
+    };
+    assert_eq!(copied_draft.copied_text, edited_reply);
+    assert!(!copied_draft.copied_text.contains("Basis and limitations"));
+    assert!(!copied_draft.copied_text.contains(basis_summary));
+    assert!(!copied_draft.copied_text.contains(basis_limit));
+}

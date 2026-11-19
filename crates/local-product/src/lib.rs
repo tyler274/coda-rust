@@ -31,6 +31,8 @@ pub mod runtime;
 pub mod source_status;
 /// Unmatched Spruce message classification and patient-match suggestion recipe.
 pub mod spruce_matching_recipe;
+/// Shared run-step projection and staff-only reasoning-summary inspection.
+pub mod step_projection;
 /// Recipe, context, and tool descriptors for visit selection and visit briefings.
 pub mod visit_preparation;
 

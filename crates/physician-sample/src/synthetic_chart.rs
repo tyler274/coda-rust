@@ -57,6 +57,7 @@ pub(crate) fn parse_source_revision(
     crate::synthetic_chart_fhir::source_revision(workspace, SOURCE_ID, line).map_err(
         |err| match err {
             RecordFilingError::UnsupportedAttachment { .. }
+            | RecordFilingError::AttachmentDecode { .. }
             | RecordFilingError::UnavailableAttachment { .. }
             | RecordFilingError::ExternalAttachment { .. }
             | RecordFilingError::InvalidBase64 { .. }
