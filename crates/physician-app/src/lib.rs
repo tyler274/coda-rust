@@ -575,7 +575,15 @@ fn apply_event_frames(
         let open = selected.read().clone();
         match event_refetch(&name, &data, open.as_deref()) {
             EventRefetch::Nothing => {}
+            EventRefetch::Today => {
+                today_attempt.set(today_attempt() + 1);
+            }
             EventRefetch::OpenPatient => {
+                workspace_attempt.set(workspace_attempt() + 1);
+                snapshot_attempt.set(snapshot_attempt() + 1);
+            }
+            EventRefetch::TodayAndOpenPatient => {
+                today_attempt.set(today_attempt() + 1);
                 workspace_attempt.set(workspace_attempt() + 1);
                 snapshot_attempt.set(snapshot_attempt() + 1);
             }
@@ -1035,20 +1043,49 @@ fn PhysicianShell(
     let mut drawer_close = use_signal(|| None::<std::rc::Rc<MountedData>>);
     let mut app_collapsed = use_signal(|| false);
     let mut schedule_collapsed = use_signal(|| false);
-    // The physician's remembered choices arrive with who they are.
+    // The physician's remembered choices arrive with who they are: seed
+    // immediately from this browser's cache, then converge with server truth
+    // (`GET /physician-state/panels`) so preferences survive sign-out and
+    // follow the physician across browsers (`P4.Rule.PanelChoiceRemembered`).
+    let mut panel_prefs_generation = use_signal(|| 0_u64);
     use_effect(move || {
+        let next_gen = *panel_prefs_generation.peek() + 1;
+        panel_prefs_generation.set(next_gen);
         if let Some(account) = whoami.read().as_ref() {
             sidebar_collapsed.set(panels::collapsed(&account.physician_id, Panel::Sidebar));
             schedule_collapsed.set(panels::collapsed(&account.physician_id, Panel::Schedule));
+            let physician_id = account.physician_id.clone();
+            let api = client.read().clone();
+            spawn(async move {
+                if let Ok(saved) = api.panel_preferences().await {
+                    if *panel_prefs_generation.peek() != next_gen {
+                        return;
+                    }
+                    sidebar_collapsed.set(saved.sidebar_collapsed);
+                    schedule_collapsed.set(saved.schedule_collapsed);
+                    panels::remember(&physician_id, Panel::Sidebar, saved.sidebar_collapsed);
+                    panels::remember(&physician_id, Panel::Schedule, saved.schedule_collapsed);
+                }
+            });
         }
     });
     let mut remember = move |panel: Panel, collapsed: bool| {
+        let next_gen = *panel_prefs_generation.peek() + 1;
+        panel_prefs_generation.set(next_gen);
         match panel {
             Panel::Sidebar => sidebar_collapsed.set(collapsed),
             Panel::Schedule => schedule_collapsed.set(collapsed),
         }
+        let next = physician_wire::briefings::PanelPreferencesWire {
+            sidebar_collapsed: *sidebar_collapsed.peek(),
+            schedule_collapsed: *schedule_collapsed.peek(),
+        };
         if let Some(account) = whoami.peek().as_ref() {
             panels::remember(&account.physician_id, panel, collapsed);
+            let api = client.read().clone();
+            spawn(async move {
+                let _ = api.save_panel_preferences(&next).await;
+            });
         }
     };
     let mut search_open = use_signal(|| false);

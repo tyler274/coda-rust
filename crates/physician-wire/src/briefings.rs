@@ -234,3 +234,15 @@ pub struct WorkspaceBriefingsResponse {
     #[serde(default)]
     pub briefings: Vec<BriefingSummaryItemWire>,
 }
+
+/// Per-physician panel collapse preferences stored on the server
+/// (`GET /physician-state/panels`, `PUT /physician-state/panels`).
+#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct PanelPreferencesWire {
+    /// Whether the navigation sidebar is collapsed for this physician.
+    #[serde(default)]
+    pub sidebar_collapsed: bool,
+    /// Whether the schedule rail is collapsed for this physician.
+    #[serde(default)]
+    pub schedule_collapsed: bool,
+}

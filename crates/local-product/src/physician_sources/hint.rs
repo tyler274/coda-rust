@@ -5,14 +5,25 @@
 //! JSON, without translating their clinical content into another schema.
 
 use serde::Deserialize;
-use serde_json::Value;
-use std::collections::HashSet;
+use serde_json::{Value, json};
+use std::collections::{BTreeMap, BTreeSet, HashSet};
 
 use super::adapter::{RecordFilingError, file_record};
 use super::{
-    Bucket, DateRole, FailedPart, FiledDate, RecordCode, RecordEnvelope, RecordVersion,
+    Bucket, DateRole, FailedPart, FiledDate, RecordCode, RecordDate, RecordEnvelope, RecordVersion,
     SourceAdapterError, SourcePatient, SourcePullOutput, SourceRecordKind,
 };
+use crate::runtime::schedule::{
+    AppointmentId, AppointmentStatus, AppointmentWindow, ScheduleDelivery, ScheduleReadIssue,
+    ScheduleSourceError, SourceAppointment, SourceAppointmentParts, SourceId as ScheduleSourceId,
+    SourcePatientId,
+};
+
+/// Canonical source identifier for Hint Health Chrome connector deliveries.
+pub const HINT_SOURCE_ID: &str = "hint";
+
+/// Physician-facing source label for Hint Health Chrome connector deliveries.
+pub const HINT_SOURCE_LABEL: &str = "Hint Health";
 
 /// Acquired Hint sections, after the acquisition owner applies its source policy.
 #[derive(Debug, Deserialize)]
@@ -500,4 +511,211 @@ fn native_link(section: Section, patient_id: &str, native_id: &str) -> String {
         }
     }
     url.into()
+}
+
+/// Error parsing a Hint Health `READS.roster` payload delivered by the Chrome connector.
+#[derive(Debug, thiserror::Error)]
+pub enum HintRosterError {
+    /// Top-level payload was not a JSON array (or `{ patients/data: [...] }`).
+    #[error("Hint roster payload must be a JSON array of patient objects")]
+    ExpectedArray,
+}
+
+/// Parses a Hint Health roster delivery (`extension/chrome/readers/hint.js`
+/// `READS.roster`) into validated [`SourcePatient`] records, isolating any
+/// malformed individual entries so one bad patient never blocks the rest.
+pub fn parse_hint_roster(
+    payload: &Value,
+) -> Result<(Vec<SourcePatient>, Vec<String>), HintRosterError> {
+    let items = payload
+        .as_array()
+        .or_else(|| payload.get("patients").and_then(Value::as_array))
+        .or_else(|| payload.get("data").and_then(Value::as_array))
+        .ok_or(HintRosterError::ExpectedArray)?;
+
+    let mut patients = Vec::new();
+    let mut seen_ids = BTreeSet::new();
+    let mut failures = Vec::new();
+    for (idx, item) in items.iter().enumerate() {
+        let Some(id) = text(item, "id") else {
+            failures.push(format!("roster[{idx}]: missing required field `id`"));
+            continue;
+        };
+        match patient_identity(item, id) {
+            Ok(patient) => {
+                if seen_ids.insert(patient.source_patient_id.clone()) {
+                    patients.push(patient);
+                }
+            }
+            Err(err) => failures.push(format!("Patient/{id}: {err}")),
+        }
+    }
+    Ok((patients, failures))
+}
+
+/// Parses a Hint Health appointments payload (`extension/chrome/readers/hint.js`
+/// `READS.appointments` array or `{ data/entities: [...] }`) into a
+/// [`ScheduleDelivery`], isolating malformed entries without dropping valid visits.
+pub fn parse_hint_appointments(
+    source_id: &ScheduleSourceId,
+    payload: &Value,
+) -> Result<ScheduleDelivery, ScheduleSourceError> {
+    let items = payload
+        .as_array()
+        .or_else(|| payload.get("entities").and_then(Value::as_array))
+        .or_else(|| payload.get("data").and_then(Value::as_array))
+        .or_else(|| payload.get("appointments").and_then(Value::as_array))
+        .ok_or_else(|| ScheduleSourceError::Unavailable {
+            source_id: source_id.clone(),
+            reason: "Hint appointments payload must be a JSON array or envelope with data/entities"
+                .to_owned(),
+        })?;
+
+    let mut appointments = Vec::new();
+    let mut seen_digests: BTreeMap<AppointmentId, String> = BTreeMap::new();
+    let mut issues = Vec::new();
+
+    for (idx, item) in items.iter().enumerate() {
+        match parse_one_hint_appointment(item) {
+            Ok((appt, maybe_issue)) => {
+                if let Some(issue) = maybe_issue {
+                    issues.push(issue);
+                }
+                let id = appt.appointment_id().clone();
+                if let Some(prior_sha) = seen_digests.get(&id) {
+                    if prior_sha != appt.sha256() {
+                        issues.push(
+                            ScheduleReadIssue::new(
+                                format!("HintAppointment/{id}"),
+                                "duplicate Hint appointment id with conflicting content",
+                            )
+                            .expect("non-empty issue"),
+                        );
+                    }
+                    continue;
+                }
+                seen_digests.insert(id, appt.sha256().to_owned());
+                appointments.push(appt);
+            }
+            Err(reason) => {
+                let target = text(item, "ident")
+                    .or_else(|| text(item, "id"))
+                    .map(|id| format!("HintAppointment/{id}"))
+                    .unwrap_or_else(|| format!("HintAppointment[{idx}]"));
+                issues.push(ScheduleReadIssue::new(target, reason).expect("non-empty issue"));
+            }
+        }
+    }
+
+    ScheduleDelivery::from_outcomes(appointments, issues).map_err(|err| {
+        ScheduleSourceError::Unavailable {
+            source_id: source_id.clone(),
+            reason: err.to_string(),
+        }
+    })
+}
+
+fn parse_one_hint_appointment(
+    item: &Value,
+) -> Result<(SourceAppointment, Option<ScheduleReadIssue>), String> {
+    let raw_id = text(item, "ident")
+        .or_else(|| text(item, "id"))
+        .ok_or_else(|| "Hint appointment missing `ident` or `id`".to_owned())?;
+    let appointment_id = AppointmentId::new(raw_id).map_err(|e| e.to_string())?;
+
+    let raw_status = text(item, "status").unwrap_or("scheduled").trim();
+    let status = match raw_status.to_ascii_lowercase().as_str() {
+        "booked" | "scheduled" | "confirmed" | "pending" | "arrived" | "checked_in"
+        | "checked-in" | "in_progress" | "in-progress" => AppointmentStatus::Scheduled,
+        "cancelled" | "canceled" | "deleted" | "entered-in-error" => AppointmentStatus::Cancelled,
+        "completed" | "fulfilled" | "finished" => AppointmentStatus::Fulfilled,
+        "no_show" | "no-show" | "noshow" => AppointmentStatus::NoShow,
+        other => return Err(format!("unsupported Hint appointment status `{other}`")),
+    };
+
+    let start = text(item, "start")
+        .or_else(|| text(item, "start_time"))
+        .or_else(|| text(item, "starts_at"))
+        .or_else(|| text(item, "start_at"))
+        .ok_or_else(|| "Hint appointment missing `start`".to_owned())?;
+    let end = text(item, "end")
+        .or_else(|| text(item, "end_time"))
+        .or_else(|| text(item, "ends_at"))
+        .or_else(|| text(item, "end_at"))
+        .ok_or_else(|| "Hint appointment missing `end`".to_owned())?;
+    let window = AppointmentWindow::parse(start, end).map_err(|e| e.to_string())?;
+
+    let label = text(item, "title")
+        .or_else(|| text(item, "description"))
+        .or_else(|| text(item, "reason"))
+        .or_else(|| text(item, "appointment_type"))
+        .unwrap_or("Hint appointment")
+        .to_owned();
+
+    let (source_patient_id, participant_issue) = extract_hint_appointment_patient(item, raw_id)?;
+    let mut dates = vec![
+        RecordDate {
+            name: "start".to_owned(),
+            value: start.to_owned(),
+        },
+        RecordDate {
+            name: "end".to_owned(),
+            value: end.to_owned(),
+        },
+    ];
+    if let Some(updated) = text(item, "updated_at").or_else(|| text(item, "updatedAt")) {
+        dates.push(RecordDate {
+            name: "updated_at".to_owned(),
+            value: updated.to_owned(),
+        });
+    }
+    let raw_content = serde_json::to_string(item).unwrap_or_default();
+    let appt = SourceAppointment::new(SourceAppointmentParts {
+        appointment_id,
+        source_revision: None,
+        window,
+        status,
+        source_status: raw_status.to_owned(),
+        label,
+        source_patient_id,
+        dates,
+        content: raw_content,
+        provenance: json!({
+            "native_record": format!("HintAppointment/{raw_id}"),
+            "native_link": native_link(Section::Appointments, "", raw_id),
+        }),
+    })
+    .map_err(|e| e.to_string())?;
+    Ok((appt, participant_issue))
+}
+
+fn extract_hint_appointment_patient(
+    item: &Value,
+    raw_id: &str,
+) -> Result<(Option<SourcePatientId>, Option<ScheduleReadIssue>), String> {
+    let mut found: Option<SourcePatientId> = None;
+    if let Some(pid) = text(item, "patient_id").or_else(|| text(item, "patientId")) {
+        found = Some(SourcePatientId::new(pid).map_err(|e| e.to_string())?);
+    }
+    if let Some(attendees) = item.get("attendees").and_then(Value::as_array) {
+        for attendee in attendees {
+            let Some(pid) = text(attendee, "patient_id").or_else(|| text(attendee, "patientId"))
+            else {
+                continue;
+            };
+            let parsed = SourcePatientId::new(pid).map_err(|e| e.to_string())?;
+            if let Some(existing) = &found
+                && existing != &parsed
+            {
+                let issue = ScheduleReadIssue::new(
+                    format!("HintAppointment/{raw_id}"),
+                    "Hint appointment lists multiple distinct patient attendees",
+                )
+                .expect("non-empty issue");
+                return Ok((None, Some(issue)));
+            }
+            found = Some(parsed);
+        }
+    }
+    Ok((found, None))
 }

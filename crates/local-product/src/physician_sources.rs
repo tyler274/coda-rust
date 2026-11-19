@@ -6,6 +6,8 @@
 /// Declared adapter mapping tables and shared record filing.
 pub mod adapter;
 mod chart;
+/// Elation / FHIR R4 roster, schedule, and patient chart adapter.
+pub mod elation_fhir;
 /// Hint Chrome capture extraction into shared records and delivery outcomes.
 pub mod hint;
 /// Shared domain types for chart buckets, filed envelopes, and pull outcomes.

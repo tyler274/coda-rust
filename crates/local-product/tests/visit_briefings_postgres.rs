@@ -4307,9 +4307,8 @@ async fn mid_run_withdrawal_recorrection_reselection_and_wake_idempotence() {
     assert_eq!(second_wake.completed_briefings.len(), 1);
     let orig_briefing_id = second_wake.completed_briefings[0].clone();
 
-    // 3. Re-selecting an already `Ready` visit on a minor chart update (`v4`) where the model
-    //    chooses `Skip` MUST retain `VisitPreparationState::Ready` + `briefing_id`, advance
-    //    `observed_source_version`, and NOT re-select on the next wake!
+    // 3. A chart update (`v4`) arriving AFTER a briefing is already `Ready` MUST NOT
+    //    re-select or rewrite the saved briefing (`P4.Along.LaterInput`).
     let rec_minor = make_record(ChartDoc {
         workspace: &ws,
         source_id: CHART_SOURCE_ID,
@@ -4334,42 +4333,27 @@ async fn mid_run_withdrawal_recorrection_reselection_and_wake_idempotence() {
         .await
         .unwrap();
 
-    let mut skip_reselect_provider = ScriptedProvider::new(vec![
-        call_turn(
-            "sel-minor-skip",
-            SELECT_VISITS_TOOL,
-            json!({
-                "decisions": [{
-                    "source_id": CALENDAR_SOURCE_ID,
-                    "appointment_id": "appt-withdraw-1",
-                    "starts_at_unix": starts_at_unix,
-                    "action": "skip",
-                    "reason": "Routine influenza immunization record does not alter the prepared renal and electrolyte briefing."
-                }]
-            }),
-        ),
-        done_turn("Existing briefing remains current; skipped re-preparation."),
-    ]);
+    let mut no_reselect_provider = ScriptedProvider::new(Vec::new());
     let third_wake = store
         .wake_visit_preparation(
             auth.as_ref(),
             &practice,
             &roles,
             &skills,
-            &mut skip_reselect_provider,
+            &mut no_reselect_provider,
             BASE_NOW_UNIX + 120,
         )
         .await
         .unwrap();
-    assert!(third_wake.selection_job.is_some());
+    assert!(third_wake.selection_job.is_none());
     assert!(third_wake.queued_briefing_jobs.is_empty());
+    assert!(no_reselect_provider.requests.is_empty());
 
     let preps = store
         .visit_preparations_for_practice(&practice, auth.as_ref())
         .await
         .unwrap();
     assert_eq!(preps.len(), 1);
-    assert_eq!(preps[0].observed_source_version, 4);
     match &preps[0].state {
         VisitPreparationState::Ready {
             briefing_id,
@@ -4379,7 +4363,7 @@ async fn mid_run_withdrawal_recorrection_reselection_and_wake_idempotence() {
             assert_eq!(briefing_id, &orig_briefing_id);
             assert!(visit_card_orientation.contains("K 4.4 mEq/L"));
         }
-        other => panic!("expected Ready state preserved after minor-update Skip, got {other:?}"),
+        other => panic!("expected Ready state preserved after later chart update, got {other:?}"),
     }
 
     // Next wake at `BASE_NOW_UNIX + 180` triggers ZERO selection jobs!
@@ -4681,7 +4665,9 @@ async fn closed_prior_concern_refusal_and_selection_scope_isolation() {
             .is_empty()
     );
 
-    // Repeat INR arrives higher (`INR 5.9`, `rev-2`), triggering re-selection and re-preparation:
+    // Repeat INR arrives higher (`INR 5.9`, `rev-2`) AND the visit moves to `19:00Z`
+    // (a moved visit is prepared fresh per `P4.Along.CancelMove`, while reusing the
+    // already-closed `concern-inr-initial` id on the new slot MUST be refused!).
     let rec_v2 = make_record(ChartDoc {
         workspace: &ws,
         source_id: CHART_SOURCE_ID,
@@ -4706,6 +4692,22 @@ async fn closed_prior_concern_refusal_and_selection_scope_isolation() {
         .await
         .unwrap();
 
+    let moved_appt = make_appointment(
+        "appt-closedc-1",
+        AppointmentStatus::Scheduled,
+        "booked",
+        "Anticoagulation follow-up",
+        "2026-08-27T19:00:00+00:00",
+        "2026-08-27T19:30:00+00:00",
+        Some("MRN-CLOSEDC"),
+    );
+    let moved_starts_at_unix = moved_appt.window().starts_at_unix();
+    let cal_moved = InMemoryScheduleSource::new(vec![moved_appt]);
+    store
+        .sync_practice_schedule(auth.as_ref(), &practice, &cal_moved, BASE_NOW_UNIX + 90)
+        .await
+        .unwrap();
+
     let mut wake2 = ScriptedProvider::new(vec![
         call_turn(
             "sel-2",
@@ -4714,25 +4716,25 @@ async fn closed_prior_concern_refusal_and_selection_scope_isolation() {
                 "decisions": [{
                     "source_id": CALENDAR_SOURCE_ID,
                     "appointment_id": "appt-closedc-1",
-                    "starts_at_unix": starts_at_unix,
+                    "starts_at_unix": moved_starts_at_unix,
                     "action": "prepare_now",
-                    "reason": "Confirmatory INR rose to 5.9; refresh briefing."
+                    "reason": "Moved visit with confirmatory INR 5.9 prepared fresh."
                 }]
             }),
         ),
-        done_turn("Re-selected."),
+        done_turn("Selected moved slot."),
         call_turn(
             "read-2",
             READ_TOOL,
             json!({ "references": [{ "candidate_id": "Observation/inr-previsit", "revision": "rev-2", "cursor": null }], "max_result_bytes": 16_384 }),
         ),
-        // First attempt reuses closed `concern-inr-initial` -> MUST be refused (`concern_already_closed`)!
+        // First attempt reuses closed `concern-inr-initial` -> MUST be refused (`concern_already_exists`)!
         call_turn(
             "save-reuse-closed",
             SAVE_BRIEFING_TOOL,
             serde_json::to_value(make_save(
                 "rev-2",
-                "Repeat INR 5.9 with gingival oozing ahead of 18:00 visit.",
+                "Repeat INR 5.9 with gingival oozing ahead of 19:00 visit.",
                 "concern-inr-initial",
             ))
             .unwrap(),
@@ -4743,12 +4745,12 @@ async fn closed_prior_concern_refusal_and_selection_scope_isolation() {
             SAVE_BRIEFING_TOOL,
             serde_json::to_value(make_save(
                 "rev-2",
-                "Repeat INR 5.9 with gingival oozing ahead of 18:00 visit.",
+                "Repeat INR 5.9 with gingival oozing ahead of 19:00 visit.",
                 "concern-inr-escalated",
             ))
             .unwrap(),
         ),
-        done_turn("Saved refreshed briefing with fresh concern."),
+        done_turn("Saved moved-slot briefing with fresh concern."),
     ]);
     let summary2 = store
         .wake_visit_preparation(
@@ -4764,8 +4766,9 @@ async fn closed_prior_concern_refusal_and_selection_scope_isolation() {
     assert_eq!(summary2.completed_briefings.len(), 1);
     let refusal_turn_prompt = serde_json::to_string(&wake2.requests[4].items).unwrap();
     assert!(
-        refusal_turn_prompt.contains("concern_already_closed"),
-        "expected concern_already_closed refusal when reusing Done concern_id, got {refusal_turn_prompt}"
+        refusal_turn_prompt.contains("concern_already_exists")
+            || refusal_turn_prompt.contains("concern_already_closed"),
+        "expected refusal when reusing Done concern_id, got {refusal_turn_prompt}"
     );
 
     let open_after_refresh =
@@ -4773,4 +4776,448 @@ async fn closed_prior_concern_refusal_and_selection_scope_isolation() {
     assert_eq!(open_after_refresh.len(), 1);
     assert_eq!(open_after_refresh[0].id.as_str(), "concern-inr-escalated");
     assert_eq!(open_after_refresh[0].standing, ConcernStanding::Open);
+}
+
+#[tokio::test]
+async fn later_input_after_ready_briefing_never_reselects_or_rewrites_briefing() {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let roles = distinct_roles();
+
+    let practice = format!("practice-vp-later-{}", Uuid::new_v4().simple());
+    let ws = format!("pw-later-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::Fixed(BASE_NOW_UNIX as u64))
+        .await
+        .unwrap();
+
+    let rec_v1 = make_record(ChartDoc {
+        workspace: &ws,
+        source_id: CHART_SOURCE_ID,
+        candidate_id: "Observation/a1c-1",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "Hemoglobin A1c",
+        date: "2026-08-26",
+        text: "Hemoglobin A1c 7.4% on metformin 1000 mg twice daily.",
+    });
+    seed_roster_patient(
+        &store,
+        &auth,
+        RosterPatient {
+            practice: &practice,
+            workspace: &ws,
+            mrn: "MRN-LATER",
+            display_name: "Hannah Park",
+            records: std::slice::from_ref(&rec_v1),
+            pulled_at: BASE_NOW_UNIX - 600,
+        },
+    )
+    .await;
+
+    let appt = make_appointment(
+        "appt-later-1",
+        AppointmentStatus::Scheduled,
+        "booked",
+        "Diabetes follow-up",
+        "2026-08-27T18:00:00+00:00",
+        "2026-08-27T18:30:00+00:00",
+        Some("MRN-LATER"),
+    );
+    let starts_at_unix = appt.window().starts_at_unix();
+    let cal = InMemoryScheduleSource::new(vec![appt]);
+    store
+        .sync_practice_schedule(auth.as_ref(), &practice, &cal, BASE_NOW_UNIX - 300)
+        .await
+        .unwrap();
+
+    let initial_save = SaveBriefingArgs {
+        visit_card_orientation: "Diabetes follow-up; A1c 7.4% on metformin.".into(),
+        trajectory: vec![BriefingClaimInput {
+            text: "Hemoglobin A1c is 7.4% on metformin 1000 mg BID.".into(),
+            uncertainty: None,
+            citations: vec![ExactRecordReference {
+                candidate_id: "Observation/a1c-1".into(),
+                revision: "rev-1".into(),
+            }],
+        }],
+        meaningful_changes: vec![BriefingClaimInput {
+            text: "Latest A1c 7.4% recorded 2026-08-26.".into(),
+            uncertainty: None,
+            citations: vec![ExactRecordReference {
+                candidate_id: "Observation/a1c-1".into(),
+                revision: "rev-1".into(),
+            }],
+        }],
+        unresolved_issues: vec![BriefingClaimInput {
+            text: "Review home fasting glucose readings at visit.".into(),
+            uncertainty: None,
+            citations: vec![ExactRecordReference {
+                candidate_id: "Observation/a1c-1".into(),
+                revision: "rev-1".into(),
+            }],
+        }],
+        visit_decisions: vec![BriefingDecisionInput {
+            decision: "Glycemic therapy adjustment".into(),
+            clinical_rationale: "A1c 7.4% is slightly above 7% goal.".into(),
+            options_or_questions: vec![
+                "Consider maintaining metformin vs adding GLP-1/SGLT2.".into(),
+            ],
+            uncertainty: None,
+            citations: vec![ExactRecordReference {
+                candidate_id: "Observation/a1c-1".into(),
+                revision: "rev-1".into(),
+            }],
+        }],
+        basis_and_limitations: "Prepared from 2026-08-26 A1c lab.".into(),
+        basis_citations: Vec::new(),
+        limits: Vec::new(),
+        visit_concern: None,
+    };
+
+    let mut wake1 = ScriptedProvider::new(vec![
+        call_turn(
+            "sel-later-1",
+            SELECT_VISITS_TOOL,
+            json!({
+                "decisions": [{
+                    "source_id": CALENDAR_SOURCE_ID,
+                    "appointment_id": "appt-later-1",
+                    "starts_at_unix": starts_at_unix,
+                    "action": "prepare_now",
+                    "reason": "Upcoming diabetes follow-up."
+                }]
+            }),
+        ),
+        done_turn("Selected."),
+        call_turn(
+            "read-later-1",
+            READ_TOOL,
+            json!({
+                "references": [{ "candidate_id": "Observation/a1c-1", "revision": "rev-1", "cursor": null }],
+                "max_result_bytes": 16_384
+            }),
+        ),
+        call_turn(
+            "save-later-1",
+            SAVE_BRIEFING_TOOL,
+            serde_json::to_value(&initial_save).unwrap(),
+        ),
+        done_turn("Initial briefing saved."),
+    ]);
+    let summary1 = store
+        .wake_visit_preparation(
+            auth.as_ref(),
+            &practice,
+            &roles,
+            &skills,
+            &mut wake1,
+            BASE_NOW_UNIX,
+        )
+        .await
+        .unwrap();
+    assert_eq!(summary1.completed_briefings.len(), 1);
+
+    let slot = VisitSlotKey {
+        practice: practice.clone(),
+        source_id: CALENDAR_SOURCE_ID.into(),
+        appointment_id: "appt-later-1".into(),
+        starts_at_unix,
+    };
+    let original = store
+        .visit_briefing(&slot, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("saved initial briefing");
+
+    // Later chart input arrives AFTER the briefing is already Ready (`P4.Along.LaterInput`).
+    let rec_v2 = make_record(ChartDoc {
+        workspace: &ws,
+        source_id: CHART_SOURCE_ID,
+        candidate_id: "Observation/k-later-1",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "Serum potassium",
+        date: "2026-08-27",
+        text: "Serum potassium 5.9 mEq/L reported after briefing preparation.",
+    });
+    store
+        .record_chart(
+            &ws,
+            &[rec_v1, rec_v2],
+            &SourcePull {
+                source_id: CHART_SOURCE_ID.into(),
+                source_label: CHART_SOURCE_LABEL.into(),
+                patient: source_patient("MRN-LATER", "Hannah Park"),
+                pulled_at: Some(BASE_NOW_UNIX + 60),
+            },
+        )
+        .await
+        .unwrap();
+
+    // Subsequent wake MUST NOT re-select or rewrite the already-prepared briefing!
+    let mut wake2 = ScriptedProvider::new(vec![
+        call_turn(
+            "sel-later-should-not-run",
+            SELECT_VISITS_TOOL,
+            json!({
+                "decisions": [{
+                    "source_id": CALENDAR_SOURCE_ID,
+                    "appointment_id": "appt-later-1",
+                    "starts_at_unix": starts_at_unix,
+                    "action": "skip",
+                    "reason": "Should never even be asked to re-select a Ready briefing."
+                }]
+            }),
+        ),
+        done_turn("Should not run."),
+    ]);
+    let summary2 = store
+        .wake_visit_preparation(
+            auth.as_ref(),
+            &practice,
+            &roles,
+            &skills,
+            &mut wake2,
+            BASE_NOW_UNIX + 120,
+        )
+        .await
+        .unwrap();
+    assert!(
+        summary2.selection_job.is_none(),
+        "Ready briefing must never be re-selected after later chart input"
+    );
+    assert!(summary2.queued_briefing_jobs.is_empty());
+    assert!(summary2.completed_briefings.is_empty());
+    assert!(wake2.requests.is_empty());
+
+    let after = store
+        .visit_briefing(&slot, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("briefing preserved");
+    assert_eq!(after.source_version, original.source_version);
+    assert_eq!(
+        after.visit_card_orientation,
+        original.visit_card_orientation
+    );
+    assert_eq!(after.narrative, original.narrative);
+}
+
+#[tokio::test]
+async fn pre_preparation_checks_sources_before_starting_and_failed_refresh_does_not_block() {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (base_store, auth) = connect_stores(&url).await;
+    let skills = load_skills();
+    let roles = distinct_roles();
+
+    let practice = format!("practice-vp-precheck-{}", Uuid::new_v4().simple());
+    let ws = format!("pw-precheck-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::Fixed(BASE_NOW_UNIX as u64))
+        .await
+        .unwrap();
+
+    let rec_old = make_record(ChartDoc {
+        workspace: &ws,
+        source_id: CHART_SOURCE_ID,
+        candidate_id: "Observation/cr-old",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "Prior creatinine",
+        date: "2026-08-20",
+        text: "Baseline creatinine 1.1 mg/dL.",
+    });
+    seed_roster_patient(
+        &base_store,
+        &auth,
+        RosterPatient {
+            practice: &practice,
+            workspace: &ws,
+            mrn: "MRN-PRECHECK",
+            display_name: "Marcus Bell",
+            records: std::slice::from_ref(&rec_old),
+            pulled_at: BASE_NOW_UNIX - 3600,
+        },
+    )
+    .await;
+
+    let rec_fresh = make_record(ChartDoc {
+        workspace: &ws,
+        source_id: CHART_SOURCE_ID,
+        candidate_id: "Observation/k-fresh",
+        revision: "rev-1",
+        record_type: "Observation",
+        title: "Fresh potassium",
+        date: "2026-08-27",
+        text: "Morning potassium 5.3 mEq/L pulled by pre-preparation readiness check.",
+    });
+    let checker = FixedSourceCheck::new();
+    checker.set_source_outcome(
+        &practice,
+        &ws,
+        RefreshSourceId::new(CHART_SOURCE_ID).unwrap(),
+        SourceCheckOutcome::Updated {
+            source_label: CHART_SOURCE_LABEL.into(),
+            patient: source_patient("MRN-PRECHECK", "Marcus Bell"),
+            records: vec![rec_old, rec_fresh],
+            pulled_at: BASE_NOW_UNIX,
+        },
+    );
+    checker.set_source_outcome(
+        &practice,
+        &ws,
+        RefreshSourceId::new("regional-hie").unwrap(),
+        SourceCheckOutcome::Failed {
+            source_label: Some("Regional HIE".into()),
+            checked_at: BASE_NOW_UNIX,
+            reason: "Regional HIE upstream 503 timeout".into(),
+        },
+    );
+    let store = base_store.with_source_refresh(Arc::new(checker));
+
+    let appt = make_appointment(
+        "appt-precheck-1",
+        AppointmentStatus::Scheduled,
+        "booked",
+        "Renal follow-up",
+        "2026-08-27T17:00:00+00:00",
+        "2026-08-27T17:30:00+00:00",
+        Some("MRN-PRECHECK"),
+    );
+    let starts_at_unix = appt.window().starts_at_unix();
+    let cal = InMemoryScheduleSource::new(vec![appt]);
+    store
+        .sync_practice_schedule(auth.as_ref(), &practice, &cal, BASE_NOW_UNIX - 300)
+        .await
+        .unwrap();
+
+    // Notice the model NEVER calls `refresh_patient_sources`: pre-prep itself checks sources first!
+    let save_args = SaveBriefingArgs {
+        visit_card_orientation:
+            "Renal follow-up with morning K 5.3 mEq/L; Regional HIE unavailable.".into(),
+        trajectory: vec![BriefingClaimInput {
+            text: "Baseline creatinine 1.1 mg/dL ahead of renal follow-up.".into(),
+            uncertainty: None,
+            citations: vec![ExactRecordReference {
+                candidate_id: "Observation/cr-old".into(),
+                revision: "rev-1".into(),
+            }],
+        }],
+        meaningful_changes: vec![BriefingClaimInput {
+            text: "Latest baseline creatinine 1.1 mg/dL reviewed ahead of visit.".into(),
+            uncertainty: None,
+            citations: vec![ExactRecordReference {
+                candidate_id: "Observation/cr-old".into(),
+                revision: "rev-1".into(),
+            }],
+        }],
+        unresolved_issues: vec![BriefingClaimInput {
+            text: "Regional HIE feed could not update before the visit.".into(),
+            uncertainty: Some("Outside labs from Regional HIE are unavailable.".into()),
+            citations: vec![ExactRecordReference {
+                candidate_id: "Observation/cr-old".into(),
+                revision: "rev-1".into(),
+            }],
+        }],
+        visit_decisions: vec![BriefingDecisionInput {
+            decision: "Hyperkalemia monitoring plan".into(),
+            clinical_rationale: "Renal and electrolyte review needed at visit.".into(),
+            options_or_questions: vec![
+                "Consider repeating BMP and reviewing RAAS/K-sparing therapy.".into(),
+            ],
+            uncertainty: None,
+            citations: vec![ExactRecordReference {
+                candidate_id: "Observation/cr-old".into(),
+                revision: "rev-1".into(),
+            }],
+        }],
+        basis_and_limitations: "Prepared from refreshed synthetic chart; Regional HIE timed out."
+            .into(),
+        basis_citations: Vec::new(),
+        limits: Vec::new(),
+        visit_concern: None,
+    };
+
+    let mut provider = ScriptedProvider::new(vec![
+        call_turn(
+            "sel-precheck-1",
+            SELECT_VISITS_TOOL,
+            json!({
+                "decisions": [{
+                    "source_id": CALENDAR_SOURCE_ID,
+                    "appointment_id": "appt-precheck-1",
+                    "starts_at_unix": starts_at_unix,
+                    "action": "prepare_now",
+                    "reason": "Upcoming renal follow-up."
+                }]
+            }),
+        ),
+        done_turn("Selected."),
+        call_turn(
+            "read-precheck-old",
+            READ_TOOL,
+            json!({
+                "references": [{ "candidate_id": "Observation/cr-old", "revision": "rev-1", "cursor": null }],
+                "max_result_bytes": 16_384
+            }),
+        ),
+        call_turn(
+            "save-precheck-1",
+            SAVE_BRIEFING_TOOL,
+            serde_json::to_value(&save_args).unwrap(),
+        ),
+        done_turn("Saved briefing after automatic pre-prep source check."),
+    ]);
+    let summary = store
+        .wake_visit_preparation(
+            auth.as_ref(),
+            &practice,
+            &roles,
+            &skills,
+            &mut provider,
+            BASE_NOW_UNIX,
+        )
+        .await
+        .unwrap();
+    assert_eq!(summary.completed_briefings.len(), 1);
+
+    let obs_after = store.sources(&ws).await.unwrap();
+    assert!(
+        obs_after
+            .sources
+            .iter()
+            .any(|s| s.candidate_id == "Observation/k-fresh"),
+        "pre-preparation must check configured sources before starting so fresh records arrive"
+    );
+
+    let slot = VisitSlotKey {
+        practice: practice.clone(),
+        source_id: CALENDAR_SOURCE_ID.into(),
+        appointment_id: "appt-precheck-1".into(),
+        starts_at_unix,
+    };
+    let saved = store
+        .visit_briefing(&slot, auth.as_ref())
+        .await
+        .unwrap()
+        .expect("saved briefing");
+    assert!(
+        saved.source_freshness.iter().any(|s| {
+            s.source_id == "regional-hie"
+                && s.failure_reason
+                    .as_deref()
+                    .is_some_and(|r| r.contains("503 timeout"))
+        }),
+        "pre-preparation must check configured sources before starting and record failed refresh in source_freshness: {:?}",
+        saved.source_freshness
+    );
+    assert!(
+        saved.limits.iter().any(|lim| lim.subject == "regional-hie"),
+        "failed pre-prep refresh must surface in limits: {:?}",
+        saved.limits
+    );
 }

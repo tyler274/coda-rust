@@ -1606,3 +1606,233 @@ async fn schedule_pane_and_briefing_view_pass_desktop_and_phone_browser_checks()
     browser.assert_no_page_errors();
     let _ = fs::remove_dir_all(&bank);
 }
+
+async fn spawn_durable_site_with_web(
+    db_url: &str,
+    site_dir: &Path,
+    synthetic_calendar: &Path,
+) -> (RunningSite, String) {
+    let address = TcpListener::bind("127.0.0.1:0")
+        .expect("bind durable site port")
+        .local_addr()
+        .expect("durable site local addr");
+    let skills_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../skills");
+    let mut cmd = Command::new(env!("CARGO_BIN_EXE_physician-sample"));
+    cmd.env("PHYSICIAN_DATABASE_URL", db_url)
+        .env("PHYSICIAN_SITE_DIR", site_dir)
+        .env("PHYSICIAN_AUTH", "required")
+        .env("PHYSICIAN_AUTH_PROOF_TOKENS", "1")
+        .env("PHYSICIAN_DURABLE_CHAT", "1")
+        .env("PHYSICIAN_SKILLS_DIR", &skills_dir)
+        .env("CODA_CHAT_MODEL", "browser-test-chat-model")
+        .env("CODA_CHAT_EFFORT", "low")
+        .env("CODA_CHAT_CONTEXT_WINDOW_TOKENS", "128000")
+        .env("CODA_CHAT_INPUT_LIMIT_TOKENS", "100000")
+        .env("CODA_BACKGROUND_MODEL", "browser-test-bg-model")
+        .env("CODA_BACKGROUND_EFFORT", "low")
+        .env("CODA_BACKGROUND_CONTEXT_WINDOW_TOKENS", "128000")
+        .env("CODA_BACKGROUND_INPUT_LIMIT_TOKENS", "100000")
+        .env("PHYSICIAN_SYNTHETIC_CALENDAR", synthetic_calendar)
+        .env("PHYSICIAN_LISTEN_ADDR", address.to_string())
+        .env_remove("PHYSICIAN_SYNTHETIC_CHARTS")
+        .env_remove("CODA_LOCAL_MODEL_EXECUTION")
+        .env_remove("PHYSICIAN_CHAT_TOPIC")
+        .env_remove("PHYSICIAN_UPSTREAM")
+        .stdout(Stdio::null())
+        .stderr(Stdio::piped());
+    let mut site = RunningSite(cmd.spawn().expect("spawn durable physician-sample"));
+    let base = format!("http://{address}");
+    let deadline = Instant::now() + Duration::from_secs(60);
+    loop {
+        if let Some(status) = site.0.try_wait().expect("poll durable site") {
+            let mut err = String::new();
+            if let Some(mut stderr) = site.0.stderr.take() {
+                let _ = std::io::Read::read_to_string(&mut stderr, &mut err);
+            }
+            panic!("durable physician-sample exited unexpectedly ({status}):\n{err}");
+        }
+        let health = reqwest::get(format!("{base}/health")).await;
+        if health.is_ok_and(|resp| resp.status().is_success()) {
+            break;
+        }
+        assert!(
+            Instant::now() < deadline,
+            "durable physician-sample never answered"
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    }
+    (site, base)
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn schedule_panel_choice_persists_across_sign_out_and_background_sync_does_not_steal_focus() {
+    let site_dir = shared_site();
+    let pg = TempPgServer::start().await;
+    let db = pg.create_database("panel_focus").await;
+    let migrate = run_migrate_schema(&db, &format!("{PHYSICIAN_EMAIL}|Dr. Test Physician|admin"));
+    assert!(
+        migrate.status.success(),
+        "schema migrate failed: {}",
+        String::from_utf8_lossy(&migrate.stderr)
+    );
+
+    let (bank, calendar_file) = build_synthetic_bank();
+    let load = run_load_charts(&db, &bank);
+    assert!(
+        load.status.success(),
+        "load-charts failed: {}",
+        String::from_utf8_lossy(&load.stderr)
+    );
+
+    let chart_source = physician_sample::synthetic_chart::SOURCE_ID;
+    let ws_alice = workspace_id(chart_source, "MRN-ALICE");
+    let ws_bob = workspace_id(chart_source, "MRN-BOB");
+    let store = Store::connect(&db).await.expect("connect Store");
+    let auth = Arc::new(
+        PostgresAuthStore::connect_with_migrations(&db)
+            .await
+            .expect("connect PostgresAuthStore"),
+    );
+    let physician_id = staging_physician_id(PHYSICIAN_EMAIL);
+    let admin_identity = PhysicianIdentity {
+        practice_id: STAGING_PRACTICE_ID.to_owned(),
+        physician_id,
+    };
+    for ws in [&ws_alice, &ws_bob] {
+        auth.set_membership(&admin_identity, ws, Membership::Allowed)
+            .await
+            .expect("place patient on admin panel");
+    }
+    let calendar = physician_sample::schedule::SyntheticBankCalendar::from_file(&calendar_file);
+    physician_sample::schedule::sync_synthetic_schedule(
+        &calendar,
+        auth.as_ref(),
+        &store,
+        STAGING_PRACTICE_ID,
+    )
+    .await
+    .expect("initial schedule sync");
+
+    let (_site, base) = spawn_durable_site_with_web(&db, &site_dir, &calendar_file).await;
+    let http = reqwest::Client::new();
+    let api_session = sign_in_http(&http, &base, PHYSICIAN_EMAIL).await;
+
+    let mut browser = BrowserHarness::launch(DESKTOP, "America/New_York");
+    browser.sign_in(&base, PHYSICIAN_EMAIL);
+    browser.browser.wait_for("Alice Carter");
+    browser.wait_exists(".schedule-rail");
+    assert!(
+        !browser.exists(".schedule-rail.is-collapsed"),
+        "schedule rail must start expanded by default"
+    );
+
+    // -------------------------------------------------------------------------
+    // AC4 (`P4.Rule.PanelChoiceRemembered`): Collapse schedule rail -> survives
+    // reload AND survives sign-out -> sign-in (even after localStorage is cleared).
+    // -------------------------------------------------------------------------
+    browser.press_first(r#".schedule-rail button[aria-label^="Collapse "]"#);
+    browser.wait_exists(".schedule-rail.is-collapsed");
+
+    // Wait for PUT /physician-state/panels to land durably in Postgres.
+    let deadline = Instant::now() + Duration::from_secs(10);
+    loop {
+        let prefs: physician_wire::PanelPreferencesWire = http
+            .get(format!("{base}/physician-state/panels"))
+            .bearer_auth(&api_session)
+            .send()
+            .await
+            .expect("GET /physician-state/panels")
+            .json()
+            .await
+            .expect("decode panels");
+        if prefs.schedule_collapsed {
+            break;
+        }
+        assert!(
+            Instant::now() < deadline,
+            "PUT /physician-state/panels never persisted schedule_collapsed=true"
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    }
+
+    // Reload preserves collapsed schedule rail.
+    browser.browser.text_until(&base, "Today");
+    browser.wait_exists(".schedule-rail.is-collapsed");
+
+    // Sign out clears browser localStorage, then sign back in -> server restores collapsed state!
+    browser.press("Sign out of Coda");
+    browser.browser.wait_for("Sign in to Coda");
+    browser.sign_in(&base, PHYSICIAN_EMAIL);
+    browser.wait_exists(".schedule-rail.is-collapsed");
+    browser.capture_screenshot("briefing-schedule-10-panel-persisted-after-signout.png");
+
+    // Expand schedule rail again for the background focus-retention check.
+    browser.press_first(r#".schedule-rail button[aria-label^="Show "]"#);
+    browser.wait_absent(".schedule-rail.is-collapsed");
+    browser.browser.wait_for("Alice Carter");
+
+    // -------------------------------------------------------------------------
+    // AC3 (`P4.Rule.BackgroundNoStealFocus`): Keep focus on an interactive control
+    // on Today, then trigger a background schedule sync (`POST /director/schedule/sync`)
+    // adding a new appointment. The schedule updates live via SSE while focus stays
+    // untouched and no briefing or patient page is auto-opened.
+    // -------------------------------------------------------------------------
+    let focused = browser.run_walk("focus", &[json!(r#"button[aria-label="Find patient"]"#)]);
+    assert_eq!(
+        focused,
+        json!(true),
+        "expected Find patient button to take focus before background sync"
+    );
+    assert_eq!(
+        browser.run_walk(
+            "activeMatches",
+            &[json!(r#"button[aria-label="Find patient"]"#)]
+        ),
+        json!(true)
+    );
+
+    let mut lines = fs::read_to_string(&calendar_file).expect("read calendar");
+    lines.push_str(&fhir_appointment(
+        "appt-bg-live-focus",
+        "booked",
+        "Live background cardiology consult",
+        "2026-08-27T17:30:00+00:00",
+        "2026-08-27T18:00:00+00:00",
+        Some("MRN-ALICE"),
+    ));
+    lines.push('\n');
+    fs::write(&calendar_file, lines).expect("append live background appointment");
+
+    let sync_status = http
+        .post(format!("{base}/director/schedule/sync"))
+        .bearer_auth(&api_session)
+        .send()
+        .await
+        .expect("POST /director/schedule/sync")
+        .status();
+    assert_eq!(sync_status, reqwest::StatusCode::OK);
+
+    // The newly synced appointment appears live in Today's schedule pane via SSE.
+    browser
+        .browser
+        .wait_for("Live background cardiology consult");
+
+    // Focus must still rest on `Find patient`, and no briefing/patient view was opened.
+    assert_eq!(
+        browser.run_walk(
+            "activeMatches",
+            &[json!(r#"button[aria-label="Find patient"]"#)]
+        ),
+        json!(true),
+        "background schedule/briefing SSE update must never steal keyboard focus"
+    );
+    assert!(
+        !browser.exists(".briefing-view"),
+        "background update must never auto-open a visit briefing"
+    );
+    browser.capture_screenshot("briefing-schedule-11-background-live-no-focus-steal.png");
+
+    browser.assert_no_page_errors();
+    let _ = fs::remove_dir_all(&bank);
+}

@@ -335,11 +335,14 @@ pub(crate) async fn resolve(
 }
 
 /// Whether this path is one the guard protects: exactly the physician
-/// routes, the one list the proxy also forwards, minus `/health`, which the
-/// load balancer needs unauthenticated. The auth routes establish the
-/// session and the static site renders it, so both stay open.
+/// routes, the one list the proxy also forwards, minus `/health` (which the
+/// load balancer needs unauthenticated) and Hint Chrome connector routes
+/// (which authenticate via constant-time `X-Coda-Pair` verification). The auth
+/// routes establish the session and the static site renders it, so both stay open.
 fn guarded(path: &str) -> bool {
-    crate::physician_route(path) && path != "/health"
+    crate::physician_route(path)
+        && path != "/health"
+        && !crate::hint_bridge::is_connector_route(path)
 }
 
 /// Marker extension inserted exclusively on routers running behind required physician auth.
