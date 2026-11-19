@@ -1,0 +1,842 @@
+{
+  "branch": "fix-p1-composer-queue-steps-provenance",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC3",
+      "label": "before the fix",
+      "kind": "run",
+      "revision": "513bd8647381aca33248ae7164eea9e27e127acb",
+      "dirty": true,
+      "recorded": "2026-11-19T10:56:09+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib",
+        "native_source_citation_does_not_say_prepared_by_coda"
+      ],
+      "expect": "Prepared by Coda",
+      "expect_fail": true,
+      "files": [
+        "01-before-the-fix.log"
+      ],
+      "seconds": 22.3,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "64e0ff2ac768364fbd300a1a65bc1c4cab508a5f",
+        "reason": "deliberately before the fix"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC3",
+      "label": "after the fix",
+      "kind": "run",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:03:12+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib",
+        "native_source_citation_does_not_say_prepared_by_coda"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-after-the-fix.log"
+      ],
+      "seconds": 21.8,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-verified on final rebased commit with stub usage fix"
+    },
+    {
+      "id": 3,
+      "claim": "AC1",
+      "label": "ui, boundaries, physician-wire, physician-app, physician-sample unit tests",
+      "kind": "run",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:03:34+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "ui",
+        "-p",
+        "boundaries",
+        "-p",
+        "physician-wire",
+        "-p",
+        "physician-app",
+        "-p",
+        "physician-sample",
+        "--lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-ui-boundaries-physician-wire-physician-app-physi.log"
+      ],
+      "seconds": 4.7,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-verified on final rebased commit with stub usage fix"
+    },
+    {
+      "id": 4,
+      "claim": "AC5",
+      "label": "sessionStorage pending command recovery unit tests",
+      "kind": "run",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:03:39+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib",
+        "local_command"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-sessionStorage-pending-command-recovery-unit-tes.log"
+      ],
+      "seconds": 2.0,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-verified on final rebased commit with stub usage fix"
+    },
+    {
+      "id": 5,
+      "claim": "AC6",
+      "label": "queue and browser_tz command builder unit tests",
+      "kind": "run",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:03:41+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib",
+        "queue_and_delivery_commands_carry_expected_payloads"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-queue-and-browser_tz-command-builder-unit-tests.log"
+      ],
+      "seconds": 2.0,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-verified on final rebased commit with stub usage fix"
+    },
+    {
+      "id": 6,
+      "claim": "AC4",
+      "label": "steps projection without tool names unit test",
+      "kind": "run",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:03:43+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib",
+        "project_steps_uses_physician_words_without_tool_names"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-steps-projection-without-tool-names-unit-test.log"
+      ],
+      "seconds": 2.0,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-verified on final rebased commit with stub usage fix"
+    },
+    {
+      "id": 7,
+      "claim": "AC2",
+      "label": "Postgres chat queue, edit/withdraw/send_now, failure preservation, and stop tests",
+      "kind": "run",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:03:46+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "chat_queue_postgres",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "07-Postgres-chat-queue-edit-withdraw-send_now-failu.log"
+      ],
+      "seconds": 3.5,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-verified on final rebased commit with stub usage fix"
+    },
+    {
+      "id": 8,
+      "claim": "AC2",
+      "label": "Stop holds turn across restart and resume",
+      "kind": "run",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:03:50+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "stop"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "08-Stop-holds-turn-across-restart-and-resume.log"
+      ],
+      "seconds": 18.7,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-verified on final rebased commit with stub usage fix"
+    },
+    {
+      "id": 9,
+      "claim": "AC4",
+      "label": "Browser test: composer keys, queue, WorkTrace, stop return, auto-retry, browser_tz",
+      "kind": "run",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:04:09+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "p1_composer_queue_stop_steps_retry_and_provenance",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "09-Browser-test-composer-keys-queue-WorkTrace-stop-.log"
+      ],
+      "seconds": 43.1,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-verified on final rebased commit with stub usage fix"
+    },
+    {
+      "id": 10,
+      "claim": "AC1",
+      "label": "Multiline message, WorkingMark pulsing dots, and open WorkTrace in Chromium",
+      "kind": "screenshot",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:04:52+00:00",
+      "files": [
+        "10-p1-working-trace-and-queue.png"
+      ],
+      "source": "target/verification/proof/p1-b1-shots/p1-working-trace-and-queue.png",
+      "ok": true,
+      "superseded": "re-verified on final rebased commit with stub usage fix"
+    },
+    {
+      "id": 11,
+      "claim": "AC4",
+      "label": "WorkTrace stayed open across Working -> Finished after queued turn drained",
+      "kind": "screenshot",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:04:52+00:00",
+      "files": [
+        "11-p1-trace-still-open-after-finish.png"
+      ],
+      "source": "target/verification/proof/p1-b1-shots/p1-trace-still-open-after-finish.png",
+      "ok": true,
+      "superseded": "re-verified on final rebased commit with stub usage fix"
+    },
+    {
+      "id": 12,
+      "claim": "AC2",
+      "label": "Stop halted turn and returned queued message to composer",
+      "kind": "screenshot",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:04:52+00:00",
+      "files": [
+        "12-p1-stop-returned-queue.png"
+      ],
+      "source": "target/verification/proof/p1-b1-shots/p1-stop-returned-queue.png",
+      "ok": true,
+      "superseded": "re-verified on final rebased commit with stub usage fix"
+    },
+    {
+      "id": 13,
+      "claim": "AC1",
+      "label": "host and wasm32 clippy -D warnings",
+      "kind": "run",
+      "revision": "3c1291c4239b297996a21f3217ff74d16f77b4f5",
+      "dirty": false,
+      "recorded": "2026-11-19T12:32:00+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo clippy --workspace --all-targets -- -D warnings && cargo clippy -p physician-app -p duet-app -p extension-popup --target wasm32-unknown-unknown -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "13-host-and-wasm32-clippy--D-warnings.log"
+      ],
+      "seconds": 29.8,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-verified on final rebased commit with stub usage fix"
+    },
+    {
+      "id": 14,
+      "claim": "AC3",
+      "label": "after the fix",
+      "kind": "run",
+      "revision": "3c1291c4239b297996a21f3217ff74d16f77b4f5",
+      "dirty": false,
+      "recorded": "2026-11-19T12:32:30+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib",
+        "native_source_citation_does_not_say_prepared_by_coda"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "14-after-the-fix.log"
+      ],
+      "seconds": 17.7,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-verified on final rebased commit with stub usage fix"
+    },
+    {
+      "id": 15,
+      "claim": "AC1",
+      "label": "ui, boundaries, physician-wire, physician-app, physician-sample unit tests",
+      "kind": "run",
+      "revision": "3c1291c4239b297996a21f3217ff74d16f77b4f5",
+      "dirty": false,
+      "recorded": "2026-11-19T12:32:48+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "ui",
+        "-p",
+        "boundaries",
+        "-p",
+        "physician-wire",
+        "-p",
+        "physician-app",
+        "-p",
+        "physician-sample",
+        "--lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "15-ui-boundaries-physician-wire-physician-app-physi.log"
+      ],
+      "seconds": 53.4,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-verified on final rebased commit with stub usage fix"
+    },
+    {
+      "id": 16,
+      "claim": "AC5",
+      "label": "sessionStorage pending command and slot recovery unit tests",
+      "kind": "run",
+      "revision": "3c1291c4239b297996a21f3217ff74d16f77b4f5",
+      "dirty": false,
+      "recorded": "2026-11-19T12:33:41+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib",
+        "local_command"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "16-sessionStorage-pending-command-and-slot-recovery.log"
+      ],
+      "seconds": 2.5,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-verified on final rebased commit with stub usage fix"
+    },
+    {
+      "id": 17,
+      "claim": "AC6",
+      "label": "queue, browser_tz, and cross-patient target unit tests",
+      "kind": "run",
+      "revision": "3c1291c4239b297996a21f3217ff74d16f77b4f5",
+      "dirty": false,
+      "recorded": "2026-11-19T12:33:44+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib",
+        "queue_and_delivery_commands_carry_expected_payloads"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "17-queue-browser_tz-and-cross-patient-target-unit-t.log"
+      ],
+      "seconds": 2.1,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-verified on final rebased commit with stub usage fix"
+    },
+    {
+      "id": 18,
+      "claim": "AC4",
+      "label": "steps projection without tool names unit test",
+      "kind": "run",
+      "revision": "3c1291c4239b297996a21f3217ff74d16f77b4f5",
+      "dirty": false,
+      "recorded": "2026-11-19T12:33:46+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib",
+        "project_steps_uses_physician_words_without_tool_names"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "18-steps-projection-without-tool-names-unit-test.log"
+      ],
+      "seconds": 2.1,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-verified on final rebased commit with stub usage fix"
+    },
+    {
+      "id": 19,
+      "claim": "AC2",
+      "label": "Postgres chat queue, edit/withdraw/send_now, refused retry rollback, and stop tests",
+      "kind": "run",
+      "revision": "3c1291c4239b297996a21f3217ff74d16f77b4f5",
+      "dirty": false,
+      "recorded": "2026-11-19T12:33:49+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "chat_queue_postgres",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "19-Postgres-chat-queue-edit-withdraw-send_now-refus.log"
+      ],
+      "seconds": 30.3,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-verified on final rebased commit with stub usage fix"
+    },
+    {
+      "id": 20,
+      "claim": "AC2",
+      "label": "Stop holds turn across restart and resume",
+      "kind": "run",
+      "revision": "3c1291c4239b297996a21f3217ff74d16f77b4f5",
+      "dirty": false,
+      "recorded": "2026-11-19T12:34:20+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "stop"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "20-Stop-holds-turn-across-restart-and-resume.log"
+      ],
+      "seconds": 110.4,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-verified on final rebased commit with stub usage fix"
+    },
+    {
+      "id": 21,
+      "claim": "AC2",
+      "label": "Full Chromium browser qualification suite (tests/site --ignored)",
+      "kind": "run",
+      "revision": "3c1291c4239b297996a21f3217ff74d16f77b4f5",
+      "dirty": false,
+      "recorded": "2026-11-19T12:36:10+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "21-Full-Chromium-browser-qualification-suite-tests-.log"
+      ],
+      "seconds": 294.9,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-verified on final rebased commit with stub usage fix"
+    },
+    {
+      "id": 22,
+      "claim": "AC1",
+      "label": "host and wasm32 clippy -D warnings",
+      "kind": "run",
+      "revision": "64e0ff2ac768364fbd300a1a65bc1c4cab508a5f",
+      "dirty": false,
+      "recorded": "2026-11-19T12:45:27+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo clippy --workspace --all-targets -- -D warnings && cargo clippy -p physician-app -p duet-app -p extension-popup --target wasm32-unknown-unknown -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "22-host-and-wasm32-clippy--D-warnings.log"
+      ],
+      "seconds": 7.3,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 23,
+      "claim": "AC3",
+      "label": "after the fix",
+      "kind": "run",
+      "revision": "64e0ff2ac768364fbd300a1a65bc1c4cab508a5f",
+      "dirty": false,
+      "recorded": "2026-11-19T12:45:34+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib",
+        "native_source_citation_does_not_say_prepared_by_coda"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "23-after-the-fix.log"
+      ],
+      "seconds": 3.5,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 24,
+      "claim": "AC1",
+      "label": "ui, boundaries, physician-wire, physician-app, physician-sample unit tests",
+      "kind": "run",
+      "revision": "64e0ff2ac768364fbd300a1a65bc1c4cab508a5f",
+      "dirty": false,
+      "recorded": "2026-11-19T12:45:38+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "ui",
+        "-p",
+        "boundaries",
+        "-p",
+        "physician-wire",
+        "-p",
+        "physician-app",
+        "-p",
+        "physician-sample",
+        "--lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "24-ui-boundaries-physician-wire-physician-app-physi.log"
+      ],
+      "seconds": 4.2,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 25,
+      "claim": "AC5",
+      "label": "sessionStorage pending command and slot recovery unit tests",
+      "kind": "run",
+      "revision": "64e0ff2ac768364fbd300a1a65bc1c4cab508a5f",
+      "dirty": false,
+      "recorded": "2026-11-19T12:45:42+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib",
+        "local_command"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "25-sessionStorage-pending-command-and-slot-recovery.log"
+      ],
+      "seconds": 2.0,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 26,
+      "claim": "AC6",
+      "label": "queue, browser_tz, and cross-patient target unit tests",
+      "kind": "run",
+      "revision": "64e0ff2ac768364fbd300a1a65bc1c4cab508a5f",
+      "dirty": false,
+      "recorded": "2026-11-19T12:45:44+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib",
+        "queue_and_delivery_commands_carry_expected_payloads"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "26-queue-browser_tz-and-cross-patient-target-unit-t.log"
+      ],
+      "seconds": 2.0,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 27,
+      "claim": "AC4",
+      "label": "steps projection without tool names unit test",
+      "kind": "run",
+      "revision": "64e0ff2ac768364fbd300a1a65bc1c4cab508a5f",
+      "dirty": false,
+      "recorded": "2026-11-19T12:45:46+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib",
+        "project_steps_uses_physician_words_without_tool_names"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "27-steps-projection-without-tool-names-unit-test.log"
+      ],
+      "seconds": 2.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 28,
+      "claim": "AC2",
+      "label": "Postgres chat queue, edit/withdraw/send_now, refused retry rollback, and stop tests",
+      "kind": "run",
+      "revision": "64e0ff2ac768364fbd300a1a65bc1c4cab508a5f",
+      "dirty": false,
+      "recorded": "2026-11-19T12:45:49+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "chat_queue_postgres",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "28-Postgres-chat-queue-edit-withdraw-send_now-refus.log"
+      ],
+      "seconds": 3.5,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 29,
+      "claim": "AC2",
+      "label": "Stop holds turn across restart and resume",
+      "kind": "run",
+      "revision": "64e0ff2ac768364fbd300a1a65bc1c4cab508a5f",
+      "dirty": false,
+      "recorded": "2026-11-19T12:45:53+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "stop"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "29-Stop-holds-turn-across-restart-and-resume.log"
+      ],
+      "seconds": 18.9,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 30,
+      "claim": "AC4",
+      "label": "Transcript limits and Try again recovery suite (transcript 7/7)",
+      "kind": "run",
+      "revision": "64e0ff2ac768364fbd300a1a65bc1c4cab508a5f",
+      "dirty": false,
+      "recorded": "2026-11-19T12:46:12+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "transcript"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "30-Transcript-limits-and-Try-again-recovery-suite-t.log"
+      ],
+      "seconds": 48.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 31,
+      "claim": "AC2",
+      "label": "Full Chromium browser qualification suite (tests/site 24/24)",
+      "kind": "run",
+      "revision": "64e0ff2ac768364fbd300a1a65bc1c4cab508a5f",
+      "dirty": false,
+      "recorded": "2026-11-19T12:47:00+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "31-Full-Chromium-browser-qualification-suite-tests-.log"
+      ],
+      "seconds": 255.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 32,
+      "claim": "AC1",
+      "label": "Multiline message, WorkingMark pulsing dots, and open WorkTrace in Chromium",
+      "kind": "screenshot",
+      "revision": "64e0ff2ac768364fbd300a1a65bc1c4cab508a5f",
+      "dirty": false,
+      "recorded": "2026-11-19T12:52:16+00:00",
+      "files": [
+        "32-p1-working-trace-and-queue.png"
+      ],
+      "source": "target/verification/proof/p1-b1-shots-final/p1-working-trace-and-queue.png",
+      "ok": true
+    },
+    {
+      "id": 33,
+      "claim": "AC4",
+      "label": "WorkTrace stayed open across Working -> Finished after queued turn drained",
+      "kind": "screenshot",
+      "revision": "64e0ff2ac768364fbd300a1a65bc1c4cab508a5f",
+      "dirty": false,
+      "recorded": "2026-11-19T12:52:16+00:00",
+      "files": [
+        "33-p1-trace-still-open-after-finish.png"
+      ],
+      "source": "target/verification/proof/p1-b1-shots-final/p1-trace-still-open-after-finish.png",
+      "ok": true
+    },
+    {
+      "id": 34,
+      "claim": "AC2",
+      "label": "Stop halted turn and returned queued message to composer",
+      "kind": "screenshot",
+      "revision": "64e0ff2ac768364fbd300a1a65bc1c4cab508a5f",
+      "dirty": false,
+      "recorded": "2026-11-19T12:52:16+00:00",
+      "files": [
+        "34-p1-stop-returned-queue.png"
+      ],
+      "source": "target/verification/proof/p1-b1-shots-final/p1-stop-returned-queue.png",
+      "ok": true
+    }
+  ]
+}
