@@ -1,0 +1,67 @@
+{
+  "branch": "tyler-eng-434-2-synthetic-control-and-cli",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Synthetic control router and sample unit suite",
+      "kind": "run",
+      "revision": "4a3097ce28232638b414bb781ede5ac9713ccbf3",
+      "dirty": false,
+      "recorded": "2026-11-19T00:17:10+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--lib"
+      ],
+      "expect": "\\b94 passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "01-Synthetic-control-router-and-sample-unit-suite.log"
+      ],
+      "seconds": 36.1,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "a82bf0fc7d5165e29e66f78e65a295b25d899124",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Compile coda-staging-events CLI binary with warnings denied",
+      "kind": "run",
+      "revision": "4a3097ce28232638b414bb781ede5ac9713ccbf3",
+      "dirty": false,
+      "recorded": "2026-11-19T00:17:46+00:00",
+      "command": [
+        "cargo",
+        "clippy",
+        "-p",
+        "physician-sample",
+        "--bin",
+        "coda-staging-events",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "expect": "Finished",
+      "expect_fail": false,
+      "files": [
+        "02-Compile-coda-staging-events-CLI-binary-with-warn.log"
+      ],
+      "seconds": 27.5,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "a82bf0fc7d5165e29e66f78e65a295b25d899124",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    }
+  ]
+}
