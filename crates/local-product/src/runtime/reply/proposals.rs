@@ -2859,6 +2859,26 @@ impl Store {
         })
     }
 
+    /// Reads the current `woke_events` set of `(practice, conversation_id)` inside `tx`
+    /// through the typed conversation owner.
+    pub(in crate::runtime) async fn conversation_woke_events_in_tx(
+        tx: &sea_orm::DatabaseTransaction,
+        practice: &str,
+        conversation_id: &str,
+    ) -> Result<BTreeSet<ReviewWakeEvent>, DbErr> {
+        let Some(row) = reply_conversation::Entity::find_by_id((
+            practice.to_owned(),
+            conversation_id.to_owned(),
+        ))
+        .one(tx)
+        .await?
+        else {
+            return Ok(BTreeSet::new());
+        };
+        let conv = decode_conversation(tx, row).await?;
+        Ok(conv.woke_events)
+    }
+
     /// Starts a waiting review (`ReviewStarts`) or reads the full current conversation
     /// for an already-active review (`ReviewReadsAgain`), pinning workspace sources
     /// and recording observed practice words into patient history (`Rule 7`, `Rule 8`).

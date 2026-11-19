@@ -1059,7 +1059,22 @@ impl WorkspaceWrongPatientFence {
                     false
                 }
             }
-            ReviewTrigger::PhysicianRequest { .. } | ReviewTrigger::Periodic { .. } => false,
+            ReviewTrigger::Message {
+                conversation_id,
+                message_ids,
+                ..
+            } => {
+                self.withheld
+                    .reason_for_conversation(conversation_id)
+                    .is_some()
+                    || message_ids.iter().any(|mid| {
+                        self.withheld.message_ids.contains(mid)
+                            || self.withdrawn_messages.contains(mid)
+                    })
+            }
+            ReviewTrigger::PhysicianRequest { .. }
+            | ReviewTrigger::FollowUp { .. }
+            | ReviewTrigger::Periodic { .. } => false,
         }
     }
 
@@ -4522,7 +4537,9 @@ impl Store {
                             limit: None,
                         });
                     }
-                    ReviewTrigger::Periodic { .. } => {}
+                    ReviewTrigger::Message { .. }
+                    | ReviewTrigger::FollowUp { .. }
+                    | ReviewTrigger::Periodic { .. } => {}
                 }
             }
 

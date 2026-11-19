@@ -839,6 +839,35 @@ fn project_trigger(trigger: &ReviewTrigger, context: &WorkspaceSourceContext) ->
             workspace_version: *workspace_version,
             last_reviewed_at: last_reviewed_at.map(unix_to_rfc3339),
         },
+        ReviewTrigger::Message {
+            conversation_id,
+            message_ids,
+            workspace_version,
+            ..
+        } => {
+            let label = if message_ids.is_empty() {
+                format!("Linked message ({conversation_id})")
+            } else {
+                format!(
+                    "Linked message ({conversation_id}: {})",
+                    message_ids.join(", ")
+                )
+            };
+            ReviewTriggerWire::ChangedRecords {
+                workspace_version: *workspace_version,
+                changed_records: vec![label],
+            }
+        }
+        ReviewTrigger::FollowUp {
+            follow_up_id,
+            version,
+            summary,
+            workspace_version,
+            ..
+        } => ReviewTriggerWire::ChangedRecords {
+            workspace_version: *workspace_version,
+            changed_records: vec![format!("Follow-up {follow_up_id} v{version}: {summary}")],
+        },
         ReviewTrigger::PhysicianRequest {
             physician_id,
             request_text,
