@@ -25,7 +25,7 @@ pg_test() { cargo test --locked "${packages[@]}" "$@"; }
 
 # Shard 1 builds most of the workspace, so shard 2 takes the larger share of
 # test time: the four slow physician scale suites.
-shard_1_targets=(--lib --test migrations_postgres --test postgres
+shard_1_targets=(--lib --test migrations --test migrations_postgres --test postgres
   --test front_door_postgres --test identity --test luna_journal
   --test database_foundation
   --test runtime_postgres --test runtime_publication --test runtime_recovery --test runtime_quota
@@ -34,6 +34,7 @@ shard_1_targets=(--lib --test migrations_postgres --test postgres
   --test patient_reviews_postgres --test visit_briefings_postgres --test today_updates_postgres
   --test spruce_matching --test reply_proposals --test follow_ups_postgres
   --test withdrawal_postgres --test attachments
+  --test staff_practice_accounts --test source_check_and_reconnect
   --test redis --test fanout --test worker --test try_again --test pool_budget
   --bin physician-worker)
 shard_2_targets=(--test stop --test chat_draft --test feedback --test reply_revision
@@ -43,6 +44,9 @@ shard_2_targets=(--test stop --test chat_draft --test feedback --test reply_revi
 shard_1() {
   # This ignored test fails closed if its URL is missing. It tests each of the
   # two workspace migration chains separately and together, with two reruns.
+  PHYSICIAN_TEST_DATABASE_URL="${PHYSICIAN_TEST_DATABASE_URL:-${PHYSICIAN_DATABASE_URL/postgres:\/\//postgresql://}}" \
+    FRONT_DOOR_TEST_DATABASE_URL="${FRONT_DOOR_TEST_DATABASE_URL:-${FRONT_DOOR_DATABASE_URL/postgres:\/\//postgresql://}}" \
+    pg_test --test migrations -- --test-threads=1
   pg_test --test migrations_postgres -- --ignored
   # Tests use unique per-test databases. Run suites in sequence so their admin
   # work cannot race; the sample uses PHYSICIAN_DATABASE_URL for both stores.
@@ -83,6 +87,8 @@ shard_1() {
   pg_test --test follow_ups_postgres -- --ignored --test-threads=1
   pg_test --test withdrawal_postgres -- --ignored --test-threads=1
   pg_test --test attachments -- --ignored --test-threads=1
+  pg_test --test staff_practice_accounts -- --test-threads=1
+  pg_test --test source_check_and_reconnect -- --test-threads=1
   # The worker's source boundary: a developer plan refuses non-synthetic sources.
   pg_test --bin physician-worker -- --ignored --test-threads=1
   # Physician scale proofs. Valkey comes from the nix dev shell; each test
