@@ -1,0 +1,43 @@
+   Compiling physician-sample v0.1.0 (/tmp/pr-e1-fix/crates/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 32.31s
+     Running tests/startup_readiness.rs (/tmp/coda-target-integrator/debug/deps/startup_readiness-6c006238b7524359)
+
+running 3 tests
+test invalid_hosted_config_refuses_immediately_without_serving ... ok
+test sample_and_worker_start_serving_degraded_readyz_when_postgres_is_unreachable ... ok
+test sample_and_worker_recover_readyz_from_503_to_200_when_postgres_recovers ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.86s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.73s
+     Running tests/worker.rs (/tmp/coda-target-integrator/debug/deps/worker-a38024f4a0a2ec53)
+
+running 25 tests
+test a_due_revision_is_claimed_while_chat_turns_keep_arriving ... ok
+test a_failed_attempt_is_retried_and_links_to_the_accepting_request ... ok
+test a_hosted_worker_starts_without_push_identity_settings ... ok
+test a_lease_that_runs_out_unannounced_is_taken_at_its_end_not_at_the_next_poll ... ok
+test a_recovered_run_sends_the_memory_it_first_sent ... ok
+test a_rehearsal_turn_marked_to_fail_fails_once_and_its_successor_answers ... ok
+test a_reply_revision_reads_memory_and_its_notes_come_from_the_instruction ... ok
+test a_request_the_provider_rejects_holds_the_turn_and_is_not_sent_again ... ok
+test a_scripted_finish_cites_the_record_the_worker_read ... ok
+test a_worker_whose_listener_is_gone_claims_accepted_work_within_the_poll_interval ... ok
+test concurrent_turns_on_one_worker_run_side_by_side ... ok
+test content_reaches_langfuse_and_never_the_operations_backend ... ignored, starts Langfuse and the collector in Docker
+test every_request_of_a_chat_opens_with_the_memory_it_started_with ... ok
+test failed_attempts_wait_longer_each_time ... ok
+test hearing_of_settled_work_again_runs_the_fixed_provider_once ... ok
+test hosting_cancels_a_chat_whose_claim_has_been_replaced ... ok
+test memory_tools_run_through_the_worker_and_notes_keep_their_quotes ... ok
+test origin_follows_the_practice_of_the_claimed_turn ... ok
+test revoking_panel_does_not_cancel_practice_job ... ok
+test revoking_panel_mid_turn_cancels_chat_attempt_promptly ... ok
+test skill_reads_run_through_the_worker_and_only_the_answer_is_published ... ok
+test the_fifth_failure_ends_the_turn_and_nothing_starts_it_again ... ok
+test the_worker_serves_no_work_route ... ok
+test work_resumed_after_a_stopped_worker_died_is_taken_at_its_lease_end ... ok
+test work_that_becomes_due_unannounced_is_found_by_the_poll ... ok
+
+test result: ok. 24 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 112.37s
+

@@ -1,0 +1,182 @@
+{
+  "branch": "fix-a1-invitations-access-and-startup-readiness",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "sign-in and invite authorization",
+      "kind": "run",
+      "revision": "4af50989bfa10da0c690bb6da3b9c0e63d53d227",
+      "dirty": false,
+      "recorded": "2026-11-19T20:54:49+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-sample",
+        "--lib",
+        "any_active_practice_member_can_invite_and_a_conflict_answers_409",
+        "--",
+        "--exact"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-sign-in-and-invite-authorization.log"
+      ],
+      "seconds": 3.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "mid-turn panel revocation",
+      "kind": "run",
+      "revision": "4af50989bfa10da0c690bb6da3b9c0e63d53d227",
+      "dirty": false,
+      "recorded": "2026-11-19T20:54:53+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-sample",
+        "--test",
+        "worker",
+        "revoking_panel_mid_turn_cancels_chat_attempt_promptly",
+        "--",
+        "--exact"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-mid-turn-panel-revocation.log"
+      ],
+      "seconds": 3.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "StoreUnavailable 503 propagation",
+      "kind": "run",
+      "revision": "4af50989bfa10da0c690bb6da3b9c0e63d53d227",
+      "dirty": false,
+      "recorded": "2026-11-19T20:54:57+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-sample",
+        "--test",
+        "durable_access",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-StoreUnavailable-503-propagation.log"
+      ],
+      "seconds": 14.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC4",
+      "label": "practice cadence migration and dispatch",
+      "kind": "run",
+      "revision": "4af50989bfa10da0c690bb6da3b9c0e63d53d227",
+      "dirty": false,
+      "recorded": "2026-11-19T20:55:12+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--test",
+        "practice_jobs_dispatch"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-practice-cadence-migration-and-dispatch.log"
+      ],
+      "seconds": 3.3,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "AC5",
+      "label": "evaluation feedback exports (reply_proposals + feedback)",
+      "kind": "run",
+      "revision": "4af50989bfa10da0c690bb6da3b9c0e63d53d227",
+      "dirty": false,
+      "recorded": "2026-11-19T20:55:15+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test --locked -p local-product --test reply_proposals -- --ignored --test-threads=1 && cargo test --locked -p physician-sample --test feedback"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-evaluation-feedback-exports-reply_proposals-feed.log"
+      ],
+      "seconds": 20.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 6,
+      "claim": "AC6",
+      "label": "Chromium site (24/24), chart_load, pool_budget, migrations, fmt, clippy, boundaries",
+      "kind": "run",
+      "revision": "4af50989bfa10da0c690bb6da3b9c0e63d53d227",
+      "dirty": false,
+      "recorded": "2026-11-19T20:55:35+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test --locked -p physician-sample --test site -- --ignored && cargo test --locked -p physician-sample --test chart_load --test pool_budget -- --test-threads=1 && cargo test --locked -p local-product --lib migration_tests -- --ignored --test-threads=1 && cargo test --locked -p physician-sample --test migrations_postgres -- --ignored --test-threads=1 && cargo test --locked -p boundaries && python3 scripts/check-sql.py && cargo fmt --all --check && cargo clippy --locked --workspace --all-targets -- -D warnings && cargo clippy --locked -p physician-app --target wasm32-unknown-unknown -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-Chromium-site-24-24-chart_load-pool_budget-migra.log"
+      ],
+      "seconds": 579.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 7,
+      "claim": "AC7",
+      "label": "startup readiness degraded 503, 200 recovery, and worker",
+      "kind": "run",
+      "revision": "4af50989bfa10da0c690bb6da3b9c0e63d53d227",
+      "dirty": false,
+      "recorded": "2026-11-19T21:05:15+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test --locked -p physician-sample --test startup_readiness && cargo test --locked -p physician-sample --test worker -- --test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "07-startup-readiness-degraded-503-200-recovery-and-.log"
+      ],
+      "seconds": 148.9,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
