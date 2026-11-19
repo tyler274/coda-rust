@@ -1,0 +1,17 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling patient-work v0.1.0 (<workspace>)
+   Compiling local-product v0.1.0 (<workspace>)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 58.34s
+     Running unittests src/lib.rs (target/debug/deps/local_product-d7a6d89d643cb021)
+
+running 6 tests
+test runtime::tests::migration_tests::leftover_runtime_tables_fail_the_migration_and_record_nothing ... ok
+test runtime::tests::migration_tests::a_second_migrate_records_nothing_new ... ok
+test runtime::tests::migration_tests::source_pull_missing_candidates_migration_refuses_down_rollback ... ok
+test runtime::tests::migration_tests::conversation_activity_migration_backfills_later_of_open_and_last_activity ... ok
+test runtime::tests::migration_tests::physician_newest_twenty_five_conversations_plan_uses_activity_index ... ok
+test runtime::tests::migration_tests::sending_message_and_publishing_reply_both_advance_activity_column_and_order ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 194 filtered out; finished in 4.26s
+

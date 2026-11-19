@@ -1,0 +1,95 @@
+{
+  "branch": "tyler-eng-431-message-followup-dispatch",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Message and follow-up dispatch migration ledger lockstep",
+      "kind": "run",
+      "revision": "f1741a696950ef673062862fe38e8ca4cf0c1e78",
+      "dirty": false,
+      "recorded": "2026-11-19T00:00:17+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "runtime::tests::migration",
+        "--",
+        "--ignored"
+      ],
+      "expect": "test result: ok\\. [1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "01-Message-and-follow-up-dispatch-migration-ledger-.log"
+      ],
+      "seconds": 62.9,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "755aee546aeb01405bf2173bdcb559a406838614",
+        "reason": "Rebased cleanly onto patched upstream PR 81; the only downstream adjustment in PR 82..91 adds the PHYSICIAN_TEST_DATABASE_URL fallback in link_correction_postgres.rs (PR 84)."
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Patient work dispatch queue and cooldown coalescing unit suite",
+      "kind": "run",
+      "revision": "f1741a696950ef673062862fe38e8ca4cf0c1e78",
+      "dirty": false,
+      "recorded": "2026-11-19T00:01:20+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "patient-work"
+      ],
+      "expect": "test result: ok\\. [1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "02-Patient-work-dispatch-queue-and-cooldown-coalesc.log"
+      ],
+      "seconds": 5.7,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "755aee546aeb01405bf2173bdcb559a406838614",
+        "reason": "Rebased cleanly onto patched upstream PR 81; the only downstream adjustment in PR 82..91 adds the PHYSICIAN_TEST_DATABASE_URL fallback in link_correction_postgres.rs (PR 84)."
+      }
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "Patient review trigger variants and prompt context unit tests",
+      "kind": "run",
+      "revision": "f1741a696950ef673062862fe38e8ca4cf0c1e78",
+      "dirty": false,
+      "recorded": "2026-11-19T00:01:26+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "patient_reviews"
+      ],
+      "expect": "test result: ok\\. [1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "03-Patient-review-trigger-variants-and-prompt-conte.log"
+      ],
+      "seconds": 2.6,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "755aee546aeb01405bf2173bdcb559a406838614",
+        "reason": "Rebased cleanly onto patched upstream PR 81; the only downstream adjustment in PR 82..91 adds the PHYSICIAN_TEST_DATABASE_URL fallback in link_correction_postgres.rs (PR 84)."
+      }
+    }
+  ]
+}

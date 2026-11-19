@@ -1,0 +1,23 @@
+   Compiling patient-work v0.1.0 (<workspace>)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.48s
+     Running unittests src/lib.rs (target/debug/deps/patient_work-742232d95e232f75)
+
+running 9 tests
+test tests::default_cadence_checks_daily_and_reviews_weekly ... ok
+test tests::review_reason_serializes_exact_wire_labels ... ok
+test tests::failed_check_records_attempt_without_advancing_last_success_or_next_due ... ok
+test tests::unchanged_sources_within_weekly_window_start_no_review ... ok
+test tests::changed_records_queue_one_new_records_review ... ok
+test tests::linked_message_and_record_change_coalesce_into_one_review ... ok
+test tests::elapsed_weekly_window_without_changes_queues_one_periodic_review ... ok
+test tests::due_follow_up_starts_one_review_of_current_version_and_inactive_start_none ... ok
+test tests::linked_message_starts_one_review_with_message_reason ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests patient_work
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
