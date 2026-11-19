@@ -1,0 +1,84 @@
+{
+  "branch": "tyler-eng-287-1-today-updates-surfaces",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Physician app unit suite including today_updates and #46 checks",
+      "kind": "run",
+      "revision": "29ac8fc666f52c1a9d3217f5a0653f4b3bc144ba",
+      "dirty": false,
+      "recorded": "2026-11-19T00:47:25+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib"
+      ],
+      "expect": "\\b99 passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "01-Physician-app-unit-suite-including-today_updates.log"
+      ],
+      "seconds": 14.6,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Physician demo-db and sample unit suites with Today and Updates routes",
+      "kind": "run",
+      "revision": "29ac8fc666f52c1a9d3217f5a0653f4b3bc144ba",
+      "dirty": false,
+      "recorded": "2026-11-19T00:47:39+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--lib"
+      ],
+      "expect": "\\b9[5-9] passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "02-Physician-demo-db-and-sample-unit-suites-with-To.log"
+      ],
+      "seconds": 62.9,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "Shell states Chromium qualification check",
+      "kind": "run",
+      "revision": "29ac8fc666f52c1a9d3217f5a0653f4b3bc144ba",
+      "dirty": false,
+      "recorded": "2026-11-19T00:48:42+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "shell_states",
+        "--",
+        "--include-ignored",
+        "--test-threads=1"
+      ],
+      "expect": "\\b1 passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "03-Shell-states-Chromium-qualification-check.log"
+      ],
+      "seconds": 92.6,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+   Compiling physician-wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/physician-wire)
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/local-product)
+   Compiling physician-sample v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 02s
+     Running unittests src/lib.rs (target/debug/deps/physician_sample-ce273f2ac2bc0989)
+
+running 98 tests
+test auth::tests::workspace_resolution_names_only_patient_reads ... ok
+test chart_load::tests::enrollment_error_preserves_sea_orm_source_and_describes_auth_store_failures ... ok
+test auth::tests::a_disallowed_event_split_across_chunks_is_not_forwarded ... ok
+test gmail::tests::absent_sender_is_proof_mode ... ok
+test auth::tests::command_resolution_names_only_bodied_workspaces ... ok
+test hosting::tests::a_false_cloud_marker_is_still_hosted ... ok
+test hosting::tests::a_pool_timeout_does_not_suggest_the_migration_job ... ok
+test gmail::tests::a_misconfigured_relay_never_falls_back_to_returning_tokens ... ok
+test briefings::tests::generic_part_labels_are_omitted_and_structured_json_renders_key_value_lines ... ok
+test auth::tests::event_guard_forwards_resync_frames ... ok
+test hosting::tests::fail_marker_fails_the_first_k_saved_attempts ... ok
+test hosting::tests::fail_marker_parses_whole_counts_only ... ok
+test hosting::tests::hosted_local_stack_refuses_even_with_complete_profile ... ok
+test hosting::tests::local_runs_start_without_any_profile ... ok
+test gmail::tests::relay_needs_no_personal_mailbox_credentials ... ok
+test hosting::tests::production_and_other_profiles_refuse_even_when_complete ... ok
+test gmail::tests::a_sender_address_selects_hosted_mode ... ok
+test hosting::tests::readiness_fails_closed_without_live_stores ... ok
+test hosting::tests::clinical_library_config_enforces_https_in_hosted_runs_and_loopback_locally ... ok
+test hosting::tests::service_account_email_normalizes_and_rejects_non_service_principals ... ok
+test hosting::tests::staging_accounts_parse_under_the_preview_profile ... ok
+test hosting::tests::origin_follows_the_practice_and_scenarios_need_a_rehearsal_practice ... ok
+test hosting::tests::simulation_practices_parse_only_under_the_preview_profile ... ok
+test hosting::tests::only_a_rehearsal_practice_fails_a_marked_turn ... ok
+test auth::tests::active_staging_admins_see_the_sample_patients ... ok
+test hosting::tests::staging_accounts_refuse_outside_the_preview_profile_and_bad_entries ... ok
+test hosting::tests::staging_physician_ids_are_stable_and_distinct_per_email ... ok
+test hosting::tests::staging_preview_is_the_only_hosted_profile ... ok
+test hosting::tests::synthetic_charts_load_only_under_the_preview_profile ... ok
+test hosting::tests::the_rehearsal_sign_in_needs_both_settings_and_the_preview_profile ... ok
+test live_tests::chat_titles_are_one_line_and_cut_at_a_word ... ok
+test patients::tests::age_turns_on_the_birthday ... ok
+test live_tests::a_due_beat_goes_out_before_changes_that_are_ready ... ok
+test patients::tests::connected_sources_projects_pull_less_linked_standings_and_skips_not_yet_read ... ok
+test patients::tests::search_orders_exact_identifier_before_prefix_before_substring ... ok
+test patients::tests::directory_error_preserves_source_status_cause ... ok
+test patients::tests::clinic_demographics_exposes_only_name_dob_and_mrn ... ok
+test patients::tests::source_delivery_never_reports_usable_without_saved_pull_and_keeps_last_good_time ... ok
+test live_tests::the_change_stream_keeps_alive_on_a_fixed_beat_while_changes_pass_and_ends_with_them ... ok
+test rehearsal::tests::rehearsal_workspaces_never_collide_with_the_staging_panel ... ok
+test auth::tests::a_held_link_without_access_says_so_and_a_guessed_one_does_not ... ok
+test auth::tests::sse_events_filter_to_panel_and_terminate_when_session_or_panel_access_is_revoked ... ok
+test auth::tests::a_sign_in_token_verifies_once ... ok
+test auth::tests::an_unknown_email_never_confirms_an_account ... ok
+test auth::tests::a_non_admin_physician_cannot_invite_and_a_conflict_answers_409 ... ok
+test auth::tests::an_unknown_or_expired_token_never_serializes ... ok
+test auth::tests::reads_without_a_session_never_serialize ... ok
+test auth::tests::a_refused_read_says_whether_the_session_ended_or_access_was_removed ... ok
+test auth::tests::an_admin_invitation_redeems_once_at_the_front_door ... ok
+test live_tests::a_signed_in_reader_hears_the_beat_while_only_changes_it_may_not_see_pass ... ok
+test auth::tests::a_cross_practice_or_unknown_patient_never_gets_invited ... ok
+test auth::tests::a_command_into_a_denied_workspace_returns_404 ... ok
+test auth::tests::whoami_names_the_session_physician ... ok
+test synthetic_chart::tests::every_built_chart_reads_in_full ... ignored, requires `cargo run -p patient-bank -- build`
+test auth::tests::health_and_the_signed_out_page_stay_open ... ok
+test synthetic_chart::tests::reconnect_receipts_and_modes_persist_in_postgres_across_separate_bank_directories ... ignored, requires explicit local Postgres
+test synthetic_reply::tests::the_switch_names_the_patient ... ok
+test hosting::tests::clinical_library_down_or_refused_never_masquerades_as_nothing_found ... ok
+test schedule::tests::from_env_prefers_explicit_calendar_and_ignores_chart_only_banks ... ok
+test auth::tests::clinical_now_follows_the_clock_each_practice_was_created_with ... ok
+test auth::tests::the_staging_physician_reads_their_granted_workspaces ... ok
+test tests::chat_mode_follows_the_switch_and_falls_back_to_the_topic ... ok
+test auth::tests::clinic_admin_or_secretary_assigns_patient_to_physician_panel_over_http ... ok
+test auth::tests::same_clinic_physicians_read_basic_demographics_while_clinical_routes_require_panel_membership ... ok
+test auth::tests::a_physician_cannot_change_review_cadence ... ok
+test auth::tests::a_patient_exists_once_registered_to_the_practice ... ok
+test hosting::tests::clinical_library_enforces_excerpt_rights_unit_id_and_sha256_integrity ... ok
+test hosting::tests::clinical_library_search_and_exact_read_authenticate_and_preserve_passage_metadata ... ok
+test synthetic_reply::tests::the_first_draft_is_fixed_non_empty_wording ... ok
+test tests::hosted_site_requires_durable_chat ... ok
+test timestamp::tests::rfc3339_formats_the_unix_epoch ... ok
+test tests::required_sign_in_serves_only_the_practice ... ok
+test reviews::tests::project_trigger_and_tool_steps_use_physician_language_and_candidate_ids ... ok
+test reviews::tests::review_version_advances_across_every_state_transition_even_at_same_timestamp ... ok
+test auth::tests::projection_lists_filter_by_practice_and_panel_without_staging_practice_assumptions ... ok
+test auth::tests::hosted_invite_mails_the_redeem_link_and_omits_the_token ... ok
+test schedule::tests::synthetic_bank_calendar_parses_appointments_and_names_corrupt_lines ... ok
+test schedule::tests::multiple_patient_participants_degrade_to_unmatched_appointment_and_issue ... ok
+test synthetic_chart::tests::an_unread_attachment_keeps_its_parent_and_chart_siblings ... ok
+test synthetic_chart::tests::a_chart_reads_as_coda_records_with_its_exact_bytes ... ok
+test synthetic_chart::tests::controllable_modes_simulate_lapsed_access_partial_outage_and_reconnect ... ok
+test tests::proxy_preserves_long_queries_under_concurrent_http_parsing ... ok
+test auth::tests::hosted_sign_in_mails_the_link_and_omits_the_token ... ok
+test tests::commands_are_rejected_without_a_model ... ok
+test tests::an_unset_upstream_serves_the_site_and_a_set_one_forwards ... ok
+test tests::a_registered_patient_no_source_holds_is_not_found ... ok
+test tests::fixture_snapshot_and_past_work_refuse_off_panel_clinic_demographic_patients ... ok
+test tests::connected_care_patient_link ... ok
+test tests::synthetic_charts_fail_closed_when_patients_folder_is_missing ... ok
+test tests::durable_chat_requires_the_physician_database ... ok
+test auth::tests::a_failed_or_missing_gmail_send_does_not_return_the_token ... ok
+test rehearsal::tests::without_the_settings_there_is_no_rehearsal_route ... ok
+test rehearsal::tests::the_rehearsal_email_on_another_account_signs_nobody_in ... ok
+test rehearsal::tests::the_rehearsal_session_ends_on_time_however_much_it_is_used ... ok
+test rehearsal::tests::only_a_valid_assertion_for_this_audience_is_considered ... ok
+test rehearsal::tests::the_rehearsal_session_reaches_only_the_rehearsal_panel ... ok
+test rehearsal::tests::only_the_configured_service_account_may_rehearse ... ok
+test tests::serves_patients_and_no_work_it_does_not_hold ... ok
+
+test result: ok. 96 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
