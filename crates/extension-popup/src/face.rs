@@ -858,6 +858,10 @@ mod tests {
             .unwrap_or_default();
         for (name, content) in [
             (
+                "manifest.json",
+                include_str!("../../../extension/chrome/manifest.json"),
+            ),
+            (
                 "options.html",
                 include_str!("../../../extension/chrome/options.html"),
             ),
@@ -868,6 +872,10 @@ mod tests {
             (
                 "connector.js",
                 include_str!("../../../extension/chrome/connector.js"),
+            ),
+            (
+                "worker.js",
+                include_str!("../../../extension/chrome/worker.js"),
             ),
             ("chrome.js", include_str!("../assets/chrome.js")),
             ("lib.rs", include_str!("lib.rs")),
