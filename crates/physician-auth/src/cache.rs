@@ -29,8 +29,9 @@ use async_trait::async_trait;
 use tokio::sync::watch;
 
 use crate::{
-    Account, AuthStore, AuthorityFeed, Membership, PanelError, PatientLink, PhysicianIdentity,
-    PracticeClock, Session, SessionActivity, SessionError, SessionRenewal, SignInError,
+    Account, AccountCreateOutcome, AccountSetupError, AuthStore, AuthorityFeed, Membership,
+    PanelError, PatientLink, PhysicianIdentity, PracticeClock, PracticeRecord, PracticeSetupError,
+    PracticeSetupOutcome, Session, SessionActivity, SessionError, SessionRenewal, SignInError,
     StoreUnavailable, token_hash,
 };
 
@@ -429,6 +430,22 @@ impl AuthStore for CachedAuthStore {
         self.inner.ensure_practice(practice_id, clock).await
     }
 
+    async fn upsert_practice(
+        &self,
+        record: &PracticeRecord,
+    ) -> Result<PracticeSetupOutcome, PracticeSetupError> {
+        let written = self.inner.upsert_practice(record).await;
+        self.invalidate();
+        written
+    }
+
+    async fn practice(
+        &self,
+        practice_id: &str,
+    ) -> Result<Option<PracticeRecord>, StoreUnavailable> {
+        self.inner.practice(practice_id).await
+    }
+
     async fn practice_clock(&self, practice_id: &str) -> Result<PracticeClock, StoreUnavailable> {
         self.inner.practice_clock(practice_id).await
     }
@@ -469,6 +486,23 @@ impl AuthStore for CachedAuthStore {
 
     async fn practice_accounts(&self, practice_id: &str) -> Result<Vec<Account>, StoreUnavailable> {
         self.inner.practice_accounts(practice_id).await
+    }
+
+    async fn create_account(
+        &self,
+        practice_id: &str,
+        physician_id: Option<&str>,
+        email: &str,
+        display_name: &str,
+        admin: bool,
+        now: u64,
+    ) -> Result<(Account, AccountCreateOutcome), AccountSetupError> {
+        let created = self
+            .inner
+            .create_account(practice_id, physician_id, email, display_name, admin, now)
+            .await;
+        self.invalidate();
+        created
     }
 
     async fn invite(
@@ -678,6 +712,18 @@ mod tests {
         async fn ensure_practice(&self, a: &str, b: PracticeClock) -> Result<(), StoreUnavailable> {
             self.inner.ensure_practice(a, b).await
         }
+        async fn upsert_practice(
+            &self,
+            record: &PracticeRecord,
+        ) -> Result<PracticeSetupOutcome, PracticeSetupError> {
+            self.inner.upsert_practice(record).await
+        }
+        async fn practice(
+            &self,
+            practice_id: &str,
+        ) -> Result<Option<PracticeRecord>, StoreUnavailable> {
+            self.inner.practice(practice_id).await
+        }
         async fn practice_clock(&self, a: &str) -> Result<PracticeClock, StoreUnavailable> {
             self.inner.practice_clock(a).await
         }
@@ -698,6 +744,19 @@ mod tests {
         }
         async fn practice_accounts(&self, a: &str) -> Result<Vec<Account>, StoreUnavailable> {
             AuthStore::practice_accounts(&self.inner, a).await
+        }
+        async fn create_account(
+            &self,
+            practice_id: &str,
+            physician_id: Option<&str>,
+            email: &str,
+            display_name: &str,
+            admin: bool,
+            now: u64,
+        ) -> Result<(Account, AccountCreateOutcome), AccountSetupError> {
+            self.inner
+                .create_account(practice_id, physician_id, email, display_name, admin, now)
+                .await
         }
         async fn invite(
             &self,

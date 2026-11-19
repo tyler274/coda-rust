@@ -68,6 +68,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261106_000006_session_lifetime),
             Box::new(m20261109_000007_fixed_sessions),
             Box::new(m20261112_000008_drop_cadence_columns),
+            Box::new(m20261113_000009_practice_time_zone),
         ]
     }
 }
@@ -761,6 +762,48 @@ impl MigrationTrait for m20261112_000008_drop_cadence_columns {
                             .not_null()
                             .default("weekly"),
                     )
+                    .to_owned(),
+            )
+            .await
+    }
+}
+
+/// Adds validated IANA `time_zone` storage to `physician_practices`.
+#[expect(
+    non_camel_case_types,
+    reason = "SeaORM migration version naming convention"
+)]
+pub struct m20261113_000009_practice_time_zone;
+impl MigrationName for m20261113_000009_practice_time_zone {
+    fn name(&self) -> &str {
+        "physician_auth_20261113_000009_practice_time_zone"
+    }
+}
+
+#[async_trait::async_trait]
+impl MigrationTrait for m20261113_000009_practice_time_zone {
+    async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .alter_table(
+                Table::alter()
+                    .table(Practices)
+                    .add_column(
+                        ColumnDef::new(practice::Column::TimeZone)
+                            .string()
+                            .not_null()
+                            .default("America/New_York"),
+                    )
+                    .to_owned(),
+            )
+            .await
+    }
+
+    async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .alter_table(
+                Table::alter()
+                    .table(Practices)
+                    .drop_column(practice::Column::TimeZone)
                     .to_owned(),
             )
             .await

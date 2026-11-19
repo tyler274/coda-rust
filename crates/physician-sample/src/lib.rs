@@ -32,6 +32,7 @@ mod reply;
 mod reviews;
 pub mod schedule;
 pub mod sources;
+pub mod staff_setup;
 pub mod synthetic_chart;
 pub mod synthetic_chart_fhir;
 pub mod synthetic_control;
@@ -818,6 +819,11 @@ async fn site_from_env(
     if rehearsal.is_some() && !required {
         return Err("the rehearsal sign-in needs PHYSICIAN_AUTH=required".into());
     }
+    let staff = hosting::StaffSetupAuth::from_env(&get)?;
+    if staff.is_some() && !required {
+        return Err("staff practice setup requires PHYSICIAN_AUTH=required".into());
+    }
+    let mail = gmail::Delivery::from_env(&get);
     let bus = physician_bus::from_env(&get, hosted).await?;
     // One pool per process: durable chat, the patient directory, auth, the
     // front door and `/readyz` all read through it.
@@ -967,8 +973,17 @@ async fn site_from_env(
         base = base.layer(schedule::schedule_source_layer(source));
     }
     let postgres = runtime.zip(readiness.as_ref());
-    let router =
-        auth::authed_router_with_bus(base, bus, memory_patients, postgres, rehearsal).await;
+    let router = auth::authed_router_configured(
+        base,
+        bus,
+        memory_patients,
+        postgres,
+        required,
+        mail,
+        rehearsal,
+        staff,
+    )
+    .await;
     let router = route_readiness(router, readiness);
     let compaction = chat.map(|chat| chat.start_compaction());
     Ok((router, compaction))
@@ -1058,13 +1073,6 @@ pub async fn serve_with_store(
     axum::serve(listener, app).await.expect("sample server");
 }
 
-/// The practice's calendar day, as `/today` and `/updates` carry it. It is the
-/// clock's UTC date, which a fixed clock at noon never shows; a real-time
-/// practice needs its own zone here.
-pub(crate) fn practice_date(now: &str) -> &str {
-    now.get(..10).unwrap_or_default()
-}
-
 #[derive(Debug, Default, serde::Deserialize)]
 struct TodayQuery {
     #[serde(default)]
@@ -1077,7 +1085,7 @@ async fn today(
     request: Request<Body>,
 ) -> Response {
     let extensions = request.extensions();
-    let Ok(now) = connected.practice_now(extensions).await else {
+    let Ok(moment) = connected.practice_moment(extensions).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
     let Ok((connections, source_outages)) =
@@ -1099,7 +1107,7 @@ async fn today(
             ctx,
             &connected,
             extensions,
-            &now,
+            &moment,
             target_workspace,
             connections,
             source_outages,
@@ -1142,7 +1150,8 @@ async fn today(
         None => (Vec::new(), Vec::new()),
     };
     Json(json!({
-        "date": practice_date(&now),
+        "date": moment.date_iso,
+        "time_zone": moment.time_zone.as_str(),
         "rows": rows,
         "seen": seen,
         "connections": connections,
@@ -1159,14 +1168,14 @@ async fn updates(
     request: Request<Body>,
 ) -> Response {
     let extensions = request.extensions();
-    let Ok(now) = connected.practice_now(extensions).await else {
+    let Ok(moment) = connected.practice_moment(extensions).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
     if let (Some(store), Some(ctx)) = (
         extensions.get::<local_product::runtime::Store>(),
         extensions.get::<auth::AuthContext>(),
     ) {
-        return today_updates::serve_durable_updates(store, ctx, &connected, extensions, &now)
+        return today_updates::serve_durable_updates(store, ctx, &connected, extensions, &moment)
             .await;
     }
     let identity = care::ConnectedCare::identity(extensions);
@@ -1204,7 +1213,8 @@ async fn updates(
         None => (Vec::new(), Vec::new(), Vec::new()),
     };
     Json(json!({
-        "date": practice_date(&now),
+        "date": moment.date_iso,
+        "time_zone": moment.time_zone.as_str(),
         "active_runs": active_runs,
         "rows": rows,
         "seen": seen,
@@ -1298,7 +1308,7 @@ async fn workspace(
     axum::Extension(connected): axum::Extension<care::ConnectedCare>,
     request: Request<Body>,
 ) -> Response {
-    let Ok(now) = connected.practice_now(request.extensions()).await else {
+    let Ok(moment) = connected.practice_moment(request.extensions()).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
     let patient = match connected.patient(request.extensions(), &id).await {
@@ -1307,12 +1317,13 @@ async fn workspace(
         Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
     };
     let registry = sources::registry_from(request.extensions()).map(std::sync::Arc::as_ref);
-    let mut enriched = care::enrich_workspace(
-        patient.workspace_body(&now, registry),
-        &id,
-        request.extensions(),
-    )
-    .await;
+    let base_body = patient.workspace_body_in_zone(
+        &moment.now_rfc3339,
+        &moment.date_iso,
+        moment.time_zone.as_str(),
+        registry,
+    );
+    let mut enriched = care::enrich_workspace(base_body, &id, request.extensions()).await;
     // A live server lists the signed-in physician's chats. The fixture site
     // has no `Live`.
     if let Some(live) = request.extensions().get::<std::sync::Arc<live::Live>>() {

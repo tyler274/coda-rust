@@ -13,6 +13,8 @@ pub struct Model {
     pub practice_id: String,
     /// The Unix second a synthetic practice's clinical "now" is fixed at.
     pub fixed_time: Option<i64>,
+    /// The IANA time zone the practice operates in.
+    pub time_zone: String,
     /// The Unix second the practice was created.
     pub created_at: i64,
 }

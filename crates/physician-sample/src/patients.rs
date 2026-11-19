@@ -23,7 +23,8 @@ use crate::auth::{STAGING_PRACTICE_ID, SYNTHETIC_PRACTICE_CLOCK, staging_panel};
 use crate::sources::SourceRegistry;
 use crate::timestamp::format_rfc3339;
 
-/// The zone the practice's times are worded in.
+/// Default fixture zone used only in unit tests that bypass practice setup.
+#[cfg(test)]
 pub(crate) const PRACTICE_TIME_ZONE: &str = "America/New_York";
 
 /// The most patients one search answers with.
@@ -722,9 +723,8 @@ impl Patient {
         }
     }
 
-    fn identity(&self, now: &str) -> Value {
+    fn identity(&self, today: &str) -> Value {
         let patient = self.holder();
-        let today = now.get(..10).unwrap_or_default();
         let sex_or_gender = patient
             .sex_or_gender
             .as_ref()
@@ -919,13 +919,30 @@ impl Patient {
     }
 
     /// The patient page: identity, saved summary when present, and how current the records are.
+    #[cfg(test)]
     pub(crate) fn workspace_body(&self, now: &str, registry: Option<&SourceRegistry>) -> Value {
+        self.workspace_body_in_zone(
+            now,
+            now.get(..10).unwrap_or_default(),
+            PRACTICE_TIME_ZONE,
+            registry,
+        )
+    }
+
+    /// The patient page in the practice's saved local date and time zone.
+    pub(crate) fn workspace_body_in_zone(
+        &self,
+        now: &str,
+        today: &str,
+        time_zone: &str,
+        registry: Option<&SourceRegistry>,
+    ) -> Value {
         json!({
             "patient_workspace_id": self.workspace,
             "display_name": self.holder().display_name,
-            "time_zone": PRACTICE_TIME_ZONE,
+            "time_zone": time_zone,
             "current_time": now,
-            "identity": self.identity(now),
+            "identity": self.identity(today),
             "patient_synopsis": self.synopsis,
             "automation_run": self.automation_run,
             "connected_sources": self.connected_sources(registry),
@@ -937,7 +954,14 @@ impl Patient {
 
     /// What a physician in the clinic reads of a patient not on their panel:
     /// strictly display name, birth date, and medical record numbers.
+    #[cfg(test)]
     pub(crate) fn clinic_demographics(&self, now: &str) -> Value {
+        self.clinic_demographics_in_zone(now, PRACTICE_TIME_ZONE)
+    }
+
+    /// What a physician in the clinic reads of a patient not on their panel,
+    /// carrying the practice's saved IANA time zone.
+    pub(crate) fn clinic_demographics_in_zone(&self, now: &str, time_zone: &str) -> Value {
         let patient = self.holder();
         let numbers: Vec<Value> = patient
             .medical_record_numbers
@@ -948,7 +972,7 @@ impl Patient {
             "patient_workspace_id": self.workspace,
             "display_name": patient.display_name,
             "membership": "clinic_demographic",
-            "time_zone": PRACTICE_TIME_ZONE,
+            "time_zone": time_zone,
             "current_time": now,
             "identity": {
                 "display_name": patient.display_name,

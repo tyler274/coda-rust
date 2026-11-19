@@ -158,6 +158,7 @@ impl DemoStore {
             .collect();
         Ok(TodayListResponse {
             date: DEMO_DATE.into(),
+            time_zone: Some(DEMO_ZONE.into()),
             rows,
             seen: Vec::new(),
             as_of: 1,

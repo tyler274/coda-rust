@@ -40,7 +40,8 @@ use crate::timestamp::format_rfc3339;
 use front_door::{FrontDoorStore, MemoryFrontDoorStore, RosterPatient};
 use physician_auth::{
     AuthStore, AuthorityFeed, CachedAuthStore, Membership, MemoryAuthStore, PanelError,
-    PhysicianIdentity, PracticeClock, SessionError, SignInError, StoreUnavailable,
+    PhysicianIdentity, PracticeClock, PracticeTimeZone, SessionError, SignInError,
+    StoreUnavailable,
 };
 
 use crate::patients::{MemoryPatients, PatientDirectory, enroll_in_memory, read_patient};
@@ -471,13 +472,18 @@ async fn clinic_demographics(
     identity: &PhysicianIdentity,
     workspace: &str,
 ) -> Response {
-    let Ok(clock) = auth.store.practice_clock(&identity.practice_id).await else {
+    let Ok(practice) = auth.store.practice(&identity.practice_id).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let (clock, time_zone) = match practice {
+        Some(record) => (record.clock, record.time_zone),
+        None => (PracticeClock::RealTime, PracticeTimeZone::default()),
     };
     match read_patient(&*auth.patients, workspace).await {
         Ok(Some(patient)) => {
             let at = UNIX_EPOCH + Duration::from_secs(clock.now(now()));
-            Json(patient.clinic_demographics(&format_rfc3339(at))).into_response()
+            Json(patient.clinic_demographics_in_zone(&format_rfc3339(at), time_zone.as_str()))
+                .into_response()
         }
         Ok(None) => not_found(),
         Err(_) => StatusCode::SERVICE_UNAVAILABLE.into_response(),
@@ -854,16 +860,26 @@ struct VerifyBody {
     token: String,
 }
 
-/// Verifies a sign-in token and returns the bearer session.
+/// Verifies a sign-in token (or redeems a pending physician invitation link)
+/// and returns the bearer session.
 async fn verify(State(auth): State<Arc<Auth>>, body: axum::body::Bytes) -> Response {
     let Ok(body) = serde_json::from_slice::<VerifyBody>(&body) else {
         return StatusCode::UNAUTHORIZED.into_response();
     };
-    match auth
+    let verified = match auth
         .store
         .complete_sign_in(&body.email, &body.token, now())
         .await
     {
+        Ok(session) => Ok(session),
+        Err(SignInError::Invalid) => {
+            auth.store
+                .redeem_invitation(&body.email, &body.token, now())
+                .await
+        }
+        Err(SignInError::Inactive) => Err(SignInError::Inactive),
+    };
+    match verified {
         Ok((identity, session)) => (
             StatusCode::OK,
             Json(json!({
@@ -1252,39 +1268,57 @@ async fn inject_auth_store(
 /// `PHYSICIAN_AUTH=required` guards every physician route of `base`. Any other
 /// value serves `base` with the auth routes still present. Workspace events
 /// stay on an in-process bus. The process entrypoint uses
-/// [`authed_router_with_bus`] for Postgres and Redis. Sign-in mail comes from
+/// [`authed_router_configured`] for Postgres and Redis. Sign-in mail comes from
 /// the environment.
 pub async fn authed_router(base: axum::Router) -> axum::Router {
-    authed_router_with_bus(
+    let required = matches!(auth_mode(), AuthMode::Required);
+    let mail = crate::gmail::Delivery::from_env(|key| std::env::var(key).ok());
+    let staff = crate::hosting::StaffSetupAuth::from_env(|key| std::env::var(key).ok())
+        .ok()
+        .flatten();
+    authed_router_configured(
         base,
         Arc::new(physician_bus::LocalBus::new(64)),
         MemoryPatients::fixture(),
         None,
+        required,
+        mail,
         None,
+        staff,
     )
     .await
 }
 
 /// Builds the router with auth on `base`, publishing panel changes on `bus`.
 ///
-/// `PHYSICIAN_AUTH=required` guards every physician route through one store —
-/// Postgres when `postgres` holds the process's runtime store and the stores
-/// over its pool, memory otherwise. Any other value serves `base` with the
-/// auth routes still present. Neither store is migrated. Without a database
-/// the practice holds `memory_patients`. Sign-in mail comes from the
-/// environment.
+/// `required` guards every physician route through one store — Postgres when
+/// `postgres` holds the process's runtime store and the stores over its pool,
+/// memory otherwise. Any other value serves `base` with the auth routes still
+/// present. Neither store is migrated. Without a database the practice holds
+/// `memory_patients`.
 ///
 /// `rehearsal` adds `POST /auth/rehearsal` ([`crate::rehearsal::sign_in_routes`]),
 /// and only behind required sign-in: with open auth there is no session to mint.
-pub(crate) async fn authed_router_with_bus(
+#[expect(
+    clippy::too_many_arguments,
+    reason = "process router composition wiring"
+)]
+pub(crate) async fn authed_router_configured(
     base: axum::Router,
     bus: Arc<dyn physician_bus::Bus>,
     memory_patients: Arc<MemoryPatients>,
     postgres: Option<(local_product::runtime::Store, &crate::hosting::Readiness)>,
+    required: bool,
+    mail: crate::gmail::Delivery,
     rehearsal: Option<crate::hosting::RehearsalSignIn>,
+    staff: Option<crate::hosting::StaffSetupAuth>,
 ) -> axum::Router {
-    let mail = crate::gmail::Delivery::from_env(|key| std::env::var(key).ok());
-    let auth = match (auth_mode(), postgres) {
+    let mode = if required {
+        AuthMode::Required
+    } else {
+        AuthMode::Open
+    };
+    let auth = match (&mode, postgres) {
         (AuthMode::Required, Some((runtime, stores))) => {
             match Auth::postgres_with_bus(runtime, stores, bus, mail).await {
                 Ok(auth) => auth,
@@ -1303,11 +1337,17 @@ pub(crate) async fn authed_router_with_bus(
         }
         _ => Auth::memory_with(memory_patients, bus, mail).await,
     };
-    match auth_mode() {
+    match mode {
         AuthMode::Required => {
             let base = match rehearsal {
                 Some(config) => {
                     base.merge(crate::rehearsal::sign_in_routes(Arc::clone(&auth), config))
+                }
+                None => base,
+            };
+            let base = match staff {
+                Some(staff_auth) => {
+                    base.merge(crate::staff_setup::routes(Arc::clone(&auth), staff_auth))
                 }
                 None => base,
             };

@@ -33,7 +33,7 @@ use serde_json::{Value, json};
 
 use crate::auth::now;
 use crate::care::ConnectedCare;
-use crate::patients::{self, PRACTICE_TIME_ZONE};
+use crate::patients;
 
 /// Stable source identifier for the synthetic bank practice calendar.
 pub const SOURCE_ID: &str = "synthetic-practice-calendar";
@@ -541,12 +541,14 @@ pub(crate) async fn practice_day(
     request: Request<Body>,
 ) -> Response {
     let extensions = request.extensions();
-    let Ok(current_time) = connected.practice_now(extensions).await else {
+    let Ok(moment) = connected.practice_moment(extensions).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
-    let date = crate::practice_date(&current_time).to_owned();
+    let current_time = moment.now_rfc3339;
+    let date = moment.date_iso;
+    let practice_tz = moment.time_zone.as_str().to_owned();
     let Some(runtime_store) = extensions.get::<Store>().cloned() else {
-        return Json(absent_day_json(&date, &current_time)).into_response();
+        return Json(absent_day_json(&date, &practice_tz, &current_time)).into_response();
     };
 
     let identity = ConnectedCare::identity(extensions);
@@ -555,14 +557,11 @@ pub(crate) async fn practice_day(
     };
 
     if matches!(schedule.standing, ScheduleStanding::Absent) {
-        return Json(absent_day_json(&date, &current_time)).into_response();
+        return Json(absent_day_json(&date, &practice_tz, &current_time)).into_response();
     }
 
     let auth_store = connected.auth_store(extensions);
-    let Ok(clock) = auth_store.practice_clock(&identity.practice_id).await else {
-        return StatusCode::SERVICE_UNAVAILABLE.into_response();
-    };
-    let current_time_unix = clock.now(now()) as i64;
+    let current_time_unix = moment.now_unix as i64;
     let panel = auth_store.panel(&identity).await;
     let panel_set: BTreeSet<&str> = panel.iter().map(String::as_str).collect();
 
@@ -640,20 +639,19 @@ pub(crate) async fn practice_day(
         ScheduleStanding::Unavailable { .. } | ScheduleStanding::Absent => 0,
     };
 
+    let visit_ctx = VisitContext {
+        panel_set: &panel_set,
+        display_names: &display_names,
+        prep_by_slot: &prep_by_slot,
+        briefing_by_slot: &briefing_by_slot,
+        current_time_unix,
+        practice_time_zone: &practice_tz,
+    };
     let visits: Vec<Value> = if matches!(schedule.standing, ScheduleStanding::Usable { .. }) {
         schedule
             .appointments
             .iter()
-            .filter_map(|appointment| {
-                visit_json(
-                    appointment,
-                    &panel_set,
-                    &display_names,
-                    &prep_by_slot,
-                    &briefing_by_slot,
-                    current_time_unix,
-                )
-            })
+            .filter_map(|appointment| visit_json(appointment, &visit_ctx))
             .collect()
     } else {
         Vec::new()
@@ -661,7 +659,7 @@ pub(crate) async fn practice_day(
 
     Json(json!({
         "date": date,
-        "time_zone": PRACTICE_TIME_ZONE,
+        "time_zone": practice_tz,
         "current_time": current_time,
         "version": version,
         "source_state": source_state_json(&schedule.standing),
@@ -671,10 +669,10 @@ pub(crate) async fn practice_day(
     .into_response()
 }
 
-fn absent_day_json(date: &str, current_time: &str) -> Value {
+fn absent_day_json(date: &str, time_zone: &str, current_time: &str) -> Value {
     json!({
         "date": date,
-        "time_zone": PRACTICE_TIME_ZONE,
+        "time_zone": time_zone,
         "current_time": current_time,
         "source_state": { "state": "absent" },
         "visits": [],
@@ -759,14 +757,16 @@ fn source_state_json(standing: &ScheduleStanding) -> Value {
     }
 }
 
-fn visit_json(
-    appointment: &SavedAppointment,
-    panel_set: &BTreeSet<&str>,
-    display_names: &BTreeMap<String, String>,
-    prep_by_slot: &BTreeMap<(String, String, i64), VisitPreparationRecord>,
-    briefing_by_slot: &BTreeMap<(String, String, i64), SavedVisitBriefing>,
+struct VisitContext<'a> {
+    panel_set: &'a BTreeSet<&'a str>,
+    display_names: &'a BTreeMap<String, String>,
+    prep_by_slot: &'a BTreeMap<(String, String, i64), VisitPreparationRecord>,
+    briefing_by_slot: &'a BTreeMap<(String, String, i64), SavedVisitBriefing>,
     current_time_unix: i64,
-) -> Option<Value> {
+    practice_time_zone: &'a str,
+}
+
+fn visit_json(appointment: &SavedAppointment, ctx: &VisitContext<'_>) -> Option<Value> {
     let encounter = json!({
         "source_code": appointment.source_id.as_str(),
         "native_event_id": appointment.appointment_id.as_str(),
@@ -780,7 +780,7 @@ fn visit_json(
             workspace_id,
             source_patient_id,
         } => {
-            if !panel_set.contains(workspace_id.as_str()) {
+            if !ctx.panel_set.contains(workspace_id.as_str()) {
                 return None;
             }
             let slot_key = (
@@ -790,9 +790,9 @@ fn visit_json(
             );
             let preparation = matched_visit_preparation_json(
                 appointment,
-                prep_by_slot.get(&slot_key),
-                briefing_by_slot.get(&slot_key),
-                current_time_unix,
+                ctx.prep_by_slot.get(&slot_key),
+                ctx.briefing_by_slot.get(&slot_key),
+                ctx.current_time_unix,
             );
             Some(json!({
                 "encounter": encounter,
@@ -804,8 +804,8 @@ fn visit_json(
                 "as_of": as_of_iso,
                 "source_patient_id": source_patient_id.as_str(),
                 "patient_workspace_id": workspace_id,
-                "patient_display_name": display_names.get(workspace_id),
-                "patient_time_zone": PRACTICE_TIME_ZONE,
+                "patient_display_name": ctx.display_names.get(workspace_id),
+                "patient_time_zone": ctx.practice_time_zone,
                 "preparation": preparation,
             }))
         }

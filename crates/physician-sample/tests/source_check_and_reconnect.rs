@@ -1024,6 +1024,37 @@ impl AuthStore for FailingEnrollmentAuth {
     ) -> Result<PracticeClock, physician_auth::StoreUnavailable> {
         self.inner.practice_clock(practice_id).await
     }
+    async fn upsert_practice(
+        &self,
+        record: &physician_auth::PracticeRecord,
+    ) -> Result<physician_auth::PracticeSetupOutcome, physician_auth::PracticeSetupError> {
+        self.inner.upsert_practice(record).await
+    }
+    async fn practice(
+        &self,
+        practice_id: &str,
+    ) -> Result<Option<physician_auth::PracticeRecord>, physician_auth::StoreUnavailable> {
+        self.inner.practice(practice_id).await
+    }
+    async fn create_account(
+        &self,
+        email: &str,
+        display_name: Option<&str>,
+        practice_id: &str,
+        role: &str,
+        practice_admin: bool,
+        now: u64,
+    ) -> Result<
+        (
+            physician_auth::Account,
+            physician_auth::AccountCreateOutcome,
+        ),
+        physician_auth::AccountSetupError,
+    > {
+        self.inner
+            .create_account(email, display_name, practice_id, role, practice_admin, now)
+            .await
+    }
     async fn register_patient(
         &self,
         practice_id: &str,
