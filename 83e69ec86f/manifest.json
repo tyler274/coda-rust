@@ -1,0 +1,89 @@
+{
+  "branch": "tyler-eng-317-1-staff-practice-accounts",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1-auth-unit-and-migrations",
+      "label": "",
+      "kind": "run",
+      "revision": "dd7029a86b5473b4d9043b36912db1561716957e",
+      "dirty": false,
+      "recorded": "2026-11-19T00:00:55+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-auth",
+        "--lib",
+        "--test",
+        "migrations"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-cargo.log"
+      ],
+      "seconds": 13.7,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "83e69ec86f9981d15390f105772b5c509a6d839f",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2-shared-migrations-ledger",
+      "label": "",
+      "kind": "run",
+      "revision": "dd7029a86b5473b4d9043b36912db1561716957e",
+      "dirty": false,
+      "recorded": "2026-11-19T00:01:09+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "migrations_postgres",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-cargo.log"
+      ],
+      "seconds": 103.5,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "83e69ec86f9981d15390f105772b5c509a6d839f",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    },
+    {
+      "id": 3,
+      "claim": "AC3-physician-demo-db-compat",
+      "label": "",
+      "kind": "run",
+      "revision": "83e69ec86f9981d15390f105772b5c509a6d839f",
+      "dirty": false,
+      "recorded": "2026-11-19T01:46:51+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-demo-db"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-cargo.log"
+      ],
+      "seconds": 8.4,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
