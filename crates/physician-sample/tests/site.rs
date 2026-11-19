@@ -5706,4 +5706,88 @@ async fn p1_composer_queue_stop_steps_retry_and_provenance() {
     tab.call("Fetch.disable", serde_json::json!({}));
     tab.release_all();
     tab.wait_for_text("Auto retry once message", Duration::from_secs(15));
+    tab.wait_for_text(scale::FIXED_TEXT, Duration::from_secs(20));
+
+    // 8. Cross-patient Stop isolation: while Patient A's `work.stop` is in flight,
+    // navigate in-app (no reload) to another patient and ensure neither Patient A's
+    // returned queue text nor any Stop slot notice bleeds into Patient B.
+    tab.type_composer("Stop cross patient turn");
+    send_enter(&mut tab, 0, false);
+    tab.wait_for_text("Stop cross patient turn", Duration::from_secs(10));
+    tab.wait_for_text("Send next", Duration::from_secs(10));
+    tab.type_composer("Patient A private queued note");
+    send_enter(&mut tab, 2, false);
+    tab.wait_for_text("Patient A private queued note", Duration::from_secs(10));
+
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/commands", "requestStage": "Request" }] }),
+    );
+    tab.click_named(".conversation-mechanical button", "Stop");
+    let held_stop = tab.held_request("POST");
+
+    // In-app switch to another patient via Find patient while Stop is in flight.
+    assert_eq!(
+        tab.eval("(() => { const b = [...document.querySelectorAll('button')].find(x => x.textContent.includes('Find patient')); b?.click(); return Boolean(b); })()"),
+        serde_json::json!(true),
+        "Find patient button not found"
+    );
+    let search_deadline = Instant::now() + Duration::from_secs(10);
+    while tab
+        .eval("document.querySelectorAll('.dialog-results button').length")
+        .as_u64()
+        .unwrap_or(0)
+        < 2
+    {
+        assert!(
+            Instant::now() < search_deadline,
+            "Find patient did not list 2 patients"
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    }
+    assert_eq!(
+        tab.eval("(() => { const rows = document.querySelectorAll('.dialog-results button'); const other = [...rows].find(b => !b.innerText.includes('Mary Louis')); other?.click(); return Boolean(other); })()"),
+        serde_json::json!(true),
+        "could not open a second patient via Find patient"
+    );
+    let patient_b_deadline = Instant::now() + Duration::from_secs(10);
+    while tab
+        .eval("document.querySelector('h1.workspace-title')?.innerText ?? ''")
+        .as_str()
+        .unwrap_or("Mary Louis")
+        == "Mary Louis"
+    {
+        assert!(
+            Instant::now() < patient_b_deadline,
+            "did not switch to second patient"
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    }
+    tab.eval("(() => { const b = [...document.querySelectorAll('button')].find(x => x.textContent.includes('New conversation')); b?.click(); return true; })()");
+    tab.wait_composer("", Duration::from_secs(10));
+
+    // Release Patient A's Stop while viewing Patient B.
+    tab.release(&held_stop);
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.release_all();
+    tokio::time::sleep(Duration::from_millis(600)).await;
+
+    assert_eq!(
+        tab.composer().0,
+        "",
+        "Patient A returned queue leaked into Patient B composer"
+    );
+    let patient_b_dom = tab
+        .eval("document.documentElement.innerText")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        !patient_b_dom.contains("Patient A private queued note"),
+        "Patient A queued PHI appeared on Patient B page:\n{patient_b_dom}"
+    );
+    assert!(
+        !patient_b_dom.contains("Check again"),
+        "Patient A slot notice leaked onto Patient B page:\n{patient_b_dom}"
+    );
 }

@@ -1175,17 +1175,7 @@ fn PhysicianShell(
         selected,
         open_chat,
         move |value| {
-            let returned = returned_queue_texts(&value);
-            if !returned.is_empty()
-                && let (Some(ws), Some(chat)) = (selected.peek().clone(), open_chat.peek().clone())
-            {
-                let target = DraftTarget {
-                    workspace: ws,
-                    chat,
-                };
-                composer.write().restore_returned_queue(&target, &returned);
-                autosave(composer, client, target);
-            }
+            restore_returned_queue_from_response(&value, None, composer, client);
             *snapshot_attempt.write() += 1;
             *workspace_attempt.write() += 1;
         },
@@ -3141,26 +3131,17 @@ fn PhysicianShell(
                                 if let Some(command) =
                                     chat_stop_command(selected(), open_chat(), &target)
                                 {
-                                    let target_ws = selected();
-                                    let target_chat = open_chat();
+                                    let fallback = command_target(&command);
                                     chat_stop_slot.run_with_response(
                                         client.read().clone(),
                                         command,
                                         move |value| {
-                                            let returned = returned_queue_texts(&value);
-                                            if !returned.is_empty()
-                                                && let (Some(ws), Some(chat)) =
-                                                    (target_ws.clone(), target_chat.clone())
-                                            {
-                                                let draft = DraftTarget {
-                                                    workspace: ws,
-                                                    chat,
-                                                };
-                                                composer
-                                                    .write()
-                                                    .restore_returned_queue(&draft, &returned);
-                                                autosave(composer, client, draft);
-                                            }
+                                            restore_returned_queue_from_response(
+                                                &value,
+                                                fallback.clone(),
+                                                composer,
+                                                client,
+                                            );
                                             *snapshot_attempt.write() += 1;
                                         },
                                     );
@@ -3584,6 +3565,24 @@ fn answer(result: &Result<serde_json::Value, physician_client::HttpError>) -> An
     }
 }
 
+/// Extracts `(patient_workspace_id, chat_id)` from a chat command payload so
+/// persistence and response recovery stay bound to the dispatched target even
+/// if the physician navigates elsewhere while the request is in flight.
+fn command_target(command: &Command) -> Option<DraftTarget> {
+    let payload = command.0.get("payload")?;
+    let workspace = payload
+        .get("patient_workspace_id")
+        .and_then(serde_json::Value::as_str)
+        .filter(|s| !s.is_empty())?
+        .to_owned();
+    let chat = payload
+        .get("chat_id")
+        .and_then(serde_json::Value::as_str)
+        .unwrap_or_default()
+        .to_owned();
+    Some(DraftTarget { workspace, chat })
+}
+
 /// Optional same-tab persistence binding for chat commands so `Pending` /
 /// `Unconfirmed` commands survive a page reload (`Chat Command 8`, `Chat Rule 13`).
 #[derive(Clone, Copy, PartialEq)]
@@ -3601,7 +3600,7 @@ impl SlotPersistence {
         let Some(account) = self.whoami.peek().clone() else {
             return;
         };
-        let Some(workspace) = self.workspace.peek().clone() else {
+        let Some(target) = command_target(command) else {
             return;
         };
         let Some(scope) = local_draft::Scope::new(
@@ -3617,8 +3616,8 @@ impl SlotPersistence {
                 &scope,
                 &local_command::PersistedCommand {
                     slot: self.slot_id.to_owned(),
-                    workspace,
-                    chat: self.chat.peek().clone().unwrap_or_default(),
+                    workspace: target.workspace,
+                    chat: target.chat,
                     command: command.0.clone(),
                     stage,
                 },
@@ -3630,8 +3629,11 @@ impl SlotPersistence {
     fn save(self, _command: &Command, _stage: local_command::PersistedCommandStage) {}
 
     #[cfg(target_arch = "wasm32")]
-    fn clear(self) {
+    fn clear(self, command: &Command) {
         let Some(account) = self.whoami.peek().clone() else {
+            return;
+        };
+        let Some(target) = command_target(command) else {
             return;
         };
         let Some(scope) = local_draft::Scope::new(
@@ -3642,12 +3644,26 @@ impl SlotPersistence {
             return;
         };
         if let Some(storage) = local_draft::SessionStorage::open() {
-            local_command::remove(&storage, &scope, self.slot_id);
+            local_command::remove(
+                &storage,
+                &scope,
+                self.slot_id,
+                &target.workspace,
+                &target.chat,
+            );
         }
     }
 
     #[cfg(not(target_arch = "wasm32"))]
-    fn clear(self) {}
+    fn clear(self, _command: &Command) {}
+
+    fn matches_live_target(self, target: Option<&DraftTarget>) -> bool {
+        let Some(target) = target else {
+            return true;
+        };
+        self.workspace.peek().as_deref() == Some(target.workspace.as_str())
+            && self.chat.peek().as_deref().unwrap_or("") == target.chat.as_str()
+    }
 }
 
 type StoredSlotCommand = (Command, Callback<serde_json::Value>, Option<Callback>);
@@ -3659,6 +3675,7 @@ struct CommandSlot {
     /// The unconfirmed command, what runs once it is taken, and what runs if
     /// it is refused.
     last: Signal<Option<StoredSlotCommand>>,
+    generation: Signal<u64>,
     persistence: Option<SlotPersistence>,
 }
 
@@ -3683,6 +3700,7 @@ fn use_command_slot() -> CommandSlot {
     CommandSlot {
         stage: use_signal(|| CommandStage::Idle),
         last: use_signal(|| None),
+        generation: use_signal(|| 0),
         persistence: None,
     }
 }
@@ -3698,6 +3716,7 @@ fn use_persisted_command_slot(
     let slot = CommandSlot {
         stage: use_signal(|| CommandStage::Idle),
         last: use_signal(|| None),
+        generation: use_signal(|| 0),
         persistence: Some(SlotPersistence {
             slot_id,
             client,
@@ -3707,19 +3726,33 @@ fn use_persisted_command_slot(
         }),
     };
     let on_accepted = Callback::new(on_restored_accepted);
+    let mut slot_stage = slot.stage;
+    let mut slot_last = slot.last;
+    let mut slot_gen = slot.generation;
+    let mut active_target = use_signal(|| None::<(Option<String>, Option<String>)>);
     #[cfg(target_arch = "wasm32")]
-    {
-        let mut slot_stage = slot.stage;
-        let mut slot_last = slot.last;
-        let mut restored_for = use_signal(|| None::<String>);
-        use_effect(move || {
+    let mut restored_for = use_signal(|| None::<String>);
+    use_effect(move || {
+        let ws_now = workspace.read().clone();
+        let chat_now = chat.read().clone();
+        let current = (ws_now.clone(), chat_now.clone());
+        if active_target.peek().as_ref() != Some(&current) {
+            active_target.set(Some(current));
+            *slot_gen.write() += 1;
+            slot_stage.set(CommandStage::Idle);
+            slot_last.set(None);
+            #[cfg(target_arch = "wasm32")]
+            restored_for.set(None);
+        }
+        #[cfg(target_arch = "wasm32")]
+        {
             let Some(account) = whoami.read().clone() else {
                 return;
             };
-            let Some(ws) = workspace.read().clone() else {
+            let Some(ws) = ws_now else {
                 return;
             };
-            let chat_id = chat.read().clone().unwrap_or_default();
+            let chat_id = chat_now.unwrap_or_default();
             let base = client.read().base().to_owned();
             let scope_key = format!(
                 "{slot_id}|{}|{}|{ws}|{chat_id}",
@@ -3737,12 +3770,9 @@ fn use_persisted_command_slot(
             let Some(storage) = local_draft::SessionStorage::open() else {
                 return;
             };
-            let Some(saved) = local_command::read(&storage, &scope, slot_id) else {
+            let Some(saved) = local_command::read(&storage, &scope, slot_id, &ws, &chat_id) else {
                 return;
             };
-            if saved.workspace != ws || (!saved.chat.is_empty() && saved.chat != chat_id) {
-                return;
-            }
             if *slot_stage.peek() != CommandStage::Idle {
                 return;
             }
@@ -3756,10 +3786,10 @@ fn use_persisted_command_slot(
                     slot_stage.set(CommandStage::Unconfirmed);
                 }
             }
-        });
-    }
-    #[cfg(not(target_arch = "wasm32"))]
-    let _ = on_accepted;
+        }
+        #[cfg(not(target_arch = "wasm32"))]
+        let _ = (whoami, client, on_accepted);
+    });
     slot
 }
 
@@ -3823,35 +3853,48 @@ impl CommandSlot {
         if *self.stage.peek() == CommandStage::Sending {
             return;
         }
+        let start_gen = *self.generation.peek();
+        let target = command_target(&command);
         self.last.set(Some((command.clone(), then, refused)));
         self.stage.set(CommandStage::Sending);
         if let Some(p) = self.persistence {
             p.save(&command, local_command::PersistedCommandStage::Pending);
         }
         spawn(async move {
-            match dispatch_with_auto_retry(&client, &command.0).await {
+            let answer = dispatch_with_auto_retry(&client, &command.0).await;
+            let still_current = *self.generation.peek() == start_gen
+                && self
+                    .persistence
+                    .is_none_or(|p| p.matches_live_target(target.as_ref()));
+            match answer {
                 Answer::Accepted(value) => {
-                    self.stage.set(CommandStage::Idle);
-                    self.last.set(None);
                     if let Some(p) = self.persistence {
-                        p.clear();
+                        p.clear(&command);
+                    }
+                    if still_current {
+                        self.stage.set(CommandStage::Idle);
+                        self.last.set(None);
                     }
                     then.call(value);
                 }
                 Answer::Refused(reason) => {
-                    self.stage.set(CommandStage::Refused(reason));
-                    self.last.set(None);
                     if let Some(p) = self.persistence {
-                        p.clear();
+                        p.clear(&command);
                     }
-                    if let Some(refused) = refused {
-                        refused.call(());
+                    if still_current {
+                        self.stage.set(CommandStage::Refused(reason));
+                        self.last.set(None);
+                        if let Some(refused) = refused {
+                            refused.call(());
+                        }
                     }
                 }
                 Answer::Unconfirmed => {
-                    self.stage.set(CommandStage::Unconfirmed);
                     if let Some(p) = self.persistence {
                         p.save(&command, local_command::PersistedCommandStage::Unconfirmed);
+                    }
+                    if still_current {
+                        self.stage.set(CommandStage::Unconfirmed);
                     }
                 }
             }
@@ -6647,6 +6690,39 @@ fn returned_queue_texts(value: &serde_json::Value) -> Vec<String> {
         .unwrap_or_default()
 }
 
+/// Extracts `(patient_workspace_id, chat_id)` from an accepted `work.stop`
+/// payload so queue restoration targets the patient conversation that stopped.
+fn returned_queue_target(value: &serde_json::Value) -> Option<DraftTarget> {
+    let workspace = value
+        .get("patient_workspace_id")
+        .and_then(serde_json::Value::as_str)
+        .filter(|s| !s.is_empty())?
+        .to_owned();
+    let chat = value
+        .get("chat_id")
+        .and_then(serde_json::Value::as_str)
+        .filter(|s| !s.is_empty())?
+        .to_owned();
+    Some(DraftTarget { workspace, chat })
+}
+
+fn restore_returned_queue_from_response(
+    value: &serde_json::Value,
+    fallback_target: Option<DraftTarget>,
+    mut composer: Signal<Composer>,
+    client: Signal<PhysicianClient>,
+) {
+    let returned = returned_queue_texts(value);
+    if returned.is_empty() {
+        return;
+    }
+    let Some(target) = returned_queue_target(value).or(fallback_target) else {
+        return;
+    };
+    composer.write().restore_returned_queue(&target, &returned);
+    autosave(composer, client, target);
+}
+
 fn queue_edit_command(
     workspace_id: Option<String>,
     chat_id: Option<String>,
@@ -7523,5 +7599,32 @@ mod conversation_line_tests {
             "returned_messages": ["First queued", "Second queued"]
         }));
         assert_eq!(returned, vec!["First queued", "Second queued"]);
+
+        assert_eq!(
+            super::command_target(&promote),
+            Some(super::DraftTarget {
+                workspace: "pw-1".into(),
+                chat: "chat-1".into(),
+            })
+        );
+        assert_eq!(
+            super::returned_queue_target(&serde_json::json!({
+                "outcome": "accepted",
+                "patient_workspace_id": "pw-a",
+                "chat_id": "chat-a",
+                "returned_messages": ["Patient A draft"]
+            })),
+            Some(super::DraftTarget {
+                workspace: "pw-a".into(),
+                chat: "chat-a".into(),
+            })
+        );
+        assert_eq!(
+            super::returned_queue_target(&serde_json::json!({
+                "outcome": "accepted",
+                "returned_messages": ["Missing target"]
+            })),
+            None
+        );
     }
 }
