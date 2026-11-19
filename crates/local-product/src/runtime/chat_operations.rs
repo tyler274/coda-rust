@@ -1204,7 +1204,7 @@ impl Store {
         scope: &Scope,
     ) -> Result<PatientStartingContext, DbErr> {
         scope.validate()?;
-        let observation = self.sources(&scope.workspace).await?;
+        let observation = self.sources_snapshot(&scope.workspace).await?;
         let pulls = self
             .source_pulls(std::slice::from_ref(&scope.workspace))
             .await?

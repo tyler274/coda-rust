@@ -396,20 +396,777 @@ pub fn caught_up_context<'a>(
         let Some(source) = current.iter().find(|s| s.candidate_id == reference) else {
             continue; // withdrawn again since
         };
-        let results: Vec<_> = delivered
-            .iter()
-            .filter(|receipt| receipt.names(source))
-            .collect();
-        let read = results.iter().any(|receipt| matches!(receipt,
-            chart::RecordReceipt::Available { content, sha256, provenance, .. }
-                if content == &source.content && sha256 == &source.sha256 && provenance == &source.provenance
-        )) || (0..=source.readable_parts.len())
-            .all(|part| delivered_part(source, part, &results));
-        if !read && !unread.contains(&reference) {
+        if !record_completely_delivered(source, &delivered) && !unread.contains(&reference) {
             unread.push(reference);
         }
     }
     Ok(unread)
+}
+
+fn record_completely_delivered(
+    source: &SourceRevision,
+    delivered: &[chart::RecordReceipt],
+) -> bool {
+    let results: Vec<_> = delivered
+        .iter()
+        .filter(|receipt| receipt.names(source))
+        .collect();
+    results.iter().any(|receipt| matches!(receipt,
+        chart::RecordReceipt::Available { content, sha256, provenance, .. }
+            if content == &source.content && sha256 == &source.sha256 && provenance == &source.provenance
+    )) || (0..=source.readable_parts.len())
+        .all(|part| delivered_part(source, part, &results))
+}
+
+/// A patient chart record added after the chat run's known observation.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct AddedChartRecord {
+    /// Candidate record identifier in the workspace.
+    pub candidate_id: String,
+    /// Current immutable revision identifier.
+    pub revision: String,
+    /// Source adapter identifier.
+    pub source_id: String,
+    /// Record type label.
+    pub record_type: String,
+    /// Clinically meaningful dates on the record.
+    pub dates: Vec<RecordDate>,
+}
+
+/// A patient chart record corrected to a newer revision after the chat run's known observation.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CorrectedChartRecord {
+    /// Candidate record identifier in the workspace.
+    pub candidate_id: String,
+    /// Revision previously known to the run.
+    pub previous_revision: String,
+    /// Current immutable revision identifier.
+    pub current_revision: String,
+    /// Source adapter identifier.
+    pub source_id: String,
+    /// Record type label.
+    pub record_type: String,
+    /// Clinically meaningful dates on the current record.
+    pub dates: Vec<RecordDate>,
+}
+
+/// How the patient source store represents a withdrawn chart record.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum WithdrawnShape {
+    /// Omitted by a later whole-source delivery, so `read_patient_sources`
+    /// returns `not_in_recorded_observation`.
+    RemovedFromObservation {
+        /// Revision that was present before withdrawal.
+        withdrawn_revision: String,
+    },
+    /// Replaced by a newer revision whose clinical status marks it retracted
+    /// (`entered-in-error` or `withdrawn`).
+    RetractedRevision {
+        /// Revision that was present before retraction.
+        previous_revision: String,
+        /// Current retracted revision identifier.
+        current_revision: String,
+    },
+    /// Arrived during the run already bearing a retracted clinical status.
+    ArrivedWithdrawn {
+        /// Current retracted revision identifier.
+        revision: String,
+    },
+}
+
+/// A patient chart record withdrawn after the chat run's known observation.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct WithdrawnChartRecord {
+    /// Candidate record identifier in the workspace.
+    pub candidate_id: String,
+    /// Source adapter identifier.
+    pub source_id: String,
+    /// Record type label.
+    pub record_type: String,
+    /// Clinically meaningful dates on the record.
+    pub dates: Vec<RecordDate>,
+    /// How the withdrawal is represented in the retained chart.
+    pub shape: WithdrawnShape,
+}
+
+/// Exact re-read obligation for a corrected or withdrawn record the run relied on.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "action", rename_all = "snake_case")]
+pub enum ReliedRereadAction {
+    /// Read the complete current revision via `read_patient_sources`.
+    ReadCurrentRevision {
+        /// Current revision identifier to open.
+        revision: String,
+    },
+    /// Call `read_patient_sources` on the candidate to confirm its withdrawal
+    /// (`not_in_recorded_observation`) from the retained chart.
+    ConfirmWithdrawnFromChart {
+        /// Last revision relied on before withdrawal.
+        withdrawn_revision: String,
+    },
+}
+
+/// One record the run relied on that changed and must be read again before finishing.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ReliedRecordRequirement {
+    /// Candidate record identifier in the workspace.
+    pub candidate_id: String,
+    /// Required `read_patient_sources` follow-up action.
+    #[serde(flatten)]
+    pub action: ReliedRereadAction,
+}
+
+/// Reason why a proposed chat finish could not publish against current sources.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ChatArrivalOutcome {
+    /// Patient chart records were added, corrected, or withdrawn during the run.
+    SourcesChanged,
+    /// Corrected or withdrawn records relied on by the run have not been read again yet.
+    SourcesUnread,
+}
+
+/// Developer note attached to a refused chat finish when chart records changed.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ChatChartArrivalNote {
+    /// Whether this refusal reports newly observed chart changes or remaining unread obligations.
+    pub outcome: ChatArrivalOutcome,
+    /// Current workspace chart version at the time of the finish check.
+    pub workspace_version: u64,
+    /// Records newly added to the active chart.
+    pub added: Vec<AddedChartRecord>,
+    /// Records updated to a newer active revision.
+    pub corrected: Vec<CorrectedChartRecord>,
+    /// Records withdrawn or retracted from clinical reliance.
+    pub withdrawn: Vec<WithdrawnChartRecord>,
+    /// Relied-on corrected or withdrawn records that must be opened via `read_patient_sources`.
+    pub must_read_again: Vec<ReliedRecordRequirement>,
+    /// Plain model-facing instruction describing how to proceed in this run.
+    pub message: String,
+}
+
+impl ChatChartArrivalNote {
+    /// Encodes the note as JSON for `harness::engine::recipe::Refusal`.
+    pub fn to_json_string(&self) -> String {
+        serde_json::to_string(self).expect("ChatChartArrivalNote serializes as JSON")
+    }
+}
+
+/// Result of checking chat chart currency at finish time.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum ChatFinishCurrency {
+    /// The chart matches what the run has observed and read; the finish may publish.
+    Current,
+    /// Chart arrivals or unread relied-on changes require continuing in the same run.
+    Refused(ChatChartArrivalNote),
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+enum KnownChartEntry {
+    Present { revision: String },
+    Withdrawn { retracted_revision: Option<String> },
+}
+
+enum CurrentChartEntry<'a> {
+    Active(&'a SourceRevision),
+    Retracted(&'a SourceRevision),
+    Absent,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+enum ReliedRecordState {
+    OpenedInitial { revision: String },
+    OpenedAcrossChange,
+    ConfirmedWithdrawnInEarlierWindow,
+    ConfirmedWithdrawnInLatestWindow,
+}
+
+#[derive(Clone, Debug)]
+struct SourceSummaryMeta {
+    source_id: String,
+    record_type: String,
+    dates: Vec<RecordDate>,
+}
+
+fn is_retracted_json(content: &str) -> bool {
+    let Ok(Value::Object(map)) = serde_json::from_str::<Value>(content) else {
+        return false;
+    };
+    let Some(status) = map.get("status").and_then(Value::as_str) else {
+        return false;
+    };
+    matches!(
+        status.trim().to_ascii_lowercase().as_str(),
+        "entered-in-error" | "entered_in_error" | "withdrawn"
+    )
+}
+
+fn is_retracted_source(source: &SourceRevision) -> bool {
+    is_retracted_json(&source.content)
+}
+
+fn known_entry_for_revision(
+    candidate_id: &str,
+    revision: String,
+    content_hint: Option<&str>,
+    baseline_map: &std::collections::BTreeMap<&str, &SourceRevision>,
+    current_map: &std::collections::BTreeMap<&str, &SourceRevision>,
+) -> KnownChartEntry {
+    let retracted = content_hint
+        .map(is_retracted_json)
+        .or_else(|| {
+            current_map
+                .get(candidate_id)
+                .filter(|src| src.revision == revision)
+                .map(|src| is_retracted_source(src))
+        })
+        .or_else(|| {
+            baseline_map
+                .get(candidate_id)
+                .filter(|src| src.revision == revision)
+                .map(|src| is_retracted_source(src))
+        })
+        .unwrap_or(false);
+    if retracted {
+        KnownChartEntry::Withdrawn {
+            retracted_revision: Some(revision),
+        }
+    } else {
+        KnownChartEntry::Present { revision }
+    }
+}
+
+/// Single rule owner checking whether patient chart records were added,
+/// corrected, or withdrawn while a chat answer ran, and whether any corrected
+/// or withdrawn record the run relied on has been read again.
+pub fn evaluate_chat_finish_currency<'a>(
+    baseline: &[SourceRevision],
+    current_version: u64,
+    current: &[SourceRevision],
+    records: impl IntoIterator<Item = impl Into<harness::engine::recipe::ReplayEvent<'a>>>,
+    messages: &[harness::engine::ProductMessage],
+) -> Result<ChatFinishCurrency, String> {
+    use harness::engine::{EventKind, Item, results};
+    use std::collections::{BTreeMap, BTreeSet};
+
+    let records: Vec<harness::engine::recipe::ReplayEvent<'a>> =
+        records.into_iter().map(Into::into).collect();
+    let delivery = results::Delivery::from_events(records.iter().copied(), messages)
+        .map_err(|cause| cause.to_string())?;
+    let latest_window_receipts: Vec<chart::RecordReceipt> =
+        results::delivered_originals(records.iter().copied(), messages)
+            .map_err(|cause| cause.to_string())?
+            .into_iter()
+            .filter_map(|output| serde_json::from_str::<chart::ReadReceipt>(output).ok())
+            .flat_map(|receipt| receipt.results)
+            .collect();
+
+    let mut metadata: BTreeMap<String, SourceSummaryMeta> = BTreeMap::new();
+    let mut baseline_map: BTreeMap<&str, &SourceRevision> = BTreeMap::new();
+    let mut known_chart: BTreeMap<String, KnownChartEntry> = BTreeMap::new();
+
+    for src in baseline {
+        baseline_map.insert(src.candidate_id.as_str(), src);
+        metadata.insert(
+            src.candidate_id.clone(),
+            SourceSummaryMeta {
+                source_id: src.source_id.clone(),
+                record_type: src.record_type.clone(),
+                dates: src.dates.clone(),
+            },
+        );
+        let entry = if is_retracted_source(src) {
+            KnownChartEntry::Withdrawn {
+                retracted_revision: Some(src.revision.clone()),
+            }
+        } else {
+            KnownChartEntry::Present {
+                revision: src.revision.clone(),
+            }
+        };
+        known_chart.insert(src.candidate_id.clone(), entry);
+    }
+
+    let mut current_map: BTreeMap<&str, &SourceRevision> = BTreeMap::new();
+    for src in current {
+        current_map.insert(src.candidate_id.as_str(), src);
+        metadata.insert(
+            src.candidate_id.clone(),
+            SourceSummaryMeta {
+                source_id: src.source_id.clone(),
+                record_type: src.record_type.clone(),
+                dates: src.dates.clone(),
+            },
+        );
+    }
+
+    let mut relied_records: BTreeMap<String, ReliedRecordState> = BTreeMap::new();
+    let mut last_opened_revision: BTreeMap<String, String> = BTreeMap::new();
+    let mut pending_requests: BTreeMap<(&str, u64), &harness::engine::SavedRequest> =
+        BTreeMap::new();
+    let latest_window = records
+        .iter()
+        .filter(|record| {
+            matches!(
+                record,
+                harness::engine::recipe::ReplayEvent::Admitted(harness::engine::Event {
+                    kind: EventKind::WindowOpened { .. },
+                    ..
+                })
+            )
+        })
+        .count() as u64;
+
+    for record in &records {
+        let (event, is_admitted) = match *record {
+            harness::engine::recipe::ReplayEvent::Admitted(event) => (event, true),
+            harness::engine::recipe::ReplayEvent::EvidenceOnly(event) => (event, false),
+        };
+        let key = (event.attempt_id.as_str(), event.ordinal);
+        match &event.kind {
+            EventKind::ToolReturned {
+                call_id,
+                result: results::ToolResult::Original(output),
+            } if delivery.covers(call_id, None) => {
+                let in_latest = delivery.covers(call_id, Some(latest_window));
+                if let Ok(read_receipt) = serde_json::from_str::<chart::ReadReceipt>(output) {
+                    for item in read_receipt.results {
+                        match item {
+                            chart::RecordReceipt::Available {
+                                reference,
+                                revision,
+                                record_type,
+                                dates,
+                                content,
+                                ..
+                            } => {
+                                let dates = dates.into_record_dates();
+                                metadata
+                                    .entry(reference.clone())
+                                    .and_modify(|m| {
+                                        m.record_type = record_type.clone();
+                                        m.dates = dates.clone();
+                                    })
+                                    .or_insert_with(|| SourceSummaryMeta {
+                                        source_id: String::new(),
+                                        record_type,
+                                        dates,
+                                    });
+                                known_chart.insert(
+                                    reference.clone(),
+                                    known_entry_for_revision(
+                                        &reference,
+                                        revision.clone(),
+                                        Some(&content),
+                                        &baseline_map,
+                                        &current_map,
+                                    ),
+                                );
+                                last_opened_revision.insert(reference.clone(), revision.clone());
+                                let next_state = match relied_records.get(&reference) {
+                                    None => ReliedRecordState::OpenedInitial { revision },
+                                    Some(ReliedRecordState::OpenedInitial { revision: prev })
+                                        if prev == &revision =>
+                                    {
+                                        ReliedRecordState::OpenedInitial { revision }
+                                    }
+                                    Some(
+                                        ReliedRecordState::OpenedInitial { .. }
+                                        | ReliedRecordState::OpenedAcrossChange
+                                        | ReliedRecordState::ConfirmedWithdrawnInEarlierWindow
+                                        | ReliedRecordState::ConfirmedWithdrawnInLatestWindow,
+                                    ) => ReliedRecordState::OpenedAcrossChange,
+                                };
+                                relied_records.insert(reference, next_state);
+                            }
+                            chart::RecordReceipt::Passage {
+                                reference,
+                                revision,
+                                ..
+                            } => {
+                                known_chart.insert(
+                                    reference.clone(),
+                                    known_entry_for_revision(
+                                        &reference,
+                                        revision.clone(),
+                                        None,
+                                        &baseline_map,
+                                        &current_map,
+                                    ),
+                                );
+                                last_opened_revision.insert(reference.clone(), revision.clone());
+                                let next_state = match relied_records.get(&reference) {
+                                    None => ReliedRecordState::OpenedInitial { revision },
+                                    Some(ReliedRecordState::OpenedInitial { revision: prev })
+                                        if prev == &revision =>
+                                    {
+                                        ReliedRecordState::OpenedInitial { revision }
+                                    }
+                                    Some(
+                                        ReliedRecordState::OpenedInitial { .. }
+                                        | ReliedRecordState::OpenedAcrossChange
+                                        | ReliedRecordState::ConfirmedWithdrawnInEarlierWindow
+                                        | ReliedRecordState::ConfirmedWithdrawnInLatestWindow,
+                                    ) => ReliedRecordState::OpenedAcrossChange,
+                                };
+                                relied_records.insert(reference, next_state);
+                            }
+                            chart::RecordReceipt::Unavailable {
+                                reference: Some(reference),
+                                reason,
+                            } if reason == "not_in_recorded_observation" => {
+                                known_chart.insert(
+                                    reference.clone(),
+                                    KnownChartEntry::Withdrawn {
+                                        retracted_revision: None,
+                                    },
+                                );
+                                if relied_records.contains_key(&reference) {
+                                    let next_state = if in_latest {
+                                        ReliedRecordState::ConfirmedWithdrawnInLatestWindow
+                                    } else {
+                                        ReliedRecordState::ConfirmedWithdrawnInEarlierWindow
+                                    };
+                                    relied_records.insert(reference, next_state);
+                                }
+                            }
+                            chart::RecordReceipt::Unavailable { .. }
+                            | chart::RecordReceipt::OverBudget { .. } => {}
+                        }
+                    }
+                } else if let Ok(search_receipt) =
+                    serde_json::from_str::<chart::SearchReceipt>(output)
+                {
+                    for hit in search_receipt.results {
+                        let cid = hit.reference.candidate_id;
+                        let rev = hit.reference.revision;
+                        metadata.entry(cid.clone()).or_insert(SourceSummaryMeta {
+                            source_id: hit.source_id,
+                            record_type: hit.record_type,
+                            dates: hit.dates.into_record_dates(),
+                        });
+                        if !relied_records.contains_key(&cid) {
+                            let entry = known_entry_for_revision(
+                                &cid,
+                                rev,
+                                None,
+                                &baseline_map,
+                                &current_map,
+                            );
+                            known_chart.insert(cid, entry);
+                        }
+                    }
+                }
+            }
+            EventKind::ProviderStarted { request, .. } if is_admitted => {
+                pending_requests.insert(key, request);
+            }
+            EventKind::ContextRejected
+            | EventKind::ProviderFailed { .. }
+            | EventKind::ProviderBlocked { .. }
+            | EventKind::TransportRetry { .. }
+                if is_admitted =>
+            {
+                pending_requests.remove(&key);
+            }
+            EventKind::ProviderReturned(_) if is_admitted => {
+                if let Some(request) = pending_requests.remove(&key) {
+                    for item in &request.added {
+                        let refusal_opt = match item {
+                            Item::FinishRefused(refusal) => Some(refusal),
+                            Item::Result { output, .. } => match &output.source {
+                                results::ResultSource::FinishRefused { refusal } => Some(refusal),
+                                _ => None,
+                            },
+                            _ => None,
+                        };
+                        if let Some(refusal) = refusal_opt
+                            && let Ok(note) =
+                                serde_json::from_str::<ChatChartArrivalNote>(refusal.reason())
+                        {
+                            for added in note.added {
+                                metadata.insert(
+                                    added.candidate_id.clone(),
+                                    SourceSummaryMeta {
+                                        source_id: added.source_id,
+                                        record_type: added.record_type,
+                                        dates: added.dates,
+                                    },
+                                );
+                                known_chart.insert(
+                                    added.candidate_id,
+                                    KnownChartEntry::Present {
+                                        revision: added.revision,
+                                    },
+                                );
+                            }
+                            for corrected in note.corrected {
+                                metadata.insert(
+                                    corrected.candidate_id.clone(),
+                                    SourceSummaryMeta {
+                                        source_id: corrected.source_id,
+                                        record_type: corrected.record_type,
+                                        dates: corrected.dates,
+                                    },
+                                );
+                                known_chart.insert(
+                                    corrected.candidate_id,
+                                    KnownChartEntry::Present {
+                                        revision: corrected.current_revision,
+                                    },
+                                );
+                            }
+                            for withdrawn in note.withdrawn {
+                                metadata.insert(
+                                    withdrawn.candidate_id.clone(),
+                                    SourceSummaryMeta {
+                                        source_id: withdrawn.source_id,
+                                        record_type: withdrawn.record_type,
+                                        dates: withdrawn.dates,
+                                    },
+                                );
+                                let retracted_revision = match withdrawn.shape {
+                                    WithdrawnShape::RemovedFromObservation { .. } => None,
+                                    WithdrawnShape::RetractedRevision {
+                                        current_revision, ..
+                                    } => Some(current_revision),
+                                    WithdrawnShape::ArrivedWithdrawn { revision } => Some(revision),
+                                };
+                                known_chart.insert(
+                                    withdrawn.candidate_id,
+                                    KnownChartEntry::Withdrawn { retracted_revision },
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+            EventKind::ToolReturned { .. }
+            | EventKind::ProviderStarted { .. }
+            | EventKind::ProviderReturned(_)
+            | EventKind::ContextRejected
+            | EventKind::ProviderFailed { .. }
+            | EventKind::ProviderBlocked { .. }
+            | EventKind::TransportRetry { .. }
+            | EventKind::ProviderObservation { .. }
+            | EventKind::ToolStarted(_)
+            | EventKind::Candidate { .. }
+            | EventKind::WindowOpened { .. }
+            | EventKind::CallBegan { .. } => {}
+        }
+    }
+
+    let mut all_candidates: BTreeSet<&str> = BTreeSet::new();
+    for cid in known_chart.keys() {
+        all_candidates.insert(cid.as_str());
+    }
+    for src in current {
+        all_candidates.insert(src.candidate_id.as_str());
+    }
+
+    let mut added = Vec::new();
+    let mut corrected = Vec::new();
+    let mut withdrawn = Vec::new();
+
+    for cid in all_candidates {
+        let current_entry = match current_map.get(cid).copied() {
+            Some(src) if is_retracted_source(src) => CurrentChartEntry::Retracted(src),
+            Some(src) => CurrentChartEntry::Active(src),
+            None => CurrentChartEntry::Absent,
+        };
+        let meta = metadata.get(cid);
+        let source_id = meta.map_or_else(String::new, |m| m.source_id.clone());
+        let record_type = meta.map_or_else(String::new, |m| m.record_type.clone());
+        let dates = meta.map_or_else(Vec::new, |m| m.dates.clone());
+
+        match (known_chart.get(cid), current_entry) {
+            (None, CurrentChartEntry::Active(curr))
+            | (Some(KnownChartEntry::Withdrawn { .. }), CurrentChartEntry::Active(curr)) => {
+                added.push(AddedChartRecord {
+                    candidate_id: curr.candidate_id.clone(),
+                    revision: curr.revision.clone(),
+                    source_id: curr.source_id.clone(),
+                    record_type: curr.record_type.clone(),
+                    dates: curr.dates.clone(),
+                });
+            }
+            (None, CurrentChartEntry::Retracted(curr)) => {
+                withdrawn.push(WithdrawnChartRecord {
+                    candidate_id: curr.candidate_id.clone(),
+                    source_id: curr.source_id.clone(),
+                    record_type: curr.record_type.clone(),
+                    dates: curr.dates.clone(),
+                    shape: WithdrawnShape::ArrivedWithdrawn {
+                        revision: curr.revision.clone(),
+                    },
+                });
+            }
+            (None, CurrentChartEntry::Absent) => {}
+            (
+                Some(KnownChartEntry::Present { revision: prev }),
+                CurrentChartEntry::Active(curr),
+            ) => {
+                if prev != &curr.revision {
+                    corrected.push(CorrectedChartRecord {
+                        candidate_id: curr.candidate_id.clone(),
+                        previous_revision: prev.clone(),
+                        current_revision: curr.revision.clone(),
+                        source_id: curr.source_id.clone(),
+                        record_type: curr.record_type.clone(),
+                        dates: curr.dates.clone(),
+                    });
+                }
+            }
+            (
+                Some(KnownChartEntry::Present { revision: prev }),
+                CurrentChartEntry::Retracted(curr),
+            ) => {
+                withdrawn.push(WithdrawnChartRecord {
+                    candidate_id: curr.candidate_id.clone(),
+                    source_id: curr.source_id.clone(),
+                    record_type: curr.record_type.clone(),
+                    dates: curr.dates.clone(),
+                    shape: WithdrawnShape::RetractedRevision {
+                        previous_revision: prev.clone(),
+                        current_revision: curr.revision.clone(),
+                    },
+                });
+            }
+            (Some(KnownChartEntry::Present { revision: prev }), CurrentChartEntry::Absent) => {
+                withdrawn.push(WithdrawnChartRecord {
+                    candidate_id: cid.to_owned(),
+                    source_id,
+                    record_type,
+                    dates,
+                    shape: WithdrawnShape::RemovedFromObservation {
+                        withdrawn_revision: prev.clone(),
+                    },
+                });
+            }
+            (
+                Some(KnownChartEntry::Withdrawn { retracted_revision }),
+                CurrentChartEntry::Retracted(curr),
+            ) => match retracted_revision {
+                Some(prev) if prev == &curr.revision => {}
+                Some(prev) => {
+                    withdrawn.push(WithdrawnChartRecord {
+                        candidate_id: curr.candidate_id.clone(),
+                        source_id: curr.source_id.clone(),
+                        record_type: curr.record_type.clone(),
+                        dates: curr.dates.clone(),
+                        shape: WithdrawnShape::RetractedRevision {
+                            previous_revision: prev.clone(),
+                            current_revision: curr.revision.clone(),
+                        },
+                    });
+                }
+                None => {
+                    withdrawn.push(WithdrawnChartRecord {
+                        candidate_id: curr.candidate_id.clone(),
+                        source_id: curr.source_id.clone(),
+                        record_type: curr.record_type.clone(),
+                        dates: curr.dates.clone(),
+                        shape: WithdrawnShape::ArrivedWithdrawn {
+                            revision: curr.revision.clone(),
+                        },
+                    });
+                }
+            },
+            (
+                Some(KnownChartEntry::Withdrawn { retracted_revision }),
+                CurrentChartEntry::Absent,
+            ) => {
+                if let Some(prev) = retracted_revision {
+                    withdrawn.push(WithdrawnChartRecord {
+                        candidate_id: cid.to_owned(),
+                        source_id,
+                        record_type,
+                        dates,
+                        shape: WithdrawnShape::RemovedFromObservation {
+                            withdrawn_revision: prev.clone(),
+                        },
+                    });
+                }
+            }
+        }
+    }
+
+    let mut must_read_again = Vec::new();
+    for (cid, relied_state) in &relied_records {
+        match current_map.get(cid.as_str()).copied() {
+            None => {
+                let confirmed = matches!(
+                    relied_state,
+                    ReliedRecordState::ConfirmedWithdrawnInLatestWindow
+                );
+                if !confirmed {
+                    let withdrawn_revision =
+                        last_opened_revision.get(cid).cloned().unwrap_or_default();
+                    must_read_again.push(ReliedRecordRequirement {
+                        candidate_id: cid.clone(),
+                        action: ReliedRereadAction::ConfirmWithdrawnFromChart {
+                            withdrawn_revision,
+                        },
+                    });
+                }
+            }
+            Some(curr) => {
+                let curr_retracted = is_retracted_source(curr);
+                let baseline_unchanged = baseline_map.get(cid.as_str()).is_some_and(|base| {
+                    base.revision == curr.revision && is_retracted_source(base) == curr_retracted
+                });
+                let unchanged_initial_read = matches!(
+                    relied_state,
+                    ReliedRecordState::OpenedInitial { revision }
+                        if revision == &curr.revision && (baseline_unchanged || !curr_retracted)
+                );
+                if !unchanged_initial_read
+                    && !record_completely_delivered(curr, &latest_window_receipts)
+                {
+                    must_read_again.push(ReliedRecordRequirement {
+                        candidate_id: cid.clone(),
+                        action: ReliedRereadAction::ReadCurrentRevision {
+                            revision: curr.revision.clone(),
+                        },
+                    });
+                }
+            }
+        }
+    }
+
+    if added.is_empty()
+        && corrected.is_empty()
+        && withdrawn.is_empty()
+        && must_read_again.is_empty()
+    {
+        return Ok(ChatFinishCurrency::Current);
+    }
+
+    let (outcome, message) = if !added.is_empty() || !corrected.is_empty() || !withdrawn.is_empty()
+    {
+        let guidance = if must_read_again.is_empty() {
+            "Patient chart records were added, corrected, or withdrawn while you were answering, so your reply was not published yet. Judge whether any added records affect the question, open relevant revisions with read_patient_sources if needed, update any affected patient memory or open concern, and then provide your complete updated answer."
+        } else {
+            "Patient chart records were added, corrected, or withdrawn while you were answering, so your reply was not published yet. Call read_patient_sources on every record in must_read_again, judge whether any added records affect the question, update or retire any affected patient memory or open concern, and then provide your complete updated answer."
+        };
+        (ChatArrivalOutcome::SourcesChanged, guidance.to_owned())
+    } else {
+        (
+            ChatArrivalOutcome::SourcesUnread,
+            "Records you relied on were corrected or withdrawn during this run and have not been read again yet. Call read_patient_sources on every entry in must_read_again before providing your updated answer.".to_owned(),
+        )
+    };
+
+    Ok(ChatFinishCurrency::Refused(ChatChartArrivalNote {
+        outcome,
+        workspace_version: current_version,
+        added,
+        corrected,
+        withdrawn,
+        must_read_again,
+        message,
+    }))
 }
 
 /// Exact `(candidate_id, revision)` pairs delivered via `read_patient_sources`
@@ -803,6 +1560,302 @@ mod tests {
             )
             .unwrap()
             .is_empty()
+        );
+    }
+
+    fn named_source(candidate_id: &str, revision: &str, content: &str) -> SourceRevision {
+        SourceRevision {
+            workspace: "patient".into(),
+            source_id: "ehr".into(),
+            candidate_id: candidate_id.into(),
+            revision: revision.into(),
+            record_type: "Observation".into(),
+            dates: vec![RecordDate {
+                name: "effectiveDate".into(),
+                value: "2026-11-12".into(),
+            }],
+            content: content.into(),
+            sha256: crate::sha256_hex(content.as_bytes()),
+            readable_parts: vec![],
+            provenance: json!({"native_record": candidate_id}),
+            envelope: None,
+        }
+    }
+
+    fn accepted_refusal(events: &mut Vec<Event>, note: &ChatChartArrivalNote) {
+        let sequence = events.len() as u64 + 1;
+        let refusal = harness::engine::recipe::Refusal::new(note.to_json_string());
+        events.push(Event {
+            attempt_id: "inline".into(),
+            sequence,
+            ordinal: sequence,
+            kind: EventKind::ProviderStarted {
+                dispatched_at_unix_ms: 2,
+                context: Default::default(),
+                request: harness::engine::SavedRequest {
+                    added: vec![Item::FinishRefused(refusal)],
+                    items: vec![harness::engine::RequestItem::Event {
+                        attempt: "inline".into(),
+                        sequence,
+                        index: 0,
+                    }],
+                },
+            },
+        });
+        events.push(Event {
+            attempt_id: "inline".into(),
+            sequence: sequence + 1,
+            ordinal: sequence,
+            kind: EventKind::ProviderReturned(harness::engine::Turn {
+                items: vec![Item::assistant("Updated reply")],
+                receipt: json!({}),
+                usage: Default::default(),
+            }),
+        });
+    }
+
+    #[test]
+    fn chat_finish_allows_unchanged_partial_passage_and_judged_added_records() {
+        let long_note = named_source("note-1", "r1", &"Clinical note text. ".repeat(40));
+        let passage = json!({
+            "results": [{
+                "outcome": "passage",
+                "reference": "note-1",
+                "revision": "r1",
+                "part": 0,
+                "label": "native_record",
+                "start_byte": 0,
+                "end_byte": 20,
+                "total_bytes": long_note.content.len(),
+                "next": {"candidate_id": "note-1", "revision": "r1", "cursor": {"part": 0, "offset": 20}},
+                "content": &long_note.content[..20]
+            }]
+        })
+        .to_string();
+        let mut events = Vec::new();
+        accepted_result(
+            &mut events,
+            "read-note-part",
+            &passage,
+            harness::engine::results::ResultView::whole("read-note-part", &passage),
+        );
+
+        assert_eq!(
+            evaluate_chat_finish_currency(
+                std::slice::from_ref(&long_note),
+                1,
+                std::slice::from_ref(&long_note),
+                events
+                    .iter()
+                    .map(harness::engine::recipe::ReplayEvent::Admitted),
+                &[],
+            )
+            .unwrap(),
+            ChatFinishCurrency::Current,
+            "unchanged record opened as a partial passage must commit without extra requests"
+        );
+
+        let added_derm = named_source("derm-2", "r1", "Unrelated skin biopsy benign");
+        let current = vec![long_note.clone(), added_derm];
+        let ChatFinishCurrency::Refused(note) = evaluate_chat_finish_currency(
+            std::slice::from_ref(&long_note),
+            2,
+            &current,
+            events
+                .iter()
+                .map(harness::engine::recipe::ReplayEvent::Admitted),
+            &[],
+        )
+        .unwrap() else {
+            panic!("expected arrival note when a record is added mid-answer");
+        };
+        assert_eq!(note.outcome, ChatArrivalOutcome::SourcesChanged);
+        assert_eq!(note.added.len(), 1);
+        assert_eq!(note.added[0].candidate_id, "derm-2");
+        assert!(note.must_read_again.is_empty());
+
+        accepted_refusal(&mut events, &note);
+        assert_eq!(
+            evaluate_chat_finish_currency(
+                std::slice::from_ref(&long_note),
+                2,
+                &current,
+                events
+                    .iter()
+                    .map(harness::engine::recipe::ReplayEvent::Admitted),
+                &[],
+            )
+            .unwrap(),
+            ChatFinishCurrency::Current,
+            "model judges added records itself once notified"
+        );
+    }
+
+    #[test]
+    fn chat_finish_enforces_reread_for_relied_corrected_and_withdrawn_records() {
+        let lab_r1 = named_source("lab-k", "r1", "Potassium 6.2 mmol/L (hemolyzed)");
+        let lab_r2 = named_source("lab-k", "r2", "Potassium 4.1 mmol/L (repeat)");
+        let read_r1 = exact_read(
+            std::slice::from_ref(&lab_r1),
+            "patient",
+            &["lab-k".into()],
+            65_536,
+        )
+        .unwrap()
+        .text()
+        .unwrap()
+        .to_owned();
+        let mut events = Vec::new();
+        accepted_result(
+            &mut events,
+            "read-r1",
+            &read_r1,
+            harness::engine::results::ResultView::whole("read-r1", &read_r1),
+        );
+
+        let ChatFinishCurrency::Refused(first_note) = evaluate_chat_finish_currency(
+            std::slice::from_ref(&lab_r1),
+            2,
+            std::slice::from_ref(&lab_r2),
+            events
+                .iter()
+                .map(harness::engine::recipe::ReplayEvent::Admitted),
+            &[],
+        )
+        .unwrap() else {
+            panic!("expected refusal when relied-on lab is corrected");
+        };
+        assert_eq!(first_note.outcome, ChatArrivalOutcome::SourcesChanged);
+        assert_eq!(first_note.corrected.len(), 1);
+        assert_eq!(
+            first_note.must_read_again,
+            vec![ReliedRecordRequirement {
+                candidate_id: "lab-k".into(),
+                action: ReliedRereadAction::ReadCurrentRevision {
+                    revision: "r2".into(),
+                },
+            }]
+        );
+
+        accepted_refusal(&mut events, &first_note);
+        let ChatFinishCurrency::Refused(second_note) = evaluate_chat_finish_currency(
+            std::slice::from_ref(&lab_r1),
+            2,
+            std::slice::from_ref(&lab_r2),
+            events
+                .iter()
+                .map(harness::engine::recipe::ReplayEvent::Admitted),
+            &[],
+        )
+        .unwrap() else {
+            panic!("skipping read_patient_sources on relied-on correction must still refuse");
+        };
+        assert_eq!(second_note.outcome, ChatArrivalOutcome::SourcesUnread);
+        assert_eq!(second_note.must_read_again.len(), 1);
+
+        let read_r2 = exact_read(
+            std::slice::from_ref(&lab_r2),
+            "patient",
+            &["lab-k".into()],
+            65_536,
+        )
+        .unwrap()
+        .text()
+        .unwrap()
+        .to_owned();
+        accepted_result(
+            &mut events,
+            "read-r2",
+            &read_r2,
+            harness::engine::results::ResultView::whole("read-r2", &read_r2),
+        );
+        assert_eq!(
+            evaluate_chat_finish_currency(
+                std::slice::from_ref(&lab_r1),
+                2,
+                std::slice::from_ref(&lab_r2),
+                events
+                    .iter()
+                    .map(harness::engine::recipe::ReplayEvent::Admitted),
+                &[],
+            )
+            .unwrap(),
+            ChatFinishCurrency::Current
+        );
+
+        // Now withdraw `lab-k` from observation (`current = []`): requires post-withdrawal read!
+        let ChatFinishCurrency::Refused(withdrawn_note) = evaluate_chat_finish_currency(
+            std::slice::from_ref(&lab_r1),
+            3,
+            &[],
+            events
+                .iter()
+                .map(harness::engine::recipe::ReplayEvent::Admitted),
+            &[],
+        )
+        .unwrap() else {
+            panic!("expected refusal when relied-on lab is withdrawn");
+        };
+        assert_eq!(withdrawn_note.withdrawn.len(), 1);
+        assert_eq!(
+            withdrawn_note.withdrawn[0].shape,
+            WithdrawnShape::RemovedFromObservation {
+                withdrawn_revision: "r2".into(),
+            }
+        );
+        assert_eq!(
+            withdrawn_note.must_read_again,
+            vec![ReliedRecordRequirement {
+                candidate_id: "lab-k".into(),
+                action: ReliedRereadAction::ConfirmWithdrawnFromChart {
+                    withdrawn_revision: "r2".into(),
+                },
+            }]
+        );
+        accepted_refusal(&mut events, &withdrawn_note);
+        assert!(matches!(
+            evaluate_chat_finish_currency(
+                std::slice::from_ref(&lab_r1),
+                3,
+                &[],
+                events
+                    .iter()
+                    .map(harness::engine::recipe::ReplayEvent::Admitted),
+                &[],
+            )
+            .unwrap(),
+            ChatFinishCurrency::Refused(ChatChartArrivalNote {
+                outcome: ChatArrivalOutcome::SourcesUnread,
+                ..
+            })
+        ));
+
+        let missing_receipt = json!({
+            "results": [{
+                "outcome": "unavailable",
+                "reference": "lab-k",
+                "reason": "not_in_recorded_observation"
+            }]
+        })
+        .to_string();
+        accepted_result(
+            &mut events,
+            "read-withdrawn",
+            &missing_receipt,
+            harness::engine::results::ResultView::whole("read-withdrawn", &missing_receipt),
+        );
+        assert_eq!(
+            evaluate_chat_finish_currency(
+                std::slice::from_ref(&lab_r1),
+                3,
+                &[],
+                events
+                    .iter()
+                    .map(harness::engine::recipe::ReplayEvent::Admitted),
+                &[],
+            )
+            .unwrap(),
+            ChatFinishCurrency::Current
         );
     }
 }
