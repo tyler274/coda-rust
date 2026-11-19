@@ -26,6 +26,14 @@ checkout as `nix run ./crates/workspace-tools/sandbox -- worktree new <slug>`.
    cd .worktrees/<slug>
    ```
 
+   In the home checkout on Cyrene's host (outside the agent container), pass
+   the host config, since `/etc/coda-sandbox/config.toml` describes the
+   container's checkout:
+
+   ```bash
+   coda-sandbox --config crates/workspace-tools/sandbox/config/cyrene-host.toml worktree new <slug>
+   ```
+
    On an Apple silicon Mac without Nix there is no reflink build root; each
    Apple container session keeps its own `target/` instead. Create the worktree
    with Git there:

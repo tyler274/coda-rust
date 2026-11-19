@@ -1,0 +1,50 @@
+# Cyrene's home checkout: the config for running `coda-sandbox` as luluco on
+# the host, against /home/luluco/code/coda/coda-rust rather than the
+# container's checkout that /etc/coda-sandbox/config.toml describes. Pass it
+# with `--config crates/workspace-tools/sandbox/config/cyrene-host.toml`.
+# The crate's tests parse it.
+#
+# It matches config/cyrene.toml except for container.repo and build.root.
+
+version = 1
+
+[container]
+name = "coda-agent"
+unit = "container@coda-agent.service"
+ssh_host = "coda-agent"
+agent_uid = 656360
+repo = "/home/luluco/code/coda/coda-rust"
+
+[build]
+# The home ZFS dataset; reflinks need zfs_bclone_enabled = 1.
+root = "/home/luluco/.cache/coda-build"
+keep_seeds = 2
+
+[ci]
+# Holds requests/ and results/.
+spool = "/agents/coda/ci/spool"
+timeout_seconds = 14400
+timer = "coda-ci.timer"
+service = "coda-ci.service"
+
+[broker]
+# The token broker's socket, bound into the container at the same path.
+socket = "/run/coda-sandbox/agent/broker.sock"
+# Whether `gh auth token` may stand in for a github-agent token the keyring
+# does not hold. It reaches every repository you can, so it stays off.
+gh_fallback = "off"
+
+[broker.ci]
+# Where the CI controller, running as `user`, asks for its github-ci token.
+# Host only: the container has no such path.
+socket = "/run/coda-sandbox/ci/broker.sock"
+user = "coda-ci"
+
+[model_proxy]
+# Where Claude Code and Codex in the container send their requests, with the
+# broker's model-proxy key; ungate on the host keeps the account sign-ins.
+url = "http://10.233.1.1:47821"
+
+[carry]
+repo = "/home/luluco/code/coda/coda-rust"
+out = "/var/lib/coda-carry"

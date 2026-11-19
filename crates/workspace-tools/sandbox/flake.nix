@@ -51,7 +51,8 @@
       build = pkgs:
         let
           craneLib = crane.mkLib pkgs;
-          # Tests read config/cyrene.toml, so it enters the source with the crate.
+          # Tests read config/cyrene.toml and config/cyrene-host.toml, so
+          # config/ enters the source with the crate.
           # clippy.toml carries the lint settings `[workspace.lints]` relies on,
           # so this build's Clippy checks what the workspace's does.
           src = lib.fileset.toSource {

@@ -25,6 +25,22 @@ fn cyrene_config_parses() {
     assert_eq!(config.ci.timer.kind(), UnitKind::Timer);
 }
 
+const CYRENE_HOST: &str = include_str!("../config/cyrene-host.toml");
+
+#[test]
+fn cyrene_host_config_parses_with_the_home_checkout() {
+    let config =
+        Config::parse(Path::new("cyrene-host.toml"), CYRENE_HOST).expect("cyrene-host.toml parses");
+    assert_eq!(
+        config.container.repo,
+        PathBuf::from("/home/luluco/code/coda/coda-rust")
+    );
+    assert_eq!(
+        config.build.root,
+        PathBuf::from("/home/luluco/.cache/coda-build")
+    );
+}
+
 #[test]
 fn config_keeps_unknown_keys_and_rejects_bad_units_versions_and_missing_sections() {
     let newer = format!(
