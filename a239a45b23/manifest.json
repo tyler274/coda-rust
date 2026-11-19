@@ -1,0 +1,38 @@
+{
+  "branch": "tyler-eng-397-3-message-review-suite-part1",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1-to-AC5-postgres",
+      "label": "PostgreSQL message_review_recipe Part 1 (guidance + AC1..AC5)",
+      "kind": "run",
+      "revision": "dc5c8959aebbf6d59276df0ebfcbad07bc437611",
+      "dirty": false,
+      "recorded": "2026-11-19T00:11:48+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--test",
+        "message_review_recipe",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": "test result: ok\\. 6 passed",
+      "expect_fail": false,
+      "files": [
+        "01-PostgreSQL-message_review_recipe-Part-1-guidance.log"
+      ],
+      "seconds": 69.6,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "a239a45b2397801e78ec008abdeec732fa47ada1",
+        "reason": "Rebased onto final PR 91 (562055b56d); seam files preserved and full workspace/PG16/Chromium suites verified at PR 104 tip 59829dacb"
+      }
+    }
+  ]
+}
