@@ -120,6 +120,12 @@ The container is the sandbox for both CLIs. Codex's own `workspace-write` sandbo
 
 `coda-sandbox worktree` owns worktrees and their build directories in the container, and a daily `coda-worktree-gc` timer there runs `coda-sandbox worktree gc`.
 
+On Cyrene's host, `/etc/coda-sandbox/config.toml` names the container's checkout, which the host user cannot read. Worktrees of the home checkout use [config/cyrene-host.toml](config/cyrene-host.toml), which names that checkout and a build root under `~/.cache/coda-build`:
+
+```bash
+coda-sandbox --config crates/workspace-tools/sandbox/config/cyrene-host.toml worktree new <slug>
+```
+
 ### Bringing host worktrees over
 
 `sudo -u <user> coda-carry` records every host worktree of `carry.sourceRepo` as refs, publishing nothing: `refs/carry/<slug>/head` for its commit and `refs/carry/<slug>/dirty` for a snapshot of uncommitted and untracked files, built with a temporary index so the worktree is untouched. It runs git as `user`, then installs one bundle into `carry.dir` with `ignored.txt` beside it, listing ignored files outside `target/`. Inside the container, `git fetch /agents/coda/carry/carry.bundle 'refs/carry/*:refs/carry/*'` makes all of it available to `coda-sandbox worktree new <slug> --from carry/<slug>/dirty`.
