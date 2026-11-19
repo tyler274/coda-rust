@@ -25,11 +25,14 @@ use local_product::physician_chat::PhysicianSkills;
 use local_product::physician_sources::{
     MedicalRecordNumber, ReadablePart, RecordDate, SourcePatient, SourceRevision,
 };
-use local_product::runtime::concerns::ExactRecordReference;
+use local_product::runtime::concerns::{ExactRecordReference, SourceWork};
 use local_product::runtime::delivery::Delivery;
 use local_product::runtime::dispatch::{PracticeJobReviewReceiver, ReviewReceiver};
 use local_product::runtime::engine::{
     self, Event as HarnessEvent, EventKind, Invocation, Item, Turn, recipe::Usage,
+};
+use local_product::runtime::follow_ups::{
+    FollowUpCommandKey, FollowUpId, FollowUpReviewOutcome, FollowUpStanding,
 };
 use local_product::runtime::jobs::{PracticeAccessError, PracticeAuthority, PracticeScope};
 use local_product::runtime::reply::proposals::{
@@ -55,7 +58,9 @@ use physician_auth::{
 };
 use physician_bus::LocalBus;
 use physician_sample::durable::DurableChat;
-use physician_sample::matching_reply::{MatchingReplyFollowUpsFaultInjection, fault_layer};
+use physician_sample::matching_reply::{
+    MatchingReplyFollowUpsFault, MatchingReplyFollowUpsFaultInjection, fault_layer,
+};
 use physician_sample::{STAGING_PRACTICE_ID, WORKSPACE_IDS};
 use sea_orm::{ConnectionTrait, Database, DatabaseConnection};
 use serde_json::{Value, json};
@@ -322,11 +327,12 @@ impl Authority for OpenWorkspaceAuthority {
 }
 
 struct RunningHarness {
-    _db_holder: DisposableDb,
+    db_holder: DisposableDb,
     address: SocketAddr,
     store: Store,
     _db: DatabaseConnection,
     auth: Arc<PostgresAuthStore>,
+    faults: Arc<MatchingReplyFollowUpsFaultInjection>,
     server_task: tokio::task::JoinHandle<()>,
 }
 
@@ -380,13 +386,45 @@ impl RunningHarness {
         wait_until_serving(address).await;
 
         Self {
-            _db_holder: disposable,
+            db_holder: disposable,
             address,
             store,
             _db: db,
             auth,
+            faults,
             server_task,
         }
+    }
+
+    async fn restart_server(&mut self) {
+        self.server_task.abort();
+        let _ = (&mut self.server_task).await;
+
+        let fresh_store = Store::connect(&self.db_holder.url)
+            .await
+            .expect("reconnect store after server restart");
+        let mut bound = None;
+        for _ in 0..40 {
+            let socket = tokio::net::TcpSocket::new_v4().expect("tcp v4 socket");
+            socket.set_reuseaddr(true).expect("set_reuseaddr");
+            if socket.bind(self.address).is_ok()
+                && let Ok(listener) = socket.listen(128)
+            {
+                bound = Some(listener);
+                break;
+            }
+            tokio::time::sleep(Duration::from_millis(50)).await;
+        }
+        let listener = bound.expect("rebind server listener on same address after restart");
+        self.server_task = spawn_durable_server(
+            listener,
+            &self.db_holder.url,
+            fresh_store.clone(),
+            Arc::clone(&self.faults),
+        )
+        .await;
+        self.store = fresh_store;
+        wait_until_serving(self.address).await;
     }
 
     async fn enroll_physician(
@@ -2403,4 +2441,758 @@ async fn reply_editor_basis_private_drafts_moves_withheld_and_disconnected() {
         .expect("read reply_conversation")
         .expect("reply_conversation exists");
     assert_eq!(closed_conv.reply_standing, ReplyStanding::None);
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "launches headless Chromium"]
+async fn failed_commands_lookup_unavailable_and_lost_access_closure() {
+    let _guard = test_lock().lock().await;
+    let harness = RunningHarness::start("faults_and_access").await;
+
+    let ws_elena = WORKSPACE_IDS[0];
+    let ws_jake = WORKSPACE_IDS[1];
+
+    let ref_elena = harness
+        .seed_patient_with_chart(
+            ws_elena,
+            "Elena Morales",
+            "1968-05-14",
+            "MRN-3001",
+            "obs-fault-elena",
+            "rev-1",
+            "Potassium 4.3 mmol/L.",
+        )
+        .await;
+    harness
+        .seed_patient_with_chart(
+            ws_jake,
+            "Jake Patel",
+            "1975-11-02",
+            "MRN-3002",
+            "obs-fault-jake",
+            "rev-1",
+            "BP 122/76 mmHg.",
+        )
+        .await;
+
+    let dr_rivera = harness
+        .enroll_physician(
+            "dr.rivera@codahealth.test",
+            "Dr. Rivera",
+            &[ws_elena, ws_jake],
+        )
+        .await;
+
+    let lease_token =
+        connect_spruce_and_lease(&harness.store, harness.auth.as_ref(), &dr_rivera).await;
+    let now_ts = real_now_i64();
+
+    // Seed one unmatched message in `Waiting` (`msg-fault-match`)
+    harness
+        .store
+        .ingest_spruce_item(
+            STAGING_PRACTICE_ID,
+            &lease_token,
+            &make_readable_spruce_item(
+                1,
+                "msg-fault-match",
+                "conv-fault-match",
+                Some("+14155550201"),
+                Some("Elena Morales"),
+                "Checking whether my lab order was sent.",
+                Vec::new(),
+                Vec::new(),
+            ),
+            now_ts - 40,
+        )
+        .await
+        .expect("ingest msg-fault-match");
+    harness
+        .store
+        .record_spruce_message_classification(
+            harness.auth.as_ref(),
+            STAGING_PRACTICE_ID,
+            "msg-fault-match",
+            None,
+            "spruce-message-matching/v1",
+            "spruce-matching-guidance/v1",
+            local_product::runtime::spruce_matching::MatchingDecision::PatientMail {
+                urgency: local_product::runtime::spruce_matching::MessageUrgencyChoice::Ordinary,
+                assessment:
+                    local_product::runtime::spruce_matching::MatchAssessment::SuggestedPatient {
+                        workspace: ws_elena.to_owned(),
+                        evidence_summary: "Matches Elena Morales.".to_owned(),
+                    },
+                rationale: "Lab order question.".to_owned(),
+            },
+            None,
+            now_ts - 35,
+        )
+        .await
+        .expect("classify msg-fault-match");
+
+    // Seed one open reply card on `ws_elena` (`conv-fault-reply`)
+    let conv_id = "conv-fault-reply";
+    harness
+        .store
+        .ingest_spruce_item(
+            STAGING_PRACTICE_ID,
+            &lease_token,
+            &make_readable_spruce_item(
+                2,
+                "msg-fault-reply",
+                conv_id,
+                Some("+14155550202"),
+                Some("Elena Morales"),
+                "Can I take ibuprofen for shoulder soreness?",
+                Vec::new(),
+                Vec::new(),
+            ),
+            now_ts - 30,
+        )
+        .await
+        .expect("ingest msg-fault-reply");
+    harness
+        .store
+        .record_spruce_message_classification(
+            harness.auth.as_ref(),
+            STAGING_PRACTICE_ID,
+            "msg-fault-reply",
+            None,
+            "spruce-message-matching/v1",
+            "spruce-matching-guidance/v1",
+            local_product::runtime::spruce_matching::MatchingDecision::PatientMail {
+                urgency: local_product::runtime::spruce_matching::MessageUrgencyChoice::Ordinary,
+                assessment:
+                    local_product::runtime::spruce_matching::MatchAssessment::SuggestedPatient {
+                        workspace: ws_elena.to_owned(),
+                        evidence_summary: "Matches Elena Morales.".to_owned(),
+                    },
+                rationale: "Patient NSAID question.".to_owned(),
+            },
+            None,
+            now_ts - 29,
+        )
+        .await
+        .expect("classify msg-fault-reply into Waiting");
+    harness
+        .store
+        .confirm_spruce_message_link(
+            harness.auth.as_ref(),
+            &dr_rivera,
+            "msg-fault-reply",
+            ws_elena,
+            SenderConfirmationPolicy::ConversationOnly,
+            "cmd-confirm-fault-reply",
+            None,
+            now_ts - 28,
+        )
+        .await
+        .expect("confirm conv-fault-reply");
+    harness
+        .store
+        .link_reply_conversation(
+            STAGING_PRACTICE_ID,
+            conv_id,
+            ConversationLink::LinkedPatient {
+                workspace: ws_elena.to_owned(),
+            },
+        )
+        .await
+        .expect("link reply conversation");
+    harness
+        .store
+        .record_linked_patient_message(&RecordPatientMessage {
+            practice: STAGING_PRACTICE_ID.to_owned(),
+            conversation_id: conv_id.to_owned(),
+            message_id: "msg-fault-reply".to_owned(),
+            sender: MessageSender::Patient,
+            text: "Can I take ibuprofen for shoulder soreness?".to_owned(),
+            sent_at: now_ts - 30,
+        })
+        .await
+        .expect("record linked message");
+    harness
+        .store
+        .start_or_read_reply_review(STAGING_PRACTICE_ID, conv_id, "rev-fault-1", "run-fault-1")
+        .await
+        .expect("start review");
+    harness
+        .store
+        .complete_reply_review(&CompleteReplyReview {
+            practice: STAGING_PRACTICE_ID.to_owned(),
+            conversation_id: conv_id.to_owned(),
+            review_id: "rev-fault-1".to_owned(),
+            run_id: "run-fault-1".to_owned(),
+            completion_key: "comp-fault-1".to_owned(),
+            answered_closures: Vec::new(),
+            decision: ReplyReviewDecision::ProposeReply(ReplyProposalInput {
+                text: "SECRET_CLINICAL_REPLY_ELENA: Avoid NSAIDs like ibuprofen while taking lisinopril; acetaminophen is preferred.".to_owned(),
+                basis: ReplyProposalBasisInput {
+                    summary: "Avoid NSAID + ACEi interaction.".to_owned(),
+                    limits: Vec::new(),
+                    cited_records: vec![ref_elena.clone()],
+                },
+                cited_records: vec![ref_elena],
+            }),
+            raised_concern_ids: Vec::new(),
+        })
+        .await
+        .expect("complete proposal");
+
+    let mut tab = Tab::open(&format!("http://{}/", harness.address));
+    tab.sign_in_as("dr.rivera@codahealth.test");
+    tab.wait_for_selector(
+        "[data-nav-messages-to-match=\"true\"]",
+        Duration::from_secs(20),
+    );
+    tab.click("[data-nav-messages-to-match=\"true\"]");
+    tab.wait_for_selector(
+        "[data-confirm-match=\"msg-fault-match\"]",
+        Duration::from_secs(15),
+    );
+
+    // Force `MatchingCommand` failure -> `Confirm` shows `"Not saved"`!
+    harness
+        .faults
+        .fail(MatchingReplyFollowUpsFault::MatchingCommand);
+    tab.click("[data-confirm-match=\"msg-fault-match\"]");
+    tab.wait_for_selector(
+        "[data-matching-command-error=\"true\"]",
+        Duration::from_secs(10),
+    );
+    tab.wait_for_text("Not saved", Duration::from_secs(10));
+    harness
+        .faults
+        .clear_fault(MatchingReplyFollowUpsFault::MatchingCommand);
+
+    // Force `PatientLookup` failure -> `Choose another patient` shows `"Coda couldn’t search patients."`, NEVER `"No patients match."`!
+    harness
+        .faults
+        .fail(MatchingReplyFollowUpsFault::PatientLookup);
+    tab.click("[data-choose-another-patient=\"msg-fault-match\"]");
+    tab.wait_for_selector(
+        "[data-picker-lookup-error=\"true\"]",
+        Duration::from_secs(10),
+    );
+    let dialog_text = tab
+        .eval("document.querySelector('[data-patient-picker-dialog=\"true\"]').innerText")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        dialog_text.contains("couldn’t search patients")
+            || dialog_text.contains("couldn't search patients"),
+        "expected explicit lookup failure notice, got:\n{dialog_text}"
+    );
+    assert!(
+        !dialog_text.contains("No patients match"),
+        "failed lookup must NEVER claim No patients match:\n{dialog_text}"
+    );
+    tab.save_screenshot("10-patient-picker-lookup-failure");
+
+    // Clear `PatientLookup` fault and retry -> patients load cleanly!
+    harness
+        .faults
+        .clear_fault(MatchingReplyFollowUpsFault::PatientLookup);
+    tab.click("[data-picker-lookup-retry=\"true\"]");
+    tab.wait_for_selector(
+        &format!("[data-picker-select=\"{ws_jake}\"]"),
+        Duration::from_secs(10),
+    );
+
+    // Force `ReplyRead` and `FollowUpRead` faults -> `Today` shows partial-failure banner naming
+    // `Spruce messages` and `Follow-ups` (NEVER `"Nothing needs you"`), and patient page shows
+    // `REPLIES_UNAVAILABLE` (`"Coda couldn’t load messages for this patient."`) instead of empty!
+    harness.faults.fail(MatchingReplyFollowUpsFault::ReplyRead);
+    harness
+        .faults
+        .fail(MatchingReplyFollowUpsFault::FollowUpRead);
+    tab.navigate(&format!("http://{}/", harness.address));
+    tab.wait_for_selector(
+        "[data-today-partial-failure=\"true\"]",
+        Duration::from_secs(15),
+    );
+    let partial_banner_text = tab
+        .eval("document.querySelector('[data-today-partial-failure=\"true\"]')?.innerText ?? ''")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        partial_banner_text.contains("Spruce messages")
+            && partial_banner_text.contains("Follow-ups"),
+        "Today partial failure banner must name failed Spruce messages and Follow-ups producers:\n{partial_banner_text}"
+    );
+    let today_body_on_fault = tab
+        .eval("document.body?.innerText ?? ''")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        !today_body_on_fault.contains("Nothing needs you"),
+        "Today must NEVER claim Nothing needs you when Spruce or Follow-ups producers failed:\n{today_body_on_fault}"
+    );
+
+    tab.navigate(&format!("http://{}/?patient={ws_elena}", harness.address));
+    tab.wait_for_text(
+        "couldn’t load messages for this patient",
+        Duration::from_secs(15),
+    );
+    harness
+        .faults
+        .clear_fault(MatchingReplyFollowUpsFault::ReplyRead);
+    harness
+        .faults
+        .clear_fault(MatchingReplyFollowUpsFault::FollowUpRead);
+
+    // Reload Elena Morales -> edit draft -> force `ReplyCommand` fault -> `"Not saved"` + edits preserved!
+    tab.reload();
+    tab.wait_for_selector(
+        &format!("[data-reply-editor=\"{conv_id}\"] textarea"),
+        Duration::from_secs(20),
+    );
+    let unsaved_draft = "PHYSICIAN_UNSAVED_EDIT_PRESERVED_ON_FAILURE: Use acetaminophen 500 mg instead of ibuprofen.";
+    tab.type_into(
+        &format!("[data-reply-editor=\"{conv_id}\"] textarea"),
+        unsaved_draft,
+    );
+    harness
+        .faults
+        .fail(MatchingReplyFollowUpsFault::ReplyCommand);
+    tab.click(&format!("[data-save-reply-draft=\"{conv_id}\"]"));
+    tab.wait_for_selector(
+        &format!("[data-reply-command-error=\"{conv_id}\"]"),
+        Duration::from_secs(10),
+    );
+    tab.wait_for_text("Not saved", Duration::from_secs(10));
+    let preserved = tab
+        .eval(&format!(
+            "document.querySelector('[data-reply-editor=\"{conv_id}\"] textarea').value"
+        ))
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert_eq!(
+        preserved, unsaved_draft,
+        "failed reply command must preserve physician draft edits"
+    );
+    tab.save_screenshot("11-reply-command-failure-preserves-draft");
+    harness
+        .faults
+        .clear_fault(MatchingReplyFollowUpsFault::ReplyCommand);
+
+    // Remove Dr. Rivera's panel access to `ws_elena` -> readable clinical content closes immediately and refuses further actions!
+    harness
+        .auth
+        .set_membership(&dr_rivera, ws_elena, Membership::ClinicDemographic)
+        .await
+        .expect("revoke panel membership");
+    // Attempt an action on the open reply card -> 404 triggers immediate `on_patient_gone` closure!
+    tab.click(&format!("[data-save-reply-draft=\"{conv_id}\"]"));
+    tab.wait_until_absent("SECRET_CLINICAL_REPLY_ELENA", Duration::from_secs(15));
+    tab.wait_until_absent(unsaved_draft, Duration::from_secs(15));
+    let after_revoke_text = tab
+        .eval("document.body?.innerText ?? ''")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        !after_revoke_text.contains("SECRET_CLINICAL_REPLY_ELENA"),
+        "revoking panel access must immediately close readable reply content:\n{after_revoke_text}"
+    );
+    tab.save_screenshot("12-lost-patient-access-closed");
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "launches headless Chromium"]
+async fn follow_ups_restart_controls_faults_cannot_restart_and_responsive_layout() {
+    let _guard = test_lock().lock().await;
+    let mut harness = RunningHarness::start("follow_ups").await;
+
+    let ws_elena = WORKSPACE_IDS[0];
+    harness
+        .seed_patient_with_chart(
+            ws_elena,
+            "Elena Morales",
+            "1968-05-14",
+            "MRN-4001",
+            "obs-fu-elena",
+            "rev-1",
+            "Baseline BMP potassium 4.5 mmol/L, creatinine 1.0 mg/dL prior to lisinopril uptitration.",
+        )
+        .await;
+    let _dr_rivera = harness
+        .enroll_physician("dr.rivera@codahealth.test", "Dr. Rivera", &[ws_elena])
+        .await;
+
+    let mut tab = Tab::open(&format!("http://{}/?patient={ws_elena}", harness.address));
+    tab.sign_in_as("dr.rivera@codahealth.test");
+    tab.wait_for_selector(
+        "[data-patient-follow-ups-section=\"true\"]",
+        Duration::from_secs(20),
+    );
+
+    // AC1: Create a follow-up (verifying initial due-date input starts empty), edit it, restart the server, and reopen -> saved result shows!
+    tab.click("[data-open-create-follow-up=\"true\"]");
+    tab.wait_for_selector(
+        "[data-create-follow-up-card=\"true\"]",
+        Duration::from_secs(10),
+    );
+    let initial_due_date_val = tab
+        .eval("document.querySelector('[data-create-follow-up-due-date=\"true\"] input')?.value ?? ''")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert_eq!(
+        initial_due_date_val, "",
+        "new follow-up due date input must start empty rather than hardcoded"
+    );
+    tab.type_into(
+        "[data-create-follow-up-summary=\"true\"] input",
+        "Recheck metabolic panel after lisinopril titration",
+    );
+    tab.type_into(
+        "[data-create-follow-up-due-date=\"true\"] input",
+        "2026-09-10",
+    );
+    tab.click("[data-submit-create-follow-up=\"true\"]");
+    tab.wait_for_selector(
+        "[data-follow-up-standing=\"scheduled\"]",
+        Duration::from_secs(15),
+    );
+
+    let fid1 = tab
+        .eval(
+            "document.querySelector('[data-follow-up-card]')?.getAttribute('data-follow-up-card') ?? ''",
+        )
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(!fid1.is_empty(), "created follow-up id must be present");
+    let open_cancel_label = tab
+        .eval(&format!(
+            "document.querySelector('[data-follow-up-cancel=\"{fid1}\"]')?.innerText?.trim() ?? ''"
+        ))
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert_eq!(
+        open_cancel_label, "Cancel follow-up",
+        "open follow-up cancel button must read 'Cancel follow-up' per intent/physician.md"
+    );
+
+    // Edit summary and due date
+    tab.click(&format!("[data-follow-up-edit=\"{fid1}\"]"));
+    tab.wait_for_selector(
+        &format!("[data-follow-up-edit-form=\"{fid1}\"]"),
+        Duration::from_secs(10),
+    );
+    let edited_summary = "Recheck BMP potassium and creatinine after lisinopril 20 mg";
+    tab.type_into(
+        &format!("[data-edit-follow-up-summary=\"{fid1}\"] input"),
+        edited_summary,
+    );
+    tab.type_into(
+        &format!("[data-edit-follow-up-due-date=\"{fid1}\"] input"),
+        "2026-09-14",
+    );
+    tab.click(&format!("[data-save-follow-up-edit=\"{fid1}\"]"));
+    tab.wait_for_text(edited_summary, Duration::from_secs(15));
+
+    // Restart the Axum server over the same PostgreSQL database and reload the page!
+    harness.restart_server().await;
+    tab.reload();
+    tab.wait_for_selector(
+        &format!("[data-follow-up-card=\"{fid1}\"]"),
+        Duration::from_secs(20),
+    );
+    tab.wait_for_text(edited_summary, Duration::from_secs(10));
+    tab.eval(&format!(
+        "document.querySelector('[data-follow-up-card=\"{fid1}\"]').scrollIntoView({{block: 'center'}})"
+    ));
+    std::thread::sleep(Duration::from_millis(80));
+    tab.save_screenshot("13-follow-up-persisted-after-restart");
+
+    // AC1: `Review now` marks the follow-up `DueNow` AND starts/queues a patient chart review!
+    tab.click(&format!("[data-follow-up-review-now=\"{fid1}\"]"));
+    tab.wait_for_selector(
+        &format!("[data-follow-up-card=\"{fid1}\"][data-follow-up-standing=\"due_now\"]"),
+        Duration::from_secs(15),
+    );
+    tab.wait_for_selector(
+        &format!("[data-follow-up-review-started=\"{fid1}\"]"),
+        Duration::from_secs(10),
+    );
+    let practice_auth = TestPracticeAuthority(harness.auth.as_ref());
+    let reviews = harness
+        .store
+        .patient_reviews(STAGING_PRACTICE_ID, ws_elena, &practice_auth)
+        .await
+        .expect("read workspace reviews");
+    assert!(
+        !reviews.is_empty(),
+        "Review now must submit a durable patient chart review"
+    );
+    tab.eval(&format!(
+        "document.querySelector('[data-follow-up-card=\"{fid1}\"]').scrollIntoView({{block: 'center'}})"
+    ));
+    std::thread::sleep(Duration::from_millis(80));
+    tab.save_screenshot("14-follow-up-review-now");
+
+    // AC2: Forced failure shows `"Not saved"` and preserves edits!
+    tab.click(&format!("[data-follow-up-edit=\"{fid1}\"]"));
+    tab.wait_for_selector(
+        &format!("[data-edit-follow-up-summary=\"{fid1}\"] input"),
+        Duration::from_secs(10),
+    );
+    let unsaved_fu_edit = "UNSAVED_FOLLOW_UP_EDIT_PRESERVED_ON_ERROR";
+    tab.type_into(
+        &format!("[data-edit-follow-up-summary=\"{fid1}\"] input"),
+        unsaved_fu_edit,
+    );
+    harness
+        .faults
+        .fail(MatchingReplyFollowUpsFault::FollowUpCommand);
+    tab.click(&format!("[data-save-follow-up-edit=\"{fid1}\"]"));
+    tab.wait_for_selector(
+        &format!("[data-follow-up-command-error=\"{fid1}\"]"),
+        Duration::from_secs(10),
+    );
+    tab.wait_for_text("Not saved", Duration::from_secs(10));
+    let preserved_fu_val = tab
+        .eval(&format!(
+            "document.querySelector('[data-edit-follow-up-summary=\"{fid1}\"] input').value"
+        ))
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert_eq!(
+        preserved_fu_val, unsaved_fu_edit,
+        "failed follow-up edit must preserve unsaved text"
+    );
+    tab.eval(&format!(
+        "document.querySelector('[data-follow-up-card=\"{fid1}\"]').scrollIntoView({{block: 'center'}})"
+    ));
+    std::thread::sleep(Duration::from_millis(80));
+    tab.save_screenshot("15-follow-up-failure-not-saved");
+    harness
+        .faults
+        .clear_fault(MatchingReplyFollowUpsFault::FollowUpCommand);
+    tab.click(&format!("[data-cancel-follow-up-edit=\"{fid1}\"]"));
+
+    // AC2: `Stop` -> `Held`, then `Resume` -> `DueNow`
+    tab.click(&format!("[data-follow-up-stop=\"{fid1}\"]"));
+    tab.wait_for_selector(
+        &format!("[data-follow-up-card=\"{fid1}\"][data-follow-up-standing=\"held\"]"),
+        Duration::from_secs(15),
+    );
+    tab.click(&format!("[data-follow-up-resume=\"{fid1}\"]"));
+    tab.wait_for_selector(
+        &format!("[data-follow-up-card=\"{fid1}\"][data-follow-up-standing=\"due_now\"]"),
+        Duration::from_secs(15),
+    );
+
+    // AC2: When discussion-chat seeding fails on `Stop and discuss`, surface `"Not saved"` explicitly instead of silent 200 OK!
+    harness
+        .faults
+        .fail(MatchingReplyFollowUpsFault::StopAndDiscussChat);
+    tab.click(&format!("[data-follow-up-stop-discuss=\"{fid1}\"]"));
+    tab.wait_for_selector(
+        &format!("[data-follow-up-command-error=\"{fid1}\"]"),
+        Duration::from_secs(15),
+    );
+    tab.wait_for_text("Not saved", Duration::from_secs(10));
+    harness
+        .faults
+        .clear_fault(MatchingReplyFollowUpsFault::StopAndDiscussChat);
+    tab.wait_for_selector(
+        &format!("[data-follow-up-card=\"{fid1}\"][data-follow-up-standing=\"held\"]"),
+        Duration::from_secs(15),
+    );
+    tab.click(&format!("[data-follow-up-resume=\"{fid1}\"]"));
+    tab.wait_for_selector(
+        &format!("[data-follow-up-card=\"{fid1}\"][data-follow-up-standing=\"due_now\"]"),
+        Duration::from_secs(15),
+    );
+
+    // AC2: `Stop and discuss` holds the follow-up AND opens a durable patient conversation seeded with its context!
+    tab.click(&format!("[data-follow-up-stop-discuss=\"{fid1}\"]"));
+    tab.wait_for_selector(
+        &format!("[data-follow-up-card=\"{fid1}\"][data-follow-up-standing=\"held\"]"),
+        Duration::from_secs(15),
+    );
+    tab.wait_for_text(
+        "Let's discuss held follow-up \"Recheck BMP potassium and creatinine after lisinopril 20 mg\"",
+        Duration::from_secs(20),
+    );
+    let stored_fu_after_discuss = harness
+        .store
+        .workspace_follow_ups(STAGING_PRACTICE_ID, ws_elena)
+        .await
+        .expect("read workspace follow-ups")
+        .into_iter()
+        .find(|f| f.id.as_str() == fid1)
+        .expect("fid1 exists");
+    assert!(
+        matches!(
+            stored_fu_after_discuss.standing,
+            FollowUpStanding::Held { .. }
+        ),
+        "follow-up must remain Held after Stop and discuss until Resume"
+    );
+    tab.eval(&format!(
+        "document.querySelector('[data-follow-up-card=\"{fid1}\"]').scrollIntoView({{block: 'center'}})"
+    ));
+    std::thread::sleep(Duration::from_millis(80));
+    tab.save_screenshot("16-follow-up-stop-and-discuss");
+
+    // `Resume` then `Complete` on `fid1`
+    tab.click(&format!("[data-follow-up-resume=\"{fid1}\"]"));
+    tab.wait_for_selector(
+        &format!("[data-follow-up-card=\"{fid1}\"][data-follow-up-standing=\"due_now\"]"),
+        Duration::from_secs(15),
+    );
+    tab.click(&format!("[data-follow-up-complete=\"{fid1}\"]"));
+    tab.wait_for_selector(
+        &format!("[data-follow-up-card=\"{fid1}\"][data-follow-up-standing=\"completed\"]"),
+        Duration::from_secs(15),
+    );
+
+    // Create a second follow-up and exercise `Cancel`
+    tab.click("[data-open-create-follow-up=\"true\"]");
+    tab.wait_for_selector(
+        "[data-create-follow-up-card=\"true\"]",
+        Duration::from_secs(10),
+    );
+    tab.type_into(
+        "[data-create-follow-up-summary=\"true\"] input",
+        "Confirm home blood pressure cuff delivery",
+    );
+    tab.type_into(
+        "[data-create-follow-up-due-date=\"true\"] input",
+        "2026-09-20",
+    );
+    tab.click("[data-submit-create-follow-up=\"true\"]");
+    tab.wait_for_text(
+        "Confirm home blood pressure cuff delivery",
+        Duration::from_secs(15),
+    );
+    let fid2 = tab
+        .eval(
+            "[...document.querySelectorAll('[data-follow-up-card]')].find(el => el.getAttribute('data-follow-up-standing') === 'scheduled')?.getAttribute('data-follow-up-card') ?? ''",
+        )
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(!fid2.is_empty());
+    tab.click(&format!("[data-follow-up-cancel=\"{fid2}\"]"));
+    tab.wait_for_selector(
+        &format!("[data-follow-up-card=\"{fid2}\"][data-follow-up-standing=\"cancelled\"]"),
+        Duration::from_secs(15),
+    );
+
+    // AC3: Create a third follow-up, transition into `CannotRestart` ("Can't restart"), verify `Complete`, `New date`, and `Cancel`,
+    // and verify desktop (1440x960) + phone (390x844, zero sideways scroll)!
+    tab.click("[data-open-create-follow-up=\"true\"]");
+    tab.wait_for_selector(
+        "[data-create-follow-up-card=\"true\"]",
+        Duration::from_secs(10),
+    );
+    tab.type_into(
+        "[data-create-follow-up-summary=\"true\"] input",
+        "Quarterly A1c surveillance after discharge",
+    );
+    tab.type_into(
+        "[data-create-follow-up-due-date=\"true\"] input",
+        "2026-09-25",
+    );
+    tab.click("[data-submit-create-follow-up=\"true\"]");
+    tab.wait_for_text(
+        "Quarterly A1c surveillance after discharge",
+        Duration::from_secs(15),
+    );
+    let fid3 = tab
+        .eval(
+            "[...document.querySelectorAll('[data-follow-up-card]')].find(el => el.getAttribute('data-follow-up-standing') === 'scheduled')?.getAttribute('data-follow-up-card') ?? ''",
+        )
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(!fid3.is_empty());
+
+    harness
+        .store
+        .apply_follow_up_review_outcome(
+            STAGING_PRACTICE_ID,
+            ws_elena,
+            &FollowUpCommandKey::new("cmd-mark-cannot-restart").expect("valid cmd key"),
+            &FollowUpId::new(&fid3).expect("valid fid3"),
+            SourceWork::new("patient_review", "work-fu-cr", "att-fu-cr").expect("source work"),
+            FollowUpReviewOutcome::CannotRestart {
+                failed_work_id: "work-fu-cr".to_owned(),
+                reason: "Recurring A1c schedule needs a new due date after inpatient stay."
+                    .to_owned(),
+            },
+        )
+        .await
+        .expect("mark follow-up CannotRestart");
+
+    tab.reload();
+    tab.wait_for_selector(
+        &format!("[data-follow-up-card=\"{fid3}\"][data-follow-up-standing=\"cannot_restart\"]"),
+        Duration::from_secs(15),
+    );
+    tab.wait_for_selector(
+        &format!("[data-cannot-restart-new-date=\"{fid3}\"]"),
+        Duration::from_secs(10),
+    );
+    tab.wait_for_selector(
+        &format!("[data-cannot-restart-complete=\"{fid3}\"]"),
+        Duration::from_secs(10),
+    );
+    tab.wait_for_selector(
+        &format!("[data-cannot-restart-cancel=\"{fid3}\"]"),
+        Duration::from_secs(10),
+    );
+    let cr_cancel_label = tab
+        .eval(&format!(
+            "document.querySelector('[data-cannot-restart-cancel=\"{fid3}\"]')?.innerText?.trim() ?? ''"
+        ))
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert_eq!(cr_cancel_label, "Cancel");
+    tab.wait_for_text("Can't restart", Duration::from_secs(10));
+
+    // Desktop (1440x960) layout check + screenshot
+    let reveal_cannot_restart = format!(
+        "document.querySelector('[data-follow-up-card=\"{fid3}\"]').scrollIntoView({{block: 'center'}})"
+    );
+    tab.set_viewport(1440, 960, true);
+    std::thread::sleep(Duration::from_millis(100));
+    tab.assert_no_horizontal_overflow("Patient follow-ups desktop 1440x960");
+    tab.eval(&reveal_cannot_restart);
+    std::thread::sleep(Duration::from_millis(80));
+    tab.save_screenshot("17-follow-up-cannot-restart-desktop");
+
+    // Phone (390x844) layout check + screenshot
+    tab.set_viewport(390, 844, true);
+    std::thread::sleep(Duration::from_millis(120));
+    tab.assert_no_horizontal_overflow("Patient follow-ups phone 390x844");
+    tab.eval(&reveal_cannot_restart);
+    std::thread::sleep(Duration::from_millis(80));
+    tab.save_screenshot("18-follow-up-cannot-restart-phone");
+
+    // Restore desktop and resolve `CannotRestart` via `New date`!
+    tab.set_viewport(1440, 960, true);
+    std::thread::sleep(Duration::from_millis(80));
+    tab.type_into(
+        &format!("[data-cannot-restart-date=\"{fid3}\"] input"),
+        "2026-10-15",
+    );
+    tab.click(&format!("[data-cannot-restart-new-date=\"{fid3}\"]"));
+    tab.wait_for_selector(
+        &format!("[data-follow-up-card=\"{fid3}\"][data-follow-up-standing=\"scheduled\"]"),
+        Duration::from_secs(15),
+    );
 }

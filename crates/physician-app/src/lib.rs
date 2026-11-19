@@ -9,6 +9,7 @@
 
 mod composer;
 mod feedback;
+mod follow_ups;
 mod local_draft;
 mod matching_reply;
 mod panels;
@@ -1887,6 +1888,11 @@ fn PhysicianShell(
         shell_reviews_context,
         mark_patient_gone,
     );
+    let follow_ups_read = follow_ups::use_patient_follow_ups(
+        on_panel_workspace,
+        shell_reviews_context,
+        mark_patient_gone,
+    );
     let snapshot = use_resource(move || {
         let _attempt = snapshot_attempt();
         let asked = (selected(), open_chat());
@@ -2830,6 +2836,7 @@ fn PhysicianShell(
                             read: patient_read,
                             reviews_context: shell_reviews_context,
                             spruce_replies_read,
+                            follow_ups_read,
                             on_go_today: move |_| {
                                 open_briefing.set(None);
                                 selected.set(None);
@@ -3141,6 +3148,14 @@ fn PhysicianShell(
                             },
                             on_patient_gone: move |gone_ws: String| {
                                 mark_patient_gone.call(gone_ws);
+                            },
+                            on_open_discuss_chat: move |chat_id: String| {
+                                if let Some(ws_id) = selected() {
+                                    requested_chat.set(Some((ws_id, chat_id.clone())));
+                                }
+                                open_chat.set(Some(chat_id));
+                                *workspace_attempt.write() += 1;
+                                *snapshot_attempt.write() += 1;
                             },
                         }
                             }
@@ -4415,6 +4430,7 @@ fn PatientSurface(
     read: ReadStage,
     reviews_context: patient_reviews_panel::PatientReviewsContext,
     spruce_replies_read: matching_reply::PatientSpruceRepliesRead,
+    follow_ups_read: follow_ups::PatientFollowUpsRead,
     on_go_today: EventHandler,
     workspace_id: String,
     name: String,
@@ -4502,6 +4518,7 @@ fn PatientSurface(
     on_resume_reply: EventHandler<WorkResumeTarget>,
     on_open_patient: EventHandler<String>,
     on_patient_gone: EventHandler<String>,
+    on_open_discuss_chat: EventHandler<String>,
 ) -> Element {
     let clinic_demographic = workspace
         .as_ref()
@@ -4994,12 +5011,19 @@ fn PatientSurface(
                     }
                 }
             }
-            if !follow_ups.is_empty() {
-                section { class: "patient-section", aria_label: "Follow-ups",
-                    h2 { "Follow-ups" }
-                    for follow_up in follow_ups {
-                        p { "{follow_up.description.clone().unwrap_or_default()}" }
-                    }
+            if let Some(open) = workspace.as_ref().filter(|_| !clinic_demographic) {
+                follow_ups::PatientFollowUpsSection {
+                    workspace_id: open.patient_workspace_id.clone(),
+                    browser_tz: browser_tz.clone(),
+                    legacy_follow_ups: follow_ups,
+                    read_state: follow_ups_read,
+                    client: reviews_context.client,
+                    session: reviews_context.session,
+                    shown: reviews_context.shown,
+                    workspace_attempt: reviews_context.workspace_attempt,
+                    today_attempt: reviews_context.today_attempt,
+                    on_open_discuss_chat,
+                    on_patient_gone,
                 }
             }
             section { class: "patient-section", aria_label: "Conversation",
