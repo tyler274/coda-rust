@@ -1137,10 +1137,13 @@ async fn patient_page_reviews_controls_reload_access_and_viewports() {
     });
     step_recorded_wait.notified().await;
 
-    // Keeping the patient-reviews workspace surface exclusively on the patient page.
+    // Physician-requested running review shows as recognizable running work on Today while
+    // keeping the patient-reviews workspace surface exclusively on the patient page.
     tab.reload();
-    let today_running_dom =
-        tab.wait_for_text("Nothing needs you right now.", Duration::from_secs(20));
+    let today_running_dom = tab.wait_for_text(
+        "Reviewing patient chart as requested",
+        Duration::from_secs(20),
+    );
     assert!(
         !today_running_dom.contains("data-patient-reviews"),
         "patient reviews panel must stay on the patient page:\n{today_running_dom}"
