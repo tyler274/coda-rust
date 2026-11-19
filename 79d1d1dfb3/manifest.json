@@ -1,0 +1,36 @@
+{
+  "branch": "tyler-eng-269-multimodal-saved-attachments",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Multimodal saved PNG, JPEG, and UTF-8 attachment harness suite",
+      "kind": "run",
+      "revision": "1d25dd6b5122b1776b0019896730440eab8d6fcf",
+      "dirty": false,
+      "recorded": "2026-11-18T23:30:49+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "attachments",
+        "--",
+        "--nocapture"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-Multimodal-saved-PNG-JPEG-and-UTF-8-attachment-h.log"
+      ],
+      "seconds": 51.3,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "79d1d1dfb32d22fbe4f872807b51f986a7ac3936",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    }
+  ]
+}
