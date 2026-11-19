@@ -1,0 +1,67 @@
+{
+  "branch": "tyler-eng-363-1-today-projection-store",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "PostgreSQL migration m20261118_08_today_updates_seen verification",
+      "kind": "run",
+      "revision": "89cb82821d9f8adf8e192d125b55a5c8f0c3081a",
+      "dirty": false,
+      "recorded": "2026-11-19T00:25:37+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "runtime::tests::migration",
+        "--",
+        "--include-ignored",
+        "--test-threads=1"
+      ],
+      "expect": "\\b3 passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "01-PostgreSQL-migration-m20261118_08_today_updates_.log"
+      ],
+      "seconds": 41.3,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "738bdc79a798f633fe87f30b3dbccacdc80da42e",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Product privacy boundary and shared-ui check",
+      "kind": "run",
+      "revision": "89cb82821d9f8adf8e192d125b55a5c8f0c3081a",
+      "dirty": false,
+      "recorded": "2026-11-19T00:26:18+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "boundaries",
+        "--lib"
+      ],
+      "expect": "\\b25 passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "02-Product-privacy-boundary-and-shared-ui-check.log"
+      ],
+      "seconds": 1.8,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "738bdc79a798f633fe87f30b3dbccacdc80da42e",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    }
+  ]
+}
