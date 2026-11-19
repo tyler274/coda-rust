@@ -1,0 +1,21 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.75s
+     Running tests/source_status_and_links.rs (target/debug/deps/source_status_and_links-232c570b26f4e05d)
+
+running 1 test
+test overdue_scheduled_fetch_reports_couldn_t_update_standing ... FAILED
+
+failures:
+
+---- overdue_scheduled_fetch_reports_couldn_t_update_standing stdout ----
+
+thread 'overdue_scheduled_fetch_reports_couldn_t_update_standing' (1150502) panicked at crates/local-product/tests/source_status_and_links.rs:3072:5:
+overdue scheduled fetch must report couldn't update / overdue instead of UpToDate, got: UpToDate { last_good_read_at: 1000, missing_candidates: [] }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    overdue_scheduled_fetch_reports_couldn_t_update_standing
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.22s
+
+error: test failed, to rerun pass `-p local-product --test source_status_and_links`

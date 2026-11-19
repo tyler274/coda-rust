@@ -1,0 +1,44 @@
+   Compiling physician-wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/physician-wire)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.00s
+     Running unittests src/lib.rs (target/debug/deps/physician_wire-0dc6345c7a464f38)
+
+running 10 tests
+test reviews::tests::control_request_and_response_round_trip_with_review_id_and_version ... ok
+test tests::reads_a_today_list ... ok
+test reviews::tests::available_control_matches_each_review_lifecycle_state ... ok
+test tests::a_search_step_says_which_page_it_got ... ok
+test follow_ups::tests::follow_up_wire_roundtrips_all_standings_and_cannot_restart_resolutions ... ok
+test tests::reads_a_snapshot_whose_feedback_was_unavailable ... ok
+test tests::a_step_names_a_record_by_its_group_and_title ... ok
+test matching_reply::tests::unmatched_wire_contains_zero_confidence_fields_and_roundtrips ... ok
+test matching_reply::tests::reply_card_wire_roundtrips_withheld_and_coda_revision_states ... ok
+test tests::reads_a_transcript_and_refuses_the_older_shape ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests physician_wire
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 21.24s
+     Running tests/patient_reviews_postgres.rs (target/debug/deps/patient_reviews_postgres-d1172232aba5d311)
+
+running 12 tests
+test patient_review_recipe_and_tools_have_clean_model_text_and_valid_skill_tool_references ... ok
+test provider_blocked_hold_preserves_refusal_and_reason_instead_of_stopped ... ok
+test practice_authority_enforced_on_reads_and_stop_atomic_rearm_steering_fences_and_understanding_tool_boundary ... ok
+test saved_review_records_metadata_keeps_unknown_usage_unknown_and_feeds_later_review_reads ... ok
+test dispatch_changed_periodic_and_physician_reviews_reach_model_with_recipe_and_discoverable_capabilities ... ok
+test corrected_evidence_revises_outputs_missing_sources_stay_explicit_limits_and_medication_stays_unapproved_consideration ... ok
+test real_tool_operations_persist_across_restart_and_quiet_saves_nothing_to_do ... ok
+test stop_holds_across_restart_resume_and_try_again_refresh_evidence_and_new_input_access_loss_or_correction_block_stale_completion ... ok
+test mid_run_record_correction_blocks_old_version_and_interrupted_action_is_not_repeated ... ok
+test periodic_reassessment_respects_prior_decisions_avoids_duplicate_alerts_and_updates_memory_only_when_warranted ... ok
+test clinical_cases_urgent_abnormal_nonurgent_change_conflicting_sources_and_normal_quiet_review ... ok
+test new_review_supersedes_incomplete_review_withdrawn_records_fence_recovery_and_completed_sources_baseline_tracks_mid_run_refresh ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.92s
+

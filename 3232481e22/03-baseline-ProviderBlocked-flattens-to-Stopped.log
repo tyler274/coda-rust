@@ -1,0 +1,21 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.30s
+     Running tests/patient_reviews_postgres.rs (target/debug/deps/patient_reviews_postgres-d1172232aba5d311)
+
+running 1 test
+test provider_blocked_hold_preserves_refusal_and_reason_instead_of_stopped ... FAILED
+
+failures:
+
+---- provider_blocked_hold_preserves_refusal_and_reason_instead_of_stopped stdout ----
+
+thread 'provider_blocked_hold_preserves_refusal_and_reason_instead_of_stopped' (1151456) panicked at crates/local-product/tests/patient_reviews_postgres.rs:6311:5:
+ProviderBlocked hold must preserve refusal reason instead of flattening to Stopped/Limit, got: Held { reason: Stopped, held_at: 1795091565, partial_text: None }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    provider_blocked_hold_preserves_refusal_and_reason_instead_of_stopped
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.19s
+
+error: test failed, to rerun pass `-p local-product --test patient_reviews_postgres`

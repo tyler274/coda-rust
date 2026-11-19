@@ -1,0 +1,21 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.29s
+     Running tests/message_followup_dispatch_reviews.rs (target/debug/deps/message_followup_dispatch_reviews-12e49bcebdf52573)
+
+running 1 test
+test lab_correction_retires_stale_ready_reply_preserving_physician_draft ... FAILED
+
+failures:
+
+---- lab_correction_retires_stale_ready_reply_preserving_physician_draft stdout ----
+
+thread 'lab_correction_retires_stale_ready_reply_preserving_physician_draft' (1150950) panicked at crates/local-product/tests/message_followup_dispatch_reviews.rs:3157:5:
+correcting cited lab record must automatically retire stale Ready reply to None, got: Ready { proposal: SavedReplyProposal { practice: "prac-lab-retire-a350046beb774e35914ecd9f5e87d9b8", conversation_id: "conv-lab-retire", reply_id: 1, version: 1, workspace: "pw-lab-retire-390f17195c834a78b998456947e74833", covered_message_ids: {"pm-retire-1"}, text: "Your potassium of 4.1 mmol/L is normal.", basis: ReplyProposalBasis { summary: "Reviewed Observation/bmp-1 rev-1.", limits: [], cited_records: [ExactRecordReference { candidate_id: "Observation/bmp-1", revision: "rev-1" }] }, citations: [SummaryCitation { reference: ExactRecordReference { candidate_id: "Observation/bmp-1", revision: "rev-1" }, source_id: "clinic-ehr", source_label: "Clinic EHR", sha256: "f5794d98093666b1c0deb354c32bde870bd78de30756ce2a8c516779606fa20a", display_label: "Baseline Metabolic Panel", as_of: Some("2026-11-10"), excerpt: "Serum potassium 4.1 mmol/L (normal).", native_uri: Some("/local-ehr/pw-lab-retire-390f17195c834a78b998456947e74833/Observation/bmp-1#/resources/Observation/bmp-1") }], review_id: "rev-50a5624811f69c06d2d8", run_id: "patient-review:rev-50a5624811f69c06d2d8", completion_key: "message-reply:patient-review:rev-50a5624811f69c06d2d8:call-propose", conversation_version: 2, source_version: 1, move_epoch: 0, replaced_proposal_version: None, proposed_at: 1795091562 } }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    lab_correction_retires_stale_ready_reply_preserving_physician_draft
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 9 filtered out; finished in 1.19s
+
+error: test failed, to rerun pass `-p local-product --test message_followup_dispatch_reviews`

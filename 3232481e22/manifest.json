@@ -1,0 +1,304 @@
+{
+  "branch": "fix-p2-overdue-standing-and-lab-reply-retirement",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "baseline overdue source reads UpToDate",
+      "kind": "run",
+      "revision": "b8e37e634c329dfab5af4849f9b046045d03aac8",
+      "dirty": true,
+      "recorded": "2026-11-19T12:32:36+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "source_status_and_links",
+        "overdue_scheduled_fetch_reports_couldn_t_update_standing"
+      ],
+      "expect": "overdue scheduled fetch must report",
+      "expect_fail": true,
+      "files": [
+        "01-baseline-overdue-source-reads-UpToDate.log"
+      ],
+      "seconds": 3.2,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "3232481e221d6762777eff80f2d5b2eae4b32880",
+        "reason": "Pre-fix failing-first baselines establishing AC1-AC4 bugs before 3232481e2"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "baseline lab correction leaves Ready reply intact",
+      "kind": "run",
+      "revision": "b8e37e634c329dfab5af4849f9b046045d03aac8",
+      "dirty": true,
+      "recorded": "2026-11-19T12:32:39+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "message_followup_dispatch_reviews",
+        "lab_correction_retires_stale_ready_reply_preserving_physician_draft"
+      ],
+      "expect": "correcting cited lab record must automatically retire stale Ready reply",
+      "expect_fail": true,
+      "files": [
+        "02-baseline-lab-correction-leaves-Ready-reply-intac.log"
+      ],
+      "seconds": 3.7,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "3232481e221d6762777eff80f2d5b2eae4b32880",
+        "reason": "Pre-fix failing-first baselines establishing AC1-AC4 bugs before 3232481e2"
+      }
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "baseline ProviderBlocked flattens to Stopped",
+      "kind": "run",
+      "revision": "b8e37e634c329dfab5af4849f9b046045d03aac8",
+      "dirty": true,
+      "recorded": "2026-11-19T12:32:43+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "patient_reviews_postgres",
+        "provider_blocked_hold_preserves_refusal_and_reason_instead_of_stopped"
+      ],
+      "expect": "ProviderBlocked hold must preserve refusal reason",
+      "expect_fail": true,
+      "files": [
+        "03-baseline-ProviderBlocked-flattens-to-Stopped.log"
+      ],
+      "seconds": 2.7,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "3232481e221d6762777eff80f2d5b2eae4b32880",
+        "reason": "Pre-fix failing-first baselines establishing AC1-AC4 bugs before 3232481e2"
+      }
+    },
+    {
+      "id": 4,
+      "claim": "AC4",
+      "label": "baseline 2/3 source failure skips outage",
+      "kind": "run",
+      "revision": "b8e37e634c329dfab5af4849f9b046045d03aac8",
+      "dirty": true,
+      "recorded": "2026-11-19T12:32:46+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "today_updates_postgres",
+        "ac4_majority_source_failure_two_of_three_reports_practice_outage"
+      ],
+      "expect": "2 of 3 patients failing",
+      "expect_fail": true,
+      "files": [
+        "04-baseline-2-3-source-failure-skips-outage.log"
+      ],
+      "seconds": 2.7,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "3232481e221d6762777eff80f2d5b2eae4b32880",
+        "reason": "Pre-fix failing-first baselines establishing AC1-AC4 bugs before 3232481e2"
+      }
+    },
+    {
+      "id": 5,
+      "claim": "AC1",
+      "label": "unit and Postgres overdue source standing checks",
+      "kind": "run",
+      "revision": "3232481e221d6762777eff80f2d5b2eae4b32880",
+      "dirty": false,
+      "recorded": "2026-11-19T13:07:02+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p patient-work && cargo test -p local-product --lib source_status && cargo test -p local-product --test source_status_and_links && cargo test -p physician-sample --test chart_load && cargo test -p physician-sample --test source_check_and_reconnect"
+      ],
+      "expect": "test result: ok\\.",
+      "expect_fail": false,
+      "files": [
+        "05-unit-and-Postgres-overdue-source-standing-checks.log"
+      ],
+      "seconds": 162.4,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 6,
+      "claim": "AC2",
+      "label": "Postgres lab correction retires Ready reply preserving draft",
+      "kind": "run",
+      "revision": "3232481e221d6762777eff80f2d5b2eae4b32880",
+      "dirty": false,
+      "recorded": "2026-11-19T13:09:44+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "message_followup_dispatch_reviews"
+      ],
+      "expect": "10 passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "06-Postgres-lab-correction-retires-Ready-reply-pres.log"
+      ],
+      "seconds": 30.5,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 7,
+      "claim": "AC3",
+      "label": "wire unit and Postgres ProviderBlocked hold checks",
+      "kind": "run",
+      "revision": "3232481e221d6762777eff80f2d5b2eae4b32880",
+      "dirty": false,
+      "recorded": "2026-11-19T13:10:15+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p physician-wire && cargo test -p local-product --test patient_reviews_postgres"
+      ],
+      "expect": "test result: ok\\.",
+      "expect_fail": false,
+      "files": [
+        "07-wire-unit-and-Postgres-ProviderBlocked-hold-chec.log"
+      ],
+      "seconds": 33.1,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 8,
+      "claim": "AC4",
+      "label": "Postgres majority outage and physician-app item open copy",
+      "kind": "run",
+      "revision": "3232481e221d6762777eff80f2d5b2eae4b32880",
+      "dirty": false,
+      "recorded": "2026-11-19T13:10:48+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p physician-app && cargo test -p local-product --test today_updates_postgres"
+      ],
+      "expect": "test result: ok\\.",
+      "expect_fail": false,
+      "files": [
+        "08-Postgres-majority-outage-and-physician-app-item-.log"
+      ],
+      "seconds": 50.9,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 9,
+      "claim": "ALL",
+      "label": "boundaries and workspace fmt/clippy pre-commit gates",
+      "kind": "run",
+      "revision": "3232481e221d6762777eff80f2d5b2eae4b32880",
+      "dirty": false,
+      "recorded": "2026-11-19T13:11:39+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "bash .githooks/pre-commit && cargo test -p boundaries"
+      ],
+      "expect": "25 passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "09-boundaries-and-workspace-fmt-clippy-pre-commit-g.log"
+      ],
+      "seconds": 91.7,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 10,
+      "claim": "AC4",
+      "label": "Chromium site_today_updates item-open Couldnt load this and retry",
+      "kind": "run",
+      "revision": "3232481e221d6762777eff80f2d5b2eae4b32880",
+      "dirty": false,
+      "recorded": "2026-11-19T13:13:54+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_today_updates",
+        "ac3_partial_failure_practice_outage_failed_open_retry_and_nothing_needs_you_guard",
+        "--",
+        "--ignored"
+      ],
+      "expect": "1 passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "10-Chromium-site_today_updates-item-open-Couldnt-lo.log"
+      ],
+      "seconds": 21.3,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 11,
+      "claim": "ALL",
+      "label": "Chromium physician-sample site suite",
+      "kind": "run",
+      "revision": "3232481e221d6762777eff80f2d5b2eae4b32880",
+      "dirty": false,
+      "recorded": "2026-11-19T13:14:15+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored"
+      ],
+      "expect": "23 passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "11-Chromium-physician-sample-site-suite.log"
+      ],
+      "seconds": 193.5,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    }
+  ]
+}

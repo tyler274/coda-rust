@@ -1,0 +1,23 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.29s
+     Running tests/today_updates_postgres.rs (target/debug/deps/today_updates_postgres-ed9a4708c3f257f2)
+
+running 1 test
+test ac4_majority_source_failure_two_of_three_reports_practice_outage ... FAILED
+
+failures:
+
+---- ac4_majority_source_failure_two_of_three_reports_practice_outage stdout ----
+
+thread 'ac4_majority_source_failure_two_of_three_reports_practice_outage' (1151742) panicked at crates/local-product/tests/today_updates_postgres.rs:2712:5:
+assertion `left == right` failed: 2 of 3 patients failing (strict majority) must collapse into one practice-wide outage
+  left: 0
+ right: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    ac4_majority_source_failure_two_of_three_reports_practice_outage
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.15s
+
+error: test failed, to rerun pass `-p local-product --test today_updates_postgres`
