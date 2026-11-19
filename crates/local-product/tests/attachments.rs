@@ -1581,3 +1581,135 @@ async fn corrected_document_in_postgres_creates_new_version_while_existing_citat
         WorkStatus::Completed
     );
 }
+
+#[test]
+fn scan_and_fax_ocr_reads_shifted_and_scaled_clinical_images() {
+    use local_product::attachments::{
+        AttachmentMediaKind, AttachmentPart, SavedAttachmentInput, decode_saved_attachment,
+        render_synthetic_clinical_png,
+    };
+
+    // First decode a baseline 5x7 render, then produce a 2x-scaled + padded clinical scan PNG
+    // so pixels sit completely outside the fixed (6,6) / (6,10) grid.
+    let base_png = render_synthetic_clinical_png(&["POTASSIUM 5.4", "KCL HELD"], true);
+    let base_img = image::load_from_memory(&base_png).unwrap().to_luma8();
+    let pad_x = 24_u32;
+    let pad_y = 18_u32;
+    let scale = 2_u32;
+    let scaled_w = base_img.width() * scale + pad_x * 2;
+    let scaled_h = base_img.height() * scale + pad_y * 2;
+    let mut scaled_pixels = vec![246_u8; (scaled_w * scaled_h) as usize];
+    for y in 0..base_img.height() {
+        for x in 0..base_img.width() {
+            let v = base_img.get_pixel(x, y).0[0];
+            for dy in 0..scale {
+                for dx in 0..scale {
+                    let ny = pad_y + y * scale + dy;
+                    let nx = pad_x + x * scale + dx;
+                    scaled_pixels[(ny * scaled_w + nx) as usize] = v;
+                }
+            }
+        }
+    }
+    let mut png_bytes = Vec::new();
+    {
+        let mut encoder = png::Encoder::new(&mut png_bytes, scaled_w, scaled_h);
+        encoder.set_color(png::ColorType::Grayscale);
+        encoder.set_depth(png::BitDepth::Eight);
+        let mut writer = encoder.write_header().unwrap();
+        writer.write_image_data(&scaled_pixels).unwrap();
+    }
+
+    let part = decode_saved_attachment(&SavedAttachmentInput {
+        attachment_id: "att-shifted-scan".into(),
+        revision: "v1".into(),
+        workspace: "pw-scan".into(),
+        source_id: "spruce".into(),
+        authored_date: "2026-11-18".into(),
+        title: "Shifted Fax Lab".into(),
+        media_kind: AttachmentMediaKind::PngPhoto,
+        bytes: png_bytes,
+        expected_sha256: None,
+    })
+    .expect("shifted scan PNG must decode");
+    let AttachmentPart::Image { extracted_text, .. } = part else {
+        panic!("expected image part");
+    };
+    assert!(
+        extracted_text.contains("POTASSIUM 5.4") && extracted_text.contains("KCL HELD"),
+        "missing extracted OCR text from shifted/scaled scan: {extracted_text:?}"
+    );
+}
+
+#[test]
+fn scan_ocr_fails_closed_on_blank_or_unstructured_noise_images() {
+    use local_product::attachments::{
+        AttachmentMediaKind, AttachmentPart, SavedAttachmentInput, decode_saved_attachment,
+    };
+
+    let encode_gray = |w: u32, h: u32, pixels: &[u8]| -> Vec<u8> {
+        let mut out = Vec::new();
+        let mut enc = png::Encoder::new(&mut out, w, h);
+        enc.set_color(png::ColorType::Grayscale);
+        enc.set_depth(png::BitDepth::Eight);
+        let mut writer = enc.write_header().unwrap();
+        writer.write_image_data(pixels).unwrap();
+        drop(writer);
+        out
+    };
+
+    let blank_png = encode_gray(64, 32, &vec![250_u8; 64 * 32]);
+    let blank_part = decode_saved_attachment(&SavedAttachmentInput {
+        attachment_id: "att-blank".into(),
+        revision: "v1".into(),
+        workspace: "pw-scan".into(),
+        source_id: "spruce".into(),
+        authored_date: "2026-11-18".into(),
+        title: "Blank Fax Page".into(),
+        media_kind: AttachmentMediaKind::PngPhoto,
+        bytes: blank_png,
+        expected_sha256: None,
+    })
+    .unwrap();
+    let AttachmentPart::Image { extracted_text, .. } = blank_part else {
+        panic!("expected image part");
+    };
+    assert!(
+        extracted_text.is_empty(),
+        "blank scan must extract empty text, got: {extracted_text:?}"
+    );
+
+    let mut noise = Vec::with_capacity(64 * 32);
+    for idx in 0..(64 * 32) {
+        let px = if (idx * 37 + (idx >> 2) * 13) % 3 == 0 {
+            24
+        } else {
+            238
+        };
+        noise.push(px);
+    }
+    let noise_png = encode_gray(64, 32, &noise);
+    let noise_part = decode_saved_attachment(&SavedAttachmentInput {
+        attachment_id: "att-noise".into(),
+        revision: "v1".into(),
+        workspace: "pw-scan".into(),
+        source_id: "spruce".into(),
+        authored_date: "2026-11-18".into(),
+        title: "Corrupt Speckle".into(),
+        media_kind: AttachmentMediaKind::PngPhoto,
+        bytes: noise_png,
+        expected_sha256: None,
+    })
+    .unwrap();
+    let AttachmentPart::Image {
+        extracted_text: noise_text,
+        ..
+    } = noise_part
+    else {
+        panic!("expected image part");
+    };
+    assert!(
+        noise_text.is_empty(),
+        "random speckle noise must fail closed without fabricating text, got: {noise_text:?}"
+    );
+}

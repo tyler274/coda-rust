@@ -354,7 +354,7 @@ pub fn decode_saved_attachment(
         AttachmentMediaKind::PngPhoto => {
             let (width, height, pixels) =
                 decode_grayscale_or_rgb_png(&input.attachment_id, &input.bytes)?;
-            let extracted_text = ocr_5x7_grayscale_grid(width as usize, height as usize, &pixels);
+            let extracted_text = ocr_grayscale_scan(width as usize, height as usize, &pixels);
             let b64 = base64::engine::general_purpose::STANDARD.encode(&input.bytes);
             Ok(AttachmentPart::Image {
                 attachment_id: input.attachment_id.clone(),
@@ -845,7 +845,7 @@ pub fn ingest_paged_document(
 pub fn document_page_tool() -> Tool {
     Tool {
         name: READ_DOCUMENT_PAGE_TOOL.into(),
-        description: "Read a single 1-based page from a multi-page clinical PDF, inbound fax, or chart scan in this patient workspace. Pass `version` as null to read the current document version, or pass an integer `version` to reopen the exact historical document version referenced by an earlier citation.".into(),
+        description: "Read a single 1-based page from a multi-page clinical PDF, inbound fax, or chart scan in this patient workspace. Pass `version` as null to read the current document version, or pass an integer `version` to reopen the exact historical document version referenced by an earlier citation. When returned with `cite_as` (such as `D1`), cite that label in square brackets beside claims from that page.".into(),
         parameters: json!({
             "type": "object",
             "properties": {
@@ -868,11 +868,20 @@ struct ReadDocumentPageArgs {
 }
 
 /// Resolves a [`READ_DOCUMENT_PAGE_TOOL`] call against retained [`SourceRevision`]
-/// history (including superseded versions so existing citations reopen to the
-/// exact original page and version).
+/// history without a citation label.
 pub fn execute_document_page_read_from_revisions(
     arguments: &Value,
     retained_revisions: &[SourceRevision],
+) -> ToolOutcome {
+    execute_document_page_read_from_revisions_with_cite_as(arguments, retained_revisions, None)
+}
+
+/// Resolves a [`READ_DOCUMENT_PAGE_TOOL`] call against retained [`SourceRevision`]
+/// history, attaching `cite_as` (such as `"D1"`) when the requested page succeeds.
+pub fn execute_document_page_read_from_revisions_with_cite_as(
+    arguments: &Value,
+    retained_revisions: &[SourceRevision],
+    cite_as: Option<&str>,
 ) -> ToolOutcome {
     let parsed: ReadDocumentPageArgs = match serde_json::from_value(arguments.clone()) {
         Ok(parsed) => parsed,
@@ -1004,20 +1013,21 @@ pub fn execute_document_page_read_from_revisions(
             );
         }
         if let Some(text) = entry.get("text").and_then(Value::as_str) {
-            return ToolOutcome::Returned(
-                json!({
-                    "outcome": "available",
-                    "document_id": doc_id,
-                    "version": resolved_version,
-                    "revision": source_rev.revision,
-                    "page_number": parsed.page_number,
-                    "page_count": page_count,
-                    "page_sha256": entry.get("page_sha256").and_then(Value::as_str).unwrap_or(""),
-                    "extraction_method": entry.get("extraction_method"),
-                    "text": text,
-                })
-                .to_string(),
-            );
+            let mut body = json!({
+                "outcome": "available",
+                "document_id": doc_id,
+                "version": resolved_version,
+                "revision": source_rev.revision,
+                "page_number": parsed.page_number,
+                "page_count": page_count,
+                "page_sha256": entry.get("page_sha256").and_then(Value::as_str).unwrap_or(""),
+                "extraction_method": entry.get("extraction_method"),
+                "text": text,
+            });
+            if let (Some(label), Some(obj)) = (cite_as, body.as_object_mut()) {
+                obj.insert("cite_as".into(), json!(label));
+            }
+            return ToolOutcome::Returned(body.to_string());
         }
     }
 
@@ -1027,18 +1037,19 @@ pub fn execute_document_page_read_from_revisions(
         .iter()
         .find(|p| p.label == expected_prefix)
     {
-        return ToolOutcome::Returned(
-            json!({
-                "outcome": "available",
-                "document_id": doc_id,
-                "version": resolved_version,
-                "revision": source_rev.revision,
-                "page_number": parsed.page_number,
-                "page_count": page_count,
-                "text": part.text,
-            })
-            .to_string(),
-        );
+        let mut body = json!({
+            "outcome": "available",
+            "document_id": doc_id,
+            "version": resolved_version,
+            "revision": source_rev.revision,
+            "page_number": parsed.page_number,
+            "page_count": page_count,
+            "text": part.text,
+        });
+        if let (Some(label), Some(obj)) = (cite_as, body.as_object_mut()) {
+            obj.insert("cite_as".into(), json!(label));
+        }
+        return ToolOutcome::Returned(body.to_string());
     }
 
     ToolOutcome::Returned(
@@ -1279,11 +1290,11 @@ pub fn read_pdf_pages_isolated(
     pdf_bytes: &[u8],
     policy: PdfExtractionPolicy,
 ) -> Result<Vec<Result<DocumentPage, AttachmentReadFailure>>, AttachmentReadFailure> {
-    if !pdf_bytes.starts_with(b"%PDF-1.") {
+    if !pdf_bytes.starts_with(b"%PDF-1.") && !pdf_bytes.starts_with(b"%PDF-2.") {
         return Err(AttachmentReadFailure::CorruptedDocument {
             document_id: document_id.to_owned(),
             version,
-            reason: "missing `%PDF-1.x` header".into(),
+            reason: "missing `%PDF-1.x` or `%PDF-2.x` header".into(),
         });
     }
     if !pdf_bytes
@@ -1299,48 +1310,71 @@ pub fn read_pdf_pages_isolated(
         });
     }
 
-    let objects = parse_pdf_indirect_objects(pdf_bytes).map_err(|reason| {
-        AttachmentReadFailure::CorruptedDocument {
-            document_id: document_id.to_owned(),
-            version,
-            reason,
+    let objects = parse_pdf_indirect_objects(pdf_bytes);
+    let page_object_ids = match &objects {
+        Ok(objs) => collect_page_object_ids(objs).map(|ids| (objs, ids)),
+        Err(err) => Err(err.clone()),
+    };
+
+    match page_object_ids {
+        Ok((objs, page_ids)) if !page_ids.is_empty() => {
+            let page_count = u32::try_from(page_ids.len()).unwrap_or(u32::MAX);
+            let mut results = Vec::with_capacity(page_ids.len());
+            for (idx, page_obj_id) in page_ids.iter().enumerate() {
+                let page_number = u32::try_from(idx + 1).unwrap_or(u32::MAX);
+                let mut outcome = decode_single_pdf_page(
+                    document_id,
+                    version,
+                    page_number,
+                    page_count,
+                    *page_obj_id,
+                    objs,
+                    policy,
+                );
+                // If native parsing encountered valid PDF features beyond our minimal parser
+                // (Type0/CID fonts, compressed streams, CCITT faxes, or non-trivial scan rasters),
+                // retry this page locally via Poppler (`pdftotext` + `pdftoppm` + local OCR) while
+                // keeping genuine corrupted `/FlateDecode` streams failing closed.
+                if let Err(AttachmentReadFailure::CorruptedPage { ref reason, .. }) = outcome
+                    && !reason.contains("corrupted FlateDecode")
+                    && !reason.contains("corrupted content stream")
+                    && !reason.contains("corrupted DCTDecode")
+                    && !reason.contains("missing page")
+                    && let Ok(page) = extract_pdf_page_via_poppler(
+                        document_id,
+                        version,
+                        pdf_bytes,
+                        page_number,
+                        page_count,
+                        policy,
+                    )
+                {
+                    outcome = Ok(page);
+                }
+                results.push(outcome);
+            }
+            Ok(results)
         }
-    })?;
-
-    let page_object_ids = collect_page_object_ids(&objects).map_err(|reason| {
-        AttachmentReadFailure::CorruptedDocument {
-            document_id: document_id.to_owned(),
-            version,
-            reason,
+        Ok((_, _)) => {
+            poppler_extract_all_pages(document_id, version, pdf_bytes, policy).map_err(|reason| {
+                AttachmentReadFailure::CorruptedDocument {
+                    document_id: document_id.to_owned(),
+                    version,
+                    reason,
+                }
+            })
         }
-    })?;
-
-    if page_object_ids.is_empty() {
-        return Err(AttachmentReadFailure::CorruptedDocument {
-            document_id: document_id.to_owned(),
-            version,
-            reason: "PDF page tree contains zero pages".into(),
-        });
+        Err(native_err) => {
+            if let Ok(pages) = poppler_extract_all_pages(document_id, version, pdf_bytes, policy) {
+                return Ok(pages);
+            }
+            Err(AttachmentReadFailure::CorruptedDocument {
+                document_id: document_id.to_owned(),
+                version,
+                reason: native_err,
+            })
+        }
     }
-
-    let page_count = u32::try_from(page_object_ids.len()).unwrap_or(u32::MAX);
-    let mut results = Vec::with_capacity(page_object_ids.len());
-
-    for (idx, page_obj_id) in page_object_ids.iter().enumerate() {
-        let page_number = u32::try_from(idx + 1).unwrap_or(u32::MAX);
-        let outcome = decode_single_pdf_page(
-            document_id,
-            version,
-            page_number,
-            page_count,
-            *page_obj_id,
-            &objects,
-            policy,
-        );
-        results.push(outcome);
-    }
-
-    Ok(results)
 }
 
 fn parse_pdf_indirect_objects(pdf_bytes: &[u8]) -> Result<BTreeMap<u32, Vec<u8>>, String> {
@@ -1810,7 +1844,7 @@ fn decode_single_pdf_page(
                 (w, h, gray)
             };
 
-            let ocr_text = ocr_5x7_grayscale_grid(width, height, &grayscale);
+            let ocr_text = ocr_grayscale_scan(width, height, &grayscale);
             if !ocr_text.trim().is_empty() {
                 ocr_blocks.push(ocr_text);
             }
@@ -2094,74 +2128,542 @@ fn validate_and_decode_jpeg(
     }
 
     let luma = decoded.to_luma8();
-    let extracted_text = ocr_5x7_grayscale_grid(width as usize, height as usize, luma.as_raw());
+    let extracted_text = ocr_grayscale_scan(width as usize, height as usize, luma.as_raw());
     Ok((width, height, extracted_text))
 }
 
-/// Adaptive grayscale glyph recognizer matching the 5x7 clinical label raster grid
-/// across both clean and noisy/low-contrast scan bitmaps.
-fn ocr_5x7_grayscale_grid(width: usize, height: usize, pixels: &[u8]) -> String {
-    const MARGIN_X: usize = 6;
-    const MARGIN_Y: usize = 6;
-    const CELL_W: usize = 6;
-    const CELL_H: usize = 10;
-
-    if width <= MARGIN_X * 2 || height <= MARGIN_Y * 2 || pixels.len() != width * height {
+/// Adaptive local OCR for clinical scan and fax raster images.
+///
+/// Prefers an installed local `tesseract` binary for complex or full-page natural
+/// document scans (no external network calls — PHI stays strictly local), and uses
+/// an Otsu-thresholded, connected-slice, scale- and shift-independent recognizer for
+/// high-contrast 5x7 fax/scan raster strips and environments without `tesseract`.
+fn ocr_grayscale_scan(width: usize, height: usize, pixels: &[u8]) -> String {
+    if width == 0 || height == 0 || pixels.len() != width.saturating_mul(height) {
         return String::new();
     }
 
-    let min_px = pixels.iter().copied().min().unwrap_or(255);
-    let max_px = pixels.iter().copied().max().unwrap_or(255);
+    if width >= 400 || height >= 400 {
+        if let Some(text) = ocr_via_tesseract_cli(width, height, pixels)
+            && !text.trim().is_empty()
+        {
+            return text;
+        }
+        return ocr_connected_component_grayscale(width, height, pixels);
+    }
+
+    let cc_text = ocr_connected_component_grayscale(width, height, pixels);
+    if !cc_text.trim().is_empty() {
+        return cc_text;
+    }
+    ocr_via_tesseract_cli(width, height, pixels).unwrap_or_default()
+}
+
+struct ScopedTempDir {
+    path: std::path::PathBuf,
+}
+
+impl ScopedTempDir {
+    fn new(prefix: &str) -> Result<Self, String> {
+        static NEXT_ID: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(1);
+        let id = NEXT_ID.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+        let path = std::env::temp_dir().join(format!("coda-{prefix}-{}-{id}", std::process::id()));
+        std::fs::create_dir_all(&path)
+            .map_err(|err| format!("failed creating temp dir `{}`: {err}", path.display()))?;
+        Ok(Self { path })
+    }
+}
+
+impl Drop for ScopedTempDir {
+    fn drop(&mut self) {
+        let _ = std::fs::remove_dir_all(&self.path);
+    }
+}
+
+fn poppler_extract_all_pages(
+    document_id: &str,
+    version: u64,
+    pdf_bytes: &[u8],
+    policy: PdfExtractionPolicy,
+) -> Result<Vec<Result<DocumentPage, AttachmentReadFailure>>, String> {
+    let tmp = ScopedTempDir::new("poppler-all")?;
+    let pdf_path = tmp.path.join("document.pdf");
+    std::fs::write(&pdf_path, pdf_bytes)
+        .map_err(|err| format!("failed staging PDF for Poppler: {err}"))?;
+
+    let info_out = std::process::Command::new("pdfinfo")
+        .arg(&pdf_path)
+        .output()
+        .map_err(|err| format!("Poppler `pdfinfo` unavailable: {err}"))?;
+    if !info_out.status.success() {
+        let stderr = String::from_utf8_lossy(&info_out.stderr);
+        return Err(format!(
+            "invalid PDF document (`pdfinfo` failed): {}",
+            stderr.trim()
+        ));
+    }
+    let info_text = String::from_utf8_lossy(&info_out.stdout);
+    let page_count = info_text
+        .lines()
+        .find_map(|line| {
+            line.strip_prefix("Pages:")
+                .and_then(|rest| rest.trim().parse::<u32>().ok())
+        })
+        .filter(|&count| count > 0)
+        .ok_or_else(|| "Poppler `pdfinfo` reported zero or missing page count".to_owned())?;
+
+    let mut pages = Vec::with_capacity(page_count as usize);
+    for page_number in 1..=page_count {
+        pages.push(extract_pdf_page_via_poppler_file(
+            document_id,
+            version,
+            &pdf_path,
+            page_number,
+            page_count,
+            policy,
+        ));
+    }
+    Ok(pages)
+}
+
+fn extract_pdf_page_via_poppler(
+    document_id: &str,
+    version: u64,
+    pdf_bytes: &[u8],
+    page_number: u32,
+    page_count: u32,
+    policy: PdfExtractionPolicy,
+) -> Result<DocumentPage, AttachmentReadFailure> {
+    let tmp = ScopedTempDir::new("poppler-page").map_err(|reason| {
+        AttachmentReadFailure::CorruptedPage {
+            document_id: document_id.to_owned(),
+            version,
+            page_number,
+            reason,
+        }
+    })?;
+    let pdf_path = tmp.path.join("document.pdf");
+    std::fs::write(&pdf_path, pdf_bytes).map_err(|err| AttachmentReadFailure::CorruptedPage {
+        document_id: document_id.to_owned(),
+        version,
+        page_number,
+        reason: format!("failed staging PDF page for Poppler: {err}"),
+    })?;
+    extract_pdf_page_via_poppler_file(
+        document_id,
+        version,
+        &pdf_path,
+        page_number,
+        page_count,
+        policy,
+    )
+}
+
+fn extract_pdf_page_via_poppler_file(
+    document_id: &str,
+    version: u64,
+    pdf_path: &std::path::Path,
+    page_number: u32,
+    page_count: u32,
+    policy: PdfExtractionPolicy,
+) -> Result<DocumentPage, AttachmentReadFailure> {
+    let page_arg = page_number.to_string();
+    let text_out = std::process::Command::new("pdftotext")
+        .args(["-f", &page_arg, "-l", &page_arg])
+        .arg(pdf_path)
+        .arg("-")
+        .output()
+        .map_err(|err| AttachmentReadFailure::CorruptedPage {
+            document_id: document_id.to_owned(),
+            version,
+            page_number,
+            reason: format!("Poppler `pdftotext` unavailable: {err}"),
+        })?;
+    if !text_out.status.success() {
+        let stderr = String::from_utf8_lossy(&text_out.stderr);
+        return Err(AttachmentReadFailure::CorruptedPage {
+            document_id: document_id.to_owned(),
+            version,
+            page_number,
+            reason: format!(
+                "`pdftotext` failed on page {page_number}: {}",
+                stderr.trim()
+            ),
+        });
+    }
+
+    let extracted_native = String::from_utf8_lossy(&text_out.stdout)
+        .replace('\x0c', "")
+        .trim()
+        .to_owned();
+    if !extracted_native.is_empty() {
+        return Ok(DocumentPage {
+            document_id: document_id.to_owned(),
+            version,
+            page_number,
+            page_count,
+            page_sha256: sha256_hex(extracted_native.as_bytes()),
+            text: extracted_native,
+            extraction_method: PageExtractionMethod::NativePdfText,
+        });
+    }
+
+    if policy == PdfExtractionPolicy::HybridTextAndLocalRasterOcr {
+        let tmp = ScopedTempDir::new("poppler-ppm").map_err(|reason| {
+            AttachmentReadFailure::CorruptedPage {
+                document_id: document_id.to_owned(),
+                version,
+                page_number,
+                reason,
+            }
+        })?;
+        let prefix = tmp.path.join("page");
+        let ppm_out = std::process::Command::new("pdftoppm")
+            .args([
+                "-png",
+                "-gray",
+                "-r",
+                "150",
+                "-f",
+                &page_arg,
+                "-l",
+                &page_arg,
+                "-singlefile",
+            ])
+            .arg(pdf_path)
+            .arg(&prefix)
+            .output()
+            .map_err(|err| AttachmentReadFailure::CorruptedPage {
+                document_id: document_id.to_owned(),
+                version,
+                page_number,
+                reason: format!("Poppler `pdftoppm` unavailable: {err}"),
+            })?;
+        if !ppm_out.status.success() {
+            let stderr = String::from_utf8_lossy(&ppm_out.stderr);
+            return Err(AttachmentReadFailure::CorruptedPage {
+                document_id: document_id.to_owned(),
+                version,
+                page_number,
+                reason: format!("`pdftoppm` failed on page {page_number}: {}", stderr.trim()),
+            });
+        }
+        let png_path = tmp.path.join("page.png");
+        let png_bytes =
+            std::fs::read(&png_path).map_err(|err| AttachmentReadFailure::CorruptedPage {
+                document_id: document_id.to_owned(),
+                version,
+                page_number,
+                reason: format!("missing rendered page PNG `{}`: {err}", png_path.display()),
+            })?;
+        let img = image::load_from_memory_with_format(&png_bytes, image::ImageFormat::Png)
+            .map_err(|err| AttachmentReadFailure::CorruptedPage {
+                document_id: document_id.to_owned(),
+                version,
+                page_number,
+                reason: format!("rendered PNG decode failed: {err}"),
+            })?;
+        let luma = img.to_luma8();
+        let ocr_text =
+            ocr_grayscale_scan(img.width() as usize, img.height() as usize, luma.as_raw());
+        if !ocr_text.trim().is_empty() {
+            return Ok(DocumentPage {
+                document_id: document_id.to_owned(),
+                version,
+                page_number,
+                page_count,
+                page_sha256: sha256_hex(ocr_text.as_bytes()),
+                text: ocr_text,
+                extraction_method: PageExtractionMethod::LocalRasterOcr,
+            });
+        }
+    }
+
+    Err(AttachmentReadFailure::CorruptedPage {
+        document_id: document_id.to_owned(),
+        version,
+        page_number,
+        reason: "page contains no readable text operators or recognizable scan raster".into(),
+    })
+}
+
+fn ocr_via_tesseract_cli(width: usize, height: usize, pixels: &[u8]) -> Option<String> {
+    let tmp = ScopedTempDir::new("tesseract").ok()?;
+    let png_path = tmp.path.join("scan.png");
+    let w_u32 = u32::try_from(width).ok()?;
+    let h_u32 = u32::try_from(height).ok()?;
+    image::save_buffer_with_format(
+        &png_path,
+        pixels,
+        w_u32,
+        h_u32,
+        image::ColorType::L8,
+        image::ImageFormat::Png,
+    )
+    .ok()?;
+    let output = std::process::Command::new("tesseract")
+        .arg(&png_path)
+        .arg("stdout")
+        .args(["--psm", "6", "-l", "eng"])
+        .output()
+        .ok()?;
+    if !output.status.success() {
+        return None;
+    }
+    let text = String::from_utf8_lossy(&output.stdout).trim().to_owned();
+    (!text.is_empty()).then_some(text)
+}
+
+fn otsu_threshold(pixels: &[u8]) -> Option<u8> {
+    let min_px = pixels.iter().copied().min()?;
+    let max_px = pixels.iter().copied().max()?;
     if max_px.saturating_sub(min_px) < 40 {
+        return None;
+    }
+
+    let mut hist = [0_u64; 256];
+    for &px in pixels {
+        hist[usize::from(px)] += 1;
+    }
+    let total = pixels.len() as f64;
+    let total_sum: f64 = hist
+        .iter()
+        .enumerate()
+        .map(|(v, &c)| (v as f64) * (c as f64))
+        .sum();
+
+    let mut bg_weight = 0.0_f64;
+    let mut bg_sum = 0.0_f64;
+    let mut best_var = -1.0_f64;
+    let mut best_thresh = 128_u8;
+
+    for (t, &count) in hist.iter().enumerate() {
+        bg_weight += count as f64;
+        if bg_weight == 0.0 {
+            continue;
+        }
+        let fg_weight = total - bg_weight;
+        if fg_weight == 0.0 {
+            break;
+        }
+        bg_sum += (t as f64) * (count as f64);
+        let mean_bg = bg_sum / bg_weight;
+        let mean_fg = (total_sum - bg_sum) / fg_weight;
+        let diff = mean_bg - mean_fg;
+        let between_var = bg_weight * fg_weight * diff * diff;
+        if between_var > best_var {
+            best_var = between_var;
+            best_thresh = u8::try_from(t).unwrap_or(128);
+        }
+    }
+    Some(best_thresh)
+}
+
+/// Layout-independent Otsu + vertical-slice grayscale OCR recognizer.
+///
+/// Discovers horizontal text bands and character columns dynamically rather than assuming
+/// fixed pixel margins or cell sizes, matching each normalized slice against the 5x7
+/// clinical glyph set by cosine similarity across arbitrary integer/fractional scales.
+fn ocr_connected_component_grayscale(width: usize, height: usize, pixels: &[u8]) -> String {
+    let Some(threshold) = otsu_threshold(pixels) else {
+        return String::new();
+    };
+
+    let dark: Vec<bool> = pixels.iter().map(|&px| px <= threshold).collect();
+    let dark_count = dark.iter().filter(|&&b| b).count();
+    if dark_count == 0 || dark_count * 10 > pixels.len() * 7 {
         return String::new();
     }
-    let threshold = u8::try_from((u16::from(min_px) + u16::from(max_px)) / 2).unwrap_or(128);
 
-    let line_slots = (height - MARGIN_Y * 2) / CELL_H;
-    let char_slots = (width - MARGIN_X * 2) / CELL_W;
-    if line_slots == 0 || char_slots == 0 {
+    let row_has_ink: Vec<bool> = (0..height)
+        .map(|y| {
+            let row = &dark[y * width..(y + 1) * width];
+            row.iter().any(|&b| b)
+        })
+        .collect();
+
+    let mut bands = Vec::new();
+    let mut y = 0_usize;
+    while y < height {
+        if !row_has_ink[y] {
+            y += 1;
+            continue;
+        }
+        let band_y0 = y;
+        while y < height && row_has_ink[y] {
+            y += 1;
+        }
+        let band_y1 = y - 1;
+        if band_y1 >= band_y0 + 2 {
+            bands.push((band_y0, band_y1));
+        }
+    }
+    if bands.is_empty() {
         return String::new();
     }
 
     let mut lines = Vec::new();
-    for line_idx in 0..line_slots {
-        let base_y = MARGIN_Y + line_idx * CELL_H;
-        let mut line = String::with_capacity(char_slots);
-        let mut unmatched_glyph = false;
+    for (band_y0, band_y1) in bands {
+        let band_h = band_y1 - band_y0 + 1;
+        let col_has_ink: Vec<bool> = (0..width)
+            .map(|x| (band_y0..=band_y1).any(|ry| dark[ry * width + x]))
+            .collect();
 
-        for char_idx in 0..char_slots {
-            let base_x = MARGIN_X + char_idx * CELL_W;
-            let mut pattern = [0_u8; 7];
-            for (row_idx, row_mask) in pattern.iter_mut().enumerate() {
-                let mut mask = 0_u8;
-                for col_idx in 0..5 {
-                    let px = pixels[(base_y + row_idx) * width + (base_x + col_idx)];
-                    if px < threshold {
-                        mask |= 1 << (4 - col_idx);
-                    }
-                }
-                *row_mask = mask;
+        let mut slices = Vec::new();
+        let mut x = 0_usize;
+        while x < width {
+            if !col_has_ink[x] {
+                x += 1;
+                continue;
             }
-            if pattern == [0_u8; 7] {
+            let x0 = x;
+            while x < width && col_has_ink[x] {
+                x += 1;
+            }
+            let x1 = x - 1;
+            slices.push((x0, x1));
+        }
+        if slices.is_empty() {
+            continue;
+        }
+
+        // Reject noise bands that cannot decode cleanly across slices.
+        // `band_h * 72 / 100` stays above max intra-word glyph padding (e.g. `.` before digits)
+        // while reliably separating single word-space cells across 1x and higher scales.
+        let space_gap_threshold = ((band_h * 72) / 100).max(5);
+        let mut line = String::with_capacity(slices.len() + 8);
+        let mut prev_x1: Option<usize> = None;
+
+        for (x0, x1) in slices {
+            if let Some(px1) = prev_x1
+                && x0.saturating_sub(px1 + 1) >= space_gap_threshold
+            {
                 line.push(' ');
-            } else if let Some(ch) = match_5x7_glyph(pattern) {
-                line.push(ch);
-            } else {
-                unmatched_glyph = true;
-                break;
             }
+            let Some(ch) = classify_slice(width, &dark, x0, x1, band_y0, band_y1) else {
+                return String::new();
+            };
+            line.push(ch);
+            prev_x1 = Some(x1);
         }
 
-        if unmatched_glyph {
-            return String::new();
-        }
-        let trimmed = line.trim_end().to_owned();
+        let trimmed = line.trim();
         if !trimmed.is_empty() {
-            lines.push(trimmed);
+            lines.push(trimmed.to_owned());
         }
     }
 
     lines.join("\n")
+}
+
+fn classify_slice(
+    width: usize,
+    dark: &[bool],
+    x0: usize,
+    x1: usize,
+    band_y0: usize,
+    band_y1: usize,
+) -> Option<char> {
+    let band_h = band_y1 - band_y0 + 1;
+    let slice_w = x1 - x0 + 1;
+    // Reject overly wide connected noise blobs (> 1.5x line height) unless punctuation.
+    if slice_w * 2 > band_h * 3 {
+        return None;
+    }
+
+    let sample = sample_bbox_5x7(width, dark, x0, x1, band_y0, band_y1);
+    let mut best: Option<(char, f32)> = None;
+    for &ch in GLYPH_ALPHABET {
+        let tmpl = normalized_template_5x7(ch);
+        let sim = cosine_similarity_35(&sample, &tmpl);
+        if best.is_none_or(|(_, best_sim)| sim > best_sim) {
+            best = Some((ch, sim));
+        }
+    }
+
+    let (best_ch, best_sim) = best?;
+    if best_sim < 0.72 {
+        return None;
+    }
+    Some(best_ch)
+}
+
+fn sample_bbox_5x7(
+    width: usize,
+    dark: &[bool],
+    x0: usize,
+    x1: usize,
+    y0: usize,
+    y1: usize,
+) -> [f32; 35] {
+    let mut out = [0.0_f32; 35];
+    let bw = (x1 - x0 + 1) as f32;
+    let bh = (y1 - y0 + 1) as f32;
+    for row in 0..7 {
+        let sy0 = y0 + (((row as f32) * bh) / 7.0).floor() as usize;
+        let sy1 = (y0 + ((((row + 1) as f32) * bh) / 7.0).ceil() as usize)
+            .max(sy0 + 1)
+            .min(y1 + 1);
+        for col in 0..5 {
+            let sx0 = x0 + (((col as f32) * bw) / 5.0).floor() as usize;
+            let sx1 = (x0 + ((((col + 1) as f32) * bw) / 5.0).ceil() as usize)
+                .max(sx0 + 1)
+                .min(x1 + 1);
+            let mut hits = 0_u32;
+            let mut count = 0_u32;
+            for ry in sy0..sy1 {
+                for rx in sx0..sx1 {
+                    count += 1;
+                    if dark[ry * width + rx] {
+                        hits += 1;
+                    }
+                }
+            }
+            out[row * 5 + col] = if count == 0 {
+                0.0
+            } else {
+                (hits as f32) / (count as f32)
+            };
+        }
+    }
+    out
+}
+
+fn normalized_template_5x7(ch: char) -> [f32; 35] {
+    let bitmap = glyph_bitmap_5x7(ch);
+    let mut min_col = 5_usize;
+    let mut max_col = 0_usize;
+    for &row_mask in &bitmap {
+        for col in 0..5 {
+            if ((row_mask >> (4 - col)) & 1) == 1 {
+                min_col = min_col.min(col);
+                max_col = max_col.max(col);
+            }
+        }
+    }
+    if min_col > max_col {
+        return [0.0; 35];
+    }
+    let mut flat = [false; 35];
+    for (r, &mask) in bitmap.iter().enumerate() {
+        for c in 0..5 {
+            flat[r * 5 + c] = ((mask >> (4 - c)) & 1) == 1;
+        }
+    }
+    sample_bbox_5x7(5, &flat, min_col, max_col, 0, 6)
+}
+
+fn cosine_similarity_35(a: &[f32; 35], b: &[f32; 35]) -> f32 {
+    let mut dot = 0.0_f32;
+    let mut norm_a = 0.0_f32;
+    let mut norm_b = 0.0_f32;
+    for i in 0..35 {
+        dot += a[i] * b[i];
+        norm_a += a[i] * a[i];
+        norm_b += b[i] * b[i];
+    }
+    let denom = norm_a.sqrt() * norm_b.sqrt();
+    if denom == 0.0 { 0.0 } else { dot / denom }
 }
 
 const GLYPH_ALPHABET: &[char] = &[
@@ -2169,13 +2671,6 @@ const GLYPH_ALPHABET: &[char] = &[
     'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', '-',
     '/', '.', ',', '%', '(', ')', '+', '#',
 ];
-
-fn match_5x7_glyph(pattern: [u8; 7]) -> Option<char> {
-    GLYPH_ALPHABET
-        .iter()
-        .copied()
-        .find(|&ch| glyph_bitmap_5x7(ch) == pattern)
-}
 
 fn glyph_bitmap_5x7(ch: char) -> [u8; 7] {
     match ch {

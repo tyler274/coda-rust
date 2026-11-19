@@ -371,6 +371,17 @@ pub enum LibraryCollection {
 }
 
 impl LibraryCollection {
+    /// Canonical lowercase identifier string matching wire `source_code`.
+    pub const fn as_str(self) -> &'static str {
+        match self {
+            Self::Pubmed => "pubmed",
+            Self::Pmc => "pmc",
+            Self::Dailymed => "dailymed",
+            Self::Mmwr => "mmwr",
+            Self::Uspstf => "uspstf",
+        }
+    }
+
     /// Maps a clinical-evidence service `source_code` into its typed collection.
     pub fn from_source_code(source_code: &str) -> Result<Self, &'static str> {
         match source_code.trim() {
@@ -520,6 +531,9 @@ pub enum LibraryReadOutcome {
     Passage {
         /// Exact passage matching `passage_id`.
         passage: Box<LibraryPassage>,
+        /// Citation label (`L1`, `L2`, ...) assigned inside a chat work run.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        cite_as: Option<String>,
     },
     /// Library responded and holds no active passage with `passage_id`.
     NotFound {
@@ -897,6 +911,115 @@ pub enum WireReadItem {
 pub struct ReadWireResponse {
     /// Per-candidate read outcomes.
     pub results: Vec<WireReadItem>,
+}
+
+/// Per-source freshness state returned by `GET /v1/freshness`.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "state", rename_all = "snake_case")]
+pub enum WireSourceFreshnessState {
+    /// No successful refresh check has ever completed for this source.
+    NeverRefreshed,
+    /// Source completed refresh with no pending retries, waiting items, or errors.
+    Current {
+        /// ISO-8601 UTC timestamp when this source was last confirmed current.
+        last_confirmed_at: String,
+    },
+    /// Source is behind due to errors, retries, waiting items, or unpublished lag.
+    Lagging {
+        /// Last confirmation timestamp if a prior refresh succeeded.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        last_confirmed_at: Option<String>,
+        /// Items awaiting automatic retry.
+        pending_retry: u64,
+        /// Items waiting for an upstream or reader fix.
+        waiting_change: u64,
+        /// Items requiring operator intervention.
+        needs_person: u64,
+        /// Newly admitted items not yet activated in a serving version.
+        unpublished: u64,
+        /// Last recorded failure code for this source, if any.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        last_error_code: Option<String>,
+    },
+}
+
+/// Per-source freshness summary returned by `GET /v1/freshness`.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct WireSourceFreshness {
+    /// Wire source identifier (`"pubmed"`, `"pmc"`, `"dailymed"`, `"cdc-mmwr"`, `"uspstf"`).
+    pub source_code: String,
+    /// Human-readable source display name.
+    pub source_display_name: String,
+    /// Freshness state for this source.
+    pub status: WireSourceFreshnessState,
+    /// Total admitted items held for this source.
+    pub admitted_count: u64,
+}
+
+/// Latency summary returned by `GET /v1/freshness`.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct WireLatencySummary {
+    /// Endpoint name (`"search"` or `"read"`).
+    pub endpoint: String,
+    /// Observation count.
+    pub sample_count: u64,
+    /// 50th percentile duration in milliseconds.
+    pub p50_ms: f64,
+    /// 95th percentile duration in milliseconds.
+    pub p95_ms: f64,
+    /// 99th percentile duration in milliseconds.
+    pub p99_ms: f64,
+    /// Whether observed p95/p99 latencies stay within targets (`None` when zero samples exist).
+    pub within_targets: Option<bool>,
+}
+
+/// Overall corpus standing returned by `GET /v1/freshness`.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "standing", rename_all = "snake_case")]
+pub enum WireLibraryStanding {
+    /// Every source is confirmed without pending failures or unpublished lag.
+    Current,
+    /// At least one source or nightly invariant is stale, lagging, or failed.
+    Stale {
+        /// Human-readable reason naming why the library is not current.
+        reason: String,
+    },
+}
+
+/// Freshness report returned by `GET /v1/freshness`.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct WireFreshnessReport {
+    /// Overall standing (`current` vs `stale` with named reason).
+    #[serde(flatten)]
+    pub standing: WireLibraryStanding,
+    /// Currently active serving version identifier, if any.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub active_version: Option<String>,
+    /// ISO-8601 UTC timestamp of the latest recorded nightly run, if any.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub last_night_recorded_at: Option<String>,
+    /// Outcome label of the latest recorded nightly run.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub last_night_outcome: Option<String>,
+    /// Per-source freshness states across all configured sources.
+    pub sources: Vec<WireSourceFreshness>,
+    /// Count of open operator alerts.
+    pub open_alerts: usize,
+    /// Search latency summary.
+    pub search_latency: WireLatencySummary,
+}
+
+/// Honest outcome of checking clinical library freshness (`GET /v1/freshness`).
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(tag = "outcome", rename_all = "snake_case")]
+pub enum LibraryFreshnessOutcome {
+    /// Live freshness report returned from the clinical library service.
+    Report(WireFreshnessReport),
+    /// Clinical library endpoint was unconfigured, unreachable, or refused `/v1/freshness`.
+    Unavailable {
+        /// Explanation distinct from an idle/fresh standing.
+        reason: String,
+    },
 }
 
 fn format_wire_relationship(rel: &WireRelationship) -> String {
@@ -1539,7 +1662,11 @@ impl ClinicalLibraryClient {
         })
     }
 
-    async fn authorized_post(&self, path: &str) -> Result<reqwest::RequestBuilder, String> {
+    async fn authorized_request(
+        &self,
+        method: reqwest::Method,
+        path: &str,
+    ) -> Result<reqwest::RequestBuilder, String> {
         let Endpoint::Http {
             base_url,
             auth,
@@ -1552,7 +1679,7 @@ impl ClinicalLibraryClient {
             return Err(reason.clone());
         };
 
-        let request = client.post(format!("{base_url}{path}"));
+        let request = client.request(method, format!("{base_url}{path}"));
         match auth {
             OutboundAuth::Unauthenticated => Ok(request),
             OutboundAuth::StaticBearer(token) => {
@@ -1567,6 +1694,53 @@ impl ClinicalLibraryClient {
                 let header = sensitive_bearer_header(&jwt)?;
                 Ok(request.header(AUTHORIZATION, header))
             }
+        }
+    }
+
+    async fn authorized_post(&self, path: &str) -> Result<reqwest::RequestBuilder, String> {
+        self.authorized_request(reqwest::Method::POST, path).await
+    }
+
+    /// Checks live clinical library freshness from `GET /v1/freshness`, failing
+    /// visibly as [`LibraryFreshnessOutcome::Unavailable`] when unconfigured or unreachable.
+    pub async fn freshness(&self) -> LibraryFreshnessOutcome {
+        if let Endpoint::Unconfigured { reason } = &self.endpoint {
+            return LibraryFreshnessOutcome::Unavailable {
+                reason: reason.clone(),
+            };
+        }
+        let builder = match self
+            .authorized_request(reqwest::Method::GET, "/v1/freshness")
+            .await
+        {
+            Ok(req) => req,
+            Err(reason) => return LibraryFreshnessOutcome::Unavailable { reason },
+        };
+        let response = match builder.send().await {
+            Ok(resp) => resp,
+            Err(source) => {
+                return LibraryFreshnessOutcome::Unavailable {
+                    reason: WireCallError::Transport {
+                        kind: classify_transport_kind(&source),
+                        source,
+                    }
+                    .to_string(),
+                };
+            }
+        };
+        if response.status() != StatusCode::OK {
+            return LibraryFreshnessOutcome::Unavailable {
+                reason: WireCallError::HttpStatus {
+                    status: response.status(),
+                }
+                .to_string(),
+            };
+        }
+        match response.json::<WireFreshnessReport>().await {
+            Ok(report) => LibraryFreshnessOutcome::Report(report),
+            Err(source) => LibraryFreshnessOutcome::Unavailable {
+                reason: WireCallError::MalformedResponse { source }.to_string(),
+            },
         }
     }
 
@@ -1800,6 +1974,7 @@ impl ClinicalLibraryClient {
                 match passage_from_wire_unit(&candidate_id, *unit) {
                     Ok(passage) => LibraryReadOutcome::Passage {
                         passage: Box::new(passage),
+                        cite_as: None,
                     },
                     Err(reason) => LibraryReadOutcome::Unavailable {
                         reason: format!("clinical_library_invalid_passage: {reason}"),
@@ -1827,8 +2002,19 @@ impl ClinicalLibraryClient {
 
     /// Validates and executes one chat tool invocation (`search_clinical_library`
     /// or `read_clinical_library`), returning the exact JSON result delivered to
-    /// the model.
+    /// the model without a citation label.
     pub async fn execute(&self, name: &str, arguments: &Value) -> ToolOutcome {
+        self.execute_with_cite_as(name, arguments, None).await
+    }
+
+    /// Executes one chat tool invocation and attaches `cite_as` (such as `"L1"`)
+    /// when a `read_clinical_library` passage succeeds inside a cited run.
+    pub async fn execute_with_cite_as(
+        &self,
+        name: &str,
+        arguments: &Value,
+        cite_as: Option<&str>,
+    ) -> ToolOutcome {
         let request = match ClinicalLibraryRequest::parse(name, arguments) {
             Ok(request) => request,
             Err(reason) => return ToolOutcome::refused(reason.to_string()),
@@ -1845,7 +2031,12 @@ impl ClinicalLibraryClient {
                 )
             }
             ClinicalLibraryRequest::Read { passage_id } => {
-                let outcome = self.read_passage(&passage_id).await;
+                let mut outcome = self.read_passage(&passage_id).await;
+                if let (Some(label), LibraryReadOutcome::Passage { cite_as: slot, .. }) =
+                    (cite_as, &mut outcome)
+                {
+                    *slot = Some(label.to_owned());
+                }
                 ToolOutcome::Returned(
                     serde_json::to_string(&outcome).expect("LibraryReadOutcome serializes"),
                 )
@@ -1941,7 +2132,7 @@ pub fn search_tool() -> Tool {
 pub fn read_tool() -> Tool {
     Tool {
         name: READ_LIBRARY_TOOL.into(),
-        description: "Open an exact passage from the clinical library by its `passage_id` to inspect or verify its full passage text, source metadata, publication date, publication status (including any retraction or correction notice), and attribution before citing it.".into(),
+        description: "Open an exact passage from the clinical library by its `passage_id` to inspect or verify its full passage text, source metadata, publication date, publication status (including any retraction or correction notice), and attribution before citing it. When returned with `cite_as` (such as `L1`), cite that label in square brackets beside claims resting on the passage.".into(),
         parameters: json!({
             "type": "object",
             "properties": {

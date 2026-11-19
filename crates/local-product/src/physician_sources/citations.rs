@@ -325,12 +325,47 @@ impl Delivered {
     fn of_work(records: &[(Event, bool)], messages: &[ProductMessage]) -> Result<Self, Cause> {
         let mut delivered = Self::default();
         for output in harness::engine::results::delivered_originals(records, messages)? {
-            // Search pages and other results are not read receipts.
-            let Ok(receipt) = serde_json::from_str::<ReadReceipt>(output) else {
+            // Chart read receipts.
+            if let Ok(receipt) = serde_json::from_str::<ReadReceipt>(output) {
+                for result in receipt.results {
+                    delivered.add(result);
+                }
                 continue;
-            };
-            for result in receipt.results {
-                delivered.add(result);
+            }
+            // Clinical library exact passage reads (`L1`, `L2`, ...).
+            if let Ok(crate::clinical_library::LibraryReadOutcome::Passage {
+                passage,
+                cite_as: Some(label),
+            }) = serde_json::from_str::<crate::clinical_library::LibraryReadOutcome>(output)
+            {
+                let label = Label(label);
+                match delivered.0.iter_mut().find(|(known, _)| known == &label) {
+                    Some((_, version)) => version.stretches.push((0, 0, passage.text)),
+                    None => delivered.0.push((
+                        label,
+                        DeliveredVersion {
+                            stretches: vec![(0, 0, passage.text)],
+                        },
+                    )),
+                }
+                continue;
+            }
+            // Document page reads (`D1`, `D2`, ...).
+            if let Ok(val) = serde_json::from_str::<serde_json::Value>(output)
+                && val.get("outcome").and_then(serde_json::Value::as_str) == Some("available")
+                && let Some(label) = val.get("cite_as").and_then(serde_json::Value::as_str)
+                && let Some(text) = val.get("text").and_then(serde_json::Value::as_str)
+            {
+                let label = Label(label.to_owned());
+                match delivered.0.iter_mut().find(|(known, _)| known == &label) {
+                    Some((_, version)) => version.stretches.push((0, 0, text.to_owned())),
+                    None => delivered.0.push((
+                        label,
+                        DeliveredVersion {
+                            stretches: vec![(0, 0, text.to_owned())],
+                        },
+                    )),
+                }
             }
         }
         for (_, version) in &mut delivered.0 {
@@ -738,7 +773,7 @@ fn bracket(bytes: &[u8], open: usize) -> Option<(Vec<std::ops::Range<usize>>, us
     let mut labels = Vec::new();
     let mut at = open + 1;
     loop {
-        if bytes.get(at) != Some(&b'S') {
+        if !matches!(bytes.get(at), Some(b'S' | b'L' | b'D')) {
             return None;
         }
         let digits = bytes[at + 1..]
@@ -1174,5 +1209,192 @@ mod tests {
             marks,
             [(28, vec![at("Potassium")]), (28, vec![at("Sodium")])]
         );
+    }
+
+    #[test]
+    fn library_and_document_page_reads_resolve_cite_as_marks_and_quotes() {
+        let lib_started = (
+            Event {
+                attempt_id: "attempt".into(),
+                sequence: 1,
+                ordinal: 1,
+                kind: EventKind::ToolStarted(harness::engine::Invocation {
+                    id: "lib-1".into(),
+                    name: crate::clinical_library::READ_LIBRARY_TOOL.into(),
+                    arguments: serde_json::json!({
+                        "passage_id": "22222222-2222-4222-8222-222222222202"
+                    })
+                    .to_string(),
+                }),
+            },
+            true,
+        );
+        let lib_json = serde_json::json!({
+            "outcome": "passage",
+            "cite_as": "L1",
+            "passage": {
+                "passage_id": "22222222-2222-4222-8222-222222222202",
+                "source": {
+                    "collection": "dailymed",
+                    "document_id": "setid-dapa",
+                    "title": "Dapagliflozin prescribing information",
+                    "section": "Dosage and Administration"
+                },
+                "date": "2025-11-03",
+                "status": { "state": "current" },
+                "attribution": "DailyMed",
+                "text": "Initiate 10 mg daily when eGFR >= 25 mL/min/1.73 m2.",
+                "content_sha256": crate::sha256_hex(b"Initiate 10 mg daily when eGFR >= 25 mL/min/1.73 m2.")
+            }
+        })
+        .to_string();
+        let lib_returned = (
+            Event {
+                attempt_id: "attempt".into(),
+                sequence: 2,
+                ordinal: 1,
+                kind: EventKind::ToolReturned {
+                    call_id: "lib-1".into(),
+                    result: harness::engine::results::ToolResult::Original(lib_json.clone()),
+                },
+            },
+            true,
+        );
+        let doc_started = (
+            Event {
+                attempt_id: "attempt".into(),
+                sequence: 3,
+                ordinal: 1,
+                kind: EventKind::ToolStarted(harness::engine::Invocation {
+                    id: "doc-1".into(),
+                    name: crate::attachments::READ_DOCUMENT_PAGE_TOOL.into(),
+                    arguments: serde_json::json!({
+                        "document_id": "fax-echo",
+                        "version": 1,
+                        "page_number": 2
+                    })
+                    .to_string(),
+                }),
+            },
+            true,
+        );
+        let doc_json = serde_json::json!({
+            "outcome": "available",
+            "cite_as": "D1",
+            "document_id": "fax-echo",
+            "version": 1,
+            "revision": "v1",
+            "page_number": 2,
+            "page_count": 3,
+            "text": "LVEF 61% preserved systolic function."
+        })
+        .to_string();
+        let doc_returned = (
+            Event {
+                attempt_id: "attempt".into(),
+                sequence: 4,
+                ordinal: 1,
+                kind: EventKind::ToolReturned {
+                    call_id: "doc-1".into(),
+                    result: harness::engine::results::ToolResult::Original(doc_json.clone()),
+                },
+            },
+            true,
+        );
+        let provider_delivered = (
+            Event {
+                attempt_id: "attempt".into(),
+                sequence: 5,
+                ordinal: 2,
+                kind: EventKind::ProviderStarted {
+                    dispatched_at_unix_ms: 5,
+                    request: harness::engine::SavedRequest {
+                        added: vec![
+                            Item::Result {
+                                call_id: "lib-1".into(),
+                                output: harness::engine::results::ResultView::whole(
+                                    "lib-1", &lib_json,
+                                ),
+                            },
+                            Item::Result {
+                                call_id: "doc-1".into(),
+                                output: harness::engine::results::ResultView::whole(
+                                    "doc-1", &doc_json,
+                                ),
+                            },
+                        ],
+                        items: vec![
+                            harness::engine::RequestItem::Event {
+                                attempt: "attempt".into(),
+                                sequence: 5,
+                                index: 0,
+                            },
+                            harness::engine::RequestItem::Event {
+                                attempt: "attempt".into(),
+                                sequence: 5,
+                                index: 1,
+                            },
+                        ],
+                    },
+                    context: harness::engine::DispatchContext::default(),
+                },
+            },
+            true,
+        );
+        let turn = Turn {
+            items: vec![Item::Call(harness::engine::Invocation {
+                id: "fin-1".into(),
+                name: FINISH_TOOL.into(),
+                arguments: serde_json::json!({
+                    "answer": "Echo shows LVEF 61% [D1] and dapagliflozin 10 mg is supported [L1].",
+                    "quotes": [
+                        { "label": "D1", "quote": "LVEF 61%" },
+                        { "label": "L1", "quote": "Initiate 10 mg daily" }
+                    ],
+                    "descriptions": [],
+                    "basis": "Echo fax page 2 [D1] and DailyMed label [L1].",
+                    "cites_none": false
+                })
+                .to_string(),
+            })],
+            receipt: serde_json::json!({}),
+            usage: Default::default(),
+        };
+        let provider_returned = (
+            Event {
+                attempt_id: "attempt".into(),
+                sequence: 6,
+                ordinal: 2,
+                kind: EventKind::ProviderReturned(turn.clone()),
+            },
+            true,
+        );
+        let records = [
+            lib_started,
+            lib_returned,
+            doc_started,
+            doc_returned,
+            provider_delivered,
+            provider_returned,
+        ];
+        let Decision::Save { text, finished } = decide(&turn, &records, &[]).unwrap() else {
+            panic!("expected L1 and D1 citations to resolve cleanly");
+        };
+        assert_eq!(
+            text,
+            "Echo shows LVEF 61% and dapagliflozin 10 mg is supported."
+        );
+        assert_eq!(finished.marks().len(), 2);
+        assert_eq!(finished.marks()[0].source.revision, "v1:p2");
+        assert!(finished.marks()[0].place.is_some());
+        assert!(finished.marks()[1].place.is_some());
+
+        // Non-canonical zero-padded labels like `[L01]` / `[D01]` must not resolve.
+        let labels = Labels::of_work(&records);
+        assert!(labels.version(&Label("L01".into())).is_none());
+        assert!(labels.version(&Label("D01".into())).is_none());
+        assert!(labels.version(&Label("S01".into())).is_none());
+        assert!(labels.version(&Label("L1".into())).is_some());
+        assert!(labels.version(&Label("D1".into())).is_some());
     }
 }

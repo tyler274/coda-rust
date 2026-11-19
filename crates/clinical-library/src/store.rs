@@ -137,6 +137,9 @@ pub enum StoreError {
     /// The article's rules refused the move.
     #[error("the article's state refused the move")]
     InvalidMove(#[from] InvalidMove),
+    /// A corpus document or passage unit violated domain invariants.
+    #[error("invalid clinical corpus document")]
+    Corpus(#[from] crate::corpus::CorpusError),
     /// A stored row doesn't match any state the types allow.
     #[error("a stored {table} row is invalid")]
     Corrupt {
@@ -186,6 +189,11 @@ pub enum Corruption {
 }
 
 impl Store {
+    /// Returns the underlying Postgres connection for crate-internal queries.
+    pub(crate) fn db(&self) -> &DatabaseConnection {
+        &self.db
+    }
+
     /// Opens a small pool without changing the schema. Run
     /// `clinical-library-migrate` first.
     pub async fn connect(database_url: &str) -> Result<Self, DbErr> {
@@ -954,7 +962,10 @@ async fn history(
 }
 
 /// Locks the slot's row and checks the lease still holds it.
-async fn locked_slot(tx: &DatabaseTransaction, lease: &Lease) -> Result<slot::Model, StoreError> {
+pub(crate) async fn locked_slot(
+    tx: &DatabaseTransaction,
+    lease: &Lease,
+) -> Result<slot::Model, StoreError> {
     let row = slot::Entity::find_by_id(lease.slot.as_str().to_owned())
         .lock_exclusive()
         .one(tx)
@@ -1127,14 +1138,14 @@ async fn insert_night(
 
 /// Wraps a stored row's fault with its table, keeping the fault as the
 /// cause.
-fn fault(table: &'static str, cause: impl Into<Corruption>) -> StoreError {
+pub(crate) fn fault(table: &'static str, cause: impl Into<Corruption>) -> StoreError {
     StoreError::Corrupt {
         table,
         cause: cause.into(),
     }
 }
 
-fn outcome_from_row(row: night::Model) -> Result<NightOutcome, StoreError> {
+pub(crate) fn outcome_from_row(row: night::Model) -> Result<NightOutcome, StoreError> {
     const TABLE: &str = "clinical_library_nights";
     let version = row
         .activated_version

@@ -90,6 +90,7 @@ impl JobError for StoreError {
             | Self::Unqualified(_)
             | Self::NotTonightsSource(_)
             | Self::InvalidMove(_)
+            | Self::Corpus(_)
             | Self::Corrupt { .. } => Failure::Code(FailureCode::known(STORE_FAILED)),
         }
     }

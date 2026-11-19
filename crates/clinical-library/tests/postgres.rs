@@ -61,8 +61,8 @@ async fn migrations_apply_to_a_fresh_database() {
         .unwrap()
         .try_get::<i64>("", "n")
         .unwrap();
-    // The initial schema, the PubMed status schema and the night runner's.
-    assert_eq!(ledger, 3);
+    // The initial schema, PubMed status, night runner, and corpus/freshness schemas.
+    assert_eq!(ledger, 4);
     assert_eq!(store.active_version().await.unwrap(), None);
     scratch.drop().await;
 }
