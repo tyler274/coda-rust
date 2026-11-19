@@ -1065,6 +1065,11 @@ fn PhysicianShell(
         *search_attempt.write() += 1;
         search_open.set(true);
     };
+    let send_refresh = SendRefresh {
+        snapshot: snapshot_attempt,
+        workspace: workspace_attempt,
+        today: today_attempt,
+    };
     let mut today_cache = use_signal(|| None::<Vec<TodayLine>>);
     let mut today_meta_cache = use_signal(today_updates::TodayMeta::default);
     let mut workspace_cache = use_signal(|| None::<PatientWorkspaceResponse>);
@@ -1458,8 +1463,7 @@ fn PhysicianShell(
                         send_slot,
                         client,
                         composer,
-                        snapshot_attempt,
-                        workspace_attempt,
+                        send_refresh,
                         target.clone(),
                         pending,
                     );
@@ -1543,15 +1547,7 @@ fn PhysicianShell(
         // again with its own key; a new command would risk sending twice.
         let unanswered = composer.peek().pending_send(&target);
         if let Some(pending) = unanswered {
-            dispatch_send(
-                send_slot,
-                client,
-                composer,
-                snapshot_attempt,
-                workspace_attempt,
-                target,
-                pending,
-            );
+            dispatch_send(send_slot, client, composer, send_refresh, target, pending);
             return;
         }
         if text.trim().is_empty() {
@@ -1566,15 +1562,7 @@ fn PhysicianShell(
             .write()
             .begin_send(&target, command.key(), &text, command.0.clone());
         if let Some(pending) = pending {
-            dispatch_send(
-                send_slot,
-                client,
-                composer,
-                snapshot_attempt,
-                workspace_attempt,
-                target,
-                pending,
-            );
+            dispatch_send(send_slot, client, composer, send_refresh, target, pending);
         }
     };
     let send_update_answer = move || {
@@ -5719,6 +5707,21 @@ fn autosave(composer: Signal<Composer>, client: Signal<PhysicianClient>, target:
     });
 }
 
+#[derive(Clone, Copy)]
+struct SendRefresh {
+    snapshot: Signal<u32>,
+    workspace: Signal<u32>,
+    today: Signal<u32>,
+}
+
+impl SendRefresh {
+    fn bump(&mut self) {
+        *self.snapshot.write() += 1;
+        *self.workspace.write() += 1;
+        *self.today.write() += 1;
+    }
+}
+
 /// Sends a captured message. Acceptance removes only the submitted text and
 /// queues its durable clear; refusal keeps the text as an ordinary draft; no
 /// answer leaves the Send pending, and Check again (or a reload) asks again
@@ -5727,8 +5730,7 @@ fn dispatch_send(
     slot: CommandSlot,
     client: Signal<PhysicianClient>,
     composer: Signal<Composer>,
-    mut snapshot_attempt: Signal<u32>,
-    mut workspace_attempt: Signal<u32>,
+    mut refresh: SendRefresh,
     target: DraftTarget,
     pending: composer::PendingSend,
 ) {
@@ -5738,8 +5740,7 @@ fn dispatch_send(
         Callback::new(move |()| {
             let mut held = composer;
             held.write().sent(&target, &key, SendAnswer::Accepted);
-            *snapshot_attempt.write() += 1;
-            *workspace_attempt.write() += 1;
+            refresh.bump();
             autosave(composer, client, target.clone());
         })
     };

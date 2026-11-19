@@ -24,8 +24,9 @@ use local_product::physician_chat::PhysicianSkills;
 use local_product::physician_sources::{
     MedicalRecordNumber, ReadablePart, RecordDate, SourcePatient, SourceRevision,
 };
-use local_product::runtime::Store;
+use local_product::runtime::delivery::{DeliveryKind, Wakeups};
 use local_product::runtime::sources::SourcePull;
+use local_product::runtime::{Input, Scope, Store};
 use local_product::sha256_hex;
 use physician_auth::{AuthStore, Membership, PhysicianIdentity, PostgresAuthStore, PracticeClock};
 use physician_sample::STAGING_PRACTICE_ID;
@@ -328,6 +329,7 @@ struct RunningHarness {
     _db: DisposableDb,
     address: SocketAddr,
     roster_faults: Arc<RosterFaultState>,
+    wakeups: Wakeups,
     server_task: tokio::task::JoinHandle<()>,
 }
 
@@ -373,6 +375,7 @@ impl RunningHarness {
         seed(store.clone(), Arc::clone(&auth)).await;
 
         let roster_faults = RosterFaultState::new();
+        let wakeups = store.wakeups().await.expect("subscribe runtime wakeups");
         let skills = PhysicianSkills::configured(None, false).expect("load workspace skills");
         let roles = test_model_roles();
         let chat = Arc::new(DurableChat::new(store.clone(), skills, &roles));
@@ -402,6 +405,7 @@ impl RunningHarness {
             _db: disposable,
             address,
             roster_faults,
+            wakeups,
             server_task,
         }
     }
@@ -640,6 +644,10 @@ impl Tab {
         self.step("clickNamed", serde_json::json!([selector, words]));
     }
 
+    fn click_containing(&mut self, selector: &str, words: &str) {
+        self.step("clickContaining", serde_json::json!([selector, words]));
+    }
+
     fn sign_in_as(&mut self, email: &str) {
         self.wait_for_text("Work email", Duration::from_secs(20));
         self.browser.type_into("input[type=\"email\"]", email);
@@ -738,6 +746,45 @@ impl Tab {
                 return val;
             }
             std::thread::sleep(Duration::from_millis(30));
+        }
+    }
+
+    fn conversation_titles(&mut self) -> Vec<String> {
+        self.step("conversationTitles", serde_json::json!([]))
+            .as_array()
+            .map(|items| {
+                items
+                    .iter()
+                    .filter_map(|v| v.as_str().map(str::to_owned))
+                    .collect()
+            })
+            .unwrap_or_default()
+    }
+
+    fn conversation_row_texts(&mut self) -> Vec<String> {
+        self.step("conversationRowTexts", serde_json::json!([]))
+            .as_array()
+            .map(|items| {
+                items
+                    .iter()
+                    .filter_map(|v| v.as_str().map(str::to_owned))
+                    .collect()
+            })
+            .unwrap_or_default()
+    }
+
+    fn wait_for_conversation_titled(&mut self, title: &str, timeout: Duration) -> Vec<String> {
+        let started = Instant::now();
+        loop {
+            let titles = self.conversation_titles();
+            if titles.iter().any(|item| item == title) {
+                return titles;
+            }
+            assert!(
+                started.elapsed() < timeout,
+                "timed out waiting for conversation {title:?} in sidebar; currently showing: {titles:?}"
+            );
+            std::thread::sleep(Duration::from_millis(60));
         }
     }
 
@@ -960,4 +1007,160 @@ async fn find_patient_lists_paged_roster_recovers_failures_and_isolates_practice
     tab.set_viewport(390, 844, true);
     std::thread::sleep(Duration::from_millis(150));
     tab.assert_no_horizontal_overflow("phone Find patient roster");
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn new_conversation_appears_immediately_survives_switch_and_notifies_second_tab() {
+    let _guard = test_lock().lock().await;
+    let workspace = "pw-chat-immediate-01";
+    let mut harness = RunningHarness::start_after("chat_immediate", |store, auth| async move {
+        register_and_seed_patient(
+            &auth,
+            &store,
+            STAGING_PRACTICE_ID,
+            workspace,
+            "Mary Louis",
+            "1972-03-18",
+            "00000005",
+        )
+        .await;
+        let identity = enroll_physician(
+            &auth,
+            STAGING_PRACTICE_ID,
+            "chat-physician@codahealth.test",
+            "Dr. Chat",
+            &[workspace.to_owned()],
+        )
+        .await;
+
+        // Seed an earlier conversation on Mary Louis so switching chats before reply completion
+        // can be exercised directly.
+        let skills = PhysicianSkills::configured(None, false).expect("load workspace skills");
+        let roles = test_model_roles();
+        let recipe = store
+            .chat_recipe_with_understanding(
+                &roles.chat,
+                local_product::physician_chat::INSTRUCTIONS,
+                &skills,
+                &identity.practice_id,
+                workspace,
+            )
+            .await
+            .expect("chat recipe");
+        store
+            .accept_authorized(
+                &Scope {
+                    practice: identity.practice_id.clone(),
+                    physician: identity.physician_id.clone(),
+                    workspace: workspace.to_owned(),
+                    chat: "chat-earlier-bp".to_owned(),
+                },
+                &Input {
+                    key: "seed-earlier-bp".to_owned(),
+                    text: "Prior blood pressure review".to_owned(),
+                    timezone: "America/New_York".to_owned(),
+                    scenario: None,
+                },
+                vec![3_u8; 32],
+                &skills,
+                &recipe,
+                None,
+            )
+            .await
+            .expect("seed earlier conversation");
+    })
+    .await;
+
+    let patient_url = format!("http://{}/?patient={workspace}", harness.address);
+    let mut tab_one = Tab::open(&patient_url);
+    let mut tab_two = Tab::open(&patient_url);
+
+    for tab in [&mut tab_one, &mut tab_two] {
+        tab.sign_in_as("chat-physician@codahealth.test");
+        tab.wait_for_conversation_titled("Prior blood pressure review", Duration::from_secs(20));
+    }
+    // Give Tab 2's EventSource / streaming connection a beat to settle before Tab 1 submits.
+    std::thread::sleep(Duration::from_millis(350));
+
+    let prompt = "Check potassium trend before tomorrow's visit";
+    tab_one.click("button.sidebar-new-conversation");
+    tab_one.wait_for_text(
+        "What would you like Coda to review?",
+        Duration::from_secs(10),
+    );
+    tab_one.browser.type_into("textarea.composer-input", prompt);
+    std::thread::sleep(Duration::from_millis(80));
+    tab_one.click_named(".composer-toolbar button", "Send");
+
+    // AC1: New conversation appears immediately in Tab 1's Conversations list, titled from
+    // its first message, while Coda is still writing (no worker has run; queue holds wakeup).
+    let tab_one_titles = tab_one.wait_for_conversation_titled(prompt, Duration::from_secs(10));
+    assert_eq!(
+        tab_one_titles.first().map(String::as_str),
+        Some(prompt),
+        "newest accepted conversation must appear at the top of Conversations: {tab_one_titles:?}"
+    );
+    assert!(
+        !tab_one_titles.iter().any(|t| t == "Untitled"),
+        "conversation must be titled from its first message, never Untitled: {tab_one_titles:?}"
+    );
+    let tab_one_rows = tab_one.conversation_row_texts();
+    assert!(
+        tab_one_rows[0].contains("In progress"),
+        "pending conversation row must show In progress while Coda is writing: {:?}",
+        tab_one_rows[0]
+    );
+    let notified = tokio::time::timeout(Duration::from_secs(5), harness.wakeups.next())
+        .await
+        .expect("turn wakeup notified within 5s")
+        .expect("wakeup channel open")
+        .expect("delivery notification");
+    assert_eq!(
+        notified.kind,
+        DeliveryKind::ChatTurn,
+        "turn was queued once and no model worker completed it"
+    );
+    tab_one.save_screenshot("eng-451-pending-conversation-listed");
+
+    // AC3: Without any user action in Tab 2, the server's WorkspaceChanged event on message
+    // accept causes Tab 2 to refetch and list the new conversation before the reply lands.
+    let tab_two_titles = tab_two.wait_for_conversation_titled(prompt, Duration::from_secs(15));
+    assert_eq!(
+        tab_two_titles.first().map(String::as_str),
+        Some(prompt),
+        "second tab must list the newly accepted conversation at the top: {tab_two_titles:?}"
+    );
+    tab_two.save_screenshot("eng-451-second-tab-listed");
+
+    // AC2: Physician switches to another conversation ("Prior blood pressure review") in Tab 1
+    // before Coda's reply lands; the new conversation remains in Conversations.
+    tab_one.click_containing(
+        ".glass-sidebar button.sidebar-conversation-link",
+        "Prior blood pressure review",
+    );
+    tab_one.wait_for_text("Prior blood pressure review", Duration::from_secs(10));
+    std::thread::sleep(Duration::from_millis(200));
+    let after_switch_titles = tab_one.conversation_titles();
+    assert_eq!(
+        after_switch_titles,
+        vec![prompt.to_owned(), "Prior blood pressure review".to_owned(),],
+        "new conversation must stay listed after switching to another chat: {after_switch_titles:?}"
+    );
+    let page_titles: Vec<String> = tab_one
+        .step("pageConversationTitles", serde_json::json!([]))
+        .as_array()
+        .map(|items| {
+            items
+                .iter()
+                .filter_map(|v| v.as_str().map(str::to_owned))
+                .collect()
+        })
+        .unwrap_or_default();
+    assert_eq!(
+        page_titles,
+        vec![prompt.to_owned(), "Prior blood pressure review".to_owned(),],
+        "patient page Conversation list must also keep the pending chat listed: {page_titles:?}"
+    );
+    tab_one.save_screenshot("eng-451-switched-chat-still-listed");
 }
