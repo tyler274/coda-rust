@@ -896,7 +896,15 @@ async fn each_message_and_follow_up_kind_reaches_the_right_list_with_item_open_a
     assert!(alpha_keys.contains(&"match:spruce-match-ordinary"));
     assert!(alpha_keys.contains(&"unreadable:spruce-unreadable-4"));
     assert!(alpha_keys.contains(&"channel:spruce"));
-    assert!(alpha_keys.contains(&format!("unhandled:{ws_fu_cannot_restart}").as_str()));
+    assert!(
+        alpha_keys.contains(
+            &format!(
+                "unhandled-followup:{ws_fu_cannot_restart}:{}",
+                fu_cant_id.as_str()
+            )
+            .as_str()
+        )
+    );
 
     // Verify excluded items NEVER appear on Today:
     for forbidden in [
@@ -1042,6 +1050,8 @@ async fn each_message_and_follow_up_kind_reaches_the_right_list_with_item_open_a
         SeenStanding::Seen { .. }
     ));
 
+    // Direct `clear_today_item_done` on a `CannotRestart` follow-up must be refused
+    // (`P5.Along.CantRestart`); the physician must choose Complete, NewDate, or Cancel.
     let done_cant = store
         .clear_today_item_done(
             auth.as_ref(),
@@ -1055,9 +1065,34 @@ async fn each_message_and_follow_up_kind_reaches_the_right_list_with_item_open_a
                 command_key: &CommandKey::new("cmd-done-cant-fu").unwrap(),
             },
         )
+        .await;
+    assert!(
+        matches!(
+            done_cant,
+            Err(local_product::runtime::today_updates::TodayUpdatesError::CannotMarkDone { .. })
+        ),
+        "CannotRestart follow-up must refuse silent Today Done dismissal: got {done_cant:?}"
+    );
+    store
+        .resolve_cannot_restart_for_physician(
+            &WorkspaceAccess {
+                practice: &dr_alpha.practice_id,
+                physician: &dr_alpha.physician_id,
+                workspace: &ws_fu_cannot_restart,
+                session_hash: &hash_alpha,
+            },
+            &FollowUpCommandKey::new("cmd-resolve-cant-fu-today").unwrap(),
+            &fu_cant_id,
+            local_product::runtime::follow_ups::CannotRestartResolution::Complete {
+                resolution: local_product::runtime::follow_ups::FollowUpChangeNote::new(
+                    "Reviewed discharge summary manually",
+                )
+                .unwrap(),
+            },
+            &mut authority,
+        )
         .await
-        .expect("clear CannotRestart follow-up row with Done");
-    assert!(matches!(done_cant, TodayDoneResult::Cleared { .. }));
+        .expect("resolve CannotRestart follow-up via explicit physician choice");
 
     // Open & clear `UnreadableMessage` (`unreadable:spruce-unreadable-4`) and disconnected `MessageThread` with `Done`!
     let unreadable_row = today_alpha

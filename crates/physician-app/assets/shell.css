@@ -154,7 +154,8 @@ html, body { margin: 0; height: 100%; background: var(--surface); color: var(--i
     grid-template-rows: auto minmax(0, 1fr);
     scroll-padding-top: var(--toolbar-height);
   }
-  .glass-stage:has(.now-banner) {
+  .glass-stage:has(.now-banner),
+  .glass-stage:has(.today-cannot-restart-prompt) {
     grid-template-rows: auto auto minmax(0, 1fr);
   }
   .glass-stage .schedule-rail { top: var(--toolbar-height); }
@@ -349,6 +350,12 @@ html, body { margin: 0; height: 100%; background: var(--surface); color: var(--i
 }
 @media (width >= 56.25rem) {
   .now-banner { margin-inline-end: calc(var(--page-gutter) + 9rem); }
+  .today-cannot-restart-prompt { margin-inline-end: calc(var(--page-gutter) + 9rem); }
+}
+.today-cannot-restart-prompt {
+  box-sizing: border-box;
+  max-width: 44rem;
+  margin: var(--space-3) var(--page-gutter) 0;
 }
 .now-banner-body {
   display: flex;

@@ -2636,6 +2636,7 @@ mod tests {
                 log_days: Vec::new(),
             },
             open_concerns: Vec::new(),
+            follow_ups: Vec::new(),
             recent_work: Vec::new(),
         };
         let chat_recipe = crate::physician_chat::ChatAssignment::for_patient(

@@ -1219,37 +1219,6 @@ impl Store {
         newest_mark(&self.db, patient_marks(key)).await
     }
 
-    /// Computes a deterministic fingerprint over active non-withdrawn, non-withheld
-    /// memory files and log notes, plus whether an active physician-authored
-    /// memory note exists on `key`.
-    pub(crate) async fn active_memory_state(
-        &self,
-        key: &PatientKey,
-    ) -> Result<(String, bool), DbErr> {
-        let tx = self.snapshot().await?;
-        let files = current_files(&tx, key).await?;
-        let days = log_days(&tx, key).await?;
-        tx.commit().await?;
-
-        let mut parts = Vec::new();
-        for (file, version) in files {
-            parts.push(format!("{}:v{}", MemoryPath::from(file), version.number));
-        }
-        let mut has_physician_correction = false;
-        for (day, log) in days {
-            for note in log.notes {
-                if note.physician != super::jobs::PRACTICE_OWNER {
-                    has_physician_correction = true;
-                }
-                parts.push(format!("log:{day}:n{}", note.number));
-            }
-        }
-        Ok((
-            crate::sha256_hex(parts.join("|").as_bytes()),
-            has_physician_correction,
-        ))
-    }
-
     /// Searches the current text of every file that exists and every log
     /// day, in file order. Each hit names its file, its line number in the
     /// file and the line.

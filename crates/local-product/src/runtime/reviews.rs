@@ -789,7 +789,7 @@ impl ReviewReceiver for PatientReviewReceiver<'_> {
     }
 }
 
-struct VerifiedPracticePatient;
+pub(super) struct VerifiedPracticePatient;
 
 #[async_trait]
 impl PracticeAuthority for VerifiedPracticePatient {
@@ -1689,21 +1689,80 @@ impl Store {
         }
 
         let now_ts = now(&self.db).await?;
-        let due_fups = self
-            .due_follow_ups(practice, workspace, now_ts)
+        let all_fups = self
+            .workspace_follow_ups(practice, workspace)
             .await
             .map_err(|err| match err {
                 super::follow_ups::FollowUpError::Database(db_err) => db_err,
                 other => error(&other.to_string()),
             })?;
-        for fu in due_fups {
-            additional_inputs.push(format!(
-                "due active follow-up `{}` (version {}, due unix {}): {} — inspect current chart and call `patient_follow_up` when completed, revised, or cancelled.",
-                fu.id.as_str(),
-                fu.version,
-                fu.due_at,
-                fu.summary.as_str(),
-            ));
+        let withheld =
+            super::link_correction::load_workspace_withheld_state_in_tx(&self.db, workspace)
+                .await?;
+        for fu in all_fups {
+            if super::follow_ups::follow_up_cites_withheld(&fu, &withheld) {
+                continue;
+            }
+            match &fu.standing {
+                super::follow_ups::FollowUpStanding::Active { .. }
+                    if fu.standing.is_due_at(now_ts) =>
+                {
+                    additional_inputs.push(format!(
+                        "due active follow-up `{}` (version {}, due unix {}): {} — inspect current chart and call `patient_follow_up` when completed, revised, or cancelled.",
+                        fu.id.as_str(),
+                        fu.version,
+                        fu.due_at,
+                        fu.summary.as_str(),
+                    ));
+                }
+                super::follow_ups::FollowUpStanding::Active { .. } => {
+                    additional_inputs.push(format!(
+                        "active upcoming follow-up `{}` (version {}, due unix {}): {} — check whether new chart evidence or messages resolve or change it before its due date, and update via `patient_follow_up` when warranted.",
+                        fu.id.as_str(),
+                        fu.version,
+                        fu.due_at,
+                        fu.summary.as_str(),
+                    ));
+                }
+                super::follow_ups::FollowUpStanding::Held { reason, .. } => {
+                    let note = reason
+                        .as_ref()
+                        .map_or("paused by physician", |r| r.as_str());
+                    additional_inputs.push(format!(
+                        "held follow-up `{}` (version {}, paused due unix {}, note: {}): {} — keep paused unless the physician asks to resume or revise it.",
+                        fu.id.as_str(),
+                        fu.version,
+                        fu.due_at,
+                        note,
+                        fu.summary.as_str(),
+                    ));
+                }
+                super::follow_ups::FollowUpStanding::CannotRestart { reason, .. } => {
+                    additional_inputs.push(format!(
+                        "follow-up `{}` (version {}) could not restart automatically ({}): {} — awaits explicit physician choice (Complete, Set a new date, or Cancel follow-up).",
+                        fu.id.as_str(),
+                        fu.version,
+                        reason,
+                        fu.summary.as_str(),
+                    ));
+                }
+                super::follow_ups::FollowUpStanding::Cancelled {
+                    reason,
+                    cancelled_at,
+                    ..
+                } => {
+                    additional_inputs.push(format!(
+                        "cancelled follow-up `{}` (cancelled unix {}, reason: {}): {} — stays cancelled; do not recreate this follow-up unless genuinely new clinical information has arrived since unix {}.",
+                        fu.id.as_str(),
+                        cancelled_at,
+                        reason.as_str(),
+                        fu.summary.as_str(),
+                        cancelled_at,
+                    ));
+                }
+                super::follow_ups::FollowUpStanding::Completed { .. }
+                | super::follow_ups::FollowUpStanding::WithdrawnWrongPatient { .. } => {}
+            }
         }
 
         additional_inputs.extend(caller_inputs);
@@ -2084,6 +2143,102 @@ impl Store {
             roles,
             skills,
             &VerifiedPracticePatient,
+        )
+        .await
+    }
+
+    /// Admits a physician-requested follow-up review (`Review now` or `Resume`),
+    /// attaching both [`ReviewTrigger::FollowUp`] (so unified `Stop`, `Change`,
+    /// and failure-exhaustion `CannotRestart` link directly to this review) and
+    /// [`ReviewTrigger::PhysicianRequest`].
+    #[allow(clippy::too_many_arguments)]
+    pub async fn submit_physician_follow_up_review(
+        &self,
+        auth: &dyn AuthStore,
+        identity: &PhysicianIdentity,
+        workspace: &str,
+        command_key: &str,
+        follow_up: &super::follow_ups::FollowUp,
+        roles: &ModelRoles,
+        skills: &PhysicianSkills,
+    ) -> Result<AdmittedPatientReview, PatientReviewError> {
+        let practice = validate_id(&identity.practice_id)?;
+        let physician = validate_id(&identity.physician_id)?;
+        let workspace = validate_id(workspace)?;
+        let command_key = validate_id(command_key)?;
+
+        let membership = auth.membership(identity, &workspace).await;
+        if membership != Membership::Allowed {
+            return Err(PatientReviewError::PhysicianUnauthorized {
+                practice_id: practice,
+                physician_id: physician,
+                workspace,
+                membership,
+            });
+        }
+
+        let observation = self.sources(&workspace).await?;
+        let record_versions = record_versions_map(&observation.sources);
+        let follow_up_trigger = ReviewTrigger::FollowUp {
+            follow_up_id: follow_up.id.as_str().to_owned(),
+            version: follow_up.version,
+            summary: follow_up.summary.as_str().to_owned(),
+            due_at: follow_up.due_at,
+            workspace_version: observation.version,
+            record_versions: record_versions.clone(),
+        };
+        let physician_trigger = ReviewTrigger::PhysicianRequest {
+            physician_id: physician,
+            request_text: format!("Review follow-up: {}", follow_up.summary.as_str()),
+            workspace_version: observation.version,
+            record_versions,
+        };
+        self.admit_patient_review_with_triggers(PatientReviewAdmission {
+            practice: &practice,
+            workspace: &workspace,
+            command_key: &command_key,
+            triggers: vec![follow_up_trigger, physician_trigger],
+            roles,
+            skills,
+            authority: &VerifiedPracticePatient,
+        })
+        .await
+    }
+
+    /// Admits an immediate follow-up review from an already-authorized workspace
+    /// run (such as a physician chat turn calling `patient_follow_up` `resume` or
+    /// `review_now`), attaching [`ReviewTrigger::FollowUp`].
+    #[allow(clippy::too_many_arguments)]
+    pub async fn admit_follow_up_review_now(
+        &self,
+        practice: &str,
+        workspace: &str,
+        command_key: &str,
+        follow_up: &super::follow_ups::FollowUp,
+        roles: &ModelRoles,
+        skills: &PhysicianSkills,
+        authority: &dyn PracticeAuthority,
+    ) -> Result<AdmittedPatientReview, PatientReviewError> {
+        let practice = validate_id(practice)?;
+        let workspace = validate_id(workspace)?;
+        let command_key = validate_id(command_key)?;
+        let observation = self.sources(&workspace).await?;
+        let trigger = ReviewTrigger::FollowUp {
+            follow_up_id: follow_up.id.as_str().to_owned(),
+            version: follow_up.version,
+            summary: follow_up.summary.as_str().to_owned(),
+            due_at: follow_up.due_at,
+            workspace_version: observation.version,
+            record_versions: record_versions_map(&observation.sources),
+        };
+        self.admit_patient_review_with_trigger(
+            &practice,
+            &workspace,
+            &command_key,
+            trigger,
+            roles,
+            skills,
+            authority,
         )
         .await
     }
@@ -3332,6 +3487,166 @@ impl Store {
         Ok(())
     }
 
+    /// Holds all `pending` or `running` `patient_review` rows (and their backing
+    /// `practice_job`s) in `(practice, workspace)` triggered by `follow_up_id`
+    /// inside the caller's Postgres transaction, so one `Stop` on a follow-up
+    /// holds both the follow-up and its in-flight review atomically.
+    pub(super) async fn hold_follow_up_reviews_in_tx(
+        tx: &sea_orm::DatabaseTransaction,
+        practice: &str,
+        workspace: &str,
+        follow_up_id: &str,
+        clock: i64,
+    ) -> Result<Vec<String>, DbErr> {
+        let rows = patient_review::Entity::find()
+            .filter(patient_review::Column::Practice.eq(practice))
+            .filter(patient_review::Column::Workspace.eq(workspace))
+            .filter(patient_review::Column::Status.is_in(["pending", "running"]))
+            .lock_exclusive()
+            .all(tx)
+            .await?;
+        let mut held_review_ids = Vec::new();
+        for rev_row in rows {
+            let triggers: Vec<ReviewTrigger> = serde_json::from_value(rev_row.triggers.clone())
+                .map_err(conversion_error("patient_review.triggers", "ReviewTrigger"))?;
+            let targets_follow_up = triggers.iter().any(|trigger| {
+                matches!(
+                    trigger,
+                    ReviewTrigger::FollowUp {
+                        follow_up_id: fid, ..
+                    } if fid == follow_up_id
+                )
+            });
+            if !targets_follow_up {
+                continue;
+            }
+            let scope = PracticeScope {
+                practice: rev_row.practice.clone(),
+                workspace: rev_row.workspace.clone(),
+                job_id: rev_row.job_id.clone(),
+            };
+            let mut work_id = rev_row.work_id.clone();
+            if let Some(job_row) = practice_job::Entity::find_by_id((
+                rev_row.practice.clone(),
+                rev_row.workspace.clone(),
+                rev_row.job_id.clone(),
+            ))
+            .lock_exclusive()
+            .one(tx)
+            .await?
+            {
+                let mut job = super::jobs::decode_job_for_reviews(tx, &scope, job_row).await?;
+                work_id = job.work.clone();
+                if let Some(attempt) = job
+                    .attempts
+                    .last_mut()
+                    .filter(|a| a.status == AttemptStatus::Active)
+                {
+                    attempt.status = AttemptStatus::Cancelled;
+                }
+                if job.status.running() {
+                    job.runs
+                        .end(harness::engine::runs::RunOutcome::Held {
+                            reason: harness::engine::runs::HoldReason::Stopped,
+                        })
+                        .map_err(|err| error(&err.to_string()))?;
+                }
+                job.revision += 1;
+                job.status = WorkStatus::Held;
+                job.updated_at = clock;
+                super::jobs::write_practice_job_in_tx(tx, &job).await?;
+            }
+            Self::release_workspace_reply_reviews_in_tx(
+                tx,
+                &rev_row.practice,
+                &rev_row.workspace,
+                &rev_row.review_id,
+                super::reply::proposals::ReplyReviewRelease::Completed,
+                clock,
+            )
+            .await?;
+            let review_id = rev_row.review_id.clone();
+            let started = rev_row.started_at;
+            update_review_lifecycle_in_tx(
+                tx,
+                rev_row,
+                &work_id,
+                ReviewLifecycleState::Held {
+                    reason: ReviewHoldReason::Stopped,
+                    held_at: clock,
+                    partial_text: None,
+                },
+                started,
+                clock,
+            )
+            .await?;
+            held_review_ids.push(review_id);
+        }
+        Ok(held_review_ids)
+    }
+
+    /// Supersedes incomplete `patient_review` rows for `follow_up_id` inside the
+    /// caller's transaction — used when a follow-up is changed (superseding older
+    /// versions), resumed, requested for immediate review, completed, or cancelled
+    /// so stale or previously held reviews never linger or overwrite the current version.
+    pub(super) async fn supersede_follow_up_reviews_in_tx(
+        tx: &sea_orm::DatabaseTransaction,
+        filter: &FollowUpReviewSupersedeFilter<'_>,
+        clock: i64,
+    ) -> Result<Vec<String>, DbErr> {
+        let statuses: &[&str] = if filter.include_held {
+            &["pending", "running", "held"]
+        } else {
+            &["pending", "running"]
+        };
+        let rows = patient_review::Entity::find()
+            .filter(patient_review::Column::Practice.eq(filter.practice))
+            .filter(patient_review::Column::Workspace.eq(filter.workspace))
+            .filter(patient_review::Column::Status.is_in(statuses.iter().copied()))
+            .lock_exclusive()
+            .all(tx)
+            .await?;
+        let mut superseded_ids = Vec::new();
+        for rev_row in rows {
+            if filter
+                .excluding_work_id
+                .is_some_and(|w| w == rev_row.work_id)
+            {
+                continue;
+            }
+            let triggers: Vec<ReviewTrigger> = serde_json::from_value(rev_row.triggers.clone())
+                .map_err(conversion_error("patient_review.triggers", "ReviewTrigger"))?;
+            let matches_target = triggers.iter().any(|trigger| {
+                matches!(
+                    trigger,
+                    ReviewTrigger::FollowUp {
+                        follow_up_id: fid,
+                        version,
+                        ..
+                    } if fid == filter.follow_up_id
+                        && filter
+                            .only_older_than_version
+                            .is_none_or(|min_v| *version < min_v)
+                )
+            });
+            if !matches_target {
+                continue;
+            }
+            let review_id = rev_row.review_id.clone();
+            Self::supersede_review_in_tx(
+                tx,
+                rev_row,
+                ReviewSupersededReason::NewInput {
+                    replacement_review_id: None,
+                },
+                clock,
+            )
+            .await?;
+            superseded_ids.push(review_id);
+        }
+        Ok(superseded_ids)
+    }
+
     async fn refresh_job_binding_in_tx(
         tx: &sea_orm::DatabaseTransaction,
         scope: &PracticeScope,
@@ -4578,6 +4893,25 @@ impl Store {
                     clock,
                 )
                 .await?;
+                let triggers: Vec<ReviewTrigger> = serde_json::from_value(rev_row.triggers.clone())
+                    .map_err(conversion_error("patient_review.triggers", "ReviewTrigger"))?;
+                let mut seen_follow_ups = BTreeSet::new();
+                for trigger in &triggers {
+                    if let ReviewTrigger::FollowUp { follow_up_id, .. } = trigger
+                        && seen_follow_ups.insert(follow_up_id.as_str())
+                    {
+                        super::follow_ups::mark_follow_up_cannot_restart_in_tx(
+                            tx,
+                            &job.scope.practice,
+                            &job.scope.workspace,
+                            follow_up_id,
+                            &job.work,
+                            reason_label,
+                            clock,
+                        )
+                        .await?;
+                    }
+                }
                 ReviewLifecycleState::Failed {
                     reason: cause.failed_reason_label(),
                     failed_at: clock,
@@ -4613,6 +4947,16 @@ impl Store {
         let started = rev_row.started_at;
         update_review_lifecycle_in_tx(tx, rev_row, &job.work, next_state, started, clock).await
     }
+}
+
+#[derive(Clone, Copy, Debug)]
+pub(super) struct FollowUpReviewSupersedeFilter<'a> {
+    pub practice: &'a str,
+    pub workspace: &'a str,
+    pub follow_up_id: &'a str,
+    pub only_older_than_version: Option<u64>,
+    pub include_held: bool,
+    pub excluding_work_id: Option<&'a str>,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

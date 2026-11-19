@@ -816,6 +816,27 @@ impl PatientMemoryStanding {
     }
 }
 
+/// Compact follow-up standing summary injected into [`PatientStartingContext`].
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct FollowUpContextSummary {
+    /// Stable follow-up identifier.
+    pub follow_up_id: String,
+    /// Current follow-up version.
+    pub version: u64,
+    /// Canonical standing label (`"active"`, `"held"`, `"cannot_restart"`, `"cancelled"`).
+    pub status: String,
+    /// Clinical summary of what to watch for.
+    pub summary: String,
+    /// Scheduled or paused due Unix timestamp.
+    pub due_at: i64,
+    /// Optional status detail (hold note, cannot-restart reason, or cancellation reason).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub detail: Option<String>,
+    /// Unix timestamp of cancellation when `status == "cancelled"`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub cancelled_at: Option<i64>,
+}
+
 /// Starting clinical context assembled for one patient workspace when a chat turn
 /// begins or opens a fresh window.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -843,6 +864,10 @@ pub struct PatientStartingContext {
     pub memory_standing: PatientMemoryStanding,
     /// Open patient concerns on Today.
     pub open_concerns: Vec<OpenConcernSummary>,
+    /// Active, held, cannot-restart, and cancelled follow-ups in this workspace
+    /// (excluding wrong-patient withdrawals).
+    #[serde(default)]
+    pub follow_ups: Vec<FollowUpContextSummary>,
     /// Recent earlier conversations and work in this workspace (excluding the active chat).
     pub recent_work: Vec<PriorWorkPointer>,
 }
@@ -995,6 +1020,45 @@ impl PatientStartingContext {
                     concern.urgency.as_str(),
                     concern.reason
                 ));
+            }
+        }
+
+        if !self.follow_ups.is_empty() {
+            lines.push(
+                "Patient follow-ups (manage via patient_follow_up; cancelled follow-ups stay cancelled unless genuinely new clinical information has arrived):"
+                    .to_owned(),
+            );
+            for fu in &self.follow_ups {
+                match fu.status.as_str() {
+                    "cancelled" => {
+                        let reason = fu.detail.as_deref().unwrap_or("cancelled");
+                        let at = fu.cancelled_at.unwrap_or(0);
+                        lines.push(format!(
+                            "- [{}] (cancelled at unix {}, reason: {}): {} — do not recreate unless new clinical information has arrived.",
+                            fu.follow_up_id, at, reason, fu.summary
+                        ));
+                    }
+                    "held" => {
+                        let note = fu.detail.as_deref().unwrap_or("paused");
+                        lines.push(format!(
+                            "- [{}] (held, v{}, due unix {}, note: {}): {}",
+                            fu.follow_up_id, fu.version, fu.due_at, note, fu.summary
+                        ));
+                    }
+                    "cannot_restart" => {
+                        let reason = fu.detail.as_deref().unwrap_or("review could not restart");
+                        lines.push(format!(
+                            "- [{}] (cannot_restart, v{}, reason: {}): {}",
+                            fu.follow_up_id, fu.version, reason, fu.summary
+                        ));
+                    }
+                    other => {
+                        lines.push(format!(
+                            "- [{}] ({}, v{}, due unix {}): {}",
+                            fu.follow_up_id, other, fu.version, fu.due_at, fu.summary
+                        ));
+                    }
+                }
             }
         }
 
@@ -1414,6 +1478,10 @@ impl Store {
             .patient_understanding_internal(&scope.practice, &scope.workspace)
             .await?;
 
+        let follow_ups = self
+            .load_follow_up_context_summaries(&scope.practice, &scope.workspace, &withheld)
+            .await?;
+
         Ok(PatientStartingContext {
             workspace: scope.workspace.clone(),
             patient,
@@ -1425,8 +1493,95 @@ impl Store {
             withdrawal_boundary,
             memory_standing,
             open_concerns,
+            follow_ups,
             recent_work,
         })
+    }
+
+    pub(crate) async fn load_follow_up_context_summaries_for_workspace(
+        &self,
+        practice: &str,
+        workspace: &str,
+    ) -> Result<Vec<FollowUpContextSummary>, DbErr> {
+        let withheld =
+            super::link_correction::load_workspace_withheld_state_in_tx(&self.db, workspace)
+                .await?;
+        self.load_follow_up_context_summaries(practice, workspace, &withheld)
+            .await
+    }
+
+    pub(crate) async fn load_follow_up_context_summaries(
+        &self,
+        practice: &str,
+        workspace: &str,
+        withheld: &super::link_correction::WithheldWorkspaceState,
+    ) -> Result<Vec<FollowUpContextSummary>, DbErr> {
+        let items = self
+            .workspace_follow_ups(practice, workspace)
+            .await
+            .map_err(|err| match err {
+                super::follow_ups::FollowUpError::Database(db_err) => db_err,
+                other => error(&other.to_string()),
+            })?;
+        let mut summaries = Vec::new();
+        for item in items {
+            if super::follow_ups::follow_up_cites_withheld(&item, withheld) {
+                continue;
+            }
+            match &item.standing {
+                super::follow_ups::FollowUpStanding::Active { .. } => {
+                    summaries.push(FollowUpContextSummary {
+                        follow_up_id: item.id.as_str().to_owned(),
+                        version: item.version,
+                        status: "active".to_owned(),
+                        summary: item.summary.as_str().to_owned(),
+                        due_at: item.due_at,
+                        detail: None,
+                        cancelled_at: None,
+                    });
+                }
+                super::follow_ups::FollowUpStanding::Held { reason, .. } => {
+                    summaries.push(FollowUpContextSummary {
+                        follow_up_id: item.id.as_str().to_owned(),
+                        version: item.version,
+                        status: "held".to_owned(),
+                        summary: item.summary.as_str().to_owned(),
+                        due_at: item.due_at,
+                        detail: reason.as_ref().map(|r| r.as_str().to_owned()),
+                        cancelled_at: None,
+                    });
+                }
+                super::follow_ups::FollowUpStanding::CannotRestart { reason, .. } => {
+                    summaries.push(FollowUpContextSummary {
+                        follow_up_id: item.id.as_str().to_owned(),
+                        version: item.version,
+                        status: "cannot_restart".to_owned(),
+                        summary: item.summary.as_str().to_owned(),
+                        due_at: item.due_at,
+                        detail: Some(reason.clone()),
+                        cancelled_at: None,
+                    });
+                }
+                super::follow_ups::FollowUpStanding::Cancelled {
+                    reason,
+                    cancelled_at,
+                    ..
+                } => {
+                    summaries.push(FollowUpContextSummary {
+                        follow_up_id: item.id.as_str().to_owned(),
+                        version: item.version,
+                        status: "cancelled".to_owned(),
+                        summary: item.summary.as_str().to_owned(),
+                        due_at: item.due_at,
+                        detail: Some(reason.as_str().to_owned()),
+                        cancelled_at: Some(*cancelled_at),
+                    });
+                }
+                super::follow_ups::FollowUpStanding::Completed { .. }
+                | super::follow_ups::FollowUpStanding::WithdrawnWrongPatient { .. } => {}
+            }
+        }
+        Ok(summaries)
     }
 
     /// Executes `search_patient_information` or `read_patient_sources` for a chat
@@ -1744,19 +1899,84 @@ impl Store {
                 .ok_or("missing hosted attempt")?;
             let source_work = SourceWork::new("physician_chat", &attempt.work, &claim.attempt)
                 .map_err(|cause| cause.to_string())?;
+            let parsed_call = super::follow_ups::FollowUpToolCall::parse(&call.name, &arguments);
+            let triggers_immediate_review = matches!(
+                parsed_call,
+                Ok(super::follow_ups::FollowUpToolCall::Resume { .. }
+                    | super::follow_ups::FollowUpToolCall::ReviewNow { .. })
+            );
             let invocation = Invocation {
                 id: call.id.clone(),
                 name: call.name.clone(),
                 arguments,
             };
-            return self
+            let outcome = self
                 .execute_follow_up_tool(
                     &claim.scope.practice,
                     &claim.scope.workspace,
                     &source_work,
                     &invocation,
                 )
-                .await;
+                .await?;
+            if triggers_immediate_review
+                && let ToolOutcome::Returned(raw) = &outcome
+                && let Ok(mut payload) = serde_json::from_str::<Value>(raw)
+                && let Some(fu_val) = payload.get("follow_up").cloned()
+                && let Ok(follow_up) = serde_json::from_value::<super::follow_ups::FollowUp>(fu_val)
+            {
+                let binding_ref = state
+                    .bindings
+                    .get(&attempt.work)
+                    .ok_or("missing frozen chat recipe binding for follow-up review")?;
+                let binding = super::frozen::binding(&self.db, &claim.scope, binding_ref)
+                    .await
+                    .map_err(persistence_failure)?;
+                let skills = super::frozen::skills(&self.db, &claim.scope, &state.skills)
+                    .await
+                    .map_err(persistence_failure)?;
+                let effort = binding
+                    .recipe
+                    .options
+                    .get("reasoning")
+                    .and_then(|r| r.get("effort"))
+                    .and_then(Value::as_str)
+                    .unwrap_or("medium")
+                    .to_owned();
+                let lane = crate::ModelBinding {
+                    model: binding.recipe.model.clone(),
+                    context_window_tokens: binding.recipe.context_window_tokens,
+                    max_input_tokens: binding.recipe.max_input_tokens,
+                    effort,
+                    adapter: "responses".to_owned(),
+                };
+                let roles = crate::ModelRoles {
+                    chat: lane.clone(),
+                    background: lane,
+                };
+                let review_cmd_key = format!("chat-furev:{}:{}", attempt.work, call.id);
+                let admitted = self
+                    .admit_follow_up_review_now(
+                        &claim.scope.practice,
+                        &claim.scope.workspace,
+                        &review_cmd_key,
+                        &follow_up,
+                        &roles,
+                        &skills,
+                        &super::reviews::VerifiedPracticePatient,
+                    )
+                    .await
+                    .map_err(|err| {
+                        engine::ProductError::from(format!(
+                            "follow-up saved, but admitting immediate review failed: {err}"
+                        ))
+                    })?;
+                if let Some(obj) = payload.as_object_mut() {
+                    obj.insert("review_started".into(), json!(true));
+                    obj.insert("review_id".into(), json!(admitted.review().review_id));
+                }
+                return Ok(ToolOutcome::Returned(payload.to_string()));
+            }
+            return Ok(outcome);
         }
 
         if crate::attachments::is_document_page_tool(&call.name) {

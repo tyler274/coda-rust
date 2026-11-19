@@ -1180,6 +1180,14 @@ fn FollowUpItemCard(
                                             compact: true,
                                             variant: ButtonVariant::Secondary,
                                             disabled: busy,
+                                            "data-follow-up-review-now": "{fid}",
+                                            onclick: move |_| on_review_now.call(()),
+                                            "Review now"
+                                        }
+                                        Button {
+                                            compact: true,
+                                            variant: ButtonVariant::Secondary,
+                                            disabled: busy,
                                             "data-follow-up-edit": "{fid}",
                                             onclick: move |_| on_begin_edit.call(()),
                                             "Edit"
@@ -1310,7 +1318,7 @@ fn FollowUpItemCard(
                                                     );
                                                 }
                                             },
-                                            "Cancel"
+                                            "Cancel follow-up"
                                         }
                                     }
                                 }

@@ -133,9 +133,11 @@ elapsed, or a physician requested a focused reassessment, follow one disciplined
      (`decision: \"no_reply_would_help\"`), or close patient messages already answered by a \
      non-automatic practice message (`answered_closures` + `decision: \"all_handled\"`). \
      Proposed replies are saved strictly as physician drafts and never sent automatically.
-   - Due follow-ups: inspect the current version of each due follow-up alongside the chart \
-     evidence and call `patient_follow_up` to complete a resolved follow-up, revise its \
-     summary or next due date when still awaited, or record any clinical concern.
+   - Follow-ups: inspect the current version of each due or upcoming active follow-up alongside \
+     the chart evidence and linked messages, and call `patient_follow_up` to complete a resolved \
+     follow-up, revise its summary or next due date when still awaited, or record any clinical \
+     concern. A cancelled follow-up stays cancelled — never recreate it unless genuinely new \
+     clinical information has arrived since cancellation.
 
 6. Record your structured review outcome before finishing:
    - Preloaded assignment skills are already open below; do not reload them with `skill_view`. \
