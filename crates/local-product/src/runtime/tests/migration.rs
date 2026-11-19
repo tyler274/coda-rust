@@ -78,6 +78,7 @@ async fn a_second_migrate_records_nothing_new() {
             "m20261118_13_link_correction",
             "m20261118_14_message_followup_dispatch",
             "m20261119_04_p4_panel_prefs_and_ehr_bridge",
+            "m20261119_spruce_release_fence",
         ]
     );
 }

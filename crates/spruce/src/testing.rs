@@ -61,6 +61,15 @@ struct StoredConversation {
 }
 
 #[derive(Clone)]
+struct StoredItemAttachment {
+    kind: String,
+    title: Option<String>,
+    mimetype: Option<String>,
+    name: Option<String>,
+    media_id: Option<String>,
+}
+
+#[derive(Clone)]
 struct StoredItem {
     id: String,
     conversation: String,
@@ -68,10 +77,29 @@ struct StoredItem {
     created_at: String,
     modified_at: String,
     transcription_id: Option<String>,
+    attachments: Vec<StoredItemAttachment>,
+    is_internal_note: bool,
+    direction: Option<String>,
+}
+
+/// Synthetic attachment descriptor + optional bytes served by [`FakeSpruce`].
+#[derive(Debug, Clone)]
+pub struct TestAttachment {
+    /// Attachment type (`image`, `fax`, `file`).
+    pub kind: String,
+    /// Optional title.
+    pub title: Option<String>,
+    /// Optional MIME type (`image/png`, `application/pdf`, etc.).
+    pub mimetype: Option<String>,
+    /// Optional filename.
+    pub name: Option<String>,
+    /// Optional payload bytes (`None` yields 503 on media fetch to test isolation).
+    pub bytes: Option<Vec<u8>>,
 }
 
 struct FakeState {
     page_size: usize,
+    base_origin: String,
     /// Every route answers 401, including with the right credential.
     unauthorized: bool,
     /// Every route answers 403, including the organization read.
@@ -82,12 +110,14 @@ struct FakeState {
     conversations: Vec<StoredConversation>,
     items: Vec<StoredItem>,
     transcriptions: HashMap<String, StoredTranscription>,
+    media: HashMap<String, Option<Vec<u8>>>,
 }
 
 impl FakeState {
     fn fresh() -> Self {
         Self {
             page_size: crate::payload::MAX_PAGE_SIZE,
+            base_origin: String::new(),
             unauthorized: false,
             forbidden: false,
             failing: HashSet::new(),
@@ -95,6 +125,7 @@ impl FakeState {
             conversations: Vec::new(),
             items: Vec::new(),
             transcriptions: HashMap::new(),
+            media: HashMap::new(),
         }
     }
 }
@@ -120,18 +151,18 @@ impl FakeSpruce {
             .route("/v1/conversations/{id}/items", get(items))
             .route("/v1/conversationItems/{id}", get(item))
             .route("/v1/transcriptions/{id}", get(transcription))
+            .route("/v1/media/{id}", get(media))
             .with_state(Arc::clone(&state));
         let listener = tokio::net::TcpListener::bind("127.0.0.1:0")
             .await
             .expect("spruce stand-in port");
         let address = listener.local_addr().expect("spruce stand-in address");
+        let base = format!("http://{address}/v1/");
+        state.lock().expect("spruce stand-in lock").base_origin = base.clone();
         tokio::spawn(async move {
             axum::serve(listener, app).await.expect("spruce stand-in");
         });
-        Self {
-            base: format!("http://{address}/v1/"),
-            state,
-        }
+        Self { base, state }
     }
 
     /// A client aimed at this stand-in, with its credential.
@@ -176,12 +207,50 @@ impl FakeSpruce {
             created_at: delivery.created_at,
             modified_at: delivery.modified_at,
             transcription_id: delivery.transcription_id,
+            attachments: Vec::new(),
+            is_internal_note: false,
+            direction: Some("inbound".into()),
         };
         if let Some(existing) = state.items.iter_mut().find(|item| item.id == stored.id) {
             *existing = stored;
         } else {
             state.items.push(stored);
         }
+    }
+
+    /// Marks an already-delivered item as an internal note with optional `direction` override.
+    pub fn mark_internal_note(&self, item_id: &str, direction: Option<&str>) {
+        let mut state = self.state.lock().expect("spruce stand-in lock");
+        let item = state
+            .items
+            .iter_mut()
+            .find(|item| item.id == item_id)
+            .expect("item to mark internal note");
+        item.is_internal_note = true;
+        item.direction = direction.map(str::to_owned);
+    }
+
+    /// Attaches files or inbound faxes to an already-delivered item.
+    pub fn attach_to_item(&self, item_id: &str, attachments: Vec<TestAttachment>) {
+        let mut state = self.state.lock().expect("spruce stand-in lock");
+        let mut stored_atts = Vec::with_capacity(attachments.len());
+        for (idx, att) in attachments.into_iter().enumerate() {
+            let media_id = format!("{item_id}-media-{idx}");
+            state.media.insert(media_id.clone(), att.bytes);
+            stored_atts.push(StoredItemAttachment {
+                kind: att.kind,
+                title: att.title,
+                mimetype: att.mimetype,
+                name: att.name,
+                media_id: Some(media_id),
+            });
+        }
+        let item = state
+            .items
+            .iter_mut()
+            .find(|item| item.id == item_id)
+            .expect("item to attach media to");
+        item.attachments = stored_atts;
     }
 
     /// Changes an item's text and `modifiedAt`. Does not move `lastMessageAt`.
@@ -369,7 +438,11 @@ async fn items(
         state.duplicate = None;
     }
     let (page, has_more, token) = slice(rows, &state, &query);
-    let conversation_items: Vec<Value> = page.iter().map(item_json).collect();
+    let base_origin = state.base_origin.clone();
+    let conversation_items: Vec<Value> = page
+        .iter()
+        .map(|item| item_json(&base_origin, item))
+        .collect();
     Json(json!({
         "conversationItems": conversation_items,
         "hasMore": has_more,
@@ -386,7 +459,24 @@ async fn item(State(state): State<Shared>, headers: HeaderMap, Path(id): Path<St
     let Some(item) = state.items.iter().find(|item| item.id == id) else {
         return (StatusCode::NOT_FOUND, Json(json!({}))).into_response();
     };
-    Json(json!({"conversationItem": item_json(item)})).into_response()
+    let payload = item_json(&state.base_origin, item);
+    Json(json!({"conversationItem": payload})).into_response()
+}
+
+async fn media(
+    State(state): State<Shared>,
+    headers: HeaderMap,
+    Path(id): Path<String>,
+) -> Response {
+    if let Some(response) = deny(&state, &headers) {
+        return response;
+    }
+    let state = state.lock().expect("spruce stand-in lock");
+    match state.media.get(&id) {
+        Some(Some(bytes)) => (StatusCode::OK, bytes.clone()).into_response(),
+        Some(None) => (StatusCode::SERVICE_UNAVAILABLE, Json(json!({}))).into_response(),
+        None => (StatusCode::NOT_FOUND, Json(json!({}))).into_response(),
+    }
 }
 
 async fn transcription(
@@ -422,18 +512,45 @@ fn conversation_json(conversation: &StoredConversation) -> Value {
     })
 }
 
-fn item_json(item: &StoredItem) -> Value {
+fn item_json(base_origin: &str, item: &StoredItem) -> Value {
     let mut body = json!({
         "id": item.id,
         "conversationId": item.conversation,
-        "direction": "inbound",
-        "isInternalNote": false,
+        "direction": item.direction,
+        "isInternalNote": item.is_internal_note,
         "author": {"displayName": "Synthetic"},
         "createdAt": item.created_at,
         "modifiedAt": item.modified_at,
         "appURL": format!("https://app.sprucehealth.com/org/{ORGANIZATION_ID}/thread/{}/message/{}", item.conversation, item.id),
         "text": item.text,
     });
+    if !item.attachments.is_empty() {
+        let attachments: Vec<Value> = item
+            .attachments
+            .iter()
+            .map(|att| {
+                let mut data = serde_json::Map::new();
+                if let Some(mimetype) = &att.mimetype {
+                    data.insert("mimetype".to_owned(), Value::String(mimetype.clone()));
+                }
+                if let Some(name) = &att.name {
+                    data.insert("name".to_owned(), Value::String(name.clone()));
+                }
+                if let Some(media_id) = &att.media_id {
+                    data.insert(
+                        "signedUrl".to_owned(),
+                        Value::String(format!("{base_origin}media/{media_id}")),
+                    );
+                }
+                json!({
+                    "type": att.kind,
+                    "title": att.title,
+                    "data": Value::Object(data),
+                })
+            })
+            .collect();
+        body["attachments"] = Value::Array(attachments);
+    }
     if let Some(id) = &item.transcription_id {
         body["event"] = json!({
             "type": "voicemail",

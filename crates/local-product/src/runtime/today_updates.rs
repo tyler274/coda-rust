@@ -1233,6 +1233,29 @@ fn spruce_channel_banner_snapshot(
             };
             Some(("reconnect_required", title, detail, snapshot, *failed_at))
         }
+        TodayChannelBanner::RollbackHalted { halt, last_read_at } => {
+            let version_id = format!(
+                "rollback_halted:{}:{}:{}",
+                halt.detected_at, halt.running_generation, halt.highest_generation
+            );
+            let title = "Messaging filing halted after rollback".to_owned();
+            let detail = match last_read_at {
+                Some(last_ts) => {
+                    format!(
+                        "{} Operator action required; last read at {last_ts}.",
+                        halt.reason
+                    )
+                }
+                None => format!("{} Operator action required.", halt.reason),
+            };
+            let snapshot = SeenItemSnapshot {
+                version_id,
+                urgency: None,
+                headline: title.clone(),
+                detail: detail.clone(),
+            };
+            Some(("rollback_halted", title, detail, snapshot, halt.detected_at))
+        }
     }
 }
 

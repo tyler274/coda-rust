@@ -23,6 +23,7 @@ harness = { path = "../harness" }
 patient-work = { path = "../patient-work" }
 physician-auth = { path = "../physician-auth" }
 physician-wire = { path = "../physician-wire" }
+spruce = { path = "../spruce" }
 sea-orm = { version = "2", default-features = false, features = ["sqlx-postgres", "runtime-tokio-rustls", "with-json", "macros"] }
 sea-orm-migration = { version = "2", default-features = false, features = [
     "runtime-tokio-rustls",
@@ -37,5 +38,6 @@ tracing = "0.1"
 
 [dev-dependencies]
 front-door = { path = "../front-door" }
+spruce = { path = "../spruce", features = ["test-util"] }
 tokio = { version = "1", features = ["macros", "rt"] }
 tower = { version = "0.5", features = ["util"] }

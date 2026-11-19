@@ -186,6 +186,29 @@ pub enum SourceStandingWire {
         /// Specific physician-facing recovery guidance and failure reason.
         reason: String,
     },
+    /// Spruce filing was halted after detecting an older running release behind a newer
+    /// release that already touched the practice channel; persists until operator resolution.
+    RollbackHalted {
+        /// RFC-3339 timestamp when the source was connected.
+        connected_at: String,
+        /// How the connection was established.
+        method: SourceConnectionMethodWire,
+        /// Account, workspace, or endpoint label.
+        account_label: String,
+        /// Count of saved records/messages still readable.
+        imported_records: usize,
+        /// RFC-3339 timestamp of the last successful read before the halt.
+        #[serde(default)]
+        last_successful_read_at: Option<String>,
+        /// RFC-3339 timestamp when the rollback halt fired.
+        halted_at: String,
+        /// Release label of the older binary that hit the fence.
+        running_release: String,
+        /// Highest release label previously recorded on the practice channel.
+        highest_release: String,
+        /// Operator-facing explanation of why filing is halted.
+        reason: String,
+    },
 }
 
 impl SourceStandingWire {
@@ -199,6 +222,7 @@ impl SourceStandingWire {
             Self::UpToDate { .. } => "Up to date",
             Self::ReadFailed { .. } => "Records couldn’t be updated",
             Self::AccessLost { .. } => "Access lost",
+            Self::RollbackHalted { .. } => "Filing halted",
         }
     }
 
@@ -247,6 +271,8 @@ pub enum TodayConnectionRecoveryWire {
     ReadFailed,
     /// Revoked grant or administrator block: show reason + last read time and offer `Reconnect`.
     ReconnectRequired,
+    /// Release rollback fence halted filing until explicitly resolved by an operator.
+    OperatorActionRequired,
 }
 
 /// Full projection for one practice source on `GET /connections` and mutation responses.

@@ -470,3 +470,74 @@ async fn a_deleted_item_reads_as_not_found() {
     let error = fake.client().get_item("ti_one").await.expect_err("gone");
     assert_eq!(error, Error::NotFound);
 }
+
+#[tokio::test]
+async fn transient_attachment_bytes_download_without_keeping_signed_urls_and_isolate_failures() {
+    use spruce::changes::AttachmentBytesOutcome;
+    use spruce::testing::TestAttachment;
+
+    let fake = FakeSpruce::spawn().await;
+    fake.deliver(message(
+        "t_att",
+        "ti_att",
+        "Attached fax and failing sibling",
+        10,
+        10,
+    ));
+    fake.attach_to_item(
+        "ti_att",
+        vec![
+            TestAttachment {
+                kind: "fax".into(),
+                title: Some("Consult Fax".into()),
+                mimetype: Some("application/pdf".into()),
+                name: Some("consult.pdf".into()),
+                bytes: Some(b"%PDF-1.4\nhello fax".to_vec()),
+            },
+            TestAttachment {
+                kind: "image".into(),
+                title: Some("Broken photo".into()),
+                mimetype: Some("image/png".into()),
+                name: Some("broken.png".into()),
+                bytes: None,
+            },
+        ],
+    );
+    let reader = open(&fake, Duration::ZERO, 50);
+    let items = all_items(&reader, "t_att").await;
+    assert_eq!(items.len(), 1);
+    let v_before = items[0].version();
+
+    let fetched = reader
+        .fetch_item_attachments(&items[0])
+        .await
+        .expect("fetch attachments");
+    assert_eq!(fetched.len(), 2);
+    assert!(matches!(
+        &fetched[0],
+        AttachmentBytesOutcome::Fetched { attachment, bytes }
+            if attachment.name.as_deref() == Some("consult.pdf") && bytes == b"%PDF-1.4\nhello fax"
+    ));
+    assert!(matches!(
+        &fetched[1],
+        AttachmentBytesOutcome::Unavailable { attachment, .. }
+            if attachment.name.as_deref() == Some("broken.png")
+    ));
+    assert_eq!(items[0].version(), v_before);
+}
+
+#[tokio::test]
+async fn backlog_page_reads_pre_connection_items_when_requested() {
+    let fake = FakeSpruce::spawn().await;
+    fake.deliver(message("t_hist", "ti_old_1", "Before connect", 0, 0));
+    let reader = open(&fake, Duration::ZERO, 50);
+    let (cursor, changes) = drain(&reader, None).await;
+    assert!(changes.is_empty());
+
+    let backlog = reader
+        .read_backlog_page(&cursor, None)
+        .await
+        .expect("backlog call")
+        .expect("backlog page");
+    assert_eq!(ids(&backlog.items), ["ti_old_1"]);
+}

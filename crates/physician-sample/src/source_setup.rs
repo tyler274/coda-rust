@@ -37,7 +37,12 @@ use axum::routing::{get, post};
 use local_product::physician_sources::{
     MedicalRecordNumber, ReadablePart, RecordDate, SourcePatient, SourceRevision,
 };
+use local_product::runtime::reply::proposals::ChannelConnection;
 use local_product::runtime::sources::SourcePull;
+use local_product::runtime::spruce_matching::{
+    BacklogStanding, ChannelHealth, ChannelStanding, SpruceChannelConfig, SpruceChannelOverview,
+    SpruceMatchingError,
+};
 use local_product::runtime::{Authority, PublicationTransaction, Scope, Store, async_trait};
 use physician_auth::migration::{
     PracticeSourceSetupActiveModel, PracticeSourceSetupRow, PracticeSourceSetups,
@@ -445,7 +450,39 @@ impl SourceSetupStore {
                 | SourceStandingWire::Connected { .. }
                 | SourceStandingWire::RecordsImported { .. }
                 | SourceStandingWire::UpToDate { .. } => {}
+                SourceStandingWire::RollbackHalted {
+                    last_successful_read_at,
+                    reason,
+                    ..
+                } => {
+                    out.push(TodayConnection {
+                        condition: "spruce_rollback_halted".to_owned(),
+                        channel: Some(kind.slug().to_owned()),
+                        source_id: Some(kind),
+                        source_label: Some(kind.label().to_owned()),
+                        reason: Some(reason.clone()),
+                        last_successful_read_at: last_successful_read_at.clone(),
+                        recovery: Some(TodayConnectionRecoveryWire::OperatorActionRequired),
+                    });
+                }
             }
+        }
+        if let Some(runtime) = match &self.backend {
+            SourceSetupBackend::Postgres(db) => Some(Store::from_connection(db.clone())),
+            SourceSetupBackend::Memory(_) => None,
+        } && let Ok(overview) = runtime.spruce_channel_overview(practice_id).await
+            && let Some(halt) = overview.rollback_halt
+            && !out.iter().any(|c| c.condition == "spruce_rollback_halted")
+        {
+            out.push(TodayConnection {
+                condition: "spruce_rollback_halted".to_owned(),
+                channel: Some(SupportedSourceWire::Spruce.slug().to_owned()),
+                source_id: Some(SupportedSourceWire::Spruce),
+                source_label: Some(SupportedSourceWire::Spruce.label().to_owned()),
+                reason: Some(halt.reason),
+                last_successful_read_at: overview.standing.last_read_at().map(format_unix_i64),
+                recovery: Some(TodayConnectionRecoveryWire::OperatorActionRequired),
+            });
         }
         Ok(out)
     }
@@ -655,6 +692,10 @@ where
             "/connections/{source_id}/disconnect",
             post(disconnect_source),
         )
+        .route(
+            "/connections/spruce/rollback/resolve",
+            post(resolve_spruce_rollback),
+        )
         .route("/connections/{source_id}/simulate", post(simulate_event))
 }
 
@@ -724,6 +765,10 @@ pub(crate) async fn enrich_workspace(
                 | SourceStandingWire::AccessLost {
                     last_successful_read_at: Some(ts),
                     ..
+                }
+                | SourceStandingWire::RollbackHalted {
+                    last_successful_read_at: Some(ts),
+                    ..
                 } => Some(json!({
                     "state": "failed",
                     "usable_snapshot": {
@@ -735,6 +780,10 @@ pub(crate) async fn enrich_workspace(
                     ..
                 }
                 | SourceStandingWire::AccessLost {
+                    last_successful_read_at: None,
+                    ..
+                }
+                | SourceStandingWire::RollbackHalted {
                     last_successful_read_at: None,
                     ..
                 } => Some(json!({ "state": "failed" })),
@@ -854,8 +903,119 @@ async fn list_connections(
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
     match setup.list_practice(&identity.practice_id, mode).await {
-        Ok(list) => Json(list).into_response(),
+        Ok(mut list) => {
+            if let Some(runtime) = runtime_store_for_setup(extensions, &setup)
+                && let Ok(overview) = runtime.spruce_channel_overview(&identity.practice_id).await
+                && let Some(spruce_source) = list
+                    .sources
+                    .iter_mut()
+                    .find(|src| src.source_id == SupportedSourceWire::Spruce)
+            {
+                apply_runtime_spruce_overview(spruce_source, &overview);
+            }
+            Json(list).into_response()
+        }
         Err(_) => StatusCode::SERVICE_UNAVAILABLE.into_response(),
+    }
+}
+
+fn runtime_store_for_setup(extensions: &Extensions, setup: &SourceSetupStore) -> Option<Store> {
+    if let Some(runtime) = crate::sources::registry_from(extensions).and_then(|r| r.runtime()) {
+        return Some(runtime.clone());
+    }
+    match &setup.backend {
+        SourceSetupBackend::Postgres(db) => Some(Store::from_connection(db.clone())),
+        SourceSetupBackend::Memory(_) => None,
+    }
+}
+
+fn format_unix_i64(ts: i64) -> String {
+    format_rfc3339(std::time::UNIX_EPOCH + std::time::Duration::from_secs(ts.max(0) as u64))
+}
+
+fn apply_runtime_spruce_overview(
+    source: &mut PracticeSourceWire,
+    overview: &SpruceChannelOverview,
+) {
+    let (connected_at, method, account_label, imported_records, existing_last_read) =
+        match connection_anchor(&source.standing) {
+            Some(anchor) => anchor,
+            None => (
+                overview
+                    .standing
+                    .last_read_at()
+                    .map(format_unix_i64)
+                    .unwrap_or_else(|| format_unix_i64(0)),
+                SourceConnectionMethodWire::CredentialSignIn,
+                "Practice Spruce API".to_owned(),
+                source.retained_linked_records,
+                overview.standing.last_read_at().map(format_unix_i64),
+            ),
+        };
+    if let Some(halt) = &overview.rollback_halt {
+        source.standing = SourceStandingWire::RollbackHalted {
+            connected_at,
+            method,
+            account_label,
+            imported_records,
+            last_successful_read_at: existing_last_read,
+            halted_at: format_unix_i64(halt.detected_at),
+            running_release: halt.running_label.clone(),
+            highest_release: halt.highest_label.clone(),
+            reason: halt.reason.clone(),
+        };
+        return;
+    }
+    if let ChannelStanding::Connected {
+        backlog, health, ..
+    } = &overview.standing
+    {
+        match health {
+            ChannelHealth::RevokedOrBlocked {
+                reason,
+                failed_at,
+                last_read_at,
+            } => {
+                source.standing = SourceStandingWire::AccessLost {
+                    connected_at,
+                    method,
+                    account_label,
+                    imported_records,
+                    last_successful_read_at: last_read_at
+                        .map(format_unix_i64)
+                        .or(existing_last_read),
+                    lost_at: format_unix_i64(*failed_at),
+                    cause: AccessLossCauseWire::RevokedGrant,
+                    reason: reason.clone(),
+                };
+            }
+            ChannelHealth::TransientFailure {
+                reason,
+                failed_at,
+                last_read_at,
+            } => {
+                source.standing = SourceStandingWire::ReadFailed {
+                    connected_at,
+                    method,
+                    account_label,
+                    imported_records,
+                    last_successful_read_at: last_read_at
+                        .map(format_unix_i64)
+                        .or(existing_last_read),
+                    failed_at: format_unix_i64(*failed_at),
+                    reason: reason.clone(),
+                };
+            }
+            ChannelHealth::Reading { .. } => {}
+        }
+        if matches!(backlog, BacklogStanding::Offered { .. })
+            && matches!(source.backlog, SpruceBacklogWire::NonePending)
+        {
+            source.backlog = SpruceBacklogWire::Offered {
+                message_count: 1,
+                earliest_message_at: format_unix_i64(0),
+            };
+        }
     }
 }
 
@@ -995,11 +1155,59 @@ async fn connect_source(
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
     let now_str = moment.now_rfc3339;
+    let now_unix = moment.now_unix as i64;
+    if kind == SupportedSourceWire::Spruce
+        && let Some(runtime) = runtime_store_for_setup(&parts.extensions, &setup)
+    {
+        let auth_store = connected.auth_store(&parts.extensions);
+        let overview = match runtime.spruce_channel_overview(&identity.practice_id).await {
+            Ok(overview) => overview,
+            Err(err) => return runtime_spruce_error_response(err),
+        };
+        if let Some(halt) = overview.rollback_halt {
+            return runtime_spruce_error_response(SpruceMatchingError::RollbackHalted(halt));
+        }
+        if matches!(overview.standing, ChannelStanding::Disconnected { .. })
+            && let Err(err) = runtime
+                .connect_spruce_channel(auth_store.as_ref(), &identity, 0, None, now_unix)
+                .await
+        {
+            return runtime_spruce_error_response(err);
+        }
+        if let Err(err) = runtime
+            .set_practice_reply_channels_connection(
+                &identity.practice_id,
+                ChannelConnection::Connected,
+            )
+            .await
+        {
+            tracing::warn!(error = %err, "failed to set reply channels connected during spruce connect");
+            return StatusCode::SERVICE_UNAVAILABLE.into_response();
+        }
+        if let Some(secret) = payload
+            .secret_or_code
+            .as_deref()
+            .map(str::trim)
+            .filter(|s| !s.is_empty())
+        {
+            let cfg = SpruceChannelConfig {
+                api_base: std::env::var("CODA_SPRUCE_API_BASE").ok(),
+                organization_id: Some(account_label.clone()),
+                access_token: Some(secret.to_owned()),
+            };
+            if let Err(err) = runtime
+                .set_spruce_channel_config(&identity.practice_id, Some(&cfg), now_unix)
+                .await
+            {
+                return runtime_spruce_error_response(err);
+            }
+        }
+    }
     let updated = setup
         .mutate_entry(
             &identity.practice_id,
             kind,
-            moment.now_unix as i64,
+            now_unix,
             |entry| -> Result<(), std::convert::Infallible> {
                 entry.standing = SourceStandingWire::Connected {
                     connected_at: now_str,
@@ -1541,6 +1749,9 @@ async fn accept_backlog(
                     }
                     | SourceStandingWire::AccessLost {
                         imported_records, ..
+                    }
+                    | SourceStandingWire::RollbackHalted {
+                        imported_records, ..
                     } => {
                         *imported_records = total;
                     }
@@ -1567,6 +1778,24 @@ async fn accept_backlog(
         }
         Err(MutateError::Persist(error)) => return persist_failure(error),
     };
+    if let Some(runtime) = runtime_store_for_setup(extensions, &setup) {
+        let overview = match runtime.spruce_channel_overview(&identity.practice_id).await {
+            Ok(overview) => overview,
+            Err(err) => return runtime_spruce_error_response(err),
+        };
+        if matches!(
+            overview.standing,
+            ChannelStanding::Connected {
+                backlog: BacklogStanding::Offered { .. },
+                ..
+            }
+        ) && let Err(err) = runtime
+            .accept_spruce_backlog(auth_store.as_ref(), &identity, pulled_unix as i64)
+            .await
+        {
+            return runtime_spruce_error_response(err);
+        }
+    }
 
     notify_practice(extensions).await;
     Json(SourceOperationResponseWire {
@@ -1619,7 +1848,26 @@ async fn reconnect_source(
     let Ok(current) = setup.read_entry(&identity.practice_id, kind).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
-    if !current.standing.requires_reconnect() {
+    let runtime_overview = if kind == SupportedSourceWire::Spruce
+        && let Some(runtime) = runtime_store_for_setup(&parts.extensions, &setup)
+    {
+        match runtime.spruce_channel_overview(&identity.practice_id).await {
+            Ok(ov) => Some(ov),
+            Err(err) => return runtime_spruce_error_response(err),
+        }
+    } else {
+        None
+    };
+    let runtime_requires_reconnect = runtime_overview.as_ref().is_some_and(|ov| {
+        matches!(
+            ov.standing,
+            ChannelStanding::Connected {
+                health: ChannelHealth::RevokedOrBlocked { .. },
+                ..
+            }
+        )
+    });
+    if !current.standing.requires_reconnect() && !runtime_requires_reconnect {
         return (
             StatusCode::CONFLICT,
             Json(json!({
@@ -1659,7 +1907,7 @@ async fn reconnect_source(
             kind,
             pulled_unix as i64,
             |entry| -> Result<(), StatusCode> {
-                if !entry.standing.requires_reconnect() {
+                if !entry.standing.requires_reconnect() && !runtime_requires_reconnect {
                     return Err(StatusCode::CONFLICT);
                 }
                 let imported_records = entry.linked_records.len();
@@ -1689,11 +1937,59 @@ async fn reconnect_source(
         Err(MutateError::Domain(status)) => return status.into_response(),
         Err(MutateError::Persist(error)) => return persist_failure(error),
     };
+    let mut source = project_source(kind, mode, &entry);
+    if kind == SupportedSourceWire::Spruce
+        && let Some(runtime) = runtime_store_for_setup(&parts.extensions, &setup)
+    {
+        if runtime_requires_reconnect
+            && let Err(err) = runtime
+                .reconnect_spruce_channel(auth_store.as_ref(), &identity, pulled_unix as i64)
+                .await
+        {
+            return runtime_spruce_error_response(err);
+        }
+        if let Err(err) = runtime
+            .set_practice_reply_channels_connection(
+                &identity.practice_id,
+                ChannelConnection::Connected,
+            )
+            .await
+        {
+            tracing::warn!(error = %err, "failed to restore reply channel connectivity on reconnect");
+            return StatusCode::SERVICE_UNAVAILABLE.into_response();
+        }
+        if let Some(secret) = payload
+            .secret_or_code
+            .as_deref()
+            .map(str::trim)
+            .filter(|s| !s.is_empty())
+        {
+            let mut cfg = match runtime.spruce_channel_config(&identity.practice_id).await {
+                Ok(existing) => existing.unwrap_or(SpruceChannelConfig {
+                    api_base: std::env::var("CODA_SPRUCE_API_BASE").ok(),
+                    organization_id: None,
+                    access_token: None,
+                }),
+                Err(err) => return runtime_spruce_error_response(err),
+            };
+            cfg.access_token = Some(secret.to_owned());
+            if let Err(err) = runtime
+                .set_spruce_channel_config(&identity.practice_id, Some(&cfg), pulled_unix as i64)
+                .await
+            {
+                return runtime_spruce_error_response(err);
+            }
+        }
+        match runtime.spruce_channel_overview(&identity.practice_id).await {
+            Ok(overview) => apply_runtime_spruce_overview(&mut source, &overview),
+            Err(err) => return runtime_spruce_error_response(err),
+        }
+    }
 
     notify_practice(&parts.extensions).await;
     Json(SourceOperationResponseWire {
         practice_id: identity.practice_id,
-        source: project_source(kind, mode, &entry),
+        source,
     })
     .into_response()
 }
@@ -1741,12 +2037,165 @@ async fn disconnect_source(
     let Ok((entry, ())) = updated else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
+    if kind == SupportedSourceWire::Spruce
+        && let Some(runtime) = runtime_store_for_setup(extensions, &setup)
+    {
+        let auth_store = connected.auth_store(extensions);
+        let now_unix = moment.now_unix as i64;
+        let overview = match runtime.spruce_channel_overview(&identity.practice_id).await {
+            Ok(overview) => overview,
+            Err(err) => return runtime_spruce_error_response(err),
+        };
+        if !matches!(overview.standing, ChannelStanding::Disconnected { .. })
+            && let Err(err) = runtime
+                .disconnect_spruce_channel(auth_store.as_ref(), &identity, now_unix)
+                .await
+        {
+            return runtime_spruce_error_response(err);
+        }
+        if let Err(err) = runtime
+            .set_practice_reply_channels_connection(
+                &identity.practice_id,
+                ChannelConnection::Disconnected {
+                    disconnected_at: now_unix,
+                    note: "Spruce channel is disconnected. Open in Spruce to reply manually, or mark Done.".to_owned(),
+                },
+            )
+            .await
+        {
+            tracing::warn!(error = %err, "failed to mark reply channels disconnected on disconnect");
+            return StatusCode::SERVICE_UNAVAILABLE.into_response();
+        }
+    }
     notify_practice(extensions).await;
     Json(SourceOperationResponseWire {
         practice_id: identity.practice_id,
         source: project_source(kind, mode, &entry),
     })
     .into_response()
+}
+
+#[derive(Default, Deserialize)]
+struct ResolveSpruceRollbackBody {
+    #[serde(default)]
+    adopt_running_release: bool,
+}
+
+async fn resolve_spruce_rollback(
+    axum::Extension(connected): axum::Extension<ConnectedCare>,
+    request: Request<Body>,
+) -> Response {
+    let (parts, body) = request.into_parts();
+    let Some(setup) = store_from(&parts.extensions) else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let Some(runtime) = runtime_store_for_setup(&parts.extensions, &setup) else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let Ok(bytes) = axum::body::to_bytes(body, BODY_LIMIT).await else {
+        return StatusCode::BAD_REQUEST.into_response();
+    };
+    let payload: ResolveSpruceRollbackBody = if bytes.iter().all(u8::is_ascii_whitespace) {
+        ResolveSpruceRollbackBody::default()
+    } else {
+        let Ok(parsed) = serde_json::from_slice(&bytes) else {
+            return StatusCode::BAD_REQUEST.into_response();
+        };
+        parsed
+    };
+    let identity = ConnectedCare::identity(&parts.extensions);
+    let Ok(mode) =
+        resolve_practice_mode(&connected, &setup, &parts.extensions, &identity.practice_id).await
+    else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let Ok(moment) = connected.practice_moment(&parts.extensions).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let auth_store = connected.auth_store(&parts.extensions);
+    let overview = match runtime
+        .resolve_spruce_rollback_halt(
+            auth_store.as_ref(),
+            &identity,
+            payload.adopt_running_release,
+            moment.now_unix as i64,
+        )
+        .await
+    {
+        Ok(overview) => overview,
+        Err(err) => return runtime_spruce_error_response(err),
+    };
+    let Ok(entry) = setup
+        .read_entry(&identity.practice_id, SupportedSourceWire::Spruce)
+        .await
+    else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let mut source = project_source(SupportedSourceWire::Spruce, mode, &entry);
+    apply_runtime_spruce_overview(&mut source, &overview);
+    notify_practice(&parts.extensions).await;
+    Json(SourceOperationResponseWire {
+        practice_id: identity.practice_id,
+        source,
+    })
+    .into_response()
+}
+
+fn runtime_spruce_error_response(err: SpruceMatchingError) -> Response {
+    match err {
+        SpruceMatchingError::AdminRequired { .. } => (
+            StatusCode::FORBIDDEN,
+            Json(json!({
+                "detail": "An active practice admin must resolve a Spruce rollback halt.",
+                "code": "admin_required",
+            })),
+        )
+            .into_response(),
+        SpruceMatchingError::AccessDenied { .. } | SpruceMatchingError::PracticeAccess(_) => (
+            StatusCode::NOT_FOUND,
+            Json(json!({ "detail": "Spruce channel access is not available." })),
+        )
+            .into_response(),
+        SpruceMatchingError::ChannelStateRefused { ref state, .. }
+            if state == "older_release_still_running" =>
+        {
+            (
+                StatusCode::CONFLICT,
+                Json(json!({
+                    "detail": "Running release is still older than the recorded channel release; deploy the newer release or confirm adopt_running_release.",
+                    "code": "older_release_still_running",
+                })),
+            )
+                .into_response()
+        }
+        SpruceMatchingError::RollbackHalted(halt) => (
+            StatusCode::CONFLICT,
+            Json(json!({
+                "detail": halt.reason,
+                "code": "spruce_rollback_halted",
+            })),
+        )
+            .into_response(),
+        SpruceMatchingError::InvalidTransition { .. }
+        | SpruceMatchingError::ChannelStateRefused { .. }
+        | SpruceMatchingError::IdempotencyCollision { .. }
+        | SpruceMatchingError::ReaderLeaseHeld { .. }
+        | SpruceMatchingError::InvalidReaderLease { .. } => (
+            StatusCode::CONFLICT,
+            Json(json!({ "detail": err.to_string() })),
+        )
+            .into_response(),
+        SpruceMatchingError::InvalidIdentifier { .. }
+        | SpruceMatchingError::InvalidReasonText { .. } => (
+            StatusCode::BAD_REQUEST,
+            Json(json!({ "detail": err.to_string() })),
+        )
+            .into_response(),
+        SpruceMatchingError::AuthorityUnavailable(_)
+        | SpruceMatchingError::ReviewHandoff { .. }
+        | SpruceMatchingError::NotFound { .. }
+        | SpruceMatchingError::Database(_) => StatusCode::SERVICE_UNAVAILABLE.into_response(),
+    }
 }
 
 async fn simulate_event(
@@ -1926,6 +2375,14 @@ fn connection_anchor(
             ..
         }
         | SourceStandingWire::AccessLost {
+            connected_at,
+            method,
+            account_label,
+            imported_records,
+            last_successful_read_at,
+            ..
+        }
+        | SourceStandingWire::RollbackHalted {
             connected_at,
             method,
             account_label,

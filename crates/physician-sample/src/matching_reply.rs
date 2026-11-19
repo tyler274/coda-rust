@@ -311,6 +311,11 @@ fn spruce_error_response(err: SpruceMatchingError) -> Response {
             Json(json!({ "detail": "Patient or conversation access is not available." })),
         )
             .into_response(),
+        SpruceMatchingError::AdminRequired { .. } => (
+            StatusCode::FORBIDDEN,
+            Json(json!({ "detail": "An active practice admin must resolve a Spruce rollback halt." })),
+        )
+            .into_response(),
         SpruceMatchingError::NotFound { .. } => (
             StatusCode::NOT_FOUND,
             Json(json!({ "detail": err.to_string() })),
@@ -326,7 +331,8 @@ fn spruce_error_response(err: SpruceMatchingError) -> Response {
         | SpruceMatchingError::ChannelStateRefused { .. }
         | SpruceMatchingError::IdempotencyCollision { .. }
         | SpruceMatchingError::ReaderLeaseHeld { .. }
-        | SpruceMatchingError::InvalidReaderLease { .. } => (
+        | SpruceMatchingError::InvalidReaderLease { .. }
+        | SpruceMatchingError::RollbackHalted(_) => (
             StatusCode::CONFLICT,
             Json(json!({ "detail": err.to_string() })),
         )

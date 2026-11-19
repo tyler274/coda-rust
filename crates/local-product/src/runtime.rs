@@ -85,6 +85,8 @@ pub mod source_status;
 pub mod sources;
 /// Spruce channel reading, patient conversation linking, classification storage, and move controls.
 pub mod spruce_matching;
+/// Live `crates/spruce` channel reader, transient attachment intake, and matching/review loop.
+pub mod spruce_sync;
 #[cfg(test)]
 mod tests;
 /// Cross-producer Today and Updates read model, per-physician seen state, and item detail projection.
@@ -748,6 +750,7 @@ pub struct Store {
     source_refresh: std::sync::Arc<dyn refresh::PatientSourceRefresh>,
     refresh_operation: std::sync::Arc<dyn chat_operations::PatientRefreshOperation>,
     understanding_trigger: Option<std::sync::Arc<understanding::UnderstandingTriggerBinding>>,
+    spruce_release: spruce_matching::SpruceReleaseStamp,
 }
 
 fn error(message: &str) -> DbErr {
@@ -1045,7 +1048,23 @@ impl Store {
             source_refresh: std::sync::Arc::new(refresh::FixedSourceCheck::new()),
             refresh_operation: std::sync::Arc::new(chat_operations::RuntimeSourceRefreshOperation),
             understanding_trigger: None,
+            spruce_release: spruce_matching::SpruceReleaseStamp::from_env(),
         }
+    }
+
+    /// Binds this [`Store`] handle to an explicit Spruce release-generation stamp
+    /// (`generation >= 1`) for release-rollback fence testing.
+    pub fn with_spruce_release(mut self, generation: i64, label: impl Into<String>) -> Self {
+        self.spruce_release = spruce_matching::SpruceReleaseStamp {
+            generation: std::cmp::Ord::max(generation, 1),
+            label: label.into(),
+        };
+        self
+    }
+
+    /// Running Spruce release-generation stamp used to fence channel filing.
+    pub fn spruce_release(&self) -> &spruce_matching::SpruceReleaseStamp {
+        &self.spruce_release
     }
 
     /// Configures automatic background patient understanding triggers (`roles.background`)
@@ -2152,6 +2171,26 @@ impl Store {
                         )));
                     }
                 }
+            }
+            let configured_sources = self
+                .source_refresh
+                .configured_sources(&claim.scope.practice, &claim.scope.workspace)
+                .await
+                .map_err(|cause| error(&cause.to_string()))?;
+            if !configured_sources.is_empty()
+                && let Some(refusal_json) =
+                    crate::physician_sources::evaluate_chat_live_chart_reread(
+                        &current_obs.sources,
+                        ordered.iter(),
+                        &messages,
+                        &finished,
+                    )
+                    .map_err(|reason| error(&reason))?
+            {
+                tx.commit().await?;
+                return Ok(Finish::Refused(harness::engine::recipe::Refusal::new(
+                    refusal_json,
+                )));
             }
         }
         let attempt = state.attempts.last_mut().unwrap();

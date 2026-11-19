@@ -128,16 +128,16 @@ pub(super) async fn run(worker: Arc<Worker>, stop: watch::Receiver<bool>) {
     // Which kind of due work the next sweep reads first.
     let mut order = SweepOrder::default();
     loop {
-        let sweep = tokio::select! {
+        let (sweep, spruce_tick) = tokio::select! {
             () = stopping(stop.clone()) => break,
-            _ = poll.tick() => true,
-            () = &mut lease_end, if watching_lease => true,
+            _ = poll.tick() => (true, true),
+            () = &mut lease_end, if watching_lease => (true, false),
             Some(wake) = woken.recv() => match wake {
                 Wake::Work(delivery) => {
                     backlog |= !running.start(&worker, delivery, &stop);
-                    false
+                    (false, false)
                 }
-                Wake::Subscribed => true,
+                Wake::Subscribed => (true, false),
             },
             Some(joined) = running.tasks.join_next_with_id() => {
                 if let Some((delivery, Next::RetryAfter(delay))) = running.finished(joined) {
@@ -148,7 +148,7 @@ pub(super) async fn run(worker: Arc<Worker>, stop: watch::Receiver<bool>) {
                         let _ = wake.send(Wake::Work(delivery)).await;
                     });
                 }
-                backlog
+                (backlog, false)
             }
         };
         if sweep {
@@ -179,6 +179,9 @@ pub(super) async fn run(worker: Arc<Worker>, stop: watch::Receiver<bool>) {
                     backlog
                 }
             };
+        }
+        if spruce_tick {
+            worker.poll_spruce_channels().await;
         }
     }
     listener.abort();
@@ -227,8 +230,8 @@ impl SweepOrder {
             Self::PracticeJobs => (
                 [
                     DeliveryKind::PracticeJob,
-                    DeliveryKind::ChatTurn,
                     DeliveryKind::ReplyRevision,
+                    DeliveryKind::ChatTurn,
                 ],
                 Self::ChatTurns,
             ),

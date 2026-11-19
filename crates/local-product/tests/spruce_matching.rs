@@ -4259,3 +4259,765 @@ async fn wrong_patient_undo_boundaries_access_redaction_multi_participant_recove
     );
     receiver.clear_failures();
 }
+
+#[tokio::test]
+async fn wrong_patient_undo_allows_any_authorized_physician() {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let now_ts: i64 = 1_763_200_000;
+    let practice = format!("practice-undo-peer-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::RealTime)
+        .await
+        .unwrap();
+
+    let dr_mover = invite_physician(&auth, &practice, "DrMover", now_ts as u64).await;
+    let dr_peer = invite_physician(&auth, &practice, "DrPeer", now_ts as u64).await;
+    let pw_a = format!("pw-undo-a-{}", Uuid::new_v4().simple());
+    let pw_b = format!("pw-undo-b-{}", Uuid::new_v4().simple());
+    for (ws, ehr_id, name) in [
+        (&pw_a, "ehr-ua", "Patient A"),
+        (&pw_b, "ehr-ub", "Patient B"),
+    ] {
+        seed_patient_with_chart(
+            &store,
+            &auth,
+            &practice,
+            ws,
+            ehr_id,
+            name,
+            "1980-01-01",
+            "Clinical note.",
+            now_ts,
+        )
+        .await;
+        auth.set_membership(&dr_mover, ws, Membership::Allowed)
+            .await
+            .unwrap();
+        auth.set_membership(&dr_peer, ws, Membership::Allowed)
+            .await
+            .unwrap();
+    }
+
+    store
+        .connect_spruce_channel(auth.as_ref(), &dr_mover, 0, None, now_ts)
+        .await
+        .unwrap();
+    let lease = store
+        .acquire_spruce_reader_lease(&practice, "worker-undo-peer", 600, now_ts)
+        .await
+        .unwrap();
+    store
+        .ingest_spruce_item(
+            &practice,
+            &lease.lease_token,
+            &readable_item(
+                1,
+                "msg-undo-peer-1",
+                "conv-undo-peer",
+                Some("+14155550901"),
+                Some("Patient A"),
+                "Question about my refill.",
+                vec![],
+            ),
+            now_ts + 1,
+        )
+        .await
+        .unwrap();
+    let receiver = RecordingReviewReceiver::default();
+    store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "msg-undo-peer-1",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::NoMatchFound {
+                    evidence_summary: "Unconfirmed sender.".into(),
+                },
+                rationale: "Patient refill inquiry.".into(),
+            },
+            Some(&receiver),
+            now_ts + 1,
+        )
+        .await
+        .unwrap();
+    store
+        .confirm_spruce_message_link(
+            auth.as_ref(),
+            &dr_mover,
+            "msg-undo-peer-1",
+            &pw_a,
+            SenderConfirmationPolicy::ConversationOnly,
+            "cmd-link-undo-peer",
+            Some(&receiver),
+            now_ts + 2,
+        )
+        .await
+        .unwrap();
+
+    store
+        .move_spruce_conversation(
+            auth.as_ref(),
+            &dr_mover,
+            MoveSpruceConversationCommand {
+                conversation_id: "conv-undo-peer".into(),
+                destination: MoveDestination::AnotherPatient {
+                    workspace: pw_b.clone(),
+                },
+                undo_window_seconds: 15,
+                command_key: "cmd-move-undo-peer".into(),
+            },
+            Some(&receiver),
+            now_ts + 3,
+        )
+        .await
+        .unwrap();
+
+    let undone = store
+        .undo_spruce_conversation_move(
+            auth.as_ref(),
+            &dr_peer,
+            "conv-undo-peer",
+            "cmd-peer-undo",
+            Some(&receiver),
+            now_ts + 5,
+        )
+        .await
+        .expect("any authorized physician with access to both patients may Undo");
+    assert!(matches!(
+        undone.link_state,
+        ConversationLinkState::Linked { ref workspace, .. } if workspace == &pw_a
+    ));
+}
+
+#[tokio::test]
+async fn spruce_release_fence_halts_filing_on_rollback_until_explicit_resolution() {
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (base_store, auth) = connect_stores(&url).await;
+    let now_ts = 1_763_200_000i64;
+    let practice = format!("prac-rollback-fence-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::Fixed(now_ts as u64))
+        .await
+        .unwrap();
+    let dr = invite_physician(&auth, &practice, "dr-rollback", now_ts as u64).await;
+    let admin_email = format!("admin-rollback-{}@codahealth.test", Uuid::new_v4().simple());
+    let admin_inv = auth
+        .invite(
+            &practice,
+            &admin_email,
+            "Admin Rollback",
+            true,
+            now_ts as u64,
+        )
+        .await
+        .unwrap();
+    let (admin, _) = auth
+        .redeem_invitation(&admin_email, &admin_inv, now_ts as u64)
+        .await
+        .unwrap();
+
+    let store_v5 = base_store.clone().with_spruce_release(5, "spruce-sync/v5");
+    let lease_v5 = store_v5
+        .acquire_spruce_reader_lease(&practice, "worker-v5", 60, now_ts)
+        .await
+        .unwrap();
+    store_v5
+        .connect_spruce_channel(auth.as_ref(), &dr, 0, Some("cursor-0".into()), now_ts)
+        .await
+        .unwrap();
+    store_v5
+        .ingest_spruce_item(
+            &practice,
+            &lease_v5.lease_token,
+            &readable_item(
+                1,
+                "m-fence-1",
+                "conv-fence",
+                Some("phone:+15550009911"),
+                Some("Clara"),
+                "First message processed on release v5.",
+                Vec::new(),
+            ),
+            now_ts + 1,
+        )
+        .await
+        .unwrap();
+    store_v5
+        .advance_spruce_channel_place(
+            &practice,
+            &lease_v5.lease_token,
+            Some("cursor-1".into()),
+            now_ts + 2,
+        )
+        .await
+        .unwrap();
+    store_v5
+        .release_spruce_reader_lease(&practice, &lease_v5.lease_token, now_ts + 3)
+        .await
+        .unwrap();
+
+    // Now simulate rolling back to release v3 -> filing and cursor advancement MUST halt!
+    let store_v3 = Store::connect(&url)
+        .await
+        .unwrap()
+        .with_spruce_release(3, "spruce-sync/v3");
+    let lease_v3 = store_v3
+        .acquire_spruce_reader_lease(&practice, "worker-v3", 60, now_ts + 10)
+        .await
+        .unwrap();
+    let halted_err = store_v3
+        .ingest_spruce_item(
+            &practice,
+            &lease_v3.lease_token,
+            &readable_item(
+                2,
+                "m-fence-2",
+                "conv-fence",
+                Some("phone:+15550009911"),
+                Some("Clara"),
+                "Second message during rollback must wait in Spruce without being filed or dropped.",
+                Vec::new(),
+            ),
+            now_ts + 11,
+        )
+        .await
+        .expect_err("older release behind v5 must halt Spruce filing");
+    assert!(
+        matches!(
+            halted_err,
+            SpruceMatchingError::RollbackHalted(ref h)
+                if h.running_generation == 3 && h.highest_generation == 5
+        ),
+        "unexpected error on rollback fence: {halted_err:?}"
+    );
+    assert!(
+        store_v3
+            .spruce_message(&practice, "m-fence-2")
+            .await
+            .unwrap()
+            .is_none(),
+        "halted filing must not store message 2 prematurely"
+    );
+
+    // Halt must remain durable across fresh connections & expose on Today/health until resolved.
+    let restarted = Store::connect(&url)
+        .await
+        .unwrap()
+        .with_spruce_release(5, "spruce-sync/v5");
+    let halted_list = restarted.spruce_rollback_halted_practices().await.unwrap();
+    assert_eq!(halted_list.len(), 1);
+    assert_eq!(halted_list[0].0, practice);
+    let summary = restarted
+        .today_spruce_summary_for_physician(auth.as_ref(), &dr)
+        .await
+        .unwrap();
+    assert!(matches!(
+        summary.channel_banner,
+        TodayChannelBanner::RollbackHalted { .. }
+    ));
+
+    // Even when v5 resumes, filing remains halted until an operator explicitly clears the halt!
+    let still_halted = restarted
+        .enforce_spruce_release_fence(&practice, now_ts + 20)
+        .await
+        .expect_err("halt must remain active until explicitly resolved");
+    assert!(matches!(
+        still_halted,
+        SpruceMatchingError::RollbackHalted(_)
+    ));
+
+    // Non-admin physician cannot resolve a rollback halt; resolving while v3 runs without
+    // adopt_running_release is refused for admin too; resolving as admin on v5 succeeds
+    // and resumes from saved place=1 / cursor="cursor-1" with zero loss or duplicate filing.
+    let non_admin_err = restarted
+        .resolve_spruce_rollback_halt(auth.as_ref(), &dr, true, now_ts + 20)
+        .await;
+    assert!(matches!(
+        non_admin_err,
+        Err(SpruceMatchingError::AdminRequired { .. })
+    ));
+
+    let refused_old = store_v3
+        .resolve_spruce_rollback_halt(auth.as_ref(), &admin, false, now_ts + 21)
+        .await;
+    assert!(matches!(
+        refused_old,
+        Err(SpruceMatchingError::ChannelStateRefused { .. })
+    ));
+
+    let resolved = restarted
+        .resolve_spruce_rollback_halt(auth.as_ref(), &admin, false, now_ts + 22)
+        .await
+        .unwrap();
+    assert!(resolved.rollback_halt.is_none());
+    let lease_resumed = restarted
+        .acquire_spruce_reader_lease(&practice, "worker-v5-resumed", 60, now_ts + 80)
+        .await
+        .unwrap();
+    restarted
+        .ingest_spruce_item(
+            &practice,
+            &lease_resumed.lease_token,
+            &readable_item(
+                2,
+                "m-fence-2",
+                "conv-fence",
+                Some("phone:+15550009911"),
+                Some("Clara"),
+                "Second message resumes once from saved cursor after halt cleared.",
+                Vec::new(),
+            ),
+            now_ts + 81,
+        )
+        .await
+        .unwrap();
+    let place = restarted
+        .advance_spruce_channel_place(
+            &practice,
+            &lease_resumed.lease_token,
+            Some("cursor-2".into()),
+            now_ts + 82,
+        )
+        .await
+        .unwrap();
+    assert_eq!(place, 2);
+}
+
+#[tokio::test]
+async fn live_fake_spruce_sync_handles_attachments_transients_revocation_and_outbound() {
+    use local_product::attachments::{build_test_pdf, render_synthetic_clinical_png};
+    use local_product::runtime::spruce_sync::{SpruceSyncOutcome, SpruceSyncPass};
+
+    let Some(url) = database_url() else {
+        return;
+    };
+    let (store, auth) = connect_stores(&url).await;
+    let now_ts = 1_763_300_000i64;
+    let practice = format!("prac-live-spruce-{}", Uuid::new_v4().simple());
+    auth.ensure_practice(&practice, PracticeClock::Fixed(now_ts as u64))
+        .await
+        .unwrap();
+    let dr = invite_physician(&auth, &practice, "dr-live-spruce", now_ts as u64).await;
+
+    let patient_id = format!("pat-live-{}", Uuid::new_v4().simple());
+    let pw = local_product::physician_sources::workspace_id("clinic-ehr", &patient_id);
+    seed_patient_with_chart(
+        &store,
+        auth.as_ref(),
+        &practice,
+        &pw,
+        &patient_id,
+        "Rosa Mendez",
+        "1972-09-14",
+        "Essential hypertension.",
+        now_ts,
+    )
+    .await;
+    auth.set_membership(&dr, &pw, Membership::Allowed)
+        .await
+        .unwrap();
+
+    let fake = spruce::testing::FakeSpruce::spawn().await;
+    fake.deliver(spruce::testing::Delivery {
+        conversation: "conv-live-1".into(),
+        id: "m-hist-0".into(),
+        text: "Earlier clinic check-in before connection.".into(),
+        created_at: "2026-11-18T10:00:00Z".into(),
+        modified_at: "2026-11-18T10:00:00Z".into(),
+        activity_at: "2026-11-18T10:00:00Z".into(),
+        transcription_id: None,
+        transcription_text: None,
+        transcription_status: None,
+        transcription_summary: None,
+    });
+
+    let dr_connect = dr.clone();
+    store
+        .connect_spruce_channel(auth.as_ref(), &dr_connect, 1, None, now_ts)
+        .await
+        .unwrap();
+
+    let reader = spruce::changes::Reader::new(fake.client());
+    let roles = distinct_roles();
+    let skills = load_skills();
+    let receiver = RecordingReviewReceiver::default();
+
+    // Pass 1 establishes cursor cleanly without ingesting pre-connection item `m-hist-0`.
+    let pass1 = store
+        .sync_spruce_channel_pass(
+            &reader,
+            auth.as_ref(),
+            &SpruceSyncPass {
+                practice: &practice,
+                holder_id: "sync-test-1",
+                lease_ttl_seconds: 60,
+                now_ts: now_ts + 1,
+                roles: &roles,
+                skills: &skills,
+                review_receiver: &receiver,
+            },
+            None::<&mut harness::provider::ResponsesProvider>,
+        )
+        .await
+        .unwrap();
+    let SpruceSyncOutcome::Completed(rep1) = pass1 else {
+        panic!("expected Pass 1 Completed, got {pass1:?}");
+    };
+    assert_eq!(rep1.ingested_count, 0);
+
+    // Pre-link conversation `conv-live-1` via m0 confirmation, then deliver new patient message with PNG + Fax PDF!
+    let m0 = readable_item(
+        2,
+        "m-link-0",
+        "conv-live-1",
+        Some("phone:+15552223344"),
+        Some("Rosa Mendez"),
+        "Checking appointment time.",
+        Vec::new(),
+    );
+    let l0 = store
+        .acquire_spruce_reader_lease(&practice, "seed-link", 30, now_ts + 2)
+        .await
+        .unwrap();
+    store
+        .ingest_spruce_item(&practice, &l0.lease_token, &m0, now_ts + 2)
+        .await
+        .unwrap();
+    store
+        .release_spruce_reader_lease(&practice, &l0.lease_token, now_ts + 2)
+        .await
+        .unwrap();
+    store
+        .record_spruce_message_classification(
+            auth.as_ref(),
+            &practice,
+            "m-link-0",
+            None,
+            RECIPE_VERSION,
+            GUIDANCE_VERSION,
+            MatchingDecision::PatientMail {
+                urgency: MessageUrgencyChoice::Ordinary,
+                assessment: MatchAssessment::SuggestedPatient {
+                    workspace: pw.clone(),
+                    evidence_summary: "Name Rosa Mendez matches.".into(),
+                },
+                rationale: "Patient inquiry.".into(),
+            },
+            Some(&receiver),
+            now_ts + 3,
+        )
+        .await
+        .unwrap();
+    store
+        .confirm_spruce_message_link(
+            auth.as_ref(),
+            &dr,
+            "m-link-0",
+            &pw,
+            SenderConfirmationPolicy::ConfirmSenderForPatient,
+            "cmd-confirm-live",
+            Some(&receiver),
+            now_ts + 4,
+        )
+        .await
+        .unwrap();
+
+    // Deliver live message `m-live-1` with PNG clinical photo & multi-page PDF fax.
+    fake.deliver(spruce::testing::Delivery {
+        conversation: "conv-live-1".into(),
+        id: "m-live-1".into(),
+        text: "Sending my home BP cuff photo and specialist fax PDF.".into(),
+        created_at: "2026-11-18T12:00:00Z".into(),
+        modified_at: "2026-11-18T12:00:00Z".into(),
+        activity_at: "2026-11-18T12:00:00Z".into(),
+        transcription_id: None,
+        transcription_text: None,
+        transcription_status: None,
+        transcription_summary: None,
+    });
+    let png_bytes = render_synthetic_clinical_png(&["BP 146/90"], false);
+    let pdf_bytes = build_test_pdf(&[
+        (
+            vec!["Cardiology fax page 1: Continue lisinopril 20 mg".into()],
+            true,
+            false,
+        ),
+        (
+            vec!["Page 2: Repeat potassium in 2 weeks".into()],
+            true,
+            false,
+        ),
+    ]);
+    fake.attach_to_item(
+        "m-live-1",
+        vec![
+            spruce::testing::TestAttachment {
+                kind: "image".into(),
+                title: Some("Home BP cuff".into()),
+                mimetype: Some("image/png".into()),
+                name: Some("bp-cuff.png".into()),
+                bytes: Some(png_bytes),
+            },
+            spruce::testing::TestAttachment {
+                kind: "fax".into(),
+                title: Some("Cardiology fax".into()),
+                mimetype: Some("application/pdf".into()),
+                name: Some("cardiology-fax.pdf".into()),
+                bytes: Some(pdf_bytes),
+            },
+        ],
+    );
+
+    // Also deliver internal staff notes with direction=None and direction="inbound" -> neither may be ingested.
+    fake.deliver(spruce::testing::Delivery {
+        conversation: "conv-live-1".into(),
+        id: "m-internal-none".into(),
+        text: "Internal note without direction.".into(),
+        created_at: "2026-11-18T12:01:00Z".into(),
+        modified_at: "2026-11-18T12:01:00Z".into(),
+        activity_at: "2026-11-18T12:01:00Z".into(),
+        transcription_id: None,
+        transcription_text: None,
+        transcription_status: None,
+        transcription_summary: None,
+    });
+    fake.mark_internal_note("m-internal-none", None);
+    fake.deliver(spruce::testing::Delivery {
+        conversation: "conv-live-1".into(),
+        id: "m-internal-inbound".into(),
+        text: "Internal note tagged inbound.".into(),
+        created_at: "2026-11-18T12:02:00Z".into(),
+        modified_at: "2026-11-18T12:02:00Z".into(),
+        activity_at: "2026-11-18T12:02:00Z".into(),
+        transcription_id: None,
+        transcription_text: None,
+        transcription_status: None,
+        transcription_summary: None,
+    });
+    fake.mark_internal_note("m-internal-inbound", Some("inbound"));
+
+    let pass2 = store
+        .sync_spruce_channel_pass(
+            &reader,
+            auth.as_ref(),
+            &SpruceSyncPass {
+                practice: &practice,
+                holder_id: "sync-test-1",
+                lease_ttl_seconds: 60,
+                now_ts: now_ts + 10,
+                roles: &roles,
+                skills: &skills,
+                review_receiver: &receiver,
+            },
+            None::<&mut harness::provider::ResponsesProvider>,
+        )
+        .await
+        .unwrap();
+    let SpruceSyncOutcome::Completed(rep2) = pass2 else {
+        panic!("expected Pass 2 Completed, got {pass2:?}");
+    };
+    assert_eq!(rep2.ingested_count, 1);
+    assert_eq!(rep2.attachments_ingested_count, 2);
+    assert_eq!(rep2.attachments_failed_count, 0);
+    assert!(
+        store
+            .spruce_message(&practice, "m-internal-none")
+            .await
+            .unwrap()
+            .is_none(),
+        "internal note without direction must never ingest"
+    );
+    assert!(
+        store
+            .spruce_message(&practice, "m-internal-inbound")
+            .await
+            .unwrap()
+            .is_none(),
+        "internal note with inbound direction must never ingest"
+    );
+
+    // Ensure transient signed URLs never leaked into stored message or chart records.
+    let saved_msg = store
+        .spruce_message(&practice, "m-live-1")
+        .await
+        .unwrap()
+        .unwrap();
+    let saved_msg_json = serde_json::to_string(&saved_msg).unwrap();
+    assert!(!saved_msg_json.contains("signedUrl") && !saved_msg_json.contains("/v1/media/"));
+    let obs = store.sources(&pw).await.unwrap();
+    assert!(
+        obs.sources
+            .iter()
+            .any(|s| s.candidate_id == "spruce-att-m-live-1-0"),
+        "PNG attachment must be ingested into linked workspace"
+    );
+    assert!(
+        obs.sources
+            .iter()
+            .any(|s| s.candidate_id == "spruce-att-m-live-1-1"),
+        "Fax PDF must be ingested into linked workspace"
+    );
+    let obs_json = serde_json::to_string(&obs.sources).unwrap();
+    assert!(!obs_json.contains("signedUrl") && !obs_json.contains("/v1/media/"));
+
+    // Accept the offered backlog once: Pass 3 reads `m-hist-0` and marks BacklogStanding::Completed;
+    // Pass 4 reads nothing and does not re-scan the backlog.
+    store
+        .accept_spruce_backlog(auth.as_ref(), &dr, now_ts + 12)
+        .await
+        .unwrap();
+    let pass3 = store
+        .sync_spruce_channel_pass(
+            &reader,
+            auth.as_ref(),
+            &SpruceSyncPass {
+                practice: &practice,
+                holder_id: "sync-test-1",
+                lease_ttl_seconds: 60,
+                now_ts: now_ts + 13,
+                roles: &roles,
+                skills: &skills,
+                review_receiver: &receiver,
+            },
+            None::<&mut harness::provider::ResponsesProvider>,
+        )
+        .await
+        .unwrap();
+    let SpruceSyncOutcome::Completed(rep3) = pass3 else {
+        panic!("expected Pass 3 Completed, got {pass3:?}");
+    };
+    assert_eq!(rep3.ingested_count, 1);
+    assert!(
+        store
+            .spruce_message(&practice, "m-hist-0")
+            .await
+            .unwrap()
+            .is_some(),
+        "accepting backlog must ingest pre-connection message m-hist-0"
+    );
+    let (standing_after_pass3, _) = store.spruce_channel_standing(&practice).await.unwrap();
+    assert!(matches!(
+        standing_after_pass3,
+        ChannelStanding::Connected {
+            backlog: local_product::runtime::spruce_matching::BacklogStanding::Completed { .. },
+            ..
+        }
+    ));
+    let pass4 = store
+        .sync_spruce_channel_pass(
+            &reader,
+            auth.as_ref(),
+            &SpruceSyncPass {
+                practice: &practice,
+                holder_id: "sync-test-1",
+                lease_ttl_seconds: 60,
+                now_ts: now_ts + 14,
+                roles: &roles,
+                skills: &skills,
+                review_receiver: &receiver,
+            },
+            None::<&mut harness::provider::ResponsesProvider>,
+        )
+        .await
+        .unwrap();
+    let SpruceSyncOutcome::Completed(rep4) = pass4 else {
+        panic!("expected Pass 4 Completed, got {pass4:?}");
+    };
+    assert_eq!(rep4.ingested_count, 0);
+
+    // Inject 401 -> ReconnectRequired + reply conversation disconnected, then reconnect restores Reading!
+    fake.reject_unauthorized();
+    let pass_revoked = store
+        .sync_spruce_channel_pass(
+            &reader,
+            auth.as_ref(),
+            &SpruceSyncPass {
+                practice: &practice,
+                holder_id: "sync-test-1",
+                lease_ttl_seconds: 60,
+                now_ts: now_ts + 20,
+                roles: &roles,
+                skills: &skills,
+                review_receiver: &receiver,
+            },
+            None::<&mut harness::provider::ResponsesProvider>,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        pass_revoked,
+        SpruceSyncOutcome::ReconnectRequired { .. }
+    ));
+    let summary_revoked = store
+        .today_spruce_summary_for_physician(auth.as_ref(), &dr)
+        .await
+        .unwrap();
+    assert!(matches!(
+        summary_revoked.channel_banner,
+        TodayChannelBanner::ReconnectRequired { .. }
+    ));
+    let reply_conv = store
+        .reply_conversation(&practice, "conv-live-1")
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(matches!(
+        reply_conv.channel,
+        local_product::runtime::reply::proposals::ChannelConnection::Disconnected { .. }
+    ));
+
+    store
+        .reconnect_spruce_channel(auth.as_ref(), &dr, now_ts + 30)
+        .await
+        .unwrap();
+    let (reconnected_standing, _) = store.spruce_channel_standing(&practice).await.unwrap();
+    assert!(matches!(
+        reconnected_standing,
+        ChannelStanding::Connected {
+            health: ChannelHealth::Reading { .. },
+            ..
+        }
+    ));
+
+    // Disconnecting clears channel_config credentials cleanly.
+    store
+        .set_spruce_channel_config(
+            &practice,
+            Some(
+                &local_product::runtime::spruce_matching::SpruceChannelConfig {
+                    api_base: Some("https://api.sprucehealth.com".into()),
+                    organization_id: Some("org-live".into()),
+                    access_token: Some("secret-tok".into()),
+                },
+            ),
+            now_ts + 31,
+        )
+        .await
+        .unwrap();
+    assert!(
+        store
+            .spruce_channel_config(&practice)
+            .await
+            .unwrap()
+            .is_some()
+    );
+    store
+        .disconnect_spruce_channel(auth.as_ref(), &dr, now_ts + 32)
+        .await
+        .unwrap();
+    assert!(
+        store
+            .spruce_channel_config(&practice)
+            .await
+            .unwrap()
+            .is_none(),
+        "disconnecting Spruce must wipe stored channel credentials"
+    );
+}

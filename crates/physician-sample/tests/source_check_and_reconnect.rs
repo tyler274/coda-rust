@@ -6,6 +6,7 @@ mod common;
 
 use std::fs;
 use std::path::PathBuf;
+use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use local_product::physician_sources::workspace_id;
@@ -2202,4 +2203,271 @@ async fn post_connections_reconnect_requires_key_replays_after_500_and_deduplica
     task_b.abort();
     let _ = fs::remove_dir_all(&bank_a);
     let _ = fs::remove_dir_all(&bank_b);
+}
+
+#[tokio::test]
+async fn spruce_source_setup_delegates_to_runtime_and_surfaces_rollback_halt() {
+    let db_url = match std::env::var("PHYSICIAN_TEST_DATABASE_URL")
+        .or_else(|_| std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL"))
+    {
+        Ok(val) if !val.trim().is_empty() => val,
+        _ => return,
+    };
+    let auth = PostgresAuthStore::connect_with_migrations(&db_url)
+        .await
+        .unwrap();
+    let front_door = front_door::PostgresFrontDoorStore::connect_with_migrations(&db_url)
+        .await
+        .unwrap();
+    let store_v4 = Store::connect(&db_url)
+        .await
+        .unwrap()
+        .with_spruce_release(4, "spruce-sync/v4");
+    store_v4.migrate().await.unwrap();
+
+    let run = run_id();
+    let practice_id = format!("prac-setup-unify-{run}");
+    let now = 1_787_846_400u64;
+    auth.ensure_practice(&practice_id, PracticeClock::Fixed(now))
+        .await
+        .unwrap();
+    let email = format!("dr-{run}@codahealth.test");
+    let invite = auth
+        .invite(&practice_id, &email, "Dr. Unify", false, now)
+        .await
+        .unwrap();
+    let (dr, _) = auth.redeem_invitation(&email, &invite, now).await.unwrap();
+    let admin_email = format!("admin-{run}@codahealth.test");
+    let admin_invite = auth
+        .invite(&practice_id, &admin_email, "Admin Unify", true, now)
+        .await
+        .unwrap();
+    let (_admin, _) = auth
+        .redeem_invitation(&admin_email, &admin_invite, now)
+        .await
+        .unwrap();
+
+    let setup_store = physician_sample::source_setup::SourceSetupStore::postgres(
+        Database::connect(&db_url).await.unwrap(),
+        false,
+    );
+    let registry = physician_sample::sources::SourceRegistry::new(Some(store_v4.clone()));
+    let app = physician_sample::authed_router_on(
+        physician_sample::fixture_site()
+            .layer(axum::Extension(registry))
+            .layer(axum::Extension(setup_store.clone())),
+        Arc::new(auth.clone()) as Arc<dyn AuthStore>,
+        Arc::new(front_door),
+    )
+    .await;
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    let server = tokio::spawn(async move {
+        let _ = axum::serve(listener, app).await;
+    });
+    let base = format!("http://{addr}");
+    let client = reqwest::Client::new();
+    let session = sign_in(&base, &email).await;
+    let admin_session = sign_in(&base, &admin_email).await;
+
+    // 1. Connect Spruce over HTTP -> delegates directly into `physician_runtime_spruce_channels`!
+    let connect_resp = client
+        .post(format!("{base}/connections/spruce/connect"))
+        .header("authorization", format!("Bearer {session}"))
+        .json(&json!({
+            "method": "credential_sign_in",
+            "account_label": "Practice Spruce API",
+            "secret_or_code": "spruce-live-token-123",
+            "prerequisites_confirmed": true,
+        }))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(connect_resp.status(), 200);
+    let (standing, _) = store_v4
+        .spruce_channel_standing(&practice_id)
+        .await
+        .unwrap();
+    assert!(matches!(
+        standing,
+        local_product::runtime::spruce_matching::ChannelStanding::Connected { .. }
+    ));
+
+    // Record release v4 on channel.
+    store_v4
+        .enforce_spruce_release_fence(&practice_id, now as i64)
+        .await
+        .unwrap();
+
+    // 2. Rolled-back Store (v2 < v4) triggers durable rollback halt -> `/health`, `/connections`, and `/today` reflect halt!
+    let store_v2 = Store::connect(&db_url)
+        .await
+        .unwrap()
+        .with_spruce_release(2, "spruce-sync/v2");
+    assert!(matches!(
+        store_v2
+            .enforce_spruce_release_fence(&practice_id, (now + 5) as i64)
+            .await,
+        Err(local_product::runtime::spruce_matching::SpruceMatchingError::RollbackHalted(_))
+    ));
+
+    let health: Value = client
+        .get(format!("{base}/health"))
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(health["status"], "degraded", "{health}");
+    assert_eq!(health["spruce_channel"]["standing"], "rollback_halted");
+    assert_eq!(health["spruce_channel"]["halted_practice_count"], 1);
+    assert!(
+        health["spruce_channel"].get("halted_practices").is_none()
+            && !health.to_string().contains(&practice_id),
+        "public /health must not expose cross-tenant practice IDs: {health}"
+    );
+
+    let conns: Value = client
+        .get(format!("{base}/connections"))
+        .header("authorization", format!("Bearer {session}"))
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    let spruce_conn = conns["sources"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|s| s["source_id"] == "spruce")
+        .unwrap();
+    assert_eq!(
+        spruce_conn["standing"]["state"], "rollback_halted",
+        "{conns}"
+    );
+
+    let today: Value = client
+        .get(format!("{base}/today"))
+        .header("authorization", format!("Bearer {session}"))
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert!(
+        today["connections"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|c| c["condition"] == "spruce_rollback_halted"
+                && c["recovery"] == "operator_action_required"),
+        "expected rollback halt notice on /today: {today}"
+    );
+
+    // 3. Non-admin physician gets 403 on rollback resolve; admin resolves halt -> clears `/health` & `/connections`!
+    let forbidden_resp = client
+        .post(format!("{base}/connections/spruce/rollback/resolve"))
+        .header("authorization", format!("Bearer {session}"))
+        .json(&json!({ "adopt_running_release": true }))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(forbidden_resp.status(), 403);
+
+    let resolve_resp = client
+        .post(format!("{base}/connections/spruce/rollback/resolve"))
+        .header("authorization", format!("Bearer {admin_session}"))
+        .json(&json!({ "adopt_running_release": true }))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(resolve_resp.status(), 200);
+    let health_after: Value = client
+        .get(format!("{base}/health"))
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(health_after["spruce_channel"]["standing"], "healthy");
+
+    // 4. Worker-recorded revocation in runtime DB is reconnectable over HTTP (`200`, not `409`),
+    //    and HTTP disconnect clears stored channel credentials from Postgres.
+    let lease_rev = store_v4
+        .acquire_spruce_reader_lease(&practice_id, "worker-rev-test", 60, (now + 10) as i64)
+        .await
+        .unwrap();
+    store_v4
+        .record_spruce_channel_failure(
+            &practice_id,
+            &lease_rev.lease_token,
+            local_product::runtime::spruce_matching::ChannelStopCause::RevokedOrBlocked {
+                reason: "Token revoked by Spruce admin.".into(),
+            },
+            (now + 11) as i64,
+        )
+        .await
+        .unwrap();
+    store_v4
+        .release_spruce_reader_lease(&practice_id, &lease_rev.lease_token, (now + 12) as i64)
+        .await
+        .unwrap();
+
+    let conns_rev: Value = client
+        .get(format!("{base}/connections"))
+        .header("authorization", format!("Bearer {session}"))
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    let spruce_rev = conns_rev["sources"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|s| s["source_id"] == "spruce")
+        .unwrap();
+    assert_eq!(
+        spruce_rev["standing"]["state"], "access_lost",
+        "{conns_rev}"
+    );
+
+    let reconnect_resp = client
+        .post(format!("{base}/connections/spruce/reconnect"))
+        .header("authorization", format!("Bearer {session}"))
+        .json(&json!({
+            "method": "credential_sign_in",
+            "account_label": "Practice Spruce API",
+            "secret_or_code": "spruce-live-token-rotated",
+            "prerequisites_confirmed": true,
+        }))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(reconnect_resp.status(), 200);
+    let reconnect_json: Value = reconnect_resp.json().await.unwrap();
+    assert_eq!(reconnect_json["source"]["standing"]["state"], "connected");
+
+    let disconnect_resp = client
+        .post(format!("{base}/connections/spruce/disconnect"))
+        .header("authorization", format!("Bearer {session}"))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(disconnect_resp.status(), 200);
+    assert!(
+        store_v4
+            .spruce_channel_config(&practice_id)
+            .await
+            .unwrap()
+            .is_none(),
+        "HTTP disconnect must clear stored Spruce token from Postgres"
+    );
+    let _ = dr;
+    server.abort();
 }
