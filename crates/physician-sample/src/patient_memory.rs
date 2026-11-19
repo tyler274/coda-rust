@@ -59,8 +59,10 @@ async fn read_patient_memory(
     request: Request<Body>,
 ) -> Response {
     let extensions = request.extensions();
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     let Some(store) = runtime_store_from_extensions(extensions) else {
         return Json(PatientMemoryResponse {
@@ -104,8 +106,10 @@ async fn save_patient_memory_edit(
 ) -> Response {
     let (parts, body) = request.into_parts();
     let extensions = &parts.extensions;
-    if !crate::on_panel_in_practice(&connected, extensions, &workspace).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) =
+        crate::require_on_panel_in_practice(&connected, extensions, &workspace).await
+    {
+        return status.into_response();
     }
     let Some(store) = runtime_store_from_extensions(extensions) else {
         return (

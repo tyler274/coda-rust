@@ -663,5 +663,91 @@ async fn physician_sees_only_summary_and_direction_and_edit_saves_note_folded_by
     walk.run("scrollTo", &[json!("[data-patient-memory='true']")]);
     walk.capture("03-patient-memory-after-rounds-folded");
 
+    // Seed a second panel patient (Marcus Vance) to verify SPA Patient A -> Patient B
+    // switching loads Patient B's memory and never carries Patient A's open draft PHI.
+    let marcus_workspace = "pw-marcus-memory";
+    seed_patient(
+        &pg_auth,
+        &runtime,
+        practice_id,
+        marcus_workspace,
+        "Marcus Vance",
+    )
+    .await;
+    pg_auth
+        .set_membership(&identity, marcus_workspace, Membership::Allowed)
+        .await
+        .expect("set Marcus panel membership");
+    let marcus_scope = Scope {
+        practice: practice_id.to_owned(),
+        physician: physician_id.to_owned(),
+        workspace: marcus_workspace.to_owned(),
+        chat: "seed-marcus".to_owned(),
+    };
+    let marcus_key = PatientKey::try_from(&marcus_scope).unwrap();
+    runtime
+        .edit_memory(
+            &marcus_key,
+            &VersionedFile::Summary,
+            &[Ok(Edit::Create {
+                text: Words::parse("Hypertension controlled on amlodipine 5 mg.").unwrap(),
+            })],
+        )
+        .await
+        .unwrap();
+    runtime
+        .edit_memory(
+            &marcus_key,
+            &VersionedFile::Direction,
+            &[Ok(Edit::Create {
+                text: Words::parse("Review home BP log every 3 months.").unwrap(),
+            })],
+        )
+        .await
+        .unwrap();
+
+    // Open Elena's summary editor and enter unsaved PHI without saving, then
+    // navigate in-SPA to Marcus Vance via Find patient.
+    walk.wait_until(
+        "Edit Elena summary button",
+        "click",
+        &[json!("[data-memory-edit='summary']")],
+    );
+    walk.wait_until(
+        "Elena unsaved summary draft",
+        "fillTextarea",
+        &[
+            json!("[data-memory-input='summary']"),
+            json!("ELENA-UNSAVED-PHI-DRAFT"),
+        ],
+    );
+    walk.wait_until(
+        "Find patient for SPA switch",
+        "press",
+        &[json!("Find patient")],
+    );
+    walk.wait_until("search input for Marcus", "exists", &[json!(SEARCH_FIELD)]);
+    walk.browser.type_into(SEARCH_FIELD, "Marcus");
+    walk.wait_until("first Marcus result", "exists", &[json!(FIRST_RESULT)]);
+    walk.wait_until("click Marcus result", "click", &[json!(FIRST_RESULT)]);
+
+    let marcus_text = walk.wait_page_contains("Hypertension controlled on amlodipine 5 mg.");
+    assert!(marcus_text.contains("Review home BP log every 3 months."));
+    assert!(
+        !marcus_text.contains("ELENA-UNSAVED-PHI-DRAFT"),
+        "SPA switch leaked Elena's unsaved draft onto Marcus's page:\n{marcus_text}"
+    );
+    assert!(
+        !marcus_text.contains("CKD stage 3b with stable potassium 4.2."),
+        "SPA switch leaked Elena's summary onto Marcus's page:\n{marcus_text}"
+    );
+    assert_eq!(
+        walk.run("exists", &[json!("[data-memory-editor]")]),
+        json!(false),
+        "editor from Elena must not stay open on Marcus's page"
+    );
+    walk.run("scrollTo", &[json!("[data-patient-memory='true']")]);
+    walk.capture("04-patient-memory-spa-switch-marcus");
+
     srv.abort();
 }
