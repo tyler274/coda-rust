@@ -1,0 +1,59 @@
+{
+  "branch": "tyler-eng-348-cloud-sql-backup-rpo-alerts",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "OpenTofu Cloud SQL backup and isolation policy test suite",
+      "kind": "run",
+      "revision": "13266715c91325a6b72d219c34fe64b11aaa5ba2",
+      "dirty": false,
+      "recorded": "2026-11-19T00:28:18+00:00",
+      "command": [
+        "tofu",
+        "-chdir=infra/gcp/rust-environments",
+        "test"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-OpenTofu-Cloud-SQL-backup-and-isolation-policy-t.log"
+      ],
+      "seconds": 15.2,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "97d727ca4371fb450c7a590e4102fee636162cb9",
+        "reason": "Rebased onto fa1ac67bd9; infra/gcp/rust-environments and book/src/gcp.md unchanged"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "GCP infrastructure documentation mdbook build",
+      "kind": "run",
+      "revision": "13266715c91325a6b72d219c34fe64b11aaa5ba2",
+      "dirty": false,
+      "recorded": "2026-11-19T00:28:34+00:00",
+      "command": [
+        "mdbook",
+        "build",
+        "book",
+        "-d",
+        "/tmp/mdbook-pr57"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-GCP-infrastructure-documentation-mdbook-build.log"
+      ],
+      "seconds": 1.9,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "97d727ca4371fb450c7a590e4102fee636162cb9",
+        "reason": "Rebased onto fa1ac67bd9; infra/gcp/rust-environments and book/src/gcp.md unchanged"
+      }
+    }
+  ]
+}

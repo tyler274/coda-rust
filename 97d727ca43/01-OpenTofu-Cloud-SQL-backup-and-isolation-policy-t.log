@@ -1,0 +1,74 @@
+tests/backup_policy.tftest.hcl... [32mpass[0m[0m
+  run "foundations_create_no_backup_metrics_or_alerts"... [32mpass[0m[0m
+  run "staging_backup_policy_and_alerts"... [32mpass[0m[0m
+  run "dedicated_backup_alert_channels_override_watchdog"... [32mpass[0m[0m
+  run "production_backup_policy_and_alerts"... [32mpass[0m[0m
+  run "reject_non_us_backup_location"... [32mpass[0m[0m
+  run "reject_single_region_backup_location"... [32mpass[0m[0m
+  run "reject_non_us_database_region"... [32mpass[0m[0m
+  run "reject_invalid_backup_alert_channel"... [32mpass[0m[0m
+  run "reject_production_databases_without_backup_alert_channels"... [32mpass[0m[0m
+  run "reject_production_databases_with_backup_alerts_disabled"... [32mpass[0m[0m
+tests/isolation.tftest.hcl... [32mpass[0m[0m
+  run "foundations_need_no_database_passwords"... [32mpass[0m[0m
+  run "reject_missing_database_passwords"... [32mpass[0m[0m
+  run "reject_partial_database_passwords"... [32mpass[0m[0m
+  run "reject_blank_database_password"... [32mpass[0m[0m
+  run "reject_known_bootstrap_password"... [32mpass[0m[0m
+  run "foundations_only"... [32mpass[0m[0m
+  run "single_environment_bootstrap"... [32mpass[0m[0m
+  run "reject_duplicate_projects"... [32mpass[0m[0m
+  run "reject_prod_activation"... [32mpass[0m[0m
+  run "reject_public_proxy_invoker"... [32mpass[0m[0m
+  run "reject_group_proxy_invoker"... [32mpass[0m[0m
+  run "production_identity"... [32mpass[0m[0m
+  run "private_product_databases"... [32mpass[0m[0m
+  run "reject_unapproved_runtime"... [32mpass[0m[0m
+  run "active_staging_contract"... [32mpass[0m[0m
+  run "reject_migration_bootstrap_override"... [32mpass[0m[0m
+  run "physician_relay_routing"... [32mpass[0m[0m
+  run "physician_scale_gate_off"... [32mpass[0m[0m
+  run "physician_scale_ineffective_without_workloads"... [32mpass[0m[0m
+  run "physician_scale_requires_worker_image"... [32mpass[0m[0m
+  run "reject_runtime_override_of_scale_settings"... [32mpass[0m[0m
+  run "physician_scale_active"... [32mpass[0m[0m
+[33m╷[0m[0m
+[33m│[0m [0m[1m[33mWarning: [0m[0m[1mMultiple `override_resource` blocks for the same address[0m
+[33m│[0m [0m
+[33m│[0m [0m[0m  on tests/isolation.tftest.hcl line 20, in override_resource:
+[33m│[0m [0m  20:   target = [4mgoogle_project_service_identity.iap[0m[0m
+[33m│[0m [0m
+[33m│[0m [0m`google_project_service_identity.iap` is overridden in both global file and
+[33m│[0m [0mlocal run blocks. The declaration in global file block will be ignored.
+[33m╵[0m[0m
+  run "observability_default_off"... [32mpass[0m[0m
+  run "reject_observability_without_cluster"... [32mpass[0m[0m
+  run "reject_relay_without_cluster"... [32mpass[0m[0m
+  run "reject_unpinned_relay_image"... [32mpass[0m[0m
+  run "reject_group_observability_proxy_invoker"... [32mpass[0m[0m
+  run "reject_runtime_override_of_telemetry_env"... [32mpass[0m[0m
+  run "reject_runtime_override_of_telemetry_backend"... [32mpass[0m[0m
+  run "reject_unknown_telemetry_backend"... [32mpass[0m[0m
+  run "reject_unknown_telemetry_content"... [32mpass[0m[0m
+  run "reject_production_simulation_practices"... [32mpass[0m[0m
+  run "reject_malformed_simulation_practice"... [32mpass[0m[0m
+  run "reject_production_rehearsal_sign_in"... [32mpass[0m[0m
+  run "reject_rehearsal_sign_in_without_a_rehearsal_practice"... [32mpass[0m[0m
+  run "reject_a_group_as_rehearsal_signer"... [32mpass[0m[0m
+  run "rehearsal_is_off_by_default"... [32mpass[0m[0m
+  run "reject_runtime_override_of_rehearsal_principal"... [32mpass[0m[0m
+  run "reject_runtime_override_of_simulation_practices"... [32mpass[0m[0m
+  run "reject_production_observability_cluster"... [32mpass[0m[0m
+  run "reject_unpinned_sidecar_image"... [32mpass[0m[0m
+  run "observability_cluster_only"... [32mpass[0m[0m
+  run "observability_active"... [32mpass[0m[0m
+  run "observability_grafana_backend"... [32mpass[0m[0m
+  run "reject_schedule_without_scale_or_channels"... [32mpass[0m[0m
+  run "reject_invalid_schedule_cron"... [32mpass[0m[0m
+  run "reject_production_schedule_without_dedicated_approval"... [32mpass[0m[0m
+  run "reject_non_cloud_run_clinical_library_url"... [32mpass[0m[0m
+  run "reject_runtime_override_of_schedule_or_clinical_library_env"... [32mpass[0m[0m
+  run "reject_duet_clinical_library_env"... [32mpass[0m[0m
+  run "physician_schedule_and_clinical_library_staging"... [32mpass[0m[0m
+
+[32mSuccess![0m[0m 61 passed, 0 failed.
