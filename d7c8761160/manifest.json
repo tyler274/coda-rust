@@ -1,0 +1,36 @@
+{
+  "branch": "tyler-eng-396-2-spruce-matching-recipe-suite",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC3",
+      "label": "PostgreSQL and SSE ResponsesProvider Spruce matching recipe suite",
+      "kind": "run",
+      "revision": "099b922e52cfc6b58f4ab4fd1cde348593d3d058",
+      "dirty": false,
+      "recorded": "2026-11-18T23:11:23+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "spruce_matching",
+        "--",
+        "--nocapture"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-PostgreSQL-and-SSE-ResponsesProvider-Spruce-matc.log"
+      ],
+      "seconds": 46.6,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "d7c87611609f5bb94eb0b22b113891cd27483528",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    }
+  ]
+}
