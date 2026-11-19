@@ -100,6 +100,81 @@ async fn each_run_record_holds_the_newest_rounds_mark_before_and_after_and_no_la
         second["last_rounds_after"]["started_at"],
         json!(started(&second))
     );
+    assert!(second["steps"].is_array());
+
+    // `physician-rounds inspect <record.json>` projects steps and staff reasoning summaries cleanly.
+    let inspect_sample = home.join("sample-with-reasoning.json");
+    std::fs::write(
+        &inspect_sample,
+        serde_json::to_string_pretty(&json!({
+            "practice": practice,
+            "workspace": workspace,
+            "started_at": second["started_at"],
+            "ending": second["ending"],
+            "events": [{
+                "attempt_id": "att-1",
+                "sequence": 1,
+                "ordinal": 0,
+                "kind": {
+                    "ProviderReturned": {
+                        "items": [{
+                            "Opaque": {
+                                "type": "reasoning",
+                                "id": "rs_rounds_1",
+                                "summary": [{"type": "summary_text", "text": "Confirmed no new log days required chart edits."}],
+                                "encrypted_content": "enc_rounds"
+                            }
+                        }],
+                        "receipt": null,
+                        "usage": {}
+                    }
+                }
+            }]
+        }))
+        .unwrap(),
+    )
+    .unwrap();
+    let rounds_inspect = Command::new(env!("CARGO_BIN_EXE_physician-rounds"))
+        .args(["inspect", inspect_sample.to_str().unwrap()])
+        .env_clear()
+        .env("PATH", std::env::var("PATH").unwrap_or_default())
+        .output()
+        .expect("run physician-rounds inspect");
+    assert!(
+        rounds_inspect.status.success(),
+        "{}",
+        String::from_utf8_lossy(&rounds_inspect.stderr)
+    );
+    let inspected_json: Value = serde_json::from_slice(&rounds_inspect.stdout).unwrap();
+    assert_eq!(
+        inspected_json["reasoning_summaries"][0]["item_id"],
+        "rs_rounds_1"
+    );
+    assert!(inspected_json["projected_steps"].is_array());
+
+    // `physician-migrate inspect-runs` refuses under Cloud Run job logging and succeeds locally.
+    let refused = Command::new(env!("CARGO_BIN_EXE_physician-migrate"))
+        .arg("inspect-runs")
+        .env_clear()
+        .env("PATH", std::env::var("PATH").unwrap_or_default())
+        .env("PHYSICIAN_DATABASE_URL", &database.url)
+        .env("CLOUD_RUN_JOB", "test-job")
+        .output()
+        .expect("run physician-migrate inspect-runs in CLOUD_RUN_JOB");
+    assert!(!refused.status.success());
+
+    let ok = Command::new(env!("CARGO_BIN_EXE_physician-migrate"))
+        .args(["inspect-runs", &practice, &workspace])
+        .env_clear()
+        .env("PATH", std::env::var("PATH").unwrap_or_default())
+        .env("PHYSICIAN_DATABASE_URL", &database.url)
+        .output()
+        .expect("run physician-migrate inspect-runs locally");
+    assert!(
+        ok.status.success(),
+        "{}",
+        String::from_utf8_lossy(&ok.stderr)
+    );
 
     drop(stub);
     std::fs::remove_dir_all(&home).unwrap();

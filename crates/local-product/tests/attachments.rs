@@ -1713,3 +1713,178 @@ fn scan_ocr_fails_closed_on_blank_or_unstructured_noise_images() {
         "random speckle noise must fail closed without fabricating text, got: {noise_text:?}"
     );
 }
+
+#[test]
+fn fhir_inline_binary_pdf_png_jpeg_attachments_ocr_search_and_cite_document_pages() {
+    use base64::Engine as _;
+    use local_product::attachments::execute_document_page_read_from_revisions_with_cite_as;
+    use local_product::physician_sources::adapter::file_fhir_record;
+    use local_product::physician_sources::{ChartRequest, ChartScope, SEARCH_TOOL};
+
+    let scanned_pdf = build_test_pdf(&[
+        (
+            vec!["ECHO LVEF 38 PERCENT".into(), "AORTIC STENOSIS".into()],
+            true,
+            true,
+        ),
+        (
+            vec!["RECOMMEND CARDIOLOGY".into(), "PAGE TWO".into()],
+            true,
+            true,
+        ),
+    ]);
+    let scanned_png = render_synthetic_clinical_png(&["POTASSIUM 5.6", "KCL HELD"], true);
+    let diag_jpeg = render_synthetic_clinical_jpeg(&["CREATININE 1.8"], false);
+
+    let b64 = |bytes: &[u8]| base64::engine::general_purpose::STANDARD.encode(bytes);
+
+    let pdf_doc_raw = json!({
+        "resourceType": "DocumentReference",
+        "id": "doc-fhir-pdf",
+        "meta": { "versionId": "2" },
+        "status": "current",
+        "date": "2026-10-12",
+        "description": "Scanned outside echocardiogram",
+        "content": [{
+            "attachment": {
+                "contentType": "application/pdf",
+                "title": "outside-echo.pdf",
+                "data": b64(&scanned_pdf),
+            }
+        }]
+    })
+    .to_string();
+    let pdf_rev = file_fhir_record("pw-fhir-ocr", "clinic-ehr", &pdf_doc_raw, None)
+        .expect("inline FHIR PDF must file cleanly");
+    assert_eq!(pdf_rev.readable_parts.len(), 2);
+    assert!(
+        pdf_rev.readable_parts[0].text.contains("ECHO")
+            || pdf_rev.readable_parts[0].text.contains("LVEF"),
+        "expected OCR text on page 1, got: {:?}",
+        pdf_rev.readable_parts[0].text
+    );
+    assert_eq!(
+        pdf_rev.envelope.as_ref().unwrap().unavailable_parts.len(),
+        0
+    );
+    assert_eq!(
+        pdf_rev.provenance["document_id"],
+        json!("clinic-ehr/DocumentReference/doc-fhir-pdf")
+    );
+    assert_eq!(pdf_rev.provenance["document_version"], json!(2));
+    assert_eq!(pdf_rev.provenance["page_count"], json!(2));
+
+    let png_doc_raw = json!({
+        "resourceType": "DocumentReference",
+        "id": "doc-fhir-png",
+        "status": "current",
+        "date": "2026-10-13",
+        "description": "Scanned fax lab PNG",
+        "content": [{
+            "attachment": {
+                "contentType": "image/png",
+                "title": "lab-fax.png",
+                "data": b64(&scanned_png),
+            }
+        }]
+    })
+    .to_string();
+    let png_rev = file_fhir_record("pw-fhir-ocr", "clinic-ehr", &png_doc_raw, None)
+        .expect("inline FHIR PNG must file cleanly");
+    assert_eq!(png_rev.readable_parts.len(), 1);
+    assert!(
+        png_rev.readable_parts[0].text.contains("POTASSIUM 5.6")
+            && png_rev.readable_parts[0].text.contains("KCL HELD"),
+        "expected OCR text in FHIR PNG readable_parts, got: {:?}",
+        png_rev.readable_parts[0].text
+    );
+    assert_eq!(png_rev.provenance["attachment_kind"], json!("image"));
+    assert_eq!(png_rev.provenance["media_type"], json!("image/png"));
+
+    let diag_pdf_raw = json!({
+        "resourceType": "DiagnosticReport",
+        "id": "dr-fhir-jpeg-pdf",
+        "status": "final",
+        "effectiveDateTime": "2026-10-14",
+        "code": { "text": "Renal Ultrasound" },
+        "presentedForm": [
+            {
+                "contentType": "image/jpeg",
+                "title": "renal-thumb.jpg",
+                "data": b64(&diag_jpeg),
+            },
+            {
+                "contentType": "image/tiff",
+                "title": "legacy-tiff.tiff",
+                "data": "AAECAwQ=",
+            }
+        ]
+    })
+    .to_string();
+    let diag_rev = file_fhir_record("pw-fhir-ocr", "clinic-ehr", &diag_pdf_raw, None)
+        .expect("DiagnosticReport with JPEG + unsupported TIFF sibling must file cleanly");
+    assert_eq!(diag_rev.readable_parts.len(), 1);
+    assert_eq!(
+        diag_rev.envelope.as_ref().unwrap().unavailable_parts.len(),
+        1,
+        "unsupported image/tiff sibling must stay isolated in unavailable_parts"
+    );
+
+    // Searchable via `search_patient_information` AND `[D1]`-citable via `read_document_page`.
+    let sources = vec![pdf_rev.clone(), png_rev.clone(), diag_rev.clone()];
+    let search_req = ChartRequest::parse(
+        SEARCH_TOOL,
+        &json!({ "query": "POTASSIUM 5.6" }),
+        ChartScope::Chat,
+    )
+    .unwrap();
+    let search_out = match search_req.run("pw-fhir-ocr", 12, &sources) {
+        Ok(outcome) => serde_json::from_str::<Value>(outcome.text().unwrap()).unwrap(),
+        Err(err) => panic!("expected search outcome, got {err:?}"),
+    };
+    let results = search_out["results"].as_array().unwrap();
+    assert!(
+        results
+            .iter()
+            .any(|row| row["reference"]["candidate_id"]
+                == "clinic-ehr/DocumentReference/doc-fhir-png"),
+        "OCR text from FHIR PNG must be searchable: {search_out}"
+    );
+
+    let pdf_search_req =
+        ChartRequest::parse(SEARCH_TOOL, &json!({ "query": "ECHO" }), ChartScope::Chat).unwrap();
+    let pdf_search_out = match pdf_search_req.run("pw-fhir-ocr", 12, &sources) {
+        Ok(outcome) => serde_json::from_str::<Value>(outcome.text().unwrap()).unwrap(),
+        Err(err) => panic!("expected pdf search outcome, got {err:?}"),
+    };
+    assert!(
+        pdf_search_out["results"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|row| row["reference"]["candidate_id"]
+                == "clinic-ehr/DocumentReference/doc-fhir-pdf"),
+        "OCR text from FHIR PDF must be searchable: {pdf_search_out}"
+    );
+
+    let page_out = match execute_document_page_read_from_revisions_with_cite_as(
+        &json!({
+            "document_id": "clinic-ehr/DocumentReference/doc-fhir-pdf",
+            "version": 2,
+            "page_number": 2
+        }),
+        &[pdf_rev],
+        Some("D1"),
+    ) {
+        engine::ToolOutcome::Returned(body) => serde_json::from_str::<Value>(&body).unwrap(),
+        other => panic!("expected page outcome, got {other:?}"),
+    };
+    assert_eq!(page_out["outcome"], json!("available"));
+    assert_eq!(page_out["cite_as"], json!("D1"));
+    assert_eq!(page_out["page_count"], json!(2));
+    assert!(
+        page_out["text"].as_str().unwrap().contains("CARDIOLOGY")
+            || page_out["text"].as_str().unwrap().contains("PAGE TWO"),
+        "expected scanned page 2 OCR text, got: {page_out}"
+    );
+}

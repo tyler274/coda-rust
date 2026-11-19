@@ -27,6 +27,10 @@
 //! source-check and review cadence (`get <practice_id> [patient_workspace_id]`
 //! or `set <practice_id> <patient_workspace_id> <check_every_seconds>
 //! <review_every_seconds>`).
+//!
+//! `physician-migrate inspect-runs` prints saved run records, projected steps,
+//! and model reasoning summaries as JSON lines for Coda staff (`[practice_id]
+//! [workspace_id] [target_id]`). It refuses to run as a Cloud Run job.
 
 use physician_sample::STAGING_PRACTICE_ID;
 use physician_sample::chart_load::{
@@ -81,6 +85,19 @@ async fn main() {
             let args: Vec<String> = std::env::args().skip(2).collect();
             if let Err(error) = manage_cadence(&url, &args).await {
                 eprintln!("cadence command failed: {error}");
+                std::process::exit(1);
+            }
+            return;
+        }
+        Some("inspect-runs") => {
+            let args: Vec<String> = std::env::args().skip(2).collect();
+            if let Err(error) = inspect_runs(&url, &args).await {
+                eprintln!("inspect-runs not read: {error}");
+                let mut cause = std::error::Error::source(&error);
+                while let Some(inner) = cause {
+                    eprintln!("  caused by: {inner}");
+                    cause = inner.source();
+                }
                 std::process::exit(1);
             }
             return;
@@ -253,6 +270,60 @@ enum FeedbackReadError {
     #[error("the feedback did not read")]
     Read(#[source] DbErr),
     #[error("the feedback did not print")]
+    Print(#[source] std::io::Error),
+}
+
+/// Prints saved run records, projected physician steps, and staff-only model
+/// reasoning summaries as JSON lines. Refuses inside a Cloud Run job so
+/// clinical text and reasoning summaries never reach Cloud Logging.
+async fn inspect_runs(url: &str, args: &[String]) -> Result<(), InspectRunsError> {
+    use std::io::Write;
+    if std::env::var_os("CLOUD_RUN_JOB").is_some() {
+        return Err(InspectRunsError::InCloudRunJob);
+    }
+    if args.len() > 3 {
+        return Err(InspectRunsError::Usage);
+    }
+    let filter = local_product::runtime::run_inspector::SavedRunFilter {
+        practice: args.first().cloned(),
+        workspace: args.get(1).cloned(),
+        target: args.get(2).cloned(),
+    };
+    let db = migration_connection(url)
+        .await
+        .map_err(InspectRunsError::Connect)?;
+    let runs = local_product::runtime::Store::from_connection(db)
+        .inspect_saved_runs(&filter)
+        .await
+        .map_err(InspectRunsError::Read)?;
+    let mut out = std::io::stdout().lock();
+    for run in runs {
+        let line = serde_json::to_string(&run).map_err(InspectRunsError::Serialize)?;
+        writeln!(out, "{line}").map_err(InspectRunsError::Print)?;
+    }
+    Ok(())
+}
+
+/// Why `physician-migrate inspect-runs` could not run.
+#[derive(Debug, thiserror::Error)]
+enum InspectRunsError {
+    /// Arguments exceeded `[practice_id] [workspace_id] [target_id]`.
+    #[error("usage: physician-migrate inspect-runs [practice_id] [workspace_id] [target_id]")]
+    Usage,
+    /// It prints clinical text and reasoning summaries, so it never runs as a Cloud Run job.
+    #[error("it prints clinical text and reasoning summaries and never runs as a Cloud Run job")]
+    InCloudRunJob,
+    /// The database did not connect.
+    #[error("the physician database did not connect")]
+    Connect(#[source] DbErr),
+    /// The saved runs could not be read.
+    #[error("the saved runs did not read")]
+    Read(#[source] DbErr),
+    /// The inspected run could not be serialized.
+    #[error("the inspected run did not serialize")]
+    Serialize(#[source] serde_json::Error),
+    /// The output stream failed while writing.
+    #[error("the inspected runs did not print")]
     Print(#[source] std::io::Error),
 }
 

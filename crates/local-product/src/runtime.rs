@@ -79,6 +79,8 @@ pub mod reviews;
 /// Patient rounds: the job that keeps a patient's pages, summary and
 /// direction.
 pub mod rounds;
+/// Staff-only read-only inspector across saved run records, steps, and reasoning summaries.
+pub mod run_inspector;
 /// Practice schedule reads, patient matching, and versioned saved appointments.
 pub mod schedule;
 /// Durable source patient links, access state, and pull status.

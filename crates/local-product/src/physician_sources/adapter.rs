@@ -134,13 +134,22 @@ pub enum RecordFilingError {
         /// Declared attachment label.
         label: &'static str,
     },
-    /// Attachment carried a non-text media type that Coda cannot decode as text.
-    #[error("{label} is not text: {content_type}")]
+    /// Attachment carried a non-text media type that Coda cannot decode as text or document/image OCR.
+    #[error("{label} is not supported: {content_type}")]
     UnsupportedAttachment {
         /// Declared attachment label.
         label: &'static str,
         /// Media type sent by the source.
         content_type: String,
+    },
+    /// Attachment binary payload could not be decoded or OCR'd cleanly.
+    #[error("{label}: {source}")]
+    AttachmentDecode {
+        /// Declared attachment label.
+        label: &'static str,
+        /// Underlying attachment/document read failure.
+        #[source]
+        source: Box<crate::attachments::AttachmentReadFailure>,
     },
     /// Attachment pointed to an external URL without inline text bytes Coda can read.
     #[error("{label} has external attachment URL `{url}` without inline data")]
@@ -643,14 +652,31 @@ fn file_parsed_record(
     let status = first_extracted(resource, matched.status);
     let codes = extract_all_codes(resource, matched.codes);
     let title = first_extracted(resource, matched.title);
-    let (readable_parts, unavailable_parts) = extract_attachments(resource, matched.attachments);
 
     let sha256 = crate::sha256_hex(raw_json.as_bytes());
-    let version = match table
+    let raw_version = table
         .version_field
         .and_then(|path| lookup_path(resource, path))
-        .and_then(scalar_string)
-    {
+        .and_then(scalar_string);
+    let document_version = raw_version
+        .as_deref()
+        .and_then(|v| v.strip_prefix('v').unwrap_or(v).parse::<u64>().ok())
+        .filter(|v| *v >= 1)
+        .unwrap_or(1);
+    let candidate_id = format!("{source_id}/{kind}/{native_id}");
+    let authored_date = filed_dates.first().map(|d| d.value.as_str()).unwrap_or("");
+    let attachment_ctx = AttachmentContext {
+        workspace,
+        source_id,
+        candidate_id: &candidate_id,
+        authored_date,
+        record_title: title.as_deref().unwrap_or(&kind),
+        document_version,
+    };
+    let (readable_parts, unavailable_parts, extra_provenance) =
+        extract_attachments(resource, matched.attachments, &attachment_ctx);
+
+    let version = match raw_version {
         Some(source_version) => RecordVersion::Source(source_version),
         None => RecordVersion::ContentHash(sha256.clone()),
     };
@@ -671,7 +697,14 @@ fn file_parsed_record(
         native_link,
         unavailable_parts,
     };
-    file_record(workspace, source_id, raw_json, envelope, readable_parts)
+    file_record_with_provenance(
+        workspace,
+        source_id,
+        raw_json,
+        envelope,
+        readable_parts,
+        extra_provenance,
+    )
 }
 
 /// Builds a retained revision from source-specific metadata and native content.
@@ -682,6 +715,24 @@ pub(super) fn file_record(
     raw_json: &str,
     envelope: RecordEnvelope,
     readable_parts: Vec<ReadablePart>,
+) -> Result<SourceRevision, RecordFilingError> {
+    file_record_with_provenance(
+        workspace,
+        source_id,
+        raw_json,
+        envelope,
+        readable_parts,
+        serde_json::Map::new(),
+    )
+}
+
+fn file_record_with_provenance(
+    workspace: &str,
+    source_id: &str,
+    raw_json: &str,
+    envelope: RecordEnvelope,
+    readable_parts: Vec<ReadablePart>,
+    extra_provenance: serde_json::Map<String, Value>,
 ) -> Result<SourceRevision, RecordFilingError> {
     let kind = envelope.source_kind.kind.clone();
     let native_record = format!("{kind}/{}", envelope.native_id);
@@ -695,6 +746,12 @@ pub(super) fn file_record(
             value: d.value.clone(),
         })
         .collect();
+    let mut provenance_obj = serde_json::Map::new();
+    for (k, v) in extra_provenance {
+        provenance_obj.insert(k, v);
+    }
+    provenance_obj.insert("source_id".to_owned(), json!(source_id));
+    provenance_obj.insert("native_record".to_owned(), json!(native_record));
     // Filing metadata and decoded parts are retained evidence too. Re-filing
     // unchanged native bytes after a mapping correction must preserve the old
     // observation rather than conflict with its immutable revision identity.
@@ -712,10 +769,7 @@ pub(super) fn file_record(
         content: raw_json.to_owned(),
         sha256,
         readable_parts,
-        provenance: json!({
-            "source_id": source_id,
-            "native_record": native_record,
-        }),
+        provenance: Value::Object(provenance_obj),
         envelope: Some(envelope),
     };
     revision
@@ -1028,12 +1082,33 @@ fn extract_codes_from_value(field: &str, value: &Value, out: &mut Vec<RecordCode
     }
 }
 
+struct AttachmentContext<'a> {
+    workspace: &'a str,
+    source_id: &'a str,
+    candidate_id: &'a str,
+    authored_date: &'a str,
+    record_title: &'a str,
+    document_version: u64,
+}
+
+struct DecodedAttachmentOutcome {
+    parts: Vec<ReadablePart>,
+    failed_pages: Vec<FailedPart>,
+    provenance: Option<Value>,
+}
+
 fn extract_attachments(
     resource: &Value,
     rules: &[AttachmentRule],
-) -> (Vec<ReadablePart>, Vec<FailedPart>) {
+    ctx: &AttachmentContext<'_>,
+) -> (
+    Vec<ReadablePart>,
+    Vec<FailedPart>,
+    serde_json::Map<String, Value>,
+) {
     let mut parts = Vec::new();
     let mut unavailable = Vec::new();
+    let mut extra_provenance = serde_json::Map::new();
     for rule in rules {
         let AttachmentRule::Base64Text {
             items_path,
@@ -1045,8 +1120,30 @@ fn extract_attachments(
             continue;
         };
         for (index, item) in items.iter().enumerate() {
-            match decode_attachment(item, label, content_type_path, data_path) {
-                Ok(part) => parts.push(part),
+            let is_primary_pdf_slot = !extra_provenance.contains_key("document_id");
+            match decode_attachment(
+                item,
+                label,
+                content_type_path,
+                data_path,
+                ctx,
+                index,
+                is_primary_pdf_slot,
+            ) {
+                Ok(outcome) => {
+                    parts.extend(outcome.parts);
+                    for page_err in outcome.failed_pages {
+                        unavailable.push(FailedPart {
+                            part: format!("{items_path}[{index}].{}", page_err.part),
+                            reason: page_err.reason,
+                        });
+                    }
+                    if let Some(Value::Object(obj)) = outcome.provenance {
+                        for (k, v) in obj {
+                            extra_provenance.entry(k).or_insert(v);
+                        }
+                    }
+                }
                 Err(error) => unavailable.push(FailedPart {
                     part: format!("{items_path}[{index}]"),
                     reason: error.to_string(),
@@ -1054,7 +1151,7 @@ fn extract_attachments(
             }
         }
     }
-    (parts, unavailable)
+    (parts, unavailable, extra_provenance)
 }
 
 fn decode_attachment(
@@ -1062,16 +1159,24 @@ fn decode_attachment(
     label: &'static str,
     content_type_path: &str,
     data_path: &str,
-) -> Result<ReadablePart, RecordFilingError> {
+    ctx: &AttachmentContext<'_>,
+    index: usize,
+    is_primary_pdf_slot: bool,
+) -> Result<DecodedAttachmentOutcome, RecordFilingError> {
+    use crate::attachments::{
+        AttachmentMediaKind, PagedDocumentInput, SavedAttachmentInput, decode_saved_attachment,
+        image_part_readable_and_provenance, ingest_paged_document,
+    };
+
     let content_type = lookup_path(item, content_type_path)
         .and_then(Value::as_str)
         .unwrap_or_default();
+    let parent = match data_path.rsplit_once('.') {
+        Some((prefix, _)) => lookup_path(item, prefix),
+        None => Some(item),
+    };
     let data = lookup_path(item, data_path).and_then(Value::as_str);
     let Some(encoded) = data else {
-        let parent = match data_path.rsplit_once('.') {
-            Some((prefix, _)) => lookup_path(item, prefix),
-            None => Some(item),
-        };
         if let Some(url) = parent
             .and_then(|obj| obj.get("url"))
             .and_then(scalar_string)
@@ -1080,23 +1185,137 @@ fn decode_attachment(
         }
         return Err(RecordFilingError::UnavailableAttachment { label });
     };
-    if !content_type
+
+    let attachment_title = parent
+        .and_then(|obj| obj.get("title"))
+        .and_then(scalar_string);
+    let item_title = attachment_title.as_deref().unwrap_or(ctx.record_title);
+    let normalized_ct = content_type
+        .split(';')
+        .next()
+        .unwrap_or("")
         .trim()
-        .to_ascii_lowercase()
-        .starts_with("text/")
-    {
-        return Err(RecordFilingError::UnsupportedAttachment {
+        .to_ascii_lowercase();
+    let media_kind = AttachmentMediaKind::parse(content_type, attachment_title.as_deref());
+
+    match media_kind {
+        Some(
+            kind @ (AttachmentMediaKind::PdfDocument
+            | AttachmentMediaKind::SpruceFaxPdf
+            | AttachmentMediaKind::ChartScanPdf),
+        ) => {
+            let bytes = base64::engine::general_purpose::STANDARD
+                .decode(encoded)
+                .map_err(|source| RecordFilingError::InvalidBase64 { label, source })?;
+            let document_id = if is_primary_pdf_slot {
+                ctx.candidate_id.to_owned()
+            } else {
+                format!("{}#att-{}", ctx.candidate_id, index + 1)
+            };
+            let ingested = ingest_paged_document(&PagedDocumentInput {
+                document_id,
+                version: ctx.document_version,
+                workspace: ctx.workspace.to_owned(),
+                source_id: ctx.source_id.to_owned(),
+                authored_date: ctx.authored_date.to_owned(),
+                title: item_title.to_owned(),
+                media_kind: kind,
+                pdf_bytes: bytes,
+                expected_sha256: None,
+            })
+            .map_err(|source| RecordFilingError::AttachmentDecode {
+                label,
+                source: Box::new(source),
+            })?;
+            let failed_pages = ingested
+                .pages
+                .iter()
+                .filter_map(|page_res| match page_res {
+                    Ok(_) => None,
+                    Err(failure) => {
+                        let page_num = match failure {
+                            crate::attachments::AttachmentReadFailure::CorruptedPage {
+                                page_number,
+                                ..
+                            } => *page_number,
+                            _ => 0,
+                        };
+                        Some(FailedPart {
+                            part: format!("page[{page_num}]"),
+                            reason: failure.to_string(),
+                        })
+                    }
+                })
+                .collect();
+            Ok(DecodedAttachmentOutcome {
+                parts: ingested.source_revision.readable_parts,
+                failed_pages,
+                provenance: Some(ingested.source_revision.provenance),
+            })
+        }
+        Some(kind @ (AttachmentMediaKind::PngPhoto | AttachmentMediaKind::JpegPhoto)) => {
+            let bytes = base64::engine::general_purpose::STANDARD
+                .decode(encoded)
+                .map_err(|source| RecordFilingError::InvalidBase64 { label, source })?;
+            let attachment_id = if index == 0 {
+                ctx.candidate_id.to_owned()
+            } else {
+                format!("{}#att-{}", ctx.candidate_id, index + 1)
+            };
+            let part = decode_saved_attachment(&SavedAttachmentInput {
+                attachment_id,
+                revision: format!("v{}", ctx.document_version),
+                workspace: ctx.workspace.to_owned(),
+                source_id: ctx.source_id.to_owned(),
+                authored_date: ctx.authored_date.to_owned(),
+                title: item_title.to_owned(),
+                media_kind: kind,
+                bytes,
+                expected_sha256: None,
+            })
+            .map_err(|source| RecordFilingError::AttachmentDecode {
+                label,
+                source: Box::new(source),
+            })?;
+            let (readable, provenance) = image_part_readable_and_provenance(item_title, &part)
+                .ok_or_else(|| RecordFilingError::UnsupportedAttachment {
+                    label,
+                    content_type: content_type.to_owned(),
+                })?;
+            Ok(DecodedAttachmentOutcome {
+                parts: vec![readable],
+                failed_pages: Vec::new(),
+                provenance: Some(provenance),
+            })
+        }
+        Some(
+            AttachmentMediaKind::PlainText
+            | AttachmentMediaKind::MarkdownText
+            | AttachmentMediaKind::CsvTable,
+        ) => decode_text_attachment(encoded, label),
+        None if normalized_ct.starts_with("text/") => decode_text_attachment(encoded, label),
+        None => Err(RecordFilingError::UnsupportedAttachment {
             label,
             content_type: content_type.to_owned(),
-        });
+        }),
     }
+}
+
+fn decode_text_attachment(
+    encoded: &str,
+    label: &'static str,
+) -> Result<DecodedAttachmentOutcome, RecordFilingError> {
     let bytes = base64::engine::general_purpose::STANDARD
         .decode(encoded)
         .map_err(|source| RecordFilingError::InvalidBase64 { label, source })?;
     let text = String::from_utf8(bytes)
         .map_err(|source| RecordFilingError::InvalidUtf8 { label, source })?;
-    Ok(ReadablePart {
-        label: label.to_owned(),
-        text,
+    Ok(DecodedAttachmentOutcome {
+        parts: vec![ReadablePart {
+            label: label.to_owned(),
+            text,
+        }],
+        failed_pages: Vec::new(),
+        provenance: None,
     })
 }
