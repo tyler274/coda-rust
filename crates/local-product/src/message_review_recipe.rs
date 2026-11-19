@@ -8,43 +8,73 @@
 //! physician-requested reply draft revision recipe within the revision
 //! operation's authority.
 
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 
-use harness::engine::recipe::RequestRecipe;
-use harness::engine::{self, Event, Tool, ToolOutcome};
-use sea_orm::{ColumnTrait, DbErr, EntityTrait, QueryFilter, QueryOrder, QuerySelect};
+use async_trait::async_trait;
+use harness::engine::recipe::{Finish, Provider, RequestBinding, RequestRecipe};
+use harness::engine::{
+    self, AttemptFailure, Event, EventKind, Invocation, Item, Product, Tool, ToolOutcome, Turn,
+};
+use sea_orm::{
+    ActiveModelTrait, ColumnTrait, DbErr, EntityTrait, QueryFilter, QueryOrder, QuerySelect, Set,
+    TransactionTrait,
+};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
+use uuid::Uuid;
 
 use crate::ModelRoles;
-use crate::attachments::document_page_tool;
-use crate::initial_understanding::understanding_tools;
-use crate::patient_reviews::read_patient_reviews_tool;
-use crate::physician_chat::{PhysicianSkills, SKILL_VIEW, work_tools};
-use crate::physician_sources::{ChartScope, SourcePatient, SourceRevision, read_tool, search_tool};
+use crate::attachments::{READ_DOCUMENT_PAGE_TOOL, document_page_tool, is_document_page_tool};
+use crate::clinical_library::is_library_tool;
+use crate::initial_understanding::{
+    SAVE_UNDERSTANDING_TOOL, is_understanding_tool, understanding_tools,
+};
+use crate::patient_reviews::{
+    READ_PATIENT_REVIEWS_TOOL, ReadReviewsCall, read_only_review_tool, read_patient_reviews_tool,
+};
+use crate::physician_chat::{PhysicianSkills, SKILL_VIEW, read_only as chat_read_only, work_tools};
+use crate::physician_sources::{
+    ChartScope, READ_TOOL, SEARCH_TOOL, SourcePatient, SourceRevision, read_sources, read_tool,
+    search_tool, unread_result,
+};
 use crate::runtime::chat_operations::{
     DispatchCheckStanding, OpenConcernSummary, PatientMemoryStanding, PatientStartingContext,
-    PriorWorkKind, PriorWorkPointer, SourceFreshnessSummary, retrieve_patient_work_tool,
+    PriorWorkKind, PriorWorkPointer, RETRIEVE_PATIENT_WORK_TOOL, SourceFreshnessSummary,
+    retrieve_patient_work_tool,
 };
 use crate::runtime::concerns::{
-    ConcernError, ConcernId, ConcernUrgency, ExactRecordReference, concern_tool,
+    ConcernError, ConcernId, ConcernUrgency, ExactRecordReference, SourceWork, concern_tool,
+    is_concern_tool,
 };
+use crate::runtime::delivery::AttemptSettlement;
 use crate::runtime::follow_ups::{
     FollowUp, FollowUpError, FollowUpStanding, WorkspaceWithdrawalBoundary, follow_up_tool,
+    is_follow_up_tool,
 };
-use crate::runtime::jobs::{AssignmentError, PracticeAuthority, PracticeScope};
-use crate::runtime::refresh::{SavedSourceStatus, refresh_tool};
+use crate::runtime::jobs::{
+    AssignmentError, PracticeAccessError, PracticeAuthority, PracticeScope, is_physician_only_tool,
+};
+use crate::runtime::memory::{NoteOrigin, tools::MemoryTool};
+use crate::runtime::refresh::{REFRESH_TOOL, SavedSourceStatus, is_refresh_tool, refresh_tool};
 use crate::runtime::reply::proposals::{
-    AnsweredMessageClosure, ConversationLink, LinkedPatientMessage, MessageSender,
-    ObservedPracticeMessage, PracticeMessageKind, ReplyProposalError, ReplyReviewOutcome,
-    ReplyReviewSnapshot, ReplyStanding, ReviewReadState, SavedReviewCompletion,
+    AnsweredMessageClosure, CompleteReplyReview, ConversationLink, LinkedPatientMessage,
+    MessageSender, ObservedPracticeMessage, PROPOSAL_DRAFT_CHAT_PREFIX, PracticeMessageKind,
+    ReplyProposalBasisInput, ReplyProposalError, ReplyProposalInput, ReplyReviewDecision,
+    ReplyReviewOutcome, ReplyReviewSnapshot, ReplyStanding, ReviewReadState, SavedReviewCompletion,
 };
-use crate::runtime::reply::tools as reply_revision_runtime_tools;
+use crate::runtime::reply::{
+    RevisionClaim, RevisionCommit, RevisionContext, requests_finish, revised_text,
+    revision_feedback, tools as reply_revision_runtime_tools,
+};
 use crate::runtime::spruce_matching::{
-    SpruceAttachmentSummary, spruce_conversion_error as conversion_error, spruce_db_error as error,
+    SpruceAttachmentSummary, execute_spruce_working_note, is_spruce_working_note_tool,
+    spruce_conversion_error as conversion_error, spruce_db_error as error,
+    spruce_working_note_references,
 };
 use crate::runtime::understanding::PatientUnderstanding;
-use crate::runtime::{BindingRef, SkillPackageId, Store, WorkStatus};
+use crate::runtime::{
+    Authority, BindingRef, Scope, SkillPackageId, Store, WorkStatus, persistence_failure,
+};
 
 /// Immutable recipe identifier recorded with every linked message review run.
 pub const MESSAGE_REVIEW_RECIPE_VERSION: &str = "message-review/v1";
@@ -189,6 +219,48 @@ mod tables {
         impl ActiveModelBehavior for ActiveModel {}
     }
 
+    pub(super) mod workspace_concern_record {
+        use sea_orm::entity::prelude::*;
+
+        #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+        #[sea_orm(table_name = "physician_runtime_concerns")]
+        pub struct Model {
+            #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+            pub practice: String,
+            #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+            pub workspace: String,
+            #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+            pub id: String,
+            #[sea_orm(column_type = "Text")]
+            pub urgency: String,
+            #[sea_orm(column_type = "Text")]
+            pub status: String,
+            #[sea_orm(column_type = "Text")]
+            pub reason: String,
+            #[sea_orm(column_type = "JsonBinary")]
+            pub records: Json,
+            #[sea_orm(column_type = "JsonBinary")]
+            pub source_work: Json,
+            #[sea_orm(column_type = "Text")]
+            pub cleared_by_physician: Option<String>,
+            pub cleared_at: Option<i64>,
+            pub feedback_revision: Option<i64>,
+            #[sea_orm(column_type = "Text")]
+            pub retirement_reason: Option<String>,
+            #[sea_orm(column_type = "JsonBinary")]
+            pub retired_by_work: Option<Json>,
+            pub retired_at: Option<i64>,
+            pub created_at: i64,
+            pub updated_at: i64,
+            pub revision: i64,
+        }
+
+        #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+        pub enum Relation {}
+
+        impl ActiveModelBehavior for ActiveModel {}
+    }
+
     pub(super) mod source_withdrawal_record {
         use sea_orm::entity::prelude::*;
 
@@ -299,7 +371,7 @@ mod tables {
 
 use tables::{
     practice_job_record, runtime_command_record, source_withdrawal_record,
-    understanding_withdrawal_record,
+    understanding_withdrawal_record, workspace_concern_record,
 };
 
 /// Digest and name of one skill preloaded into a recipe's resident instructions.
@@ -1105,8 +1177,10 @@ pub(crate) fn preload_skills_from_catalog(
     Ok((digests, payloads))
 }
 
-/// Lists discoverable workspace skills available on demand beyond `preloaded`.
-pub fn discoverable_skill_names(skills: &PhysicianSkills, preloaded: &[&str]) -> Vec<String> {
+pub(crate) fn discoverable_skill_names(
+    skills: &PhysicianSkills,
+    preloaded: &[&str],
+) -> Vec<String> {
     let preloaded_set: BTreeSet<&str> = preloaded.iter().copied().collect();
     let known = [
         "patient-communication",
@@ -1331,6 +1405,299 @@ pub fn reply_revision_recipe(
     built.tools = deduplicate_and_verify_unique_tools(built.tools);
     Ok((built, digests))
 }
+
+#[derive(Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RawCompleteMessageReviewArgs {
+    answered_closures: Vec<AnsweredMessageClosure>,
+    decision: SubmittedMessageReviewDecision,
+    raised_concern_ids: Vec<String>,
+}
+
+fn validate_non_empty_prose(field: &'static str, text: &str) -> Result<String, String> {
+    let trimmed = text.trim();
+    let count = trimmed.chars().count();
+    if !(1..=MAX_SUBMISSION_TEXT_CHARS).contains(&count)
+        || trimmed
+            .chars()
+            .any(|ch| ch.is_control() && ch != '\n' && ch != '\t')
+    {
+        return Err(format!(
+            "`{field}` must be non-empty prose (up to {MAX_SUBMISSION_TEXT_CHARS} characters) with no control characters"
+        ));
+    }
+    Ok(trimmed.to_owned())
+}
+
+fn parse_submission(
+    call_id: &str,
+    arguments: &Value,
+) -> Result<StagedMessageReviewSubmission, String> {
+    let raw: RawCompleteMessageReviewArgs = serde_json::from_value(arguments.clone())
+        .map_err(|err| format!("invalid `{COMPLETE_MESSAGE_REVIEW_TOOL}` arguments: {err}"))?;
+
+    let mut raised_concern_ids = Vec::with_capacity(raw.raised_concern_ids.len());
+    let mut seen_concerns = BTreeSet::new();
+    for raw_id in raw.raised_concern_ids {
+        let id = ConcernId::new(raw_id)
+            .map_err(|err| format!("invalid `raised_concern_ids` entry: {err}"))?;
+        if seen_concerns.insert(id.clone()) {
+            raised_concern_ids.push(id);
+        }
+    }
+
+    let decision = match raw.decision {
+        SubmittedMessageReviewDecision::ProposeReply {
+            reply_text,
+            basis_summary,
+            limitations,
+            cited_records,
+            addresses_medication_question,
+        } => {
+            let reply_text = validate_non_empty_prose("reply_text", &reply_text)?;
+            let basis_summary = validate_non_empty_prose("basis_summary", &basis_summary)?;
+            let mut clean_limits = Vec::with_capacity(limitations.len());
+            for lim in limitations {
+                clean_limits.push(validate_non_empty_prose("limitations", &lim)?);
+            }
+            let mut clean_citations = Vec::with_capacity(cited_records.len());
+            let mut seen_refs = BTreeSet::new();
+            for item in cited_records {
+                let validated = ExactRecordReference::new(item.candidate_id, item.revision)
+                    .map_err(|err| format!("invalid `cited_records` reference: {err}"))?;
+                if seen_refs.insert((validated.candidate_id.clone(), validated.revision.clone())) {
+                    clean_citations.push(validated);
+                }
+            }
+            SubmittedMessageReviewDecision::ProposeReply {
+                reply_text,
+                basis_summary,
+                limitations: clean_limits,
+                cited_records: clean_citations,
+                addresses_medication_question,
+            }
+        }
+        SubmittedMessageReviewDecision::NoReplyWouldHelp {
+            reason,
+            basis_summary,
+            limitations,
+        } => {
+            let reason = validate_non_empty_prose("reason", &reason)?;
+            let basis_summary = validate_non_empty_prose("basis_summary", &basis_summary)?;
+            let mut clean_limits = Vec::with_capacity(limitations.len());
+            for lim in limitations {
+                clean_limits.push(validate_non_empty_prose("limitations", &lim)?);
+            }
+            SubmittedMessageReviewDecision::NoReplyWouldHelp {
+                reason,
+                basis_summary,
+                limitations: clean_limits,
+            }
+        }
+        SubmittedMessageReviewDecision::AllHandled { basis_summary } => {
+            SubmittedMessageReviewDecision::AllHandled {
+                basis_summary: validate_non_empty_prose("basis_summary", &basis_summary)?,
+            }
+        }
+    };
+
+    Ok(StagedMessageReviewSubmission {
+        call_id: call_id.to_owned(),
+        answered_closures: raw.answered_closures,
+        decision,
+        raised_concern_ids,
+    })
+}
+
+#[derive(Default)]
+struct RunReadAndRefreshEvidence {
+    read_revisions: BTreeSet<(String, String)>,
+    refresh_completed_ordinal: Option<u64>,
+    refresh_had_failure: bool,
+    chart_read_after_refresh: bool,
+    raised_concern_ids_in_events: BTreeSet<ConcernId>,
+}
+
+fn collect_run_evidence(
+    events: &[Event],
+    current_sources: &[SourceRevision],
+) -> RunReadAndRefreshEvidence {
+    let mut call_meta: BTreeMap<String, (String, Value)> = BTreeMap::new();
+    for event in events {
+        match &event.kind {
+            EventKind::ToolStarted(call) => {
+                let args = serde_json::from_str::<Value>(&call.arguments).unwrap_or(Value::Null);
+                call_meta.insert(call.id.clone(), (call.name.clone(), args));
+            }
+            EventKind::ProviderReturned(turn) => {
+                for call in turn.calls() {
+                    let args =
+                        serde_json::from_str::<Value>(&call.arguments).unwrap_or(Value::Null);
+                    call_meta
+                        .entry(call.id.clone())
+                        .or_insert((call.name.clone(), args));
+                }
+            }
+            _ => {}
+        }
+    }
+
+    let mut summary = RunReadAndRefreshEvidence::default();
+    for event in events {
+        let EventKind::ToolReturned { call_id, result } = &event.kind else {
+            continue;
+        };
+        let Some((tool_name, args)) = call_meta.get(call_id) else {
+            continue;
+        };
+
+        if tool_name == REFRESH_TOOL {
+            if let engine::results::ToolResult::Original(raw) = result
+                && let Ok(val) = serde_json::from_str::<Value>(raw)
+            {
+                summary.refresh_completed_ordinal = Some(event.ordinal);
+                if val
+                    .get("sources")
+                    .and_then(Value::as_array)
+                    .is_some_and(|arr| {
+                        arr.iter().any(|s| {
+                            matches!(
+                                s.get("status").and_then(Value::as_str),
+                                Some("failed" | "partly_updated")
+                            )
+                        })
+                    })
+                    || val.get("outcome").and_then(Value::as_str) == Some("failed")
+                {
+                    summary.refresh_had_failure = true;
+                }
+            }
+            continue;
+        }
+
+        if tool_name == READ_TOOL {
+            match result {
+                engine::results::ToolResult::Original(raw) => {
+                    if let Ok(val) = serde_json::from_str::<Value>(raw)
+                        && let Some(results) = val.get("results").and_then(Value::as_array)
+                    {
+                        let mut any_read = false;
+                        for item in results {
+                            let outcome = item.get("outcome").and_then(Value::as_str);
+                            if matches!(outcome, Some("available" | "passage"))
+                                && let (Some(cid), Some(rev)) = (
+                                    item.get("reference").and_then(Value::as_str),
+                                    item.get("revision").and_then(Value::as_str),
+                                )
+                            {
+                                summary
+                                    .read_revisions
+                                    .insert((cid.to_owned(), rev.to_owned()));
+                                any_read = true;
+                            }
+                        }
+                        if any_read
+                            && summary
+                                .refresh_completed_ordinal
+                                .is_some_and(|ord| event.ordinal > ord)
+                        {
+                            summary.chart_read_after_refresh = true;
+                        }
+                    }
+                }
+                engine::results::ToolResult::View(_) => {
+                    if let Some(refs) = args
+                        .get("references")
+                        .or_else(|| args.get("candidates"))
+                        .and_then(Value::as_array)
+                    {
+                        for entry in refs {
+                            let cand_opt = entry
+                                .as_str()
+                                .or_else(|| entry.get("candidate_id").and_then(Value::as_str));
+                            let rev_opt = entry.get("revision").and_then(Value::as_str);
+                            if let Some(cand) = cand_opt
+                                && let Some(src) = current_sources.iter().find(|s| {
+                                    s.candidate_id == cand
+                                        && rev_opt.is_none_or(|r| r == s.revision)
+                                })
+                            {
+                                summary
+                                    .read_revisions
+                                    .insert((src.candidate_id.clone(), src.revision.clone()));
+                            }
+                        }
+                    }
+                    if summary
+                        .refresh_completed_ordinal
+                        .is_some_and(|ord| event.ordinal > ord)
+                    {
+                        summary.chart_read_after_refresh = true;
+                    }
+                }
+                engine::results::ToolResult::Refused(_)
+                | engine::results::ToolResult::History(_) => {}
+            }
+            continue;
+        }
+
+        if tool_name == READ_DOCUMENT_PAGE_TOOL {
+            if let engine::results::ToolResult::Original(raw) = result
+                && let Ok(val) = serde_json::from_str::<Value>(raw)
+                && matches!(
+                    val.get("outcome").and_then(Value::as_str),
+                    Some("available" | "failed_page")
+                )
+                && let Some(doc_id) = val.get("document_id").and_then(Value::as_str)
+            {
+                let rev_opt = val.get("revision").and_then(Value::as_str);
+                for src in current_sources {
+                    let matches_doc = src.candidate_id == doc_id
+                        || src.provenance.get("document_id").and_then(Value::as_str)
+                            == Some(doc_id);
+                    if matches_doc && rev_opt.is_none_or(|r| r == src.revision) {
+                        summary
+                            .read_revisions
+                            .insert((src.candidate_id.clone(), src.revision.clone()));
+                    }
+                }
+                if summary
+                    .refresh_completed_ordinal
+                    .is_some_and(|ord| event.ordinal > ord)
+                {
+                    summary.chart_read_after_refresh = true;
+                }
+            }
+            continue;
+        }
+
+        if is_concern_tool(tool_name)
+            && let engine::results::ToolResult::Original(raw) = result
+            && let Ok(val) = serde_json::from_str::<Value>(raw)
+            && val.get("saved").and_then(Value::as_bool) == Some(true)
+            && let Some(id_str) = val
+                .get("concern")
+                .and_then(|c| c.get("id"))
+                .and_then(Value::as_str)
+            && let Ok(cid) = ConcernId::new(id_str)
+        {
+            summary.raised_concern_ids_in_events.insert(cid);
+        }
+    }
+
+    summary
+}
+
+fn directs_immediate_emergency_care(text: &str) -> bool {
+    let lower = text.to_ascii_lowercase();
+    lower.contains("911")
+        || lower.contains("emergency department")
+        || lower.contains("emergency room")
+        || lower.contains("nearest emergency")
+        || lower.contains("immediate emergency")
+        || lower.contains("seek emergency")
+}
+
 fn decode_message_review_run(
     row: runtime_command_record::Model,
 ) -> Result<MessageReviewRunRecord, DbErr> {
@@ -1427,6 +1794,138 @@ impl Store {
         .await?
         .map(decode_reply_revision_run)
         .transpose()
+    }
+
+    async fn persist_message_review_event(
+        &self,
+        practice: &str,
+        run_id: &str,
+        attempt_id: &str,
+        event: Event,
+    ) -> Result<(), engine::ProductError> {
+        if event.attempt_id != attempt_id {
+            return Err(error("message review event belongs to another attempt").into());
+        }
+        if event.sequence == 0 {
+            return Err(error("invalid message review event sequence").into());
+        }
+        let clock = self.spruce_now().await.map_err(persistence_failure)?;
+        let tx = self
+            .spruce_db()
+            .begin()
+            .await
+            .map_err(persistence_failure)?;
+        let row = runtime_command_record::Entity::find_by_id((
+            practice.to_owned(),
+            MESSAGE_REVIEW_RUN_ACTOR.to_owned(),
+            run_id.to_owned(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await
+        .map_err(persistence_failure)?
+        .ok_or_else(|| error("message review run missing"))?;
+        let mut run = decode_message_review_run(row.clone())?;
+        let is_current =
+            run.status == MessageReviewRunStatus::Running && run.attempt_id == attempt_id;
+        if !is_current && !event.kind.survives_loss_of_currency() {
+            let reason = if run.attempt_id != attempt_id {
+                engine::NotCurrent::Lost
+            } else {
+                engine::NotCurrent::Withdrawn
+            };
+            return Err(engine::ProductError::NotCurrent(reason));
+        }
+
+        if let Some(saved) = run
+            .events
+            .iter()
+            .find(|prior| prior.attempt_id == event.attempt_id && prior.sequence == event.sequence)
+        {
+            let saved_json =
+                serde_json::to_value(&saved.kind).map_err(conversion_error("EventKind", "json"))?;
+            let incoming_json =
+                serde_json::to_value(&event.kind).map_err(conversion_error("EventKind", "json"))?;
+            if saved.ordinal != event.ordinal || saved_json != incoming_json {
+                return Err(error("message review event collision").into());
+            }
+            tx.commit().await?;
+            return Ok(());
+        }
+
+        let last_seq = run
+            .events
+            .iter()
+            .filter(|prior| prior.attempt_id == event.attempt_id)
+            .map(|prior| prior.sequence)
+            .max();
+        if event.sequence != last_seq.map_or(1, |seq| seq + 1) {
+            return Err(error("message review event sequence gap").into());
+        }
+
+        if let EventKind::ToolReturned { call_id, result } = &event.kind {
+            let (tool_name, discovered_skill_name) = run
+                .events
+                .iter()
+                .rev()
+                .find_map(|prior| match &prior.kind {
+                    EventKind::ToolStarted(call) if call.id == *call_id => {
+                        let skill = (call.name == SKILL_VIEW)
+                            .then(|| {
+                                serde_json::from_str::<Value>(&call.arguments)
+                                    .ok()
+                                    .and_then(|v| {
+                                        v.get("name").and_then(Value::as_str).map(str::to_owned)
+                                    })
+                            })
+                            .flatten();
+                        Some((call.name.clone(), skill))
+                    }
+                    EventKind::ProviderReturned(turn) => {
+                        turn.calls().find(|c| c.id == *call_id).map(|c| {
+                            let skill = (c.name == SKILL_VIEW)
+                                .then(|| {
+                                    serde_json::from_str::<Value>(&c.arguments)
+                                        .ok()
+                                        .and_then(|v| {
+                                            v.get("name").and_then(Value::as_str).map(str::to_owned)
+                                        })
+                                })
+                                .flatten();
+                            (c.name.clone(), skill)
+                        })
+                    }
+                    _ => None,
+                })
+                .unwrap_or_else(|| ("unknown".to_owned(), None));
+            let disposition = match result {
+                engine::results::ToolResult::Refused(refusal) => {
+                    ToolDiscoveryDisposition::Refused {
+                        reason: refusal.reason().to_owned(),
+                    }
+                }
+                engine::results::ToolResult::Original(_)
+                | engine::results::ToolResult::History(_)
+                | engine::results::ToolResult::View(_) => ToolDiscoveryDisposition::Returned,
+            };
+            run.tool_discoveries.push(RecordedToolDiscovery {
+                ordinal: event.ordinal,
+                call_id: call_id.clone(),
+                tool_name,
+                discovered_skill_name,
+                disposition,
+                recorded_at: clock,
+            });
+        }
+
+        run.events.push(event);
+        let encoded = serde_json::to_value(&run)
+            .map_err(conversion_error("MessageReviewRunRecord", "json"))?;
+        let mut active: runtime_command_record::ActiveModel = row.into();
+        active.command = Set(encoded);
+        active.update(&tx).await?;
+        tx.commit().await?;
+        Ok(())
     }
 }
 
@@ -1765,16 +2264,1850 @@ pub async fn build_message_review_starting_context(
     Ok((snapshot, starting))
 }
 
+struct MessageReviewHost<'a> {
+    store: Store,
+    authority: &'a dyn PracticeAuthority,
+    practice: String,
+    workspace: String,
+    conversation_id: String,
+    review_id: String,
+    run_id: String,
+    attempt_id: String,
+    committed_outcome: Option<ReplyReviewOutcome>,
+}
+
+impl MessageReviewHost<'_> {
+    fn source_message(ctx: &MessageReviewStartingContext) -> engine::ProductMessage {
+        engine::ProductMessage {
+            id: format!("message-review:{}", ctx.review_id),
+            role: engine::history::Role::User,
+            text: ctx.prompt_text(),
+        }
+    }
+
+    fn practice_scope(&self) -> PracticeScope {
+        PracticeScope {
+            practice: self.practice.clone(),
+            workspace: self.workspace.clone(),
+            job_id: format!("message-review:{}", self.run_id),
+        }
+    }
+
+    fn control_scope(&self) -> Scope {
+        self.practice_scope().as_control_scope()
+    }
+
+    async fn load_run(&self) -> Result<MessageReviewRunRecord, DbErr> {
+        self.store
+            .message_review_run(&self.practice, &self.run_id)
+            .await?
+            .ok_or_else(|| error("message review run missing"))
+    }
+}
+
+#[async_trait]
+impl Product for MessageReviewHost<'_> {
+    async fn message_sources(
+        &mut self,
+    ) -> Result<Option<Vec<engine::ProductMessage>>, engine::ProductError> {
+        let run = self.load_run().await.map_err(persistence_failure)?;
+        Ok(Some(vec![Self::source_message(&run.starting_context)]))
+    }
+
+    async fn admit_binding(&mut self, recipe: &RequestBinding) -> Result<(), engine::ProductError> {
+        self.authority
+            .check_practice_patient(&self.practice_scope())
+            .await?;
+        let run = self.load_run().await.map_err(persistence_failure)?;
+        let (saved_binding, _) = self
+            .store
+            .load_spruce_matching_frozen(
+                &self.practice,
+                &run.provenance.binding,
+                &run.provenance.skills,
+            )
+            .await
+            .map_err(persistence_failure)?;
+        if saved_binding != *recipe {
+            return Err(error("message review dispatch changed frozen recipe").into());
+        }
+        Ok(())
+    }
+
+    fn read_only(&self, name: &str) -> bool {
+        chat_read_only(name)
+            || read_only_review_tool(name)
+            || crate::initial_understanding::read_only_understanding_tool(name)
+            || is_library_tool(name)
+            || is_document_page_tool(name)
+            || is_spruce_working_note_tool(name)
+    }
+
+    fn read_result(&mut self, id: &str) -> engine::recipe::ToolFuture<Option<String>> {
+        let store = self.store.clone();
+        let practice = self.practice.clone();
+        let run_id = self.run_id.clone();
+        let id = id.to_owned();
+        Box::pin(async move {
+            let run = store
+                .message_review_run(&practice, &run_id)
+                .await?
+                .ok_or_else(|| error("message review run missing"))?;
+            let messages = vec![Self::source_message(&run.starting_context)];
+            let admitted: Vec<(Event, bool)> = run.events.into_iter().map(|e| (e, true)).collect();
+            engine::results::resolve(admitted.iter(), &id, &messages).map_err(Into::into)
+        })
+    }
+
+    async fn assert_current(&mut self) -> Result<(), engine::ProductError> {
+        self.authority
+            .check_practice_patient(&self.practice_scope())
+            .await?;
+        let run = self.load_run().await.map_err(persistence_failure)?;
+        if run.attempt_id != self.attempt_id {
+            return Err(engine::ProductError::NotCurrent(engine::NotCurrent::Lost));
+        }
+        if run.status != MessageReviewRunStatus::Running {
+            return Err(engine::ProductError::NotCurrent(
+                engine::NotCurrent::Withdrawn,
+            ));
+        }
+        Ok(())
+    }
+
+    async fn persist(&mut self, event: Event) -> Result<(), engine::ProductError> {
+        self.store
+            .persist_message_review_event(&self.practice, &self.run_id, &self.attempt_id, event)
+            .await
+            .map_err(persistence_failure)
+    }
+
+    fn saved_outcome(
+        &mut self,
+        call: &Invocation,
+    ) -> engine::recipe::ToolFuture<Option<ToolOutcome>> {
+        let store = self.store.clone();
+        let practice = self.practice.clone();
+        let workspace = self.workspace.clone();
+        let run_id = self.run_id.clone();
+        let practice_scope = self.practice_scope();
+        let call = call.clone();
+        Box::pin(async move {
+            if call.name == COMPLETE_MESSAGE_REVIEW_TOOL {
+                let Some(run) = store.message_review_run(&practice, &run_id).await? else {
+                    return Ok(None);
+                };
+                if let Some(staged) = run.staged_submission
+                    && staged.call_id == call.id
+                {
+                    return Ok(Some(ToolOutcome::Returned(
+                        json!({
+                            "outcome": "staged",
+                            "decision": staged.decision,
+                        })
+                        .to_string(),
+                    )));
+                }
+                return Ok(None);
+            }
+            if is_refresh_tool(&call.name) {
+                return store
+                    .saved_practice_refresh_outcome(&practice_scope, &run_id, &call)
+                    .await;
+            }
+            if is_concern_tool(&call.name) {
+                return store
+                    .saved_concern_tool_outcome(&practice, &workspace, &run_id, &call)
+                    .await;
+            }
+            if is_follow_up_tool(&call.name) {
+                return store
+                    .saved_follow_up_tool_outcome(&practice, &workspace, &run_id, &call)
+                    .await;
+            }
+            Ok(None)
+        })
+    }
+
+    fn execute(&mut self, call: &Invocation, arguments: Value) -> engine::recipe::ToolFuture {
+        let store = self.store.clone();
+        let practice = self.practice.clone();
+        let workspace = self.workspace.clone();
+        let conversation_id = self.conversation_id.clone();
+        let review_id = self.review_id.clone();
+        let run_id = self.run_id.clone();
+        let attempt_id = self.attempt_id.clone();
+        let practice_scope = self.practice_scope();
+        let control_scope = self.control_scope();
+        let call = call.clone();
+        let admitted_authority = AdmittedPracticePatient {
+            practice: practice.clone(),
+            workspace: workspace.clone(),
+        };
+
+        Box::pin(async move {
+            if is_physician_only_tool(&call.name) {
+                return Ok(ToolOutcome::refused(format!(
+                    "message review background run cannot perform physician-only action `{}`",
+                    call.name
+                )));
+            }
+
+            let run = store
+                .message_review_run(&practice, &run_id)
+                .await?
+                .ok_or_else(|| error("message review run missing"))?;
+            let (_, skills) = store
+                .load_spruce_matching_frozen(
+                    &practice,
+                    &run.provenance.binding,
+                    &run.provenance.skills,
+                )
+                .await?;
+
+            if is_spruce_working_note_tool(&call.name) {
+                let note_call = Invocation {
+                    id: call.id.clone(),
+                    name: call.name.clone(),
+                    arguments,
+                };
+                return execute_spruce_working_note(
+                    &run.run_id,
+                    &note_call,
+                    run.events.iter().map(|e| (run.run_id.as_str(), e)),
+                )?
+                .ok_or_else(|| "working note tool was not handled".into());
+            }
+
+            if engine::history::is_tool(&call.name) {
+                let src = Self::source_message(&run.starting_context);
+                let messages = vec![engine::history::Message {
+                    id: src.id,
+                    role: src.role,
+                    text: src.text,
+                    metadata: json!({
+                        "practice": practice,
+                        "workspace": workspace,
+                        "conversation_id": conversation_id,
+                        "run_id": run_id,
+                    }),
+                }];
+                let admitted: Vec<(Event, bool)> =
+                    run.events.iter().cloned().map(|e| (e, true)).collect();
+                let page = match engine::history::execute(
+                    &call.name,
+                    &arguments,
+                    &messages,
+                    admitted.iter(),
+                ) {
+                    Ok(page) => page,
+                    Err(reason) => return Ok(ToolOutcome::refused(reason)),
+                };
+                return Ok(ToolOutcome::History(page));
+            }
+
+            if call.name == SKILL_VIEW {
+                return Ok(skills.execute(&call.name, &arguments));
+            }
+
+            if matches!(call.name.as_str(), SEARCH_TOOL | READ_TOOL) {
+                if let Some(req_ws) = arguments.get("workspace").and_then(Value::as_str)
+                    && req_ws != workspace
+                {
+                    return Ok(ToolOutcome::refused(
+                        "message review may read only its linked patient workspace",
+                    ));
+                }
+                return store
+                    .execute_chat_chart_tool(&control_scope, &call.name, &arguments)
+                    .await;
+            }
+
+            if is_document_page_tool(&call.name) {
+                if let Some(req_ws) = arguments.get("workspace").and_then(Value::as_str)
+                    && req_ws != workspace
+                {
+                    return Ok(ToolOutcome::refused(
+                        "message review may read only its linked patient workspace",
+                    ));
+                }
+                return store
+                    .execute_document_page_tool(&practice, &workspace, &arguments)
+                    .await;
+            }
+
+            if is_refresh_tool(&call.name) {
+                let refresh_inv = Invocation {
+                    id: call.id.clone(),
+                    name: call.name.clone(),
+                    arguments,
+                };
+                let outcome = store
+                    .execute_practice_refresh_tool(
+                        &practice_scope,
+                        &admitted_authority,
+                        &run_id,
+                        &refresh_inv,
+                        store.source_refresh(),
+                    )
+                    .await?;
+                let current_obs = store.sources(&workspace).await?;
+                let tx = store.spruce_db().begin().await?;
+                if let Some(row) = runtime_command_record::Entity::find_by_id((
+                    practice.clone(),
+                    MESSAGE_REVIEW_RUN_ACTOR.to_owned(),
+                    run_id.clone(),
+                ))
+                .lock_exclusive()
+                .one(&tx)
+                .await?
+                {
+                    let mut updated = decode_message_review_run(row.clone())?;
+                    updated.last_pinned_source_version = current_obs.version;
+                    let mut active: runtime_command_record::ActiveModel = row.into();
+                    active.command = Set(serde_json::to_value(&updated)
+                        .map_err(conversion_error("MessageReviewRunRecord", "json"))?);
+                    active.update(&tx).await?;
+                }
+                tx.commit().await?;
+                return Ok(outcome);
+            }
+
+            if let Some(mem_tool) = MemoryTool::named(&call.name) {
+                return mem_tool
+                    .execute_for_practice(&store, &practice_scope, &arguments, || {
+                        Ok(NoteOrigin {
+                            work: run_id.clone(),
+                            call: call.id.clone(),
+                            message: run_id.clone(),
+                        })
+                    })
+                    .await
+                    .map_err(persistence_failure);
+            }
+
+            if call.name == RETRIEVE_PATIENT_WORK_TOOL {
+                let jobs = store
+                    .patient_reviews(&practice, &workspace, &admitted_authority)
+                    .await
+                    .map_err(|err| -> engine::Cause { Box::new(err) })?;
+                return Ok(ToolOutcome::Returned(
+                    json!({
+                        "outcome": "available",
+                        "patient_reviews": jobs,
+                    })
+                    .to_string(),
+                ));
+            }
+
+            if call.name == READ_PATIENT_REVIEWS_TOOL {
+                let parsed = match ReadReviewsCall::parse(&arguments) {
+                    Ok(parsed) => parsed,
+                    Err(err) => return Ok(ToolOutcome::refused(err.to_string())),
+                };
+                return match parsed {
+                    ReadReviewsCall::List {
+                        limit,
+                        include_incomplete,
+                    } => {
+                        let reviews = store
+                            .patient_reviews(&practice, &workspace, &admitted_authority)
+                            .await
+                            .map_err(|err| -> engine::Cause { Box::new(err) })?;
+                        let filtered: Vec<_> = reviews
+                            .into_iter()
+                            .filter(|r| include_incomplete || r.state.status_str() == "completed")
+                            .take(limit)
+                            .collect();
+                        Ok(ToolOutcome::Returned(
+                            json!({
+                                "outcome": "available",
+                                "reviews": filtered,
+                            })
+                            .to_string(),
+                        ))
+                    }
+                    ReadReviewsCall::Read { review_id: target } => {
+                        let review = store
+                            .patient_review(&practice, &workspace, &target, &admitted_authority)
+                            .await
+                            .map_err(|err| -> engine::Cause { Box::new(err) })?;
+                        Ok(ToolOutcome::Returned(
+                            json!({
+                                "outcome": "available",
+                                "review": review,
+                            })
+                            .to_string(),
+                        ))
+                    }
+                };
+            }
+
+            if is_concern_tool(&call.name) {
+                let source_work = SourceWork::new("message_review", &run_id, &attempt_id)
+                    .map_err(|err| -> engine::Cause { Box::new(err) })?;
+                let inv = Invocation {
+                    id: call.id.clone(),
+                    name: call.name.clone(),
+                    arguments,
+                };
+                return store
+                    .execute_concern_tool(&practice, &workspace, &source_work, &inv)
+                    .await;
+            }
+
+            if is_follow_up_tool(&call.name) {
+                let source_work = SourceWork::new("message_review", &run_id, &attempt_id)
+                    .map_err(|err| -> engine::Cause { Box::new(err) })?;
+                let inv = Invocation {
+                    id: call.id.clone(),
+                    name: call.name.clone(),
+                    arguments,
+                };
+                return store
+                    .execute_follow_up_tool(&practice, &workspace, &source_work, &inv)
+                    .await;
+            }
+
+            if is_understanding_tool(&call.name) {
+                let current = store
+                    .patient_understanding_internal(&practice, &workspace)
+                    .await?;
+                if call.name == SAVE_UNDERSTANDING_TOOL {
+                    return Ok(ToolOutcome::refused(
+                        "save_patient_understanding belongs to patient understanding runs; record durable message updates in patient_memory or patient_follow_up",
+                    ));
+                }
+                return Ok(ToolOutcome::Returned(
+                    json!({
+                        "outcome": "available",
+                        "understanding": current,
+                    })
+                    .to_string(),
+                ));
+            }
+
+            if is_library_tool(&call.name) {
+                return Ok(store
+                    .clinical_library()
+                    .execute(&call.name, &arguments)
+                    .await);
+            }
+
+            if call.name == COMPLETE_MESSAGE_REVIEW_TOOL {
+                let mut submission = match parse_submission(&call.id, &arguments) {
+                    Ok(sub) => sub,
+                    Err(reason) => return Ok(ToolOutcome::refused(reason)),
+                };
+                let (_, clean_sources, withdrawal_boundary) =
+                    load_clean_sources(&store, &practice, &workspace).await?;
+                let withdrawn_candidates: BTreeSet<&str> = withdrawal_boundary
+                    .as_ref()
+                    .map(|b| b.candidate_ids.iter().map(String::as_str).collect())
+                    .unwrap_or_default();
+                let evidence = collect_run_evidence(&run.events, &clean_sources);
+
+                for auto_id in &evidence.raised_concern_ids_in_events {
+                    if !submission.raised_concern_ids.contains(auto_id) {
+                        submission.raised_concern_ids.push(auto_id.clone());
+                    }
+                }
+
+                // Rule: medication question requires refreshing chart sources before proposing a reply.
+                if let SubmittedMessageReviewDecision::ProposeReply {
+                    addresses_medication_question: true,
+                    limitations,
+                    ..
+                } = &submission.decision
+                {
+                    if evidence.refresh_completed_ordinal.is_none() {
+                        return Ok(ToolOutcome::refused(
+                            "Medication questions must call `refresh_patient_sources` and read the current medication chart before proposing a reply.",
+                        ));
+                    }
+                    if !evidence.chart_read_after_refresh
+                        && !(evidence.refresh_had_failure && !limitations.is_empty())
+                    {
+                        return Ok(ToolOutcome::refused(
+                            "After calling `refresh_patient_sources` for a medication question, read the current medication records with `read_patient_sources` (or state the refresh failure in `limitations`) before proposing a reply.",
+                        ));
+                    }
+                }
+
+                // Rule: every cited chart record must not be withdrawn and must have been read in this run.
+                if let SubmittedMessageReviewDecision::ProposeReply { cited_records, .. } =
+                    &submission.decision
+                {
+                    for cited in cited_records {
+                        if withdrawn_candidates.contains(cited.candidate_id.as_str()) {
+                            return Ok(ToolOutcome::refused(format!(
+                                "Cited chart record `{}` was withdrawn from this patient workspace and cannot be cited.",
+                                cited.candidate_id
+                            )));
+                        }
+                        if !evidence
+                            .read_revisions
+                            .contains(&(cited.candidate_id.clone(), cited.revision.clone()))
+                        {
+                            return Ok(ToolOutcome::refused(format!(
+                                "Cited chart record `{}` at revision `{}` was not read in this run; call `read_patient_sources` or `read_document_page` first.",
+                                cited.candidate_id, cited.revision
+                            )));
+                        }
+                    }
+                }
+
+                // Rule: an urgent `Now` concern requires an emergency-care reply draft (`911` / ED).
+                let open_now_concerns = workspace_concern_record::Entity::find()
+                    .filter(workspace_concern_record::Column::Practice.eq(&practice))
+                    .filter(workspace_concern_record::Column::Workspace.eq(&workspace))
+                    .filter(workspace_concern_record::Column::Status.eq("open"))
+                    .filter(workspace_concern_record::Column::Urgency.eq("now"))
+                    .all(store.spruce_db())
+                    .await?;
+                let has_urgent_now_concern = submission
+                    .raised_concern_ids
+                    .iter()
+                    .any(|cid| open_now_concerns.iter().any(|c| c.id == cid.as_str()));
+                if has_urgent_now_concern {
+                    match &submission.decision {
+                        SubmittedMessageReviewDecision::ProposeReply { reply_text, .. }
+                            if directs_immediate_emergency_care(reply_text) => {}
+                        _ => {
+                            return Ok(ToolOutcome::refused(
+                                "When raising an urgent (`now`) clinical concern on a patient message, you must propose a reply (`propose_reply`) that directs immediate emergency care (calling 911 or going to the nearest emergency department).",
+                            ));
+                        }
+                    }
+                }
+
+                // Rule: `Ask Coda to reply` requires `propose_reply`.
+                if run.starting_context.saw_physician_reply_request
+                    && !matches!(
+                        submission.decision,
+                        SubmittedMessageReviewDecision::ProposeReply { .. }
+                    )
+                {
+                    return Ok(ToolOutcome::refused(
+                        "An authorized physician explicitly requested a reply (`Ask Coda to reply`); `decision` must be `propose_reply`.",
+                    ));
+                }
+
+                // Validate practice message closures against non-automatic read practice messages.
+                for closure in &submission.answered_closures {
+                    if let Some(pm) = run
+                        .starting_context
+                        .practice_messages
+                        .iter()
+                        .find(|m| m.practice_message_id == closure.practice_message_id)
+                        && pm.kind == PracticeMessageKind::Automatic
+                    {
+                        return Ok(ToolOutcome::refused(format!(
+                            "Automatic practice message `{}` is an auto-responder and cannot close patient messages as answered.",
+                            closure.practice_message_id
+                        )));
+                    }
+                }
+
+                let tx = store.spruce_db().begin().await?;
+                let locked = runtime_command_record::Entity::find_by_id((
+                    practice,
+                    MESSAGE_REVIEW_RUN_ACTOR.to_owned(),
+                    run_id,
+                ))
+                .lock_exclusive()
+                .one(&tx)
+                .await?
+                .ok_or_else(|| error("message review run missing"))?;
+                let mut latest = decode_message_review_run(locked.clone())?;
+                let preview = json!({
+                    "outcome": "staged",
+                    "review_id": review_id,
+                    "decision": &submission.decision,
+                });
+                latest.staged_submission = Some(submission);
+                let mut active: runtime_command_record::ActiveModel = locked.into();
+                active.command = Set(serde_json::to_value(&latest)
+                    .map_err(conversion_error("MessageReviewRunRecord", "json"))?);
+                active.update(&tx).await?;
+                tx.commit().await?;
+                return Ok(ToolOutcome::Returned(preview.to_string()));
+            }
+
+            Ok(ToolOutcome::refused(format!(
+                "tool `{}` is not available in linked message review",
+                call.name
+            )))
+        })
+    }
+
+    async fn finish(&mut self, turn: &Turn) -> Result<Finish, engine::ProductError> {
+        self.assert_current().await?;
+        let run = self.load_run().await?;
+        let Some(staged) = run.staged_submission.clone() else {
+            return Ok(Finish::Continue(json!({
+                "outcome": "decision_not_submitted",
+                "message": format!(
+                    "Call `{COMPLETE_MESSAGE_REVIEW_TOOL}` with your message review decision before finishing."
+                ),
+            })));
+        };
+
+        // Check whether conversation messages or workspace sources moved since our last pin.
+        let latest_snapshot = self
+            .store
+            .start_or_read_reply_review(
+                &self.practice,
+                &self.conversation_id,
+                &self.review_id,
+                &self.run_id,
+            )
+            .await
+            .map_err(|err| -> engine::Cause { Box::new(err) })?;
+
+        let saw_request_now = match &latest_snapshot.review.read_state {
+            ReviewReadState::Current {
+                saw_physician_reply_request,
+                ..
+            } => *saw_physician_reply_request,
+            ReviewReadState::NeedsRead => {
+                latest_snapshot.conversation.pending_reply_request.is_some()
+            }
+        };
+
+        if latest_snapshot.conversation.conversation_version > run.last_read_conversation_version {
+            // New channel activity arrived while the model was working: update the run's
+            // conversation snapshot and ask the model to reconsider before completing!
+            let tx = self.store.spruce_db().begin().await?;
+            let locked = runtime_command_record::Entity::find_by_id((
+                self.practice.clone(),
+                MESSAGE_REVIEW_RUN_ACTOR.to_owned(),
+                self.run_id.clone(),
+            ))
+            .lock_exclusive()
+            .one(&tx)
+            .await?
+            .ok_or_else(|| error("message review run missing"))?;
+            let mut updated = decode_message_review_run(locked.clone())?;
+            updated.last_read_conversation_version =
+                latest_snapshot.conversation.conversation_version;
+            updated.last_pinned_source_version = latest_snapshot.source_version;
+            updated.starting_context.conversation_version =
+                latest_snapshot.conversation.conversation_version;
+            updated.starting_context.patient_messages =
+                latest_snapshot.conversation.patient_messages.clone();
+            updated.starting_context.practice_messages =
+                latest_snapshot.conversation.practice_messages.clone();
+            updated.starting_context.saw_physician_reply_request = saw_request_now;
+            updated.staged_submission = None;
+            let mut active: runtime_command_record::ActiveModel = locked.into();
+            active.command = Set(serde_json::to_value(&updated)
+                .map_err(conversion_error("MessageReviewRunRecord", "json"))?);
+            active.update(&tx).await?;
+            tx.commit().await?;
+
+            return Ok(Finish::Continue(json!({
+                "outcome": "conversation_updated",
+                "conversation_version": latest_snapshot.conversation.conversation_version,
+                "patient_messages": latest_snapshot.conversation.patient_messages,
+                "practice_messages": latest_snapshot.conversation.practice_messages,
+                "saw_physician_reply_request": saw_request_now,
+                "message": "New conversation activity arrived during this review. Reconsider affected content and call `complete_message_review` again.",
+            })));
+        }
+
+        if latest_snapshot.source_version > run.last_pinned_source_version {
+            let tx = self.store.spruce_db().begin().await?;
+            let locked = runtime_command_record::Entity::find_by_id((
+                self.practice.clone(),
+                MESSAGE_REVIEW_RUN_ACTOR.to_owned(),
+                self.run_id.clone(),
+            ))
+            .lock_exclusive()
+            .one(&tx)
+            .await?
+            .ok_or_else(|| error("message review run missing"))?;
+            let mut updated = decode_message_review_run(locked.clone())?;
+            updated.last_pinned_source_version = latest_snapshot.source_version;
+            updated.starting_context.source_version = latest_snapshot.source_version;
+            updated.staged_submission = None;
+            let mut active: runtime_command_record::ActiveModel = locked.into();
+            active.command = Set(serde_json::to_value(&updated)
+                .map_err(conversion_error("MessageReviewRunRecord", "json"))?);
+            active.update(&tx).await?;
+            tx.commit().await?;
+
+            return Ok(Finish::Continue(json!({
+                "outcome": "sources_changed",
+                "source_version": latest_snapshot.source_version,
+                "message": "Patient chart records updated during this review. Verify any affected records via `search_patient_information` / `read_patient_sources` and call `complete_message_review` again.",
+            })));
+        }
+
+        let runtime_decision = match staged.decision {
+            SubmittedMessageReviewDecision::ProposeReply {
+                reply_text,
+                basis_summary,
+                limitations,
+                cited_records,
+                addresses_medication_question: _,
+            } => ReplyReviewDecision::ProposeReply(ReplyProposalInput {
+                text: reply_text,
+                basis: ReplyProposalBasisInput {
+                    summary: basis_summary,
+                    limits: limitations,
+                    cited_records: cited_records.clone(),
+                },
+                cited_records,
+            }),
+            SubmittedMessageReviewDecision::NoReplyWouldHelp {
+                reason,
+                basis_summary: _,
+                limitations: _,
+            } => ReplyReviewDecision::NoReplyWouldHelp { reason },
+            SubmittedMessageReviewDecision::AllHandled { basis_summary: _ } => {
+                ReplyReviewDecision::AllHandled
+            }
+        };
+
+        let completion_key = format!("msg-review-complete:{}:{}", self.run_id, staged.call_id);
+        let outcome = match self
+            .store
+            .complete_reply_review(&CompleteReplyReview {
+                practice: self.practice.clone(),
+                conversation_id: self.conversation_id.clone(),
+                review_id: self.review_id.clone(),
+                run_id: self.run_id.clone(),
+                completion_key,
+                answered_closures: staged.answered_closures,
+                decision: runtime_decision,
+                raised_concern_ids: staged.raised_concern_ids,
+            })
+            .await
+        {
+            Ok(outcome) => outcome,
+            Err(
+                err @ (ReplyProposalError::AutomaticPracticeMessageCannotAnswer { .. }
+                | ReplyProposalError::UnverifiedCitation { .. }
+                | ReplyProposalError::OpenMessagesRemainUnhandled
+                | ReplyProposalError::NoOpenMessagesForProposal
+                | ReplyProposalError::PhysicianRequestedReplyRequiresProposal
+                | ReplyProposalError::InvalidInput(_)),
+            ) => {
+                let tx = self.store.spruce_db().begin().await?;
+                let locked = runtime_command_record::Entity::find_by_id((
+                    self.practice.clone(),
+                    MESSAGE_REVIEW_RUN_ACTOR.to_owned(),
+                    self.run_id.clone(),
+                ))
+                .lock_exclusive()
+                .one(&tx)
+                .await?
+                .ok_or_else(|| error("message review run missing"))?;
+                let mut updated = decode_message_review_run(locked.clone())?;
+                updated.staged_submission = None;
+                let mut active: runtime_command_record::ActiveModel = locked.into();
+                active.command = Set(serde_json::to_value(&updated)
+                    .map_err(conversion_error("MessageReviewRunRecord", "json"))?);
+                active.update(&tx).await?;
+                tx.commit().await?;
+
+                return Ok(Finish::Continue(json!({
+                    "outcome": "completion_refused",
+                    "reason": err.to_string(),
+                })));
+            }
+            Err(other) => return Err(engine::ProductError::Failed(Box::new(other))),
+        };
+
+        let saved_completion = match &outcome {
+            ReplyReviewOutcome::Applied(saved) | ReplyReviewOutcome::Duplicate(saved) => {
+                (**saved).clone()
+            }
+        };
+
+        let clock = self.store.spruce_now().await?;
+        let tx = self.store.spruce_db().begin().await?;
+        let locked = runtime_command_record::Entity::find_by_id((
+            self.practice.clone(),
+            MESSAGE_REVIEW_RUN_ACTOR.to_owned(),
+            self.run_id.clone(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?
+        .ok_or_else(|| error("message review run missing"))?;
+        let mut latest = decode_message_review_run(locked.clone())?;
+        latest.status = MessageReviewRunStatus::Completed;
+        latest.saved_completion = Some(saved_completion);
+        latest.final_summary = Some(turn.text());
+        latest.completed_at = Some(clock);
+        let mut active: runtime_command_record::ActiveModel = locked.into();
+        active.command = Set(serde_json::to_value(&latest)
+            .map_err(conversion_error("MessageReviewRunRecord", "json"))?);
+        active.update(&tx).await?;
+        tx.commit().await?;
+
+        self.committed_outcome = Some(outcome);
+        Ok(Finish::Committed)
+    }
+
+    async fn finish_partial(
+        &mut self,
+        turn: &Turn,
+        _backstops: &[engine::LimitBackstop],
+    ) -> Result<(), engine::ProductError> {
+        self.assert_current().await?;
+        let clock = self.store.spruce_now().await.map_err(persistence_failure)?;
+        let tx = self
+            .store
+            .spruce_db()
+            .begin()
+            .await
+            .map_err(persistence_failure)?;
+        let locked = runtime_command_record::Entity::find_by_id((
+            self.practice.clone(),
+            MESSAGE_REVIEW_RUN_ACTOR.to_owned(),
+            self.run_id.clone(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await
+        .map_err(persistence_failure)?
+        .ok_or_else(|| error("message review run missing"))?;
+        let mut latest = decode_message_review_run(locked.clone())?;
+        latest.status = MessageReviewRunStatus::Held;
+        latest.final_summary = Some(turn.text());
+        latest.completed_at = Some(clock);
+        let mut active: runtime_command_record::ActiveModel = locked.into();
+        active.command = Set(serde_json::to_value(&latest)
+            .map_err(conversion_error("MessageReviewRunRecord", "json"))?);
+        active.update(&tx).await.map_err(persistence_failure)?;
+        tx.commit().await.map_err(persistence_failure)?;
+        Ok(())
+    }
+
+    async fn window_seed(&mut self) -> Result<engine::WindowSeed, engine::ProductError> {
+        self.assert_current().await?;
+        let run = self.load_run().await.map_err(persistence_failure)?;
+        let src = Self::source_message(&run.starting_context);
+        let note_references =
+            spruce_working_note_references(run.events.iter().map(|e| (run.run_id.as_str(), e)))?;
+        Ok(engine::WindowSeed {
+            items: vec![Item::ProductMessage(src)],
+            note_references,
+        })
+    }
+}
+
+/// Owned `'static` authority token scoped to the single `(practice, workspace)`
+/// already verified by [`Product::admit_binding`] and [`Product::assert_current`].
+pub(crate) struct AdmittedPracticePatient {
+    pub(crate) practice: String,
+    pub(crate) workspace: String,
+}
+
+#[async_trait]
+impl PracticeAuthority for AdmittedPracticePatient {
+    async fn check_practice_patient(
+        &self,
+        scope: &PracticeScope,
+    ) -> Result<(), PracticeAccessError> {
+        if scope.practice.trim().is_empty()
+            || scope.workspace.trim().is_empty()
+            || scope.job_id.trim().is_empty()
+        {
+            return Err(PracticeAccessError::InvalidScope);
+        }
+        if scope.practice != self.practice {
+            return Err(PracticeAccessError::ForeignPractice {
+                requested_practice: scope.practice.clone(),
+                owner_practice: self.practice.clone(),
+                workspace: scope.workspace.clone(),
+            });
+        }
+        if scope.workspace != self.workspace {
+            return Err(PracticeAccessError::UnregisteredPatient {
+                practice: scope.practice.clone(),
+                workspace: scope.workspace.clone(),
+            });
+        }
+        Ok(())
+    }
+}
+
+/// Runs the linked patient message review recipe on `roles.background` over
+/// `provider`, persisting versioned provenance, initial loads, later tool
+/// discoveries, and the committed [`ReplyReviewOutcome`].
+#[expect(
+    clippy::too_many_arguments,
+    reason = "entry point binds store, practice authority, conversation target, options, model roles, skills, provider, run limits, and cancellation"
+)]
+pub async fn run_message_review<P: Provider>(
+    store: &Store,
+    authority: &dyn PracticeAuthority,
+    practice: &str,
+    conversation_id: &str,
+    options: &MessageReviewOptions,
+    roles: &ModelRoles,
+    skills: &PhysicianSkills,
+    provider: &mut P,
+    limits: engine::RunLimits,
+    cancel: &engine::Cancellation,
+) -> Result<CompletedMessageReviewRun, MessageReviewRecipeError> {
+    let run_id = format!("msg-review-run-{}", Uuid::new_v4());
+    let attempt_id = format!("attempt-{}", Uuid::new_v4());
+    let existing_conv = store.reply_conversation(practice, conversation_id).await?;
+    let (review_id, restart_existing_active) = match &options.review_id {
+        Some(explicit) => {
+            let matches_active = existing_conv.as_ref().is_some_and(|conv| {
+                conv.active_review
+                    .as_ref()
+                    .is_some_and(|active| active.review_id == *explicit && active.run_id != run_id)
+            });
+            (explicit.clone(), matches_active)
+        }
+        None => match existing_conv
+            .as_ref()
+            .and_then(|conv| conv.active_review.as_ref())
+        {
+            Some(active) => (active.review_id.clone(), active.run_id != run_id),
+            None => (format!("msg-review-{}", Uuid::new_v4()), false),
+        },
+    };
+    if restart_existing_active {
+        if let Some(conv) = &existing_conv
+            && let ConversationLink::LinkedPatient { workspace } = &conv.link
+        {
+            authority
+                .check_practice_patient(&PracticeScope {
+                    practice: practice.to_owned(),
+                    workspace: workspace.clone(),
+                    job_id: format!("message-review:{review_id}"),
+                })
+                .await?;
+        }
+        store
+            .restart_reply_review(practice, conversation_id, &run_id)
+            .await?;
+    }
+
+    let (_snapshot, starting_context) = build_message_review_starting_context(
+        store,
+        authority,
+        practice,
+        conversation_id,
+        &review_id,
+        &run_id,
+        options,
+    )
+    .await?;
+
+    let (built_recipe, preloaded_digests) = recipe(roles, skills)?;
+    let cache_key = harness::PromptCacheKey::scoped(
+        "chords-message-review",
+        &[
+            &starting_context.practice,
+            &starting_context.workspace,
+            &starting_context.conversation_id,
+            &review_id,
+        ],
+    );
+    let built_binding = built_recipe.bind(Some(cache_key));
+    let guidance_sha = message_review_instructions_sha256();
+    let discoverable = discoverable_skill_names(skills, &PRELOADED_MESSAGE_REVIEW_SKILLS);
+
+    let clock = store.spruce_now().await?;
+    let tx = store.spruce_db().begin().await?;
+    let (binding_ref, skills_id) = store
+        .keep_spruce_matching_frozen(&tx, &starting_context.practice, &built_binding, skills)
+        .await?;
+
+    let provenance = MessageReviewProvenance {
+        recipe_version: MESSAGE_REVIEW_RECIPE_VERSION.to_owned(),
+        guidance_version: MESSAGE_REVIEW_GUIDANCE_VERSION.to_owned(),
+        guidance_sha256: guidance_sha.clone(),
+        model: roles.background.model.clone(),
+        effort: roles.background.effort.clone(),
+        context_window_tokens: roles.background.context_window_tokens,
+        max_input_tokens: roles.background.max_input_tokens,
+        adapter: roles.background.adapter.clone(),
+        binding: binding_ref,
+        skills: skills_id.clone(),
+        preloaded_skills: preloaded_digests.clone(),
+    };
+
+    let open_patient_count = starting_context
+        .patient_messages
+        .iter()
+        .filter(|m| m.standing.is_open())
+        .count();
+    let active_memory_count = starting_context.memory_standing.active_count();
+
+    let mut initial_loads = vec![MessageReviewInitialLoad::ResidentGuidance {
+        version: MESSAGE_REVIEW_GUIDANCE_VERSION.to_owned(),
+        sha256: guidance_sha,
+    }];
+    for digest in &preloaded_digests {
+        initial_loads.push(MessageReviewInitialLoad::PreloadedSkill {
+            name: digest.name.clone(),
+            sha256: digest.sha256.clone(),
+        });
+    }
+    initial_loads.push(MessageReviewInitialLoad::SkillCatalogMetadata {
+        skills_package_id: skills_id,
+        discoverable_skill_names: discoverable,
+    });
+    initial_loads.push(MessageReviewInitialLoad::LinkedConversationSnapshot {
+        conversation_id: starting_context.conversation_id.clone(),
+        conversation_version: starting_context.conversation_version,
+        open_patient_message_count: open_patient_count,
+        practice_message_count: starting_context.practice_messages.len(),
+        saw_physician_reply_request: starting_context.saw_physician_reply_request,
+    });
+    initial_loads.push(MessageReviewInitialLoad::PatientChartSnapshot {
+        workspace: starting_context.workspace.clone(),
+        source_version: starting_context.source_version,
+        chart_record_count: starting_context.chart_record_count,
+        active_memory_count,
+        active_follow_up_count: starting_context.active_follow_ups.len(),
+        open_concern_count: starting_context.open_concerns.len(),
+    });
+    if !starting_context.coalesced_changed_candidates.is_empty() {
+        initial_loads.push(MessageReviewInitialLoad::CoalescedRecordChanges {
+            changed_candidates: starting_context.coalesced_changed_candidates.clone(),
+        });
+    }
+
+    let initial_record = MessageReviewRunRecord {
+        practice: starting_context.practice.clone(),
+        workspace: starting_context.workspace.clone(),
+        conversation_id: starting_context.conversation_id.clone(),
+        review_id: review_id.clone(),
+        run_id: run_id.clone(),
+        attempt_id: attempt_id.clone(),
+        status: MessageReviewRunStatus::Running,
+        provenance,
+        starting_context: starting_context.clone(),
+        initial_loads,
+        tool_discoveries: Vec::new(),
+        events: Vec::new(),
+        last_read_conversation_version: starting_context.conversation_version,
+        last_pinned_source_version: starting_context.source_version,
+        staged_submission: None,
+        saved_completion: None,
+        final_summary: None,
+        started_at: clock,
+        completed_at: None,
+    };
+
+    runtime_command_record::Entity::insert(runtime_command_record::ActiveModel {
+        practice: Set(starting_context.practice.clone()),
+        physician: Set(MESSAGE_REVIEW_RUN_ACTOR.to_owned()),
+        key: Set(run_id.clone()),
+        command: Set(serde_json::to_value(&initial_record)
+            .map_err(conversion_error("MessageReviewRunRecord", "json"))?),
+        accepted_at: Set(clock),
+    })
+    .exec_without_returning(&tx)
+    .await?;
+    tx.commit().await?;
+
+    let mut host = MessageReviewHost {
+        store: store.clone(),
+        authority,
+        practice: starting_context.practice.clone(),
+        workspace: starting_context.workspace.clone(),
+        conversation_id: starting_context.conversation_id.clone(),
+        review_id: review_id.clone(),
+        run_id: run_id.clone(),
+        attempt_id: attempt_id.clone(),
+        committed_outcome: None,
+    };
+
+    let source_msg = MessageReviewHost::source_message(&starting_context);
+    let accepted_input = engine::AcceptedInput {
+        id: format!("accept:{run_id}"),
+        items: vec![Item::ProductMessage(source_msg.clone())],
+    };
+    let mut request = built_binding.request(Vec::new());
+    request.items.clear();
+
+    let run_result = async {
+        let work = request.freeze()?.recover(
+            &attempt_id,
+            engine::recovery::Records {
+                events: Vec::new(),
+                allowance_after: 0,
+            },
+            engine::recovery::Messages {
+                sources: &[source_msg],
+                partial: None,
+            },
+            engine::recovery::Inputs {
+                accepted: vec![accepted_input],
+                source_feedback: None,
+            },
+        )?;
+        work.run(provider, &mut host, limits, cancel).await
+    }
+    .await;
+
+    if let Err(err) = run_result {
+        let _ = store
+            .restart_reply_review(&starting_context.practice, conversation_id, &run_id)
+            .await;
+        let fail_clock = store.spruce_now().await?;
+        let tx = store.spruce_db().begin().await?;
+        if let Some(locked) = runtime_command_record::Entity::find_by_id((
+            starting_context.practice.clone(),
+            MESSAGE_REVIEW_RUN_ACTOR.to_owned(),
+            run_id.clone(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?
+        {
+            let mut rec = decode_message_review_run(locked.clone())?;
+            if rec.status == MessageReviewRunStatus::Running {
+                rec.status = MessageReviewRunStatus::Failed;
+                rec.completed_at = Some(fail_clock);
+                let mut active: runtime_command_record::ActiveModel = locked.into();
+                active.command = Set(serde_json::to_value(&rec)
+                    .map_err(conversion_error("MessageReviewRunRecord", "json"))?);
+                active.update(&tx).await?;
+            }
+        }
+        tx.commit().await?;
+        return Err(MessageReviewRecipeError::Harness {
+            review_id: Some(review_id),
+            run_id,
+            source: err,
+        });
+    }
+
+    let persisted = store
+        .message_review_run(&starting_context.practice, &run_id)
+        .await?
+        .ok_or_else(|| error("completed message review run missing"))?;
+    let Some(outcome) = host.committed_outcome else {
+        let _ = store
+            .restart_reply_review(&starting_context.practice, conversation_id, &run_id)
+            .await;
+        return Err(MessageReviewRecipeError::HeldWithoutDecision { review_id, run_id });
+    };
+
+    Ok(CompletedMessageReviewRun {
+        run: persisted,
+        outcome,
+    })
+}
+
+fn revision_context_from_claim(claim: &RevisionClaim) -> RevisionContext {
+    RevisionContext {
+        saved_draft: claim.base_text.clone(),
+        instruction: claim.accepted.input.message(),
+        expected_draft_revision: claim.accepted.input.expected_revision,
+        physician_time_zone: claim.accepted.input.timezone.clone(),
+    }
+}
+
+fn parse_proposal_draft_chat_scope(chat: &str) -> Option<(String, u64)> {
+    let rest = chat.strip_prefix(PROPOSAL_DRAFT_CHAT_PREFIX)?;
+    let (conversation_id, reply_id_raw) = rest.rsplit_once(':')?;
+    if conversation_id.is_empty()
+        || conversation_id.trim() != conversation_id
+        || conversation_id.chars().any(char::is_control)
+    {
+        return None;
+    }
+    let reply_id = reply_id_raw.parse::<u64>().ok()?;
+    (reply_id > 0).then(|| (conversation_id.to_owned(), reply_id))
+}
+
+fn extract_skill_view_name(tool_name: &str, raw_arguments: &str) -> Option<String> {
+    if tool_name != SKILL_VIEW {
+        return None;
+    }
+    serde_json::from_str::<Value>(raw_arguments)
+        .ok()
+        .and_then(|v| v.get("name").and_then(Value::as_str).map(str::to_owned))
+}
+
+fn record_event_calls(seen_calls: &mut BTreeMap<String, (String, Option<String>)>, event: &Event) {
+    match &event.kind {
+        EventKind::ToolStarted(call) => {
+            let skill = extract_skill_view_name(&call.name, &call.arguments);
+            seen_calls.insert(call.id.clone(), (call.name.clone(), skill));
+        }
+        EventKind::ProviderReturned(turn) => {
+            for call in turn.calls() {
+                let skill = extract_skill_view_name(&call.name, &call.arguments);
+                seen_calls
+                    .entry(call.id.clone())
+                    .or_insert_with(|| (call.name.clone(), skill));
+            }
+        }
+        EventKind::ProviderStarted { .. }
+        | EventKind::ProviderObservation { .. }
+        | EventKind::ProviderFailed { .. }
+        | EventKind::TransportRetry { .. }
+        | EventKind::CallBegan { .. }
+        | EventKind::ToolReturned { .. }
+        | EventKind::ProviderBlocked { .. }
+        | EventKind::ContextRejected
+        | EventKind::Candidate { .. }
+        | EventKind::WindowOpened { .. } => {}
+    }
+}
+
+#[derive(Clone, Debug)]
+struct PinnedProposalConversation {
+    conversation_id: String,
+    reply_id: u64,
+    conversation_version: u64,
+    patient_messages: Vec<LinkedPatientMessage>,
+    practice_messages: Vec<ObservedPracticeMessage>,
+}
+
+impl PinnedProposalConversation {
+    fn product_message(&self) -> engine::ProductMessage {
+        engine::ProductMessage {
+            id: format!("reply-proposal-conversation:{}", self.conversation_id),
+            role: engine::history::Role::User,
+            text: json!({
+                "kind": "linked_reply_conversation",
+                "conversation_id": self.conversation_id,
+                "reply_id": self.reply_id,
+                "conversation_version": self.conversation_version,
+                "patient_messages": self.patient_messages,
+                "practice_messages": self.practice_messages,
+            })
+            .to_string(),
+        }
+    }
+
+    fn history_message(&self) -> engine::history::Message<Value> {
+        let msg = self.product_message();
+        engine::history::Message {
+            id: msg.id,
+            role: msg.role,
+            text: msg.text,
+            metadata: json!({
+                "conversation_id": self.conversation_id,
+                "reply_id": self.reply_id,
+                "conversation_version": self.conversation_version,
+            }),
+        }
+    }
+}
+
+struct ReplyRevisionHost<'a> {
+    store: Store,
+    claim: RevisionClaim,
+    authority: &'a mut dyn Authority,
+    pinned_conversation: Option<PinnedProposalConversation>,
+    seen_calls: BTreeMap<String, (String, Option<String>)>,
+    reconsiderations: u32,
+}
+
+#[async_trait]
+impl Product for ReplyRevisionHost<'_> {
+    async fn message_sources(
+        &mut self,
+    ) -> Result<Option<Vec<engine::ProductMessage>>, engine::ProductError> {
+        let draft = self
+            .store
+            .draft(&self.claim.scope)
+            .await
+            .map_err(persistence_failure)?
+            .ok_or("revision draft unavailable")?;
+        let mut messages = self
+            .store
+            .revision_message_sources(&self.claim.scope, &draft)
+            .await
+            .map_err(persistence_failure)?;
+        if let Some(pinned) = &self.pinned_conversation {
+            messages.push(pinned.product_message());
+        }
+        Ok(Some(messages))
+    }
+
+    async fn admit_binding(&mut self, recipe: &RequestBinding) -> Result<(), engine::ProductError> {
+        self.assert_current().await?;
+        self.store
+            .admit_revision_binding(&self.claim, recipe)
+            .await?;
+        Ok(())
+    }
+
+    async fn window_seed(&mut self) -> Result<engine::WindowSeed, engine::ProductError> {
+        self.assert_current().await?;
+        let draft = self
+            .store
+            .draft(&self.claim.scope)
+            .await
+            .map_err(persistence_failure)?
+            .ok_or("revision draft unavailable")?;
+        let note_references =
+            spruce_working_note_references(draft.attempts.iter().flat_map(|attempt| {
+                attempt
+                    .events
+                    .iter()
+                    .map(|event| (attempt.input_id.as_str(), event))
+            }))?;
+        let boundary = load_workspace_withdrawal_boundary(
+            &self.store,
+            &self.claim.scope.practice,
+            &self.claim.scope.workspace,
+        )
+        .await?;
+        let mut clean_sources = self.claim.sources.clone();
+        retain_non_withdrawn_sources(&mut clean_sources, boundary.as_ref());
+        let mut items = Vec::new();
+        if let Some(pinned) = &self.pinned_conversation {
+            items.push(Item::ProductMessage(pinned.product_message()));
+        }
+        let memory = self
+            .store
+            .reply_memory(&self.claim.scope)
+            .await
+            .map_err(persistence_failure)?;
+        items.extend(revision_context_from_claim(&self.claim).items(&clean_sources, memory));
+        Ok(engine::WindowSeed {
+            items,
+            note_references,
+        })
+    }
+
+    fn read_only(&self, name: &str) -> bool {
+        chat_read_only(name)
+            || is_library_tool(name)
+            || is_document_page_tool(name)
+            || is_spruce_working_note_tool(name)
+    }
+
+    fn read_result(&mut self, id: &str) -> engine::recipe::ToolFuture<Option<String>> {
+        let store = self.store.clone();
+        let claim = self.claim.clone();
+        let pinned_conversation = self.pinned_conversation.clone();
+        let id = id.to_owned();
+        Box::pin(async move {
+            store.assert_revision_current(&claim).await?;
+            let draft = store
+                .draft(&claim.scope)
+                .await?
+                .ok_or("revision draft unavailable")?;
+            let records = store.revision_records(&claim.scope, &draft).await?;
+            let mut messages = store.revision_message_sources(&claim.scope, &draft).await?;
+            if let Some(pinned) = &pinned_conversation {
+                messages.push(pinned.product_message());
+            }
+            engine::results::resolve(records.iter(), &id, &messages).map_err(Into::into)
+        })
+    }
+
+    fn terminal(&self, response: &Turn) -> bool {
+        requests_finish(response)
+    }
+
+    async fn assert_current(&mut self) -> Result<(), engine::ProductError> {
+        self.store
+            .authorize_revision(&self.claim.scope, self.authority)
+            .await?;
+        self.store.assert_revision_current(&self.claim).await
+    }
+
+    async fn persist(&mut self, event: Event) -> Result<(), engine::ProductError> {
+        record_event_calls(&mut self.seen_calls, &event);
+        let clock = self.store.spruce_now().await?;
+        if let EventKind::ToolReturned { call_id, result } = &event.kind {
+            let (tool_name, discovered_skill_name) =
+                if let Some(found) = self.seen_calls.get(call_id).cloned() {
+                    found
+                } else if let Some(draft) = self.store.draft(&self.claim.scope).await? {
+                    let records = self
+                        .store
+                        .revision_records(&self.claim.scope, &draft)
+                        .await?;
+                    for (prior_event, _) in &records {
+                        record_event_calls(&mut self.seen_calls, prior_event);
+                    }
+                    self.seen_calls
+                        .get(call_id)
+                        .cloned()
+                        .unwrap_or_else(|| ("unknown".to_owned(), None))
+                } else {
+                    ("unknown".to_owned(), None)
+                };
+
+            let tx = self.store.spruce_db().begin().await?;
+            if let Some(row) = runtime_command_record::Entity::find_by_id((
+                self.claim.scope.practice.clone(),
+                REPLY_REVISION_RUN_ACTOR.to_owned(),
+                self.claim.attempt.clone(),
+            ))
+            .lock_exclusive()
+            .one(&tx)
+            .await?
+            {
+                let mut rec = decode_reply_revision_run(row.clone())?;
+                let disposition = match result {
+                    engine::results::ToolResult::Refused(refusal) => {
+                        ToolDiscoveryDisposition::Refused {
+                            reason: refusal.reason().to_owned(),
+                        }
+                    }
+                    engine::results::ToolResult::Original(_)
+                    | engine::results::ToolResult::History(_)
+                    | engine::results::ToolResult::View(_) => ToolDiscoveryDisposition::Returned,
+                };
+                rec.tool_discoveries.push(RecordedToolDiscovery {
+                    ordinal: event.ordinal,
+                    call_id: call_id.clone(),
+                    tool_name,
+                    discovered_skill_name,
+                    disposition,
+                    recorded_at: clock,
+                });
+                let mut active: runtime_command_record::ActiveModel = row.into();
+                active.command = Set(serde_json::to_value(&rec)
+                    .map_err(conversion_error("ReplyRevisionRunRecord", "json"))?);
+                active.update(&tx).await?;
+            }
+            tx.commit().await?;
+        }
+
+        self.store
+            .record_revision(&self.claim, event)
+            .await
+            .map_err(persistence_failure)
+    }
+
+    fn execute(&mut self, call: &Invocation, arguments: Value) -> engine::recipe::ToolFuture {
+        let store = self.store.clone();
+        let claim = self.claim.clone();
+        let pinned_conversation = self.pinned_conversation.clone();
+        let call = call.clone();
+        Box::pin(async move {
+            store.assert_revision_current(&claim).await?;
+            let draft = store
+                .draft(&claim.scope)
+                .await?
+                .ok_or("revision draft unavailable")?;
+            let work_records = store.revision_records(&claim.scope, &draft).await?;
+            let inv = Invocation {
+                id: call.id.clone(),
+                name: call.name.clone(),
+                arguments,
+            };
+            let records = draft.attempts.iter().flat_map(|attempt| {
+                attempt
+                    .events
+                    .iter()
+                    .map(|event| (attempt.input_id.as_str(), event))
+            });
+            if let Some(outcome) =
+                execute_spruce_working_note(&claim.accepted.input.key, &inv, records)?
+            {
+                return Ok(outcome);
+            }
+            if engine::history::is_tool(&inv.name) {
+                let mut messages = store.revision_messages(&claim.scope, &draft).await?;
+                if let Some(pinned) = &pinned_conversation {
+                    messages.push(pinned.history_message());
+                }
+                return Ok(
+                    match engine::history::execute(
+                        &inv.name,
+                        &inv.arguments,
+                        &messages,
+                        work_records.iter(),
+                    ) {
+                        Ok(page) => {
+                            ToolOutcome::History(page.map_metadata(|metadata| json!(metadata)))
+                        }
+                        Err(reason) => ToolOutcome::refused(reason),
+                    },
+                );
+            }
+            if inv.name == SKILL_VIEW {
+                return Ok(claim.skills.execute(&inv.name, &inv.arguments));
+            }
+            let boundary = load_workspace_withdrawal_boundary(
+                &store,
+                &claim.scope.practice,
+                &claim.scope.workspace,
+            )
+            .await?;
+            let mut clean_sources = claim.sources.clone();
+            retain_non_withdrawn_sources(&mut clean_sources, boundary.as_ref());
+            if is_document_page_tool(&inv.name) {
+                return Ok(
+                    crate::attachments::execute_document_page_read_from_revisions(
+                        &inv.arguments,
+                        &clean_sources,
+                    ),
+                );
+            }
+            if let Some(mem_tool) = MemoryTool::named(&inv.name) {
+                return mem_tool
+                    .execute(&store, &claim.scope, &inv.arguments, || {
+                        Ok(NoteOrigin {
+                            work: claim.accepted.input.key.clone(),
+                            call: inv.id.clone(),
+                            message: claim.accepted.input.key.clone(),
+                        })
+                    })
+                    .await
+                    .map_err(persistence_failure);
+            }
+            if matches!(
+                inv.name.as_str(),
+                "patient_memory"
+                    | COMPLETE_MESSAGE_REVIEW_TOOL
+                    | "patient_concern"
+                    | "patient_follow_up"
+                    | "send_patient_message"
+            ) {
+                return Ok(ToolOutcome::refused(format!(
+                    "`{}` is outside physician reply revision authority",
+                    inv.name
+                )));
+            }
+            read_sources(&clean_sources, &claim.scope.workspace, &inv).map_err(Into::into)
+        })
+    }
+
+    async fn finish(&mut self, response: &Turn) -> Result<Finish, engine::ProductError> {
+        if let Err(reason) = revised_text(response) {
+            return Ok(revision_feedback(reason));
+        }
+
+        if let Some(pinned) = &mut self.pinned_conversation
+            && let Some(conv) = self
+                .store
+                .reply_conversation(&self.claim.scope.practice, &pinned.conversation_id)
+                .await
+                .map_err(|err| -> engine::Cause { Box::new(err) })?
+            && matches!(
+                &conv.link,
+                ConversationLink::LinkedPatient { workspace } if workspace == &self.claim.scope.workspace
+            )
+            && matches!(
+                &conv.reply_standing,
+                ReplyStanding::Ready { proposal } if proposal.reply_id == pinned.reply_id
+            )
+            && conv.conversation_version != pinned.conversation_version
+        {
+            let previous_version = pinned.conversation_version;
+            pinned.conversation_version = conv.conversation_version;
+            pinned.patient_messages.clone_from(&conv.patient_messages);
+            pinned.practice_messages.clone_from(&conv.practice_messages);
+            self.reconsiderations = self.reconsiderations.saturating_add(1);
+            return Ok(Finish::Continue(json!({
+                "outcome": "conversation_updated",
+                "conversation_id": conv.conversation_id,
+                "previous_conversation_version": previous_version,
+                "conversation_version": conv.conversation_version,
+                "patient_messages": conv.patient_messages,
+                "practice_messages": conv.practice_messages,
+                "message": "New linked conversation messages arrived while revising this reply. Reconsider affected content and call `finish_reply_revision` again.",
+            })));
+        }
+
+        match self
+            .store
+            .commit_revision(&self.claim, response, self.authority)
+            .await?
+        {
+            RevisionCommit::Committed => Ok(Finish::Committed),
+            RevisionCommit::SourcesMoved {
+                refresh,
+                mut sources,
+            } => {
+                let boundary = load_workspace_withdrawal_boundary(
+                    &self.store,
+                    &self.claim.scope.practice,
+                    &self.claim.scope.workspace,
+                )
+                .await?;
+                retain_non_withdrawn_sources(&mut sources, boundary.as_ref());
+                self.reconsiderations = self.reconsiderations.saturating_add(1);
+                self.claim.sources = sources;
+                self.claim.sources_version = refresh.to_version;
+                Ok(Finish::Continue(refresh.result(&self.claim.sources)))
+            }
+            RevisionCommit::SourcesUnread(references) => {
+                self.reconsiderations = self.reconsiderations.saturating_add(1);
+                Ok(Finish::Continue(unread_result(&references)))
+            }
+        }
+    }
+
+    async fn finish_partial(
+        &mut self,
+        response: &Turn,
+        _backstops: &[engine::LimitBackstop],
+    ) -> Result<(), engine::ProductError> {
+        self.store.hold_revision(&self.claim, response).await?;
+        Ok(())
+    }
+}
+
+/// Claims and executes a due physician-requested reply draft revision using the
+/// frozen [`reply_revision_recipe`], handling `SourcesMoved` / `SourcesUnread`
+/// reconsiderations and preserving physician draft authority on concurrent edits.
+#[expect(
+    clippy::too_many_arguments,
+    reason = "entry point binds store, authority, delivery, lease duration, model roles, skills, provider, limits, and cancellation"
+)]
+pub async fn run_physician_reply_revision<P: Provider>(
+    store: &Store,
+    authority: &mut dyn Authority,
+    delivery: &crate::runtime::delivery::Delivery,
+    lease_seconds: i64,
+    roles: &ModelRoles,
+    skills: &PhysicianSkills,
+    provider: &mut P,
+    limits: engine::RunLimits,
+    cancel: &engine::Cancellation,
+) -> Result<ReplyRevisionRunRecord, MessageReviewRecipeError> {
+    let Some(mut claim) = store.claim_revision(delivery, lease_seconds).await? else {
+        return Err(MessageReviewRecipeError::RevisionNotClaimable {
+            chat: delivery.scope.chat.clone(),
+            input_id: delivery.input_id.clone(),
+        });
+    };
+
+    let (built_recipe, preloaded_digests) = reply_revision_recipe(roles, skills)?;
+    if claim.binding.recipe != built_recipe {
+        let _ = store
+            .settle_revision_attempt(
+                &claim,
+                AttemptFailure::Failed,
+                crate::runtime::delivery::Backoff::HOSTED,
+            )
+            .await;
+        return Err(MessageReviewRecipeError::RevisionRecipeMismatch {
+            chat: claim.scope.chat.clone(),
+            input_id: claim.accepted.input.key.clone(),
+        });
+    }
+
+    let boundary =
+        load_workspace_withdrawal_boundary(store, &claim.scope.practice, &claim.scope.workspace)
+            .await?;
+    retain_non_withdrawn_sources(&mut claim.sources, boundary.as_ref());
+
+    let pinned_conversation = if let Some((conversation_id, reply_id)) =
+        parse_proposal_draft_chat_scope(&claim.scope.chat)
+        && let Some(conv) = store
+            .reply_conversation(&claim.scope.practice, &conversation_id)
+            .await?
+        && matches!(
+            &conv.link,
+            ConversationLink::LinkedPatient { workspace } if workspace == &claim.scope.workspace
+        ) {
+        Some(PinnedProposalConversation {
+            conversation_id,
+            reply_id,
+            conversation_version: conv.conversation_version,
+            patient_messages: conv.patient_messages,
+            practice_messages: conv.practice_messages,
+        })
+    } else {
+        None
+    };
+
+    let provenance = ReplyRevisionProvenance {
+        recipe_version: REPLY_REVISION_RECIPE_VERSION.to_owned(),
+        guidance_version: REPLY_REVISION_GUIDANCE_VERSION.to_owned(),
+        guidance_sha256: reply_revision_instructions_sha256(),
+        model: roles.background.model.clone(),
+        effort: roles.background.effort.clone(),
+        context_window_tokens: roles.background.context_window_tokens,
+        max_input_tokens: roles.background.max_input_tokens,
+        adapter: roles.background.adapter.clone(),
+        preloaded_skills: preloaded_digests,
+    };
+
+    let clock = store.spruce_now().await?;
+    let initial_rec = ReplyRevisionRunRecord {
+        practice: claim.scope.practice.clone(),
+        physician: claim.scope.physician.clone(),
+        workspace: claim.scope.workspace.clone(),
+        draft_scope_chat: claim.scope.chat.clone(),
+        attempt_id: claim.attempt.clone(),
+        input_key: claim.accepted.input.key.clone(),
+        base_draft_text: claim.base_text.clone(),
+        instruction: claim.accepted.input.instruction.clone(),
+        initial_source_version: claim.sources_version,
+        committed_source_version: None,
+        source_reconsiderations: 0,
+        provenance,
+        tool_discoveries: Vec::new(),
+        revised_text: None,
+        status: MessageReviewRunStatus::Running,
+        started_at: clock,
+        completed_at: None,
+    };
+    let tx = store.spruce_db().begin().await?;
+    runtime_command_record::Entity::insert(runtime_command_record::ActiveModel {
+        practice: Set(claim.scope.practice.clone()),
+        physician: Set(REPLY_REVISION_RUN_ACTOR.to_owned()),
+        key: Set(claim.attempt.clone()),
+        command: Set(serde_json::to_value(&initial_rec)
+            .map_err(conversion_error("ReplyRevisionRunRecord", "json"))?),
+        accepted_at: Set(clock),
+    })
+    .exec_without_returning(&tx)
+    .await?;
+    tx.commit().await?;
+
+    let draft = store
+        .draft(&claim.scope)
+        .await?
+        .ok_or_else(|| error("revision draft unavailable"))?;
+    let mut messages = store.revision_message_sources(&claim.scope, &draft).await?;
+    if let Some(pinned) = &pinned_conversation {
+        messages.push(pinned.product_message());
+    }
+    let records = store.revision_records(&claim.scope, &draft).await?;
+    let mut seen_calls = BTreeMap::new();
+    for (prior_event, _) in &records {
+        record_event_calls(&mut seen_calls, prior_event);
+    }
+    let source_feedback = draft
+        .attempts
+        .last()
+        .and_then(|attempt| attempt.refreshes.last())
+        .map(|refresh| refresh.result(&claim.sources));
+    let allowance_after = draft.allowance_after;
+    drop(draft);
+
+    let mut initial_items = Vec::new();
+    if let Some(pinned) = &pinned_conversation {
+        initial_items.push(Item::ProductMessage(pinned.product_message()));
+    }
+    let memory = store.reply_memory(&claim.scope).await?;
+    initial_items.extend(revision_context_from_claim(&claim).items(&claim.sources, memory));
+
+    let work_result = claim
+        .binding
+        .request(initial_items)
+        .freeze()
+        .and_then(|frozen| {
+            frozen.recover(
+                &claim.attempt,
+                engine::recovery::Records {
+                    events: records.iter().map(Into::into).collect(),
+                    allowance_after,
+                },
+                engine::recovery::Messages {
+                    sources: &messages,
+                    partial: None,
+                },
+                engine::recovery::Inputs {
+                    accepted: Vec::new(),
+                    source_feedback,
+                },
+            )
+        });
+
+    let attempt_id = claim.attempt.clone();
+    let practice = claim.scope.practice.clone();
+    let mut host = ReplyRevisionHost {
+        store: store.clone(),
+        claim: claim.clone(),
+        authority,
+        pinned_conversation,
+        seen_calls,
+        reconsiderations: 0,
+    };
+
+    let run_res = match work_result {
+        Ok(work) => work.run(provider, &mut host, limits, cancel).await,
+        Err(err) => Err(err),
+    };
+
+    let finish_clock = store.spruce_now().await?;
+    match run_res {
+        Ok(turn) => {
+            let committed_text = revised_text(&turn).ok();
+            let committed_source_version = host.claim.sources_version;
+            let reconsiderations = host.reconsiderations;
+            let tx = store.spruce_db().begin().await?;
+            let row = runtime_command_record::Entity::find_by_id((
+                practice.clone(),
+                REPLY_REVISION_RUN_ACTOR.to_owned(),
+                attempt_id.clone(),
+            ))
+            .lock_exclusive()
+            .one(&tx)
+            .await?
+            .ok_or_else(|| error("reply revision run missing"))?;
+            let mut rec = decode_reply_revision_run(row.clone())?;
+            rec.status = if committed_text.is_some() {
+                MessageReviewRunStatus::Completed
+            } else {
+                MessageReviewRunStatus::Held
+            };
+            rec.committed_source_version = Some(committed_source_version);
+            rec.source_reconsiderations = reconsiderations;
+            rec.revised_text = committed_text;
+            rec.completed_at = Some(finish_clock);
+            let mut active: runtime_command_record::ActiveModel = row.into();
+            active.command = Set(serde_json::to_value(&rec)
+                .map_err(conversion_error("ReplyRevisionRunRecord", "json"))?);
+            active.update(&tx).await?;
+            tx.commit().await?;
+            Ok(rec)
+        }
+        Err(err) => {
+            let reason = AttemptFailure::of(&err, cancel);
+            let settlement = store
+                .settle_revision_attempt(&claim, reason, crate::runtime::delivery::Backoff::HOSTED)
+                .await?;
+            let tx = store.spruce_db().begin().await?;
+            if let Some(row) = runtime_command_record::Entity::find_by_id((
+                practice.clone(),
+                REPLY_REVISION_RUN_ACTOR.to_owned(),
+                attempt_id.clone(),
+            ))
+            .lock_exclusive()
+            .one(&tx)
+            .await?
+            {
+                let mut rec = decode_reply_revision_run(row.clone())?;
+                rec.status = match settlement {
+                    AttemptSettlement::Applied
+                    | AttemptSettlement::Failed(_)
+                    | AttemptSettlement::Superseded => MessageReviewRunStatus::Failed,
+                };
+                rec.source_reconsiderations = host.reconsiderations;
+                rec.completed_at = Some(finish_clock);
+                let mut active: runtime_command_record::ActiveModel = row.into();
+                active.command = Set(serde_json::to_value(&rec)
+                    .map_err(conversion_error("ReplyRevisionRunRecord", "json"))?);
+                active.update(&tx).await?;
+            }
+            tx.commit().await?;
+            Err(MessageReviewRecipeError::Harness {
+                review_id: None,
+                run_id: attempt_id,
+                source: err,
+            })
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use std::path::PathBuf;
 
     use super::*;
     use crate::ModelBinding;
-    use crate::attachments::READ_DOCUMENT_PAGE_TOOL;
-    use crate::physician_sources::READ_TOOL;
-    use crate::runtime::jobs::is_physician_only_tool;
-    use crate::runtime::refresh::REFRESH_TOOL;
     use crate::runtime::reply::FINISH_TOOL;
 
     fn load_skills() -> PhysicianSkills {
