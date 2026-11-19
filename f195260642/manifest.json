@@ -571,6 +571,28 @@
       ],
       "source": "target/verification/captures/matching-reply-followups/20-background-followup-preserves-focus.png",
       "ok": true
+    },
+    {
+      "id": 28,
+      "claim": "scripts/check-postgres.sh passes syntax check, has zero stale follow_up_reassessment refs, and all shard-1 follow-up targets compile",
+      "label": "check-postgres-sh-shard1-fix",
+      "kind": "run",
+      "revision": "f1952606427f3e320b6905bec45113a7cc944cf1",
+      "dirty": false,
+      "recorded": "2026-11-19T14:27:04+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "bash -n scripts/check-postgres.sh && ! rg -n follow_up_reassessment . --glob \"!target/**\" --glob \"!submodules/**\" && cargo test -p local-product --no-run --test follow_ups_postgres --test message_review_recipe --test message_followup_dispatch_reviews --test today_updates_messages_followups"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "28-check-postgres-sh-shard1-fix.log"
+      ],
+      "seconds": 40.6,
+      "exit": 0,
+      "ok": true
     }
   ]
 }
