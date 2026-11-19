@@ -40,7 +40,8 @@ ACTION
                      coda.run_id and the trace id
   isolation          Langfuse holds the canary; the operations spans and logs of
                      the same trace exist and hold no canary
-  chat-failure       send threshold + 1 canary turns marked [fail:1] (needs
+  chat-failure       send threshold + 1 canary turns under the harness-configured
+                     rehearsal failure scenario (`drill.chat-failure`, needs
                      --confirm, it pages): each answers on its retry, the
                      physician chat failure monitor fires, one failure is
                      followed from the monitor's query to the failed attempt,
@@ -65,10 +66,11 @@ const POLL: Duration = Duration::from_secs(10);
 const CHAT_FAILURE_MONITOR: &str = "[staging] physician chat generation errors";
 /// The ledger group of a `chat-failure` exercise, apart from the exporter's.
 const CHAT_FAILURE_GROUP: &str = "staging/physician-chat-failure";
-/// What `chat-failure` appends to each turn: the worker fails the first
-/// attempt of a rehearsal turn so marked, and its retry answers.
-const FAIL_ONCE: &str = " [fail:1]";
-/// The most marked turns `chat-failure` sends, whatever the threshold says.
+/// Out-of-band scenario slug used by `chat-failure` so the staging worker's
+/// harness-level `PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS` policy fails the first
+/// attempt without putting any control markers in the person's message text.
+const CHAT_FAILURE_SCENARIO: &str = "drill.chat-failure";
+/// The most failing turns `chat-failure` sends, whatever the threshold says.
 const MAX_FAILING_TURNS: u32 = 20;
 /// The chat failure monitor counts errors over 10 minutes, so its recovery
 /// comes at least that long after the last failed attempt.
@@ -480,18 +482,24 @@ impl Rehearsal {
         })
     }
 
-    /// Submits one canary turn on a new chat, under a scenario unique to the
-    /// turn unless one was named. `marker` is appended to the text as is.
-    fn submit(&self, request: &Request, marker: &str) -> Result<(Turn, String), DrillError> {
+    /// Submits one plain canary turn on a new chat, under `request.scenario`,
+    /// `default_scenario`, or a scenario unique to the turn. Message text never
+    /// carries control markers.
+    fn submit(
+        &self,
+        request: &Request,
+        default_scenario: Option<&str>,
+    ) -> Result<(Turn, String), DrillError> {
         let run = nonce();
         let canary = format!("coda-canary-{run}");
         let turn = Turn {
             workspace: self.workspace.clone(),
             chat: format!("langfuse-drill-{run}"),
-            text: format!("Langfuse drill {canary}. Please answer in one short sentence.{marker}"),
+            text: format!("Langfuse drill {canary}. Please answer in one short sentence."),
             scenario: request
                 .scenario
                 .clone()
+                .or_else(|| default_scenario.map(str::to_owned))
                 .unwrap_or_else(|| format!("langfuse-drill-{run}")),
             key: format!("langfuse-drill-{run}"),
         };
@@ -528,7 +536,7 @@ impl Rehearsal {
 /// chat, under a scenario unique to the run unless one was named.
 fn send_turn(request: &Request, report: &mut Report, watch: &Watch) -> Result<Sent, DrillError> {
     let rehearsal = Rehearsal::sign_in()?;
-    let (turn, canary) = rehearsal.submit(request, "")?;
+    let (turn, canary) = rehearsal.submit(request, None)?;
     let sent = rehearsal.answer(turn, canary, watch)?;
     report.put("turn", rehearsal.evidence(&sent));
     Ok(sent)
@@ -1247,7 +1255,7 @@ fn chat_failure_checks(
     // well inside the monitor's 10-minute window.
     let mut submitted = Vec::new();
     for _turn in 0..count {
-        submitted.push(rehearsal.submit(request, FAIL_ONCE)?);
+        submitted.push(rehearsal.submit(request, Some(CHAT_FAILURE_SCENARIO))?);
     }
     let mut answered = Vec::new();
     for (turn, canary) in submitted {
@@ -1285,7 +1293,7 @@ fn chat_failure_checks(
         let (successor, _) = datadog.attempt(&sent.attempt, watch)?;
         if successor.predecessor_run_id.is_none() {
             found.push(format!(
-                "turn {} answered on its first attempt; the marker did not fail it",
+                "turn {} answered on its first attempt; the harness failure policy did not fail it",
                 sent.turn.chat
             ));
         }

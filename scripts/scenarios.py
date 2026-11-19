@@ -40,6 +40,7 @@ stack = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(stack)
 
 BINARIES = ("physician-sample", "physician-worker", "physician-migrate")
+AVAILABLE_JOURNEYS = {"P1", "D1", "L1"}
 CHARTS = REPO / "target/patient-bank/bank"
 D1_SUITES = ("database_foundation", "public_budget")
 # What each D1 suite holds. The suites own the assertions; the receipt names them.
@@ -522,10 +523,339 @@ def stop_stack(process):
         return "scale stack ignored SIGTERM for 60s and was killed"
 
 
+def build_l1_synthetic_bank(bank_dir):
+    """Build a self-contained deterministic multi-patient bank for the L1 simulation."""
+    (bank_dir / "calendar").mkdir(parents=True, exist_ok=True)
+    note_text = (
+        "CLINIC NOTE (2026-08-12): Well-controlled essential hypertension on "
+        "lisinopril 10 mg daily; baseline serum potassium 4.2 mmol/L."
+    )
+    encoded_note = base64.b64encode(note_text.encode()).decode()
+    for source_id, mrn, given, family, dob in (
+        ("MRN-ALICE", "00090001", "Alice", "Carter", "1972-03-18"),
+        ("MRN-BOB", "00090002", "Bob", "Diaz", "1965-11-04"),
+    ):
+        chart_dir = bank_dir / "patients" / source_id
+        chart_dir.mkdir(parents=True, exist_ok=True)
+        patient = {
+            "resourceType": "Patient",
+            "id": source_id,
+            "identifier": [{"system": "urn:oid:2.16.840.1.113883.19.5", "value": mrn}],
+            "name": [{"family": family, "given": [given]}],
+            "gender": "female" if given == "Alice" else "male",
+            "birthDate": dob,
+        }
+        note = {
+            "resourceType": "DocumentReference",
+            "id": "note-baseline-1",
+            "status": "current",
+            "subject": {"reference": f"Patient/{source_id}"},
+            "description": "Routine Primary Care Note",
+            "date": "2026-08-12T12:05:00Z",
+            "content": [{"attachment": {"contentType": "text/plain; charset=utf-8", "data": encoded_note}}],
+        }
+        (chart_dir / "Patient.ndjson").write_text(json.dumps(patient) + "\n")
+        (chart_dir / "DocumentReference.ndjson").write_text(json.dumps(note) + "\n")
+    baseline_appt = {
+        "resourceType": "Appointment",
+        "id": "appt-alice-baseline",
+        "status": "booked",
+        "description": "Routine Hypertension Follow-up",
+        "start": "2026-08-27T19:30:00Z",
+        "end": "2026-08-27T20:00:00Z",
+        "participant": [{"actor": {"reference": "Patient/MRN-ALICE"}, "status": "accepted"}],
+    }
+    (bank_dir / "calendar" / "Appointment.ndjson").write_text(json.dumps(baseline_appt) + "\n")
+    return bank_dir
+
+
+def l1(receipt, bin_dir, out):
+    """Run a multi-week (3-week) passive-patient L1 simulation against real Rust services."""
+    out.mkdir(parents=True, exist_ok=True)
+    actor = f"{stack.EMAIL} ({stack.PRACTICE}/{stack.PHYSICIAN})"
+    l1_stack = stack.Stack(out / "runtime")
+    (out / "runtime").mkdir(parents=True, exist_ok=True)
+    base_bank = build_l1_synthetic_bank(out / "base-bank")
+    work_bank = out / "work-bank"
+    pg, redis, site_port, worker_port, provider_port = [stack.free_port() for _ in range(5)]
+    database = f"postgresql://postgres@127.0.0.1:{pg}/postgres"
+    model_settings = {}
+    for role, model, effort in (("CHAT", "gpt-6.1-sol", "high"),
+                                ("BACKGROUND", "gpt-6-luna", "max")):
+        model_settings.update({
+            f"CODA_{role}_MODEL": model,
+            f"CODA_{role}_EFFORT": effort,
+            f"CODA_{role}_CONTEXT_WINDOW_TOKENS": "272000",
+            f"CODA_{role}_INPUT_LIMIT_TOKENS": "922000",
+        })
+    shared_env = model_settings | {
+        "CODA_HOSTED_PROFILE": "staging-preview",
+        "PHYSICIAN_LOCAL_SCALE": "1",
+        "PHYSICIAN_AUTH": "required",
+        "PHYSICIAN_DATABASE_URL": database,
+        "PHYSICIAN_REDIS_URL": f"redis://127.0.0.1:{redis}",
+        "PHYSICIAN_DURABLE_CHAT": "1",
+        "PHYSICIAN_RESPONSES_STUB_PORT": str(provider_port),
+        "PHYSICIAN_SYNTHETIC_CHARTS": str(base_bank),
+    }
+    site_env = shared_env | {
+        "CODA_STAGING_SYNTHETIC_CONTROL": "enabled",
+        "CODA_STAGING_SYNTHETIC_WORKDIR": str(work_bank),
+        "PHYSICIAN_LISTEN_ADDR": f"127.0.0.1:{site_port}",
+    }
+    worker_env = shared_env | {
+        "PHYSICIAN_WORKER_LISTEN_ADDR": f"127.0.0.1:{worker_port}",
+        "PHYSICIAN_LISTEN_ADDR": f"127.0.0.1:{worker_port}",
+        "PHYSICIAN_WORKER_RETRY_SECONDS": "1",
+    }
+    try:
+        pg_data = out / "runtime" / "pg"
+        subprocess.run(["initdb", "-D", str(pg_data), "-U", "postgres", "--auth=trust"],
+                       env=l1_stack.env, check=True, stdout=subprocess.DEVNULL)
+        l1_stack.start("postgres", ["postgres", "-D", str(pg_data), "-h", "127.0.0.1",
+                                    "-p", str(pg), "-k", str(out / "runtime")])
+        l1_stack.start("valkey", stack.valkey_argv(redis))
+        l1_stack.wait(lambda: subprocess.run(["pg_isready", "-d", database], env=l1_stack.env,
+                                             stdout=subprocess.DEVNULL).returncode == 0, "L1 Postgres")
+        l1_stack.wait(lambda: stack.valkey_ping(l1_stack, redis), "L1 Valkey")
+        subprocess.run([str(bin_dir / "physician-migrate")], env=l1_stack.env | shared_env, check=True)
+        stack.seed_account(l1_stack, database)
+        failures_file = out / "runtime" / "provider-failures"
+        failures_file.write_text("0")
+        l1_stack.start("responses", [sys.executable, str(REPO / "scripts/physician-responses-stub.py"),
+                                     "--port", str(provider_port), "--failures", str(failures_file)])
+        l1_stack.wait(lambda: stack.healthy(provider_port), "L1 Responses stub")
+        l1_stack.start("worker", [str(bin_dir / "physician-worker")], worker_env)
+        l1_stack.wait(lambda: stack.healthy(worker_port), "L1 physician-worker")
+        l1_stack.start("site", [str(bin_dir / "physician-sample")], site_env)
+        l1_stack.wait(lambda: stack.healthy(site_port), "L1 physician-sample")
+
+        session = stack.sign_in(site_port)
+        receipt.step("L1", "staging sign-in", actor, bool(session), "issued staging physician session")
+
+        st, clock0 = http(site_port, "GET", "/staging-synthetic/clock", bearer=session)
+        st_p, patients_resp = http(site_port, "GET", "/staging-synthetic/patients", bearer=session)
+        patients = (patients_resp or {}).get("patients", [])
+        alice = next((p for p in patients if p.get("source_patient_id") == "MRN-ALICE"), None)
+        bob = next((p for p in patients if p.get("source_patient_id") == "MRN-BOB"), None)
+        receipt.step("L1", "day-0 baseline clock and panel", actor,
+                     st == 200 and st_p == 200 and (clock0 or {}).get("elapsed_seconds") == 0
+                     and alice is not None and bob is not None,
+                     f"baseline clock {(clock0 or {}).get('rfc3339')} with {len(patients)} panel patients",
+                     artifact=save(out, "day0-baseline", {"clock": clock0, "patients": patients_resp}))
+        if not alice:
+            return
+        alice_ws = alice["patient_workspace_id"]
+
+        # Week 1 (+7 days): advance persisted clock, deliver chart, Spruce, Duet, visit, and undecided recommendation.
+        st, clock_w1 = http(site_port, "POST", "/staging-synthetic/clock",
+                            {"mode": "advance_by_seconds", "seconds": 7 * 86400}, bearer=session)
+        w1_unix = (clock_w1 or {}).get("unix_seconds", 0)
+        w1_date = (clock_w1 or {}).get("date_iso", "2026-09-03")
+        receipt.step("L1", "week-1 clock advance", actor,
+                     st == 200 and (clock_w1 or {}).get("elapsed_seconds") == 7 * 86400,
+                     f"persisted clock advanced to {(clock_w1 or {}).get('rfc3339')}",
+                     artifact=save(out, "week1-clock", clock_w1))
+
+        chart_event = {
+            "event_type": "free_form_chart_record",
+            "patient": {"by": "source_patient_id", "value": "MRN-ALICE"},
+            "record_id": "bmp-k-l1-week1",
+            "kind": "lab_result",
+            "title": "Basic Metabolic Panel - Potassium",
+            "text": "Serum potassium 6.1 mmol/L (critical high; repeat BMP and ECG recommended).",
+            "effective_at": f"{w1_date}T13:00:00Z",
+        }
+        st_c, saved_chart = http(site_port, "POST", "/staging-synthetic/events", chart_event, bearer=session)
+        spruce_event = {
+            "event_type": "spruce_patient_message",
+            "patient": {"by": "source_patient_id", "value": "MRN-ALICE"},
+            "conversation_id": "conv-l1-alice-1",
+            "message_id": "msg-l1-alice-1",
+            "sender_name": "Alice Carter",
+            "sender_contact": "+15550190001",
+            "text": "Hi Dr. Roger, I saw my lab result on the portal—should I hold my lisinopril?",
+            "sent_at": f"{w1_date}T14:00:00Z",
+        }
+        st_s, saved_spruce = http(site_port, "POST", "/staging-synthetic/events", spruce_event, bearer=session)
+        duet_event = {
+            "event_type": "duet_patient_update",
+            "patient": {"by": "source_patient_id", "value": "MRN-ALICE"},
+            "record_id": "duet-bp-w1",
+            "category": "home_bp",
+            "title": "Home Blood Pressure Log",
+            "text": "Morning BP 146/90 mmHg, heart rate 72 bpm, no chest pain or dizziness.",
+            "observed_at": f"{w1_date}T12:00:00Z",
+        }
+        st_d, saved_duet = http(site_port, "POST", "/staging-synthetic/events", duet_event, bearer=session)
+        visit_start = datetime.datetime.fromtimestamp(w1_unix + 3600, datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        visit_end = datetime.datetime.fromtimestamp(w1_unix + 5400, datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        visit_event = {
+            "event_type": "visit_change",
+            "patient": {"by": "source_patient_id", "value": "MRN-ALICE"},
+            "appointment_id": "appt-l1-alice-w1",
+            "status": "booked",
+            "starts_at": visit_start,
+            "ends_at": visit_end,
+            "label": "Urgent Potassium Follow-up",
+        }
+        st_v, saved_visit = http(site_port, "POST", "/staging-synthetic/events", visit_event, bearer=session)
+        rec_event = {
+            "event_type": "medication_recommendation",
+            "patient": {"by": "source_patient_id", "value": "MRN-ALICE"},
+            "recommendation_id": "rec-l1-lisinopril",
+            "medication": "Lisinopril 20 mg PO daily (hold pending repeat K+)",
+            "rationale": "Elevated serum potassium 6.1 mmol/L with home BP 146/90",
+            "detail": "Hold lisinopril until repeat potassium normalizes; recheck BMP within 48h.",
+            "source_label": "Week-1 chart review",
+        }
+        st_r, saved_rec = http(site_port, "POST", "/staging-synthetic/events", rec_event, bearer=session)
+        receipt.step("L1", "week-1 multi-source event intake", actor,
+                     all(code == 201 for code in (st_c, st_s, st_d, st_v, st_r)),
+                     f"statuses chart={st_c} spruce={st_s} duet={st_d} visit={st_v} rec={st_r}",
+                     artifact=save(out, "week1-events", {
+                         "chart": saved_chart, "spruce": saved_spruce, "duet": saved_duet,
+                         "visit": saved_visit, "recommendation": saved_rec}))
+
+        def wait_l1_measure(predicate, timeout=20.0):
+            deadline = time.monotonic() + timeout
+            last_status, last_body = 0, None
+            while time.monotonic() < deadline:
+                last_status, last_body = http(site_port, "GET", "/staging-synthetic/measure", bearer=session)
+                if last_status == 200 and predicate(last_body or {}):
+                    return last_status, last_body
+                time.sleep(0.25)
+            return last_status, last_body
+
+        st_rnd1, rounds1 = http(site_port, "POST", "/staging-synthetic/rounds", {}, bearer=session)
+        # Wait for worker/site to settle week-1 reviews, then run visit preparation
+        # (re-invoking once if the async worker claimed the selection job in parallel).
+        wait_l1_measure(
+            lambda m: (m.get("necessary_care") or {}).get("total_reviews_completed", 0) >= 2
+        )
+        st_prep, prep1 = http(site_port, "POST", "/staging-synthetic/visits/prepare", {}, bearer=session)
+        for _ in range(10):
+            _, cur_m = http(site_port, "GET", "/staging-synthetic/measure", bearer=session)
+            if ((cur_m or {}).get("necessary_care") or {}).get("visit_briefings_ready", 0) >= 1:
+                break
+            time.sleep(0.5)
+            st_prep, prep1 = http(site_port, "POST", "/staging-synthetic/visits/prepare", {}, bearer=session)
+        _, measure_w1 = wait_l1_measure(
+            lambda m: (m.get("necessary_care") or {}).get("total_reviews_completed", 0) >= 2
+            and (m.get("necessary_care") or {}).get("visit_briefings_ready", 0) >= 1
+        )
+        care_w1 = (measure_w1 or {}).get("necessary_care", {})
+        receipt.step("L1", "week-1 rounds and visit preparation", actor,
+                     st_rnd1 == 200 and st_prep == 200
+                     and care_w1.get("total_reviews_completed", 0) >= 2
+                     and care_w1.get("quiet_reviews_completed", 0) >= 1
+                     and care_w1.get("assessed_reviews_completed", 0) >= 1
+                     and care_w1.get("visit_briefings_ready", 0) >= 1,
+                     f"rounds={st_rnd1} completed_reviews={care_w1.get('total_reviews_completed')} "
+                     f"(quiet={care_w1.get('quiet_reviews_completed')}, assessed={care_w1.get('assessed_reviews_completed')}) "
+                     f"briefings={care_w1.get('visit_briefings_ready')}",
+                     artifact=save(out, "week1-rounds-prep", {"rounds": rounds1, "visits": prep1, "measure": measure_w1}))
+
+        # Mid-run physician-sample restart: verify persisted simulation clock and undecided state survive restart.
+        l1_stack.stop("site")
+        l1_stack.start("site", [str(bin_dir / "physician-sample")], site_env)
+        l1_stack.wait(lambda: stack.healthy(site_port), "L1 physician-sample after restart")
+        st_clk_after, clock_after_restart = http(site_port, "GET", "/staging-synthetic/clock", bearer=session)
+        st_ws_after, ws_after_restart = http(site_port, "GET", f"/patient-workspaces/{alice_ws}", bearer=session)
+        undecided_after = (ws_after_restart or {}).get("undecided_recommendations", [])
+        active_after = (ws_after_restart or {}).get("active_plan_items", [])
+        receipt.step("L1", "persisted clock and undecided recommendation survive restart", actor,
+                     st_clk_after == 200 and (clock_after_restart or {}).get("unix_seconds") == w1_unix
+                     and st_ws_after == 200 and len(undecided_after) == 1 and len(active_after) == 0,
+                     f"clock after restart={(clock_after_restart or {}).get('rfc3339')} "
+                     f"undecided={len(undecided_after)} active_plan={len(active_after)}",
+                     artifact=save(out, "after-restart", {"clock": clock_after_restart, "workspace": ws_after_restart}))
+
+        # Week 2 (+7 days -> day 14): silence never approves undecided recommendation.
+        st_w2, clock_w2 = http(site_port, "POST", "/staging-synthetic/clock",
+                               {"mode": "advance_by_seconds", "seconds": 7 * 86400}, bearer=session)
+        st_rnd2, rounds2 = http(site_port, "POST", "/staging-synthetic/rounds", {}, bearer=session)
+        st_ws_w2, ws_w2 = http(site_port, "GET", f"/patient-workspaces/{alice_ws}", bearer=session)
+        receipt.step("L1", "week-2 silence holds undecided recommendation out of active plan", actor,
+                     st_w2 == 200 and (clock_w2 or {}).get("elapsed_seconds") == 14 * 86400
+                     and st_rnd2 == 200 and st_ws_w2 == 200
+                     and len((ws_w2 or {}).get("undecided_recommendations", [])) == 1
+                     and len((ws_w2 or {}).get("active_plan_items", [])) == 0,
+                     f"day-14 clock={(clock_w2 or {}).get('rfc3339')} "
+                     f"undecided={len((ws_w2 or {}).get('undecided_recommendations', []))} "
+                     f"active_plan={len((ws_w2 or {}).get('active_plan_items', []))}",
+                     artifact=save(out, "week2-silence", {"clock": clock_w2, "rounds": rounds2, "workspace": ws_w2}))
+
+        # Week 3 (+7 days -> day 21): explicit physician approval moves recommendation into active_plan_items,
+        # then read L1 measure into receipt.json["l1_measure"].
+        st_w3, clock_w3 = http(site_port, "POST", "/staging-synthetic/clock",
+                               {"mode": "advance_by_seconds", "seconds": 7 * 86400}, bearer=session)
+        decide_cmd = {
+            "type": "plan.decide_recommendation",
+            "idempotency_key": f"l1-decide-{uuid.uuid4().hex}",
+            "payload": {
+                "patient_workspace_id": alice_ws,
+                "recommendation_id": "rec-l1-lisinopril",
+            },
+        }
+        st_dec, decided = http(site_port, "POST", "/commands", decide_cmd, bearer=session)
+        st_ws_w3, ws_w3 = http(site_port, "GET", f"/patient-workspaces/{alice_ws}", bearer=session)
+        st_rnd3, rounds3 = http(site_port, "POST", "/staging-synthetic/rounds", {}, bearer=session)
+        wait_l1_measure(
+            lambda m: (m.get("necessary_care") or {}).get("total_reviews_completed", 0) >= 4
+        )
+        receipt.step("L1", "week-3 explicit physician decision promotes into active care plan", actor,
+                     st_w3 == 200 and st_dec == 200 and (decided or {}).get("outcome") == "accepted"
+                     and st_ws_w3 == 200 and st_rnd3 == 200
+                     and len((ws_w3 or {}).get("undecided_recommendations", [])) == 0
+                     and len((ws_w3 or {}).get("active_plan_items", [])) == 1,
+                     f"day-21 approve outcome={(decided or {}).get('outcome')} "
+                     f"active_plan={len((ws_w3 or {}).get('active_plan_items', []))}",
+                     command_id=decide_cmd["idempotency_key"],
+                     artifact=save(out, "week3-approval", {"clock": clock_w3, "decision": decided, "workspace": ws_w3, "rounds": rounds3}))
+
+        st_m, measure = http(site_port, "GET", "/staging-synthetic/measure", bearer=session)
+        receipt.data["l1_measure"] = measure
+        rate = (measure or {}).get("physician_touched_per_100_patients_per_week")
+        care = (measure or {}).get("necessary_care", {})
+        measure_ok = (
+            st_m == 200
+            and (measure or {}).get("panel_size", 0) >= 2
+            and abs((measure or {}).get("elapsed_weeks", 0.0) - 3.0) < 1e-6
+            and isinstance(rate, (int, float)) and rate >= 0.0
+            and care.get("total_reviews_completed", 0) >= 1
+            and care.get("visit_briefings_ready", 0) >= 1
+            and care.get("approved_plan_items", 0) == 1
+            and care.get("spruce_messages_ingested", 0) >= 1
+            and care.get("duet_updates_recorded", 0) >= 1
+        )
+        receipt.step("L1", "l1 measure and necessary-care accounting", actor, measure_ok,
+                     f"rate={rate} touched/100pts/wk over {(measure or {}).get('elapsed_weeks')}w "
+                     f"panel={(measure or {}).get('panel_size')} reviews={care.get('total_reviews_completed')} "
+                     f"briefings={care.get('visit_briefings_ready')} spruce={care.get('spruce_messages_ingested')} "
+                     f"duet={care.get('duet_updates_recorded')} approved_plan={care.get('approved_plan_items')}",
+                     artifact=save(out, "l1-measure", measure))
+
+        # Reset & replay check
+        st_rst, reset_status = http(site_port, "POST", "/staging-synthetic/reset", {}, bearer=session)
+        st_clk_rst, clock_rst = http(site_port, "GET", "/staging-synthetic/clock", bearer=session)
+        st_rep, replayed = http(site_port, "POST", "/staging-synthetic/events", saved_chart["event"], bearer=session)
+        counts = (reset_status or {}).get("counts", {})
+        receipt.step("L1", "reset restores baseline clock/state and replays saved event", actor,
+                     st_rst == 200 and st_clk_rst == 200 and (clock_rst or {}).get("elapsed_seconds") == 0
+                     and counts.get("reviews") == 0 and counts.get("briefings") == 0
+                     and counts.get("open_concerns") == 0 and st_rep == 201,
+                     f"reset elapsed={(clock_rst or {}).get('elapsed_seconds')} reviews={counts.get('reviews')} replay={st_rep}",
+                     artifact=save(out, "reset-replay", {"reset": reset_status, "clock": clock_rst, "replay": replayed}))
+    finally:
+        l1_stack.close()
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--only", default="P1,D1", help="comma-separated journeys (default P1,D1)")
+    parser.add_argument("--only", default="P1,D1",
+                        help="comma-separated journeys (default P1,D1; available: P1, D1, L1)")
     parser.add_argument("--require-complete", action="store_true",
                         help="exit 3 when any capability is missing")
     parser.add_argument("--evidence", type=Path, help="new evidence directory "
@@ -533,14 +863,15 @@ def main():
     args = parser.parse_args()
     journeys = {j.strip().upper() for j in args.only.split(",") if j.strip()}
     if not journeys:
-        parser.error("--only selected no journeys; available: P1, D1")
-    if not journeys <= {"P1", "D1"}:
-        parser.error(f"unknown journeys {sorted(journeys - {'P1', 'D1'})}; available: P1, D1")
+        parser.error("--only selected no journeys; available: P1, D1, L1")
+    if not journeys <= AVAILABLE_JOURNEYS:
+        parser.error(f"unknown journeys {sorted(journeys - AVAILABLE_JOURNEYS)}; available: P1, D1, L1")
     stack.environment(os.environ, Path("/unused"))  # refuses to run in a hosted environment
     stamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     evidence = (args.evidence or REPO / f"target/verification/runs/scenarios-{stamp}-{os.getpid()}").resolve()
     evidence.mkdir(parents=True, exist_ok=False)
-    bin_dir = REPO / "target/debug"
+    target_root = Path(os.environ["CARGO_TARGET_DIR"]) if os.environ.get("CARGO_TARGET_DIR") else REPO / "target"
+    bin_dir = target_root / "debug"
     print(f"Evidence: {evidence}", flush=True)
     receipt = Receipt(evidence / "receipt.json")
     receipt.data.update(journeys=sorted(journeys), evidence_dir=str(evidence))
@@ -548,17 +879,28 @@ def main():
     try:
         subprocess.run(["cargo", "build", "--locked", "-p", "physician-sample", "--bins"],
                        cwd=REPO, check=True)
-        if not (CHARTS / "manifest.json").is_file():
+        need_scale_stack = bool(journeys & {"P1", "D1"})
+        if need_scale_stack and not (CHARTS / "manifest.json").is_file():
             subprocess.run(["cargo", "run", "--locked", "-q", "-p", "patient-bank", "--", "build"],
                            cwd=REPO, check=True, stdout=subprocess.DEVNULL)
-        receipt.data["sources"] = sources(bin_dir)
-        process = start_stack(evidence, bin_dir)
-        state = wait_ready(process, evidence)
-        receipt.data["services"] = {k: state[k] for k in ("sites", "worker", "postgres", "valkey")}
-        if "P1" in journeys:
-            p1(receipt, state, evidence / "p1")
-        if "D1" in journeys:
-            d1(receipt, state, evidence / "d1")
+        if need_scale_stack:
+            receipt.data["sources"] = sources(bin_dir)
+            process = start_stack(evidence, bin_dir)
+            state = wait_ready(process, evidence)
+            receipt.data["services"] = {k: state[k] for k in ("sites", "worker", "postgres", "valkey")}
+            if "P1" in journeys:
+                p1(receipt, state, evidence / "p1")
+            if "D1" in journeys:
+                d1(receipt, state, evidence / "d1")
+        else:
+            receipt.data["sources"] = {
+                "git_sha": run(["git", "rev-parse", "HEAD"]),
+                "git_dirty": bool(run(["git", "status", "--porcelain", "--untracked-files=no"])),
+                "rustc": run(["rustc", "-V"]),
+                "binaries": {name: digest(bin_dir / name) for name in BINARIES},
+            }
+        if "L1" in journeys:
+            l1(receipt, bin_dir, evidence / "l1")
     except BaseException as error:
         receipt.step("runner", "unexpected error", "runner", False, repr(error))
     finally:

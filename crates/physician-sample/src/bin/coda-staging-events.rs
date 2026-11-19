@@ -8,6 +8,7 @@ use std::fs;
 use std::path::PathBuf;
 use std::process::ExitCode;
 
+use physician_auth::SyntheticClockUpdate;
 use physician_sample::synthetic_control::{
     ChartEventRecordKind, PatientSelector, PrepareVisitsRequest, RoundsRequest,
     SavedSyntheticEvent, SourceFailureRequest, SourceHealthDirective, SyntheticEventSpec,
@@ -28,6 +29,9 @@ struct CliInvocation {
 enum CliCommand {
     ListPatients,
     Status,
+    Clock,
+    AdvanceClock(SyntheticClockUpdate),
+    Measure,
     SendEvent {
         spec: SyntheticEventSpec,
         save_to: Option<PathBuf>,
@@ -73,14 +77,23 @@ fn print_usage() {
          Commands:\n\
            list\n\
            status\n\
+           clock\n\
+           advance-clock (--days <N> | --hours <N> | --seconds <N> | --to-unix <U> | --reset-to-unix <U>)\n\
+           measure\n\
            send-chart --patient <pw-...|MRN...|mrn:...> --kind <lab_result|clinical_note|diagnostic_report> \\\n\
                       --title <TITLE> --text <TEXT> --effective-at <ISO_DATE_OR_RFC3339> [--id <ID>] [--save-event <FILE>]\n\
            send-visit --patient <pw-...|MRN...|mrn:...> --appointment-id <ID> \\\n\
                       --status <booked|arrived|fulfilled|cancelled|no_show> \\\n\
                       --starts-at <RFC3339> --ends-at <RFC3339> --label <LABEL> [--save-event <FILE>]\n\
+           send-spruce --patient <pw-...|MRN...|mrn:...> --conversation-id <ID> --message-id <ID> \\\n\
+                       --sender-name <NAME> --sender-contact <ADDR> --text <TEXT> --sent-at <ISO_DATE_OR_RFC3339> [--save-event <FILE>]\n\
+           send-duet  --patient <pw-...|MRN...|mrn:...> --category <CAT> --title <TITLE> \\\n\
+                      --text <TEXT> --observed-at <ISO_DATE_OR_RFC3339> [--id <ID>] [--save-event <FILE>]\n\
+           send-recommendation --patient <pw-...|MRN...|mrn:...> --medication <MED> --rationale <TEXT> \\\n\
+                               [--detail <TEXT>] [--source-label <LABEL>] [--id <ID>] [--save-event <FILE>]\n\
            send-raw   --file <SPEC_JSON_FILE> [--save-event <FILE>]\n\
            replay     --file <SAVED_EVENT_JSON_FILE> [--save-event <FILE>]\n\
-           source-failure --source <chart|calendar> --mode <healthy|failing> [--reason <TEXT>] [--workspace <pw-...>]\n\
+           source-failure --source <chart|calendar|spruce|duet> --mode <healthy|failing> [--reason <TEXT>] [--workspace <pw-...>]\n\
            rounds     [--now-unix <SECONDS>]\n\
            prepare-visits [--now-unix <SECONDS>]\n\
            reset"
@@ -139,12 +152,24 @@ fn parse_cli(args: &[String]) -> Result<CliInvocation, String> {
             ensure_no_extra_args("status", rest)?;
             CliCommand::Status
         }
+        "clock" => {
+            ensure_no_extra_args("clock", rest)?;
+            CliCommand::Clock
+        }
+        "advance-clock" => CliCommand::AdvanceClock(parse_advance_clock(rest)?),
+        "measure" => {
+            ensure_no_extra_args("measure", rest)?;
+            CliCommand::Measure
+        }
         "reset" => {
             ensure_no_extra_args("reset", rest)?;
             CliCommand::Reset
         }
         "send-chart" => parse_send_chart(rest)?,
         "send-visit" => parse_send_visit(rest)?,
+        "send-spruce" => parse_send_spruce(rest)?,
+        "send-duet" => parse_send_duet(rest)?,
+        "send-recommendation" => parse_send_recommendation(rest)?,
         "send-raw" => parse_send_raw(rest)?,
         "replay" => parse_replay(rest)?,
         "source-failure" => CliCommand::SourceFailure(parse_source_failure(rest)?),
@@ -310,6 +335,161 @@ fn parse_send_visit(rest: &[String]) -> Result<CliCommand, String> {
     })
 }
 
+fn parse_advance_clock(rest: &[String]) -> Result<SyntheticClockUpdate, String> {
+    if rest.len() != 2 {
+        return Err(
+            "advance-clock requires exactly one of --days, --hours, --seconds, --to-unix, or --reset-to-unix"
+                .to_owned(),
+        );
+    }
+    let val: u64 = rest[1]
+        .parse()
+        .map_err(|err| format!("invalid {} value `{}`: {err}", rest[0], rest[1]))?;
+    match rest[0].as_str() {
+        "--days" => Ok(SyntheticClockUpdate::AdvanceBySeconds {
+            seconds: val.saturating_mul(86_400),
+        }),
+        "--hours" => Ok(SyntheticClockUpdate::AdvanceBySeconds {
+            seconds: val.saturating_mul(3_600),
+        }),
+        "--seconds" => Ok(SyntheticClockUpdate::AdvanceBySeconds { seconds: val }),
+        "--to-unix" => Ok(SyntheticClockUpdate::AdvanceToUnix { unix_seconds: val }),
+        "--reset-to-unix" => Ok(SyntheticClockUpdate::ResetToUnix { unix_seconds: val }),
+        other => Err(format!("unknown advance-clock flag `{other}`")),
+    }
+}
+
+fn parse_send_spruce(rest: &[String]) -> Result<CliCommand, String> {
+    let mut patient = None;
+    let mut conversation_id = None;
+    let mut message_id = None;
+    let mut sender_name = None;
+    let mut sender_contact = None;
+    let mut text = None;
+    let mut sent_at = None;
+    let mut save_to = None;
+
+    let mut idx = 0;
+    while idx < rest.len() {
+        let flag = rest[idx].as_str();
+        idx += 1;
+        let value = rest
+            .get(idx)
+            .ok_or_else(|| format!("missing value for {flag}"))?;
+        match flag {
+            "--patient" => patient = Some(parse_patient_selector(value)?),
+            "--conversation-id" => conversation_id = Some(value.clone()),
+            "--message-id" => message_id = Some(value.clone()),
+            "--sender-name" => sender_name = Some(value.clone()),
+            "--sender-contact" => sender_contact = Some(value.clone()),
+            "--text" => text = Some(value.clone()),
+            "--sent-at" => sent_at = Some(value.clone()),
+            "--save-event" => save_to = Some(PathBuf::from(value)),
+            other => return Err(format!("unknown send-spruce flag `{other}`")),
+        }
+        idx += 1;
+    }
+
+    Ok(CliCommand::SendEvent {
+        spec: SyntheticEventSpec::SprucePatientMessage {
+            patient: patient.ok_or_else(|| "missing --patient".to_owned())?,
+            conversation_id: conversation_id
+                .ok_or_else(|| "missing --conversation-id".to_owned())?,
+            message_id: message_id.ok_or_else(|| "missing --message-id".to_owned())?,
+            sender_name: sender_name.ok_or_else(|| "missing --sender-name".to_owned())?,
+            sender_contact: sender_contact.ok_or_else(|| "missing --sender-contact".to_owned())?,
+            text: text.ok_or_else(|| "missing --text".to_owned())?,
+            sent_at: sent_at.ok_or_else(|| "missing --sent-at".to_owned())?,
+        },
+        save_to,
+    })
+}
+
+fn parse_send_duet(rest: &[String]) -> Result<CliCommand, String> {
+    let mut patient = None;
+    let mut record_id = None;
+    let mut category = None;
+    let mut title = None;
+    let mut text = None;
+    let mut observed_at = None;
+    let mut save_to = None;
+
+    let mut idx = 0;
+    while idx < rest.len() {
+        let flag = rest[idx].as_str();
+        idx += 1;
+        let value = rest
+            .get(idx)
+            .ok_or_else(|| format!("missing value for {flag}"))?;
+        match flag {
+            "--patient" => patient = Some(parse_patient_selector(value)?),
+            "--id" => record_id = Some(value.clone()),
+            "--category" => category = Some(value.clone()),
+            "--title" => title = Some(value.clone()),
+            "--text" => text = Some(value.clone()),
+            "--observed-at" => observed_at = Some(value.clone()),
+            "--save-event" => save_to = Some(PathBuf::from(value)),
+            other => return Err(format!("unknown send-duet flag `{other}`")),
+        }
+        idx += 1;
+    }
+
+    Ok(CliCommand::SendEvent {
+        spec: SyntheticEventSpec::DuetPatientUpdate {
+            patient: patient.ok_or_else(|| "missing --patient".to_owned())?,
+            record_id,
+            category: category.ok_or_else(|| "missing --category".to_owned())?,
+            title: title.ok_or_else(|| "missing --title".to_owned())?,
+            text: text.ok_or_else(|| "missing --text".to_owned())?,
+            observed_at: observed_at.ok_or_else(|| "missing --observed-at".to_owned())?,
+        },
+        save_to,
+    })
+}
+
+fn parse_send_recommendation(rest: &[String]) -> Result<CliCommand, String> {
+    let mut patient = None;
+    let mut recommendation_id = None;
+    let mut medication = None;
+    let mut rationale = None;
+    let mut detail = None;
+    let mut source_label = None;
+    let mut save_to = None;
+
+    let mut idx = 0;
+    while idx < rest.len() {
+        let flag = rest[idx].as_str();
+        idx += 1;
+        let value = rest
+            .get(idx)
+            .ok_or_else(|| format!("missing value for {flag}"))?;
+        match flag {
+            "--patient" => patient = Some(parse_patient_selector(value)?),
+            "--id" => recommendation_id = Some(value.clone()),
+            "--medication" => medication = Some(value.clone()),
+            "--rationale" => rationale = Some(value.clone()),
+            "--detail" => detail = Some(value.clone()),
+            "--source-label" => source_label = Some(value.clone()),
+            "--save-event" => save_to = Some(PathBuf::from(value)),
+            other => return Err(format!("unknown send-recommendation flag `{other}`")),
+        }
+        idx += 1;
+    }
+
+    let rationale = rationale.ok_or_else(|| "missing --rationale".to_owned())?;
+    Ok(CliCommand::SendEvent {
+        spec: SyntheticEventSpec::MedicationRecommendation {
+            patient: patient.ok_or_else(|| "missing --patient".to_owned())?,
+            recommendation_id,
+            medication: medication.ok_or_else(|| "missing --medication".to_owned())?,
+            detail: detail.unwrap_or_else(|| rationale.clone()),
+            rationale,
+            source_label,
+        },
+        save_to,
+    })
+}
+
 fn parse_send_raw(rest: &[String]) -> Result<CliCommand, String> {
     let mut file = None;
     let mut save_to = None;
@@ -382,6 +562,8 @@ fn parse_source_failure(rest: &[String]) -> Result<SourceFailureRequest, String>
                 source = Some(match value.as_str() {
                     "chart" => SyntheticSourceKind::Chart,
                     "calendar" => SyntheticSourceKind::Calendar,
+                    "spruce" => SyntheticSourceKind::Spruce,
+                    "duet" => SyntheticSourceKind::Duet,
                     other => return Err(format!("unsupported --source `{other}`")),
                 });
             }
@@ -437,6 +619,42 @@ async fn execute(inv: CliInvocation) -> Result<ExitCode, String> {
                 inv.token.as_deref(),
                 Method::GET,
                 "/staging-synthetic/status",
+                Option::<&()>::None,
+                None,
+            )
+            .await
+        }
+        CliCommand::Clock => {
+            send_request(
+                &client,
+                &inv.base_url,
+                inv.token.as_deref(),
+                Method::GET,
+                "/staging-synthetic/clock",
+                Option::<&()>::None,
+                None,
+            )
+            .await
+        }
+        CliCommand::AdvanceClock(update) => {
+            send_request(
+                &client,
+                &inv.base_url,
+                inv.token.as_deref(),
+                Method::POST,
+                "/staging-synthetic/clock",
+                Some(&update),
+                None,
+            )
+            .await
+        }
+        CliCommand::Measure => {
+            send_request(
+                &client,
+                &inv.base_url,
+                inv.token.as_deref(),
+                Method::GET,
+                "/staging-synthetic/measure",
                 Option::<&()>::None,
                 None,
             )

@@ -458,7 +458,7 @@ fn ac6_product_code_contains_zero_synthetic_checks() {
 async fn ac7_production_omits_staging_synthetic_routes_and_refuses_startup() {
     let _guard = test_lock().lock().await;
 
-    assert_eq!(STAGING_SYNTHETIC_ROUTE_MANIFEST.len(), 7);
+    assert_eq!(STAGING_SYNTHETIC_ROUTE_MANIFEST.len(), 10);
     for entry in STAGING_SYNTHETIC_ROUTE_MANIFEST {
         assert!(
             entry.path.starts_with("/staging-synthetic/"),
@@ -2258,4 +2258,440 @@ async fn staging_synthetic_end_to_end_walk_browser_and_cli() {
     let _ = fs::remove_dir_all(&base_bank);
     let _ = fs::remove_dir_all(&work_bank);
     let _ = fs::remove_file(&saved_event_file);
+}
+
+#[tokio::test]
+async fn ac9_reset_covers_every_physician_runtime_table_in_postgres() {
+    use sea_orm::{ConnectionTrait, Statement};
+    use std::collections::BTreeSet;
+
+    let _guard = test_lock().lock().await;
+    let ephemeral_pg = ensure_test_postgres_gate();
+    let database = scale::Database::create("ac9_reset_tables")
+        .await
+        .expect("disposable Postgres database for ac9");
+
+    let db = sea_orm::Database::connect(&database.url)
+        .await
+        .expect("connect Postgres for ac9");
+    let rows = db
+        .query_all_raw(Statement::from_string(
+            sea_orm::DatabaseBackend::Postgres,
+            "SELECT table_name FROM information_schema.tables \
+             WHERE table_schema = 'public' \
+               AND table_name LIKE 'physician_runtime_%' \
+               AND table_name NOT IN ('physician_runtime_migrations', 'physician_runtime_provider_quota') \
+             ORDER BY table_name"
+                .to_owned(),
+        ))
+        .await
+        .expect("query information_schema.tables");
+
+    let live_tables: BTreeSet<String> = rows
+        .into_iter()
+        .map(|row| row.try_get_by_index::<String>(0).expect("table_name"))
+        .collect();
+    let covered_tables: BTreeSet<String> =
+        physician_sample::synthetic_control::reset_covered_runtime_table_names()
+            .into_iter()
+            .map(str::to_owned)
+            .collect();
+
+    let missing_from_reset: Vec<String> =
+        live_tables.difference(&covered_tables).cloned().collect();
+    let unknown_in_reset: Vec<String> = covered_tables.difference(&live_tables).cloned().collect();
+    assert!(
+        missing_from_reset.is_empty() && unknown_in_reset.is_empty(),
+        "reset table coverage drifted from migrated schema: missing={missing_from_reset:?} unknown={unknown_in_reset:?}"
+    );
+
+    drop(db);
+    drop(database);
+    drop(ephemeral_pg);
+}
+
+#[tokio::test]
+async fn ac10_clock_spruce_duet_care_plan_and_l1_measure() {
+    use physician_auth::SyntheticClockUpdate;
+    use physician_sample::synthetic_control::{
+        DUET_CONNECTED_CARE_SOURCE_ID, L1SimulationMeasure, SyntheticClockSnapshot,
+    };
+
+    let _guard = test_lock().lock().await;
+    let ephemeral_pg = ensure_test_postgres_gate();
+    let database = scale::Database::create("ac10_l1_clock_measure")
+        .await
+        .expect("disposable Postgres database for ac10");
+    let base_bank = build_synthetic_bank("ac10");
+    let work_bank = base_bank.with_file_name(format!(
+        "{}-workdir",
+        base_bank.file_name().unwrap().to_string_lossy()
+    ));
+
+    let auth = physician_auth::PostgresAuthStore::connect_without_migrations(&database.url)
+        .await
+        .expect("connect PostgresAuthStore");
+    let now_secs = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .expect("unix clock")
+        .as_secs();
+    auth.ensure_account(
+        STAGING_PRACTICE_ID,
+        "staging-physician",
+        "physician@codahealth.test",
+        "Dr. Roger Staging",
+        true,
+        now_secs,
+    )
+    .await
+    .expect("seed staging physician");
+    let one_time = auth
+        .begin_sign_in("physician@codahealth.test", now_secs)
+        .await
+        .expect("begin sign-in");
+    let (_identity, token) = auth
+        .complete_sign_in("physician@codahealth.test", &one_time, now_secs)
+        .await
+        .expect("complete sign-in");
+
+    let build_app = || async {
+        let env_map: BTreeMap<&str, String> = [
+            ("CODA_HOSTED_PROFILE", "staging-preview".to_owned()),
+            ("PHYSICIAN_AUTH", "required".to_owned()),
+            ("PHYSICIAN_DATABASE_URL", database.url.clone()),
+            ("PHYSICIAN_DURABLE_CHAT", "1".to_owned()),
+            (
+                "PHYSICIAN_SYNTHETIC_CHARTS",
+                base_bank.to_string_lossy().into_owned(),
+            ),
+            (STAGING_SYNTHETIC_CONTROL_ENV, "enabled".to_owned()),
+            (
+                STAGING_SYNTHETIC_WORKDIR_ENV,
+                work_bank.to_string_lossy().into_owned(),
+            ),
+            ("CODA_CHAT_MODEL", "gpt-6.1-sol".to_owned()),
+            ("CODA_CHAT_EFFORT", "high".to_owned()),
+            ("CODA_CHAT_CONTEXT_WINDOW_TOKENS", "272000".to_owned()),
+            ("CODA_CHAT_INPUT_LIMIT_TOKENS", "922000".to_owned()),
+            ("CODA_BACKGROUND_MODEL", "gpt-6-luna".to_owned()),
+            ("CODA_BACKGROUND_EFFORT", "max".to_owned()),
+            ("CODA_BACKGROUND_CONTEXT_WINDOW_TOKENS", "272000".to_owned()),
+            ("CODA_BACKGROUND_INPUT_LIMIT_TOKENS", "922000".to_owned()),
+        ]
+        .into_iter()
+        .collect();
+        physician_sample::site_router_from_env(move |k| env_map.get(k).cloned())
+            .await
+            .expect("build staging site router")
+            .0
+    };
+
+    let app = build_app().await;
+    let bearer_header = HeaderValue::from_str(&format!("Bearer {token}")).unwrap();
+
+    // 1. Read baseline clock and advance by 7 days.
+    let resp = app
+        .clone()
+        .oneshot(
+            Request::builder()
+                .method(Method::GET)
+                .uri("/staging-synthetic/clock")
+                .header(axum::http::header::AUTHORIZATION, bearer_header.clone())
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::OK);
+    let clock0: SyntheticClockSnapshot = serde_json::from_slice(
+        &axum::body::to_bytes(resp.into_body(), 1 << 20)
+            .await
+            .unwrap(),
+    )
+    .unwrap();
+    assert_eq!(clock0.elapsed_seconds, 0);
+
+    let advance_body = serde_json::to_vec(&SyntheticClockUpdate::AdvanceBySeconds {
+        seconds: 7 * 86_400,
+    })
+    .unwrap();
+    let resp = app
+        .clone()
+        .oneshot(
+            Request::builder()
+                .method(Method::POST)
+                .uri("/staging-synthetic/clock")
+                .header(axum::http::header::AUTHORIZATION, bearer_header.clone())
+                .header(axum::http::header::CONTENT_TYPE, "application/json")
+                .body(Body::from(advance_body))
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::OK);
+    let clock1: SyntheticClockSnapshot = serde_json::from_slice(
+        &axum::body::to_bytes(resp.into_body(), 1 << 20)
+            .await
+            .unwrap(),
+    )
+    .unwrap();
+    assert_eq!(clock1.elapsed_seconds, 7 * 86_400);
+
+    // Backwards advance is refused with 422 Unprocessable Entity.
+    let back_body = serde_json::to_vec(&SyntheticClockUpdate::AdvanceToUnix {
+        unix_seconds: clock0.unix_seconds,
+    })
+    .unwrap();
+    let resp = app
+        .clone()
+        .oneshot(
+            Request::builder()
+                .method(Method::POST)
+                .uri("/staging-synthetic/clock")
+                .header(axum::http::header::AUTHORIZATION, bearer_header.clone())
+                .header(axum::http::header::CONTENT_TYPE, "application/json")
+                .body(Body::from(back_body))
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::UNPROCESSABLE_ENTITY);
+
+    // 2. Rebuild a fresh router (simulating service restart) and confirm persisted clock survives!
+    let app = build_app().await;
+    let resp = app
+        .clone()
+        .oneshot(
+            Request::builder()
+                .method(Method::GET)
+                .uri("/staging-synthetic/clock")
+                .header(axum::http::header::AUTHORIZATION, bearer_header.clone())
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::OK);
+    let clock_restarted: SyntheticClockSnapshot = serde_json::from_slice(
+        &axum::body::to_bytes(resp.into_body(), 1 << 20)
+            .await
+            .unwrap(),
+    )
+    .unwrap();
+    assert_eq!(clock_restarted.unix_seconds, clock1.unix_seconds);
+
+    // 3. Deliver synthetic Spruce message, Duet update, and undecided medication recommendation.
+    let alice_ws = workspace_id("synthetic-charts", "MRN-ALICE");
+    for spec in [
+        SyntheticEventSpec::SprucePatientMessage {
+            patient: PatientSelector::SourcePatientId("MRN-ALICE".into()),
+            conversation_id: "conv-ac10-1".into(),
+            message_id: "msg-ac10-1".into(),
+            sender_name: "Alice Carter".into(),
+            sender_contact: "+15550190010".into(),
+            text: "Checking in on my blood pressure medication.".into(),
+            sent_at: "2026-09-03T14:00:00Z".into(),
+        },
+        SyntheticEventSpec::DuetPatientUpdate {
+            patient: PatientSelector::SourcePatientId("MRN-ALICE".into()),
+            record_id: Some("duet-ac10-1".into()),
+            category: "home_bp".into(),
+            title: "Home BP Log".into(),
+            text: "Morning BP 144/88 mmHg".into(),
+            observed_at: "2026-09-03T12:00:00Z".into(),
+        },
+        SyntheticEventSpec::MedicationRecommendation {
+            patient: PatientSelector::SourcePatientId("MRN-ALICE".into()),
+            recommendation_id: Some("rec-ac10-lisinopril".into()),
+            medication: "Lisinopril 20 mg PO daily".into(),
+            rationale: "Sustained home BP above 140/90".into(),
+            detail: "Increase lisinopril from 10 mg to 20 mg daily.".into(),
+            source_label: Some("Hypertension review".into()),
+        },
+    ] {
+        let resp = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method(Method::POST)
+                    .uri("/staging-synthetic/events")
+                    .header(axum::http::header::AUTHORIZATION, bearer_header.clone())
+                    .header(axum::http::header::CONTENT_TYPE, "application/json")
+                    .body(Body::from(serde_json::to_vec(&spec).unwrap()))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(resp.status(), StatusCode::CREATED);
+    }
+
+    // Verify Duet record landed under DUET_CONNECTED_CARE_SOURCE_ID (distinct from synthetic-charts).
+    let store = Store::connect(&database.url).await.unwrap();
+    let obs = store.sources(&alice_ws).await.unwrap();
+    assert!(
+        obs.sources
+            .iter()
+            .any(|s| s.source_id == DUET_CONNECTED_CARE_SOURCE_ID
+                && s.candidate_id == "duet:duet-ac10-1"),
+        "Duet update must be persisted under distinct source_id"
+    );
+
+    // 4. Verify workspace shows undecided recommendation held out of active_plan_items.
+    let resp = app
+        .clone()
+        .oneshot(
+            Request::builder()
+                .method(Method::GET)
+                .uri(format!("/patient-workspaces/{alice_ws}"))
+                .header(axum::http::header::AUTHORIZATION, bearer_header.clone())
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::OK);
+    let ws_before: Value = serde_json::from_slice(
+        &axum::body::to_bytes(resp.into_body(), 1 << 20)
+            .await
+            .unwrap(),
+    )
+    .unwrap();
+    assert_eq!(
+        ws_before["undecided_recommendations"]
+            .as_array()
+            .unwrap()
+            .len(),
+        1
+    );
+    assert!(
+        ws_before["active_plan_items"]
+            .as_array()
+            .unwrap()
+            .is_empty(),
+        "undecided recommendation must stay outside active_plan_items until physician decides"
+    );
+
+    // 5. Explicit physician approval via POST /commands promotes it into active_plan_items.
+    let decide_body = serde_json::to_vec(&json!({
+        "type": "plan.decide_recommendation",
+        "idempotency_key": "ac10-decide-1",
+        "payload": {
+            "patient_workspace_id": alice_ws,
+            "recommendation_id": "rec-ac10-lisinopril"
+        }
+    }))
+    .unwrap();
+    let resp = app
+        .clone()
+        .oneshot(
+            Request::builder()
+                .method(Method::POST)
+                .uri("/commands")
+                .header(axum::http::header::AUTHORIZATION, bearer_header.clone())
+                .header(axum::http::header::CONTENT_TYPE, "application/json")
+                .body(Body::from(decide_body))
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::OK);
+    let ws_after_resp = app
+        .clone()
+        .oneshot(
+            Request::builder()
+                .method(Method::GET)
+                .uri(format!("/patient-workspaces/{alice_ws}"))
+                .header(axum::http::header::AUTHORIZATION, bearer_header.clone())
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    let ws_after: Value = serde_json::from_slice(
+        &axum::body::to_bytes(ws_after_resp.into_body(), 1 << 20)
+            .await
+            .unwrap(),
+    )
+    .unwrap();
+    assert!(
+        ws_after["undecided_recommendations"]
+            .as_array()
+            .unwrap()
+            .is_empty()
+    );
+    assert_eq!(ws_after["active_plan_items"].as_array().unwrap().len(), 1);
+
+    // 6. Read GET /staging-synthetic/measure and verify L1 rate & necessary-care accounting.
+    let measure_resp = app
+        .clone()
+        .oneshot(
+            Request::builder()
+                .method(Method::GET)
+                .uri("/staging-synthetic/measure")
+                .header(axum::http::header::AUTHORIZATION, bearer_header.clone())
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(measure_resp.status(), StatusCode::OK);
+    let measure: L1SimulationMeasure = serde_json::from_slice(
+        &axum::body::to_bytes(measure_resp.into_body(), 1 << 20)
+            .await
+            .unwrap(),
+    )
+    .unwrap();
+    assert_eq!(measure.panel_size, 2);
+    assert!((measure.elapsed_weeks - 1.0).abs() < 1e-6);
+    assert!(
+        measure
+            .physician_touched_per_100_patients_per_week
+            .is_some()
+    );
+    assert_eq!(measure.necessary_care.approved_plan_items, 1);
+    assert_eq!(measure.necessary_care.spruce_messages_ingested, 1);
+    assert_eq!(measure.necessary_care.duet_updates_recorded, 1);
+
+    // 7. Reset clears Spruce, Duet, care-plan rows, AND restores clock to baseline!
+    let reset_resp = app
+        .clone()
+        .oneshot(
+            Request::builder()
+                .method(Method::POST)
+                .uri("/staging-synthetic/reset")
+                .header(axum::http::header::AUTHORIZATION, bearer_header.clone())
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(reset_resp.status(), StatusCode::OK);
+    let reset_status: PracticeSyntheticStatus = serde_json::from_slice(
+        &axum::body::to_bytes(reset_resp.into_body(), 1 << 20)
+            .await
+            .unwrap(),
+    )
+    .unwrap();
+    assert_eq!(reset_status.l1_measure.elapsed_seconds, 0);
+    assert_eq!(
+        reset_status.l1_measure.necessary_care.approved_plan_items,
+        0
+    );
+    assert_eq!(
+        reset_status
+            .l1_measure
+            .necessary_care
+            .spruce_messages_ingested,
+        0
+    );
+    assert_eq!(
+        reset_status.l1_measure.necessary_care.duet_updates_recorded,
+        0
+    );
+
+    drop(store);
+    drop(database);
+    drop(ephemeral_pg);
+    let _ = fs::remove_dir_all(&base_bank);
+    let _ = fs::remove_dir_all(&work_bank);
 }

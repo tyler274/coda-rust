@@ -31,8 +31,8 @@ pub use lifetime::{SessionActivity, SessionLifetime, SessionRenewal};
 
 pub use cache::{AUTHORITY_CHANNEL, CachedAuthStore, ENTRY_TTL, follow};
 pub use error::{
-    AccountSetupError, InvalidTimeZone, PanelError, PracticeSetupError, SessionError, SignInError,
-    StoreUnavailable,
+    AccountSetupError, ClockUpdateError, InvalidTimeZone, PanelError, PracticeSetupError,
+    SessionError, SignInError, StoreUnavailable,
 };
 pub use store::PostgresAuthStore;
 pub use tokio::sync::watch;
@@ -94,6 +94,63 @@ impl PracticeClock {
             Self::RealTime => real_time,
             Self::Fixed(instant) => instant,
         }
+    }
+}
+
+/// How to update a synthetic practice's persisted simulation clock.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "mode", rename_all = "snake_case")]
+pub enum SyntheticClockUpdate {
+    /// Move the persisted simulation clock strictly forward by `seconds`.
+    AdvanceBySeconds {
+        /// Positive number of seconds to add to the current persisted clock.
+        seconds: u64,
+    },
+    /// Move the persisted simulation clock forward to `unix_seconds`.
+    AdvanceToUnix {
+        /// Target Unix second (`> current`).
+        unix_seconds: u64,
+    },
+    /// Reset the persisted simulation clock explicitly to `unix_seconds`.
+    ResetToUnix {
+        /// Target Unix second to persist as the synthetic baseline.
+        unix_seconds: u64,
+    },
+}
+
+impl SyntheticClockUpdate {
+    /// Computes the next persisted Unix timestamp from `current_unix`, enforcing
+    /// forward-only advances and PostgreSQL `BIGINT` bounds.
+    pub fn apply(self, current_unix: u64) -> Result<u64, ClockUpdateError> {
+        let next = match self {
+            Self::AdvanceBySeconds { seconds } => {
+                if seconds == 0 {
+                    return Err(ClockUpdateError::InvalidAdvance {
+                        current_unix,
+                        requested_unix: current_unix,
+                    });
+                }
+                current_unix
+                    .checked_add(seconds)
+                    .ok_or(ClockUpdateError::TimestampOutOfRange {
+                        unix_seconds: u64::MAX,
+                    })?
+            }
+            Self::AdvanceToUnix { unix_seconds } => {
+                if unix_seconds <= current_unix {
+                    return Err(ClockUpdateError::InvalidAdvance {
+                        current_unix,
+                        requested_unix: unix_seconds,
+                    });
+                }
+                unix_seconds
+            }
+            Self::ResetToUnix { unix_seconds } => unix_seconds,
+        };
+        if i64::try_from(next).is_err() {
+            return Err(ClockUpdateError::TimestampOutOfRange { unix_seconds: next });
+        }
+        Ok(next)
     }
 }
 
@@ -479,6 +536,13 @@ pub trait AuthStore: Send + Sync {
     /// Reads the clock `practice_id` was created with. A practice with no
     /// record was never made synthetic, so it runs on real time.
     async fn practice_clock(&self, practice_id: &str) -> Result<PracticeClock, StoreUnavailable>;
+    /// Updates a synthetic practice's persisted simulation clock. Refuses real-time
+    /// practices and backwards advances.
+    async fn set_synthetic_practice_clock(
+        &self,
+        practice_id: &str,
+        update: SyntheticClockUpdate,
+    ) -> Result<PracticeClock, ClockUpdateError>;
     /// Registers a patient workspace as belonging to `practice_id`. A workspace
     /// that is already registered keeps its practice.
     async fn register_patient(
@@ -1187,6 +1251,29 @@ impl AuthStore for MemoryAuthStore {
             .unwrap_or(PracticeClock::RealTime))
     }
 
+    async fn set_synthetic_practice_clock(
+        &self,
+        practice_id: &str,
+        update: SyntheticClockUpdate,
+    ) -> Result<PracticeClock, ClockUpdateError> {
+        let trimmed = practice_id.trim();
+        let _announce = self.announce();
+        let mut state = self.state.lock().expect("auth state");
+        let Some((clock, _)) = state.practices.get_mut(trimmed) else {
+            return Err(ClockUpdateError::PracticeNotFound {
+                practice_id: trimmed.to_owned(),
+            });
+        };
+        let PracticeClock::Fixed(current_unix) = *clock else {
+            return Err(ClockUpdateError::RealTimePractice {
+                practice_id: trimmed.to_owned(),
+            });
+        };
+        let next_unix = update.apply(current_unix)?;
+        *clock = PracticeClock::Fixed(next_unix);
+        Ok(*clock)
+    }
+
     async fn register_patient(
         &self,
         practice_id: &str,
@@ -1585,6 +1672,94 @@ mod tests {
             store.practice_clock("real").await.unwrap(),
             PracticeClock::RealTime
         );
+    }
+
+    #[tokio::test]
+    async fn synthetic_practice_clock_advances_persists_and_refuses_real_time_or_backwards() {
+        let store = MemoryAuthStore::new();
+        let base = 1_787_846_400;
+        store
+            .ensure_practice("synthetic", PracticeClock::Fixed(base))
+            .await
+            .unwrap();
+        store
+            .ensure_practice("real", PracticeClock::RealTime)
+            .await
+            .unwrap();
+
+        let week_later = store
+            .set_synthetic_practice_clock(
+                "synthetic",
+                SyntheticClockUpdate::AdvanceBySeconds {
+                    seconds: 7 * 86_400,
+                },
+            )
+            .await
+            .unwrap();
+        assert_eq!(week_later, PracticeClock::Fixed(base + 7 * 86_400));
+        assert_eq!(
+            store.practice_clock("synthetic").await.unwrap(),
+            PracticeClock::Fixed(base + 7 * 86_400)
+        );
+
+        let two_weeks = store
+            .set_synthetic_practice_clock(
+                "synthetic",
+                SyntheticClockUpdate::AdvanceToUnix {
+                    unix_seconds: base + 14 * 86_400,
+                },
+            )
+            .await
+            .unwrap();
+        assert_eq!(two_weeks, PracticeClock::Fixed(base + 14 * 86_400));
+
+        assert!(matches!(
+            store
+                .set_synthetic_practice_clock(
+                    "synthetic",
+                    SyntheticClockUpdate::AdvanceToUnix {
+                        unix_seconds: base + 7 * 86_400,
+                    },
+                )
+                .await,
+            Err(ClockUpdateError::InvalidAdvance { .. })
+        ));
+        assert!(matches!(
+            store
+                .set_synthetic_practice_clock(
+                    "synthetic",
+                    SyntheticClockUpdate::AdvanceBySeconds { seconds: 0 },
+                )
+                .await,
+            Err(ClockUpdateError::InvalidAdvance { .. })
+        ));
+        assert!(matches!(
+            store
+                .set_synthetic_practice_clock(
+                    "real",
+                    SyntheticClockUpdate::AdvanceBySeconds { seconds: 60 },
+                )
+                .await,
+            Err(ClockUpdateError::RealTimePractice { .. })
+        ));
+        assert!(matches!(
+            store
+                .set_synthetic_practice_clock(
+                    "missing",
+                    SyntheticClockUpdate::AdvanceBySeconds { seconds: 60 },
+                )
+                .await,
+            Err(ClockUpdateError::PracticeNotFound { .. })
+        ));
+
+        let reset = store
+            .set_synthetic_practice_clock(
+                "synthetic",
+                SyntheticClockUpdate::ResetToUnix { unix_seconds: base },
+            )
+            .await
+            .unwrap();
+        assert_eq!(reset, PracticeClock::Fixed(base));
     }
 
     #[tokio::test]

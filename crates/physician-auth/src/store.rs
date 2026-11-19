@@ -10,10 +10,11 @@ use crate::migration::{
     Sessions, SignInTokens,
 };
 use crate::{
-    Account, AccountCreateOutcome, AccountSetupError, AuthStore, INVITATION_TTL_SECONDS,
-    Membership, PanelError, PatientLink, PhysicianIdentity, PracticeClock, PracticeRecord,
-    PracticeSetupError, PracticeSetupOutcome, PracticeTimeZone, SIGN_IN_TOKEN_TTL_SECONDS, Session,
-    SessionActivity, SessionError, SessionLifetime, SessionRenewal, SignInError, StoreUnavailable,
+    Account, AccountCreateOutcome, AccountSetupError, AuthStore, ClockUpdateError,
+    INVITATION_TTL_SECONDS, Membership, PanelError, PatientLink, PhysicianIdentity, PracticeClock,
+    PracticeRecord, PracticeSetupError, PracticeSetupOutcome, PracticeTimeZone,
+    SIGN_IN_TOKEN_TTL_SECONDS, Session, SessionActivity, SessionError, SessionLifetime,
+    SessionRenewal, SignInError, StoreUnavailable, SyntheticClockUpdate,
     check_existing_account_match, mint_patient_token, mint_token, post_fence_mint_second,
     token_hash, validate_account_fields, validate_practice_id,
 };
@@ -826,6 +827,37 @@ impl AuthStore for PostgresAuthStore {
             Some(instant) => PracticeClock::Fixed(instant as u64),
             None => PracticeClock::RealTime,
         })
+    }
+
+    async fn set_synthetic_practice_clock(
+        &self,
+        practice_id: &str,
+        update: SyntheticClockUpdate,
+    ) -> Result<PracticeClock, ClockUpdateError> {
+        let trimmed = practice_id.trim();
+        let txn = self.db.begin().await.map_err(|_| StoreUnavailable)?;
+        let Some(existing) = Practices::find_by_id(trimmed.to_owned())
+            .lock(LockType::Update)
+            .one(&txn)
+            .await
+            .map_err(|_| StoreUnavailable)?
+        else {
+            return Err(ClockUpdateError::PracticeNotFound {
+                practice_id: trimmed.to_owned(),
+            });
+        };
+        let Some(current_raw) = existing.fixed_time else {
+            return Err(ClockUpdateError::RealTimePractice {
+                practice_id: trimmed.to_owned(),
+            });
+        };
+        let current_unix = u64::try_from(current_raw).unwrap_or(0);
+        let next_unix = update.apply(current_unix)?;
+        let mut active: crate::migration::PracticeActiveModel = existing.into();
+        active.fixed_time = Set(Some(next_unix as i64));
+        active.update(&txn).await.map_err(|_| StoreUnavailable)?;
+        txn.commit().await.map_err(|_| StoreUnavailable)?;
+        Ok(PracticeClock::Fixed(next_unix))
     }
 
     async fn patient_practice(

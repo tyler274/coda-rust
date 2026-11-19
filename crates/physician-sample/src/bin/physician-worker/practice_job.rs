@@ -148,7 +148,7 @@ async fn handle(
 
     if worker
         .simulation_practices
-        .rehearsed_failure(&claim.scope.practice, "", earlier_attempts)
+        .rehearsed_failure(&claim.scope.practice, None, earlier_attempts)
     {
         genai::record_error(&generation, Failure::Rehearsed.description());
         return settle_attempt(

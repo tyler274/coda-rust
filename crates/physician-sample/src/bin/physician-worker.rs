@@ -262,6 +262,7 @@ async fn chat_attempt(
         },
     );
     drop(conversation);
+    let scenario_for_failure = scenario_id.clone();
     let generation = genai::generation_span(
         &RunContext {
             run_id: claim.attempt.clone(),
@@ -275,11 +276,11 @@ async fn chat_attempt(
         &worker.model.roles.chat.adapter,
     );
     genai::record_input(&generation, &input_text);
-    // A rehearsal turn marked `[fail:K]` fails its first K attempts before
-    // any model call, so a drill exercises the real failure path at no cost.
+    // A simulation practice whose harness failure policy covers this turn fails
+    // its first K attempts before any model call, without reading message text.
     if worker.simulation_practices.rehearsed_failure(
         &claim.scope.practice,
-        &input_text,
+        scenario_for_failure.as_deref(),
         earlier_attempts,
     ) {
         genai::record_error(&generation, Failure::Rehearsed.description());

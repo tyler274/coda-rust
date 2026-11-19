@@ -111,3 +111,39 @@ pub enum AccountSetupError {
     #[error("account setup store unavailable")]
     Unavailable(#[from] StoreUnavailable),
 }
+
+/// Why updating a synthetic practice's persisted simulation clock failed.
+#[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
+pub enum ClockUpdateError {
+    /// No practice exists with this identifier.
+    #[error("practice `{practice_id}` does not exist")]
+    PracticeNotFound {
+        /// The missing practice identifier.
+        practice_id: String,
+    },
+    /// Real-time practices cannot be mutated through the simulation clock control.
+    #[error("practice `{practice_id}` runs on real time and has no mutable simulation clock")]
+    RealTimePractice {
+        /// The real-time practice identifier.
+        practice_id: String,
+    },
+    /// Advancing the simulation clock must move strictly forward (or be a positive delta).
+    #[error(
+        "simulation clock advance must move forward (current={current_unix}, requested={requested_unix})"
+    )]
+    InvalidAdvance {
+        /// Current persisted Unix timestamp.
+        current_unix: u64,
+        /// Requested target Unix timestamp.
+        requested_unix: u64,
+    },
+    /// Requested Unix timestamp cannot be stored in PostgreSQL `BIGINT`.
+    #[error("simulation clock timestamp {unix_seconds} is out of range")]
+    TimestampOutOfRange {
+        /// The out-of-range Unix timestamp.
+        unix_seconds: u64,
+    },
+    /// The auth store could not read or write the practice record.
+    #[error("simulation clock store unavailable")]
+    Unavailable(#[from] StoreUnavailable),
+}
