@@ -847,6 +847,9 @@ pub fn Composer(
     on_input: EventHandler<String>,
     /// The words as written, when the host's submit control is pressed.
     on_submit: EventHandler<String>,
+    /// Key press inside the composer textarea, before default handling.
+    #[props(default)]
+    on_key_down: Option<EventHandler<KeyboardEvent>>,
     /// Whether the words have focus.
     on_editing: Option<EventHandler<bool>>,
     /// What the person brought in, held above the words: a `ContextChip`.
@@ -917,6 +920,11 @@ pub fn Composer(
                 placeholder: "{placeholder}",
                 value: "{value}",
                 oninput: move |event| on_input.call(event.value()),
+                onkeydown: move |event| {
+                    if let Some(handler) = &on_key_down {
+                        handler.call(event);
+                    }
+                },
                 onfocus: move |_| {
                     if let Some(handler) = &on_editing {
                         handler.call(true);

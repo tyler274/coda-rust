@@ -932,6 +932,7 @@ fn evidence_source_chip(
         as_of: String::new(),
         open_label: None,
         open_uri: None,
+        origin: physician_wire::CitationOrigin::SourceRecord,
     }
 }
 

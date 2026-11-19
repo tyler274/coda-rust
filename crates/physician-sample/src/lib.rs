@@ -687,6 +687,7 @@ async fn empty_snapshot(
             transcript: Vec::new(),
             feedback: physician_wire::SnapshotFeedback::Loaded,
             sources: std::collections::BTreeMap::new(),
+            queued: Vec::new(),
         },
     })
     .into_response()
@@ -1714,7 +1715,9 @@ pub(crate) struct RosterQuery {
 pub fn rejection_message(command_type: &str) -> &'static str {
     match command_type {
         "message.submit" => "Coda couldn’t accept that message.",
+        "message.queue_edit" => "Coda couldn’t update that queued message.",
         "message.withdraw" => "Coda couldn’t remove that queued message.",
+        "message.queue_send_now" => "Coda couldn’t send that queued message.",
         "work.resume" => "Coda couldn’t resume that work.",
         "work.stop" => "Coda couldn’t stop that work.",
         "work.done" => "Coda couldn’t mark that done.",

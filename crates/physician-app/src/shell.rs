@@ -422,6 +422,8 @@ pub struct SourceChip {
     pub open_label: Option<String>,
     /// The native destination URI.
     pub open_uri: Option<String>,
+    /// Whether the body is from the source record or Coda's fallback description.
+    pub origin: physician_wire::CitationOrigin,
 }
 
 /// The accessible name React gives a source chip.
@@ -464,13 +466,24 @@ pub fn preview_paragraphs(text: &str) -> Vec<String> {
     paragraphs
 }
 
-/// `Prepared by Coda · as of {as_of}` when the citation recorded a date.
-pub fn prepared_line(as_of: &str) -> Option<String> {
+/// Provenance line for an open citation in the side panel:
+/// `"Prepared by Coda · as of {as_of}"` ONLY when showing Coda's fallback
+/// description (`CitationOrigin::PreparedByCoda`); native source records show
+/// `"As of {as_of}"` (without `"Prepared by Coda"`).
+pub fn source_provenance_line(
+    origin: physician_wire::CitationOrigin,
+    as_of: &str,
+) -> Option<String> {
     let as_of = as_of.trim();
-    if as_of.is_empty() {
-        None
-    } else {
-        Some(format!("Prepared by Coda · as of {as_of}"))
+    match (origin, as_of.is_empty()) {
+        (physician_wire::CitationOrigin::PreparedByCoda, false) => {
+            Some(format!("Prepared by Coda · as of {as_of}"))
+        }
+        (physician_wire::CitationOrigin::PreparedByCoda, true) => {
+            Some("Prepared by Coda".to_owned())
+        }
+        (physician_wire::CitationOrigin::SourceRecord, false) => Some(format!("As of {as_of}")),
+        (physician_wire::CitationOrigin::SourceRecord, true) => None,
     }
 }
 
@@ -627,6 +640,7 @@ pub fn message_pieces(
                                 as_of: source.recorded_at.clone().unwrap_or_default(),
                                 open_label,
                                 open_uri,
+                                origin: source.origin,
                             }
                         }
                         None => SourceChip {
@@ -637,6 +651,7 @@ pub fn message_pieces(
                             as_of: String::new(),
                             open_label: None,
                             open_uri: None,
+                            origin: physician_wire::CitationOrigin::SourceRecord,
                         },
                     };
                     chips.push(chip);
@@ -707,6 +722,7 @@ fn source_chip(
         as_of,
         open_label,
         open_uri,
+        origin: physician_wire::CitationOrigin::SourceRecord,
     }
 }
 
@@ -1615,11 +1631,263 @@ pub fn citation_inspection(chip: &SourceChip) -> CitationInspection {
         provenance: if unavailable.is_some() {
             None
         } else {
-            prepared_line(&chip.as_of)
+            source_provenance_line(chip.origin, &chip.as_of)
         },
         open_label: chip.open_label.clone(),
         open_uri: chip.open_uri.clone(),
         unavailable,
+    }
+}
+
+/// One step of Coda's chat work, phrased for a physician without internal names.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProjectedStep {
+    /// Icon category for this step.
+    pub kind: ProjectedStepKind,
+    /// Physician-readable headline of the step.
+    pub label: String,
+    /// Optional quieter secondary detail (such as matched terms or record count).
+    pub detail: Option<String>,
+    /// Live or final execution standing of the step.
+    pub state: ui::StepState,
+}
+
+/// High-level visual category for choosing the step icon.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ProjectedStepKind {
+    /// Chart search step.
+    Search,
+    /// Chart record or passage read step.
+    Read,
+    /// Earlier conversation read step.
+    Conversation,
+}
+
+/// All projected steps of one chat exchange alongside its summary/live line.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct ProjectedSteps {
+    /// Steps in start order.
+    pub steps: Vec<ProjectedStep>,
+    /// Whether the server could not load steps for this exchange.
+    pub unavailable: bool,
+    /// Single-line headline for the trace toggle button.
+    pub line_label: Option<String>,
+}
+
+fn step_state_from_wire<T>(state: &physician_wire::StepState<T>) -> ui::StepState {
+    match state {
+        physician_wire::StepState::Running => ui::StepState::Running,
+        physician_wire::StepState::Returned { .. } => ui::StepState::Done,
+        physician_wire::StepState::Failed | physician_wire::StepState::Interrupted => {
+            ui::StepState::Failed
+        }
+        physician_wire::StepState::Stopped => ui::StepState::Stopped,
+    }
+}
+
+fn record_group_label(group: physician_wire::RecordGroup) -> &'static str {
+    match group {
+        physician_wire::RecordGroup::Patient => "patient details",
+        physician_wire::RecordGroup::Problems => "problems",
+        physician_wire::RecordGroup::Medications => "medications",
+        physician_wire::RecordGroup::Allergies => "allergies",
+        physician_wire::RecordGroup::Results => "results",
+        physician_wire::RecordGroup::Vitals => "vitals",
+        physician_wire::RecordGroup::Notes => "notes",
+        physician_wire::RecordGroup::Documents => "documents",
+        physician_wire::RecordGroup::Visits => "visits",
+        physician_wire::RecordGroup::Procedures => "procedures",
+        physician_wire::RecordGroup::Immunizations => "immunizations",
+        physician_wire::RecordGroup::Orders => "orders",
+        physician_wire::RecordGroup::History => "history",
+        physician_wire::RecordGroup::Forms => "forms",
+        physician_wire::RecordGroup::Messages => "messages",
+        physician_wire::RecordGroup::Other => "other records",
+    }
+}
+
+/// Converts wire steps of one exchange into physician-readable `WorkStep` projections.
+pub fn project_steps(steps: &physician_wire::ExchangeSteps, working: bool) -> ProjectedSteps {
+    let physician_wire::ExchangeSteps::Read(items) = steps else {
+        return ProjectedSteps {
+            steps: Vec::new(),
+            unavailable: true,
+            line_label: Some("Steps unavailable".to_owned()),
+        };
+    };
+    if items.is_empty() {
+        return ProjectedSteps::default();
+    }
+    let projected: Vec<ProjectedStep> = items
+        .iter()
+        .map(|step| match step {
+            physician_wire::Step::SearchedChart {
+                query,
+                group,
+                page,
+                state,
+            } => {
+                let ui_state = step_state_from_wire(state);
+                let base_subject = match group {
+                    Some(g) => format!(
+                        "{} in {}",
+                        if *page == physician_wire::SearchPage::More {
+                            "next page of"
+                        } else {
+                            "chart"
+                        },
+                        record_group_label(*g)
+                    ),
+                    None if *page == physician_wire::SearchPage::More => {
+                        "next page of chart".to_owned()
+                    }
+                    None => "patient chart".to_owned(),
+                };
+                let label = match state {
+                    physician_wire::StepState::Running => format!("Searching {base_subject}"),
+                    physician_wire::StepState::Returned { .. } => {
+                        format!("Searched {base_subject}")
+                    }
+                    physician_wire::StepState::Failed => {
+                        format!("Chart search in {base_subject} didn’t finish")
+                    }
+                    physician_wire::StepState::Stopped => {
+                        format!("Stopped searching {base_subject}")
+                    }
+                    physician_wire::StepState::Interrupted => {
+                        format!("Search of {base_subject} was interrupted")
+                    }
+                };
+                let mut detail_parts = Vec::new();
+                let q = query.trim();
+                if !q.is_empty() {
+                    detail_parts.push(format!("“{q}”"));
+                }
+                if let physician_wire::StepState::Returned { result } = state {
+                    if result.records == 0 {
+                        detail_parts.push("none found".to_owned());
+                    } else if result.more {
+                        detail_parts.push(format!("{} found, more available", result.records));
+                    } else {
+                        detail_parts.push(format!("{} found", result.records));
+                    }
+                }
+                ProjectedStep {
+                    kind: ProjectedStepKind::Search,
+                    label,
+                    detail: (!detail_parts.is_empty()).then(|| detail_parts.join(" · ")),
+                    state: ui_state,
+                }
+            }
+            physician_wire::Step::ReadRecords { requested, state } => {
+                let ui_state = step_state_from_wire(state);
+                let noun = if *requested == 1 {
+                    "chart record"
+                } else {
+                    "chart records"
+                };
+                let label = match state {
+                    physician_wire::StepState::Running => format!("Reading {requested} {noun}"),
+                    physician_wire::StepState::Returned { .. } => {
+                        format!("Read {requested} {noun}")
+                    }
+                    physician_wire::StepState::Failed => {
+                        format!("Reading {requested} {noun} didn’t finish")
+                    }
+                    physician_wire::StepState::Stopped => {
+                        format!("Stopped reading {requested} {noun}")
+                    }
+                    physician_wire::StepState::Interrupted => {
+                        format!("Reading {requested} {noun} was interrupted")
+                    }
+                };
+                let detail = if let physician_wire::StepState::Returned { result } = state {
+                    let mut titles = Vec::new();
+                    let mut passages = 0usize;
+                    let mut unavailable = 0usize;
+                    for item in result {
+                        match item {
+                            physician_wire::RecordRead::Whole { about, .. } => {
+                                if let Some(title) = about
+                                    .title
+                                    .as_deref()
+                                    .map(str::trim)
+                                    .filter(|t| !t.is_empty())
+                                {
+                                    titles.push(title.to_owned());
+                                }
+                            }
+                            physician_wire::RecordRead::Passage { .. } => passages += 1,
+                            physician_wire::RecordRead::Unavailable
+                            | physician_wire::RecordRead::TooLarge => unavailable += 1,
+                        }
+                    }
+                    let mut parts = Vec::new();
+                    if !titles.is_empty() {
+                        parts.push(titles.join(", "));
+                    }
+                    if passages > 0 {
+                        parts.push(if passages == 1 {
+                            "1 passage".to_owned()
+                        } else {
+                            format!("{passages} passages")
+                        });
+                    }
+                    if unavailable > 0 {
+                        parts.push(format!("{unavailable} unavailable"));
+                    }
+                    (!parts.is_empty()).then(|| parts.join(" · "))
+                } else {
+                    None
+                };
+                ProjectedStep {
+                    kind: ProjectedStepKind::Read,
+                    label,
+                    detail,
+                    state: ui_state,
+                }
+            }
+            physician_wire::Step::ReadConversation { state } => {
+                let ui_state = step_state_from_wire(state);
+                let label = match state {
+                    physician_wire::StepState::Running => {
+                        "Checking earlier messages in this conversation"
+                    }
+                    physician_wire::StepState::Returned { .. } => {
+                        "Checked earlier messages in this conversation"
+                    }
+                    physician_wire::StepState::Failed => "Checking earlier messages didn’t finish",
+                    physician_wire::StepState::Stopped => "Stopped checking earlier messages",
+                    physician_wire::StepState::Interrupted => {
+                        "Checking earlier messages was interrupted"
+                    }
+                }
+                .to_owned();
+                ProjectedStep {
+                    kind: ProjectedStepKind::Conversation,
+                    label,
+                    detail: None,
+                    state: ui_state,
+                }
+            }
+        })
+        .collect();
+    let line_label = if working {
+        projected
+            .iter()
+            .rev()
+            .find(|s| s.state == ui::StepState::Running)
+            .or_else(|| projected.last())
+            .map(|s| s.label.clone())
+    } else if projected.len() == 1 {
+        Some(projected[0].label.clone())
+    } else {
+        Some(format!("{} steps", projected.len()))
+    };
+    ProjectedSteps {
+        steps: projected,
+        unavailable: false,
+        line_label,
     }
 }
 
@@ -1861,8 +2129,9 @@ mod tests {
         assert!(chart.preview.contains("Date of birth: 1972-03-18"));
         assert_eq!(chart.as_of, "June 23, 2026");
         assert_eq!(
-            prepared_line(&chart.as_of).as_deref(),
-            Some("Prepared by Coda · as of June 23, 2026")
+            source_provenance_line(physician_wire::CitationOrigin::SourceRecord, &chart.as_of)
+                .as_deref(),
+            Some("As of June 23, 2026")
         );
         let discharge = chips.iter().find(|chip| chip.index == 2).expect("chip 2");
         assert_eq!(discharge.label, "Discharge Summary");
@@ -2245,7 +2514,7 @@ mod tests {
         assert!(inspection.unavailable.is_none());
         assert_eq!(
             inspection.provenance.as_deref(),
-            Some("Prepared by Coda · as of April 13, 2026")
+            Some("As of April 13, 2026")
         );
         assert_eq!(inspection.open_label.as_deref(), Some("Open in Demo chart"));
         let mut closed = discharge.clone();
@@ -2496,6 +2765,86 @@ mod tests {
             RosterContinuation::HasMore {
                 cursor: "cursor-25".to_owned(),
             }
+        );
+    }
+
+    #[test]
+    fn native_source_citation_does_not_say_prepared_by_coda() {
+        let chip = SourceChip {
+            index: 1,
+            label: "Basic metabolic panel".to_owned(),
+            open: true,
+            preview: "Potassium 4.4 mmol/L".to_owned(),
+            as_of: "April 13, 2026".to_owned(),
+            open_label: Some("Open in EHR".to_owned()),
+            open_uri: Some("https://ehr.example/lab/1".to_owned()),
+            origin: physician_wire::CitationOrigin::SourceRecord,
+        };
+        let inspection = citation_inspection(&chip);
+        assert_eq!(
+            inspection.provenance.as_deref(),
+            Some("As of April 13, 2026")
+        );
+
+        let fallback = SourceChip {
+            origin: physician_wire::CitationOrigin::PreparedByCoda,
+            ..chip
+        };
+        assert_eq!(
+            citation_inspection(&fallback).provenance.as_deref(),
+            Some("Prepared by Coda · as of April 13, 2026")
+        );
+    }
+
+    #[test]
+    fn project_steps_uses_physician_words_without_tool_names() {
+        use physician_wire::{
+            ExchangeSteps, Found, RecordGroup, RecordRead, SearchPage, SourceVersion, Step,
+            StepState,
+        };
+        let steps = ExchangeSteps::Read(vec![
+            Step::SearchedChart {
+                query: "potassium".into(),
+                group: Some(RecordGroup::Results),
+                page: SearchPage::First,
+                state: StepState::Returned {
+                    result: Found {
+                        records: 2,
+                        more: false,
+                    },
+                },
+            },
+            Step::ReadRecords {
+                requested: 1,
+                state: StepState::Stopped,
+            },
+            Step::ReadConversation {
+                state: StepState::Running,
+            },
+        ]);
+        let projected = project_steps(&steps, true);
+        assert_eq!(projected.steps.len(), 3);
+        assert_eq!(projected.steps[0].label, "Searched chart in results");
+        assert_eq!(
+            projected.steps[0].detail.as_deref(),
+            Some("“potassium” · 2 found")
+        );
+        assert_eq!(projected.steps[0].state, ui::StepState::Done);
+        assert_eq!(projected.steps[1].label, "Stopped reading 1 chart record");
+        assert_eq!(projected.steps[1].state, ui::StepState::Stopped);
+        assert_eq!(
+            projected.line_label.as_deref(),
+            Some("Checking earlier messages in this conversation")
+        );
+        let serialized = format!("{projected:?}");
+        assert!(!serialized.contains("search_patient_sources"));
+        assert!(!serialized.contains("read_patient_sources"));
+        let _ = (
+            SourceVersion {
+                candidate_id: String::new(),
+                revision: String::new(),
+            },
+            RecordRead::Unavailable,
         );
     }
 }

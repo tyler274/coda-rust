@@ -372,6 +372,7 @@ impl DemoStore {
                 sources: Default::default(),
                 transcript: Vec::new(),
                 feedback: SnapshotFeedback::Loaded,
+                queued: Vec::new(),
             },
         };
         Ok(ChatSnapshotResponse { snapshot })

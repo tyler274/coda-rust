@@ -53,6 +53,18 @@ fn wire_time(saved_at: SavedAt) -> physician_wire::SavedAt {
 }
 
 impl Conversation {
+    /// The physician's messages queued behind active/held/failed work, in order.
+    pub fn queued_messages(&self) -> Vec<physician_wire::QueuedMessageWire> {
+        self.queued
+            .iter()
+            .map(|msg| physician_wire::QueuedMessageWire {
+                id: MessageKey(msg.id.clone()),
+                text: msg.text.clone(),
+                saved_at: wire_time(msg.saved_at),
+            })
+            .collect()
+    }
+
     /// The exchanges of this conversation, in the order the physician started
     /// them. `feedback` gives the physician's saved feedback on a published
     /// answer. Only the current work offers Stop, Resume or Try again.

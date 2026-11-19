@@ -1161,6 +1161,7 @@ fn collect_review_evidence(
                     body: body.clone(),
                     raw_content: (!raw_content.is_empty()).then_some(raw_content.clone()),
                     external_url: external_url.clone(),
+                    origin: Default::default(),
                 },
             );
             readback.push(CitedSourceReadback {
@@ -1177,6 +1178,7 @@ fn collect_review_evidence(
                 body,
                 raw_content,
                 external_url,
+                origin: Default::default(),
             });
         }
     }
@@ -1227,6 +1229,7 @@ fn collect_review_evidence(
                     body: body.clone(),
                     raw_content: (!src.content.is_empty()).then(|| src.content.clone()),
                     external_url: external_url.clone(),
+                    origin: Default::default(),
                 },
             );
             readback.push(CitedSourceReadback {
@@ -1243,6 +1246,7 @@ fn collect_review_evidence(
                 body,
                 raw_content: src.content.clone(),
                 external_url,
+                origin: Default::default(),
             });
         } else {
             evidence.push(ReviewEvidenceRefWire {

@@ -53,6 +53,10 @@ impl Scope {
             target.chat.clone(),
         ]
     }
+
+    pub(crate) fn account_parts(&self) -> [&str; 3] {
+        [&self.base, &self.practice, &self.physician]
+    }
 }
 
 /// One stored record and when it was written.

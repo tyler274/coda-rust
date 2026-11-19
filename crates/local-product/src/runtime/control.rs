@@ -1,8 +1,8 @@
 //! Typed status and attempt storage. Public readback combines these rows with
 //! authored state and, when requested, the appended execution record.
 use super::{
-    Attempt, AttemptStatus, BindingRef, Conversation, Message, Scope, SkillPackageId,
-    conversion_error,
+    Attempt, AttemptStatus, BindingRef, Conversation, Message, QueuedMessage, Scope,
+    SkillPackageId, StoppedQueue, conversion_error,
     delivery::TraceContext,
     entities::{chat_attempt, conversation, reply_draft, reply_revision, revision_attempt},
     error,
@@ -124,6 +124,10 @@ struct ConversationState {
     scenario: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     origin: Option<TraceContext>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    queued: Vec<QueuedMessage>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    stopped_queue: Option<StoppedQueue>,
 }
 
 /// The reply draft row's `state`: each [`Draft`] field that has no column or
@@ -176,6 +180,8 @@ pub(super) fn conversation_state(conversation: &Conversation) -> Result<Value, D
         last_activity_at: _,
         scenario,
         origin,
+        queued,
+        stopped_queue,
     } = conversation;
     serde_json::to_value(ConversationState {
         messages: messages.clone(),
@@ -190,6 +196,8 @@ pub(super) fn conversation_state(conversation: &Conversation) -> Result<Value, D
         last_activity_at: conversation.latest_activity_at(),
         scenario: scenario.clone(),
         origin: origin.clone(),
+        queued: queued.clone(),
+        stopped_queue: stopped_queue.clone(),
     })
     .map_err(conversion_error("Conversation", "conversation state"))
 }
@@ -272,6 +280,8 @@ pub(super) fn conversation(
         last_activity_at,
         scenario,
         origin,
+        queued,
+        stopped_queue,
     } = serde_json::from_value(row.state)
         .map_err(conversion_error("conversation state", "ConversationState"))?;
     let mut conversation = Conversation {
@@ -292,6 +302,8 @@ pub(super) fn conversation(
         last_activity_at,
         scenario,
         origin,
+        queued,
+        stopped_queue,
     };
     conversation.last_activity_at = conversation.latest_activity_at();
     if let Some(outcome) = conversation.run().and_then(|run| run.outcome) {

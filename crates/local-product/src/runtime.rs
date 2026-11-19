@@ -393,6 +393,54 @@ impl Attempt {
     }
 }
 
+/// One physician message queued behind active, cut-off, or failed chat work.
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+pub struct QueuedMessage {
+    /// Original physician command identity.
+    pub id: String,
+    /// Authored message text (updated when edited while queued).
+    pub text: String,
+    /// Physician's browser timezone supplied with the message.
+    pub timezone: String,
+    /// Optional rehearsal scenario tag.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub scenario: Option<String>,
+    /// Database-clock seconds when queued.
+    pub saved_at: SavedAt,
+    /// Accepted session reference for restart authorization when sent.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub session_hash: Option<Vec<u8>>,
+}
+
+/// Queued messages returned to the composer when Stop ended `work`.
+#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct StoppedQueue {
+    /// The stopped work identity.
+    pub work: String,
+    /// Queued message texts returned by Stop, in order.
+    pub texts: Vec<String>,
+}
+
+/// Outcome of `work.stop` on a physician conversation, carrying any returned queue text.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct ChatStopped {
+    /// Whether this Stop newly held active work, replayed a held stop, or was refused.
+    pub outcome: Stopped,
+    /// Text of every queued message returned for the composer (repeated on duplicate Stop).
+    pub returned_messages: Vec<String>,
+}
+
+/// Outcome of mutating a queued chat message (`queue_edit` / `withdraw` / `queue_send_now`).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum QueueMutation {
+    /// Mutation applied (or duplicate receipt confirmed it applied).
+    Applied,
+    /// Exact original command already applied.
+    Duplicate,
+    /// Refused (blank text, missing queue item, or conflicting key).
+    Refused,
+}
+
 /// Durable conversation and work projection.
 #[derive(Clone, Debug)]
 pub struct Conversation {
@@ -431,6 +479,10 @@ pub struct Conversation {
     pub last_activity_at: i64,
     /// The latest accepted input's rehearsal scenario; see [`Input::scenario`].
     pub scenario: Option<String>,
+    /// Physician messages queued behind active, cut-off, or failed work.
+    pub queued: Vec<QueuedMessage>,
+    /// Queued message texts returned when Stop held the current work, so repeated Stop returns them.
+    pub stopped_queue: Option<StoppedQueue>,
 }
 
 use harness::engine::{
@@ -623,6 +675,8 @@ impl Conversation {
             opened_at: 0,
             last_activity_at: 0,
             scenario: None,
+            queued: Vec::new(),
+            stopped_queue: None,
         }
     }
 }
@@ -673,7 +727,7 @@ pub enum Resumed {
 }
 
 /// Outcome of a physician's Stop on the current chat work.
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Stopped {
     /// The conversation is held until Resume or newer input. Do not publish a
     /// wakeup.
@@ -1129,12 +1183,50 @@ impl Store {
         recipe: &RequestRecipe,
         origin: Option<delivery::TraceContext>,
     ) -> Result<Accepted, RuntimeError> {
+        self.accept_with_delivery_authorized(
+            scope,
+            input,
+            session_hash,
+            physician_wire::SubmitDelivery::SendNow,
+            skills,
+            recipe,
+            origin,
+        )
+        .await
+    }
+
+    /// Accepts hosted input as immediate (`SendNow`) or queued (`SendNext`
+    /// while Coda is working), recording its receipt under the conversation lock.
+    #[expect(
+        clippy::too_many_arguments,
+        reason = "mirrors accept_authorized plus delivery mode without changing Input receipt hash"
+    )]
+    pub async fn accept_with_delivery_authorized(
+        &self,
+        scope: &Scope,
+        input: &Input,
+        session_hash: Vec<u8>,
+        delivery: physician_wire::SubmitDelivery,
+        skills: &PhysicianSkills,
+        recipe: &RequestRecipe,
+        origin: Option<delivery::TraceContext>,
+    ) -> Result<Accepted, RuntimeError> {
         if session_hash.len() != 32 {
             return Err(error("invalid session reference").into());
         }
         Self::validate_accept_fields(scope, input)?;
         let tx = self.db.begin().await?;
-        Self::accept_in_tx(tx, scope, input, session_hash, skills, recipe, origin).await
+        Self::accept_in_tx_with_delivery(
+            tx,
+            scope,
+            input,
+            session_hash,
+            delivery,
+            skills,
+            recipe,
+            origin,
+        )
+        .await
     }
 
     pub(super) fn validate_accept_fields(scope: &Scope, input: &Input) -> Result<(), RuntimeError> {
@@ -1165,7 +1257,41 @@ impl Store {
         recipe: &RequestRecipe,
         origin: Option<delivery::TraceContext>,
     ) -> Result<Accepted, RuntimeError> {
-        let command = serde_json::json!({"scope": scope, "input": input});
+        Self::accept_in_tx_with_delivery(
+            tx,
+            scope,
+            input,
+            session_hash,
+            physician_wire::SubmitDelivery::SendNow,
+            skills,
+            recipe,
+            origin,
+        )
+        .await
+    }
+
+    #[expect(
+        clippy::too_many_arguments,
+        reason = "transactional chat input path parameterized by delivery mode"
+    )]
+    async fn accept_in_tx_with_delivery(
+        tx: sea_orm::DatabaseTransaction,
+        scope: &Scope,
+        input: &Input,
+        session_hash: Vec<u8>,
+        delivery: physician_wire::SubmitDelivery,
+        skills: &PhysicianSkills,
+        recipe: &RequestRecipe,
+        origin: Option<delivery::TraceContext>,
+    ) -> Result<Accepted, RuntimeError> {
+        let command = match delivery {
+            physician_wire::SubmitDelivery::SendNow => {
+                serde_json::json!({"scope": scope, "input": input})
+            }
+            physician_wire::SubmitDelivery::SendNext => {
+                serde_json::json!({"scope": scope, "input": input, "delivery": "send_next"})
+            }
+        };
         match receipt::record(&tx, &scope.practice, &scope.physician, &input.key, &command).await? {
             receipt::Receipt::New => {}
             receipt::Receipt::Same => {
@@ -1188,49 +1314,306 @@ impl Store {
             .await?
             .ok_or_else(|| error("missing conversation"))?;
         let mut state = Self::conversation_control(&tx, scope, row).await?;
+        let now = now(&tx).await?;
+        if delivery == physician_wire::SubmitDelivery::SendNext && state.status.running() {
+            state.record_activity(now);
+            state.queued.push(QueuedMessage {
+                id: input.key.clone(),
+                text: input.text.clone(),
+                timezone: input.timezone.clone(),
+                scenario: input.scenario.clone(),
+                saved_at: SavedAt(now),
+                session_hash: Some(session_hash),
+            });
+            Self::save(tx, scope, &state).await?;
+            return Ok(Accepted::New);
+        }
+        Self::start_or_steer_messages_in_tx(
+            &tx,
+            scope,
+            &mut state,
+            now,
+            vec![(input.key.clone(), input.text.clone(), SavedAt(now))],
+            session_hash,
+            input.scenario.clone(),
+            Some((package, recipe)),
+            origin,
+        )
+        .await?;
+        Self::save(tx, scope, &state).await?;
+        Ok(Accepted::New)
+    }
+
+    /// Starts new work (if not running) or steers running work with `messages`,
+    /// persisting delivery notification in the same transaction.
+    #[expect(
+        clippy::too_many_arguments,
+        reason = "internal shared helper for accept, send_queued_now, and drain-on-finish"
+    )]
+    async fn start_or_steer_messages_in_tx(
+        tx: &sea_orm::DatabaseTransaction,
+        scope: &Scope,
+        state: &mut Conversation,
+        now: i64,
+        messages: Vec<(String, String, SavedAt)>,
+        session_hash: Vec<u8>,
+        scenario: Option<String>,
+        fresh_recipe: Option<(SkillPackageId, &RequestRecipe)>,
+        origin: Option<delivery::TraceContext>,
+    ) -> Result<(), RuntimeError> {
+        let notify_id = messages
+            .last()
+            .map(|(id, _, _)| id.clone())
+            .ok_or_else(|| error("empty chat message batch"))?;
         if !state.status.running() {
+            let prev_work = state.work.clone();
             state.work = Uuid::new_v4().to_string();
             let mut runs = RunHistory::default();
             state.failures = runs.start(Uuid::new_v4().to_string())?;
             state.runs.insert(state.work.clone(), runs);
-            state.skills = package;
-            let pinned_version = sources::snapshot_version_in_tx(&tx, &scope.workspace).await?;
-            let recipe = recipe.bind(Some(scope.cache_key("chords-chat")));
-            let recipe = frozen::keep_binding(&tx, scope, &recipe)
-                .await?
-                .with_pinned_source_version(pinned_version);
-            state.bindings.insert(state.work.clone(), recipe);
+            let pinned_version = sources::snapshot_version_in_tx(tx, &scope.workspace).await?;
+            let binding = match fresh_recipe {
+                Some((package, recipe)) => {
+                    state.skills = package;
+                    let bound = recipe.bind(Some(scope.cache_key("chords-chat")));
+                    frozen::keep_binding(tx, scope, &bound).await?
+                }
+                None => state
+                    .bindings
+                    .get(&prev_work)
+                    .cloned()
+                    .ok_or_else(|| error("accepted recipe missing"))?,
+            }
+            .with_pinned_source_version(pinned_version);
+            state.bindings.insert(state.work.clone(), binding);
             state.budget_resume_after = 0;
         }
         state.revision += 1;
-        let now = now(&tx).await?;
         state.session_hash = Some(session_hash);
-        state.scenario = input.scenario.clone();
+        state.scenario = scenario;
         state.dispatch_after = now;
         state.origin = origin;
-        delivery::notify(
-            &tx,
-            &delivery::Delivery::chat_turn(scope.clone(), input.key.clone()),
-        )
-        .await?;
+        state.stopped_queue = None;
+        delivery::notify(tx, &delivery::Delivery::chat_turn(scope.clone(), notify_id)).await?;
         if state.messages.is_empty() {
             state.opened_at = now;
         }
         state.record_activity(now);
-        state.messages.push(Message {
-            role: MessageRole::User {
-                id: input.key.clone(),
-                work: state.work.clone(),
-                revision: state.revision,
-            },
-            text: input.text.clone(),
-            saved_at: SavedAt(now),
-        });
+        for (id, text, saved_at) in messages {
+            state.messages.push(Message {
+                role: MessageRole::User {
+                    id,
+                    work: state.work.clone(),
+                    revision: state.revision,
+                },
+                text,
+                saved_at,
+            });
+        }
         // New input steers ordinary work. After Stop it is the physician
         // sending something else, which releases the hold and drops Resume.
         state.status = WorkStatus::Pending;
+        Ok(())
+    }
+
+    /// Updates the text of one queued message, preserving its queue position.
+    pub async fn edit_queued_message_authorized(
+        &self,
+        scope: &Scope,
+        key: &str,
+        message_id: &str,
+        new_text: &str,
+    ) -> Result<QueueMutation, RuntimeError> {
+        if [
+            key,
+            message_id,
+            new_text,
+            &scope.practice,
+            &scope.physician,
+            &scope.workspace,
+            &scope.chat,
+        ]
+        .iter()
+        .any(|s| s.trim().is_empty())
+        {
+            return Ok(QueueMutation::Refused);
+        }
+        scope.validate()?;
+        let tx = self.db.begin().await?;
+        let command = serde_json::json!({
+            "scope": scope,
+            "queue_edit": {"message_id": message_id, "text": new_text},
+        });
+        match receipt::record(&tx, &scope.practice, &scope.physician, key, &command).await? {
+            receipt::Receipt::New => {}
+            receipt::Receipt::Same => {
+                tx.commit().await?;
+                return Ok(QueueMutation::Duplicate);
+            }
+            receipt::Receipt::Different => {
+                tx.commit().await?;
+                return Ok(QueueMutation::Refused);
+            }
+        }
+        let Some(row) = conversation::Entity::find_by_id(keys(scope))
+            .lock_exclusive()
+            .one(&tx)
+            .await?
+        else {
+            tx.commit().await?;
+            return Ok(QueueMutation::Refused);
+        };
+        let mut state = Self::conversation_control(&tx, scope, row).await?;
+        let Some(queued) = state.queued.iter_mut().find(|item| item.id == message_id) else {
+            tx.commit().await?;
+            return Ok(QueueMutation::Refused);
+        };
+        queued.text = new_text.to_owned();
+        let now = now(&tx).await?;
+        state.record_activity(now);
         Self::save(tx, scope, &state).await?;
-        Ok(Accepted::New)
+        Ok(QueueMutation::Applied)
+    }
+
+    /// Deletes one queued message (`message.withdraw`).
+    pub async fn withdraw_queued_message_authorized(
+        &self,
+        scope: &Scope,
+        key: &str,
+        message_id: &str,
+    ) -> Result<QueueMutation, RuntimeError> {
+        if [
+            key,
+            message_id,
+            &scope.practice,
+            &scope.physician,
+            &scope.workspace,
+            &scope.chat,
+        ]
+        .iter()
+        .any(|s| s.trim().is_empty())
+        {
+            return Ok(QueueMutation::Refused);
+        }
+        scope.validate()?;
+        let tx = self.db.begin().await?;
+        let command = serde_json::json!({
+            "scope": scope,
+            "withdraw": {"message_id": message_id},
+        });
+        match receipt::record(&tx, &scope.practice, &scope.physician, key, &command).await? {
+            receipt::Receipt::New => {}
+            receipt::Receipt::Same => {
+                tx.commit().await?;
+                return Ok(QueueMutation::Duplicate);
+            }
+            receipt::Receipt::Different => {
+                tx.commit().await?;
+                return Ok(QueueMutation::Refused);
+            }
+        }
+        let Some(row) = conversation::Entity::find_by_id(keys(scope))
+            .lock_exclusive()
+            .one(&tx)
+            .await?
+        else {
+            tx.commit().await?;
+            return Ok(QueueMutation::Refused);
+        };
+        let mut state = Self::conversation_control(&tx, scope, row).await?;
+        let before = state.queued.len();
+        state.queued.retain(|item| item.id != message_id);
+        if state.queued.len() == before {
+            tx.commit().await?;
+            return Ok(QueueMutation::Refused);
+        }
+        let now = now(&tx).await?;
+        state.record_activity(now);
+        Self::save(tx, scope, &state).await?;
+        Ok(QueueMutation::Applied)
+    }
+
+    /// Removes one queued message and sends it at once (`Send now`), steering running
+    /// work or starting a new turn while keeping any remaining queued messages queued.
+    #[expect(
+        clippy::too_many_arguments,
+        reason = "authorizes queued promotion under conversation lock with receipt"
+    )]
+    pub async fn send_queued_now_authorized(
+        &self,
+        scope: &Scope,
+        key: &str,
+        session_hash: Vec<u8>,
+        message_id: &str,
+        timezone: &str,
+        skills: &PhysicianSkills,
+        recipe: &RequestRecipe,
+        origin: Option<delivery::TraceContext>,
+    ) -> Result<QueueMutation, RuntimeError> {
+        if session_hash.len() != 32 {
+            return Err(error("invalid session reference").into());
+        }
+        if [
+            key,
+            message_id,
+            timezone,
+            &scope.practice,
+            &scope.physician,
+            &scope.workspace,
+            &scope.chat,
+        ]
+        .iter()
+        .any(|s| s.trim().is_empty())
+        {
+            return Ok(QueueMutation::Refused);
+        }
+        scope.validate()?;
+        let tx = self.db.begin().await?;
+        let command = serde_json::json!({
+            "scope": scope,
+            "queue_send_now": {"message_id": message_id, "timezone": timezone},
+        });
+        match receipt::record(&tx, &scope.practice, &scope.physician, key, &command).await? {
+            receipt::Receipt::New => {}
+            receipt::Receipt::Same => {
+                tx.commit().await?;
+                return Ok(QueueMutation::Duplicate);
+            }
+            receipt::Receipt::Different => {
+                tx.commit().await?;
+                return Ok(QueueMutation::Refused);
+            }
+        }
+        let Some(row) = conversation::Entity::find_by_id(keys(scope))
+            .lock_exclusive()
+            .one(&tx)
+            .await?
+        else {
+            tx.commit().await?;
+            return Ok(QueueMutation::Refused);
+        };
+        let mut state = Self::conversation_control(&tx, scope, row).await?;
+        let Some(pos) = state.queued.iter().position(|item| item.id == message_id) else {
+            tx.commit().await?;
+            return Ok(QueueMutation::Refused);
+        };
+        let queued = state.queued.remove(pos);
+        let package = frozen::keep_skills(&tx, scope, skills).await?;
+        let now = now(&tx).await?;
+        Self::start_or_steer_messages_in_tx(
+            &tx,
+            scope,
+            &mut state,
+            now,
+            vec![(queued.id, queued.text, SavedAt(now))],
+            session_hash,
+            queued.scenario,
+            Some((package, recipe)),
+            origin,
+        )
+        .await?;
+        Self::save(tx, scope, &state).await?;
+        Ok(QueueMutation::Applied)
     }
 
     /// Reads authoritative state using the complete tenant/physician binding.
@@ -1807,6 +2190,37 @@ impl Store {
             text,
             saved_at: SavedAt(now),
         });
+        if !state.queued.is_empty() {
+            let drained = std::mem::take(&mut state.queued);
+            let next_session = drained
+                .iter()
+                .rev()
+                .find_map(|item| item.session_hash.clone())
+                .or_else(|| state.session_hash.clone())
+                .ok_or_else(|| error("queued turn lacks session reference"))?;
+            let next_scenario = drained
+                .iter()
+                .rev()
+                .find_map(|item| item.scenario.clone())
+                .or_else(|| state.scenario.clone());
+            let next_origin = state.origin.clone();
+            let batch: Vec<(String, String, SavedAt)> = drained
+                .into_iter()
+                .map(|item| (item.id, item.text, item.saved_at))
+                .collect();
+            Self::start_or_steer_messages_in_tx(
+                &tx,
+                &claim.scope,
+                &mut state,
+                now,
+                batch,
+                next_session,
+                next_scenario,
+                None,
+                next_origin,
+            )
+            .await?;
+        }
         Self::save(tx, &claim.scope, &state).await?;
         Ok(Finish::Committed)
     }
@@ -1920,6 +2334,20 @@ impl Store {
         session_hash: Vec<u8>,
         work_item_id: &str,
     ) -> Result<Stopped, RuntimeError> {
+        self.stop_chat_authorized(scope, key, session_hash, work_item_id)
+            .await
+            .map(|stopped| stopped.outcome)
+    }
+
+    /// Hosted chat Stop, returning any queued messages returned for the composer
+    /// (both on the initial hold and on every duplicate Stop for that held work).
+    pub async fn stop_chat_authorized(
+        &self,
+        scope: &Scope,
+        key: &str,
+        session_hash: Vec<u8>,
+        work_item_id: &str,
+    ) -> Result<ChatStopped, RuntimeError> {
         if session_hash.len() != 32 {
             return Err(error("invalid session reference").into());
         }
@@ -1934,7 +2362,10 @@ impl Store {
         .iter()
         .any(|part| part.trim().is_empty())
         {
-            return Ok(Stopped::Refused);
+            return Ok(ChatStopped {
+                outcome: Stopped::Refused,
+                returned_messages: Vec::new(),
+            });
         }
         let tx = self.db.begin().await?;
         let command = serde_json::json!({
@@ -1944,12 +2375,30 @@ impl Store {
         match receipt::record(&tx, &scope.practice, &scope.physician, key, &command).await? {
             receipt::Receipt::New => {}
             receipt::Receipt::Same => {
+                let returned_messages = match conversation::Entity::find_by_id(keys(scope))
+                    .one(&tx)
+                    .await?
+                {
+                    Some(row) => Self::conversation_control(&tx, scope, row)
+                        .await?
+                        .stopped_queue
+                        .filter(|sq| sq.work == work_item_id)
+                        .map(|sq| sq.texts)
+                        .unwrap_or_default(),
+                    None => Vec::new(),
+                };
                 tx.commit().await?;
-                return Ok(Stopped::Duplicate);
+                return Ok(ChatStopped {
+                    outcome: Stopped::Duplicate,
+                    returned_messages,
+                });
             }
             receipt::Receipt::Different => {
                 tx.commit().await?;
-                return Ok(Stopped::Refused);
+                return Ok(ChatStopped {
+                    outcome: Stopped::Refused,
+                    returned_messages: Vec::new(),
+                });
             }
         }
         let Some(row) = conversation::Entity::find_by_id(keys(scope))
@@ -1962,18 +2411,34 @@ impl Store {
                 workspace: scope.workspace.clone(),
                 job_id: scope.chat.clone(),
             };
-            return Self::stop_practice_job_in_tx(tx, &practice_scope, work_item_id).await;
+            let outcome = Self::stop_practice_job_in_tx(tx, &practice_scope, work_item_id).await?;
+            return Ok(ChatStopped {
+                outcome,
+                returned_messages: Vec::new(),
+            });
         };
         let mut state = Self::conversation_control(&tx, scope, row).await?;
         // Another press on work that is already held, from a page that has
         // not caught up or a second tab, finds what it asked for. Nothing
         // changes, so its receipt is not kept.
         if state.status == WorkStatus::Held && state.work == work_item_id {
-            return Ok(Stopped::Duplicate);
+            let returned_messages = state
+                .stopped_queue
+                .as_ref()
+                .filter(|sq| sq.work == work_item_id)
+                .map(|sq| sq.texts.clone())
+                .unwrap_or_default();
+            return Ok(ChatStopped {
+                outcome: Stopped::Duplicate,
+                returned_messages,
+            });
         }
         // A failed turn stays Try again. Stop does not turn it into a hold.
         if !state.status.running() || state.work != work_item_id {
-            return Ok(Stopped::Refused);
+            return Ok(ChatStopped {
+                outcome: Stopped::Refused,
+                returned_messages: Vec::new(),
+            });
         }
         if let Some(attempt) = state
             .attempts
@@ -1982,12 +2447,20 @@ impl Store {
         {
             attempt.status = AttemptStatus::Cancelled;
         }
+        let returned_messages: Vec<String> = state.queued.drain(..).map(|item| item.text).collect();
+        state.stopped_queue = (!returned_messages.is_empty()).then(|| StoppedQueue {
+            work: state.work.clone(),
+            texts: returned_messages.clone(),
+        });
         state.end_run(RunOutcome::Held {
             reason: HoldReason::Stopped,
         })?;
         state.session_hash = Some(session_hash);
         Self::save(tx, scope, &state).await?;
-        Ok(Stopped::Held)
+        Ok(ChatStopped {
+            outcome: Stopped::Held,
+            returned_messages,
+        })
     }
 
     /// The physician's chats in one workspace, latest activity first, then
