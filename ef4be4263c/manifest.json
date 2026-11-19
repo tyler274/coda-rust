@@ -1,0 +1,36 @@
+{
+  "branch": "tyler-eng-312-1-reply-proposals-schema-types",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "PostgreSQL reply proposals schema migration and ledger lockstep",
+      "kind": "run",
+      "revision": "502f66cd49200d17b36366db2fa8bdf832ed6154",
+      "dirty": false,
+      "recorded": "2026-11-18T23:14:40+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "runtime::tests::migration",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-PostgreSQL-reply-proposals-schema-migration-and-.log"
+      ],
+      "seconds": 48.3,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "ef4be4263cd0914f5e0883bbaac663ccb6affa5d",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    }
+  ]
+}
