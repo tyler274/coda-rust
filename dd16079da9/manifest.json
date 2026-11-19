@@ -1,0 +1,64 @@
+{
+  "branch": "tyler-eng-316-1-briefing-routes-and-view",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Pre-visit briefing view, wire, client, and physician-app unit suite",
+      "kind": "run",
+      "revision": "5f5ad9ada0b6509080a880df6a07264c5f542cb8",
+      "dirty": false,
+      "recorded": "2026-11-19T00:21:56+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib"
+      ],
+      "expect": "\\b95 passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "01-Pre-visit-briefing-view-wire-client-and-physicia.log"
+      ],
+      "seconds": 15.6,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "dd16079da9a359a616cc73c668de26cd3718593f",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Physician sample briefings and schedule route unit tests",
+      "kind": "run",
+      "revision": "5f5ad9ada0b6509080a880df6a07264c5f542cb8",
+      "dirty": false,
+      "recorded": "2026-11-19T00:22:12+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--lib",
+        "briefings"
+      ],
+      "expect": "\\b[1-9][0-9]* passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "02-Physician-sample-briefings-and-schedule-route-un.log"
+      ],
+      "seconds": 61.8,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "dd16079da9a359a616cc73c668de26cd3718593f",
+        "reason": "Clean rebase onto Batch 3 tip (#46, 1a93d374c); workspace and wasm32 clippy and unit checks re-verified"
+      }
+    }
+  ]
+}

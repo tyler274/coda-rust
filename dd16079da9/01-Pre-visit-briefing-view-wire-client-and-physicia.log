@@ -1,0 +1,105 @@
+   Compiling physician-wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/physician-wire)
+   Compiling physician-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/physician-client)
+   Compiling physician-app v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/physician-app)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 15.41s
+     Running unittests src/lib.rs (target/debug/deps/physician_app-6da83c5f23b9e436)
+
+running 95 tests
+test composer::tests::a_validated_conflict_pauses_autosave_until_the_physician_chooses ... ok
+test composer::tests::a_newer_notice_outlives_the_save_it_replaced ... ok
+test composer::tests::an_answer_for_an_attempt_that_is_not_running_changes_nothing ... ok
+test composer::tests::a_failure_is_not_a_conflict_and_an_edit_makes_the_save_eligible_again ... ok
+test composer::tests::a_lost_answer_reconciles_when_the_server_holds_this_pages_text ... ok
+test composer::tests::a_stale_recovered_baseline_reconciles_or_asks ... ok
+test composer::tests::a_save_that_ends_after_navigation_marks_neither_surface ... ok
+test composer::tests::a_never_saved_draft_saves_over_revision_zero ... ok
+test composer::tests::a_read_older_than_this_pages_own_save_or_during_it_changes_nothing ... ok
+test composer::tests::leaving_the_patient_page_clears_the_mark ... ok
+test composer::tests::recovery_never_replaces_typing_after_reload ... ok
+test composer::tests::before_a_chat_opens_the_draft_is_saved_under_the_draft_chat_id ... ok
+test composer::tests::nothing_saves_when_the_text_is_already_the_saved_text ... ok
+test composer::tests::a_clear_waits_behind_the_revision_zero_save ... ok
+test composer::tests::a_refused_send_keeps_the_text_as_an_ordinary_draft ... ok
+test composer::tests::edited_text_that_no_longer_starts_with_the_message_is_kept_whole ... ok
+test composer::tests::acceptance_after_navigation_clears_the_sending_chat_only ... ok
+test composer::tests::a_pending_clear_survives_reload_until_confirmed ... ok
+test composer::tests::another_tabs_newer_revision_is_never_cleared_automatically ... ok
+test composer::tests::another_patients_chat_of_the_same_id_is_its_own_draft ... ok
+test composer::tests::retry_names_exactly_the_conflicting_revision_and_conflicts_again_if_it_moved ... ok
+test composer::tests::text_typed_before_the_saved_draft_arrives_is_kept_and_a_newer_draft_conflicts ... ok
+test composer::tests::a_send_that_was_never_autosaved_needs_no_durable_clear ... ok
+test composer::tests::recovered_send_never_clears_another_writers_newer_draft ... ok
+test composer::tests::an_accepted_send_clears_only_the_submitted_text ... ok
+test composer::tests::the_saved_draft_is_shown_and_saved_over_its_own_revision ... ok
+test composer::tests::recovery_restores_unsent_text_and_drops_once_saved ... ok
+test composer::tests::replayed_first_save_preserves_another_writers_text ... ok
+test composer::tests::use_newer_text_discards_the_local_edit_and_takes_the_baseline ... ok
+test draft_notice_tests::routine_draft_saves_are_silent_but_failures_remain_visible ... ok
+test composer::tests::edits_during_a_save_keep_the_typing_and_need_a_trailing_save ... ok
+test local_draft::tests::an_unknown_identity_has_no_scope ... ok
+test panels::tests::panel_keys_are_recognised_and_others_are_not ... ok
+test conversation_line_tests::new_conversation_ids_are_distinct_chat_ids ... ok
+test feedback::tests::the_snapshot_shows_until_the_page_saves ... ok
+test composer::tests::a_pending_send_survives_reload_until_answered ... ok
+test patient_reviews_panel::tests::each_review_state_maps_to_its_expected_control_and_working_row_style ... ok
+test patient_reviews_panel::tests::done_control_confirmation_retires_once_review_version_advances ... ok
+test feedback::tests::a_rating_change_keeps_the_saved_details ... ok
+test feedback::tests::a_read_the_page_saw_still_shows_when_a_later_read_fails ... ok
+test conversation_line_tests::each_stop_press_is_its_own_command_for_the_named_work ... ok
+test feedback::tests::a_thumb_after_a_failed_details_save_sends_those_details ... ok
+test patient_reviews_panel::tests::selection_keeps_requested_review_across_reload_or_falls_back_to_newest ... ok
+test feedback::tests::one_save_at_a_time_and_the_choice_shows_while_it_saves ... ok
+test feedback::tests::unavailable_feedback_disables_thumbs_the_page_saved_nothing_on ... ok
+test feedback::tests::a_save_outlives_a_chat_switch_and_a_failure_keeps_its_draft ... ok
+test feedback::tests::an_older_revision_never_replaces_a_newer_one ... ok
+test feedback::tests::a_failed_save_says_so_shows_the_saved_rating_and_retries ... ok
+test feedback::tests::a_failed_read_never_falls_back_below_a_newer_revision_read ... ok
+test conversation_line_tests::try_again_is_one_keyed_resume_of_the_named_run ... ok
+test patient_reviews_panel::tests::working_review_poll_backoff_stays_active_across_ten_minute_run_window ... ok
+test feedback::tests::details_save_with_the_shown_rating_and_a_landed_save_closes_its_dialog ... ok
+test conversation_line_tests::a_finished_answer_carries_its_response_id_and_feedback_as_read ... ok
+test command_answer_tests::a_command_is_taken_refused_with_its_reason_or_unconfirmed ... ok
+test conversation_line_tests::each_answer_state_draws_its_line_and_action ... ok
+test sign_in_followup_tests::a_hosted_link_waits_for_email ... ok
+test shell::tests::an_answer_counts_only_for_the_question_it_answered ... ok
+test local_draft::tests::a_full_store_reports_failure_and_keeps_the_older_copy ... ok
+test local_draft::tests::ids_containing_the_separator_stay_unambiguous ... ok
+test local_draft::tests::removed_access_and_sign_out_forget_records ... ok
+test schedule_briefing::tests::browser_zone_clock_formats_across_iana_zones_and_dst ... ok
+test local_draft::tests::a_new_document_claims_the_previous_documents_record ... ok
+test local_draft::tests::a_record_comes_back_only_for_its_own_backend_practice_physician_and_target ... ok
+test sign_in_followup_tests::a_hosted_response_is_not_token_issued ... ok
+test sign_in_followup_tests::proof_delivery_provides_the_token_for_redemption ... ok
+test stream_retry_tests::a_stream_is_silent_30_seconds_after_its_last_bytes ... ok
+test schedule_briefing::tests::ended_cancelled_and_moved_briefings_show_historical_standing_notices ... ok
+test composer::tests::reload_replays_unanswered_first_save_before_clearing_sent_text ... ok
+test shell::tests::citation_preview_deduplicates_multiline_and_truncated_quotes_against_body ... ok
+test sign_in_followup_tests::another_message_stays_a_failure ... ok
+test stream_retry_tests::cloud_run_rotations_never_build_up_the_wait ... ok
+test stream_retry_tests::immediate_eof_and_failures_back_off_to_the_longest_delay ... ok
+test conversation_line_tests::clinical_dialogs_close_when_workspace_leaves_panel_or_disappears ... ok
+test schedule_briefing::tests::refresh_failed_freshness_formats_as_of_in_browser_zone ... ok
+test shell::tests::a_panel_change_is_never_for_a_physician_the_practice_no_longer_lists ... ok
+test shell::tests::a_panel_change_is_for_the_physician_chosen_while_the_practice_lists_them ... ok
+test shell::tests::a_usable_day_with_no_visits_still_shows_the_schedule ... ok
+test stream_retry_tests::sustained_stream_starts_the_backoff_over ... ok
+test tabs::tests::malformed_news_reads_as_nothing ... ok
+test stream_retry_tests::the_sixth_and_later_failures_still_retry_at_the_longest_delay ... ok
+test shell::tests::initial_understanding_run_renders_building_and_failed_headings ... ok
+test shell::tests::clinic_demographic_workspace_extracts_card_fields_without_clinical_sections ... ok
+test shell::tests::today_covers_loading_empty_error_stale_and_loaded ... ok
+test shell::tests::workspace_chats_and_reader_use_the_open_selection ... ok
+test shell::tests::ready_replies_can_be_reviewed ... ok
+test schedule_briefing::tests::actively_retrying_preparation_with_prior_failed_attempt_stays_preparing ... ok
+test tabs::tests::a_tab_hears_another_tabs_news_and_ignores_its_own ... ok
+test shell::tests::a_row_says_when_coda_marked_it_now ... ok
+test shell::tests::active_now_concern_persists_until_opened_once ... ok
+test shell::tests::source_lines_require_saved_successful_read_before_reporting_usable ... ok
+test shell::tests::records_state_preserves_last_good_time_on_failed_refresh_and_omits_unpulled ... ok
+test schedule_briefing::tests::schedule_rows_drop_ended_visits_keep_cancelled_and_mark_first_active_as_next ... ok
+test conversation_line_tests::reopened_answer_carries_citations_basis_and_newer_records_marker ... ok
+test shell::tests::recorded_past_work_is_the_empty_history_screen ... ok
+test shell::tests::recorded_practice_keeps_synopsis_search_and_an_ended_visit ... ok
+
+test result: ok. 95 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
