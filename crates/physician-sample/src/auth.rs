@@ -435,32 +435,37 @@ pub(crate) async fn guard(
     };
 
     if let Some(workspace) = direct_workspace(&path) {
-        match auth.store.membership(&identity, workspace).await {
-            Membership::Allowed => {
+        match auth.store.try_membership(&identity, workspace).await {
+            Ok(Membership::Allowed) => {
                 let response = next.run(Request::from_parts(parts, body)).await;
                 return enrich_allowed_workspace(response).await;
             }
-            Membership::ClinicDemographic => {
+            Ok(Membership::ClinicDemographic) => {
                 return clinic_demographics(&auth, &identity, workspace).await;
             }
-            Membership::Denied => return not_found(),
+            Ok(Membership::Denied) => return not_found(),
+            Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
         }
     }
 
-    if let Some(workspace) = request_workspace(&path, query.as_deref())
-        && !allows_workspace(&auth, &identity, &workspace).await
-    {
-        // 404, not 403: a denied physician cannot read clinical projections
-        // for a patient outside their panel.
-        return not_found();
+    if let Some(workspace) = request_workspace(&path, query.as_deref()) {
+        match try_allows_workspace(&auth, &identity, &workspace).await {
+            Ok(true) => {}
+            // 404, not 403: a denied physician cannot read clinical projections
+            // for a patient outside their panel.
+            Ok(false) => return not_found(),
+            Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
+        }
     }
 
     if path == "/patient-workspaces/events" {
         let watched_workspace = query_param(query.as_deref(), "patient_workspace_id");
-        if let Some(ref ws) = watched_workspace
-            && !allows_workspace(&auth, &identity, ws).await
-        {
-            return not_found();
+        if let Some(ref ws) = watched_workspace {
+            match try_allows_workspace(&auth, &identity, ws).await {
+                Ok(true) => {}
+                Ok(false) => return not_found(),
+                Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
+            }
         }
         let response = next.run(Request::from_parts(parts, body)).await;
         return guard_event_stream(response, auth, token, identity, watched_workspace).await;
@@ -1155,12 +1160,11 @@ struct InviteBody {
     display_name: String,
 }
 
-/// Invites one roster patient to Duet on the front door. Held by clinic
-/// admins, secretaries, or physicians granted panel-assignment (`admin`)
-/// permission, like the panel changes. The patient must be on the caller's
-/// practice's roster: a cross-practice or unknown patient answers 404, so
-/// the roster's existence stays unknown outside the practice. Proof mode
-/// returns the redeem token. Hosted mode mails it and drops it from the JSON.
+/// Invites one roster patient to Duet on the front door. Any active practice
+/// member may invite a patient from that patient's page. The patient must be on
+/// the caller's practice's roster: a cross-practice or unknown patient answers
+/// 404, so the roster's existence stays unknown outside the practice. Proof
+/// mode returns the redeem token. Hosted mode mails it and drops it from JSON.
 async fn invite(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Response {
     let token = bearer(&request);
     let Ok(caller) = resolve(&auth, token).await else {
@@ -1172,12 +1176,12 @@ async fn invite(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Respon
     let Ok(body) = serde_json::from_slice::<InviteBody>(&bytes) else {
         return StatusCode::BAD_REQUEST.into_response();
     };
-    let caller_admin = auth
+    let caller_active = auth
         .store
         .account_by_identity(&caller)
         .await
-        .is_some_and(|account| account.active && account.admin);
-    if !caller_admin {
+        .is_some_and(|account| account.active);
+    if !caller_active {
         return StatusCode::FORBIDDEN.into_response();
     }
     let Ok(owner) = auth
@@ -1207,6 +1211,145 @@ async fn invite(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Respon
             })),
         )
             .into_response(),
+    }
+}
+
+#[derive(Deserialize)]
+struct ColleagueInviteBody {
+    /// Colleague physician's work email address.
+    email: String,
+    /// Colleague physician's display name.
+    display_name: String,
+}
+
+/// Invites a colleague physician into the caller's practice (`Sign-in.Journey.2`).
+/// Any active practice member may invite non-admin colleagues.
+async fn invite_colleague(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Response {
+    let token = bearer(&request);
+    let Ok(caller) = resolve(&auth, token).await else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let caller_active = auth
+        .store
+        .account_by_identity(&caller)
+        .await
+        .is_some_and(|account| account.active);
+    if !caller_active {
+        return StatusCode::FORBIDDEN.into_response();
+    }
+    let Ok(bytes) = axum::body::to_bytes(request.into_body(), 64 * 1024).await else {
+        return StatusCode::BAD_REQUEST.into_response();
+    };
+    let Ok(body) = serde_json::from_slice::<ColleagueInviteBody>(&bytes) else {
+        return StatusCode::BAD_REQUEST.into_response();
+    };
+    let email = body.email.trim().to_lowercase();
+    let display_name = body.display_name.trim().to_owned();
+    let valid_email = email
+        .split_once('@')
+        .is_some_and(|(local, domain)| !local.is_empty() && domain.contains('.'))
+        && !email.chars().any(char::is_whitespace);
+    if !valid_email || display_name.is_empty() {
+        return (
+            StatusCode::UNPROCESSABLE_ENTITY,
+            Json(json!({
+                "detail": "Invitation requires a valid email address and display name.",
+                "code": "invalid_invitation",
+            })),
+        )
+            .into_response();
+    }
+    if auth.store.account_by_email(&email).await.is_some() {
+        return (
+            StatusCode::CONFLICT,
+            Json(json!({
+                "detail": "An account with that email address already exists.",
+                "code": "account_exists",
+            })),
+        )
+            .into_response();
+    }
+    let invite_token = match auth
+        .store
+        .invite(&caller.practice_id, &email, &display_name, false, now())
+        .await
+    {
+        Ok(token) => token,
+        Err(SignInError::Invalid | SignInError::Inactive) => {
+            return (
+                StatusCode::CONFLICT,
+                Json(json!({
+                    "detail": "That email address already has a conflicting invitation.",
+                    "code": "invitation_conflict",
+                })),
+            )
+                .into_response();
+        }
+    };
+    match &auth.mail {
+        crate::gmail::Delivery::Proof => {
+            auth.delivery
+                .lock()
+                .expect("delivery")
+                .push(invite_token.clone());
+            let mut sign_in_path = String::from("/?code=");
+            for byte in invite_token.bytes() {
+                if byte.is_ascii_alphanumeric() || matches!(byte, b'-' | b'_' | b'.' | b'~') {
+                    sign_in_path.push(char::from(byte));
+                } else {
+                    use std::fmt::Write as _;
+                    let _ = write!(sign_in_path, "%{byte:02X}");
+                }
+            }
+            sign_in_path.push_str("&email=");
+            for byte in email.bytes() {
+                if byte.is_ascii_alphanumeric() || matches!(byte, b'-' | b'_' | b'.' | b'~') {
+                    sign_in_path.push(char::from(byte));
+                } else {
+                    use std::fmt::Write as _;
+                    let _ = write!(sign_in_path, "%{byte:02X}");
+                }
+            }
+            (
+                StatusCode::OK,
+                Json(json!({
+                    "practice_id": caller.practice_id,
+                    "email": email,
+                    "display_name": display_name,
+                    "role": "physician",
+                    "status": "invited",
+                    "delivery": "stored",
+                    "token": invite_token,
+                    "sign_in_path": sign_in_path,
+                })),
+            )
+                .into_response()
+        }
+        crate::gmail::Delivery::Hosted(sender) => {
+            if let Err(error) = sender.send_physician_invite(&email, &invite_token).await {
+                tracing::warn!(%error, "colleague invitation mail was not sent");
+                return (
+                    StatusCode::BAD_GATEWAY,
+                    Json(json!({
+                        "detail": "The colleague invitation email could not be sent.",
+                        "code": "mail_delivery_failed",
+                    })),
+                )
+                    .into_response();
+            }
+            (
+                StatusCode::OK,
+                Json(json!({
+                    "practice_id": caller.practice_id,
+                    "email": email,
+                    "display_name": display_name,
+                    "role": "physician",
+                    "status": "invited",
+                    "delivery": "mailed",
+                })),
+            )
+                .into_response()
+        }
     }
 }
 
@@ -1245,6 +1388,44 @@ async fn deliver_invite(
     }
 }
 
+/// The workspace membership check a handler uses, propagating store
+/// outages instead of masquerading them as absent patients.
+pub(crate) async fn try_allows_workspace(
+    auth: &Auth,
+    identity: &PhysicianIdentity,
+    patient_workspace_id: &str,
+) -> Result<bool, StoreUnavailable> {
+    Ok(auth
+        .store
+        .try_membership(identity, patient_workspace_id)
+        .await?
+        == Membership::Allowed)
+}
+
+/// Checks each candidate patient's panel access individually. A patient whose
+/// access check fails with [`StoreUnavailable`] is skipped without hiding the
+/// remaining patients, setting `may_be_missing_someone` (`A1.3`).
+pub(crate) async fn check_panel_candidates(
+    store: &dyn AuthStore,
+    identity: &PhysicianIdentity,
+    candidates: &[String],
+) -> (std::collections::BTreeSet<String>, bool) {
+    let mut allowed = std::collections::BTreeSet::new();
+    let mut may_be_missing_someone = false;
+    for ws in candidates {
+        match store.try_membership(identity, ws).await {
+            Ok(Membership::Allowed) => {
+                allowed.insert(ws.clone());
+            }
+            Ok(Membership::ClinicDemographic | Membership::Denied) => {}
+            Err(_) => {
+                may_be_missing_someone = true;
+            }
+        }
+    }
+    (allowed, may_be_missing_someone)
+}
+
 /// The workspace membership check a handler uses: a denied or
 /// missing membership answers 404 so clinical projections stay panel-scoped.
 pub(crate) async fn allows_workspace(
@@ -1275,6 +1456,7 @@ pub(crate) fn auth_routes(auth: Arc<Auth>) -> axum::Router {
             put(put_panel).delete(delete_panel),
         )
         .route("/auth/invitations", post(invite))
+        .route("/auth/colleagues/invitations", post(invite_colleague))
         .with_state(auth)
 }
 
@@ -2632,7 +2814,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn a_non_admin_physician_cannot_invite_and_a_conflict_answers_409() {
+    async fn any_active_practice_member_can_invite_and_a_conflict_answers_409() {
         let (app, _, front_door) = authed_practice().await;
         let colleague = session_for(&app, COLLEAGUE_EMAIL).await;
         let (status, body) = invite_patient(
@@ -2642,10 +2824,14 @@ mod tests {
             crate::WORKSPACE_IDS[0],
         )
         .await;
-        assert_eq!(status, StatusCode::FORBIDDEN, "{body}");
-        assert!(front_door.invitation("luna@example.test").await.is_none());
+        assert_eq!(
+            status,
+            StatusCode::OK,
+            "active non-admin practice member must be allowed to invite: {body}"
+        );
+        assert!(front_door.invitation("luna@example.test").await.is_some());
 
-        // An admin invite that collides with an existing front-door account
+        // An invite that collides with an existing front-door account
         // answers conflict, and the roster patient stays unlinked.
         let session = session_for(&app, STAGING_EMAIL).await;
         front_door.seed_linked_account(
@@ -2939,5 +3125,491 @@ mod tests {
                 .get("token")
                 .is_none()
         );
+    }
+
+    #[tokio::test]
+    async fn active_practice_member_can_invite_non_admin_colleague_and_sign_in() {
+        let (app, store, _) = authed_practice().await;
+        let member = session_for(&app, COLLEAGUE_EMAIL).await;
+        let (status, body) = send(
+            &app,
+            Method::POST.as_str(),
+            "/auth/colleagues/invitations",
+            Some(&member),
+            Some(
+                json!({
+                    "email": "new-doc@codahealth.test",
+                    "display_name": "Dr. New Colleague",
+                })
+                .to_string(),
+            ),
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK, "{body}");
+        let value: Value = serde_json::from_str(&body).expect("colleague invite body");
+        assert_eq!(value["practice_id"], STAGING_PRACTICE_ID);
+        assert_eq!(value["email"], "new-doc@codahealth.test");
+        assert_eq!(value["display_name"], "Dr. New Colleague");
+        assert_eq!(value["role"], "physician");
+        assert_eq!(value["status"], "invited");
+        let token = value["token"].as_str().expect("proof mode token");
+        assert!(
+            store
+                .account_by_email("new-doc@codahealth.test")
+                .await
+                .is_none(),
+            "pending invitation must not create an active account until redeemed"
+        );
+
+        // Colleague can verify their invitation token into a working session.
+        let (verify_status, verify_body) = send(
+            &app,
+            Method::POST.as_str(),
+            "/auth/verify",
+            None,
+            Some(
+                json!({
+                    "email": "new-doc@codahealth.test",
+                    "token": token,
+                })
+                .to_string(),
+            ),
+        )
+        .await;
+        assert_eq!(verify_status, StatusCode::OK, "{verify_body}");
+        let invited = store
+            .account_by_email("new-doc@codahealth.test")
+            .await
+            .expect("created colleague account after redeem");
+        assert_eq!(invited.identity.practice_id, STAGING_PRACTICE_ID);
+        assert!(!invited.admin, "invited colleague must be non-admin");
+        assert!(invited.active);
+        let verified: Value = serde_json::from_str(&verify_body).expect("verify body");
+        let new_session = verified["session"].as_str().expect("colleague session");
+        let (who_status, who_body) = send(
+            &app,
+            Method::GET.as_str(),
+            "/auth/whoami",
+            Some(new_session),
+            None,
+        )
+        .await;
+        assert_eq!(who_status, StatusCode::OK, "{who_body}");
+        let who: Value = serde_json::from_str(&who_body).expect("whoami body");
+        assert_eq!(who["admin"], false);
+
+        // Duplicate colleague email is refused with 409 Conflict.
+        let (dup_status, _) = send(
+            &app,
+            Method::POST.as_str(),
+            "/auth/colleagues/invitations",
+            Some(&member),
+            Some(
+                json!({
+                    "email": "new-doc@codahealth.test",
+                    "display_name": "Duplicate",
+                })
+                .to_string(),
+            ),
+        )
+        .await;
+        assert_eq!(dup_status, StatusCode::CONFLICT);
+    }
+
+    #[tokio::test]
+    async fn hosted_colleague_invite_mails_link_and_omits_token() {
+        let (sender, fake) = gmail_sender(false).await;
+        let (app, _, session) = hosted_practice(sender).await;
+        let (status, body) = send(
+            &app,
+            Method::POST.as_str(),
+            "/auth/colleagues/invitations",
+            Some(&session),
+            Some(
+                json!({
+                    "email": "colleague-hosted@codahealth.test",
+                    "display_name": "Dr. Hosted Colleague",
+                })
+                .to_string(),
+            ),
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK, "{body}");
+        let value: Value = serde_json::from_str(&body).expect("hosted colleague invite");
+        assert!(value.get("token").is_none(), "{body}");
+        assert_eq!(value["delivery"], "mailed");
+        let sent = fake.sent.lock().expect("sent");
+        assert_eq!(sent.len(), 1);
+        let message = decode_gmail_raw(&sent[0]);
+        assert!(
+            message.contains("To: colleague-hosted@codahealth.test"),
+            "{message}"
+        );
+        let code = query_value(&message, "code");
+        assert!(!body.contains(code), "{body}");
+    }
+
+    struct PartialFailAuthStore {
+        inner: Arc<MemoryAuthStore>,
+        failing_workspace: String,
+    }
+
+    #[async_trait::async_trait]
+    impl AuthStore for PartialFailAuthStore {
+        async fn begin_sign_in(
+            &self,
+            email: &str,
+            now: u64,
+        ) -> Result<String, physician_auth::SignInError> {
+            self.inner.begin_sign_in(email, now).await
+        }
+        async fn complete_sign_in(
+            &self,
+            email: &str,
+            token: &str,
+            now: u64,
+        ) -> Result<(PhysicianIdentity, String), physician_auth::SignInError> {
+            self.inner.complete_sign_in(email, token, now).await
+        }
+        async fn mint_fixed_session(
+            &self,
+            identity: &PhysicianIdentity,
+            now: u64,
+            ends_at: u64,
+        ) -> Result<String, physician_auth::SignInError> {
+            self.inner.mint_fixed_session(identity, now, ends_at).await
+        }
+        async fn identity(
+            &self,
+            token: &str,
+            now: u64,
+        ) -> Result<PhysicianIdentity, physician_auth::SessionError> {
+            self.inner.identity(token, now).await
+        }
+        async fn verified_session(
+            &self,
+            token: &str,
+            now: u64,
+        ) -> Result<physician_auth::Session, physician_auth::SessionError> {
+            self.inner.verified_session(token, now).await
+        }
+        async fn note_physician_activity(
+            &self,
+            token: &str,
+            now: u64,
+        ) -> Result<physician_auth::SessionActivity, physician_auth::StoreUnavailable> {
+            self.inner.note_physician_activity(token, now).await
+        }
+        async fn publish_authorized(
+            &self,
+            token: &str,
+            identity: &PhysicianIdentity,
+            workspace: &str,
+            now: u64,
+            publish: &mut (dyn FnMut() -> Result<(), String> + Send),
+        ) -> Result<(), String> {
+            self.inner
+                .publish_authorized(token, identity, workspace, now, publish)
+                .await
+        }
+        async fn end_session(&self, token: &str) -> Result<(), physician_auth::StoreUnavailable> {
+            self.inner.end_session(token).await
+        }
+        async fn account_by_email(&self, email: &str) -> Option<physician_auth::Account> {
+            self.inner.account_by_email(email).await
+        }
+        async fn try_account_by_identity(
+            &self,
+            identity: &PhysicianIdentity,
+        ) -> Result<Option<physician_auth::Account>, physician_auth::StoreUnavailable> {
+            self.inner.try_account_by_identity(identity).await
+        }
+        async fn account_by_identity(
+            &self,
+            identity: &PhysicianIdentity,
+        ) -> Option<physician_auth::Account> {
+            self.inner.account_by_identity(identity).await
+        }
+        async fn try_membership(
+            &self,
+            identity: &PhysicianIdentity,
+            patient_workspace_id: &str,
+        ) -> Result<Membership, physician_auth::StoreUnavailable> {
+            if patient_workspace_id == self.failing_workspace {
+                return Err(physician_auth::StoreUnavailable);
+            }
+            self.inner
+                .try_membership(identity, patient_workspace_id)
+                .await
+        }
+        async fn membership(
+            &self,
+            identity: &PhysicianIdentity,
+            patient_workspace_id: &str,
+        ) -> Membership {
+            self.inner.membership(identity, patient_workspace_id).await
+        }
+        async fn set_membership(
+            &self,
+            identity: &PhysicianIdentity,
+            patient_workspace_id: &str,
+            membership: Membership,
+        ) -> Result<(), physician_auth::StoreUnavailable> {
+            self.inner
+                .set_membership(identity, patient_workspace_id, membership)
+                .await
+        }
+        async fn place_on_panel(
+            &self,
+            identity: &PhysicianIdentity,
+            patient_workspace_id: &str,
+        ) -> Result<(), physician_auth::StoreUnavailable> {
+            self.inner
+                .place_on_panel(identity, patient_workspace_id)
+                .await
+        }
+        async fn try_panel(
+            &self,
+            identity: &PhysicianIdentity,
+        ) -> Result<Vec<String>, physician_auth::StoreUnavailable> {
+            self.inner.try_panel(identity).await
+        }
+        async fn panel(&self, identity: &PhysicianIdentity) -> Vec<String> {
+            self.inner.panel(identity).await
+        }
+        async fn assign_panel(
+            &self,
+            actor: &PhysicianIdentity,
+            physician_id: &str,
+            patient_workspace_id: &str,
+            membership: Membership,
+        ) -> Result<(), physician_auth::PanelError> {
+            self.inner
+                .assign_panel(actor, physician_id, patient_workspace_id, membership)
+                .await
+        }
+        async fn ensure_practice(
+            &self,
+            practice_id: &str,
+            clock: physician_auth::PracticeClock,
+        ) -> Result<(), physician_auth::StoreUnavailable> {
+            self.inner.ensure_practice(practice_id, clock).await
+        }
+        async fn upsert_practice(
+            &self,
+            record: &physician_auth::PracticeRecord,
+        ) -> Result<physician_auth::PracticeSetupOutcome, physician_auth::PracticeSetupError>
+        {
+            self.inner.upsert_practice(record).await
+        }
+        async fn practice(
+            &self,
+            practice_id: &str,
+        ) -> Result<Option<physician_auth::PracticeRecord>, physician_auth::StoreUnavailable>
+        {
+            self.inner.practice(practice_id).await
+        }
+        async fn practice_clock(
+            &self,
+            practice_id: &str,
+        ) -> Result<physician_auth::PracticeClock, physician_auth::StoreUnavailable> {
+            self.inner.practice_clock(practice_id).await
+        }
+        async fn set_synthetic_practice_clock(
+            &self,
+            practice_id: &str,
+            update: physician_auth::SyntheticClockUpdate,
+        ) -> Result<physician_auth::PracticeClock, physician_auth::ClockUpdateError> {
+            self.inner
+                .set_synthetic_practice_clock(practice_id, update)
+                .await
+        }
+        async fn register_patient(
+            &self,
+            practice_id: &str,
+            patient_workspace_id: &str,
+        ) -> Result<(), physician_auth::StoreUnavailable> {
+            self.inner
+                .register_patient(practice_id, patient_workspace_id)
+                .await
+        }
+        async fn patient_practice(
+            &self,
+            patient_workspace_id: &str,
+        ) -> Result<Option<String>, physician_auth::StoreUnavailable> {
+            self.inner.patient_practice(patient_workspace_id).await
+        }
+        async fn practice_patients(
+            &self,
+            practice_id: &str,
+        ) -> Result<Vec<String>, physician_auth::StoreUnavailable> {
+            self.inner.practice_patients(practice_id).await
+        }
+        async fn practice_accounts(
+            &self,
+            practice_id: &str,
+        ) -> Result<Vec<physician_auth::Account>, physician_auth::StoreUnavailable> {
+            AuthStore::practice_accounts(self.inner.as_ref(), practice_id).await
+        }
+        async fn create_account(
+            &self,
+            practice_id: &str,
+            physician_id: Option<&str>,
+            email: &str,
+            display_name: &str,
+            admin: bool,
+            now: u64,
+        ) -> Result<
+            (
+                physician_auth::Account,
+                physician_auth::AccountCreateOutcome,
+            ),
+            physician_auth::AccountSetupError,
+        > {
+            self.inner
+                .create_account(practice_id, physician_id, email, display_name, admin, now)
+                .await
+        }
+        async fn invite(
+            &self,
+            practice_id: &str,
+            email: &str,
+            display_name: &str,
+            admin: bool,
+            now: u64,
+        ) -> Result<String, physician_auth::SignInError> {
+            self.inner
+                .invite(practice_id, email, display_name, admin, now)
+                .await
+        }
+        async fn redeem_invitation(
+            &self,
+            email: &str,
+            token: &str,
+            now: u64,
+        ) -> Result<(PhysicianIdentity, String), physician_auth::SignInError> {
+            self.inner.redeem_invitation(email, token, now).await
+        }
+        async fn deactivate(&self, email: &str) -> bool {
+            self.inner.deactivate(email).await
+        }
+        async fn reactivate(&self, email: &str) -> bool {
+            self.inner.reactivate(email).await
+        }
+        async fn remove_account(&self, email: &str) -> bool {
+            self.inner.remove_account(email).await
+        }
+        async fn invite_patient(
+            &self,
+            practice_id: &str,
+            patient_workspace_id: &str,
+            now: u64,
+        ) -> Result<String, physician_auth::SignInError> {
+            self.inner
+                .invite_patient(practice_id, patient_workspace_id, now)
+                .await
+        }
+        async fn accept_patient_invitation(
+            &self,
+            token: &str,
+            duet_account_id: &str,
+            now: u64,
+        ) -> Result<physician_auth::PatientLink, physician_auth::SignInError> {
+            self.inner
+                .accept_patient_invitation(token, duet_account_id, now)
+                .await
+        }
+        async fn grant_patient_consent(
+            &self,
+            practice_id: &str,
+            patient_workspace_id: &str,
+            duet_account_id: &str,
+            consent_version: &str,
+            now: u64,
+        ) -> Result<physician_auth::PatientLink, physician_auth::SignInError> {
+            self.inner
+                .grant_patient_consent(
+                    practice_id,
+                    patient_workspace_id,
+                    duet_account_id,
+                    consent_version,
+                    now,
+                )
+                .await
+        }
+        async fn revoke_patient_consent(
+            &self,
+            practice_id: &str,
+            patient_workspace_id: &str,
+            now: u64,
+        ) -> Result<physician_auth::PatientLink, physician_auth::SignInError> {
+            self.inner
+                .revoke_patient_consent(practice_id, patient_workspace_id, now)
+                .await
+        }
+        async fn patient_link(
+            &self,
+            practice_id: &str,
+            patient_workspace_id: &str,
+        ) -> Option<physician_auth::PatientLink> {
+            self.inner
+                .patient_link(practice_id, patient_workspace_id)
+                .await
+        }
+    }
+
+    #[tokio::test]
+    async fn unchecked_patient_marks_cross_patient_lists_incomplete_and_single_patient_503() {
+        let inner = Arc::new(MemoryAuthStore::new());
+        inner.seed_account(
+            STAGING_PRACTICE_ID,
+            "staging-physician",
+            STAGING_EMAIL,
+            "Staging Physician",
+            true,
+        );
+        let failing_ws = crate::WORKSPACE_IDS[1].to_owned();
+        let wrapper = Arc::new(PartialFailAuthStore {
+            inner: Arc::clone(&inner),
+            failing_workspace: failing_ws.clone(),
+        });
+        let auth = Auth::over_fixture(
+            wrapper as Arc<dyn AuthStore>,
+            Arc::new(MemoryFrontDoorStore::new()),
+        )
+        .await;
+        let app = required_router(crate::fixture_site(), auth);
+        let session = session_for(&app, STAGING_EMAIL).await;
+
+        for path in [
+            "/patient-workspaces",
+            "/today",
+            "/recent-conversations",
+            "/updates",
+        ] {
+            let (status, body) = send(&app, Method::GET.as_str(), path, Some(&session), None).await;
+            assert_eq!(status, StatusCode::OK, "{path}: {body}");
+            let value: Value = serde_json::from_str(&body).expect("json body");
+            assert_eq!(
+                value["may_be_missing_someone"],
+                json!(true),
+                "{path} must surface may_be_missing_someone=true: {body}"
+            );
+            assert!(
+                !body.contains(&failing_ws),
+                "{path} must exclude unchecked patient {failing_ws}: {body}"
+            );
+        }
+
+        // Single-patient endpoint for the unchecked patient fails loudly with 503, never 404.
+        let (single_status, _) = send(
+            &app,
+            Method::GET.as_str(),
+            &format!("/patient-workspaces/{failing_ws}/briefings"),
+            Some(&session),
+            None,
+        )
+        .await;
+        assert_eq!(single_status, StatusCode::SERVICE_UNAVAILABLE);
     }
 }

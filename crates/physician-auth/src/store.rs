@@ -540,30 +540,34 @@ impl AuthStore for PostgresAuthStore {
             .map(Self::account_row)
     }
 
-    async fn account_by_identity(&self, identity: &PhysicianIdentity) -> Option<Account> {
-        Accounts::find()
+    async fn try_account_by_identity(
+        &self,
+        identity: &PhysicianIdentity,
+    ) -> Result<Option<Account>, StoreUnavailable> {
+        let row = Accounts::find()
             .filter(crate::migration::account::Column::PracticeId.eq(&identity.practice_id))
             .filter(crate::migration::account::Column::PhysicianId.eq(&identity.physician_id))
             .one(&self.db)
             .await
-            .ok()
-            .flatten()
-            .map(Self::account_row)
+            .map_err(|_| StoreUnavailable)?;
+        Ok(row.map(Self::account_row))
     }
 
-    async fn membership(
+    async fn account_by_identity(&self, identity: &PhysicianIdentity) -> Option<Account> {
+        self.try_account_by_identity(identity).await.ok().flatten()
+    }
+
+    async fn try_membership(
         &self,
         identity: &PhysicianIdentity,
         patient_workspace_id: &str,
-    ) -> Membership {
-        let Ok(owner) = self.patient_practice(patient_workspace_id).await else {
-            return Membership::Denied;
-        };
+    ) -> Result<Membership, StoreUnavailable> {
+        let owner = self.patient_practice(patient_workspace_id).await?;
         if owner
             .as_deref()
             .is_some_and(|owner| owner != identity.practice_id)
         {
-            return Membership::Denied;
+            return Ok(Membership::Denied);
         }
         let panel_allowed = Memberships::find()
             .filter(crate::migration::membership::Column::PracticeId.eq(&identity.practice_id))
@@ -573,16 +577,25 @@ impl AuthStore for PostgresAuthStore {
             )
             .one(&self.db)
             .await
-            .ok()
-            .flatten()
+            .map_err(|_| StoreUnavailable)?
             .is_some_and(|row| row.allowed);
         if panel_allowed {
-            return Membership::Allowed;
+            return Ok(Membership::Allowed);
         }
         if owner.as_deref() == Some(identity.practice_id.as_str()) {
-            return Membership::ClinicDemographic;
+            return Ok(Membership::ClinicDemographic);
         }
-        Membership::Denied
+        Ok(Membership::Denied)
+    }
+
+    async fn membership(
+        &self,
+        identity: &PhysicianIdentity,
+        patient_workspace_id: &str,
+    ) -> Membership {
+        self.try_membership(identity, patient_workspace_id)
+            .await
+            .unwrap_or(Membership::Denied)
     }
 
     async fn set_membership(
@@ -655,7 +668,10 @@ impl AuthStore for PostgresAuthStore {
             .map_err(|_| StoreUnavailable)
     }
 
-    async fn panel(&self, identity: &PhysicianIdentity) -> Vec<String> {
+    async fn try_panel(
+        &self,
+        identity: &PhysicianIdentity,
+    ) -> Result<Vec<String>, StoreUnavailable> {
         use crate::migration::{membership, patient};
         use sea_orm::sea_query::ExprTrait;
 
@@ -672,12 +688,16 @@ impl AuthStore for PostgresAuthStore {
             .filter(membership::Column::PatientWorkspaceId.not_in_subquery(foreign))
             .all(&self.db)
             .await
-            .unwrap_or_default()
+            .map_err(|_| StoreUnavailable)?
             .into_iter()
             .map(|row| row.patient_workspace_id)
             .collect();
         workspaces.sort();
-        workspaces
+        Ok(workspaces)
+    }
+
+    async fn panel(&self, identity: &PhysicianIdentity) -> Vec<String> {
+        self.try_panel(identity).await.unwrap_or_default()
     }
 
     async fn assign_panel(

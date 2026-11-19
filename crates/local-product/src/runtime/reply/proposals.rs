@@ -28,7 +28,7 @@ use super::super::concerns::{
     RetireConcern, RetirementReason, SourceWork, WorkspaceAccess, load_concern,
     retire_concern_in_tx,
 };
-use super::super::entities::{reply_draft, source_pull};
+use super::super::entities::{reply_draft, reply_revision, source_pull};
 use super::super::receipt::{self, Receipt};
 use super::super::sources::SourcePull;
 use super::super::understanding::{SummaryCitation, build_summary_citation};
@@ -5784,5 +5784,238 @@ impl Store {
         encode_conversation_model(&conv)?.update(&tx).await?;
         tx.commit().await?;
         Ok(conv)
+    }
+}
+
+/// Durable reply-proposal feedback bundle exported for evaluation (`A1.7`, `K1.3`):
+/// Coda's proposed reply text paired with the physician's revision instructions,
+/// revised draft text, and copied text.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct EvaluatedReplyFeedback {
+    /// Practice identifier.
+    pub practice: String,
+    /// Patient workspace identifier.
+    pub workspace: String,
+    /// Linked conversation identifier.
+    pub conversation_id: String,
+    /// Physician who revised or copied the reply.
+    pub physician: String,
+    /// Conversation reply cycle identifier.
+    pub reply_id: u64,
+    /// Latest Coda proposal text for this reply cycle, when present.
+    pub proposed_text: Option<String>,
+    /// Current physician draft text, when a draft binding exists.
+    pub revised_text: Option<String>,
+    /// Draft binding standing (`active`, `detached_chose_update`, etc.).
+    pub draft_status: Option<String>,
+    /// Current draft revision number, when bound.
+    pub draft_revision: Option<u64>,
+    /// Ordered revision instructions issued by the physician on this reply draft.
+    pub revision_instructions: Vec<String>,
+    /// Ordered final texts copied by the physician for this reply.
+    pub copied_texts: Vec<String>,
+    /// Unix timestamp of the most recent binding update or copy action.
+    pub updated_at: i64,
+}
+
+impl Store {
+    /// Reads all reply draft revisions, instructions, and copy actions for
+    /// offline evaluation (`physician-migrate feedback`), ordered deterministically.
+    pub async fn reply_feedback_for_evaluation(
+        &self,
+    ) -> Result<Vec<EvaluatedReplyFeedback>, DbErr> {
+        let tx = self.snapshot().await?;
+        let proposal_rows = reply_proposal::Entity::find()
+            .order_by_asc(reply_proposal::Column::Practice)
+            .order_by_asc(reply_proposal::Column::ConversationId)
+            .order_by_asc(reply_proposal::Column::Version)
+            .all(&tx)
+            .await?;
+        let binding_rows = reply_draft_binding::Entity::find()
+            .order_by_asc(reply_draft_binding::Column::Practice)
+            .order_by_asc(reply_draft_binding::Column::ConversationId)
+            .order_by_asc(reply_draft_binding::Column::Physician)
+            .order_by_asc(reply_draft_binding::Column::ReplyId)
+            .all(&tx)
+            .await?;
+        let draft_rows = reply_draft::Entity::find().all(&tx).await?;
+        let revision_rows = reply_revision::Entity::find()
+            .order_by_asc(reply_revision::Column::Ordinal)
+            .all(&tx)
+            .await?;
+        let copy_rows = reply_copy::Entity::find()
+            .order_by_asc(reply_copy::Column::CopiedAt)
+            .order_by_asc(reply_copy::Column::CopyId)
+            .all(&tx)
+            .await?;
+        tx.commit().await?;
+
+        let mut latest_proposal_by_reply: BTreeMap<(String, String, u64), String> = BTreeMap::new();
+        for row in proposal_rows {
+            let reply_id = u64::try_from(row.reply_id)
+                .map_err(conversion_error("reply_proposal.reply_id", "u64"))?;
+            latest_proposal_by_reply
+                .insert((row.practice, row.conversation_id, reply_id), row.text);
+        }
+
+        let mut drafts_by_scope: BTreeMap<(String, String, String, String), super::Draft> =
+            BTreeMap::new();
+        for row in draft_rows {
+            let scope_key = (
+                row.practice.clone(),
+                row.physician.clone(),
+                row.workspace.clone(),
+                row.reply.clone(),
+            );
+            drafts_by_scope.insert(scope_key, control::draft(row, Vec::new())?);
+        }
+
+        let mut instructions_by_scope: BTreeMap<(String, String, String, String), Vec<String>> =
+            BTreeMap::new();
+        for row in revision_rows {
+            let scope_key = (
+                row.practice.clone(),
+                row.physician.clone(),
+                row.workspace.clone(),
+                row.reply.clone(),
+            );
+            let earlier = control::earlier(row, Vec::new())?;
+            instructions_by_scope
+                .entry(scope_key)
+                .or_default()
+                .push(earlier.accepted.input.instruction);
+        }
+        for (scope_key, draft) in &drafts_by_scope {
+            if let Some(accepted) = &draft.accepted {
+                let instr = &accepted.input.instruction;
+                let list = instructions_by_scope.entry(scope_key.clone()).or_default();
+                if list.last() != Some(instr) {
+                    list.push(instr.clone());
+                }
+            }
+        }
+
+        #[derive(Clone, PartialEq, Eq, PartialOrd, Ord)]
+        struct CopyFeedbackKey {
+            practice: String,
+            conversation_id: String,
+            physician: String,
+            reply_id: u64,
+        }
+        struct CopyGroup {
+            workspace: String,
+            copied_texts: Vec<String>,
+            updated_at: i64,
+        }
+
+        let mut copies_by_key: BTreeMap<CopyFeedbackKey, CopyGroup> = BTreeMap::new();
+        for row in copy_rows {
+            let reply_id = u64::try_from(row.reply_id)
+                .map_err(conversion_error("reply_copy.reply_id", "u64"))?;
+            let key = CopyFeedbackKey {
+                practice: row.practice,
+                conversation_id: row.conversation_id,
+                physician: row.physician,
+                reply_id,
+            };
+            let entry = copies_by_key.entry(key).or_insert_with(|| CopyGroup {
+                workspace: row.workspace,
+                copied_texts: Vec::new(),
+                updated_at: row.copied_at,
+            });
+            entry.copied_texts.push(row.copied_text);
+            entry.updated_at = entry.updated_at.max(row.copied_at);
+        }
+
+        let mut seen = BTreeSet::new();
+        let mut evaluated = Vec::new();
+        for binding in binding_rows {
+            let reply_id = u64::try_from(binding.reply_id)
+                .map_err(conversion_error("reply_draft_binding.reply_id", "u64"))?;
+            let draft_revision = u64::try_from(binding.draft_revision).map_err(
+                conversion_error("reply_draft_binding.draft_revision", "u64"),
+            )?;
+            let key = CopyFeedbackKey {
+                practice: binding.practice.clone(),
+                conversation_id: binding.conversation_id.clone(),
+                physician: binding.physician.clone(),
+                reply_id,
+            };
+            let scope_key = (
+                binding.practice.clone(),
+                binding.physician.clone(),
+                binding.workspace.clone(),
+                binding.draft_scope_chat.clone(),
+            );
+            let proposed_text = latest_proposal_by_reply
+                .get(&(
+                    binding.practice.clone(),
+                    binding.conversation_id.clone(),
+                    reply_id,
+                ))
+                .cloned();
+            let revised_text = drafts_by_scope
+                .get(&scope_key)
+                .map(|draft| draft.text.clone());
+            let revision_instructions = instructions_by_scope
+                .get(&scope_key)
+                .cloned()
+                .unwrap_or_default();
+            let (copied_texts, copy_updated_at) = copies_by_key
+                .remove(&key)
+                .map(|group| (group.copied_texts, Some(group.updated_at)))
+                .unwrap_or_default();
+            let modified_draft = revised_text.as_deref() != proposed_text.as_deref()
+                || binding.pre_revision_your_text.is_some()
+                || draft_revision > 1;
+            if revision_instructions.is_empty() && copied_texts.is_empty() && !modified_draft {
+                continue;
+            }
+            seen.insert(key);
+            evaluated.push(EvaluatedReplyFeedback {
+                practice: binding.practice,
+                workspace: binding.workspace,
+                conversation_id: binding.conversation_id,
+                physician: binding.physician,
+                reply_id,
+                proposed_text,
+                revised_text,
+                draft_status: Some(binding.standing),
+                draft_revision: Some(draft_revision),
+                revision_instructions,
+                copied_texts,
+                updated_at: copy_updated_at
+                    .map_or(binding.updated_at, |ts| ts.max(binding.updated_at)),
+            });
+        }
+
+        for (key, group) in copies_by_key {
+            if seen.contains(&key) {
+                continue;
+            }
+            let proposed_text = latest_proposal_by_reply
+                .get(&(
+                    key.practice.clone(),
+                    key.conversation_id.clone(),
+                    key.reply_id,
+                ))
+                .cloned();
+            evaluated.push(EvaluatedReplyFeedback {
+                practice: key.practice,
+                workspace: group.workspace,
+                conversation_id: key.conversation_id,
+                physician: key.physician,
+                reply_id: key.reply_id,
+                proposed_text,
+                revised_text: None,
+                draft_status: None,
+                draft_revision: None,
+                revision_instructions: Vec::new(),
+                copied_texts: group.copied_texts,
+                updated_at: group.updated_at,
+            });
+        }
+
+        Ok(evaluated)
     }
 }

@@ -35,6 +35,8 @@ pub(crate) struct TodayMeta {
     pub also_reviewed: usize,
     /// Count of patient messages currently waiting in `Messages to match`.
     pub messages_to_match_count: usize,
+    /// Whether any unchecked patient was skipped on this list (`A1.3`).
+    pub may_be_missing_someone: bool,
 }
 
 impl TodayMeta {
@@ -46,6 +48,7 @@ impl TodayMeta {
             practice_outages: list.practice_outages.clone(),
             also_reviewed: list.also_reviewed,
             messages_to_match_count: list.messages_to_match_count,
+            may_be_missing_someone: list.may_be_missing_someone,
         }
     }
 }
@@ -65,6 +68,7 @@ pub(crate) fn today_shows_nothing_needs_you(
         && !meta.incomplete
         && meta.failed_parts.is_empty()
         && meta.practice_outages.is_empty()
+        && !meta.may_be_missing_someone
 }
 
 /// Formats one concise sentence naming which parts of Today or Updates could not load.
@@ -575,7 +579,8 @@ pub(crate) fn UpdatesMainSurface(
                         && page.rows.is_empty()
                         && page.reviewed_nothing_for_you.is_empty()
                         && page.earlier_days.is_empty()
-                        && page.failed_parts.is_empty() =>
+                        && page.failed_parts.is_empty()
+                        && !page.may_be_missing_someone =>
                 {
                     rsx! {
                         div { class: "updates-empty",
@@ -586,6 +591,9 @@ pub(crate) fn UpdatesMainSurface(
                 }
                 Some(page) => rsx! {
                     div { class: "today-main",
+                        crate::access_notice::MayBeMissingSomeoneNotice {
+                            visible: page.may_be_missing_someone,
+                        }
                         TodayPartialFailureBanner {
                             surface: "Updates",
                             failed_parts: page.failed_parts.clone(),
@@ -769,6 +777,17 @@ mod tests {
             ..TodayMeta::default()
         };
         assert!(!today_shows_nothing_needs_you(&[], &[], &[], &partial));
+
+        let partial_panel = TodayMeta {
+            may_be_missing_someone: true,
+            ..TodayMeta::default()
+        };
+        assert!(!today_shows_nothing_needs_you(
+            &[],
+            &[],
+            &[],
+            &partial_panel
+        ));
 
         let outage = TodayMeta {
             practice_outages: vec![PracticeOutageWire {

@@ -397,6 +397,9 @@ pub enum PhysicianSummaryAccessError {
     /// Database read failed.
     #[error("{0}")]
     Database(#[from] DbErr),
+    /// Authority store could not be reached.
+    #[error("physician authority store unavailable: {0}")]
+    AuthorityUnavailable(#[from] physician_auth::StoreUnavailable),
 }
 
 /// Why `save_patient_understanding` refused a completion candidate without saving.
@@ -1280,7 +1283,7 @@ impl Store {
         identity: &PhysicianIdentity,
         workspace: &str,
     ) -> Result<Option<PatientSummaryView>, PhysicianSummaryAccessError> {
-        let membership = auth.membership(identity, workspace).await;
+        let membership = auth.try_membership(identity, workspace).await?;
         if membership != Membership::Allowed {
             return Err(PhysicianSummaryAccessError::Unauthorized {
                 practice_id: identity.practice_id.clone(),

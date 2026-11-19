@@ -7,9 +7,11 @@
     reason = "converting to errors that keep their cause"
 )]
 
+mod access_notice;
 mod composer;
 mod feedback;
 mod follow_ups;
+mod invitations;
 mod local_command;
 mod local_draft;
 mod matching_reply;
@@ -2673,8 +2675,13 @@ fn PhysicianShell(
                             match recent_read.as_ref() {
                                 None => rsx! {},
                                 Some(Err(())) => rsx! { p { class: "sidebar-loading", "{RECENT_UNAVAILABLE}" } },
-                                Some(Ok(list)) if list.conversations.is_empty() => rsx! { p { class: "sidebar-empty", "{RECENT_NONE}" } },
+                                Some(Ok(list)) if list.conversations.is_empty() && !list.may_be_missing_someone => {
+                                    rsx! { p { class: "sidebar-empty", "{RECENT_NONE}" } }
+                                }
                                 Some(Ok(list)) => rsx! {
+                                    access_notice::MayBeMissingSomeoneNotice {
+                                        visible: list.may_be_missing_someone,
+                                    }
                                     for conversation in list.conversations.clone() {
                                         RecentRow {
                                             conversation,
@@ -2743,6 +2750,11 @@ fn PhysicianShell(
                             "Keyboard shortcuts"
                         }
                         if !client.read().is_demo() {
+                            invitations::ColleagueInviteTrigger {
+                                client,
+                                session,
+                                shown,
+                            }
                             Button {
                                 variant: ButtonVariant::Quiet,
                                 aria_label: "Sign out of Coda",
@@ -2880,6 +2892,7 @@ fn PhysicianShell(
                             schedule_rows: today_schedule_rows.clone(),
                             show_schedule,
                             schedule,
+                            schedule_may_be_missing_someone: day.is_some_and(|d| d.may_be_missing_someone),
                             schedule_freshness: schedule_freshness.clone(),
                             practice_zone: practice_zone.clone(),
                             browser_tz: browser_tz.clone(),
@@ -3376,6 +3389,15 @@ fn PhysicianShell(
                                 *workspace_attempt.write() += 1;
                                 *snapshot_attempt.write() += 1;
                             },
+                            invite_control: rsx! {
+                                invitations::PatientInvitePanel {
+                                    client,
+                                    session,
+                                    shown,
+                                    workspace_id: selected().unwrap_or_default(),
+                                    default_display_name: open_name.clone().unwrap_or_default(),
+                                }
+                            },
                         }
                             }
                         }
@@ -3388,6 +3410,9 @@ fn PhysicianShell(
                 query: query(),
                 state: search_state.clone(),
                 continuation: roster_continuation.clone(),
+                may_be_missing_someone: roster_first
+                    .and_then(|res| res.ok())
+                    .is_some_and(|page| page.may_be_missing_someone),
                 on_retry: move |_| {
                     roster_pages.set(None);
                     *search_attempt.write() += 1;
@@ -4800,6 +4825,7 @@ fn TodaySurface(
     schedule_rows: Vec<ScheduleVisitRow>,
     show_schedule: bool,
     schedule: ReadStage,
+    #[props(default)] schedule_may_be_missing_someone: bool,
     schedule_freshness: SchedulePaneFreshness,
     practice_zone: String,
     browser_tz: String,
@@ -4888,6 +4914,9 @@ fn TodaySurface(
                         incomplete: meta.incomplete,
                         on_retry,
                     }
+                    access_notice::MayBeMissingSomeoneNotice {
+                        visible: meta.may_be_missing_someone,
+                    }
                     today_updates::ItemOpenFailureBanner {
                         failure: open_failure,
                         opening_busy,
@@ -4937,6 +4966,7 @@ fn TodaySurface(
                         on_collapsed: on_schedule_collapsed,
                         focused: visit_focus,
                         on_activate: on_activate_visit,
+                        may_be_missing_someone: schedule_may_be_missing_someone,
                     }
                 }
             }
@@ -5142,6 +5172,7 @@ fn PatientSurface(
     on_open_patient: EventHandler<String>,
     on_patient_gone: EventHandler<String>,
     on_open_discuss_chat: EventHandler<String>,
+    invite_control: Element,
 ) -> Element {
     let mut editing_queue = use_signal(|| None::<(String, String)>);
     let is_working = conversation
@@ -5235,6 +5266,7 @@ fn PatientSurface(
                 div { class: "patient-identity-top",
                     h1 { class: "workspace-title", "{heading_name}" }
                     div { class: "patient-identity-actions",
+                        {invite_control}
                         if past_work && !clinic_demographic {
                             Button {
                                 compact: true,
@@ -6016,6 +6048,7 @@ fn SearchDialog(
     query: String,
     state: ReadView<Vec<physician_wire::PatientSearchRow>>,
     continuation: RosterContinuation,
+    #[props(default)] may_be_missing_someone: bool,
     on_retry: EventHandler,
     on_scroll_more: EventHandler,
     on_retry_more: EventHandler,
@@ -6030,7 +6063,7 @@ fn SearchDialog(
         .first()
         .map(|patient| patient.patient_workspace_id.clone());
     let is_blank_query = query.trim().is_empty();
-    let empty_message = if state.content().is_some_and(Vec::is_empty) {
+    let empty_message = if state.content().is_some_and(Vec::is_empty) && !may_be_missing_someone {
         Some(if is_blank_query {
             ROSTER_EMPTY
         } else {
@@ -6082,6 +6115,9 @@ fn SearchDialog(
                         unavailable: unavailable_copy,
                         retry: TRY_AGAIN,
                         on_retry,
+                    }
+                    access_notice::MayBeMissingSomeoneNotice {
+                        visible: may_be_missing_someone,
                     }
                     if let Some(empty_copy) = empty_message {
                         EmptyLine { message: empty_copy }

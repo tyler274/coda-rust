@@ -447,6 +447,25 @@ impl Bus for RedisBus {
     }
 }
 
+/// Validates bus environment configuration synchronously without opening a
+/// network connection (`PHYSICIAN_REDIS_URL`, `PHYSICIAN_REDIS_CA_PEM`).
+pub fn validate_env(get: impl Fn(&str) -> Option<String>, hosted: bool) -> Result<(), String> {
+    let url = get("PHYSICIAN_REDIS_URL").filter(|url| !url.trim().is_empty());
+    let ca = get("PHYSICIAN_REDIS_CA_PEM").filter(|ca| !ca.trim().is_empty());
+    match url {
+        None if ca.is_some() => Err("PHYSICIAN_REDIS_CA_PEM requires PHYSICIAN_REDIS_URL".into()),
+        None => Ok(()),
+        Some(url) => {
+            if hosted && (!url.starts_with("rediss://") || ca.is_none()) {
+                return Err(
+                    "hosted physician Redis requires rediss and PHYSICIAN_REDIS_CA_PEM".into(),
+                );
+            }
+            Ok(())
+        }
+    }
+}
+
 /// Selects the bus from configuration: `PHYSICIAN_REDIS_URL` picks
 /// [`RedisBus`] (with optional `PHYSICIAN_REDIS_CA_PEM`), otherwise a
 /// [`LocalBus`] serves one process. Hosted runs must use `rediss` with a CA:
@@ -455,21 +474,14 @@ pub async fn from_env(
     get: impl Fn(&str) -> Option<String>,
     hosted: bool,
 ) -> Result<Arc<dyn Bus>, String> {
+    validate_env(&get, hosted)?;
     let url = get("PHYSICIAN_REDIS_URL").filter(|url| !url.trim().is_empty());
     let ca = get("PHYSICIAN_REDIS_CA_PEM").filter(|ca| !ca.trim().is_empty());
     match url {
-        None if ca.is_some() => Err("PHYSICIAN_REDIS_CA_PEM requires PHYSICIAN_REDIS_URL".into()),
         None => Ok(Arc::new(LocalBus::new(CAPACITY))),
-        Some(url) => {
-            if hosted && (!url.starts_with("rediss://") || ca.is_none()) {
-                return Err(
-                    "hosted physician Redis requires rediss and PHYSICIAN_REDIS_CA_PEM".into(),
-                );
-            }
-            Ok(Arc::new(
-                RedisBus::connect(&url, ca.as_deref().map(str::as_bytes)).await?,
-            ))
-        }
+        Some(url) => Ok(Arc::new(
+            RedisBus::connect(&url, ca.as_deref().map(str::as_bytes)).await?,
+        )),
     }
 }
 

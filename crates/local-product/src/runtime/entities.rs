@@ -930,6 +930,27 @@ pub(super) mod patient_dispatch {
     impl ActiveModelBehavior for ActiveModel {}
 }
 
+/// Practice-wide default source check and review cadence inherited by newly
+/// registered patients (`m20261119_05_practice_cadence`).
+pub(super) mod practice_cadence {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_practice_cadence")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub cadence: Json,
+        pub updated_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
 /// Latest saved refresh status per `(practice, workspace, source_id)`:
 /// `updated`, `partly_updated`, or `failed`. Created by `m20261118_03_source_refresh`.
 pub(super) mod source_status {

@@ -79,6 +79,9 @@ pub struct TodayListResponse {
     #[serde(default)]
     /// Count of patient messages currently waiting in `Messages to match`.
     pub messages_to_match_count: usize,
+    #[serde(default)]
+    /// True when one or more patients could not have panel access verified and were skipped.
+    pub may_be_missing_someone: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -295,6 +298,9 @@ pub struct PatientWorkspacesResponse {
     #[serde(default)]
     /// The `incomplete` value.
     pub incomplete: Option<bool>,
+    #[serde(default)]
+    /// True when one or more patients could not have panel access verified and were skipped.
+    pub may_be_missing_someone: bool,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
@@ -338,6 +344,9 @@ pub struct PracticeDayResponse {
     #[serde(default)]
     /// The `visits` value.
     pub visits: Vec<PracticeVisit>,
+    #[serde(default)]
+    /// True when one or more patients could not have panel access verified and were skipped.
+    pub may_be_missing_someone: bool,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
@@ -505,6 +514,9 @@ pub struct RecentConversationsResponse {
     #[serde(default)]
     /// The `conversations` value.
     pub conversations: Vec<RecentConversation>,
+    #[serde(default)]
+    /// True when one or more patients could not have panel access verified and were skipped.
+    pub may_be_missing_someone: bool,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
@@ -567,6 +579,9 @@ pub struct UpdatesResponse {
     #[serde(default)]
     /// Individual producer slices that failed during a partial Updates load.
     pub failed_parts: Vec<today_updates::FailedProducerWire>,
+    #[serde(default)]
+    /// True when one or more patients could not have panel access verified and were skipped.
+    pub may_be_missing_someone: bool,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
@@ -578,6 +593,9 @@ pub struct PatientSearchResponse {
     #[serde(default)]
     /// Cursor token for the next name-ordered page when more patients remain.
     pub next_after: Option<String>,
+    #[serde(default)]
+    /// True when one or more patients could not have panel access verified and were skipped.
+    pub may_be_missing_someone: bool,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
@@ -1519,6 +1537,67 @@ pub struct PatientLinkWire {
     #[serde(default)]
     /// The Unix second consent was revoked, if revoked.
     pub revoked_at: Option<u64>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// Request body for `POST /auth/invitations` (patient Duet invitation from patient's page).
+pub struct InvitePatientRequest {
+    /// Practice patient workspace to invite.
+    pub patient_workspace_id: String,
+    /// Invitee's email address.
+    pub email: String,
+    /// Invitee's display name.
+    pub display_name: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// Response body for `POST /auth/invitations`.
+pub struct PatientInvitationResponse {
+    /// Practice owning the roster patient.
+    pub practice_id: String,
+    /// Roster patient workspace identifier.
+    pub patient_workspace_id: String,
+    /// Invited email address.
+    pub email: String,
+    /// Invited display name.
+    pub display_name: String,
+    /// Status (`"invited"`).
+    pub status: String,
+    #[serde(default)]
+    /// Proof-mode single-use invitation token, omitted in hosted mail delivery.
+    pub token: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// Request body for `POST /auth/colleagues/invitations` (inviting a colleague physician).
+pub struct InviteColleagueRequest {
+    /// Colleague's work email address.
+    pub email: String,
+    /// Colleague's display name.
+    pub display_name: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// Response body for `POST /auth/colleagues/invitations`.
+pub struct ColleagueInvitationResponse {
+    /// Practice the colleague was invited into.
+    pub practice_id: String,
+    /// Colleague's email address.
+    pub email: String,
+    /// Colleague's display name.
+    pub display_name: String,
+    /// Assigned role (`"physician"`).
+    pub role: String,
+    /// Status (`"invited"`).
+    pub status: String,
+    /// Delivery channel (`"stored"` or `"mailed"`).
+    pub delivery: String,
+    #[serde(default)]
+    /// Proof-mode sign-in token, omitted in hosted mode.
+    pub token: Option<String>,
+    #[serde(default)]
+    /// Proof-mode sign-in path.
+    pub sign_in_path: Option<String>,
 }
 
 #[cfg(test)]

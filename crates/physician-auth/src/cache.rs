@@ -349,6 +349,18 @@ impl AuthStore for CachedAuthStore {
         self.inner.account_by_email(email).await
     }
 
+    async fn try_account_by_identity(
+        &self,
+        identity: &PhysicianIdentity,
+    ) -> Result<Option<Account>, StoreUnavailable> {
+        self.read_fallible(
+            |cache| &mut cache.accounts,
+            identity.clone(),
+            self.inner.try_account_by_identity(identity),
+        )
+        .await
+    }
+
     async fn account_by_identity(&self, identity: &PhysicianIdentity) -> Option<Account> {
         self.read(
             |cache| &mut cache.accounts,
@@ -358,17 +370,27 @@ impl AuthStore for CachedAuthStore {
         .await
     }
 
+    async fn try_membership(
+        &self,
+        identity: &PhysicianIdentity,
+        patient_workspace_id: &str,
+    ) -> Result<Membership, StoreUnavailable> {
+        self.read_fallible(
+            |cache| &mut cache.memberships,
+            (identity.clone(), patient_workspace_id.to_owned()),
+            self.inner.try_membership(identity, patient_workspace_id),
+        )
+        .await
+    }
+
     async fn membership(
         &self,
         identity: &PhysicianIdentity,
         patient_workspace_id: &str,
     ) -> Membership {
-        self.read(
-            |cache| &mut cache.memberships,
-            (identity.clone(), patient_workspace_id.to_owned()),
-            self.inner.membership(identity, patient_workspace_id),
-        )
-        .await
+        self.try_membership(identity, patient_workspace_id)
+            .await
+            .unwrap_or(Membership::Denied)
     }
 
     async fn set_membership(
@@ -398,13 +420,20 @@ impl AuthStore for CachedAuthStore {
         written
     }
 
-    async fn panel(&self, identity: &PhysicianIdentity) -> Vec<String> {
-        self.read(
+    async fn try_panel(
+        &self,
+        identity: &PhysicianIdentity,
+    ) -> Result<Vec<String>, StoreUnavailable> {
+        self.read_fallible(
             |cache| &mut cache.panels,
             identity.clone(),
-            self.inner.panel(identity),
+            self.inner.try_panel(identity),
         )
         .await
+    }
+
+    async fn panel(&self, identity: &PhysicianIdentity) -> Vec<String> {
+        self.try_panel(identity).await.unwrap_or_default()
     }
 
     async fn assign_panel(
@@ -662,9 +691,30 @@ mod tests {
             self.notes.fetch_add(1, Ordering::SeqCst);
             self.inner.note_physician_activity(token, now).await
         }
+        async fn try_membership(
+            &self,
+            identity: &PhysicianIdentity,
+            workspace: &str,
+        ) -> Result<Membership, StoreUnavailable> {
+            self.reads.fetch_add(1, Ordering::SeqCst);
+            if self.unavailable.load(Ordering::SeqCst) {
+                return Err(StoreUnavailable);
+            }
+            self.inner.try_membership(identity, workspace).await
+        }
         async fn membership(&self, identity: &PhysicianIdentity, workspace: &str) -> Membership {
             self.reads.fetch_add(1, Ordering::SeqCst);
             self.inner.membership(identity, workspace).await
+        }
+        async fn try_panel(
+            &self,
+            identity: &PhysicianIdentity,
+        ) -> Result<Vec<String>, StoreUnavailable> {
+            self.reads.fetch_add(1, Ordering::SeqCst);
+            if self.unavailable.load(Ordering::SeqCst) {
+                return Err(StoreUnavailable);
+            }
+            self.inner.try_panel(identity).await
         }
         async fn panel(&self, identity: &PhysicianIdentity) -> Vec<String> {
             self.reads.fetch_add(1, Ordering::SeqCst);
@@ -694,6 +744,15 @@ mod tests {
         }
         async fn account_by_email(&self, a: &str) -> Option<Account> {
             self.inner.account_by_email(a).await
+        }
+        async fn try_account_by_identity(
+            &self,
+            a: &PhysicianIdentity,
+        ) -> Result<Option<Account>, StoreUnavailable> {
+            if self.unavailable.load(Ordering::SeqCst) {
+                return Err(StoreUnavailable);
+            }
+            self.inner.try_account_by_identity(a).await
         }
         async fn account_by_identity(&self, a: &PhysicianIdentity) -> Option<Account> {
             self.inner.account_by_identity(a).await

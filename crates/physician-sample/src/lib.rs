@@ -63,6 +63,7 @@ use axum::routing::{get, post};
 use futures_util::TryStreamExt;
 use serde::Deserialize;
 use serde_json::{Value, json};
+use tower::ServiceExt as _;
 
 const INDEX: &str = include_str!("../../physician-app/index.html");
 const LOGO: &[u8] = include_bytes!("../../physician-app/assets/coda-health-logo-transparent.png");
@@ -752,18 +753,24 @@ async fn site_index() -> Response {
         .into_response()
 }
 
-async fn on_panel_in_practice(
+pub(crate) async fn require_on_panel_in_practice(
     connected: &care::ConnectedCare,
     extensions: &axum::http::Extensions,
     id: &str,
-) -> bool {
+) -> Result<(), StatusCode> {
+    if !care::try_on_roster(extensions, id).await? {
+        return Err(StatusCode::NOT_FOUND);
+    }
     let identity = care::ConnectedCare::identity(extensions);
-    care::on_roster(extensions, id).await
-        && connected
-            .auth_store(extensions)
-            .membership(&identity, id)
-            .await
-            == physician_auth::Membership::Allowed
+    match connected
+        .auth_store(extensions)
+        .try_membership(&identity, id)
+        .await
+    {
+        Ok(physician_auth::Membership::Allowed) => Ok(()),
+        Ok(_) => Err(StatusCode::NOT_FOUND),
+        Err(_) => Err(StatusCode::SERVICE_UNAVAILABLE),
+    }
 }
 
 async fn empty_snapshot(
@@ -772,8 +779,8 @@ async fn empty_snapshot(
     request: Request<Body>,
 ) -> Response {
     let extensions = request.extensions();
-    if !on_panel_in_practice(&connected, extensions, &id).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) = require_on_panel_in_practice(&connected, extensions, &id).await {
+        return status.into_response();
     }
     if let Some(feed) = extensions.get::<std::sync::Arc<SampleFeed>>()
         && let Some(snapshot) = feed
@@ -802,8 +809,8 @@ async fn fixture_past_work(
     request: Request<Body>,
 ) -> Response {
     let extensions = request.extensions();
-    if !on_panel_in_practice(&connected, extensions, &id).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) = require_on_panel_in_practice(&connected, extensions, &id).await {
+        return status.into_response();
     }
     let items = extensions
         .get::<std::sync::Arc<SampleFeed>>()
@@ -870,32 +877,158 @@ pub async fn serve(listener: tokio::net::TcpListener) {
     serve_holding(listener, std::sync::Arc::default()).await;
 }
 
+enum SamplePhase {
+    Starting {
+        pending: &'static str,
+        detail: String,
+    },
+    Ready(Router),
+}
+
+fn startup_sample_router(phase: std::sync::Arc<tokio::sync::RwLock<SamplePhase>>) -> Router {
+    async fn dispatch(
+        axum::extract::State(phase): axum::extract::State<
+            std::sync::Arc<tokio::sync::RwLock<SamplePhase>>,
+        >,
+        request: Request<Body>,
+    ) -> Response {
+        let ready = {
+            let guard = phase.read().await;
+            match &*guard {
+                SamplePhase::Ready(app) => Some(app.clone()),
+                SamplePhase::Starting { pending, detail } => {
+                    let path = request.uri().path();
+                    if request.method() == Method::GET && path == "/health" {
+                        return (StatusCode::OK, Json(json!({ "status": "ok" }))).into_response();
+                    }
+                    if request.method() == Method::GET && path == "/readyz" {
+                        return (
+                            StatusCode::SERVICE_UNAVAILABLE,
+                            Json(json!({
+                                "ready": false,
+                                "status": "starting",
+                                "pending": pending,
+                                "detail": detail,
+                            })),
+                        )
+                            .into_response();
+                    }
+                    return (
+                        StatusCode::SERVICE_UNAVAILABLE,
+                        Json(json!({
+                            "detail": "Physician site is starting up.",
+                            "pending": pending,
+                        })),
+                    )
+                        .into_response();
+                }
+            }
+        };
+        if let Some(app) = ready {
+            match app.oneshot(request).await {
+                Ok(resp) => resp,
+                Err(infallible) => match infallible {},
+            }
+        } else {
+            StatusCode::SERVICE_UNAVAILABLE.into_response()
+        }
+    }
+
+    Router::new().fallback(dispatch).with_state(phase)
+}
+
+fn exit_on_startup_error(error: &hosting::StartupError) -> ! {
+    let database = error.database();
+    tracing::error!(
+        error.type = database.map(|cause| local_product::runtime::DbFailure::of(cause).error_type()),
+        db.response.status_code = database.and_then(local_product::runtime::sqlstate).as_deref(),
+        error = %error,
+        error.cause = database.map(tracing::field::display),
+        "physician site cannot start"
+    );
+    std::process::exit(1);
+}
+
 /// [`serve`], with `memory_patients` in the practice when there is no database.
 #[doc(hidden)]
 pub async fn serve_holding(
     listener: tokio::net::TcpListener,
     memory_patients: std::sync::Arc<patients::MemoryPatients>,
 ) {
-    let site = site_from_env(|key| env::var(key).ok(), memory_patients).await;
-    let (router, compaction) = match site {
-        Ok(ready) => ready,
-        Err(error) => {
-            let database = error.database();
-            tracing::error!(
-                error.type = database.map(|cause| local_product::runtime::DbFailure::of(cause).error_type()),
-                db.response.status_code = database.and_then(local_product::runtime::sqlstate).as_deref(),
-                error = %error,
-                error.cause = database.map(tracing::field::display),
-                "physician site cannot start"
-            );
-            std::process::exit(1);
+    let env_snapshot: std::collections::BTreeMap<String, String> = env::vars().collect();
+    let lookup = move |key: &str| env_snapshot.get(key).cloned();
+    if let Err(error) = validate_site_env(&lookup) {
+        exit_on_startup_error(&error);
+    }
+
+    let phase = std::sync::Arc::new(tokio::sync::RwLock::new(SamplePhase::Starting {
+        pending: "runtime_store",
+        detail: "connecting runtime dependencies".to_owned(),
+    }));
+    let phase_bg = std::sync::Arc::clone(&phase);
+    let compaction_slot: std::sync::Arc<tokio::sync::Mutex<Option<tokio::task::JoinHandle<()>>>> =
+        std::sync::Arc::new(tokio::sync::Mutex::new(None));
+    let compaction_bg = std::sync::Arc::clone(&compaction_slot);
+    let (stop_tx, mut stop_rx) = tokio::sync::watch::channel(false);
+
+    let mut startup_task = tokio::spawn(async move {
+        let mut backoff = std::time::Duration::from_millis(200);
+        loop {
+            if *stop_rx.borrow() {
+                return;
+            }
+            match site_from_env(&lookup, std::sync::Arc::clone(&memory_patients)).await {
+                Ok((router, compaction)) => {
+                    *compaction_bg.lock().await = compaction;
+                    *phase_bg.write().await = SamplePhase::Ready(router);
+                    return;
+                }
+                Err(error) if error.retryable_dependency().is_some() => {
+                    let pending = error.retryable_dependency().unwrap_or("dependencies");
+                    let database = error.database();
+                    let detail = match database {
+                        Some(cause) => format!(
+                            "{error}: {}",
+                            local_product::runtime::DbFailure::of(cause).error_type()
+                        ),
+                        None => error.to_string(),
+                    };
+                    tracing::warn!(
+                        %pending,
+                        error.type = database.map(|cause| local_product::runtime::DbFailure::of(cause).error_type()),
+                        db.response.status_code = database.and_then(local_product::runtime::sqlstate).as_deref(),
+                        error = %error,
+                        error.cause = database.map(tracing::field::display),
+                        "physician site dependency unavailable; retrying startup"
+                    );
+                    *phase_bg.write().await = SamplePhase::Starting { pending, detail };
+                    tokio::select! {
+                        _ = tokio::time::sleep(backoff) => {}
+                        _ = stop_rx.changed() => {
+                            if *stop_rx.borrow() {
+                                return;
+                            }
+                        }
+                    }
+                    backoff = (backoff * 2).min(std::time::Duration::from_secs(5));
+                }
+                Err(fatal) => {
+                    exit_on_startup_error(&fatal);
+                }
+            }
         }
-    };
-    let app = traced(router);
+    });
+
+    let app = traced(startup_sample_router(phase));
     let served = axum::serve(listener, app)
-        .with_graceful_shutdown(shutdown())
+        .with_graceful_shutdown(async move {
+            shutdown().await;
+            stop_tx.send_replace(true);
+        })
         .await;
-    if let Some(compaction) = compaction {
+    startup_task.abort();
+    let _ = (&mut startup_task).await;
+    if let Some(compaction) = compaction_slot.lock().await.take() {
         compaction.abort();
     }
     served.expect("sample server");
@@ -919,10 +1052,101 @@ pub async fn site_router_from_env(
     .map_err(|err| err.to_string())
 }
 
+/// Validates all synchronous environment/configuration rules before binding or
+/// serving health/readiness endpoints (`serve_holding` and `site_from_env`).
+fn validate_site_env(get: &impl Fn(&str) -> Option<String>) -> Result<(), hosting::StartupError> {
+    let hosted = hosting::is_hosted(get);
+    let mode = ChatMode::from_env(get)?;
+    let durable = mode.is_durable();
+    if hosted && !durable {
+        return Err("hosted physician chat requires PHYSICIAN_DURABLE_CHAT=1".into());
+    }
+    hosting::validate_startup(get)?;
+    let staging_synthetic =
+        hosting::StagingSyntheticControlConfig::from_env(get).map_err(|error| error.to_string())?;
+    let database = configured(get, "PHYSICIAN_DATABASE_URL");
+    let required = configured(get, "PHYSICIAN_AUTH").as_deref() == Some("required");
+    if durable && database.is_none() {
+        return Err("PHYSICIAN_DURABLE_CHAT requires PHYSICIAN_DATABASE_URL".into());
+    }
+    if durable && !required {
+        return Err("durable physician chat requires PHYSICIAN_AUTH=required".into());
+    }
+    if staging_synthetic.is_some() && !required {
+        return Err("staging synthetic control requires PHYSICIAN_AUTH=required".into());
+    }
+    if staging_synthetic.is_some() && database.is_none() {
+        return Err("staging synthetic control requires PHYSICIAN_DATABASE_URL".into());
+    }
+    if required && configured(get, "PHYSICIAN_UPSTREAM").is_some() {
+        return Err("PHYSICIAN_UPSTREAM cannot run with required sign-in".into());
+    }
+    if hosting::RehearsalSignIn::from_env(get)?.is_some() && !required {
+        return Err("the rehearsal sign-in needs PHYSICIAN_AUTH=required".into());
+    }
+    if hosting::StaffSetupAuth::from_env(get)?.is_some() && !required {
+        return Err("staff practice setup requires PHYSICIAN_AUTH=required".into());
+    }
+    physician_bus::validate_env(get, hosted)?;
+    if durable {
+        let _ = local_product::physician_chat::PhysicianSkills::configured(
+            configured(get, "PHYSICIAN_SKILLS_DIR").as_deref(),
+            hosted,
+        )
+        .map_err(|error| error.to_string())?;
+        let environment: Vec<_> = local_product::MODEL_SETTING_KEYS
+            .into_iter()
+            .filter_map(|key| configured(get, key).map(|value| (key, value)))
+            .collect();
+        let environment_refs: Vec<_> = environment
+            .iter()
+            .map(|(key, value)| (*key, value.as_str()))
+            .collect();
+        let _ = local_product::model_roles("responses", &environment_refs)
+            .map_err(|error| error.to_string())?;
+        let _ = live::source_snapshot()?;
+    }
+    if staging_synthetic.is_some() {
+        let model = synthetic_control::SyntheticModelEndpoint::from_env(get, hosted)?;
+        let environment: Vec<_> = local_product::MODEL_SETTING_KEYS
+            .into_iter()
+            .filter_map(|key| configured(get, key).map(|value| (key, value)))
+            .collect();
+        let environment_refs: Vec<_> = environment
+            .iter()
+            .map(|(key, value)| (*key, value.as_str()))
+            .collect();
+        let _ = local_product::model_roles(model.adapter(), &environment_refs)
+            .map_err(|error| error.to_string())?;
+    }
+    let _ = hosting::SimulationPractices::from_env(get)?;
+    if let Some(charts_dir) = configured(get, "PHYSICIAN_SYNTHETIC_CHARTS") {
+        if hosted
+            && configured(get, "CODA_HOSTED_PROFILE").as_deref() != Some(hosting::STAGING_PROFILE)
+        {
+            return Err(format!(
+                "PHYSICIAN_SYNTHETIC_CHARTS is only honoured under CODA_HOSTED_PROFILE={}",
+                hosting::STAGING_PROFILE
+            )
+            .into());
+        }
+        let charts_path = std::path::Path::new(&charts_dir);
+        if !charts_path.join("patients").is_dir() {
+            return Err(format!(
+                "PHYSICIAN_SYNTHETIC_CHARTS has no patients directory at {}",
+                charts_path.display()
+            )
+            .into());
+        }
+    }
+    Ok(())
+}
+
 async fn site_from_env(
     get: impl Fn(&str) -> Option<String>,
     memory_patients: std::sync::Arc<patients::MemoryPatients>,
 ) -> Result<(Router, Option<tokio::task::JoinHandle<()>>), hosting::StartupError> {
+    validate_site_env(&get)?;
     let hosted = hosting::is_hosted(&get);
     let staging_synthetic = hosting::StagingSyntheticControlConfig::from_env(&get)
         .map_err(|error| error.to_string())?;
@@ -982,7 +1206,12 @@ async fn site_from_env(
         return Err("staff practice setup requires PHYSICIAN_AUTH=required".into());
     }
     let mail = gmail::Delivery::from_env(&get);
-    let bus = physician_bus::from_env(&get, hosted).await?;
+    let bus = physician_bus::from_env(&get, hosted)
+        .await
+        .map_err(|detail| hosting::StartupError::DependencyUnavailable {
+            dependency: "bus",
+            detail,
+        })?;
     // One pool per process: durable chat, the patient directory, auth, the
     // front door and `/readyz` all read through it.
     // A site that serves from the database refuses to start without it; one
@@ -990,7 +1219,7 @@ async fn site_from_env(
     let mut runtime = match &database {
         Some(url) => match local_product::runtime::Store::connect(url).await {
             Ok(store) => Some(store),
-            Err(error) if required || durable => {
+            Err(error) if required || durable || staging_synthetic.is_some() => {
                 return Err(hosting::StartupError::RuntimeStore(error));
             }
             Err(error) => {
@@ -1009,10 +1238,13 @@ async fn site_from_env(
         })?;
         let db = sea_orm::Database::connect(url)
             .await
-            .map_err(|_| "physician runtime database unavailable".to_string())?;
+            .map_err(hosting::StartupError::RuntimeStore)?;
         let pg_auth = physician_auth::PostgresAuthStore::connect_without_migrations(url)
             .await
-            .map_err(|_| "physician auth database unavailable".to_string())?;
+            .map_err(|err| hosting::StartupError::DependencyUnavailable {
+                dependency: "auth_store",
+                detail: err.to_string(),
+            })?;
         let model = synthetic_control::SyntheticModelEndpoint::from_env(&get, hosted)?;
         let settings: Vec<_> = local_product::MODEL_SETTING_KEYS
             .into_iter()
@@ -1036,7 +1268,11 @@ async fn site_from_env(
                 model,
             },
         )
-        .await?;
+        .await
+        .map_err(|error| hosting::StartupError::DependencyUnavailable {
+            dependency: "staging_control",
+            detail: error.to_string(),
+        })?;
         runtime = Some(control.store().clone());
         Some(control)
     } else {
@@ -1089,7 +1325,10 @@ async fn site_from_env(
         store
             .import_sources(&live::source_snapshot()?)
             .await
-            .map_err(|_| "physician source import failed".to_string())?;
+            .map_err(|error| hosting::StartupError::DependencyUnavailable {
+                dependency: "source_import",
+                detail: error.to_string(),
+            })?;
         let chat = std::sync::Arc::new(
             durable::DurableChat::new(store, skills, &roles)
                 .with_simulation_practices(hosting::SimulationPractices::from_env(&get)?),
@@ -1308,8 +1547,12 @@ async fn today(
         .await;
     }
     let identity = care::ConnectedCare::identity(extensions);
-    let panel = connected.auth_store(extensions).panel(&identity).await;
-    let panel_set: std::collections::BTreeSet<&str> = panel.iter().map(String::as_str).collect();
+    let auth_store = connected.auth_store(extensions);
+    let Ok(panel) = auth_store.try_panel(&identity).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let (panel_set, may_be_missing_someone) =
+        auth::check_panel_candidates(auth_store.as_ref(), &identity, &panel).await;
     let (rows, seen) = match extensions.get::<std::sync::Arc<SampleFeed>>() {
         Some(feed) => {
             let seen = feed.seen_for(&identity.practice_id, &identity.physician_id);
@@ -1363,6 +1606,7 @@ async fn today(
         "cursors": {},
         "as_of": 0,
         "also_reviewed": 0,
+        "may_be_missing_someone": may_be_missing_someone,
     }))
     .into_response()
 }
@@ -1383,8 +1627,12 @@ async fn updates(
             .await;
     }
     let identity = care::ConnectedCare::identity(extensions);
-    let panel = connected.auth_store(extensions).panel(&identity).await;
-    let panel_set: std::collections::BTreeSet<&str> = panel.iter().map(String::as_str).collect();
+    let auth_store = connected.auth_store(extensions);
+    let Ok(panel) = auth_store.try_panel(&identity).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let (panel_set, may_be_missing_someone) =
+        auth::check_panel_candidates(auth_store.as_ref(), &identity, &panel).await;
     let (active_runs, rows, seen) = match extensions.get::<std::sync::Arc<SampleFeed>>() {
         Some(feed) => {
             let seen = feed.seen_for(&identity.practice_id, &identity.physician_id);
@@ -1426,6 +1674,7 @@ async fn updates(
         "also_reviewed": 0,
         "next_cursor": null,
         "previous_date": null,
+        "may_be_missing_someone": may_be_missing_someone,
     }))
     .into_response()
 }
@@ -1437,14 +1686,23 @@ async fn recent_conversations(
     let extensions = request.extensions();
     let identity = care::ConnectedCare::identity(extensions);
     let store = connected.auth_store(extensions);
-    let panel = store.panel(&identity).await;
+    let Ok(raw_panel) = store.try_panel(&identity).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let (allowed_panel, may_be_missing_someone) =
+        auth::check_panel_candidates(store.as_ref(), &identity, &raw_panel).await;
+    let panel: Vec<String> = allowed_panel.into_iter().collect();
     let directory = connected.patients(extensions);
     if let Some(live) = extensions.get::<std::sync::Arc<live::Live>>() {
         let ctx = extensions.get::<auth::AuthContext>();
         let Ok(conversations) = live.recent_conversations(ctx, &panel, &*directory).await else {
             return StatusCode::SERVICE_UNAVAILABLE.into_response();
         };
-        return Json(json!({ "conversations": conversations })).into_response();
+        return Json(json!({
+            "conversations": conversations,
+            "may_be_missing_someone": may_be_missing_someone,
+        }))
+        .into_response();
     }
     let Ok(patients) = patients::read_patients(&*directory, &panel).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
@@ -1487,7 +1745,11 @@ async fn recent_conversations(
         }
         None => Vec::new(),
     };
-    Json(json!({ "conversations": conversations })).into_response()
+    Json(json!({
+        "conversations": conversations,
+        "may_be_missing_someone": may_be_missing_someone,
+    }))
+    .into_response()
 }
 
 async fn patient_list(
@@ -1496,15 +1758,23 @@ async fn patient_list(
 ) -> Response {
     let extensions = request.extensions();
     let store = connected.auth_store(extensions);
-    let panel = store
-        .panel(&care::ConnectedCare::identity(extensions))
-        .await;
+    let identity = care::ConnectedCare::identity(extensions);
+    let Ok(raw_panel) = store.try_panel(&identity).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let (allowed_panel, may_be_missing_someone) =
+        auth::check_panel_candidates(store.as_ref(), &identity, &raw_panel).await;
+    let panel: Vec<String> = allowed_panel.into_iter().collect();
     let directory = connected.patients(extensions);
     let Ok(found) = patients::read_patients(&*directory, &panel).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
     let rows: Vec<Value> = found.iter().map(patients::Patient::list_row).collect();
-    Json(json!({ "patients": rows })).into_response()
+    Json(json!({
+        "patients": rows,
+        "may_be_missing_someone": may_be_missing_someone,
+    }))
+    .into_response()
 }
 
 fn merge_workspace_reply(enriched: &mut Value, reply: Value) {

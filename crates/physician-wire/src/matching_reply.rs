@@ -196,6 +196,9 @@ pub struct MessagesToMatchResponseWire {
     /// Count of classified non-patient messages currently in `Filtered`.
     #[serde(default)]
     pub filtered_count: usize,
+    /// True when one or more patients could not have panel access verified and were skipped.
+    #[serde(default)]
+    pub may_be_missing_someone: bool,
 }
 
 /// Whether confirming a patient link also records the sender address as confirmed for future mail.
@@ -852,6 +855,7 @@ mod tests {
             }],
             unreadable_messages: vec![],
             filtered_count: 1,
+            may_be_missing_someone: false,
         };
 
         let encoded = serde_json::to_string(&response).expect("serialize");

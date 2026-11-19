@@ -617,6 +617,7 @@ pub fn ScheduleRailPane(
     on_collapsed: EventHandler<bool>,
     focused: Option<usize>,
     on_activate: EventHandler<ScheduleVisitRow>,
+    #[props(default)] may_be_missing_someone: bool,
 ) -> Element {
     let title = match context {
         RailContext::PracticeToday => "Schedule",
@@ -651,6 +652,9 @@ pub fn ScheduleRailPane(
                 retry: TRY_AGAIN,
                 on_retry,
             }
+            crate::access_notice::MayBeMissingSomeoneNotice {
+                visible: may_be_missing_someone,
+            }
             if let SchedulePaneFreshness::RefreshFailed { copy } = freshness {
                 div { class: "schedule-stale-notice",
                     Notice {
@@ -665,7 +669,11 @@ pub fn ScheduleRailPane(
                     }
                 }
             }
-            if rows.is_empty() && matches!(read, ReadStage::Showing | ReadStage::Stale) && !empty.is_empty() {
+            if rows.is_empty()
+                && !may_be_missing_someone
+                && matches!(read, ReadStage::Showing | ReadStage::Stale)
+                && !empty.is_empty()
+            {
                 p { class: "schedule-rail-empty", "{empty}" }
             }
             for (index, row) in rows.iter().enumerate() {

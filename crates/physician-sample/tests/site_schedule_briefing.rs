@@ -1651,13 +1651,13 @@ async fn spawn_durable_site_with_web(
             }
             panic!("durable physician-sample exited unexpectedly ({status}):\n{err}");
         }
-        let health = reqwest::get(format!("{base}/health")).await;
-        if health.is_ok_and(|resp| resp.status().is_success()) {
+        let ready = reqwest::get(format!("{base}/readyz")).await;
+        if ready.is_ok_and(|resp| resp.status().is_success()) {
             break;
         }
         assert!(
             Instant::now() < deadline,
-            "durable physician-sample never answered"
+            "durable physician-sample never became ready"
         );
         tokio::time::sleep(Duration::from_millis(50)).await;
     }

@@ -173,11 +173,14 @@ async fn spawn_site(db_url: &str, synthetic_calendar: Option<&Path>) -> (Running
             site.0.try_wait().unwrap().is_none(),
             "physician-sample exited unexpectedly"
         );
-        let health = reqwest::get(format!("{base}/health")).await;
-        if health.is_ok_and(|resp| resp.status().is_success()) {
+        let ready = reqwest::get(format!("{base}/readyz")).await;
+        if ready.is_ok_and(|resp| resp.status().is_success()) {
             break;
         }
-        assert!(Instant::now() < deadline, "physician-sample never answered");
+        assert!(
+            Instant::now() < deadline,
+            "physician-sample never became ready"
+        );
         tokio::time::sleep(Duration::from_millis(50)).await;
     }
     (site, base)

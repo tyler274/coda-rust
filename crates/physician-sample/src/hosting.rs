@@ -1851,6 +1851,14 @@ pub enum StartupError {
     /// The process's one Postgres pool could not be opened.
     #[error("physician runtime store unavailable")]
     RuntimeStore(#[source] sea_orm::DbErr),
+    /// A retryable runtime dependency (Valkey bus, auth schema/DB, staging control, source import) is temporarily unavailable.
+    #[error("physician {dependency} unavailable: {detail}")]
+    DependencyUnavailable {
+        /// Short dependency label surfaced on `/readyz`.
+        dependency: &'static str,
+        /// Underlying failure detail.
+        detail: String,
+    },
     /// The environment asks for something the process refuses to run.
     #[error("{0}")]
     Refused(String),
@@ -1861,6 +1869,16 @@ impl StartupError {
     pub fn database(&self) -> Option<&sea_orm::DbErr> {
         match self {
             Self::RuntimeStore(source) => Some(source),
+            Self::DependencyUnavailable { .. } | Self::Refused(_) => None,
+        }
+    }
+
+    /// Pending dependency name when startup failed due to an external dependency
+    /// rather than an invalid static configuration.
+    pub fn retryable_dependency(&self) -> Option<&'static str> {
+        match self {
+            Self::RuntimeStore(_) => Some("runtime_store"),
+            Self::DependencyUnavailable { dependency, .. } => Some(dependency),
             Self::Refused(_) => None,
         }
     }

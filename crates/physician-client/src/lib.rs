@@ -11,7 +11,8 @@ pub mod today_updates;
 
 pub use http::HttpError;
 use physician_wire::{
-    ChatSnapshotResponse, HealthResponse, PanelAssignmentResponse, PastWorkResponse,
+    ChatSnapshotResponse, ColleagueInvitationResponse, HealthResponse, InviteColleagueRequest,
+    InvitePatientRequest, PanelAssignmentResponse, PastWorkResponse, PatientInvitationResponse,
     PatientSearchResponse, PatientWorkspaceResponse, PatientWorkspacesResponse, PhysicianDraft,
     PracticeDayResponse, RecentConversationsResponse, ReplyDraftWire, ResponseFeedback, ResponseId,
     SaveFeedback, SignInResponse, TodayListResponse, UpdatesResponse, VerifyResponse,
@@ -414,6 +415,22 @@ impl PhysicianClient {
         .await
     }
 
+    /// Invites a patient on this practice's roster to Duet from the patient's page.
+    pub async fn invite_patient(
+        &self,
+        request: &InvitePatientRequest,
+    ) -> Result<PatientInvitationResponse, http::HttpError> {
+        self.post("/auth/invitations", request).await
+    }
+
+    /// Invites a colleague physician to join the signed-in member's practice.
+    pub async fn invite_colleague(
+        &self,
+        request: &InviteColleagueRequest,
+    ) -> Result<ColleagueInvitationResponse, http::HttpError> {
+        self.post("/auth/colleagues/invitations", request).await
+    }
+
     /// Reads Today.
     pub async fn today(&self) -> Result<TodayListResponse, http::HttpError> {
         try_demo!(self, s => s.today());
@@ -612,6 +629,7 @@ impl PhysicianClient {
                 Ok::<_, physician_demo_db::DbError>(PatientSearchResponse {
                     patients: Vec::new(),
                     next_after: None,
+                    may_be_missing_someone: false,
                 })
             });
         }

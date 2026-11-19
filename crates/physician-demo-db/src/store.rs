@@ -174,6 +174,7 @@ impl DemoStore {
             practice_outages: Vec::new(),
             failed_parts: Vec::new(),
             messages_to_match_count: 0,
+            may_be_missing_someone: false,
         })
     }
 
@@ -196,6 +197,7 @@ impl DemoStore {
         Ok(PatientWorkspacesResponse {
             patients,
             incomplete: Some(false),
+            may_be_missing_someone: false,
         })
     }
 
@@ -223,6 +225,7 @@ impl DemoStore {
                 last_error: None,
             },
             visits,
+            may_be_missing_someone: false,
         })
     }
 
@@ -254,7 +257,10 @@ impl DemoStore {
                 })
             })
             .await?;
-        Ok(RecentConversationsResponse { conversations })
+        Ok(RecentConversationsResponse {
+            conversations,
+            may_be_missing_someone: false,
+        })
     }
 
     /// Queries the Updates feed.
@@ -276,6 +282,7 @@ impl DemoStore {
             reviewed_nothing_for_you: Vec::new(),
             earlier_days: Vec::new(),
             failed_parts: Vec::new(),
+            may_be_missing_someone: false,
         })
     }
 
@@ -316,6 +323,7 @@ impl DemoStore {
         Ok(PatientSearchResponse {
             patients,
             next_after: None,
+            may_be_missing_someone: false,
         })
     }
 

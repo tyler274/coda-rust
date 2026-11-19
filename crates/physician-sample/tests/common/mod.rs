@@ -90,6 +90,12 @@ async fn wait_until_serving(address: SocketAddr) {
             .send()
             .await
             && response.status().is_success()
+            && let Ok(ready_probe) = client
+                .get(format!("http://{address}/auth/whoami"))
+                .timeout(Duration::from_secs(2))
+                .send()
+                .await
+            && ready_probe.status() != reqwest::StatusCode::SERVICE_UNAVAILABLE
         {
             return;
         }

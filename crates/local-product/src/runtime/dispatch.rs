@@ -22,8 +22,8 @@ use axum::{Json, Router};
 use patient_work::{
     Cadence, CadenceError, CheckedSources, DispatchState, FollowUpCandidate,
     FollowUpDispatchStanding, FollowUpScheduleState, LinkedMessageTrigger, OperatorCadenceView,
-    PatientWakeInputs, PendingReview, ReviewDispatchInput, ReviewReason, ReviewRequest,
-    WakeSourceObservation,
+    PatientWakeInputs, PendingReview, PracticeCadenceView, ReviewDispatchInput, ReviewReason,
+    ReviewRequest, WakeSourceObservation,
 };
 use physician_auth::AuthStore;
 use sea_orm::{
@@ -33,7 +33,7 @@ use sea_orm::{
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 
-use super::entities::{patient_dispatch, source_pull};
+use super::entities::{patient_dispatch, practice_cadence, source_pull};
 use super::follow_ups::{FollowUpError, FollowUpReviewSchedule, FollowUpStanding};
 use super::jobs::{
     Assignment, PRACTICE_OWNER, PracticeAccessError, PracticeAuthority, PracticeJobError,
@@ -762,18 +762,31 @@ fn map_follow_up_error_to_db(err: FollowUpError) -> DbErr {
     }
 }
 
+async fn effective_practice_cadence_value(
+    conn: &impl ConnectionTrait,
+    practice_id: &str,
+) -> Result<ActiveValue<serde_json::Value>, DbErr> {
+    if let Some(row) = practice_cadence::Entity::find_by_id(practice_id.to_owned())
+        .one(conn)
+        .await?
+    {
+        Ok(Set(row.cadence))
+    } else {
+        Ok(ActiveValue::NotSet)
+    }
+}
+
 async fn ensure_dispatch_row(
     tx: &impl ConnectionTrait,
     practice_id: &str,
     workspace_id: &str,
     registered_at: i64,
 ) -> Result<(), DbErr> {
-    // Leaves `cadence` unset so Postgres populates its default column value;
-    // `Store::set_patient_cadence` remains the sole writer of `cadence`.
+    let cadence = effective_practice_cadence_value(tx, practice_id).await?;
     patient_dispatch::Entity::insert(patient_dispatch::ActiveModel {
         practice: Set(practice_id.to_owned()),
         workspace: Set(workspace_id.to_owned()),
-        cadence: ActiveValue::NotSet,
+        cadence,
         registered_at: Set(registered_at),
         last_attempt_at: Set(None),
         last_success_at: Set(None),
@@ -879,10 +892,11 @@ impl Store {
             "BTreeMap<String, String>",
             "last_checked_records",
         ))?;
+        let cadence = effective_practice_cadence_value(&tx, practice_id).await?;
         patient_dispatch::Entity::insert(patient_dispatch::ActiveModel {
             practice: Set(practice_id.to_owned()),
             workspace: Set(patient_workspace_id.to_owned()),
-            cadence: ActiveValue::NotSet,
+            cadence,
             registered_at: Set(registered_at),
             last_attempt_at: Set(None),
             last_success_at: Set(None),
@@ -981,7 +995,7 @@ impl Store {
         .await?;
         let state = match row {
             Some(existing) => decode_dispatch_state(existing)?,
-            None => DispatchState::new(Cadence::default(), now_sec),
+            None => DispatchState::new(self.practice_cadence(practice_id).await?, now_sec),
         };
         Ok(state.operator_view(practice_id, patient_workspace_id))
     }
@@ -1010,15 +1024,105 @@ impl Store {
             let workspace = row.workspace.clone();
             saved_by_workspace.insert(workspace, decode_dispatch_state(row)?);
         }
+        let default_cadence = self.practice_cadence(practice_id).await?;
         let mut views = BTreeMap::new();
         for workspace in patients {
             let state = saved_by_workspace
                 .remove(&workspace)
-                .unwrap_or_else(|| DispatchState::new(Cadence::default(), now_sec));
+                .unwrap_or_else(|| DispatchState::new(default_cadence, now_sec));
             let view = state.operator_view(practice_id, &workspace);
             views.insert(workspace, view);
         }
         Ok(views)
+    }
+
+    /// Reads the configured default check and review cadence for `practice_id`,
+    /// returning `Cadence::default()` when no practice-wide override is stored.
+    pub async fn practice_cadence(&self, practice_id: &str) -> Result<Cadence, DispatchError> {
+        if practice_id.trim().is_empty() {
+            return Err(PracticeAccessError::InvalidScope.into());
+        }
+        let Some(row) = practice_cadence::Entity::find_by_id(practice_id.to_owned())
+            .one(&self.db)
+            .await?
+        else {
+            return Ok(Cadence::default());
+        };
+        let cadence: Cadence = serde_json::from_value(row.cadence)
+            .map_err(conversion_error("practice_cadence.cadence", "Cadence"))?;
+        Ok(cadence)
+    }
+
+    /// Sets the practice-wide default cadence for `practice_id` (`A1.6`) and
+    /// applies it to all currently registered patients in the practice as well
+    /// as any patient registered afterward.
+    pub async fn set_practice_cadence<A: physician_auth::AuthStore + ?Sized>(
+        &self,
+        authority: &A,
+        practice_id: &str,
+        cadence: Cadence,
+        now_sec: i64,
+    ) -> Result<PracticeCadenceView, DispatchError> {
+        if practice_id.trim().is_empty() {
+            return Err(PracticeAccessError::InvalidScope.into());
+        }
+        let workspaces = authority
+            .practice_patients(practice_id)
+            .await
+            .map_err(PracticeAccessError::StoreUnavailable)?;
+        let cadence_json = serde_json::to_value(cadence)
+            .map_err(conversion_error("Cadence", "practice_cadence.cadence"))?;
+
+        let tx = self.db.begin().await?;
+        practice_cadence::Entity::insert(practice_cadence::ActiveModel {
+            practice: Set(practice_id.to_owned()),
+            cadence: Set(cadence_json.clone()),
+            updated_at: Set(now_sec),
+        })
+        .on_conflict(
+            OnConflict::column(practice_cadence::Column::Practice)
+                .update_columns([
+                    practice_cadence::Column::Cadence,
+                    practice_cadence::Column::UpdatedAt,
+                ])
+                .to_owned(),
+        )
+        .exec(&tx)
+        .await?;
+
+        for workspace in &workspaces {
+            ensure_dispatch_row(&tx, practice_id, workspace, now_sec).await?;
+        }
+        patient_dispatch::Entity::update_many()
+            .col_expr(
+                patient_dispatch::Column::Cadence,
+                sea_orm::sea_query::Expr::value(cadence_json),
+            )
+            .filter(patient_dispatch::Column::Practice.eq(practice_id))
+            .exec(&tx)
+            .await?;
+
+        let rows = patient_dispatch::Entity::find()
+            .filter(patient_dispatch::Column::Practice.eq(practice_id))
+            .order_by_asc(patient_dispatch::Column::Workspace)
+            .all(&tx)
+            .await?;
+        tx.commit().await?;
+
+        let registered: std::collections::BTreeSet<String> = workspaces.into_iter().collect();
+        let mut patients = Vec::with_capacity(registered.len());
+        for row in rows {
+            if registered.contains(&row.workspace) {
+                let workspace = row.workspace.clone();
+                let view = decode_dispatch_state(row)?.operator_view(practice_id, &workspace);
+                patients.push(view);
+            }
+        }
+        Ok(PracticeCadenceView {
+            practice_id: practice_id.to_owned(),
+            cadence,
+            patients,
+        })
     }
 
     /// Idempotently mirrors linked Spruce conversations and messages for
@@ -1627,6 +1731,10 @@ pub struct SetCadenceBody {
 pub fn operator_router(state: DispatchEndpointState) -> Router {
     Router::new()
         .route(
+            "/operator/practices/{practice_id}/cadence",
+            get(get_practice_cadence).put(put_practice_cadence),
+        )
+        .route(
             "/operator/practices/{practice_id}/patients/{workspace_id}/cadence",
             get(get_patient_cadence).put(put_patient_cadence),
         )
@@ -1662,6 +1770,47 @@ fn map_dispatch_error(err: DispatchError) -> (StatusCode, String) {
         | DispatchError::ReviewHandoff { .. } => {
             (StatusCode::INTERNAL_SERVER_ERROR, err.to_string())
         }
+    }
+}
+
+async fn get_practice_cadence(
+    State(state): State<DispatchEndpointState>,
+    Path(practice_id): Path<String>,
+) -> impl IntoResponse {
+    match state.store.practice_cadence(&practice_id).await {
+        Ok(cadence) => (
+            StatusCode::OK,
+            Json(serde_json::json!({
+                "practice_id": practice_id,
+                "cadence": cadence,
+            })),
+        )
+            .into_response(),
+        Err(error) => map_dispatch_error(error).into_response(),
+    }
+}
+
+async fn put_practice_cadence(
+    State(state): State<DispatchEndpointState>,
+    Path(practice_id): Path<String>,
+    Query(clock): Query<ClockQuery>,
+    Json(body): Json<SetCadenceBody>,
+) -> impl IntoResponse {
+    let now_sec = match resolve_clock(&state.store, clock).await {
+        Ok(ts) => ts,
+        Err(resp) => return resp.into_response(),
+    };
+    let cadence = match Cadence::new(body.check_every_seconds, body.review_every_seconds) {
+        Ok(cadence) => cadence,
+        Err(error) => return map_dispatch_error(DispatchError::Cadence(error)).into_response(),
+    };
+    match state
+        .store
+        .set_practice_cadence(state.auth.as_ref(), &practice_id, cadence, now_sec)
+        .await
+    {
+        Ok(view) => (StatusCode::OK, Json(view)).into_response(),
+        Err(error) => map_dispatch_error(error).into_response(),
     }
 }
 

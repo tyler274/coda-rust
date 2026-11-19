@@ -390,18 +390,30 @@ async fn a_site_without_connections_does_not_ask_for_the_migration_job() {
         &home,
     );
     let deadline = Instant::now() + Duration::from_secs(60);
-    let code = loop {
-        if let Some(code) = site.exited() {
-            break code;
+    loop {
+        assert!(
+            site.exited().is_none(),
+            "the site exited instead of staying degraded"
+        );
+        let ready = reqwest::get(format!("http://{site_listen}/readyz")).await;
+        let log = site.log();
+        if ready.is_ok_and(|response| response.status().as_u16() == 503)
+            && log.contains("timed out")
+        {
+            break;
         }
-        assert!(Instant::now() < deadline, "the site kept running");
+        assert!(
+            Instant::now() < deadline,
+            "the site never reported degraded timed-out readiness: {log}"
+        );
         tokio::time::sleep(Duration::from_millis(200)).await;
-    };
+    }
     let log = site.log();
-    println!("site exit {code}: {log}");
-    assert_ne!(code, 0);
+    println!("site degraded log: {log}");
     assert!(log.contains("timed out"), "{log}");
     assert!(!log.contains("migration"), "{log}");
+    role.limit(-1);
+    support::wait_ready(&mut site, site_port).await;
     drop(role);
     let _ = std::fs::remove_dir_all(&home);
 }

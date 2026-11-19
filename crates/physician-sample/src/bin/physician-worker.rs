@@ -21,6 +21,7 @@ use axum::Json;
 use axum::Router;
 use axum::extract::{Request, State};
 use axum::http::StatusCode;
+use axum::response::{IntoResponse, Response};
 use axum::routing::{get, post};
 use harness::engine::{AttemptFailure, Cancellation, RunLimits};
 use local_product::runtime::delivery::{
@@ -80,9 +81,17 @@ async fn main() {
     }
 }
 
+enum WorkerPhase {
+    Starting {
+        pending: &'static str,
+        detail: String,
+    },
+    Ready(Arc<Worker>),
+}
+
 async fn run() -> Result<(), hosting::StartupError> {
-    let worker = Arc::new(Worker::from_env(|key| std::env::var(key).ok()).await?);
-    let address = listen_addr(&|key: &str| std::env::var(key).ok());
+    let config = WorkerConfig::from_env(|key| std::env::var(key).ok())?;
+    let address = config.listen_addr.clone();
     let listener = tokio::net::TcpListener::bind(&address)
         .await
         .map_err(|_| format!("failed to bind {address}"))?;
@@ -93,23 +102,100 @@ async fn run() -> Result<(), hosting::StartupError> {
             .map_err(|_| "physician worker address unavailable".to_owned())?
     );
     let (stop, stopped) = watch::channel(false);
-    // Cloud Run is where the gauges have a project to go to.
-    if std::env::var("K_SERVICE").is_ok() {
-        tokio::spawn(signals::run(worker.store.clone(), stopped.clone()));
-    }
-    let work = tokio::spawn(pull::run(Arc::clone(&worker), stopped));
-    let served = axum::serve(listener, router(worker))
+    let phase = Arc::new(tokio::sync::RwLock::new(WorkerPhase::Starting {
+        pending: "runtime_store",
+        detail: "connecting runtime dependencies".to_owned(),
+    }));
+
+    let phase_bg = Arc::clone(&phase);
+    let stopped_bg = stopped.clone();
+    let work_handle = tokio::sync::Mutex::new(None::<tokio::task::JoinHandle<()>>);
+    let work_handle_arc = Arc::new(work_handle);
+    let work_handle_bg = Arc::clone(&work_handle_arc);
+
+    let mut startup_task = tokio::spawn(async move {
+        let mut backoff = Duration::from_millis(200);
+        let mut stopped_rx = stopped_bg.clone();
+        loop {
+            if *stopped_rx.borrow() {
+                return Ok::<(), hosting::StartupError>(());
+            }
+            match Worker::from_config(&config).await {
+                Ok(worker) => {
+                    let worker = Arc::new(worker);
+                    if config.k_service {
+                        tokio::spawn(signals::run(worker.store.clone(), stopped_bg.clone()));
+                    }
+                    let pull_handle = tokio::spawn(pull::run(Arc::clone(&worker), stopped_bg));
+                    *work_handle_bg.lock().await = Some(pull_handle);
+                    *phase_bg.write().await = WorkerPhase::Ready(worker);
+                    return Ok(());
+                }
+                Err(err) if err.retryable_dependency().is_some() => {
+                    let pending = err.retryable_dependency().unwrap_or("dependencies");
+                    let database = err.database();
+                    let detail = match database {
+                        Some(cause) => format!(
+                            "{err}: {}",
+                            local_product::runtime::DbFailure::of(cause).error_type()
+                        ),
+                        None => err.to_string(),
+                    };
+                    tracing::warn!(
+                        %pending,
+                        error.type = database.map(|cause| local_product::runtime::DbFailure::of(cause).error_type()),
+                        db.response.status_code = database.and_then(local_product::runtime::sqlstate).as_deref(),
+                        error = %err,
+                        error.cause = database.map(tracing::field::display),
+                        "physician worker dependency unavailable; retrying startup"
+                    );
+                    *phase_bg.write().await = WorkerPhase::Starting { pending, detail };
+                    tokio::select! {
+                        _ = tokio::time::sleep(backoff) => {}
+                        _ = stopped_rx.changed() => {
+                            if *stopped_rx.borrow() {
+                                return Ok(());
+                            }
+                        }
+                    }
+                    backoff = (backoff * 2).min(Duration::from_secs(5));
+                }
+                Err(fatal) => return Err(fatal),
+            }
+        }
+    });
+
+    let shutdown_stop = stop.clone();
+    let served = axum::serve(listener, startup_router(Arc::clone(&phase)))
         .with_graceful_shutdown(async move {
             shutdown().await;
-            // The pull loop and every running attempt watch this.
-            stop.send_replace(true);
+            // The startup loop, pull loop, and every running attempt watch this.
+            shutdown_stop.send_replace(true);
         })
         .await;
-    work.await
-        .map_err(|_| "physician worker pull loop ended abnormally".to_owned())?;
+    stop.send_replace(true);
+    let startup_res = (&mut startup_task).await;
+    if let Some(work) = work_handle_arc.lock().await.take() {
+        work.await
+            .map_err(|_| "physician worker pull loop ended abnormally".to_owned())?;
+    }
+    if let Ok(Err(fatal)) = startup_res {
+        return Err(fatal);
+    }
     served.map_err(|_| "physician worker stopped".into())
 }
 
+fn startup_router(phase: Arc<tokio::sync::RwLock<WorkerPhase>>) -> Router {
+    Router::new()
+        .route("/health", get(startup_health))
+        .route("/readyz", get(startup_readyz))
+        .route("/schedule/wake", post(startup_schedule_wake))
+        .with_state(phase)
+        .layer(telemetry::http_layer())
+}
+
+#[cfg(test)]
+#[allow(dead_code)]
 fn router(worker: Arc<Worker>) -> Router {
     let wake = worker.wake.clone();
     Router::new()
@@ -120,6 +206,7 @@ fn router(worker: Arc<Worker>) -> Router {
         .layer(telemetry::http_layer())
 }
 
+#[cfg(test)]
 fn wake_router(wake: Arc<WakeService>) -> Router {
     Router::new()
         .route("/schedule/wake", post(schedule_wake))
@@ -165,6 +252,69 @@ async fn health(State(worker): State<Arc<Worker>>) -> (StatusCode, Json<Value>) 
                     "spruce_channel": { "standing": "unavailable" },
                 })),
             )
+        }
+    }
+}
+
+async fn startup_health(
+    State(phase): State<Arc<tokio::sync::RwLock<WorkerPhase>>>,
+) -> (StatusCode, Json<Value>) {
+    let guard = phase.read().await;
+    match &*guard {
+        WorkerPhase::Starting { .. } => (
+            StatusCode::OK,
+            Json(json!({
+                "status": "ok",
+            })),
+        ),
+        WorkerPhase::Ready(worker) => {
+            let worker = Arc::clone(worker);
+            drop(guard);
+            health(State(worker)).await
+        }
+    }
+}
+
+async fn startup_readyz(State(phase): State<Arc<tokio::sync::RwLock<WorkerPhase>>>) -> Response {
+    let guard = phase.read().await;
+    match &*guard {
+        WorkerPhase::Starting { pending, detail } => (
+            StatusCode::SERVICE_UNAVAILABLE,
+            Json(json!({
+                "ready": false,
+                "status": "starting",
+                "pending": pending,
+                "detail": detail,
+            })),
+        )
+            .into_response(),
+        WorkerPhase::Ready(worker) => {
+            let worker = Arc::clone(worker);
+            drop(guard);
+            readyz(State(worker)).await.into_response()
+        }
+    }
+}
+
+async fn startup_schedule_wake(
+    State(phase): State<Arc<tokio::sync::RwLock<WorkerPhase>>>,
+    request: Request,
+) -> Response {
+    let guard = phase.read().await;
+    match &*guard {
+        WorkerPhase::Starting { pending, .. } => (
+            StatusCode::SERVICE_UNAVAILABLE,
+            Json(json!({
+                "ready": false,
+                "status": "starting",
+                "pending": pending,
+            })),
+        )
+            .into_response(),
+        WorkerPhase::Ready(worker) => {
+            let wake = Arc::clone(&worker.wake);
+            drop(guard);
+            schedule_wake(State(wake), request).await.into_response()
         }
     }
 }
@@ -319,13 +469,21 @@ async fn chat_attempt(
     };
     let claimed = host.claim.clone();
     let hosted = tokio::select! {
-        hosted = while_owned(
-            claimed.lease,
-            STALL,
-            &cancel,
-            || worker.store.renew_claim(&claimed),
-            host.run(&mut provider, RunLimits::default(), &cancel)
-                .instrument(generation.clone()),
+        hosted = run_while_watching(
+            while_owned(
+                claimed.lease,
+                STALL,
+                &cancel,
+                || worker.store.renew_claim(&claimed),
+                host.run(&mut provider, RunLimits::default(), &cancel)
+                    .instrument(generation.clone()),
+            ),
+            watch_turn_access(
+                &worker.auth,
+                worker.bus.as_ref(),
+                &claimed.scope,
+                &cancel,
+            ),
         ) => Some(hosted),
         () = pull::stopping(stop) => None,
     };
@@ -418,6 +576,97 @@ enum Hosted<T> {
     /// because the run stopped moving. Nothing is settled. The lease expires
     /// and the next claim ends the attempt as abandoned, as when a worker is lost.
     Lost,
+}
+
+/// Monitors authority state for the physician owning `scope` (`A1.2`). Cancels
+/// `cancel` as soon as the account becomes inactive or loses panel membership;
+/// transient store errors do not falsely cancel an in-flight turn.
+async fn watch_turn_access(
+    auth: &PostgresAuthStore,
+    bus: &dyn Bus,
+    scope: &Scope,
+    cancel: &Cancellation,
+) {
+    use physician_auth::{AuthStore as _, Membership, PhysicianIdentity};
+
+    const ACCESS_POLL_INTERVAL: Duration = Duration::from_millis(250);
+    let identity = PhysicianIdentity {
+        practice_id: scope.practice.clone(),
+        physician_id: scope.physician.clone(),
+    };
+    let mut changes = auth.authority_changes();
+    let mut bus_rx = bus.subscribe();
+    let mut tick = tokio::time::interval(ACCESS_POLL_INTERVAL);
+    tick.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Delay);
+    // Skip immediate zero-delay double tick after initial check.
+    tick.tick().await;
+
+    loop {
+        if cancel.is_cancelled() {
+            return;
+        }
+        let revoked = match auth.try_account_by_identity(&identity).await {
+            Ok(Some(account)) if account.active => {
+                match auth.try_membership(&identity, &scope.workspace).await {
+                    Ok(Membership::Allowed) => false,
+                    Ok(_) => true,
+                    Err(err) => {
+                        tracing::debug!(error = %err, "turn access membership check unavailable");
+                        false
+                    }
+                }
+            }
+            Ok(_) => true,
+            Err(err) => {
+                tracing::debug!(error = %err, "turn access account check unavailable");
+                false
+            }
+        };
+        if revoked {
+            tracing::info!(
+                practice = %scope.practice,
+                physician = %scope.physician,
+                workspace = %scope.workspace,
+                "cancelling physician turn after access revocation"
+            );
+            cancel.cancel();
+            return;
+        }
+        tokio::select! {
+            _ = async {
+                match changes.as_mut() {
+                    Some(rx) => {
+                        let _ = rx.changed().await;
+                    }
+                    None => std::future::pending::<()>().await,
+                }
+            } => {}
+            _ = bus_rx.recv() => {}
+            _ = tick.tick() => {}
+        }
+    }
+}
+
+/// Runs `work` to completion while racing `watch`, which signals `cancel` when
+/// panel access is revoked and then yields so `work` can settle cleanly.
+pub(crate) async fn run_while_watching<T>(
+    work: impl std::future::Future<Output = T>,
+    watch: impl std::future::Future<Output = ()>,
+) -> T {
+    tokio::pin!(work);
+    tokio::pin!(watch);
+    let mut watching = true;
+    loop {
+        if watching {
+            tokio::select! {
+                biased;
+                result = &mut work => return result,
+                () = &mut watch => watching = false,
+            }
+        } else {
+            return work.await;
+        }
+    }
 }
 
 /// Hosting keeps ownership independently of the model loop and every product
@@ -753,24 +1002,31 @@ struct Worker {
     simulation_practices: SimulationPractices,
 }
 
-impl Worker {
-    /// The telemetry origin and scenario of a turn in `practice` accepted
-    /// with `scenario`. A rehearsal practice's turn is `simulation` with its
-    /// scenario; any other turn takes this worker's own origin and no
-    /// scenario.
-    fn turn_origin(
-        &self,
-        practice: &str,
-        scenario: Option<&str>,
-    ) -> (genai::Origin, Option<String>) {
-        match self.simulation_practices.origin(practice, scenario) {
-            (genai::Origin::Real, _) => (self.origin, None),
-            rehearsal => rehearsal,
-        }
-    }
+struct WorkerConfig {
+    hosted: bool,
+    k_service: bool,
+    listen_addr: String,
+    simulation_practices: SimulationPractices,
+    clinical_library: Option<hosting::ClinicalLibraryClient>,
+    origin: genai::Origin,
+    pace: Pace,
+    schedule_auth: WakeAuth,
+    wake_mode: WakeMode,
+    model: ModelSource,
+    skills_dir: Option<String>,
+    database: String,
+    redis_url: Option<String>,
+    redis_ca_pem: Option<String>,
+    calendar: Option<PracticeSyntheticCalendar>,
+    elation_practice: String,
+    elation_client: Option<Arc<local_product::physician_sources::elation_fhir::ElationFhirClient>>,
+}
 
-    async fn from_env(get: impl Fn(&str) -> Option<String>) -> Result<Self, hosting::StartupError> {
+impl WorkerConfig {
+    fn from_env(get: impl Fn(&str) -> Option<String>) -> Result<Self, hosting::StartupError> {
         let hosted = is_hosted(&get);
+        let k_service = get("K_SERVICE").is_some();
+        let listen_addr = listen_addr(&get);
         let simulation_practices = SimulationPractices::from_env(&get)?;
         let clinical_library = hosting::ClinicalLibraryConfig::from_env(&get)
             .map_err(|error| error.to_string())?
@@ -787,9 +1043,9 @@ impl Worker {
             WakeMode::LiveOnly
         };
         let model = ModelSource::from_env(transport, &get)?;
-        let wake_roles = model.roles.clone();
+        let skills_dir = configured(&get, "PHYSICIAN_SKILLS_DIR");
         let wake_skills = local_product::physician_chat::PhysicianSkills::configured(
-            configured(&get, "PHYSICIAN_SKILLS_DIR").as_deref(),
+            skills_dir.as_deref(),
             hosted,
         );
         if let Err(err @ local_product::physician_chat::SkillsError::Package { .. }) = &wake_skills
@@ -798,21 +1054,75 @@ impl Worker {
         }
         let database = configured(&get, "PHYSICIAN_DATABASE_URL")
             .ok_or("PHYSICIAN_DATABASE_URL is required")?;
-        // One pool per process: the auth store reads through the runtime's.
-        let mut store = Store::connect(&database)
-            .await
-            .map_err(hosting::StartupError::RuntimeStore)?;
+        physician_bus::validate_env(&get, hosted)?;
+        let redis_url = configured(&get, "PHYSICIAN_REDIS_URL");
+        let redis_ca_pem = configured(&get, "PHYSICIAN_REDIS_CA_PEM");
         let elation_client =
             match local_product::physician_sources::elation_fhir::ElationFhirConfig::from_env(&get)
                 .map_err(|err| err.to_string())?
             {
                 Some(config) => Some(Arc::new(
                     local_product::physician_sources::elation_fhir::ElationFhirClient::new(config)
-                        .map_err(|err| err.to_string())?
-                        .with_store(store.clone()),
+                        .map_err(|err| err.to_string())?,
                 )),
                 None => None,
             };
+        let elation_practice = configured(&get, "PHYSICIAN_ELATION_PRACTICE_ID")
+            .unwrap_or_else(|| physician_sample::STAGING_PRACTICE_ID.to_owned());
+        let calendar =
+            physician_sample::schedule::SyntheticBankCalendar::from_env(&get).map(|source| {
+                PracticeSyntheticCalendar {
+                    practice: physician_sample::STAGING_PRACTICE_ID.to_owned(),
+                    source,
+                }
+            });
+        Ok(Self {
+            hosted,
+            k_service,
+            listen_addr,
+            simulation_practices,
+            clinical_library,
+            origin,
+            pace,
+            schedule_auth,
+            wake_mode,
+            model,
+            skills_dir,
+            database,
+            redis_url,
+            redis_ca_pem,
+            calendar,
+            elation_practice,
+            elation_client,
+        })
+    }
+}
+
+impl Worker {
+    /// The telemetry origin and scenario of a turn in `practice` accepted
+    /// with `scenario`. A rehearsal practice's turn is `simulation` with its
+    /// scenario; any other turn takes this worker's own origin and no
+    /// scenario.
+    fn turn_origin(
+        &self,
+        practice: &str,
+        scenario: Option<&str>,
+    ) -> (genai::Origin, Option<String>) {
+        match self.simulation_practices.origin(practice, scenario) {
+            (genai::Origin::Real, _) => (self.origin, None),
+            rehearsal => rehearsal,
+        }
+    }
+
+    async fn from_config(config: &WorkerConfig) -> Result<Self, hosting::StartupError> {
+        // One pool per process: the auth store reads through the runtime's.
+        let mut store = Store::connect(&config.database)
+            .await
+            .map_err(hosting::StartupError::RuntimeStore)?;
+        let elation_client = config
+            .elation_client
+            .as_ref()
+            .map(|client| Arc::new((**client).clone().with_store(store.clone())));
         let mut refresh_composite =
             local_product::runtime::refresh::CompositePatientSourceRefresh::new();
         refresh_composite.push(Arc::new(
@@ -825,60 +1135,67 @@ impl Worker {
         }
         store = store.with_source_refresh(Arc::new(refresh_composite));
         if let Ok(skills) = local_product::physician_chat::PhysicianSkills::configured(
-            configured(&get, "PHYSICIAN_SKILLS_DIR").as_deref(),
-            hosted,
+            config.skills_dir.as_deref(),
+            config.hosted,
         ) {
-            store = store.with_understanding_trigger(model.roles.clone(), skills);
+            store = store.with_understanding_trigger(config.model.roles.clone(), skills);
         }
         let auth = PostgresAuthStore::from_connection(store.connection().clone());
-        let bus = physician_bus::from_env(&get, hosted).await?;
+        let bus = physician_bus::from_env(
+            |key| match key {
+                "PHYSICIAN_REDIS_URL" => config.redis_url.clone(),
+                "PHYSICIAN_REDIS_CA_PEM" => config.redis_ca_pem.clone(),
+                _ => None,
+            },
+            config.hosted,
+        )
+        .await
+        .map_err(|detail| hosting::StartupError::DependencyUnavailable {
+            dependency: "bus",
+            detail,
+        })?;
         let quota: Arc<dyn harness::provider::QuotaGate> = Arc::new(store.clone());
-        let skills_dir = configured(&get, "PHYSICIAN_SKILLS_DIR");
-        let calendar =
-            physician_sample::schedule::SyntheticBankCalendar::from_env(&get).map(|source| {
-                PracticeSyntheticCalendar {
-                    practice: physician_sample::STAGING_PRACTICE_ID.to_owned(),
-                    source,
-                }
-            });
+        let wake_skills = local_product::physician_chat::PhysicianSkills::configured(
+            config.skills_dir.as_deref(),
+            config.hosted,
+        );
         let elation = elation_client.map(|client| PracticeElationSource {
-            practice: configured(&get, "PHYSICIAN_ELATION_PRACTICE_ID")
-                .unwrap_or_else(|| physician_sample::STAGING_PRACTICE_ID.to_owned()),
+            practice: config.elation_practice.clone(),
             client,
         });
         let wake = Arc::new(WakeService {
-            auth: schedule_auth,
-            mode: wake_mode,
+            auth: config.schedule_auth.clone(),
+            mode: config.wake_mode,
             handler: Arc::new(ScheduledWakeHandler {
                 dispatch: StoreWakeHandler {
                     store: store.clone(),
                     auth: auth.clone(),
-                    roles: wake_roles,
+                    roles: config.model.roles.clone(),
                     skills: wake_skills,
                 },
                 visit_prep: VisitPrepWakeHandler {
                     store: store.clone(),
                     auth: auth.clone(),
                     bus: Arc::clone(&bus),
-                    model: model.clone(),
+                    model: config.model.clone(),
                     quota: quota.clone(),
-                    skills_dir,
-                    calendar,
+                    skills_dir: config.skills_dir.clone(),
+                    calendar: config.calendar.clone(),
                     elation,
                 },
             }),
-            clinical_library,
+            clinical_library: config.clinical_library.clone(),
         });
         Ok(Self {
             store,
             auth,
             bus,
-            model,
+            model: config.model.clone(),
             quota,
-            pace,
+            pace: config.pace,
             wake,
-            origin,
-            simulation_practices,
+            origin: config.origin,
+            simulation_practices: config.simulation_practices.clone(),
         })
     }
 
@@ -954,6 +1271,12 @@ impl Worker {
             }
         }
     }
+
+    #[cfg(test)]
+    async fn from_env(get: impl Fn(&str) -> Option<String>) -> Result<Self, hosting::StartupError> {
+        let config = WorkerConfig::from_env(get)?;
+        Self::from_config(&config).await
+    }
 }
 
 /// Shared state for `POST /schedule/wake`.
@@ -965,6 +1288,7 @@ struct WakeService {
 }
 
 /// Authentication state for `POST /schedule/wake`.
+#[derive(Clone)]
 enum WakeAuth {
     /// Verifies Google OIDC signature, issuer, expiry, and audience first (`401`),
     /// then checks that the verified service-account email equals `principal` (`403`).
@@ -1231,6 +1555,7 @@ impl WakeHandler for StoreWakeHandler {
     }
 }
 
+#[derive(Clone)]
 struct PracticeSyntheticCalendar {
     practice: String,
     source: physician_sample::schedule::SyntheticBankCalendar,

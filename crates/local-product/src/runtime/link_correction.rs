@@ -2734,7 +2734,7 @@ impl Store {
             CorrectionDestination::NotAPatient => None,
         };
         conv.open_viewers =
-            still_open_viewers(auth, practice, &conv.open_viewers, target_ws_opt).await;
+            still_open_viewers(auth, practice, &conv.open_viewers, target_ws_opt).await?;
 
         let undo_window = cmd.undo_window_seconds.max(1);
         let active_prior_undo = conv
@@ -3007,7 +3007,7 @@ impl Store {
             &conv.open_viewers,
             Some(&undo.from_workspace),
         )
-        .await;
+        .await?;
         conv.move_undo = None;
         conv.updated_at = cmd.now_ts;
         save_conversation_in_tx(&tx, &conv).await?;

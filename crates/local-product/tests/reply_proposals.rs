@@ -921,6 +921,42 @@ async fn ac2_fences_stale_conversation_and_source_reads_and_runs_selected_draft_
             text: "Line 1 via save_draft.\r\nLine 2 via save_draft.".into(),
         }
     );
+
+    store
+        .copy_reply(
+            &access,
+            &CommandKey::new("copy-eval-ac5").unwrap(),
+            conversation_id,
+            ExpectedDraftBase::DraftRevision(5),
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .unwrap();
+    let exported = store.reply_feedback_for_evaluation().await.unwrap();
+    let row = exported
+        .iter()
+        .find(|entry| {
+            entry.practice == practice
+                && entry.conversation_id == conversation_id
+                && entry.physician == dr.physician_id
+        })
+        .expect("exported reply feedback row");
+    assert!(row.proposed_text.is_some());
+    assert_eq!(
+        row.revised_text.as_deref(),
+        Some("Line 1 via save_draft.\r\nLine 2 via save_draft.")
+    );
+    assert_eq!(row.draft_revision, Some(5));
+    assert!(
+        row.revision_instructions
+            .contains(&"Make warmer and ask them to message if dizzy.".to_owned()),
+        "{:?}",
+        row.revision_instructions
+    );
+    assert_eq!(
+        row.copied_texts,
+        vec!["Line 1 via save_draft.\r\nLine 2 via save_draft."]
+    );
 }
 
 #[tokio::test]

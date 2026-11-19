@@ -23,6 +23,7 @@ mod m20261118_12_follow_ups_withdrawal;
 mod m20261118_13_link_correction;
 mod m20261118_14_message_followup_dispatch;
 mod m20261119_04_p4_panel_prefs_and_ehr_bridge;
+mod m20261119_05_practice_cadence;
 mod m20261119_06_care_plan_recommendations;
 mod m20261119_spruce_release_fence;
 
@@ -62,6 +63,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261118_13_link_correction::Migration),
             Box::new(m20261118_14_message_followup_dispatch::Migration),
             Box::new(m20261119_04_p4_panel_prefs_and_ehr_bridge::Migration),
+            Box::new(m20261119_05_practice_cadence::Migration),
             Box::new(m20261119_spruce_release_fence::Migration),
             Box::new(m20261119_06_care_plan_recommendations::Migration),
         ]

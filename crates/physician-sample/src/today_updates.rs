@@ -485,14 +485,19 @@ pub(crate) async fn serve_durable_today(
     connections: Vec<Value>,
     source_outages: Vec<Value>,
 ) -> Response {
-    let panel = ctx.auth.store.panel(&ctx.identity).await;
+    let Ok(panel) = ctx.auth.store.try_panel(&ctx.identity).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let (allowed_panel, panel_may_be_missing) =
+        auth::check_panel_candidates(ctx.auth.store.as_ref(), &ctx.identity, &panel).await;
+    let panel: Vec<String> = allowed_panel.into_iter().collect();
     let directory = connected.patients(extensions);
     let names = directory_patient_names(&*directory, &panel).await;
     let probe = active_probe(extensions);
     let real_now = auth::now();
 
     let mut extra_failed = Vec::new();
-    let (messages_to_match_count, spruce_rows) =
+    let (messages_to_match_count, spruce_rows, spruce_may_be_missing) =
         match crate::matching_reply::spruce_today_rows_for_physician(
             store,
             ctx,
@@ -503,10 +508,10 @@ pub(crate) async fn serve_durable_today(
         )
         .await
         {
-            Ok(pair) => pair,
+            Ok(tuple) => tuple,
             Err(failed) => {
                 extra_failed.push(failed);
-                (0, Vec::new())
+                (0, Vec::new(), false)
             }
         };
 
@@ -594,6 +599,8 @@ pub(crate) async fn serve_durable_today(
     );
 
     let incomplete = !projection.completeness.is_complete() || !failed_parts.is_empty();
+    let may_be_missing_someone =
+        projection.may_be_missing_someone || panel_may_be_missing || spruce_may_be_missing;
 
     Json(json!({
         "date": moment.date_iso,
@@ -609,6 +616,7 @@ pub(crate) async fn serve_durable_today(
         "incomplete": incomplete,
         "practice_outages": practice_outages,
         "failed_parts": failed_parts,
+        "may_be_missing_someone": may_be_missing_someone,
     }))
     .into_response()
 }
@@ -621,7 +629,12 @@ pub(crate) async fn serve_durable_updates(
     extensions: &Extensions,
     moment: &crate::care::PracticeMoment,
 ) -> Response {
-    let panel = ctx.auth.store.panel(&ctx.identity).await;
+    let Ok(panel) = ctx.auth.store.try_panel(&ctx.identity).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let (allowed_panel, panel_may_be_missing) =
+        auth::check_panel_candidates(ctx.auth.store.as_ref(), &ctx.identity, &panel).await;
+    let panel: Vec<String> = allowed_panel.into_iter().collect();
     let directory = connected.patients(extensions);
     let names = directory_patient_names(&*directory, &panel).await;
     let probe = active_probe(extensions);
@@ -694,6 +707,7 @@ pub(crate) async fn serve_durable_updates(
         "reviewed_nothing_for_you": reviewed_nothing_for_you,
         "earlier_days": earlier_days,
         "failed_parts": failed_parts,
+        "may_be_missing_someone": projection.may_be_missing_someone || panel_may_be_missing,
         "as_of": projection.clinical_now_unix,
         "also_reviewed": reviewed_nothing_for_you.len(),
         "next_cursor": null,
@@ -763,7 +777,9 @@ pub(crate) async fn open_route(
         let Ok(cmd_key) = CommandKey::new(&payload.idempotency_key) else {
             return StatusCode::BAD_REQUEST.into_response();
         };
-        let panel = ctx.auth.store.panel(&ctx.identity).await;
+        let Ok(panel) = ctx.auth.store.try_panel(&ctx.identity).await else {
+            return StatusCode::SERVICE_UNAVAILABLE.into_response();
+        };
         let directory = connected.patients(extensions);
         let names = directory_patient_names(&*directory, &panel).await;
         let real_now = auth::now();
@@ -807,12 +823,15 @@ pub(crate) async fn open_route(
     }
     let identity = ConnectedCare::identity(extensions);
     let auth_store = connected.auth_store(extensions);
-    if auth_store
-        .membership(&identity, &payload.patient_workspace_id)
+    match auth_store
+        .try_membership(&identity, &payload.patient_workspace_id)
         .await
-        != Membership::Allowed
     {
-        return StatusCode::NOT_FOUND.into_response();
+        Ok(Membership::Allowed) => {}
+        Ok(Membership::ClinicDemographic | Membership::Denied) => {
+            return StatusCode::NOT_FOUND.into_response();
+        }
+        Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
     }
     let now_str = connected
         .practice_now(extensions)

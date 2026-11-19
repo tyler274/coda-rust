@@ -663,6 +663,8 @@ pub struct TodayProjection {
     pub also_reviewed_today_count: usize,
     /// Whether every producer answered or one or more failed.
     pub completeness: ReadCompleteness,
+    /// True when one or more candidate patients could not have access checked and were skipped.
+    pub may_be_missing_someone: bool,
 }
 
 impl TodayProjection {
@@ -670,7 +672,10 @@ impl TodayProjection {
     /// producer answered cleanly and neither Today rows nor practice outages exist.
     #[must_use]
     pub fn nothing_needs_physician(&self) -> bool {
-        self.completeness.is_complete() && self.rows.is_empty() && self.practice_outages.is_empty()
+        self.completeness.is_complete()
+            && !self.may_be_missing_someone
+            && self.rows.is_empty()
+            && self.practice_outages.is_empty()
     }
 }
 
@@ -809,6 +814,8 @@ pub struct UpdatesProjection {
     pub earlier_days: Vec<EarlierDayUpdatesGroup>,
     /// Whether every producer answered or one or more failed.
     pub completeness: ReadCompleteness,
+    /// True when one or more candidate patients could not have access checked and were skipped.
+    pub may_be_missing_someone: bool,
 }
 
 /// Verified chart record citation attached to [`ItemWorkEvidence`].
@@ -925,6 +932,7 @@ struct AuthorizedReadContext {
     clinical_now_unix: i64,
     allowed_workspaces: Vec<String>,
     practice_workspaces: Vec<String>,
+    may_be_missing_someone: bool,
 }
 
 fn sha256_bytes(token: &str) -> Vec<u8> {
@@ -1679,13 +1687,14 @@ impl Store {
             i64::try_from(clinical_now_u64).map_err(conversion_error("clinical now", "i64"))?;
         let practice_workspaces = auth.practice_patients(&identity.practice_id).await?;
 
-        let allowed_workspaces = if let Some(target_ws) = workspace_filter {
+        let (allowed_workspaces, may_be_missing_someone) = if let Some(target_ws) = workspace_filter
+        {
             let trimmed_ws = target_ws.trim();
             if trimmed_ws.is_empty() {
                 return Err(TodayUpdatesError::InvalidInput { field: "workspace" });
             }
-            match auth.membership(&identity, trimmed_ws).await {
-                Membership::Allowed => vec![trimmed_ws.to_owned()],
+            match auth.try_membership(&identity, trimmed_ws).await? {
+                Membership::Allowed => (vec![trimmed_ws.to_owned()], false),
                 Membership::ClinicDemographic => {
                     return Err(TodayUpdatesError::AccessDenied {
                         reason: format!(
@@ -1704,14 +1713,19 @@ impl Store {
                 }
             }
         } else {
-            let panel = auth.panel(&identity).await;
+            let panel = auth.try_panel(&identity).await?;
             let mut verified = Vec::with_capacity(panel.len());
+            let mut missing = false;
             for ws in panel {
-                if auth.membership(&identity, &ws).await == Membership::Allowed {
-                    verified.push(ws);
+                match auth.try_membership(&identity, &ws).await {
+                    Ok(Membership::Allowed) => verified.push(ws),
+                    Ok(Membership::ClinicDemographic | Membership::Denied) => {}
+                    Err(_) => {
+                        missing = true;
+                    }
                 }
             }
-            verified
+            (verified, missing)
         };
 
         Ok(AuthorizedReadContext {
@@ -1720,6 +1734,7 @@ impl Store {
             clinical_now_unix,
             allowed_workspaces,
             practice_workspaces,
+            may_be_missing_someone,
         })
     }
 
@@ -2092,6 +2107,7 @@ impl Store {
             practice_outages,
             also_reviewed_today_count: quiet_reviewed_workspaces_today.len(),
             completeness: ReadCompleteness::from_failures(failed_parts),
+            may_be_missing_someone: ctx.may_be_missing_someone,
         })
     }
 
@@ -3377,6 +3393,7 @@ impl Store {
             reviewed_nothing_for_you,
             earlier_days,
             completeness: ReadCompleteness::from_failures(failed_parts),
+            may_be_missing_someone: ctx.may_be_missing_someone,
         })
     }
 
@@ -5127,6 +5144,9 @@ impl Store {
                     super::understanding::PhysicianSummaryAccessError::Database(db_err) => {
                         TodayUpdatesError::from(db_err)
                     }
+                    super::understanding::PhysicianSummaryAccessError::AuthorityUnavailable(
+                        err,
+                    ) => TodayUpdatesError::from(err),
                 })?
                 .ok_or_else(|| TodayUpdatesError::NotFound {
                     workspace: workspace.to_owned(),

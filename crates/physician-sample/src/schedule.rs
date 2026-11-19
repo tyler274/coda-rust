@@ -368,8 +368,12 @@ pub(crate) async fn practice_day(
 
     let auth_store = connected.auth_store(extensions);
     let current_time_unix = moment.now_unix as i64;
-    let panel = auth_store.panel(&identity).await;
-    let panel_set: BTreeSet<&str> = panel.iter().map(String::as_str).collect();
+    let Ok(panel) = auth_store.try_panel(&identity).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let (allowed_panel, may_be_missing_someone) =
+        crate::auth::check_panel_candidates(auth_store.as_ref(), &identity, &panel).await;
+    let panel_set: BTreeSet<&str> = allowed_panel.iter().map(String::as_str).collect();
 
     let Ok(preparations) = runtime_store
         .visit_preparations_for_practice(&identity.practice_id, auth_store.as_ref())
@@ -471,6 +475,7 @@ pub(crate) async fn practice_day(
         "source_state": source_state_json(&schedule.standing),
         "featured_encounter": Value::Null,
         "visits": visits,
+        "may_be_missing_someone": may_be_missing_someone,
     }))
     .into_response()
 }

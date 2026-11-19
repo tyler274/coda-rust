@@ -574,3 +574,154 @@ async fn staff_read_feedback_with_its_response_and_author() {
         "the cause is lost: {err}"
     );
 }
+
+struct PostgresWorkspaceAuthority;
+
+#[local_product::runtime::async_trait]
+impl local_product::runtime::Authority for PostgresWorkspaceAuthority {
+    async fn check(
+        &mut self,
+        tx: &local_product::runtime::PublicationTransaction,
+        scope: &local_product::runtime::Scope,
+        session_hash: Option<&[u8]>,
+    ) -> Result<(), String> {
+        PostgresAuthStore::check_runtime_authority(
+            tx,
+            session_hash.ok_or("missing session reference")?,
+            &physician_auth::PhysicianIdentity {
+                practice_id: scope.practice.clone(),
+                physician_id: scope.physician.clone(),
+            },
+            &scope.workspace,
+        )
+        .await
+        .map_err(|cause| cause.to_string())
+    }
+
+    async fn lock_publication(
+        &mut self,
+        tx: &local_product::runtime::PublicationTransaction,
+        scope: &local_product::runtime::Scope,
+        session_hash: Option<&[u8]>,
+    ) -> Result<(), String> {
+        PostgresAuthStore::lock_runtime_authority(
+            tx,
+            session_hash.ok_or("missing session reference")?,
+            &physician_auth::PhysicianIdentity {
+                practice_id: scope.practice.clone(),
+                physician_id: scope.physician.clone(),
+            },
+            &scope.workspace,
+        )
+        .await
+        .map_err(|cause| cause.to_string())
+    }
+}
+
+#[tokio::test]
+async fn staff_read_feedback_includes_concern_done_evaluation() {
+    use local_product::physician_sources::{RecordDate, SourceRevision};
+    use local_product::runtime::Store;
+    use local_product::runtime::concerns::{
+        CommandKey, ConcernDoneOutcome, ConcernId, ConcernUrgency, ExactRecordReference,
+        RaiseConcern, SourceWork, WorkspaceAccess,
+    };
+
+    let chat = "chat-feedback-eval";
+    let Some(running) = Running::start(chat).await else {
+        return;
+    };
+    let store = Store::connect(&running.database.url)
+        .await
+        .expect("runtime store");
+    let practice = physician_sample::STAGING_PRACTICE_ID;
+    let workspace = physician_sample::WORKSPACE_IDS[0];
+    let session_hash = PostgresAuthStore::session_reference(&running.session);
+
+    let lab_content =
+        r#"{"resourceType":"Observation","id":"bmp-eval-1","date":"2026-11-11","potassium_mmol_L":5.9}"#
+            .to_owned();
+    let lab = SourceRevision {
+        workspace: workspace.to_owned(),
+        source_id: "clinic-lab".into(),
+        candidate_id: "bmp-eval-1".into(),
+        revision: "r1".into(),
+        record_type: "Observation".into(),
+        dates: vec![RecordDate {
+            name: "effectiveDate".into(),
+            value: "2026-11-11".into(),
+        }],
+        sha256: local_product::sha256_hex(lab_content.as_bytes()),
+        content: lab_content,
+        readable_parts: vec![],
+        provenance: json!({"system": "clinic-lab", "id": "bmp-eval-1"}),
+        envelope: None,
+    };
+    store.record_source(&lab).await.expect("record source");
+
+    let concern_id = ConcernId::new("eval-hyperkalemia").expect("concern id");
+    store
+        .raise_concern(
+            &CommandKey::new("raise-eval-k-1").expect("command key"),
+            &RaiseConcern {
+                practice: practice.to_owned(),
+                workspace: workspace.to_owned(),
+                id: concern_id.clone(),
+                urgency: ConcernUrgency::Now,
+                reason: "Potassium 5.9 mmol/L while taking spironolactone.".into(),
+                records: vec![ExactRecordReference::new("bmp-eval-1", "r1").expect("ref")],
+                source_work: SourceWork::new("morning_briefing", "work-eval-1", "attempt-1")
+                    .expect("source work"),
+            },
+        )
+        .await
+        .expect("raise concern");
+
+    let access = WorkspaceAccess {
+        practice,
+        physician: "staging-physician",
+        workspace,
+        session_hash: &session_hash,
+    };
+    let done = store
+        .mark_concern_done(
+            &access,
+            &CommandKey::new("done-eval-1").expect("done key"),
+            &concern_id,
+            &mut PostgresWorkspaceAuthority,
+        )
+        .await
+        .expect("mark done");
+    assert!(matches!(done, ConcernDoneOutcome::Cleared { .. }));
+
+    // Seed a chat feedback row too so both streams appear in the same export.
+    let first = running.responses[0].as_str();
+    let saved = put(
+        &running.hosts[0],
+        Some(&running.session),
+        &format!("/physician-state/feedback/{workspace}/{chat}/{first}"),
+        &json!({"rating": "up"}),
+    )
+    .await;
+    assert_eq!(saved.0, 200, "{}", saved.1);
+
+    let (ok, out, err) = staff_read(&running.database.url, &[]);
+    assert!(ok, "{err}");
+    let rows: Vec<Value> = out
+        .lines()
+        .map(|line| serde_json::from_str(line).expect("one JSON object per line"))
+        .collect();
+    assert!(
+        rows.iter()
+            .any(|row| row["response"] == json!(first) && row["rating"] == "up"),
+        "expected chat feedback row in {out}"
+    );
+    assert!(
+        rows.iter().any(|row| {
+            row["kind"] == "concern_done"
+                && row["physician"] == "staging-physician"
+                && row["workspace"] == workspace
+        }),
+        "expected concern_done evaluation row in {out}"
+    );
+}
