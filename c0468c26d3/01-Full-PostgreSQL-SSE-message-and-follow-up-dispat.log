@@ -1,0 +1,19 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling local-product v0.1.0 (<workspace>)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 24.21s
+     Running tests/message_followup_dispatch_reviews.rs (target/debug/deps/message_followup_dispatch_reviews-4e2380169a9fde43)
+
+running 9 tests
+test direct_spruce_receiver_handoff_admits_message_review_without_duplicate_wake_and_classifies_senders ... ok
+test due_follow_up_starts_one_review_of_current_version_while_held_completed_cancelled_start_none ... ok
+test end_to_end_sse_dispatch_executes_message_followup_and_combined_reviews_once_and_saves_reply_drafts ... ok
+test linked_message_and_record_change_coalesce_into_single_review ... ok
+test linked_message_arrival_starts_one_review_with_reason_message ... ok
+test message_and_follow_up_review_recipe_and_tools_have_clean_model_text ... ok
+test reply_review_fence_releases_on_quiet_completion_and_preserves_non_patient_wakes_on_supersession ... ok
+test stop_holds_follow_up_review_across_restart_and_worker_replay ... ok
+test stopped_follow_up_review_remains_held_when_later_patient_inputs_admit_new_review ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.74s
+

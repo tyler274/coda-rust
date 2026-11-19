@@ -1,0 +1,37 @@
+{
+  "branch": "tyler-eng-432-2-message-followup-review-suite",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Full PostgreSQL + SSE message and follow-up dispatch, Stop-hold, and fence-release suite",
+      "kind": "run",
+      "revision": "7c89417818bde716269b8c4349ec3a04878567ad",
+      "dirty": false,
+      "recorded": "2026-11-19T00:10:35+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "message_followup_dispatch_reviews",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": "test result: ok\\. [1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "01-Full-PostgreSQL-SSE-message-and-follow-up-dispat.log"
+      ],
+      "seconds": 33.2,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "c0468c26d323d06cac263bfe578d3b8d9351a93e",
+        "reason": "Rebased cleanly onto patched upstream PR 81; the only downstream adjustment in PR 82..91 adds the PHYSICIAN_TEST_DATABASE_URL fallback in link_correction_postgres.rs (PR 84)."
+      }
+    }
+  ]
+}
