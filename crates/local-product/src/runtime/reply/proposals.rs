@@ -11,6 +11,18 @@
 //! physicians never overwrite each other's drafts and a patient move never
 //! carries an earlier patient's draft onto the new patient's reply.
 
+use std::collections::{BTreeMap, BTreeSet};
+use std::fmt;
+
+use harness::engine;
+use sea_orm::{
+    ActiveModelTrait, ColumnTrait, ConnectionTrait, DatabaseTransaction, DbErr, EntityTrait,
+    QueryFilter, QueryOrder, QuerySelect, Set, TransactionTrait, Unchanged,
+};
+use serde::{Deserialize, Serialize};
+use serde_json::json;
+use uuid::Uuid;
+
 use super::super::concerns::{
     CommandKey, ConcernError, ConcernId, ConcernInputError, ConcernMutation, ExactRecordReference,
     RetireConcern, RetirementReason, SourceWork, WorkspaceAccess, load_concern,
@@ -23,16 +35,8 @@ use super::super::understanding::{SummaryCitation, build_summary_citation};
 use super::super::{
     Authority, RuntimeError, Scope, Store, control, conversion_error, error, keys, now,
 };
-use super::draft_model;
+use super::{Draft, RevisionInput, draft_model};
 use crate::physician_sources::SourcePatient;
-use sea_orm::{
-    ActiveModelTrait, ColumnTrait, ConnectionTrait, DatabaseTransaction, DbErr, EntityTrait,
-    QueryFilter, QueryOrder, QuerySelect, Set, TransactionTrait, Unchanged,
-};
-use serde::{Deserialize, Serialize};
-use serde_json::json;
-use std::collections::{BTreeMap, BTreeSet};
-use std::fmt;
 
 /// Prefix identifying a [`Scope::chat`] owned by a reply proposal draft.
 pub const PROPOSAL_DRAFT_CHAT_PREFIX: &str = "reply-proposal:";
@@ -2252,6 +2256,72 @@ async fn check_physician_read_gate_in_tx(
         .map_err(|reason| ReplyProposalError::AccessDenied { reason })
 }
 
+async fn lock_proposal_access_in_tx(
+    tx: &DatabaseTransaction,
+    scope: &Scope,
+    session_hash: &[u8],
+    authority: &mut dyn Authority,
+) -> Result<(), ReplyProposalError> {
+    authority
+        .lock_publication(tx, scope, Some(session_hash))
+        .await
+        .map_err(|reason| ReplyProposalError::AccessDenied { reason })
+}
+
+async fn load_locked_conversation_for_physician(
+    tx: &DatabaseTransaction,
+    scope: &Scope,
+    session_hash: &[u8],
+    conversation_id: &str,
+    authority: &mut dyn Authority,
+) -> Result<ReplyConversation, ReplyProposalError> {
+    match load_locked_conversation(tx, &scope.practice, conversation_id).await {
+        Ok(conv) => Ok(conv),
+        Err(err @ ReplyProposalError::ConversationNotFound { .. }) => {
+            lock_proposal_access_in_tx(tx, scope, session_hash, authority).await?;
+            Err(err)
+        }
+        Err(other) => Err(other),
+    }
+}
+
+async fn verify_conversation_workspace_for_write(
+    tx: &DatabaseTransaction,
+    access: &WorkspaceAccess<'_>,
+    scope: &Scope,
+    conv: &ReplyConversation,
+    authority: &mut dyn Authority,
+) -> Result<String, ReplyProposalError> {
+    let ConversationLink::LinkedPatient { workspace } = &conv.link else {
+        lock_proposal_access_in_tx(tx, scope, access.session_hash, authority).await?;
+        return Err(ReplyProposalError::ConversationNotLinkedToPatient {
+            conversation_id: conv.conversation_id.clone(),
+        });
+    };
+    if workspace != &scope.workspace {
+        return Err(ReplyProposalError::AccessDenied {
+            reason: format!(
+                "conversation `{}` is linked to workspace `{workspace}`, not `{}`",
+                conv.conversation_id, scope.workspace
+            ),
+        });
+    }
+    Ok(workspace.clone())
+}
+
+async fn check_conversation_access_in_tx(
+    tx: &DatabaseTransaction,
+    access: &WorkspaceAccess<'_>,
+    scope: &Scope,
+    conv: &ReplyConversation,
+    authority: &mut dyn Authority,
+) -> Result<String, ReplyProposalError> {
+    let workspace =
+        verify_conversation_workspace_for_write(tx, access, scope, conv, authority).await?;
+    lock_proposal_access_in_tx(tx, scope, access.session_hash, authority).await?;
+    Ok(workspace)
+}
+
 pub(super) async fn lock_proposal_draft_binding_in_tx(
     tx: &DatabaseTransaction,
     scope: &Scope,
@@ -3751,5 +3821,1626 @@ impl Store {
             non_patient_sender_names,
             review_state,
         })
+    }
+
+    /// Requests Coda to draft a reply when none is ready (`Ask Coda to reply`),
+    /// waiting behind any already queued or running review so a single review can satisfy it (`AC5`).
+    pub async fn ask_coda_to_reply(
+        &self,
+        access: &WorkspaceAccess<'_>,
+        command_key: &CommandKey,
+        conversation_id: &str,
+        authority: &mut dyn Authority,
+    ) -> Result<AskCodaToReplyOutcome, ReplyProposalError> {
+        let conversation_id = validate_identifier("conversation_id", conversation_id)?;
+        let scope = verify_physician_access_scope(access)?;
+        let tx = self.db.begin().await?;
+        let mut conv = match load_locked_conversation_for_physician(
+            &tx,
+            &scope,
+            access.session_hash,
+            &conversation_id,
+            authority,
+        )
+        .await
+        {
+            Ok(conv) => conv,
+            Err(err) => {
+                tx.rollback().await?;
+                return Err(err);
+            }
+        };
+        if let Err(err) =
+            check_conversation_access_in_tx(&tx, access, &scope, &conv, authority).await
+        {
+            tx.rollback().await?;
+            return Err(err);
+        }
+
+        let command = json!({
+            "kind": "ask_coda_to_reply",
+            "practice": &scope.practice,
+            "physician": &scope.physician,
+            "workspace": &scope.workspace,
+            "conversation_id": &conversation_id,
+        });
+        match receipt::check(
+            &tx,
+            &scope.practice,
+            &scope.physician,
+            command_key.as_str(),
+            &command,
+        )
+        .await?
+        {
+            None | Some(Receipt::New) => {}
+            Some(Receipt::Same) => {
+                tx.commit().await?;
+                return Ok(AskCodaToReplyOutcome::Duplicate {
+                    conversation: Box::new(conv),
+                });
+            }
+            Some(Receipt::Different) => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::IdempotencyCollision {
+                    key: command_key.to_string(),
+                });
+            }
+        }
+
+        if let ReplyStanding::Ready { proposal } = &conv.reply_standing {
+            let ready = proposal.clone();
+            let _ = receipt::record(
+                &tx,
+                &scope.practice,
+                &scope.physician,
+                command_key.as_str(),
+                &command,
+            )
+            .await?;
+            tx.commit().await?;
+            return Ok(AskCodaToReplyOutcome::AlreadyReady { proposal: ready });
+        }
+        if conv.patient_messages.is_empty() {
+            tx.rollback().await?;
+            return Err(ReplyProposalError::NoOpenMessagesForProposal);
+        }
+
+        match receipt::record(
+            &tx,
+            &scope.practice,
+            &scope.physician,
+            command_key.as_str(),
+            &command,
+        )
+        .await?
+        {
+            Receipt::New => {}
+            Receipt::Same => {
+                tx.commit().await?;
+                return Ok(AskCodaToReplyOutcome::Duplicate {
+                    conversation: Box::new(conv),
+                });
+            }
+            Receipt::Different => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::IdempotencyCollision {
+                    key: command_key.to_string(),
+                });
+            }
+        }
+
+        let timestamp = now(&tx).await?;
+        let request_id = format!("req-{}", Uuid::new_v4());
+        let review_already_waiting_or_running =
+            !conv.woke_events.is_empty() || conv.active_review.is_some();
+        conv.pending_reply_request = Some(PendingPhysicianReplyRequest {
+            request_id: request_id.clone(),
+            command_key: command_key.to_string(),
+            requested_by: scope.physician,
+            requested_at: timestamp,
+        });
+
+        if review_already_waiting_or_running {
+            conv.updated_at = timestamp;
+            encode_conversation_model(&conv)?.update(&tx).await?;
+            tx.commit().await?;
+            return Ok(AskCodaToReplyOutcome::WaitingBehindActiveReview {
+                request_id,
+                conversation: Box::new(conv),
+            });
+        }
+
+        // If no open messages remain (e.g. previous review concluded `NoReplyWouldHelp`),
+        // reopen the latest `NeedsNoReply` patient message so the requested draft covers it.
+        let _ = reopen_latest_needs_no_reply_for_request(&mut conv);
+        end_closed_undo(&mut conv.reply_standing);
+        conv.conversation_version += 1;
+        conv.woke_events
+            .insert(ReviewWakeEvent::PhysicianAskedForReply {
+                request_id: request_id.clone(),
+            });
+        conv.updated_at = timestamp;
+        encode_conversation_model(&conv)?.update(&tx).await?;
+        tx.commit().await?;
+        Ok(AskCodaToReplyOutcome::QueuedReview {
+            request_id,
+            conversation: Box::new(conv),
+        })
+    }
+
+    /// Saves a physician's private draft edits on the current `Ready` reply (`YouEdit`),
+    /// isolated from other physicians and bound to the current `reply_id` (`Rule 4`, `AC6`).
+    pub async fn edit_reply_proposal_draft(
+        &self,
+        access: &WorkspaceAccess<'_>,
+        conversation_id: &str,
+        expected: ExpectedDraftBase,
+        text: &str,
+        authority: &mut dyn Authority,
+    ) -> Result<ReplyCardView, ReplyProposalError> {
+        let conversation_id = validate_identifier("conversation_id", conversation_id)?;
+        let clean_text = validate_text("draft.text", text, MAX_MESSAGE_TEXT_CHARS)?;
+        let scope = verify_physician_access_scope(access)?;
+
+        let tx = self.db.begin().await?;
+        let conv = match load_locked_conversation_for_physician(
+            &tx,
+            &scope,
+            access.session_hash,
+            &conversation_id,
+            authority,
+        )
+        .await
+        {
+            Ok(conv) => conv,
+            Err(err) => {
+                tx.rollback().await?;
+                return Err(err);
+            }
+        };
+        let workspace =
+            match verify_conversation_workspace_for_write(&tx, access, &scope, &conv, authority)
+                .await
+            {
+                Ok(workspace) => workspace,
+                Err(err) => {
+                    tx.rollback().await?;
+                    return Err(err);
+                }
+            };
+        let ReplyStanding::Ready { proposal } = &conv.reply_standing else {
+            let label = conv.reply_standing.db_label();
+            // Verify access first so unauthorized callers still receive `AccessDenied`.
+            if let Err(err) =
+                lock_proposal_access_in_tx(&tx, &scope, access.session_hash, authority).await
+            {
+                tx.rollback().await?;
+                return Err(err);
+            }
+            tx.rollback().await?;
+            return Err(ReplyProposalError::ReplyNotInRequiredState { standing: label });
+        };
+
+        let reply_id = proposal.reply_id;
+        let draft_scope = proposal_draft_scope(
+            &scope.practice,
+            &scope.physician,
+            &workspace,
+            &conversation_id,
+            reply_id,
+        );
+        let existing_draft_row = reply_draft::Entity::find_by_id(keys(&draft_scope))
+            .lock_exclusive()
+            .one(&tx)
+            .await?;
+        let existing_binding = reply_draft_binding::Entity::find_by_id((
+            scope.practice.clone(),
+            conversation_id.clone(),
+            scope.physician.clone(),
+            to_i64(reply_id, "reply_id")?,
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?;
+        if let Err(err) =
+            lock_proposal_access_in_tx(&tx, &scope, access.session_hash, authority).await
+        {
+            tx.rollback().await?;
+            return Err(err);
+        }
+
+        let current_binding_standing = match &existing_binding {
+            Some(row) => decode_draft_binding_standing(row)?,
+            None => PhysicianDraftStanding::NoDraft,
+        };
+        match (&current_binding_standing, expected) {
+            (PhysicianDraftStanding::NoDraft, ExpectedDraftBase::ProposalVersion(v)) => {
+                if v != proposal.version {
+                    tx.rollback().await?;
+                    return Err(ReplyProposalError::StaleDraftVersion {
+                        detail: format!(
+                            "expected proposal version {v}, current is {}",
+                            proposal.version
+                        ),
+                    });
+                }
+            }
+            (
+                PhysicianDraftStanding::Active { draft_revision, .. },
+                ExpectedDraftBase::DraftRevision(r),
+            ) => {
+                if r != *draft_revision {
+                    tx.rollback().await?;
+                    return Err(ReplyProposalError::StaleDraftVersion {
+                        detail: format!("expected draft revision {r}, current is {draft_revision}"),
+                    });
+                }
+            }
+            (PhysicianDraftStanding::NoDraft, ExpectedDraftBase::DraftRevision(r)) => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::StaleDraftVersion {
+                    detail: format!("physician has no active draft (supplied draft revision {r})"),
+                });
+            }
+            (
+                PhysicianDraftStanding::Active { draft_revision, .. },
+                ExpectedDraftBase::ProposalVersion(v),
+            ) => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::StaleDraftVersion {
+                    detail: format!(
+                        "physician already has active draft at revision {draft_revision} (supplied proposal version {v})"
+                    ),
+                });
+            }
+        }
+
+        let timestamp = now(&tx).await?;
+        let new_draft_revision = match existing_draft_row {
+            None => {
+                let mut opened = Draft::opened(&clean_text);
+                opened.session_hash = Some(access.session_hash.to_vec());
+                reply_draft::Entity::insert(draft_model(&draft_scope, &opened)?)
+                    .exec_without_returning(&tx)
+                    .await?;
+                opened.revision
+            }
+            Some(row) => {
+                let mut state = Self::draft_control(&tx, &draft_scope, row).await?;
+                state.restore_text = Some(std::mem::replace(&mut state.text, clean_text));
+                state.revision += 1;
+                state.session_hash = Some(access.session_hash.to_vec());
+                if state.running() {
+                    state.cancel()?;
+                }
+                control::save_revision_attempts(&tx, &draft_scope, &state.attempts).await?;
+                draft_model(&draft_scope, &state)?.update(&tx).await?;
+                state.revision
+            }
+        };
+
+        match existing_binding {
+            None => {
+                reply_draft_binding::Entity::insert(reply_draft_binding::ActiveModel {
+                    practice: Set(scope.practice.clone()),
+                    conversation_id: Set(conversation_id),
+                    physician: Set(scope.physician.clone()),
+                    reply_id: Set(to_i64(reply_id, "reply_id")?),
+                    workspace: Set(workspace),
+                    draft_scope_chat: Set(draft_scope.chat),
+                    standing: Set("your_text".to_owned()),
+                    draft_revision: Set(to_i64(new_draft_revision, "draft_revision")?),
+                    based_on_proposal_version: Set(to_i64(proposal.version, "proposal.version")?),
+                    pre_revision_your_text: Set(None),
+                    update_offered_proposal_version: Set(None),
+                    updated_at: Set(timestamp),
+                })
+                .exec_without_returning(&tx)
+                .await?;
+            }
+            Some(row) => {
+                let based_on = match row.standing.as_str() {
+                    "detached_chose_update" => to_i64(proposal.version, "proposal.version")?,
+                    _ => row.based_on_proposal_version,
+                };
+                let preserved_offer = match row.standing.as_str() {
+                    "detached_chose_update" => None,
+                    _ => row.update_offered_proposal_version,
+                };
+                reply_draft_binding::ActiveModel {
+                    practice: Unchanged(row.practice),
+                    conversation_id: Unchanged(row.conversation_id),
+                    physician: Unchanged(row.physician),
+                    reply_id: Unchanged(row.reply_id),
+                    workspace: Unchanged(row.workspace),
+                    draft_scope_chat: Unchanged(row.draft_scope_chat),
+                    standing: Set("your_text".to_owned()),
+                    draft_revision: Set(to_i64(new_draft_revision, "draft_revision")?),
+                    based_on_proposal_version: Set(based_on),
+                    pre_revision_your_text: Set(None),
+                    update_offered_proposal_version: Set(preserved_offer),
+                    updated_at: Set(timestamp),
+                }
+                .update(&tx)
+                .await?;
+            }
+        }
+
+        let card = project_reply_card_in_tx(&tx, &conv, &scope.physician)
+            .await?
+            .ok_or_else(|| error("ready reply failed to project card after draft edit"))?;
+        tx.commit().await?;
+        Ok(card)
+    }
+
+    /// Accepts a physician-requested Coda revision on their private draft (`YouAskRevise`, `AC2`),
+    /// pinned to the selected `expected_revision` and workspace sources; repeating the same
+    /// command key returns `Duplicate` and preserves any subsequent physician edits untouched.
+    pub async fn request_reply_draft_revision(
+        &self,
+        access: &WorkspaceAccess<'_>,
+        conversation_id: &str,
+        input: &RevisionInput,
+        skills: &crate::physician_chat::PhysicianSkills,
+        recipe: &engine::recipe::RequestRecipe,
+        authority: &mut dyn Authority,
+    ) -> Result<ProposalRevisionAccepted, ReplyProposalError> {
+        let conversation_id = validate_identifier("conversation_id", conversation_id)?;
+        let _ = validate_identifier("input.key", &input.key)?;
+        let _ = validate_text(
+            "input.instruction",
+            &input.instruction,
+            MAX_MESSAGE_TEXT_CHARS,
+        )?;
+        let _ = validate_single_line("input.timezone", &input.timezone)?;
+        let access_scope = verify_physician_access_scope(access)?;
+
+        let tx = self.db.begin().await?;
+        let conv = match load_locked_conversation_for_physician(
+            &tx,
+            &access_scope,
+            access.session_hash,
+            &conversation_id,
+            authority,
+        )
+        .await
+        {
+            Ok(conv) => conv,
+            Err(err) => {
+                tx.rollback().await?;
+                return Err(err);
+            }
+        };
+        let workspace = match verify_conversation_workspace_for_write(
+            &tx,
+            access,
+            &access_scope,
+            &conv,
+            authority,
+        )
+        .await
+        {
+            Ok(workspace) => workspace,
+            Err(err) => {
+                tx.rollback().await?;
+                return Err(err);
+            }
+        };
+        let ReplyStanding::Ready { proposal } = &conv.reply_standing else {
+            let label = conv.reply_standing.db_label();
+            if let Err(err) =
+                lock_proposal_access_in_tx(&tx, &access_scope, access.session_hash, authority).await
+            {
+                tx.rollback().await?;
+                return Err(err);
+            }
+            tx.rollback().await?;
+            return Err(ReplyProposalError::ReplyNotInRequiredState { standing: label });
+        };
+        let draft_scope = proposal_draft_scope(
+            &access_scope.practice,
+            &access_scope.physician,
+            &workspace,
+            &conversation_id,
+            proposal.reply_id,
+        );
+        let maybe_draft_row = reply_draft::Entity::find_by_id(keys(&draft_scope))
+            .lock_exclusive()
+            .one(&tx)
+            .await?;
+        let maybe_binding_row = reply_draft_binding::Entity::find_by_id((
+            access_scope.practice.clone(),
+            conversation_id,
+            access_scope.physician.clone(),
+            to_i64(proposal.reply_id, "reply_id")?,
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?;
+        if let Err(err) =
+            lock_proposal_access_in_tx(&tx, &access_scope, access.session_hash, authority).await
+        {
+            tx.rollback().await?;
+            return Err(err);
+        }
+
+        let command = json!({
+            "scope": &draft_scope,
+            "revise": input,
+        });
+        match receipt::check(
+            &tx,
+            &draft_scope.practice,
+            &draft_scope.physician,
+            &input.key,
+            &command,
+        )
+        .await?
+        {
+            Some(Receipt::Same) => {
+                tx.commit().await?;
+                return Ok(ProposalRevisionAccepted::Duplicate { scope: draft_scope });
+            }
+            Some(Receipt::Different) => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::IdempotencyCollision {
+                    key: input.key.clone(),
+                });
+            }
+            None | Some(Receipt::New) => {}
+        }
+
+        let Some(draft_row) = maybe_draft_row else {
+            tx.rollback().await?;
+            return Err(ReplyProposalError::StaleDraftVersion {
+                detail: "physician has no saved draft on this reply".into(),
+            });
+        };
+        let Some(binding_row) = maybe_binding_row else {
+            tx.rollback().await?;
+            return Err(ReplyProposalError::StaleDraftVersion {
+                detail: "physician has no active draft binding on this reply".into(),
+            });
+        };
+        if matches!(
+            decode_draft_binding_standing(&binding_row)?,
+            PhysicianDraftStanding::NoDraft
+        ) {
+            tx.rollback().await?;
+            return Err(ReplyProposalError::StaleDraftVersion {
+                detail: "physician draft was detached; edit before requesting revision".into(),
+            });
+        }
+
+        match receipt::record(
+            &tx,
+            &draft_scope.practice,
+            &draft_scope.physician,
+            &input.key,
+            &command,
+        )
+        .await?
+        {
+            Receipt::New => {}
+            Receipt::Same => {
+                tx.commit().await?;
+                return Ok(ProposalRevisionAccepted::Duplicate { scope: draft_scope });
+            }
+            Receipt::Different => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::IdempotencyCollision {
+                    key: input.key.clone(),
+                });
+            }
+        }
+
+        if Self::accept_locked_draft_revision_in_tx(
+            tx,
+            &draft_scope,
+            draft_row,
+            input,
+            access.session_hash.to_vec(),
+            skills,
+            recipe,
+            None,
+        )
+        .await?
+        {
+            Ok(ProposalRevisionAccepted::New { scope: draft_scope })
+        } else {
+            Err(ReplyProposalError::StaleDraftVersion {
+                detail: format!(
+                    "expected idle draft at revision {}",
+                    input.expected_revision
+                ),
+            })
+        }
+    }
+
+    /// Restores the physician's pre-revision text after Coda revised their draft (`YouRestore`, `AC6`).
+    pub async fn restore_my_reply_version(
+        &self,
+        access: &WorkspaceAccess<'_>,
+        command_key: &CommandKey,
+        conversation_id: &str,
+        expected_draft_revision: u64,
+        authority: &mut dyn Authority,
+    ) -> Result<ReplyCardView, ReplyProposalError> {
+        let conversation_id = validate_identifier("conversation_id", conversation_id)?;
+        let scope = verify_physician_access_scope(access)?;
+        let tx = self.db.begin().await?;
+        let conv = match load_locked_conversation_for_physician(
+            &tx,
+            &scope,
+            access.session_hash,
+            &conversation_id,
+            authority,
+        )
+        .await
+        {
+            Ok(conv) => conv,
+            Err(err) => {
+                tx.rollback().await?;
+                return Err(err);
+            }
+        };
+        let workspace =
+            match verify_conversation_workspace_for_write(&tx, access, &scope, &conv, authority)
+                .await
+            {
+                Ok(workspace) => workspace,
+                Err(err) => {
+                    tx.rollback().await?;
+                    return Err(err);
+                }
+            };
+        let ReplyStanding::Ready { proposal } = &conv.reply_standing else {
+            let label = conv.reply_standing.db_label();
+            if let Err(err) =
+                lock_proposal_access_in_tx(&tx, &scope, access.session_hash, authority).await
+            {
+                tx.rollback().await?;
+                return Err(err);
+            }
+            tx.rollback().await?;
+            return Err(ReplyProposalError::ReplyNotInRequiredState { standing: label });
+        };
+
+        let draft_scope = proposal_draft_scope(
+            &scope.practice,
+            &scope.physician,
+            &workspace,
+            &conversation_id,
+            proposal.reply_id,
+        );
+        let maybe_draft_row = reply_draft::Entity::find_by_id(keys(&draft_scope))
+            .lock_exclusive()
+            .one(&tx)
+            .await?;
+        let maybe_binding_row = reply_draft_binding::Entity::find_by_id((
+            scope.practice.clone(),
+            conversation_id.clone(),
+            scope.physician.clone(),
+            to_i64(proposal.reply_id, "reply_id")?,
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?;
+        if let Err(err) =
+            lock_proposal_access_in_tx(&tx, &scope, access.session_hash, authority).await
+        {
+            tx.rollback().await?;
+            return Err(err);
+        }
+
+        let command = json!({
+            "kind": "restore_my_reply_version",
+            "practice": &scope.practice,
+            "physician": &scope.physician,
+            "workspace": &workspace,
+            "conversation_id": &conversation_id,
+            "reply_id": proposal.reply_id,
+            "expected_draft_revision": expected_draft_revision,
+        });
+        match receipt::check(
+            &tx,
+            &scope.practice,
+            &scope.physician,
+            command_key.as_str(),
+            &command,
+        )
+        .await?
+        {
+            Some(Receipt::Same) => {
+                let card = project_reply_card_in_tx(&tx, &conv, &scope.physician)
+                    .await?
+                    .ok_or_else(|| error("ready reply failed to project card"))?;
+                tx.commit().await?;
+                return Ok(card);
+            }
+            Some(Receipt::Different) => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::IdempotencyCollision {
+                    key: command_key.to_string(),
+                });
+            }
+            None | Some(Receipt::New) => {}
+        }
+
+        let Some(draft_row) = maybe_draft_row else {
+            tx.rollback().await?;
+            return Err(ReplyProposalError::NoRevisionToRestore);
+        };
+        let Some(binding_row) = maybe_binding_row else {
+            tx.rollback().await?;
+            return Err(ReplyProposalError::NoRevisionToRestore);
+        };
+
+        let PhysicianDraftStanding::Active {
+            draft_revision: current_draft_revision,
+            kind:
+                PhysicianDraftKind::CodaRevision {
+                    pre_revision_your_text,
+                },
+            ..
+        } = decode_draft_binding_standing(&binding_row)?
+        else {
+            tx.rollback().await?;
+            return Err(ReplyProposalError::NoRevisionToRestore);
+        };
+
+        let mut draft = Self::draft_control(&tx, &draft_scope, draft_row).await?;
+        if current_draft_revision != expected_draft_revision
+            || draft.revision != expected_draft_revision
+        {
+            tx.rollback().await?;
+            return Err(ReplyProposalError::StaleDraftVersion {
+                detail: format!(
+                    "expected Coda-revised draft at revision {expected_draft_revision}, current is {current_draft_revision}"
+                ),
+            });
+        }
+
+        match receipt::record(
+            &tx,
+            &scope.practice,
+            &scope.physician,
+            command_key.as_str(),
+            &command,
+        )
+        .await?
+        {
+            Receipt::New => {}
+            Receipt::Same => {
+                let card = project_reply_card_in_tx(&tx, &conv, &scope.physician)
+                    .await?
+                    .ok_or_else(|| error("ready reply failed to project card"))?;
+                tx.commit().await?;
+                return Ok(card);
+            }
+            Receipt::Different => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::IdempotencyCollision {
+                    key: command_key.to_string(),
+                });
+            }
+        }
+
+        draft.restore_text = Some(std::mem::replace(&mut draft.text, pre_revision_your_text));
+        draft.revision += 1;
+        if draft.running() {
+            draft.cancel()?;
+        }
+        control::save_revision_attempts(&tx, &draft_scope, &draft.attempts).await?;
+        draft_model(&draft_scope, &draft)?.update(&tx).await?;
+
+        let timestamp = now(&tx).await?;
+        reply_draft_binding::ActiveModel {
+            practice: Unchanged(binding_row.practice),
+            conversation_id: Unchanged(binding_row.conversation_id),
+            physician: Unchanged(binding_row.physician),
+            reply_id: Unchanged(binding_row.reply_id),
+            workspace: Unchanged(binding_row.workspace),
+            draft_scope_chat: Unchanged(binding_row.draft_scope_chat),
+            standing: Set("your_text".to_owned()),
+            draft_revision: Set(to_i64(draft.revision, "draft.revision")?),
+            based_on_proposal_version: Unchanged(binding_row.based_on_proposal_version),
+            pre_revision_your_text: Set(None),
+            update_offered_proposal_version: Unchanged(binding_row.update_offered_proposal_version),
+            updated_at: Set(timestamp),
+        }
+        .update(&tx)
+        .await?;
+
+        let card = project_reply_card_in_tx(&tx, &conv, &scope.physician)
+            .await?
+            .ok_or_else(|| error("ready reply failed to project card after restore"))?;
+        tx.commit().await?;
+        Ok(card)
+    }
+
+    /// Adopts Coda's newer reply proposal over the physician's private draft (`YouChooseUpdate`, `AC6`).
+    pub async fn choose_coda_reply_update(
+        &self,
+        access: &WorkspaceAccess<'_>,
+        command_key: &CommandKey,
+        conversation_id: &str,
+        expected_draft_revision: u64,
+        expected_proposal_version: u64,
+        authority: &mut dyn Authority,
+    ) -> Result<ReplyCardView, ReplyProposalError> {
+        let conversation_id = validate_identifier("conversation_id", conversation_id)?;
+        let scope = verify_physician_access_scope(access)?;
+        let tx = self.db.begin().await?;
+        let conv = match load_locked_conversation_for_physician(
+            &tx,
+            &scope,
+            access.session_hash,
+            &conversation_id,
+            authority,
+        )
+        .await
+        {
+            Ok(conv) => conv,
+            Err(err) => {
+                tx.rollback().await?;
+                return Err(err);
+            }
+        };
+        let workspace =
+            match verify_conversation_workspace_for_write(&tx, access, &scope, &conv, authority)
+                .await
+            {
+                Ok(workspace) => workspace,
+                Err(err) => {
+                    tx.rollback().await?;
+                    return Err(err);
+                }
+            };
+        let ReplyStanding::Ready { proposal } = &conv.reply_standing else {
+            let label = conv.reply_standing.db_label();
+            if let Err(err) =
+                lock_proposal_access_in_tx(&tx, &scope, access.session_hash, authority).await
+            {
+                tx.rollback().await?;
+                return Err(err);
+            }
+            tx.rollback().await?;
+            return Err(ReplyProposalError::ReplyNotInRequiredState { standing: label });
+        };
+
+        let draft_scope = proposal_draft_scope(
+            &scope.practice,
+            &scope.physician,
+            &workspace,
+            &conversation_id,
+            proposal.reply_id,
+        );
+        let maybe_draft_row = reply_draft::Entity::find_by_id(keys(&draft_scope))
+            .lock_exclusive()
+            .one(&tx)
+            .await?;
+        let maybe_binding_row = reply_draft_binding::Entity::find_by_id((
+            scope.practice.clone(),
+            conversation_id.clone(),
+            scope.physician.clone(),
+            to_i64(proposal.reply_id, "reply_id")?,
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?;
+        if let Err(err) =
+            lock_proposal_access_in_tx(&tx, &scope, access.session_hash, authority).await
+        {
+            tx.rollback().await?;
+            return Err(err);
+        }
+
+        let command = json!({
+            "kind": "choose_coda_reply_update",
+            "practice": &scope.practice,
+            "physician": &scope.physician,
+            "workspace": &workspace,
+            "conversation_id": &conversation_id,
+            "reply_id": proposal.reply_id,
+            "expected_draft_revision": expected_draft_revision,
+            "expected_proposal_version": expected_proposal_version,
+        });
+        match receipt::check(
+            &tx,
+            &scope.practice,
+            &scope.physician,
+            command_key.as_str(),
+            &command,
+        )
+        .await?
+        {
+            Some(Receipt::Same) => {
+                let card = project_reply_card_in_tx(&tx, &conv, &scope.physician)
+                    .await?
+                    .ok_or_else(|| error("ready reply failed to project card"))?;
+                tx.commit().await?;
+                return Ok(card);
+            }
+            Some(Receipt::Different) => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::IdempotencyCollision {
+                    key: command_key.to_string(),
+                });
+            }
+            None | Some(Receipt::New) => {}
+        }
+
+        let Some(binding_row) = maybe_binding_row else {
+            tx.rollback().await?;
+            return Err(ReplyProposalError::NoUpdateOffered);
+        };
+        let PhysicianDraftStanding::Active {
+            draft_revision: current_draft_revision,
+            update_offered_proposal_version: Some(offered_version),
+            ..
+        } = decode_draft_binding_standing(&binding_row)?
+        else {
+            tx.rollback().await?;
+            return Err(ReplyProposalError::NoUpdateOffered);
+        };
+        if current_draft_revision != expected_draft_revision
+            || proposal.version != expected_proposal_version
+            || offered_version != expected_proposal_version
+        {
+            let current_proposal_version = proposal.version;
+            tx.rollback().await?;
+            return Err(ReplyProposalError::StaleDraftVersion {
+                detail: format!(
+                    "expected draft revision {expected_draft_revision} and offered proposal version {expected_proposal_version}, found draft revision {current_draft_revision} and proposal version {current_proposal_version} (offered {offered_version})"
+                ),
+            });
+        }
+
+        match receipt::record(
+            &tx,
+            &scope.practice,
+            &scope.physician,
+            command_key.as_str(),
+            &command,
+        )
+        .await?
+        {
+            Receipt::New => {}
+            Receipt::Same => {
+                let card = project_reply_card_in_tx(&tx, &conv, &scope.physician)
+                    .await?
+                    .ok_or_else(|| error("ready reply failed to project card"))?;
+                tx.commit().await?;
+                return Ok(card);
+            }
+            Receipt::Different => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::IdempotencyCollision {
+                    key: command_key.to_string(),
+                });
+            }
+        }
+
+        if let Some(draft_row) = maybe_draft_row {
+            let mut draft = Self::draft_control(&tx, &draft_scope, draft_row).await?;
+            if draft.running() {
+                draft.cancel()?;
+                control::save_revision_attempts(&tx, &draft_scope, &draft.attempts).await?;
+                draft_model(&draft_scope, &draft)?.update(&tx).await?;
+            }
+        }
+
+        let timestamp = now(&tx).await?;
+        reply_draft_binding::ActiveModel {
+            practice: Unchanged(binding_row.practice),
+            conversation_id: Unchanged(binding_row.conversation_id),
+            physician: Unchanged(binding_row.physician),
+            reply_id: Unchanged(binding_row.reply_id),
+            workspace: Unchanged(binding_row.workspace),
+            draft_scope_chat: Unchanged(binding_row.draft_scope_chat),
+            standing: Set("detached_chose_update".to_owned()),
+            draft_revision: Unchanged(binding_row.draft_revision),
+            based_on_proposal_version: Set(to_i64(proposal.version, "proposal.version")?),
+            pre_revision_your_text: Set(None),
+            update_offered_proposal_version: Set(None),
+            updated_at: Set(timestamp),
+        }
+        .update(&tx)
+        .await?;
+
+        let card = project_reply_card_in_tx(&tx, &conv, &scope.physician)
+            .await?
+            .ok_or_else(|| error("ready reply failed to project card after update"))?;
+        tx.commit().await?;
+        Ok(card)
+    }
+
+    /// Records a physician `Copy reply` action (`YouCopy`), capturing the exact text
+    /// shown on `Card(d)` without changing any reply, draft, message, or concern state (`Rule 5`, `AC5`).
+    pub async fn copy_reply(
+        &self,
+        access: &WorkspaceAccess<'_>,
+        command_key: &CommandKey,
+        conversation_id: &str,
+        expected: ExpectedDraftBase,
+        authority: &mut dyn Authority,
+    ) -> Result<CopyReplyOutcome, ReplyProposalError> {
+        let conversation_id = validate_identifier("conversation_id", conversation_id)?;
+        let scope = verify_physician_access_scope(access)?;
+        let tx = self.db.begin().await?;
+        let conv = match load_locked_conversation_for_physician(
+            &tx,
+            &scope,
+            access.session_hash,
+            &conversation_id,
+            authority,
+        )
+        .await
+        {
+            Ok(conv) => conv,
+            Err(err) => {
+                tx.rollback().await?;
+                return Err(err);
+            }
+        };
+        let workspace =
+            match check_conversation_access_in_tx(&tx, access, &scope, &conv, authority).await {
+                Ok(workspace) => workspace,
+                Err(err) => {
+                    tx.rollback().await?;
+                    return Err(err);
+                }
+            };
+
+        let command = json!({
+            "kind": "copy_reply",
+            "practice": &scope.practice,
+            "physician": &scope.physician,
+            "workspace": &workspace,
+            "conversation_id": &conversation_id,
+            "expected": expected,
+        });
+        match receipt::check(
+            &tx,
+            &scope.practice,
+            &scope.physician,
+            command_key.as_str(),
+            &command,
+        )
+        .await?
+        {
+            Some(Receipt::Same) => {
+                let existing = reply_copy::Entity::find()
+                    .filter(reply_copy::Column::Practice.eq(scope.practice.as_str()))
+                    .filter(reply_copy::Column::ConversationId.eq(conversation_id.as_str()))
+                    .filter(reply_copy::Column::Physician.eq(scope.physician.as_str()))
+                    .filter(reply_copy::Column::CommandKey.eq(command_key.as_str()))
+                    .one(&tx)
+                    .await?
+                    .ok_or_else(|| error("missing reply_copy row for accepted receipt"))?;
+                tx.commit().await?;
+                return Ok(CopyReplyOutcome::Duplicate(decode_copy_record(existing)?));
+            }
+            Some(Receipt::Different) => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::IdempotencyCollision {
+                    key: command_key.to_string(),
+                });
+            }
+            None | Some(Receipt::New) => {}
+        }
+
+        if !matches!(conv.reply_standing, ReplyStanding::Ready { .. }) {
+            let label = conv.reply_standing.db_label();
+            tx.rollback().await?;
+            return Err(ReplyProposalError::ReplyNotInRequiredState { standing: label });
+        }
+        let card = project_reply_card_in_tx(&tx, &conv, &scope.physician)
+            .await?
+            .ok_or_else(|| error("ready reply failed to project card for copy"))?;
+        let (reply_id, copied_source, copied_text) = match (card.displayed_text, expected) {
+            (
+                DisplayedReplyText::CodaProposal {
+                    reply_id,
+                    version,
+                    text,
+                },
+                ExpectedDraftBase::ProposalVersion(expected_v),
+            ) => {
+                if version != expected_v {
+                    tx.rollback().await?;
+                    return Err(ReplyProposalError::StaleDraftVersion {
+                        detail: format!(
+                            "expected proposal version {expected_v} for copy, current is {version}"
+                        ),
+                    });
+                }
+                (
+                    reply_id,
+                    CopiedReplySource::CodaProposal { reply_id, version },
+                    text,
+                )
+            }
+            (
+                DisplayedReplyText::PhysicianDraft {
+                    reply_id,
+                    draft_revision,
+                    kind,
+                    text,
+                },
+                ExpectedDraftBase::DraftRevision(expected_r),
+            ) => {
+                if draft_revision != expected_r {
+                    tx.rollback().await?;
+                    return Err(ReplyProposalError::StaleDraftVersion {
+                        detail: format!(
+                            "expected draft revision {expected_r} for copy, current is {draft_revision}"
+                        ),
+                    });
+                }
+                (
+                    reply_id,
+                    CopiedReplySource::PhysicianDraft {
+                        reply_id,
+                        draft_revision,
+                        kind,
+                    },
+                    text,
+                )
+            }
+            (
+                DisplayedReplyText::CodaProposal { version, .. },
+                ExpectedDraftBase::DraftRevision(expected_r),
+            ) => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::StaleDraftVersion {
+                    detail: format!(
+                        "expected draft revision {expected_r} for copy, card displays proposal version {version}"
+                    ),
+                });
+            }
+            (
+                DisplayedReplyText::PhysicianDraft { draft_revision, .. },
+                ExpectedDraftBase::ProposalVersion(expected_v),
+            ) => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::StaleDraftVersion {
+                    detail: format!(
+                        "expected proposal version {expected_v} for copy, card displays draft revision {draft_revision}"
+                    ),
+                });
+            }
+            (DisplayedReplyText::Withheld, _) => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::ReplyNotInRequiredState {
+                    standing: "withheld",
+                });
+            }
+        };
+
+        match receipt::record(
+            &tx,
+            &scope.practice,
+            &scope.physician,
+            command_key.as_str(),
+            &command,
+        )
+        .await?
+        {
+            Receipt::New => {}
+            Receipt::Same => {
+                let existing = reply_copy::Entity::find()
+                    .filter(reply_copy::Column::Practice.eq(scope.practice.as_str()))
+                    .filter(reply_copy::Column::ConversationId.eq(conversation_id.as_str()))
+                    .filter(reply_copy::Column::Physician.eq(scope.physician.as_str()))
+                    .filter(reply_copy::Column::CommandKey.eq(command_key.as_str()))
+                    .one(&tx)
+                    .await?
+                    .ok_or_else(|| error("missing reply_copy row for accepted receipt"))?;
+                tx.commit().await?;
+                return Ok(CopyReplyOutcome::Duplicate(decode_copy_record(existing)?));
+            }
+            Receipt::Different => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::IdempotencyCollision {
+                    key: command_key.to_string(),
+                });
+            }
+        }
+
+        let timestamp = now(&tx).await?;
+        let copy_id = format!("copy-{}", Uuid::new_v4());
+        let record = ReplyCopyRecord {
+            copy_id: copy_id.clone(),
+            command_key: command_key.to_string(),
+            practice: scope.practice,
+            conversation_id,
+            workspace,
+            physician: scope.physician,
+            reply_id,
+            practice_observation_seq: conv.last_practice_observation_seq,
+            copied_source,
+            copied_text,
+            copied_at: timestamp,
+        };
+        reply_copy::Entity::insert(reply_copy::ActiveModel {
+            practice: Set(record.practice.clone()),
+            conversation_id: Set(record.conversation_id.clone()),
+            copy_id: Set(copy_id),
+            command_key: Set(record.command_key.clone()),
+            physician: Set(record.physician.clone()),
+            workspace: Set(record.workspace.clone()),
+            reply_id: Set(to_i64(record.reply_id, "reply_id")?),
+            practice_observation_seq: Set(to_i64(
+                record.practice_observation_seq,
+                "practice_observation_seq",
+            )?),
+            copied_source: Set(serde_json::to_value(&record.copied_source)
+                .map_err(conversion_error("CopiedReplySource", "json"))?),
+            copied_text: Set(record.copied_text.clone()),
+            copied_at: Set(timestamp),
+        })
+        .exec_without_returning(&tx)
+        .await?;
+        tx.commit().await?;
+        Ok(CopyReplyOutcome::Recorded(record))
+    }
+
+    /// Closes a `Ready` reply with `No reply needed` (`YouCloseNoReply`), marking its open
+    /// covered messages `NeedsNoReply` and offering `Undo` until `EndUndo` (`Rule 3`, `Rule 12`, `AC5`).
+    pub async fn close_reply_no_reply_needed(
+        &self,
+        access: &WorkspaceAccess<'_>,
+        command_key: &CommandKey,
+        conversation_id: &str,
+        expected_proposal_version: u64,
+        authority: &mut dyn Authority,
+    ) -> Result<ReplyConversation, ReplyProposalError> {
+        let conversation_id = validate_identifier("conversation_id", conversation_id)?;
+        let scope = verify_physician_access_scope(access)?;
+        let tx = self.db.begin().await?;
+        let mut conv = match load_locked_conversation_for_physician(
+            &tx,
+            &scope,
+            access.session_hash,
+            &conversation_id,
+            authority,
+        )
+        .await
+        {
+            Ok(conv) => conv,
+            Err(err) => {
+                tx.rollback().await?;
+                return Err(err);
+            }
+        };
+        let workspace =
+            match check_conversation_access_in_tx(&tx, access, &scope, &conv, authority).await {
+                Ok(workspace) => workspace,
+                Err(err) => {
+                    tx.rollback().await?;
+                    return Err(err);
+                }
+            };
+
+        let command = json!({
+            "kind": "close_reply_no_reply_needed",
+            "practice": &scope.practice,
+            "physician": &scope.physician,
+            "workspace": &workspace,
+            "conversation_id": &conversation_id,
+            "expected_proposal_version": expected_proposal_version,
+        });
+        match receipt::check(
+            &tx,
+            &scope.practice,
+            &scope.physician,
+            command_key.as_str(),
+            &command,
+        )
+        .await?
+        {
+            Some(Receipt::Same) => {
+                tx.commit().await?;
+                return Ok(conv);
+            }
+            Some(Receipt::Different) => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::IdempotencyCollision {
+                    key: command_key.to_string(),
+                });
+            }
+            None | Some(Receipt::New) => {}
+        }
+
+        let ReplyStanding::Ready { proposal } = conv.reply_standing.clone() else {
+            let label = conv.reply_standing.db_label();
+            tx.rollback().await?;
+            return Err(ReplyProposalError::ReplyNotInRequiredState { standing: label });
+        };
+        if proposal.version != expected_proposal_version {
+            let current_version = proposal.version;
+            tx.rollback().await?;
+            return Err(ReplyProposalError::StaleDraftVersion {
+                detail: format!(
+                    "expected proposal version {expected_proposal_version} to close, current is {current_version}"
+                ),
+            });
+        }
+
+        match receipt::record(
+            &tx,
+            &scope.practice,
+            &scope.physician,
+            command_key.as_str(),
+            &command,
+        )
+        .await?
+        {
+            Receipt::New => {}
+            Receipt::Same => {
+                tx.commit().await?;
+                return Ok(conv);
+            }
+            Receipt::Different => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::IdempotencyCollision {
+                    key: command_key.to_string(),
+                });
+            }
+        }
+
+        let timestamp = now(&tx).await?;
+        let mut closed_message_ids = BTreeSet::new();
+        for msg in &mut conv.patient_messages {
+            if proposal.covered_message_ids.contains(&msg.message_id) && msg.standing.is_open() {
+                closed_message_ids.insert(msg.message_id.clone());
+                msg.standing = PatientMessageStanding::NeedsNoReply {
+                    reason: NoReplyReason::PhysicianMarkedNoReplyNeeded {
+                        physician: scope.physician.clone(),
+                        reply_id: proposal.reply_id,
+                        reply_version: proposal.version,
+                    },
+                    decided_at: timestamp,
+                };
+            }
+        }
+        conv.reply_standing = ReplyStanding::ClosedWithUndo {
+            proposal,
+            closed_message_ids,
+            closed_by: scope.physician,
+            closed_at: timestamp,
+        };
+        conv.updated_at = timestamp;
+        encode_conversation_model(&conv)?.update(&tx).await?;
+        tx.commit().await?;
+        Ok(conv)
+    }
+
+    /// Undoes `No reply needed` (`YouUndoClose`) while `ClosedWithUndo` is still active,
+    /// bringing back the exact `Ready` reply and reopening its closed messages (`Rule 12`, `AC5`).
+    pub async fn undo_close_no_reply_needed(
+        &self,
+        access: &WorkspaceAccess<'_>,
+        command_key: &CommandKey,
+        conversation_id: &str,
+        authority: &mut dyn Authority,
+    ) -> Result<ReplyCardView, ReplyProposalError> {
+        let conversation_id = validate_identifier("conversation_id", conversation_id)?;
+        let scope = verify_physician_access_scope(access)?;
+        let tx = self.db.begin().await?;
+        let mut conv = match load_locked_conversation_for_physician(
+            &tx,
+            &scope,
+            access.session_hash,
+            &conversation_id,
+            authority,
+        )
+        .await
+        {
+            Ok(conv) => conv,
+            Err(err) => {
+                tx.rollback().await?;
+                return Err(err);
+            }
+        };
+        let workspace =
+            match check_conversation_access_in_tx(&tx, access, &scope, &conv, authority).await {
+                Ok(workspace) => workspace,
+                Err(err) => {
+                    tx.rollback().await?;
+                    return Err(err);
+                }
+            };
+
+        let command = json!({
+            "kind": "undo_close_no_reply_needed",
+            "practice": &scope.practice,
+            "physician": &scope.physician,
+            "workspace": &workspace,
+            "conversation_id": &conversation_id,
+        });
+        match receipt::check(
+            &tx,
+            &scope.practice,
+            &scope.physician,
+            command_key.as_str(),
+            &command,
+        )
+        .await?
+        {
+            Some(Receipt::Same) => {
+                if let Some(card) = project_reply_card_in_tx(&tx, &conv, &scope.physician).await? {
+                    tx.commit().await?;
+                    return Ok(card);
+                }
+                tx.rollback().await?;
+                return Err(ReplyProposalError::UndoNoLongerAvailable { conversation_id });
+            }
+            Some(Receipt::Different) => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::IdempotencyCollision {
+                    key: command_key.to_string(),
+                });
+            }
+            None | Some(Receipt::New) => {}
+        }
+
+        let ReplyStanding::ClosedWithUndo {
+            proposal,
+            closed_message_ids,
+            ..
+        } = conv.reply_standing.clone()
+        else {
+            tx.rollback().await?;
+            return Err(ReplyProposalError::UndoNoLongerAvailable { conversation_id });
+        };
+
+        match receipt::record(
+            &tx,
+            &scope.practice,
+            &scope.physician,
+            command_key.as_str(),
+            &command,
+        )
+        .await?
+        {
+            Receipt::New => {}
+            Receipt::Same => {
+                if let Some(card) = project_reply_card_in_tx(&tx, &conv, &scope.physician).await? {
+                    tx.commit().await?;
+                    return Ok(card);
+                }
+                tx.rollback().await?;
+                return Err(ReplyProposalError::UndoNoLongerAvailable { conversation_id });
+            }
+            Receipt::Different => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::IdempotencyCollision {
+                    key: command_key.to_string(),
+                });
+            }
+        }
+
+        for msg in &mut conv.patient_messages {
+            if closed_message_ids.contains(&msg.message_id)
+                && matches!(msg.standing, PatientMessageStanding::NeedsNoReply { .. })
+            {
+                msg.standing = PatientMessageStanding::Open;
+            }
+        }
+        conv.reply_standing = ReplyStanding::Ready { proposal };
+        conv.updated_at = now(&tx).await?;
+        encode_conversation_model(&conv)?.update(&tx).await?;
+        let card = project_reply_card_in_tx(&tx, &conv, &scope.physician)
+            .await?
+            .ok_or_else(|| error("undone reply failed to project card"))?;
+        tx.commit().await?;
+        Ok(card)
+    }
+
+    /// Settles an open `No reply needed` undo window (`UndoGoesAway`).
+    pub async fn expire_no_reply_undo(
+        &self,
+        practice: &str,
+        conversation_id: &str,
+    ) -> Result<ReplyConversation, ReplyProposalError> {
+        let practice = validate_identifier("practice", practice)?;
+        let conversation_id = validate_identifier("conversation_id", conversation_id)?;
+        let tx = self.db.begin().await?;
+        let mut conv = load_locked_conversation(&tx, &practice, &conversation_id).await?;
+        if matches!(conv.reply_standing, ReplyStanding::ClosedWithUndo { .. }) {
+            end_closed_undo(&mut conv.reply_standing);
+            conv.updated_at = now(&tx).await?;
+            encode_conversation_model(&conv)?.update(&tx).await?;
+        }
+        tx.commit().await?;
+        Ok(conv)
+    }
+
+    /// Marks an open (`Ready` or `Withheld`) reply `Done` while the messaging channel
+    /// is disconnected (`YouMarkDone`, `Rule 11`, `AC4`).
+    pub async fn mark_disconnected_reply_done(
+        &self,
+        access: &WorkspaceAccess<'_>,
+        command_key: &CommandKey,
+        conversation_id: &str,
+        expected: ExpectedDisconnectedCard,
+        authority: &mut dyn Authority,
+    ) -> Result<ReplyConversation, ReplyProposalError> {
+        let conversation_id = validate_identifier("conversation_id", conversation_id)?;
+        let scope = verify_physician_access_scope(access)?;
+        let tx = self.db.begin().await?;
+        let mut conv = match load_locked_conversation_for_physician(
+            &tx,
+            &scope,
+            access.session_hash,
+            &conversation_id,
+            authority,
+        )
+        .await
+        {
+            Ok(conv) => conv,
+            Err(err) => {
+                tx.rollback().await?;
+                return Err(err);
+            }
+        };
+        let workspace =
+            match check_conversation_access_in_tx(&tx, access, &scope, &conv, authority).await {
+                Ok(workspace) => workspace,
+                Err(err) => {
+                    tx.rollback().await?;
+                    return Err(err);
+                }
+            };
+
+        let command = json!({
+            "kind": "mark_disconnected_reply_done",
+            "practice": &scope.practice,
+            "physician": &scope.physician,
+            "workspace": &workspace,
+            "conversation_id": &conversation_id,
+            "expected": expected,
+        });
+        match receipt::check(
+            &tx,
+            &scope.practice,
+            &scope.physician,
+            command_key.as_str(),
+            &command,
+        )
+        .await?
+        {
+            Some(Receipt::Same) => {
+                tx.commit().await?;
+                return Ok(conv);
+            }
+            Some(Receipt::Different) => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::IdempotencyCollision {
+                    key: command_key.to_string(),
+                });
+            }
+            None | Some(Receipt::New) => {}
+        }
+
+        if matches!(conv.channel, ChannelConnection::Connected) {
+            tx.rollback().await?;
+            return Err(ReplyProposalError::ChannelStillConnected { conversation_id });
+        }
+        let covered_ids = match (&conv.reply_standing, expected) {
+            (
+                ReplyStanding::Ready { proposal },
+                ExpectedDisconnectedCard::Ready {
+                    reply_id,
+                    proposal_version,
+                },
+            ) => {
+                if proposal.reply_id != reply_id || proposal.version != proposal_version {
+                    let actual_id = proposal.reply_id;
+                    let actual_version = proposal.version;
+                    tx.rollback().await?;
+                    return Err(ReplyProposalError::StaleDraftVersion {
+                        detail: format!(
+                            "expected ready reply {reply_id} v{proposal_version}, current is ready reply {actual_id} v{actual_version}"
+                        ),
+                    });
+                }
+                proposal.covered_message_ids.clone()
+            }
+            (
+                ReplyStanding::Withheld {
+                    reply_id: actual_id,
+                    covered_message_ids,
+                    ..
+                },
+                ExpectedDisconnectedCard::Withheld { reply_id },
+            ) => {
+                if *actual_id != reply_id {
+                    tx.rollback().await?;
+                    return Err(ReplyProposalError::StaleDraftVersion {
+                        detail: format!(
+                            "expected withheld reply {reply_id}, current is withheld reply {actual_id}"
+                        ),
+                    });
+                }
+                covered_message_ids.clone()
+            }
+            (
+                ReplyStanding::Ready { proposal },
+                ExpectedDisconnectedCard::Withheld { reply_id },
+            ) => {
+                let actual_id = proposal.reply_id;
+                let actual_version = proposal.version;
+                tx.rollback().await?;
+                return Err(ReplyProposalError::StaleDraftVersion {
+                    detail: format!(
+                        "expected withheld reply {reply_id}, current is ready reply {actual_id} v{actual_version}"
+                    ),
+                });
+            }
+            (
+                ReplyStanding::Withheld {
+                    reply_id: actual_id,
+                    ..
+                },
+                ExpectedDisconnectedCard::Ready {
+                    reply_id,
+                    proposal_version,
+                },
+            ) => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::StaleDraftVersion {
+                    detail: format!(
+                        "expected ready reply {reply_id} v{proposal_version}, current is withheld reply {actual_id}"
+                    ),
+                });
+            }
+            (ReplyStanding::None | ReplyStanding::ClosedWithUndo { .. }, _) => {
+                let label = conv.reply_standing.db_label();
+                tx.rollback().await?;
+                return Err(ReplyProposalError::ReplyNotInRequiredState { standing: label });
+            }
+        };
+
+        match receipt::record(
+            &tx,
+            &scope.practice,
+            &scope.physician,
+            command_key.as_str(),
+            &command,
+        )
+        .await?
+        {
+            Receipt::New => {}
+            Receipt::Same => {
+                tx.commit().await?;
+                return Ok(conv);
+            }
+            Receipt::Different => {
+                tx.rollback().await?;
+                return Err(ReplyProposalError::IdempotencyCollision {
+                    key: command_key.to_string(),
+                });
+            }
+        }
+
+        let timestamp = now(&tx).await?;
+        for msg in &mut conv.patient_messages {
+            if covered_ids.contains(&msg.message_id) && msg.standing.is_open() {
+                msg.standing = PatientMessageStanding::MarkedDoneWhileDisconnected {
+                    physician: scope.physician.clone(),
+                    marked_at: timestamp,
+                };
+            }
+        }
+        conv.reply_standing = ReplyStanding::None;
+        conv.updated_at = timestamp;
+        encode_conversation_model(&conv)?.update(&tx).await?;
+        tx.commit().await?;
+        Ok(conv)
     }
 }
