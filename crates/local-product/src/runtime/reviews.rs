@@ -13,7 +13,9 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use async_trait::async_trait;
 use harness::engine::{self, Event, EventKind, Invocation, Item, ProductMessage, ToolOutcome};
-use patient_work::ReviewRequest;
+use patient_work::{
+    DueFollowUpTrigger, LinkedMessageTrigger, ReviewDispatchInput, ReviewReason, ReviewRequest,
+};
 use physician_auth::{AuthStore, Membership, PhysicianIdentity};
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, QueryFilter, QueryOrder,
@@ -25,8 +27,8 @@ use sha2::{Digest, Sha256};
 use uuid::Uuid;
 
 use super::chat_operations::{
-    DispatchCheckStanding, OpenConcernSummary, RecordLimit, RecordLimitKind,
-    SourceFreshnessSummary, inspect_record_readability,
+    DispatchCheckStanding, RecordLimit, RecordLimitKind, SourceFreshnessSummary,
+    inspect_record_readability,
 };
 use super::concerns::{ConcernUrgency, ExactRecordReference, SourceWork};
 use super::delivery::Delivery;
@@ -35,12 +37,19 @@ use super::entities::{
     concern, memory_note, patient_dispatch, patient_review, patient_understanding_revision,
     practice_job,
 };
+use super::follow_ups::{FollowUpActor, follow_up_update_entity};
 use super::jobs::{
     AssignmentError, PRACTICE_OWNER, PracticeAccessError, PracticeAuthority, PracticeJob,
     PracticeJobClaim, PracticeJobCompletion, PracticeJobError, PracticeScope,
 };
 use super::receipt::{self, Receipt};
+use super::reply::proposals::{
+    CompleteReplyReview, ConversationLink, ReplyProposalBasisInput, ReplyProposalError,
+    ReplyProposalInput, ReplyReviewDecision, ReplyReviewOutcome, SavedReviewCompletion,
+    tables::{reply_conversation, reply_review_completion},
+};
 use super::sources::SourcePull;
+use super::spruce_matching::entities::spruce_review_trigger;
 use super::{
     AttemptStatus, BindingRef, RuntimeError, SkillPackageId, Stopped, Store, WorkStatus,
     conversion_error, error, frozen, now, persistence_failure,
@@ -48,10 +57,11 @@ use super::{
 use crate::ModelRoles;
 use crate::initial_understanding::{ConnectedSourceBrief, EvidenceScope};
 use crate::patient_reviews::{
-    COMPLETE_PATIENT_REVIEW_TOOL, CompleteReviewArgs, CompleteReviewDisposition,
-    PriorPatientReviewSummary, QuietReviewReason, READ_PATIENT_REVIEWS_TOOL, ReadReviewsCall,
-    ReviewCitation, ReviewOutcome, ReviewStartingContext, ReviewTrigger, UnfinishedReviewWork,
-    assignment as build_review_assignment, review_job_id,
+    COMPLETE_PATIENT_REVIEW_TOOL, CompleteReviewArgs, CompleteReviewDisposition, MessageReplyCall,
+    MessageReplyDecision, PATIENT_MESSAGE_REPLY_TOOL, PriorPatientReviewSummary, QuietReviewReason,
+    READ_PATIENT_CONVERSATION_TOOL, READ_PATIENT_REVIEWS_TOOL, ReadConversationCall,
+    ReadReviewsCall, ReviewCitation, ReviewOutcome, ReviewStartingContext, ReviewTrigger,
+    UnfinishedReviewWork, assignment as build_review_assignment, review_job_id,
 };
 use crate::physician_chat::PhysicianSkills;
 use crate::physician_sources::{
@@ -169,10 +179,39 @@ pub enum RecordedReviewAction {
         /// Workspace source version after the source refresh settled.
         workspace_version_after: u64,
     },
+    /// Coda saved a proposed patient reply draft on a linked conversation.
+    ReplyProposed {
+        /// Linked conversation identifier.
+        conversation_id: String,
+        /// Reply card identity.
+        reply_id: u64,
+        /// Proposal version saved.
+        version: u64,
+    },
+    /// Coda closed patient messages on a linked conversation as answered or needing no reply.
+    MessagesHandled {
+        /// Linked conversation identifier.
+        conversation_id: String,
+        /// Count of open patient messages closed as answered by practice messages.
+        answered_count: usize,
+        /// Count of open patient messages closed as needing no reply.
+        no_reply_count: usize,
+    },
+    /// Coda created, revised, completed, or cancelled a patient follow-up during this review.
+    FollowUpChanged {
+        /// Follow-up identifier.
+        follow_up_id: String,
+        /// Follow-up version recorded by this change.
+        version: u64,
+        /// Change kind (`created`, `changed`, `completed`, `cancelled`, etc.).
+        change_kind: String,
+        /// Follow-up summary snapshot.
+        summary: String,
+    },
 }
 
 impl RecordedReviewAction {
-    pub(super) fn summary_label(&self) -> String {
+    pub(crate) fn summary_label(&self) -> String {
         match self {
             Self::ConcernOpen {
                 concern_id,
@@ -199,6 +238,26 @@ impl RecordedReviewAction {
                 source_id,
                 workspace_version_after,
             } => format!("source {source_id} refreshed (chart v{workspace_version_after})"),
+            Self::ReplyProposed {
+                conversation_id,
+                reply_id,
+                version,
+            } => {
+                format!("proposed reply draft on {conversation_id} (reply #{reply_id}, v{version})")
+            }
+            Self::MessagesHandled {
+                conversation_id,
+                answered_count,
+                no_reply_count,
+            } => format!(
+                "handled messages on {conversation_id} ({answered_count} answered, {no_reply_count} no reply needed)"
+            ),
+            Self::FollowUpChanged {
+                follow_up_id,
+                version,
+                change_kind,
+                summary,
+            } => format!("follow-up {follow_up_id} {change_kind} (v{version}): {summary}"),
         }
     }
 }
@@ -659,9 +718,23 @@ impl<'a> PatientReviewReceiver<'a> {
 #[async_trait]
 impl ReviewReceiver for PatientReviewReceiver<'_> {
     async fn submit_review(&self, request: &ReviewRequest) -> Result<(), PracticeJobError> {
+        self.submit_coalesced_review(request, &[]).await
+    }
+
+    async fn submit_coalesced_review(
+        &self,
+        request: &ReviewRequest,
+        inputs: &[ReviewDispatchInput],
+    ) -> Result<(), PracticeJobError> {
         let admitted = self
             .store
-            .submit_dispatched_patient_review(request, self.roles, self.skills, self.authority)
+            .submit_dispatched_patient_review_coalesced(
+                request,
+                inputs,
+                self.roles,
+                self.skills,
+                self.authority,
+            )
             .await
             .map_err(|err| match err {
                 PatientReviewError::Access(access) => PracticeJobError::Access(access),
@@ -1389,6 +1462,59 @@ async fn collect_review_actions_in_tx(
         });
     }
 
+    let reply_completions = reply_review_completion::Entity::find()
+        .filter(reply_review_completion::Column::Practice.eq(practice))
+        .filter(reply_review_completion::Column::Workspace.eq(workspace))
+        .filter(reply_review_completion::Column::RunId.eq(work_id))
+        .order_by_asc(reply_review_completion::Column::CompletedAt)
+        .order_by_asc(reply_review_completion::Column::CompletionKey)
+        .all(tx)
+        .await?;
+    for row in reply_completions {
+        let saved: SavedReviewCompletion = serde_json::from_value(row.outcome).map_err(
+            conversion_error("reply_review_completion.outcome", "SavedReviewCompletion"),
+        )?;
+        let answered_count = saved.newly_answered_message_ids.len();
+        let no_reply_count = saved.newly_needs_no_reply_message_ids.len();
+        if answered_count > 0 || no_reply_count > 0 {
+            actions.push(RecordedReviewAction::MessagesHandled {
+                conversation_id: row.conversation_id.clone(),
+                answered_count,
+                no_reply_count,
+            });
+        }
+        if let Some(proposal) = saved.proposal {
+            actions.push(RecordedReviewAction::ReplyProposed {
+                conversation_id: row.conversation_id,
+                reply_id: proposal.reply_id,
+                version: proposal.version,
+            });
+        }
+    }
+
+    let follow_up_updates = follow_up_update_entity::Entity::find()
+        .filter(follow_up_update_entity::Column::Practice.eq(practice))
+        .filter(follow_up_update_entity::Column::Workspace.eq(workspace))
+        .order_by_asc(follow_up_update_entity::Column::OccurredAt)
+        .order_by_asc(follow_up_update_entity::Column::FollowUpId)
+        .order_by_asc(follow_up_update_entity::Column::Version)
+        .all(tx)
+        .await?;
+    for row in follow_up_updates {
+        let actor: FollowUpActor = serde_json::from_value(row.actor)
+            .map_err(conversion_error("follow_up_update.actor", "FollowUpActor"))?;
+        if let FollowUpActor::CodaWork { source_work } = actor
+            && source_work.work_id == work_id
+        {
+            actions.push(RecordedReviewAction::FollowUpChanged {
+                follow_up_id: row.follow_up_id,
+                version: u64::try_from(row.version.max(0)).unwrap_or(0),
+                change_kind: row.kind,
+                summary: row.summary,
+            });
+        }
+    }
+
     Ok(actions)
 }
 
@@ -1465,15 +1591,86 @@ impl Store {
     /// Assembles [`ReviewStartingContext`] for `(practice, workspace)` from
     /// authoritative patient pulls, chart observations, source refresh statuses,
     /// dispatch standing, saved understanding, durable memory, open concerns,
-    /// and prior completed patient reviews.
+    /// linked patient message conversations, due follow-ups, and prior completed
+    /// patient reviews.
     pub(super) async fn review_starting_context(
         &self,
         practice: &str,
         workspace: &str,
         review_id: &str,
-        trigger: ReviewTrigger,
-        additional_inputs: Vec<String>,
+        triggers: &[ReviewTrigger],
+        caller_inputs: Vec<String>,
     ) -> Result<(ReviewStartingContext, super::sources::Observation), DbErr> {
+        let trigger = triggers
+            .first()
+            .cloned()
+            .ok_or_else(|| error("patient review requires at least one trigger"))?;
+        self.sync_workspace_spruce_conversations_to_reply(practice, workspace)
+            .await?;
+
+        let mut additional_inputs: Vec<String> = triggers
+            .iter()
+            .skip(1)
+            .map(ReviewTrigger::summary_line)
+            .collect();
+
+        let conv_rows = reply_conversation::Entity::find()
+            .filter(reply_conversation::Column::Practice.eq(practice))
+            .filter(reply_conversation::Column::LinkKind.eq("linked_patient"))
+            .filter(reply_conversation::Column::Workspace.eq(workspace))
+            .order_by_asc(reply_conversation::Column::ConversationId)
+            .all(&self.db)
+            .await?;
+        for row in conv_rows {
+            let conv = self
+                .reply_conversation(practice, &row.conversation_id)
+                .await
+                .map_err(|err| match err {
+                    ReplyProposalError::Database(db_err) => db_err,
+                    other => error(&other.to_string()),
+                })?;
+            let Some(conv) = conv else {
+                continue;
+            };
+            let open_count = conv
+                .patient_messages
+                .iter()
+                .filter(|m| m.standing.is_open())
+                .count();
+            if open_count > 0
+                || !conv.woke_events.is_empty()
+                || conv.pending_reply_request.is_some()
+            {
+                additional_inputs.push(format!(
+                    "linked message conversation `{}`: {} open patient message(s), {} observed practice message(s), {} pending wake event(s); call `read_patient_conversation` and `patient_message_reply`.",
+                    conv.conversation_id,
+                    open_count,
+                    conv.practice_messages.len(),
+                    conv.woke_events.len(),
+                ));
+            }
+        }
+
+        let now_ts = now(&self.db).await?;
+        let due_fups = self
+            .due_follow_ups(practice, workspace, now_ts)
+            .await
+            .map_err(|err| match err {
+                super::follow_ups::FollowUpError::Database(db_err) => db_err,
+                other => error(&other.to_string()),
+            })?;
+        for fu in due_fups {
+            additional_inputs.push(format!(
+                "due active follow-up `{}` (version {}, due unix {}): {} — inspect current chart and call `patient_follow_up` when completed, revised, or cancelled.",
+                fu.id.as_str(),
+                fu.version,
+                fu.due_at,
+                fu.summary.as_str(),
+            ));
+        }
+
+        additional_inputs.extend(caller_inputs);
+
         let mut observation = self.sources(workspace).await?;
         let withdrawal_boundary =
             super::follow_ups::load_workspace_withdrawal_boundary(&self.db, practice, workspace)
@@ -1530,32 +1727,9 @@ impl Store {
 
         let memory_standing = self.active_memory_standing(practice, workspace).await?;
 
-        let mut raw_open_concerns = concern::Entity::find()
-            .filter(concern::Column::Practice.eq(practice))
-            .filter(concern::Column::Workspace.eq(workspace))
-            .filter(concern::Column::Status.eq("open"))
-            .all(&self.db)
+        let open_concerns = self
+            .load_open_concern_summaries(practice, workspace)
             .await?;
-        raw_open_concerns.sort_by(|left, right| {
-            let rank = |urgency: &str| if urgency == "now" { 0_u8 } else { 1_u8 };
-            rank(&left.urgency)
-                .cmp(&rank(&right.urgency))
-                .then_with(|| left.created_at.cmp(&right.created_at))
-                .then_with(|| left.id.cmp(&right.id))
-        });
-        let mut open_concerns = Vec::with_capacity(raw_open_concerns.len());
-        for row in raw_open_concerns {
-            let urgency: ConcernUrgency = serde_json::from_value(Value::String(row.urgency))
-                .map_err(conversion_error("concern.urgency", "ConcernUrgency"))?;
-            let records: Vec<ExactRecordReference> = serde_json::from_value(row.records)
-                .map_err(conversion_error("concern.records", "ExactRecordReference"))?;
-            open_concerns.push(OpenConcernSummary {
-                concern_id: row.id,
-                urgency,
-                reason: row.reason,
-                records,
-            });
-        }
 
         let completed_rows = patient_review::Entity::find()
             .filter(patient_review::Column::Practice.eq(practice))
@@ -1637,11 +1811,26 @@ impl Store {
         ))
     }
 
-    /// Admits a background dispatch [`ReviewRequest`] (`"new records"` or
-    /// `"periodic"`) into the shared patient review and practice-job pipeline.
+    /// Admits a background dispatch [`ReviewRequest`] into the shared patient
+    /// review and practice-job pipeline.
     pub async fn submit_dispatched_patient_review(
         &self,
         request: &ReviewRequest,
+        roles: &ModelRoles,
+        skills: &PhysicianSkills,
+        authority: &dyn PracticeAuthority,
+    ) -> Result<AdmittedPatientReview, PatientReviewError> {
+        self.submit_dispatched_patient_review_coalesced(request, &[], roles, skills, authority)
+            .await
+    }
+
+    /// Admits a background dispatch [`ReviewRequest`] together with all coalesced
+    /// [`ReviewDispatchInput`]s (`"new records"`, `"message"`, `"follow-up"`, or
+    /// `"periodic"`) into one shared patient review and practice-job run.
+    pub async fn submit_dispatched_patient_review_coalesced(
+        &self,
+        request: &ReviewRequest,
+        inputs: &[ReviewDispatchInput],
         roles: &ModelRoles,
         skills: &PhysicianSkills,
         authority: &dyn PracticeAuthority,
@@ -1656,6 +1845,9 @@ impl Store {
                 workspace: workspace.clone(),
                 job_id: "review-dispatch-admission".into(),
             })
+            .await?;
+
+        self.sync_workspace_spruce_conversations_to_reply(&practice, &workspace)
             .await?;
 
         let (baseline_records, last_reviewed_at) = {
@@ -1688,25 +1880,116 @@ impl Store {
             (baseline, last_rev_ts)
         };
 
-        let changed_candidates = match request.reason {
-            patient_work::ReviewReason::NewRecords => {
-                diff_changed_candidates(&baseline_records, &request.record_versions)
-            }
-            patient_work::ReviewReason::Periodic
-            | patient_work::ReviewReason::Message
-            | patient_work::ReviewReason::FollowUp => Vec::new(),
+        let direct_spruce_row = if inputs.is_empty() {
+            spruce_review_trigger::Entity::find_by_id((practice.clone(), command_key.clone()))
+                .one(&self.db)
+                .await?
+        } else {
+            None
         };
-        let trigger =
-            ReviewTrigger::from_dispatch_request(request, changed_candidates, last_reviewed_at);
-        self.admit_patient_review_with_trigger(
-            &practice,
-            &workspace,
-            &command_key,
-            trigger,
+
+        let has_new_records = (direct_spruce_row.is_none()
+            && request.reason == ReviewReason::NewRecords)
+            || inputs
+                .iter()
+                .any(|i| matches!(i, ReviewDispatchInput::ChangedRecords { .. }));
+        let changed_candidates = if has_new_records {
+            diff_changed_candidates(&baseline_records, &request.record_versions)
+        } else {
+            Vec::new()
+        };
+
+        let mut effective_inputs: Vec<ReviewDispatchInput> = inputs.to_vec();
+        if effective_inputs.is_empty() {
+            if let Some(spruce_row) = direct_spruce_row {
+                let record_map: BTreeMap<String, String> =
+                    serde_json::from_value(spruce_row.record_versions).map_err(
+                        conversion_error("spruce_review_trigger.record_versions", "map"),
+                    )?;
+                let message_ids = record_map
+                    .keys()
+                    .filter_map(|k| k.strip_prefix("spruce:").map(ToOwned::to_owned))
+                    .collect();
+                effective_inputs.push(ReviewDispatchInput::LinkedMessage(LinkedMessageTrigger {
+                    trigger_key: format!("spruce:{}", spruce_row.command_key),
+                    conversation_id: spruce_row.conversation_id,
+                    message_ids,
+                    arrived_at: spruce_row.created_at,
+                }));
+            } else {
+                match request.reason {
+                    ReviewReason::Message => {
+                        let conv_rows = reply_conversation::Entity::find()
+                            .filter(reply_conversation::Column::Practice.eq(&practice))
+                            .filter(reply_conversation::Column::LinkKind.eq("linked_patient"))
+                            .filter(reply_conversation::Column::Workspace.eq(&workspace))
+                            .order_by_asc(reply_conversation::Column::ConversationId)
+                            .all(&self.db)
+                            .await?;
+                        for row in conv_rows {
+                            if let Ok(Some(conv)) = self
+                                .reply_conversation(&practice, &row.conversation_id)
+                                .await
+                                && (!conv.woke_events.is_empty()
+                                    || conv.patient_messages.iter().any(|m| m.standing.is_open()))
+                            {
+                                let message_ids = conv
+                                    .patient_messages
+                                    .iter()
+                                    .filter(|m| m.standing.is_open())
+                                    .map(|m| m.message_id.clone())
+                                    .collect();
+                                effective_inputs.push(ReviewDispatchInput::LinkedMessage(
+                                    LinkedMessageTrigger {
+                                        trigger_key: format!("conv:{}", conv.conversation_id),
+                                        conversation_id: conv.conversation_id,
+                                        message_ids,
+                                        arrived_at: conv.updated_at,
+                                    },
+                                ));
+                            }
+                        }
+                    }
+                    ReviewReason::FollowUp => {
+                        let now_ts = now(&self.db).await?;
+                        let due = self
+                            .due_follow_ups(&practice, &workspace, now_ts)
+                            .await
+                            .map_err(|err| match err {
+                                super::follow_ups::FollowUpError::Database(db_err) => db_err,
+                                other => error(&other.to_string()),
+                            })?;
+                        for fu in due {
+                            effective_inputs.push(ReviewDispatchInput::DueFollowUp(
+                                DueFollowUpTrigger {
+                                    follow_up_id: fu.id.as_str().to_owned(),
+                                    version: fu.version,
+                                    summary: fu.summary.as_str().to_owned(),
+                                    due_at: fu.due_at,
+                                },
+                            ));
+                        }
+                    }
+                    ReviewReason::NewRecords | ReviewReason::Periodic => {}
+                }
+            }
+        }
+
+        let triggers = ReviewTrigger::triggers_from_dispatch(
+            request,
+            &effective_inputs,
+            changed_candidates,
+            last_reviewed_at,
+        );
+        self.admit_patient_review_with_triggers(PatientReviewAdmission {
+            practice: &practice,
+            workspace: &workspace,
+            command_key: &command_key,
+            triggers,
             roles,
             skills,
-            &VerifiedPracticePatient,
-        )
+            authority: &VerifiedPracticePatient,
+        })
         .await
     }
 
@@ -1767,9 +2050,28 @@ impl Store {
         )
         .await
     }
+}
 
-    /// Shared once-only review admission owner for changed-record, periodic, and
-    /// physician-requested patient reviews.
+/// Admission parameters for once-only multi-trigger patient reviews.
+pub struct PatientReviewAdmission<'a> {
+    /// Practice identifier.
+    pub practice: &'a str,
+    /// Patient workspace identifier.
+    pub workspace: &'a str,
+    /// Once-only command key.
+    pub command_key: &'a str,
+    /// Ordered review triggers (primary trigger first).
+    pub triggers: Vec<ReviewTrigger>,
+    /// Model lane bindings.
+    pub roles: &'a ModelRoles,
+    /// Skill catalog.
+    pub skills: &'a PhysicianSkills,
+    /// Practice patient authority check.
+    pub authority: &'a dyn PracticeAuthority,
+}
+
+impl Store {
+    /// Shared once-only review admission owner for single-trigger patient reviews.
     #[allow(clippy::too_many_arguments)]
     pub async fn admit_patient_review_with_trigger(
         &self,
@@ -1781,6 +2083,38 @@ impl Store {
         skills: &PhysicianSkills,
         authority: &dyn PracticeAuthority,
     ) -> Result<AdmittedPatientReview, PatientReviewError> {
+        self.admit_patient_review_with_triggers(PatientReviewAdmission {
+            practice,
+            workspace,
+            command_key,
+            triggers: vec![trigger],
+            roles,
+            skills,
+            authority,
+        })
+        .await
+    }
+
+    /// Shared once-only review admission owner for changed-record, linked-message,
+    /// due-follow-up, periodic, and physician-requested patient reviews.
+    pub async fn admit_patient_review_with_triggers(
+        &self,
+        admission: PatientReviewAdmission<'_>,
+    ) -> Result<AdmittedPatientReview, PatientReviewError> {
+        let PatientReviewAdmission {
+            practice,
+            workspace,
+            command_key,
+            triggers,
+            roles,
+            skills,
+            authority,
+        } = admission;
+        if triggers.is_empty() {
+            return Err(PatientReviewError::InvalidInput {
+                reason: "patient review requires at least one trigger".into(),
+            });
+        }
         let practice = validate_id(practice)?;
         let workspace = validate_id(workspace)?;
         let command_key = validate_id(command_key)?;
@@ -1808,14 +2142,16 @@ impl Store {
             });
         }
 
+        if triggers
+            .iter()
+            .any(|t| matches!(t, ReviewTrigger::Message { .. }))
+        {
+            self.sync_workspace_spruce_conversations_to_reply(&practice, &workspace)
+                .await?;
+        }
+
         let (starting_context, observation) = self
-            .review_starting_context(
-                &practice,
-                &workspace,
-                &review_id,
-                trigger.clone(),
-                Vec::new(),
-            )
+            .review_starting_context(&practice, &workspace, &review_id, &triggers, Vec::new())
             .await?;
         let patient_snapshot = starting_context.patient.clone();
         let assignment = build_review_assignment(&command_key, starting_context, skills)?;
@@ -1863,6 +2199,17 @@ impl Store {
             .all(&tx)
             .await?;
         for prior_row in prior_incomplete {
+            let prior_state: ReviewLifecycleState = serde_json::from_value(prior_row.state.clone())
+                .map_err(conversion_error("ReviewLifecycleState", "json"))?;
+            if matches!(
+                prior_state,
+                ReviewLifecycleState::Held {
+                    reason: ReviewHoldReason::Stopped,
+                    ..
+                }
+            ) {
+                continue;
+            }
             Self::supersede_review_in_tx(
                 &tx,
                 prior_row,
@@ -1873,6 +2220,16 @@ impl Store {
             )
             .await?;
         }
+
+        super::dispatch::record_admitted_message_triggers_in_tx(
+            &tx,
+            &practice,
+            &workspace,
+            &triggers,
+            &command_key,
+            clock,
+        )
+        .await?;
 
         let initial_version_i64 = i64::try_from(observation.version)
             .map_err(conversion_error("initial_source_version", "i64"))?;
@@ -1892,7 +2249,7 @@ impl Store {
                 .map(serde_json::to_value)
                 .transpose()
                 .map_err(conversion_error("SourcePatient", "json"))?),
-            triggers: Set(serde_json::to_value(vec![trigger.clone()])
+            triggers: Set(serde_json::to_value(&triggers)
                 .map_err(conversion_error("Vec<ReviewTrigger>", "json"))?),
             accepted_inputs: Set(json!([])),
             recipe_version: Set(serde_json::to_value(&recipe_version)
@@ -1929,7 +2286,7 @@ impl Store {
             job_id,
             work_id: job.work,
             patient: patient_snapshot,
-            triggers: vec![trigger],
+            triggers,
             accepted_inputs: Vec::new(),
             recipe_version,
             initial_source_version: observation.version,
@@ -2068,7 +2425,7 @@ impl Store {
                 &practice,
                 &workspace,
                 &review_id,
-                preview_trigger,
+                std::slice::from_ref(&preview_trigger),
                 Vec::new(),
             )
             .await?;
@@ -2121,21 +2478,26 @@ impl Store {
             text: trimmed.to_owned(),
             recorded_at: clock,
         });
-        let next_input_texts: Vec<String> = next_inputs.iter().map(|i| i.text.clone()).collect();
-        let primary_trigger = locked_review
-            .triggers
-            .first()
-            .cloned()
-            .ok_or_else(|| error("corrupt patient review missing primary trigger"))?;
-        starting_context.trigger = primary_trigger;
-        starting_context.additional_inputs = next_input_texts;
-        let updated_assignment =
-            build_review_assignment(&locked_review.command_key, starting_context, skills)?;
-
         let mut triggers = locked_review.triggers;
         if let Some(trig) = additional_trigger {
             triggers.push(trig);
         }
+        let primary_trigger = triggers
+            .first()
+            .cloned()
+            .ok_or_else(|| error("corrupt patient review missing primary trigger"))?;
+        let context_lines = std::mem::take(&mut starting_context.additional_inputs);
+        let mut combined_inputs: Vec<String> = triggers
+            .iter()
+            .skip(1)
+            .map(ReviewTrigger::summary_line)
+            .collect();
+        combined_inputs.extend(context_lines);
+        combined_inputs.extend(next_inputs.iter().map(|i| i.text.clone()));
+        starting_context.trigger = primary_trigger;
+        starting_context.additional_inputs = combined_inputs;
+        let updated_assignment =
+            build_review_assignment(&locked_review.command_key, starting_context, skills)?;
 
         let (binding, package) =
             Self::refresh_job_binding_in_tx(&tx, &scope, &updated_assignment, roles, skills)
@@ -2167,6 +2529,24 @@ impl Store {
         job.dispatch_after = 0;
         job.updated_at = clock;
 
+        for trigger in &triggers {
+            if let ReviewTrigger::Message {
+                conversation_id,
+                message_ids,
+                ..
+            } = trigger
+            {
+                Self::rearm_reply_conversation_wake_in_tx(
+                    &tx,
+                    &scope.practice,
+                    &scope.workspace,
+                    conversation_id,
+                    message_ids,
+                    clock,
+                )
+                .await?;
+            }
+        }
         let refreshed_recipe =
             build_recipe_version(roles, &job.binding, &job.skills, &job.assignment)?;
         let next_state = ReviewLifecycleState::Pending;
@@ -2351,17 +2731,17 @@ impl Store {
                     .await?;
                     return Err(PatientReviewError::Access(access_err));
                 }
-                let preview_trigger = existing
-                    .triggers
-                    .first()
-                    .cloned()
-                    .ok_or_else(|| error("corrupt patient review missing primary trigger"))?;
+                if existing.triggers.is_empty() {
+                    return Err(PatientReviewError::Database(error(
+                        "corrupt patient review missing primary trigger",
+                    )));
+                }
                 let (starting_context, observation) = self
                     .review_starting_context(
                         &practice,
                         &workspace,
                         &review_id,
-                        preview_trigger,
+                        &existing.triggers,
                         Vec::new(),
                     )
                     .await?;
@@ -2559,17 +2939,17 @@ impl Store {
             RearmKind::Resume => "resume",
             RearmKind::TryAgain => "try_again",
         };
-        let preview_trigger = existing
-            .triggers
-            .first()
-            .cloned()
-            .ok_or_else(|| error("corrupt patient review missing primary trigger"))?;
+        if existing.triggers.is_empty() {
+            return Err(PatientReviewError::Database(error(
+                "corrupt patient review missing primary trigger",
+            )));
+        }
         let (starting_context, observation) = self
             .review_starting_context(
                 &practice,
                 &workspace,
                 &review_id,
-                preview_trigger,
+                &existing.triggers,
                 Vec::new(),
             )
             .await?;
@@ -2666,13 +3046,17 @@ impl Store {
             .first()
             .cloned()
             .ok_or_else(|| error("corrupt patient review missing primary trigger"))?;
-        let extra_texts: Vec<String> = locked_review
-            .accepted_inputs
+        let context_lines = std::mem::take(&mut starting_context.additional_inputs);
+        let mut combined_inputs: Vec<String> = locked_review
+            .triggers
             .iter()
-            .map(|i| i.text.clone())
+            .skip(1)
+            .map(ReviewTrigger::summary_line)
             .collect();
+        combined_inputs.extend(context_lines);
+        combined_inputs.extend(locked_review.accepted_inputs.iter().map(|i| i.text.clone()));
         starting_context.trigger = primary_trigger;
-        starting_context.additional_inputs = extra_texts;
+        starting_context.additional_inputs = combined_inputs;
         let updated_assignment =
             build_review_assignment(&locked_review.command_key, starting_context.clone(), skills)?;
 
@@ -2707,6 +3091,24 @@ impl Store {
         job.dispatch_after = 0;
         job.updated_at = clock;
 
+        for trigger in &locked_review.triggers {
+            if let ReviewTrigger::Message {
+                conversation_id,
+                message_ids,
+                ..
+            } = trigger
+            {
+                Self::rearm_reply_conversation_wake_in_tx(
+                    &tx,
+                    &scope.practice,
+                    &scope.workspace,
+                    conversation_id,
+                    message_ids,
+                    clock,
+                )
+                .await?;
+            }
+        }
         let refreshed_recipe =
             build_recipe_version(roles, &job.binding, &job.skills, &job.assignment)?;
         let next_state = ReviewLifecycleState::Pending;
@@ -2843,6 +3245,15 @@ impl Store {
             &rev_row.practice,
             &rev_row.workspace,
             &rev_row.work_id,
+        )
+        .await?;
+        Self::release_workspace_reply_reviews_in_tx(
+            tx,
+            &rev_row.practice,
+            &rev_row.workspace,
+            &rev_row.review_id,
+            super::reply::proposals::ReplyReviewRelease::Aborted,
+            clock,
         )
         .await?;
         let superseded = ReviewLifecycleState::Superseded {
@@ -3156,6 +3567,253 @@ impl Store {
                     }
                 }
             }
+            READ_PATIENT_CONVERSATION_TOOL => {
+                let parsed = match ReadConversationCall::parse(arguments) {
+                    Ok(parsed) => parsed,
+                    Err(err) => return Ok(ToolOutcome::refused(err.to_string())),
+                };
+                let Some(review_ctx) = &job.assignment.review else {
+                    return Ok(ToolOutcome::refused(
+                        "read_patient_conversation is only available on patient review assignments",
+                    ));
+                };
+                self.sync_workspace_spruce_conversations_to_reply(
+                    &claim.scope.practice,
+                    &claim.scope.workspace,
+                )
+                .await
+                .map_err(persistence_failure)?;
+
+                let existing = match self
+                    .reply_conversation(&claim.scope.practice, &parsed.conversation_id)
+                    .await
+                {
+                    Ok(existing) => existing,
+                    Err(ReplyProposalError::Database(db_err)) => {
+                        return Err(persistence_failure(db_err));
+                    }
+                    Err(other) => return Ok(ToolOutcome::refused(other.to_string())),
+                };
+                let Some(conv) = existing else {
+                    return Ok(ToolOutcome::Returned(
+                        json!({
+                            "outcome": "unavailable",
+                            "limits": [{
+                                "kind": "missing",
+                                "subject": parsed.conversation_id,
+                                "detail": format!(
+                                    "Linked patient conversation `{}` does not exist in this practice.",
+                                    parsed.conversation_id
+                                ),
+                            }],
+                        })
+                        .to_string(),
+                    ));
+                };
+                let expected_link = ConversationLink::LinkedPatient {
+                    workspace: claim.scope.workspace.clone(),
+                };
+                if conv.link != expected_link {
+                    return Ok(ToolOutcome::refused(
+                        "practice background job may read only conversations linked to its assigned patient workspace",
+                    ));
+                }
+
+                match self
+                    .start_or_read_reply_review(
+                        &claim.scope.practice,
+                        &parsed.conversation_id,
+                        &review_ctx.review_id,
+                        &job.work,
+                    )
+                    .await
+                {
+                    Ok(snapshot) => Ok(ToolOutcome::Returned(
+                        json!({
+                            "outcome": "available",
+                            "review_active": true,
+                            "review": snapshot.review,
+                            "source_version": snapshot.source_version,
+                            "conversation": snapshot.conversation,
+                        })
+                        .to_string(),
+                    )),
+                    Err(ReplyProposalError::NoPendingReviewWake { .. }) => {
+                        Ok(ToolOutcome::Returned(
+                            json!({
+                                "outcome": "available",
+                                "review_active": false,
+                                "conversation": conv,
+                            })
+                            .to_string(),
+                        ))
+                    }
+                    Err(ReplyProposalError::Database(db_err)) => Err(persistence_failure(db_err)),
+                    Err(other) => Ok(ToolOutcome::refused(other.to_string())),
+                }
+            }
+            PATIENT_MESSAGE_REPLY_TOOL => {
+                let parsed = match MessageReplyCall::parse(arguments) {
+                    Ok(parsed) => parsed,
+                    Err(err) => return Ok(ToolOutcome::refused(err.to_string())),
+                };
+                let Some(review_ctx) = &job.assignment.review else {
+                    return Ok(ToolOutcome::refused(
+                        "patient_message_reply is only available on patient review assignments",
+                    ));
+                };
+
+                let existing = match self
+                    .reply_conversation(&claim.scope.practice, &parsed.conversation_id)
+                    .await
+                {
+                    Ok(existing) => existing,
+                    Err(ReplyProposalError::Database(db_err)) => {
+                        return Err(persistence_failure(db_err));
+                    }
+                    Err(other) => return Ok(ToolOutcome::refused(other.to_string())),
+                };
+                let Some(conv) = existing else {
+                    return Ok(ToolOutcome::refused(format!(
+                        "linked conversation `{}` does not exist",
+                        parsed.conversation_id
+                    )));
+                };
+                if conv.link
+                    != (ConversationLink::LinkedPatient {
+                        workspace: claim.scope.workspace.clone(),
+                    })
+                {
+                    return Ok(ToolOutcome::refused(
+                        "practice background job may write reply decisions only for conversations linked to its assigned patient workspace",
+                    ));
+                }
+
+                let cited_candidates: Vec<String> = match &parsed.decision {
+                    MessageReplyDecision::ProposeReply { citations, .. } => {
+                        citations.iter().map(|r| r.candidate_id.clone()).collect()
+                    }
+                    MessageReplyDecision::NoReplyWouldHelp { .. }
+                    | MessageReplyDecision::AllHandled => Vec::new(),
+                };
+                match super::follow_ups::check_withdrawal_fence_in_tx(
+                    &self.db,
+                    &claim.scope.practice,
+                    &claim.scope.workspace,
+                    &cited_candidates,
+                    None,
+                    Some(&job.work),
+                )
+                .await
+                {
+                    Ok(()) => {}
+                    Err(super::follow_ups::WithdrawalFenceCheckError::Violation(violation)) => {
+                        return Ok(ToolOutcome::refused(violation.to_string()));
+                    }
+                    Err(super::follow_ups::WithdrawalFenceCheckError::Database(db_err)) => {
+                        return Err(persistence_failure(db_err));
+                    }
+                }
+
+                if let MessageReplyDecision::ProposeReply { citations, .. } = &parsed.decision
+                    && !citations.is_empty()
+                {
+                    let read_in_work = self
+                        .delivered_review_revisions(job, ordered)
+                        .await
+                        .map_err(persistence_failure)?;
+                    let current_understanding = self
+                        .patient_understanding_internal(
+                            &claim.scope.practice,
+                            &claim.scope.workspace,
+                        )
+                        .await
+                        .map_err(persistence_failure)?;
+                    let carried_forward = known_understanding_refs(current_understanding.as_ref());
+                    for r in citations {
+                        let pair = (r.candidate_id.clone(), r.revision.clone());
+                        if !read_in_work.contains(&pair) && !carried_forward.contains(&pair) {
+                            return Ok(ToolOutcome::refused(format!(
+                                "citation `{}@{}` must be read via `read_patient_sources` in this review before proposing a reply",
+                                r.candidate_id, r.revision
+                            )));
+                        }
+                    }
+                }
+
+                for concern_id in &parsed.raised_concern_ids {
+                    let exists = concern::Entity::find_by_id((
+                        claim.scope.practice.clone(),
+                        claim.scope.workspace.clone(),
+                        concern_id.as_str().to_owned(),
+                    ))
+                    .one(&self.db)
+                    .await
+                    .map_err(persistence_failure)?;
+                    if exists.is_none() {
+                        return Ok(ToolOutcome::refused(format!(
+                            "concern `{}` does not exist in patient workspace `{}`",
+                            concern_id.as_str(),
+                            claim.scope.workspace
+                        )));
+                    }
+                }
+
+                let completion_key = format!("message-reply:{}:{}", job.work, call.id.trim());
+                let decision = match parsed.decision {
+                    MessageReplyDecision::ProposeReply {
+                        draft_text,
+                        basis_summary,
+                        limits,
+                        citations,
+                    } => ReplyReviewDecision::ProposeReply(ReplyProposalInput {
+                        text: draft_text,
+                        basis: ReplyProposalBasisInput {
+                            summary: basis_summary,
+                            limits,
+                            cited_records: citations.clone(),
+                        },
+                        cited_records: citations,
+                    }),
+                    MessageReplyDecision::NoReplyWouldHelp { reason } => {
+                        ReplyReviewDecision::NoReplyWouldHelp { reason }
+                    }
+                    MessageReplyDecision::AllHandled => ReplyReviewDecision::AllHandled,
+                };
+
+                match self
+                    .complete_reply_review(&CompleteReplyReview {
+                        practice: claim.scope.practice.clone(),
+                        conversation_id: parsed.conversation_id,
+                        review_id: review_ctx.review_id.clone(),
+                        run_id: job.work.clone(),
+                        completion_key,
+                        answered_closures: parsed.answered_closures,
+                        decision,
+                        raised_concern_ids: parsed.raised_concern_ids,
+                    })
+                    .await
+                {
+                    Ok(ReplyReviewOutcome::Applied(saved)) => Ok(ToolOutcome::Returned(
+                        json!({
+                            "outcome": "applied",
+                            "saved_as_draft": saved.proposal.is_some(),
+                            "completion": saved,
+                        })
+                        .to_string(),
+                    )),
+                    Ok(ReplyReviewOutcome::Duplicate(saved)) => Ok(ToolOutcome::Returned(
+                        json!({
+                            "outcome": "duplicate",
+                            "saved_as_draft": saved.proposal.is_some(),
+                            "completion": saved,
+                        })
+                        .to_string(),
+                    )),
+                    Err(ReplyProposalError::Database(db_err)) => Err(persistence_failure(db_err)),
+                    Err(other) => Ok(ToolOutcome::refused(other.to_string())),
+                }
+            }
             COMPLETE_PATIENT_REVIEW_TOOL => {
                 let args = match CompleteReviewArgs::parse(arguments) {
                     Ok(args) => args,
@@ -3301,6 +3959,54 @@ impl Store {
                 "unknown patient review tool {other}"
             ))),
         }
+    }
+
+    /// Reconciles an already-committed `patient_message_reply` call read-only
+    /// when a worker attempt crashed before acknowledging `ToolReturned`.
+    pub(super) async fn saved_message_reply_outcome(
+        &self,
+        scope: &PracticeScope,
+        work_id: &str,
+        call: &Invocation,
+    ) -> Result<Option<ToolOutcome>, engine::ProductError> {
+        if call.name != PATIENT_MESSAGE_REPLY_TOOL {
+            return Ok(None);
+        }
+        let Ok(arguments) = serde_json::from_str::<Value>(&call.arguments) else {
+            return Ok(None);
+        };
+        let Ok(parsed) = MessageReplyCall::parse(&arguments) else {
+            return Ok(None);
+        };
+        let completion_key = format!("message-reply:{work_id}:{}", call.id.trim());
+        let Some(row) = reply_review_completion::Entity::find_by_id((
+            scope.practice.clone(),
+            parsed.conversation_id,
+            completion_key,
+        ))
+        .one(&self.db)
+        .await
+        .map_err(persistence_failure)?
+        else {
+            return Ok(None);
+        };
+        if row.workspace != scope.workspace || row.run_id != work_id {
+            return Ok(None);
+        }
+        let saved: SavedReviewCompletion = serde_json::from_value(row.outcome)
+            .map_err(conversion_error(
+                "reply_review_completion.outcome",
+                "SavedReviewCompletion",
+            ))
+            .map_err(persistence_failure)?;
+        Ok(Some(ToolOutcome::Returned(
+            json!({
+                "outcome": "duplicate",
+                "saved_as_draft": saved.proposal.is_some(),
+                "completion": saved,
+            })
+            .to_string(),
+        )))
     }
 
     /// Reconciles an already-staged `complete_patient_review` call read-only
@@ -3658,6 +4364,15 @@ impl Store {
         }
         .update(tx)
         .await?;
+        Self::release_workspace_reply_reviews_in_tx(
+            tx,
+            &job.scope.practice,
+            &job.scope.workspace,
+            &review_ctx.review_id,
+            super::reply::proposals::ReplyReviewRelease::Completed,
+            clock,
+        )
+        .await?;
         Ok(())
     }
 
@@ -3719,6 +4434,15 @@ impl Store {
             partial_text,
         };
         let started = rev_row.started_at;
+        Self::release_workspace_reply_reviews_in_tx(
+            tx,
+            &job.scope.practice,
+            &job.scope.workspace,
+            &review_ctx.review_id,
+            super::reply::proposals::ReplyReviewRelease::Completed,
+            clock,
+        )
+        .await?;
         update_review_lifecycle_in_tx(tx, rev_row, &job.work, held, started, clock).await
     }
 
@@ -3807,17 +4531,39 @@ impl Store {
             return Ok(());
         };
         let next_state = match job.status {
-            WorkStatus::Failed => ReviewLifecycleState::Failed {
-                reason: reason_label.to_owned(),
-                failed_at: clock,
-                attempts: job.failures.max(1),
-            },
+            WorkStatus::Failed => {
+                Self::release_workspace_reply_reviews_in_tx(
+                    tx,
+                    &job.scope.practice,
+                    &job.scope.workspace,
+                    &review_ctx.review_id,
+                    super::reply::proposals::ReplyReviewRelease::Completed,
+                    clock,
+                )
+                .await?;
+                ReviewLifecycleState::Failed {
+                    reason: reason_label.to_owned(),
+                    failed_at: clock,
+                    attempts: job.failures.max(1),
+                }
+            }
             WorkStatus::Pending => ReviewLifecycleState::Pending,
-            WorkStatus::Held => ReviewLifecycleState::Held {
-                reason: ReviewHoldReason::Stopped,
-                held_at: clock,
-                partial_text: None,
-            },
+            WorkStatus::Held => {
+                Self::release_workspace_reply_reviews_in_tx(
+                    tx,
+                    &job.scope.practice,
+                    &job.scope.workspace,
+                    &review_ctx.review_id,
+                    super::reply::proposals::ReplyReviewRelease::Completed,
+                    clock,
+                )
+                .await?;
+                ReviewLifecycleState::Held {
+                    reason: ReviewHoldReason::Stopped,
+                    held_at: clock,
+                    partial_text: None,
+                }
+            }
             WorkStatus::Active | WorkStatus::Completed | WorkStatus::Cancelled => return Ok(()),
         };
         let started = rev_row.started_at;

@@ -1996,6 +1996,7 @@ impl Product for PracticeJobHost<'_> {
         let is_concern = super::concerns::is_concern_tool(&call.name);
         let is_follow_up = super::follow_ups::is_follow_up_tool(&call.name);
         let is_memory = super::memory::tools::MemoryTool::named(&call.name).is_some();
+        let is_message_reply = call.name == crate::patient_reviews::PATIENT_MESSAGE_REPLY_TOOL;
         let is_complete_review = call.name == crate::patient_reviews::COMPLETE_PATIENT_REVIEW_TOOL;
         if !is_understanding
             && !is_visit_prep
@@ -2003,11 +2004,12 @@ impl Product for PracticeJobHost<'_> {
             && !is_concern
             && !is_follow_up
             && !is_memory
+            && !is_message_reply
             && !is_complete_review
         {
             return Box::pin(async { Ok(None) });
         }
-        if (is_concern || is_follow_up || is_memory || is_complete_review)
+        if (is_concern || is_follow_up || is_memory || is_message_reply || is_complete_review)
             && self.claim.kind != PracticeJobKind::PatientReview
         {
             return Box::pin(async { Ok(None) });
@@ -2062,6 +2064,11 @@ impl Product for PracticeJobHost<'_> {
                 return super::memory::tools::saved_outcome_for_key(&store, &key, &job.work, &call)
                     .await
                     .map_err(Into::into);
+            }
+            if is_message_reply {
+                return store
+                    .saved_message_reply_outcome(&claim.scope, &job.work, &call)
+                    .await;
             }
             store
                 .saved_complete_review_outcome(&claim.scope, &job.work, &call)

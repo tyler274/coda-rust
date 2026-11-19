@@ -4578,7 +4578,7 @@ impl Store {
         trigger: ReviewTrigger,
     ) -> Result<ReviewStartingContext, TodayUpdatesError> {
         let (ctx, _) = self
-            .review_starting_context(practice, workspace, next_review_id, trigger, Vec::new())
+            .review_starting_context(practice, workspace, next_review_id, &[trigger], Vec::new())
             .await?;
         Ok(ctx)
     }

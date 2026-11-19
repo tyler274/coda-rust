@@ -1433,6 +1433,20 @@ fn project_action(action: &RecordedReviewAction) -> ReviewActionWire {
             source_id,
             workspace_version_after,
         } => format!("Refreshed {source_id} (chart v{workspace_version_after})"),
+        RecordedReviewAction::ReplyProposed {
+            conversation_id,
+            version,
+            ..
+        } => format!("Drafted reply proposal v{version} on {conversation_id}"),
+        RecordedReviewAction::MessagesHandled {
+            conversation_id, ..
+        } => format!("Handled patient messages on {conversation_id}"),
+        RecordedReviewAction::FollowUpChanged {
+            follow_up_id,
+            version,
+            change_kind,
+            summary,
+        } => format!("Updated follow-up {follow_up_id} ({change_kind}, v{version}): {summary}"),
     };
     ReviewActionWire { summary }
 }
