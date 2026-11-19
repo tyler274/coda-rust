@@ -1129,9 +1129,15 @@ fn PhysicianShell(
     let mut reading = use_signal(|| None::<OpenReading>);
     let mut source_panel = use_signal(|| SourcePanelLoad::Idle);
     let mut source_request_id = use_signal(|| 0u64);
+    let mut source_owner = use_signal(|| (Place::Today, None::<String>, None::<String>));
     let mut dictation_state = use_signal(DictationState::default);
     let mut dictation_stream = use_signal(|| None::<ui::Listening<ui::DictationHeard>>);
     let mut dictation_task = use_signal(|| None::<dioxus::core::Task>);
+    let mut dictation_generation = use_signal(|| 0u64);
+    let mut dictation_owner = use_signal(|| None::<DraftTarget>);
+    let mut discussion_chats =
+        use_signal(std::collections::HashMap::<(String, String), String>::new);
+    let mut started_discussion_chats = use_signal(std::collections::HashSet::<String>::new);
     let mut open_briefing = use_signal(|| None::<OpenBriefingTarget>);
     let mut focus = use_signal(|| -1i32);
     let mut open_chat = use_signal(|| None::<String>);
@@ -1715,6 +1721,9 @@ fn PhysicianShell(
             .write()
             .begin_send(&target, command.key(), &text, command.0.clone());
         if let Some(pending) = pending {
+            if !target.chat.is_empty() {
+                started_discussion_chats.write().insert(target.chat.clone());
+            }
             dispatch_send(send_slot, client, composer, send_refresh, target, pending);
         }
     };
@@ -1988,11 +1997,27 @@ fn PhysicianShell(
         workspace_cache.set(None);
         forget_workspace_drafts(composer, &client.peek(), whoami, &gone_ws);
         reading.set(None);
+        *source_request_id.write() += 1;
         let closed = source_panel
             .peek()
             .clone()
             .into_unavailable("Panel access is required to view this patient’s records.");
         source_panel.set(closed);
+        if dictation_owner
+            .peek()
+            .as_ref()
+            .is_some_and(|owner| owner.workspace == gone_ws)
+            || dictation_state.peek().is_active()
+        {
+            *dictation_generation.write() += 1;
+            if let Some(task) = dictation_task.write().take() {
+                task.cancel();
+            }
+            dictation_owner.set(None);
+            dictation_stream.set(None);
+            ui::cancel_dictation();
+            dictation_state.set(DictationState::Idle);
+        }
         open_briefing.set(None);
         past_work_open.set(false);
         gone.set(Some(gone_ws));
@@ -2085,6 +2110,53 @@ fn PhysicianShell(
         }
     });
     use_effect(move || {
+        let current_place = place();
+        let current_ws = selected();
+        let current_chat = open_chat();
+        let gone_id = gone();
+        let cached = workspace_cache.read();
+        let blocked = clinical_dialogs_blocked(
+            current_place,
+            current_ws.as_deref(),
+            gone_id.as_deref(),
+            cached.as_ref(),
+        );
+        let (prev_place, prev_ws, prev_chat) = source_owner.peek().clone();
+        let patient_or_place_changed = current_place != prev_place || current_ws != prev_ws;
+        let chat_changed_cleanly = current_chat != prev_chat
+            && !blocked
+            && !matches!(&*source_panel.peek(), SourcePanelLoad::Unavailable { .. });
+        if patient_or_place_changed || chat_changed_cleanly {
+            source_owner.set((current_place, current_ws, current_chat));
+            *source_request_id.write() += 1;
+            if *source_panel.peek() != SourcePanelLoad::Idle {
+                source_panel.set(SourcePanelLoad::Idle);
+            }
+        }
+    });
+    use_effect(move || {
+        let target = draft_target();
+        if dictation_state.peek().is_active() && dictation_owner.peek().as_ref() != target.as_ref()
+        {
+            *dictation_generation.write() += 1;
+            if let Some(task) = dictation_task.write().take() {
+                task.cancel();
+            }
+            dictation_owner.set(None);
+            dictation_stream.set(None);
+            ui::cancel_dictation();
+            dictation_state.set(DictationState::Idle);
+        }
+    });
+    use_drop(move || {
+        if let Ok(mut task) = dictation_task.try_write()
+            && let Some(active) = task.take()
+        {
+            active.cancel();
+        }
+        ui::cancel_dictation();
+    });
+    use_effect(move || {
         let current_id = selected();
         let gone_id = gone();
         let cached = workspace_cache.read();
@@ -2098,11 +2170,22 @@ fn PhysicianShell(
                 reading.set(None);
             }
             if source_panel.peek().active_chip().is_some() {
+                *source_request_id.write() += 1;
                 let blocked = source_panel
                     .peek()
                     .clone()
                     .into_unavailable("Panel access is required to view this patient’s records.");
                 source_panel.set(blocked);
+            }
+            if dictation_state.peek().is_active() {
+                *dictation_generation.write() += 1;
+                if let Some(task) = dictation_task.write().take() {
+                    task.cancel();
+                }
+                dictation_owner.set(None);
+                dictation_stream.set(None);
+                ui::cancel_dictation();
+                dictation_state.set(DictationState::Idle);
             }
             if open_briefing.peek().is_some() {
                 open_briefing.set(None);
@@ -2455,12 +2538,15 @@ fn PhysicianShell(
     let open_source_chip = move |chip: SourceChip| {
         let next_id = *source_request_id.peek() + 1;
         source_request_id.set(next_id);
+        let current_place = place();
         let current_ws = selected.peek().clone();
         let current_chat = open_chat.peek().clone();
+        let expected_scope = (current_place, current_ws.clone(), current_chat.clone());
+        source_owner.set(expected_scope.clone());
         let source_key = chip.source_key.clone();
         let api = client.peek().clone();
         let presented = api.session().get();
-        let can_fetch_chat_source = matches!(place(), Place::Workspace)
+        let can_fetch_chat_source = matches!(current_place, Place::Workspace)
             && current_ws.is_some()
             && current_chat.is_some()
             && source_key.is_some()
@@ -2476,6 +2562,11 @@ fn PhysicianShell(
                 match api.cited_source(&ws_id, &chat_id, &key).await {
                     Ok(resp) => {
                         if *source_request_id.peek() != next_id {
+                            return;
+                        }
+                        if (place(), selected.peek().clone(), open_chat.peek().clone())
+                            != expected_scope
+                        {
                             return;
                         }
                         if clinical_dialogs_blocked(
@@ -2499,6 +2590,11 @@ fn PhysicianShell(
                     }
                     Err(error) => {
                         if *source_request_id.peek() != next_id {
+                            return;
+                        }
+                        if (place(), selected.peek().clone(), open_chat.peek().clone())
+                            != expected_scope
+                        {
                             return;
                         }
                         if let Some(refused) = refusal(&error) {
@@ -2546,9 +2642,11 @@ fn PhysicianShell(
     };
 
     let mut cancel_active_dictation = move || {
+        *dictation_generation.write() += 1;
         if let Some(task) = dictation_task.write().take() {
             task.cancel();
         }
+        dictation_owner.set(None);
         dictation_stream.set(None);
         ui::cancel_dictation();
         dictation_state.set(DictationState::Idle);
@@ -2558,19 +2656,37 @@ fn PhysicianShell(
         if !dictation_state.peek().is_listening() {
             return;
         }
+        let Some(target) = dictation_owner.peek().clone() else {
+            cancel_active_dictation();
+            return;
+        };
+        let generation = *dictation_generation.peek();
         if let Some(task) = dictation_task.write().take() {
             task.cancel();
         }
         let next_state = dictation_state.peek().clone().into_transcribing();
         dictation_state.set(next_state);
         let api = client.read().clone();
-        let target = draft_target();
-        spawn(async move {
+        let task = spawn(async move {
             let stop_result = ui::stop_dictation().answer().await;
+            if *dictation_generation.peek() != generation {
+                return;
+            }
             dictation_stream.set(None);
             let Ok(audio) = stop_result else {
+                dictation_task.set(None);
+                dictation_owner.set(None);
                 dictation_state.set(DictationState::Idle);
-                composer.write().say(DICTATION_UNAVAILABLE);
+                if draft_target().as_ref() == Some(&target)
+                    && !clinical_dialogs_blocked(
+                        place(),
+                        selected.peek().as_deref(),
+                        gone.peek().as_deref(),
+                        workspace_cache.peek().as_ref(),
+                    )
+                {
+                    composer.write().say(DICTATION_UNAVAILABLE);
+                }
                 return;
             };
             let request = physician_wire::DictationRequest {
@@ -2578,31 +2694,59 @@ fn PhysicianShell(
                 mime_type: audio.mime_type,
                 sample_rate_hz: None,
             };
-            match api.dictate(&request).await {
+            let response = api.dictate(&request).await;
+            if *dictation_generation.peek() != generation {
+                return;
+            }
+            dictation_task.set(None);
+            dictation_owner.set(None);
+            dictation_state.set(DictationState::Idle);
+            let still_valid = draft_target().as_ref() == Some(&target)
+                && !clinical_dialogs_blocked(
+                    place(),
+                    selected.peek().as_deref(),
+                    gone.peek().as_deref(),
+                    workspace_cache.peek().as_ref(),
+                );
+            if !still_valid {
+                return;
+            }
+            match response {
                 Ok(resp) => {
-                    dictation_state.set(DictationState::Idle);
                     composer
                         .write()
-                        .insert_dictation(target.as_ref(), &resp.transcript);
-                    if let Some(t) = target {
-                        autosave_after(composer, client, t, AUTOSAVE_DEBOUNCE_MS);
-                    }
+                        .insert_dictation(Some(&target), &resp.transcript);
+                    autosave_after(composer, client, target, AUTOSAVE_DEBOUNCE_MS);
                 }
                 Err(_) => {
-                    dictation_state.set(DictationState::Idle);
                     composer.write().say(DICTATION_UNAVAILABLE);
                 }
             }
         });
+        dictation_task.set(Some(task));
     };
 
     let mut start_active_dictation = move |trigger: ui::DictationTrigger| {
+        let Some(target) = draft_target() else {
+            return;
+        };
+        if clinical_dialogs_blocked(
+            place(),
+            selected.peek().as_deref(),
+            gone.peek().as_deref(),
+            workspace_cache.peek().as_ref(),
+        ) {
+            return;
+        }
         if dictation_state.peek().is_active() {
             return;
         }
         if let Some(task) = dictation_task.write().take() {
             task.cancel();
         }
+        let generation = *dictation_generation.peek() + 1;
+        dictation_generation.set(generation);
+        dictation_owner.set(Some(target));
         dictation_state.set(DictationState::start(now_millis() as f64));
         let listening = ui::start_dictation(trigger);
         dictation_stream.set(Some(listening.clone()));
@@ -2611,19 +2755,27 @@ fn PhysicianShell(
                 match listening.next().await {
                     Ok(ui::DictationHeard::Started) => {}
                     Ok(ui::DictationHeard::Level { level }) => {
+                        if *dictation_generation.peek() != generation {
+                            break;
+                        }
                         dictation_state
                             .write()
                             .push_level(level, now_millis() as f64);
                     }
                     Ok(ui::DictationHeard::Released) => {
-                        finish_active_dictation();
+                        if *dictation_generation.peek() == generation {
+                            finish_active_dictation();
+                        }
                         break;
                     }
                     Ok(ui::DictationHeard::Error { .. }) | Err(_) => {
-                        dictation_stream.set(None);
-                        dictation_task.set(None);
-                        dictation_state.set(DictationState::Idle);
-                        composer.write().say(DICTATION_UNAVAILABLE);
+                        if *dictation_generation.peek() == generation {
+                            dictation_stream.set(None);
+                            dictation_task.set(None);
+                            dictation_owner.set(None);
+                            dictation_state.set(DictationState::Idle);
+                            composer.write().say(DICTATION_UNAVAILABLE);
+                        }
                         break;
                     }
                 }
@@ -2674,24 +2826,82 @@ fn PhysicianShell(
         });
     };
 
-    let discuss_chat = move |work_item_id: Option<String>| {
-        let (Some(ws_id), Some(chat_id)) = (selected(), open_chat()) else {
-            return;
+    let mut open_discussion_for_topic = move |ws_id: String, topic_key: String| {
+        let workspace_chats: Vec<String> = workspace_cache
+            .peek()
+            .as_ref()
+            .filter(|ws| ws.patient_workspace_id == ws_id)
+            .map(|ws| ws.chats.iter().map(|chat| chat.chat_id.clone()).collect())
+            .unwrap_or_default();
+        let discuss_chat_id = {
+            let mut tracked = discussion_chats.write();
+            let started = started_discussion_chats.peek();
+            resolve_discussion_chat_id(
+                &mut tracked,
+                &started,
+                &workspace_chats,
+                &ws_id,
+                &topic_key,
+                new_chat_id,
+            )
         };
-        let command = Command::new(
-            "discussion.open",
-            serde_json::json!({
-                "patient_workspace_id": ws_id,
-                "chat_id": chat_id,
-                "work_item_id": work_item_id,
-            }),
-        );
-        let fallback = command_target(&command);
-        discuss_slot.run_with_response(client.read().clone(), command, move |value| {
-            restore_returned_queue_from_response(&value, fallback.clone(), composer, client);
-            *snapshot_attempt.write() += 1;
-            *workspace_attempt.write() += 1;
-        });
+        requested_chat.set(Some((ws_id.clone(), discuss_chat_id.clone())));
+        selected.set(Some(ws_id));
+        open_chat.set(Some(discuss_chat_id));
+        place.set(Place::Workspace);
+        *snapshot_attempt.write() += 1;
+        *workspace_attempt.write() += 1;
+    };
+
+    let mut discuss_chat = move |action: DiscussAction| match action {
+        DiscussAction::WorkingTurn { work_item_id } => {
+            let (Some(ws_id), Some(chat_id)) = (selected(), open_chat()) else {
+                return;
+            };
+            let command = Command::new(
+                "discussion.open",
+                serde_json::json!({
+                    "patient_workspace_id": ws_id,
+                    "chat_id": chat_id,
+                    "work_item_id": work_item_id,
+                }),
+            );
+            let fallback = command_target(&command);
+            discuss_slot.run_with_response(client.read().clone(), command, move |value| {
+                restore_returned_queue_from_response(&value, fallback.clone(), composer, client);
+                *snapshot_attempt.write() += 1;
+                *workspace_attempt.write() += 1;
+            });
+        }
+        DiscussAction::Topic {
+            workspace_id,
+            topic_key,
+            source_chat_id,
+        } => {
+            if let Some(chat_id) = source_chat_id {
+                let command = Command::new(
+                    "discussion.open",
+                    serde_json::json!({
+                        "patient_workspace_id": workspace_id,
+                        "chat_id": chat_id,
+                        "work_item_id": Option::<String>::None,
+                    }),
+                );
+                let fallback = command_target(&command);
+                let mut open_discussion = open_discussion_for_topic;
+                discuss_slot.run_with_response(client.read().clone(), command, move |value| {
+                    restore_returned_queue_from_response(
+                        &value,
+                        fallback.clone(),
+                        composer,
+                        client,
+                    );
+                    open_discussion(workspace_id.clone(), topic_key.clone());
+                });
+            } else {
+                open_discussion_for_topic(workspace_id, topic_key);
+            }
+        }
     };
     let drawer_open = drawer() == Drawer::Open;
     let shell_class = format!(
@@ -3165,7 +3375,20 @@ fn PhysicianShell(
                     }
                 }
                 {
-                    let failed_chip_for_retry = match &*source_panel.read() {
+                    let current_scope = (place(), selected(), open_chat());
+                    let scope_matches =
+                        if matches!(&*source_panel.read(), SourcePanelLoad::Unavailable { .. }) {
+                            source_owner.read().0 == current_scope.0
+                                && source_owner.read().1 == current_scope.1
+                        } else {
+                            *source_owner.read() == current_scope
+                        };
+                    let visible_source_panel = if scope_matches {
+                        source_panel()
+                    } else {
+                        SourcePanelLoad::Idle
+                    };
+                    let failed_chip_for_retry = match &visible_source_panel {
                         SourcePanelLoad::Failed { chip, .. } => Some((**chip).clone()),
                         _ => None,
                     };
@@ -3176,7 +3399,7 @@ fn PhysicianShell(
                         }
                     });
                     let open_source_pane =
-                        citations_panel::build_source_pane(&source_panel(), on_retry_source);
+                        citations_panel::build_source_pane(&visible_source_panel, on_retry_source);
                     let dictation_element = match dictation_state() {
                         DictationState::Idle => None,
                         DictationState::Listening {
@@ -3660,7 +3883,7 @@ fn PhysicianShell(
                             on_restore_chat: move |_| restore_archived_chat(),
                             discuss_busy,
                             discuss_notice,
-                            on_discuss_work: move |work_id: Option<String>| discuss_chat(work_id),
+                            on_discuss_action: move |action: DiscussAction| discuss_chat(action),
                             on_editing: move |value: bool| editing.set(value),
                             conversation_open: open_chat.read().is_some(),
                             feedback_chat: selected().zip(open_chat()).map(|(workspace, chat)| {
@@ -5495,7 +5718,7 @@ fn PatientSurface(
     on_restore_chat: EventHandler,
     discuss_busy: bool,
     discuss_notice: Element,
-    on_discuss_work: EventHandler<Option<String>>,
+    on_discuss_action: EventHandler<DiscussAction>,
     on_editing: EventHandler<bool>,
     conversation: ReadView<Vec<ConversationLine>>,
     queued: Vec<physician_wire::QueuedMessageWire>,
@@ -5865,6 +6088,8 @@ fn PatientSurface(
                     let ws_for_done = evidence.patient_workspace_id.clone();
                     let id_for_done = evidence.item_id.clone();
                     let ver_for_done = evidence.version_id.clone();
+                    let ws_for_discuss = evidence.patient_workspace_id.clone();
+                    let id_for_discuss = evidence.item_id.clone();
                     rsx! {
                         today_updates::OpenedWorkEvidencePanel {
                             evidence,
@@ -5878,6 +6103,13 @@ fn PatientSurface(
                                 ));
                             },
                             on_open_source,
+                            on_discuss: Some(Callback::new(move |()| {
+                                on_discuss_action.call(DiscussAction::Topic {
+                                    workspace_id: ws_for_discuss.clone(),
+                                    topic_key: format!("evidence:{id_for_discuss}"),
+                                    source_chat_id: None,
+                                });
+                            })),
                             on_close: on_close_evidence,
                         }
                     }
@@ -5957,12 +6189,24 @@ fn PatientSurface(
                 }
             }
             if let Some(open) = workspace.as_ref().filter(|_| !clinic_demographic) {
-                patient_reviews_panel::PatientReviewsPanel {
-                    workspace_id: open.patient_workspace_id.clone(),
-                    server_now: server_now.clone(),
-                    time_zone: browser_tz.clone(),
-                    context: reviews_context,
-                    on_open_source,
+                {
+                    let ws_for_review_discuss = open.patient_workspace_id.clone();
+                    rsx! {
+                        patient_reviews_panel::PatientReviewsPanel {
+                            workspace_id: open.patient_workspace_id.clone(),
+                            server_now: server_now.clone(),
+                            time_zone: browser_tz.clone(),
+                            context: reviews_context,
+                            on_open_source,
+                            on_discuss_review: Some(Callback::new(move |review: physician_wire::reviews::PatientReviewWire| {
+                                on_discuss_action.call(DiscussAction::Topic {
+                                    workspace_id: ws_for_review_discuss.clone(),
+                                    topic_key: format!("review:{}", review.review_id),
+                                    source_chat_id: None,
+                                });
+                            })),
+                        }
+                    }
                 }
                 memory_view::PatientMemorySection {
                     workspace_id: open.patient_workspace_id.clone(),
@@ -6206,7 +6450,11 @@ fn PatientSurface(
                                                                 variant: ButtonVariant::Quiet,
                                                                 disabled: discuss_busy,
                                                                 "data-discuss-response": "true",
-                                                                onclick: move |_| on_discuss_work.call(Some(discuss_work.clone())),
+                                                                onclick: move |_| {
+                                                                    on_discuss_action.call(DiscussAction::WorkingTurn {
+                                                                        work_item_id: discuss_work.clone(),
+                                                                    });
+                                                                },
                                                                 "Discuss"
                                                             }
                                                         }
@@ -6237,29 +6485,54 @@ fn PatientSurface(
                                                     } else {
                                                         rsx! { MessageWords { text } }
                                                     };
+                                                    let response_topic = line
+                                                        .response
+                                                        .as_ref()
+                                                        .map(|(id, _)| id.0.clone())
+                                                        .unwrap_or_else(|| format!("turn-{line_idx}"));
+                                                    let discuss_chat_key = feedback_chat.clone();
+                                                    let discuss_ws = discuss_chat_key
+                                                        .as_ref()
+                                                        .map(|key| key.workspace.clone())
+                                                        .unwrap_or_default();
+                                                    let discuss_src_chat = discuss_chat_key
+                                                        .as_ref()
+                                                        .map(|key| key.chat.clone());
+                                                    let discuss_button = rsx! {
+                                                        Button {
+                                                            compact: true,
+                                                            variant: ButtonVariant::Quiet,
+                                                            disabled: discuss_busy || discuss_ws.is_empty(),
+                                                            "data-discuss-response": "true",
+                                                            onclick: move |_| {
+                                                                if discuss_ws.is_empty() {
+                                                                    return;
+                                                                }
+                                                                let chat_part = discuss_src_chat
+                                                                    .as_deref()
+                                                                    .unwrap_or("none");
+                                                                on_discuss_action.call(DiscussAction::Topic {
+                                                                    workspace_id: discuss_ws.clone(),
+                                                                    topic_key: format!("response:{chat_part}:{response_topic}"),
+                                                                    source_chat_id: discuss_src_chat.clone(),
+                                                                });
+                                                            },
+                                                            "Discuss"
+                                                        }
+                                                    };
+                                                    let rating_actions = if let Some((chat, (response, read))) =
+                                                        feedback_chat.clone().zip(line.response)
+                                                    {
+                                                        rsx! { feedback::ResponseRating { chat, response, read, extra: Some(discuss_button) } }
+                                                    } else {
+                                                        rsx! {
+                                                            ui::MessageActions { label: "Response actions".to_owned(), shown: false,
+                                                                {discuss_button}
+                                                            }
+                                                        }
+                                                    };
                                                     rsx! {
                                                         ui::Message { author: Author::Assistant, by: "Coda",
-                                                            actions: Some({
-                                                                let discuss_button = rsx! {
-                                                                    Button {
-                                                                        compact: true,
-                                                                        variant: ButtonVariant::Quiet,
-                                                                        disabled: discuss_busy,
-                                                                        "data-discuss-response": "true",
-                                                                        onclick: move |_| on_discuss_work.call(None),
-                                                                        "Discuss"
-                                                                    }
-                                                                };
-                                                                if let Some((chat, (response, read))) = feedback_chat.clone().zip(line.response) {
-                                                                    rsx! { feedback::ResponseRating { chat, response, read, extra: Some(discuss_button) } }
-                                                                } else {
-                                                                    rsx! {
-                                                                        ui::MessageActions { label: "Response actions".to_owned(), shown: false,
-                                                                            {discuss_button}
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }),
                                                             if line.freshness == AnswerFreshness::NewerRecordsArrived {
                                                                 div {
                                                                     class: "answer-update-banner",
@@ -6284,16 +6557,17 @@ fn PatientSurface(
                                                                                 CitedMessage { pieces: basis_pieces, on_open_source }
                                                                             },
                                                                         },
-                                                                        rating: rsx! {},
+                                                                        rating: rating_actions,
                                                                     },
                                                                 }
                                                             } else {
                                                                 div { id: "{answer_dom_id}", class: "answer-ending",
                                                                     div { class: "answer-words", {words} }
-                                                                    if let Some(sources) = answer_sources {
-                                                                        div { class: "answer-ending-row",
+                                                                    div { class: "answer-ending-row",
+                                                                        if let Some(sources) = answer_sources {
                                                                             ui::SourcesPopover { answer: answer_dom_id.clone(), sources }
                                                                         }
+                                                                        {rating_actions}
                                                                     }
                                                                 }
                                                             }
@@ -7326,6 +7600,45 @@ fn message_command_with_delivery(
     Ok(Command::new("message.submit", payload))
 }
 
+/// Action requested when clicking a `Discuss` button (`K1.6`–`K1.8`).
+#[derive(Clone, Debug, PartialEq, Eq)]
+enum DiscussAction {
+    /// Holds active running work in place when clicked on the `Working` bar.
+    WorkingTurn { work_item_id: String },
+    /// Opens (or reuses while unused) a dedicated discussion chat about one
+    /// response, review, or Today/Updates item, holding active source chat work
+    /// first when `source_chat_id` is running.
+    Topic {
+        workspace_id: String,
+        topic_key: String,
+        source_chat_id: Option<String>,
+    },
+}
+
+/// Resolves the discussion chat ID for `(workspace_id, topic_key)`:
+/// repeating `Discuss` before the chat has been used returns the same chat ID;
+/// once a message has been sent in that chat, a later deliberate `Discuss`
+/// allocates a fresh chat ID (`K1.7`).
+fn resolve_discussion_chat_id(
+    tracked: &mut std::collections::HashMap<(String, String), String>,
+    started: &std::collections::HashSet<String>,
+    workspace_chats: &[String],
+    workspace_id: &str,
+    topic_key: &str,
+    new_id: impl FnOnce() -> String,
+) -> String {
+    let key = (workspace_id.to_owned(), topic_key.to_owned());
+    if let Some(existing) = tracked.get(&key)
+        && !started.contains(existing)
+        && !workspace_chats.iter().any(|chat| chat == existing)
+    {
+        return existing.clone();
+    }
+    let fresh = new_id();
+    tracked.insert(key, fresh.clone());
+    fresh
+}
+
 /// Builds the "Update this answer" message command directly without altering
 /// any unsent draft held by the composer.
 fn update_answer_command(
@@ -8294,5 +8607,54 @@ mod conversation_line_tests {
             })),
             None
         );
+
+        let mut tracked = std::collections::HashMap::new();
+        let mut started = std::collections::HashSet::new();
+        let mut seq = 0u32;
+        let mut next_chat = || {
+            seq += 1;
+            format!("discuss-{seq}")
+        };
+        let first = super::resolve_discussion_chat_id(
+            &mut tracked,
+            &started,
+            &[],
+            "pw-1",
+            "response:chat-1:resp-1",
+            &mut next_chat,
+        );
+        let repeat = super::resolve_discussion_chat_id(
+            &mut tracked,
+            &started,
+            &[],
+            "pw-1",
+            "response:chat-1:resp-1",
+            &mut next_chat,
+        );
+        assert_eq!(first, "discuss-1");
+        assert_eq!(repeat, "discuss-1");
+
+        // After sending in `discuss-1`, a later deliberate Discuss opens a fresh chat.
+        started.insert(first.clone());
+        let deliberate_new = super::resolve_discussion_chat_id(
+            &mut tracked,
+            &started,
+            &[],
+            "pw-1",
+            "response:chat-1:resp-1",
+            &mut next_chat,
+        );
+        assert_eq!(deliberate_new, "discuss-2");
+
+        // Also opens fresh when workspace chats already include the prior discussion chat.
+        let seeded_fresh = super::resolve_discussion_chat_id(
+            &mut tracked,
+            &std::collections::HashSet::new(),
+            &["discuss-2".to_owned()],
+            "pw-1",
+            "response:chat-1:resp-1",
+            &mut next_chat,
+        );
+        assert_eq!(seeded_fresh, "discuss-3");
     }
 }

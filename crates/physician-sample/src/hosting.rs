@@ -803,7 +803,7 @@ fn parse_clean_origin(
     Ok((trimmed, parsed))
 }
 
-fn is_loopback_url_host(url: &reqwest::Url) -> bool {
+pub(crate) fn is_loopback_url_host(url: &reqwest::Url) -> bool {
     url.host_str()
         .map(|host| host.trim_start_matches('[').trim_end_matches(']'))
         .and_then(|host| host.parse::<std::net::IpAddr>().ok())

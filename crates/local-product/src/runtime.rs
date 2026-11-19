@@ -1009,6 +1009,22 @@ pub(crate) fn order_by_latest_activity(
         .order_by_desc(conversation::Column::Chat)
 }
 
+/// Excludes archived conversations in Postgres before applying any SQL `LIMIT`,
+/// treating an absent `archived` field on older rows as `false`.
+pub(crate) fn filter_unarchived(
+    select: sea_orm::Select<conversation::Entity>,
+) -> sea_orm::Select<conversation::Entity> {
+    use sea_orm::sea_query::{Alias, ExprTrait, Func, extension::postgres::PgExpr};
+
+    let archived_flag = Func::coalesce([
+        Expr::col(conversation::Column::State)
+            .cast_json_field("archived")
+            .cast_as(Alias::new("boolean")),
+        Expr::val(false),
+    ]);
+    select.filter(Expr::from(archived_flag).eq(false))
+}
+
 fn database_clock() -> Expr {
     // PostgreSQL wall clock, deliberately not transaction-start CURRENT_TIMESTAMP:
     // leases must be checked after waiting for conversation and authority locks.
@@ -2650,12 +2666,12 @@ impl Store {
         // `last_activity_at` column before the limit: a chat that just got a
         // message must make the list however many older chats the workspace
         // has. Chat id breaks ties.
-        let rows = order_by_latest_activity(
+        let rows = order_by_latest_activity(filter_unarchived(
             conversation::Entity::find()
                 .filter(C::Practice.eq(practice))
                 .filter(C::Physician.eq(physician))
                 .filter(C::Workspace.eq(workspace)),
-        )
+        ))
         .limit(MAX_LISTED_CHATS)
         .all(&self.db)
         .await?;

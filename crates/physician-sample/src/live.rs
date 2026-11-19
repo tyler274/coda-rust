@@ -1161,20 +1161,25 @@ async fn discuss_durable(
             .stop_chat(&scope, &key, session_hash, &work_item_id)
             .await
         {
-            Ok(stopped) => {
-                returned_messages = stopped.returned_messages;
-                if stopped.outcome == local_product::runtime::Stopped::Held
-                    && live
-                        .bus
-                        .publish(Event::WorkspaceChanged {
-                            workspace_id: payload.patient_workspace_id.clone(),
-                        })
-                        .await
-                        .is_err()
-                {
-                    tracing::warn!("physician workspace invalidation not published");
+            Ok(stopped) => match stopped.outcome {
+                local_product::runtime::Stopped::Refused => {
+                    return rejected("discussion.open");
                 }
-            }
+                outcome => {
+                    returned_messages = stopped.returned_messages;
+                    if outcome == local_product::runtime::Stopped::Held
+                        && live
+                            .bus
+                            .publish(Event::WorkspaceChanged {
+                                workspace_id: payload.patient_workspace_id.clone(),
+                            })
+                            .await
+                            .is_err()
+                    {
+                        tracing::warn!("physician workspace invalidation not published");
+                    }
+                }
+            },
             Err(_) => {
                 return (
                     StatusCode::SERVICE_UNAVAILABLE,

@@ -18,6 +18,7 @@ pub mod briefings;
 mod care;
 pub mod chart_load;
 mod chat_draft;
+mod dictation;
 pub mod durable;
 mod feedback;
 pub mod follow_ups;
@@ -321,6 +322,9 @@ pub fn fixture_site_with_feed(feed: std::sync::Arc<SampleFeed>) -> Router {
         .layer(axum::Extension(
             panel_preferences::FallbackPanelPreferences::new(),
         ))
+        .layer(axum::Extension(dictation::FallbackDictationBackend(
+            dictation::DictationBackend::LocalTest { fixture: None },
+        )))
         .layer(axum::Extension(care::ConnectedCare::fixture()))
 }
 
@@ -393,6 +397,9 @@ pub fn durable_site_with_feed(
         .layer(axum::Extension(
             panel_preferences::FallbackPanelPreferences::new(),
         ))
+        .layer(axum::Extension(dictation::FallbackDictationBackend(
+            dictation::DictationBackend::LocalTest { fixture: None },
+        )))
         .layer(axum::Extension(care::ConnectedCare::new()))
         .with_state(live)
 }
@@ -574,7 +581,7 @@ where
             get(briefings::visit_briefing),
         )
         .route("/patient-roster", get(roster))
-        .route("/dictation", post(transcribe_dictation))
+        .route("/dictation", post(dictation::transcribe_dictation))
         .route(
             "/physician-state/panels",
             get(panel_preferences::read).put(panel_preferences::save),
@@ -820,8 +827,8 @@ async fn fixture_cited_source(
     request: Request<Body>,
 ) -> Response {
     let extensions = request.extensions();
-    if !on_panel_in_practice(&connected, extensions, &id).await {
-        return StatusCode::NOT_FOUND.into_response();
+    if let Err(status) = require_on_panel_in_practice(&connected, extensions, &id).await {
+        return status.into_response();
     }
     if let Some(feed) = extensions.get::<std::sync::Arc<SampleFeed>>()
         && let Some(snapshot) = feed
@@ -1437,6 +1444,8 @@ async fn site_from_env(
             std::sync::Arc::new(calendar);
         base = base.layer(schedule::schedule_source_layer(source));
     }
+    let dictation_backend = dictation::DictationBackend::from_env(&get)?;
+    base = base.layer(axum::Extension(dictation_backend));
     let postgres = runtime.zip(readiness.as_ref());
     let forbid_simulation = configured(&get, "CODA_ENVIRONMENT").as_deref() == Some("prd");
     let router = auth::authed_router_configured(
@@ -2152,52 +2161,6 @@ async fn empty_draft() -> Response {
 
 async fn draft_not_saved() -> Response {
     StatusCode::CONFLICT.into_response()
-}
-
-fn dictation_unavailable() -> Response {
-    (
-        StatusCode::SERVICE_UNAVAILABLE,
-        "Dictation is unavailable. Check microphone support and server configuration.",
-    )
-        .into_response()
-}
-
-async fn transcribe_dictation(headers: axum::http::HeaderMap, body: axum::body::Bytes) -> Response {
-    use base64::Engine as _;
-
-    if env::var("PHYSICIAN_DICTATION_UNAVAILABLE")
-        .is_ok_and(|value| matches!(value.trim(), "1" | "true" | "yes"))
-        || headers.contains_key("x-coda-dictation-unavailable")
-    {
-        return dictation_unavailable();
-    }
-    let Ok(request) = serde_json::from_slice::<physician_wire::DictationRequest>(&body) else {
-        return dictation_unavailable();
-    };
-    let encoded = request.audio_base64.trim();
-    if encoded.is_empty() || encoded == "__unavailable__" {
-        return dictation_unavailable();
-    }
-    let Ok(audio_bytes) = base64::engine::general_purpose::STANDARD.decode(encoded) else {
-        return dictation_unavailable();
-    };
-    if audio_bytes.len() < 4 {
-        return dictation_unavailable();
-    }
-    let transcript = if let Some(text) = audio_bytes.strip_prefix(b"TEXT:") {
-        let recognized = String::from_utf8_lossy(text).trim().to_owned();
-        if recognized.is_empty() {
-            return dictation_unavailable();
-        }
-        recognized
-    } else if let Ok(fixture) = env::var("PHYSICIAN_DICTATION_FIXTURE")
-        && !fixture.trim().is_empty()
-    {
-        fixture.trim().to_owned()
-    } else {
-        "Check potassium and repeat metabolic panel tomorrow.".to_owned()
-    };
-    Json(physician_wire::DictationResponse { transcript }).into_response()
 }
 
 #[derive(Deserialize)]

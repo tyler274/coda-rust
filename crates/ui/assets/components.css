@@ -838,7 +838,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .message-turn > .message-actions { margin-inline: calc(-1 * var(--space-2)); }
 @media (hover: hover) {
   .message-actions:not(.is-shown) { opacity: 0; }
-  .message-turn:is(:hover, :focus-within) > .message-actions, .message-actions:has([data-active="true"], [aria-busy="true"]) { opacity: 1; }
+  .message-turn:is(:hover, :focus-within) .message-actions, .message-actions:has([data-active="true"], [aria-busy="true"]) { opacity: 1; }
 }
 .version-switch { display: inline-flex; align-items: center; }
 /* Attachments: a file as a tile on its hairline, its mark on the data tint, its name, and what it is beneath; an image

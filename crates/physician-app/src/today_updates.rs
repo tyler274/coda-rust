@@ -394,9 +394,11 @@ pub(crate) fn OpenedWorkEvidencePanel(
     done_busy: bool,
     on_mark_done: EventHandler,
     on_open_source: EventHandler<SourceChip>,
+    #[props(default)] on_discuss: Option<EventHandler>,
     on_close: EventHandler,
 ) -> Element {
     let item_id = evidence.item_id.clone();
+    let item_id_for_discuss = item_id.clone();
     rsx! {
         section {
             class: "patient-section tu-evidence-panel",
@@ -463,6 +465,15 @@ pub(crate) fn OpenedWorkEvidencePanel(
                             "data-evidence-done": "{evidence.item_id}",
                             onclick: move |_| on_mark_done.call(()),
                             if done_busy { "Saving…" } else { "Done" }
+                        }
+                    }
+                    if let Some(discuss) = on_discuss {
+                        Button {
+                            compact: true,
+                            variant: ButtonVariant::Quiet,
+                            "data-evidence-discuss": "{item_id_for_discuss}",
+                            onclick: move |_| discuss.call(()),
+                            "Discuss"
                         }
                     }
                     Button {

@@ -1396,7 +1396,7 @@ impl Store {
         } else {
             scoped.filter(C::Workspace.is_in(workspaces))
         };
-        let rows = super::order_by_latest_activity(filtered)
+        let rows = super::order_by_latest_activity(super::filter_unarchived(filtered))
             .limit(bounded)
             .all(&self.db)
             .await?;
