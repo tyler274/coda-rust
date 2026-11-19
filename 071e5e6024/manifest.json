@@ -1,0 +1,170 @@
+{
+  "branch": "feat-l1-simulation-clock-measure-and-runner",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "L1.8.NoMessageMarkers: no code reads [fail:K] markers from person message text",
+      "label": "l1-8-no-message-markers-pre-fix",
+      "kind": "run",
+      "revision": "4b1e6339c97688e31e1c2a2031924512e0892fc3",
+      "dirty": true,
+      "recorded": "2026-11-19T14:15:59+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "! rg -n \"marked_attempt_fails|FAIL_ONCE\" crates/"
+      ],
+      "expect": "Pre-fix: marked_attempt_fails and FAIL_ONCE [fail:1] marker still exist",
+      "expect_fail": true,
+      "files": [
+        "01-l1-8-no-message-markers-pre-fix.log"
+      ],
+      "seconds": 0.1,
+      "exit": 1,
+      "expect_matched": false,
+      "ok": false,
+      "kept": {
+        "revision": "071e5e60241df85b6231c7a7bc8c80bd8439bf1c",
+        "reason": "Pre-fix failing baseline showing marked_attempt_fails and FAIL_ONCE [fail:1] existed before PR-E3"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC1 (L1.8.NoMessageMarkers): zero [fail:K] message-text parsing; harness failure policy passes hosting, langfuse, and worker tests",
+      "label": "ac1-no-message-markers-and-harness-failure",
+      "kind": "run",
+      "revision": "071e5e60241df85b6231c7a7bc8c80bd8439bf1c",
+      "dirty": false,
+      "recorded": "2026-11-19T20:31:39+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "! rg -n \"marked_attempt_fails|FAIL_ONCE\" crates/ && cargo test -p physician-sample --lib hosting::tests && cargo test -p workspace-tools --bins observability_drill::langfuse && cargo test -p physician-sample --test worker -- a_rehearsal_turn_configured_to_fail_fails_once_and_message_markers_are_ignored --test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-ac1-no-message-markers-and-harness-failure.log"
+      ],
+      "seconds": 277.5,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC2/AC3/AC4: persisted simulation clock, production route exclusion (10 routes), 100% reset table coverage, Spruce/Duet/care-plan, and L1 measure pass",
+      "label": "ac2-ac3-clock-reset-spruce-duet-careplan-measure",
+      "kind": "run",
+      "revision": "071e5e60241df85b6231c7a7bc8c80bd8439bf1c",
+      "dirty": false,
+      "recorded": "2026-11-19T20:36:17+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo test -p physician-auth --lib && cargo test -p physician-sample --test synthetic_staging_control -- ac4_ ac7_ ac9_ ac10_ --test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-ac2-ac3-clock-reset-spruce-duet-careplan-measure.log"
+      ],
+      "seconds": 51.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC3: m20261119_06_care_plan_recommendations migration ledger, care_plan Postgres silence guard, and boundaries pass",
+      "label": "ac3-migrations-careplan-boundaries",
+      "kind": "run",
+      "revision": "071e5e60241df85b6231c7a7bc8c80bd8439bf1c",
+      "dirty": false,
+      "recorded": "2026-11-19T20:37:09+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo test -p local-product --lib migration_tests -- --ignored --test-threads=1 && cargo test -p local-product --lib care_plan::tests -- --ignored && cargo test -p boundaries"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-ac3-migrations-careplan-boundaries.log"
+      ],
+      "seconds": 76.9,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "AC4 (L1.Measure + runner): test_ci_scenarios.py (9/9) and multi-week scripts/scenarios.py --only L1 (10/10 COMPLETE with l1_measure)",
+      "label": "ac4-l1-multiweek-scenarios-runner",
+      "kind": "run",
+      "revision": "071e5e60241df85b6231c7a7bc8c80bd8439bf1c",
+      "dirty": false,
+      "recorded": "2026-11-19T20:38:26+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "python3 -m unittest scripts/test_ci_scenarios.py && rm -rf /tmp/coda-l1-proof-run && python3 scripts/scenarios.py --only L1 --evidence /tmp/coda-l1-proof-run && cat /tmp/coda-l1-proof-run/l1/l1-measure.json"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-ac4-l1-multiweek-scenarios-runner.log"
+      ],
+      "seconds": 109.5,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 6,
+      "claim": "AGENTS.md required Chromium physician-sample --test site -- --ignored passes cleanly against disposable Postgres",
+      "label": "agents-chromium-site",
+      "kind": "run",
+      "revision": "071e5e60241df85b6231c7a7bc8c80bd8439bf1c",
+      "dirty": false,
+      "recorded": "2026-11-19T20:40:50+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-agents-chromium-site.log"
+      ],
+      "seconds": 304.7,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 7,
+      "claim": "Shared gates: cargo fmt --check, host workspace Clippy -D warnings, and physician-app wasm32 Clippy -D warnings pass",
+      "label": "gates-fmt-clippy-host-wasm32",
+      "kind": "run",
+      "revision": "071e5e60241df85b6231c7a7bc8c80bd8439bf1c",
+      "dirty": false,
+      "recorded": "2026-11-19T20:45:55+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo fmt --check && cargo clippy --workspace --all-targets -- -D warnings && cargo clippy -p physician-app --target wasm32-unknown-unknown --lib --bins -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "07-gates-fmt-clippy-host-wasm32.log"
+      ],
+      "seconds": 98.7,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}

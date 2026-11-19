@@ -1,0 +1,64 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling physician-auth v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/physician-auth)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 11.33s
+     Running unittests src/lib.rs (/tmp/coda-target-gcp/debug/deps/physician_auth-2d7140b43adc5a2b)
+
+running 42 tests
+test lifetime::tests::a_dead_session_does_not_renew ... ok
+test lifetime::tests::a_fixed_session_ends_on_time_however_much_it_is_used ... ok
+test lifetime::tests::renew_skips_a_slide_inside_fifteen_minutes ... ok
+test lifetime::tests::a_persisted_deadline_past_the_cap_is_clamped ... ok
+test lifetime::tests::renew_pins_to_the_cap_inside_the_quantum ... ok
+test lifetime::tests::mint_allows_twelve_hours_and_stops_at_seven_days ... ok
+test migration::tests::the_chain_records_apart_from_the_shared_default_table ... ok
+test migration::tests::every_migration_records_a_distinct_name ... ok
+test cache::tests::a_covered_note_skips_the_store_and_an_extension_keeps_other_entries ... ok
+test cache::tests::failures_are_not_cached ... ok
+test cache::tests::an_offline_feed_reads_through_every_time ... ok
+test cache::tests::a_feed_generation_drops_what_another_writer_made_stale ... ok
+test cache::tests::repeated_reads_reach_the_store_once_between_changes ... ok
+test cache::tests::cached_session_ends_at_its_idle_deadline ... ok
+test tests::a_session_expires_and_ends_on_sign_out ... ok
+test tests::a_wrong_sign_in_token_is_invalid ... ok
+test tests::an_expired_sign_in_token_is_invalid ... ok
+test cache::tests::a_local_write_is_read_back_immediately ... ok
+test tests::activity_inside_twelve_hours_keeps_the_session ... ok
+test tests::a_dead_sessions_note_does_not_move_expires_at ... ok
+test tests::a_burst_of_notes_inside_one_quantum_persists_one_extension ... ok
+test tests::account_by_identity_is_absent_when_two_accounts_share_it ... ok
+test tests::an_issued_token_signs_in_once_and_mints_a_session ... ok
+test tests::a_practice_keeps_the_clock_it_was_created_with ... ok
+test tests::seeded_sessions_match_the_sign_in_session_shape ... ok
+test tests::an_invitation_creates_the_account_and_one_session ... ok
+test tests::membership_denies_by_default_and_resolves_per_workspace ... ok
+test tests::clinic_admin_or_authorized_physician_assigns_panels_within_the_practice ... ok
+test tests::a_deactivated_account_cannot_redeem_or_sign_in_but_reactivation_restores_it ... ok
+test tests::registered_practice_patients_resolve_clinic_demographic ... ok
+test cache::tests::a_patient_whose_practice_could_not_be_read_is_not_kept_as_unregistered ... ok
+test tests::deactivation_and_removal_end_every_held_session ... ok
+test tests::create_account_requires_matching_role_name_and_active_standing_for_existing_email ... ok
+test tests::tokens_are_stored_hashed ... ok
+test tests::same_second_reactivation_mints_live_session_without_reviving_prior_session ... ok
+test tests::repeated_identity_calls_do_not_move_expires_at ... ok
+test tests::synthetic_practice_clock_advances_persists_and_refuses_real_time_or_backwards ... ok
+test store::query_tests::authority_query_binds_values_and_locks_the_joined_owners ... ok
+test tests::an_unknown_or_inactive_email_never_receives_a_token ... ok
+test tests::patient_invitation_links_explicit_roster_patient_and_tracks_versioned_consent ... ok
+test tests::continuous_activity_is_refused_seven_days_after_sign_in ... ok
+test tests::practice_time_zone_computes_local_calendar_date_across_midnight ... ok
+
+test result: ok. 42 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+   Compiling physician-sample v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 38.32s
+     Running tests/synthetic_staging_control.rs (/tmp/coda-target-gcp/debug/deps/synthetic_staging_control-f39a71766414c140)
+
+running 4 tests
+test ac10_clock_spruce_duet_care_plan_and_l1_measure ... ok
+test ac4_source_refuses_unacceptable_events_without_saving ... ok
+test ac7_production_omits_staging_synthetic_routes_and_refuses_startup ... ok
+test ac9_reset_covers_every_physician_runtime_table_in_postgres ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 1.57s
+

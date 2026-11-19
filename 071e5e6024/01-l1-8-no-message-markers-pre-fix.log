@@ -1,0 +1,12 @@
+crates/workspace-tools/src/observability_drill/langfuse/mod.rs:70:const FAIL_ONCE: &str = " [fail:1]";
+crates/workspace-tools/src/observability_drill/langfuse/mod.rs:1250:        submitted.push(rehearsal.submit(request, FAIL_ONCE)?);
+crates/physician-sample/src/hosting.rs:234:    /// marker in its message (see [`marked_attempt_fails`]). A real practice
+crates/physician-sample/src/hosting.rs:237:        self.contains(practice) && marked_attempt_fails(earlier_attempts, input)
+crates/physician-sample/src/hosting.rs:283:pub fn marked_attempt_fails(earlier_attempts: u32, input: &str) -> bool {
+crates/physician-sample/src/hosting.rs:1954:        assert!(marked_attempt_fails(0, "Retry [fail:2]"));
+crates/physician-sample/src/hosting.rs:1955:        assert!(marked_attempt_fails(1, "Retry [fail:2]"));
+crates/physician-sample/src/hosting.rs:1956:        assert!(!marked_attempt_fails(2, "Retry [fail:2]"));
+crates/physician-sample/src/hosting.rs:1957:        assert!(!marked_attempt_fails(3, "Retry [fail:2]"));
+crates/physician-sample/src/hosting.rs:1959:        assert!(!marked_attempt_fails(0, "Plain turn"));
+crates/physician-sample/src/hosting.rs:1960:        assert!(!marked_attempt_fails(4, "Plain turn"));
+crates/physician-sample/src/hosting.rs:1961:        assert!(!marked_attempt_fails(0, "[fail:0]"));

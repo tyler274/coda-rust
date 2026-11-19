@@ -1,0 +1,92 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling patient-work v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/patient-work)
+   Compiling physician-wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/physician-wire)
+   Compiling spruce v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/spruce)
+   Compiling physician-auth v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/physician-auth)
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/local-product)
+   Compiling physician-sample v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2m 50s
+     Running unittests src/lib.rs (/tmp/coda-target-gcp/debug/deps/physician_sample-7ac46b5b53a88029)
+
+running 21 tests
+test hosting::tests::hosted_local_stack_refuses_even_with_complete_profile ... ok
+test hosting::tests::local_runs_start_without_any_profile ... ok
+test hosting::tests::production_and_other_profiles_refuse_even_when_complete ... ok
+test hosting::tests::synthetic_charts_load_only_under_the_preview_profile ... ok
+test hosting::tests::a_false_cloud_marker_is_still_hosted ... ok
+test hosting::tests::simulation_practices_parse_only_under_the_preview_profile ... ok
+test hosting::tests::staging_preview_is_the_only_hosted_profile ... ok
+test hosting::tests::rehearsal_failure_policy_parses_and_enforces_staging_only_harness_control ... ok
+test hosting::tests::staging_accounts_parse_under_the_preview_profile ... ok
+test hosting::tests::only_a_configured_rehearsal_practice_fails_and_no_message_markers_exist ... ok
+test hosting::tests::staging_accounts_refuse_outside_the_preview_profile_and_bad_entries ... ok
+test hosting::tests::service_account_email_normalizes_and_rejects_non_service_principals ... ok
+test hosting::tests::a_pool_timeout_does_not_suggest_the_migration_job ... ok
+test hosting::tests::readiness_fails_closed_without_live_stores ... ok
+test hosting::tests::the_rehearsal_sign_in_needs_both_settings_and_the_preview_profile ... ok
+test hosting::tests::staging_physician_ids_are_stable_and_distinct_per_email ... ok
+test hosting::tests::origin_follows_the_practice_and_scenarios_need_a_rehearsal_practice ... ok
+test hosting::tests::clinical_library_config_enforces_https_in_hosted_runs_and_loopback_locally ... ok
+test hosting::tests::clinical_library_down_or_refused_never_masquerades_as_nothing_found ... ok
+test hosting::tests::clinical_library_enforces_excerpt_rights_unit_id_and_sha256_integrity ... ok
+test hosting::tests::clinical_library_search_and_exact_read_authenticate_and_preserve_passage_metadata ... ok
+
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 79 filtered out; finished in 0.13s
+
+   Compiling physician-wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/physician-wire)
+   Compiling workspace-tools v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/workspace-tools)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 23.66s
+     Running unittests src/main.rs (/tmp/coda-target-gcp/debug/deps/workspace_tools-8a4245602847a6ef)
+
+running 38 tests
+test observability_drill::langfuse::readback::tests::a_wrong_failure_or_a_broken_chain_is_a_gap ... ok
+test observability_drill::langfuse::chat::tests::the_turn_is_a_message_submit_command_on_the_wire ... ok
+test observability_drill::langfuse::readback::tests::the_chat_failure_monitor_is_read_by_name_grouped_or_not ... ok
+test observability_drill::langfuse::tests::recovery_needs_every_group_ok_and_a_resolution_after_the_restore ... ok
+test observability_drill::langfuse::readback::tests::a_rehearsal_generation_meets_the_contract ... ok
+test observability_drill::langfuse::tests::firing_needs_an_alert_after_the_failure ... ok
+test observability_drill::langfuse::readback::tests::a_content_free_datadog_span_is_isolated ... ok
+test observability_drill::langfuse::readback::tests::untraced_physician_logs_and_empty_answers_fail_isolation ... ok
+test observability_drill::langfuse::readback::tests::a_canary_anywhere_in_the_trace_fails_isolation ... ok
+test observability_drill::langfuse::readback::tests::a_malformed_answer_is_not_an_empty_session ... ok
+test observability_drill::langfuse::tests::bad_input_is_refused_with_usage ... ok
+test observability_drill::langfuse::readback::tests::loki_lines_are_counted ... ok
+test observability_drill::langfuse::readback::tests::datadog_ids_are_the_low_64_bits ... ok
+test observability_drill::langfuse::readback::tests::a_rehearsed_failure_and_its_successor_share_the_work ... ok
+test observability_drill::langfuse::readback::tests::a_session_without_its_generation_has_no_turn ... ok
+test observability_drill::langfuse::readback::tests::attributes_are_found_flat_nested_or_under_containers ... ok
+test observability_drill::langfuse::readback::tests::a_datadog_trace_matches_in_decimal_or_full_hex ... ok
+test observability_drill::langfuse::readback::tests::session_generations_come_newest_first ... ok
+test observability_drill::langfuse::readback::tests::an_empty_search_is_never_isolation_proof ... ok
+test observability_drill::langfuse::cluster::tests::every_kubectl_call_names_the_staging_context ... ok
+test observability_drill::langfuse::tests::only_the_paging_action_needs_confirmation ... ok
+test observability_drill::langfuse::cluster::tests::the_forwarded_port_is_read_from_kubectl ... ok
+test observability_drill::langfuse::readback::tests::a_failed_generation_is_an_error_of_that_attempt_with_the_canary ... ok
+test observability_drill::langfuse::readback::tests::an_attempt_must_link_to_the_accepting_request ... ok
+test observability_drill::langfuse::tests::actions_and_flags_parse ... ok
+test observability_drill::langfuse::watch::tests::a_status_error_ends_the_wait_at_once ... ok
+test observability_drill::langfuse::readback::tests::datadog_logs_need_the_trace_and_no_canary ... ok
+test observability_drill::langfuse::tests::nonces_differ ... ok
+test observability_drill::langfuse::readback::tests::a_real_or_mislabelled_generation_is_refused ... ok
+test observability_drill::langfuse::tests::chat_failure_sends_one_more_turn_than_the_threshold ... ok
+test observability_drill::langfuse::readback::tests::tempo_otlp_attributes_are_read ... ok
+test observability_drill::langfuse::watch::tests::an_interrupt_or_the_cap_ends_a_wait ... ok
+test observability_drill::langfuse::tests::the_langfuse_host_is_a_bare_https_origin ... ok
+test observability_drill::langfuse::chat::tests::the_rehearsal_sign_in_has_a_length_for_google_front_end ... ok
+test observability_drill::langfuse::chat::tests::a_finished_answer_names_its_attempt_and_couldnt_finish_names_its_run ... ok
+test observability_drill::langfuse::watch::tests::an_answer_after_a_transient_read_is_a_plain_miss ... ok
+test observability_drill::langfuse::watch::tests::a_transient_read_is_one_more_poll ... ok
+test observability_drill::langfuse::watch::tests::polls_that_keep_failing_keep_the_last_cause ... ok
+
+test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 158 filtered out; finished in 0.06s
+
+   Compiling physician-sample v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 16s
+     Running tests/worker.rs (/tmp/coda-target-gcp/debug/deps/worker-4bca0c2774688b36)
+
+running 1 test
+test a_rehearsal_turn_configured_to_fail_fails_once_and_message_markers_are_ignored ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 22 filtered out; finished in 4.15s
+
