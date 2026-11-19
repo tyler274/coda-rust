@@ -738,6 +738,15 @@ impl Store {
         authority: &mut dyn Authority,
     ) -> Result<Option<Draft>, DbErr> {
         scope.validate()?;
+        match proposals::classify_proposal_draft_chat(&scope.chat) {
+            proposals::ProposalDraftScope::NotProposal => {}
+            proposals::ProposalDraftScope::Valid { .. }
+            | proposals::ProposalDraftScope::Malformed => {
+                return Err(error(
+                    "proposal reply drafts must be opened through reply proposals",
+                ));
+            }
+        }
         if text.trim().is_empty() {
             return Err(error("empty reply draft"));
         }
@@ -918,71 +927,102 @@ impl Store {
         session_hash: &[u8],
         authority: &mut dyn Authority,
     ) -> Result<u64, RuntimeError> {
-        let (tx, mut state, _) = self.locked_draft(scope).await?;
-        authority
-            .lock_publication(&tx, scope, Some(session_hash))
-            .await
-            .map_err(|e| error(&e))?;
-        if state.revision != expected {
-            return Err(error("stale draft").into());
+        match proposals::classify_proposal_draft_chat(&scope.chat) {
+            proposals::ProposalDraftScope::Malformed => {
+                Err(error("invalid proposal draft scope").into())
+            }
+            proposals::ProposalDraftScope::Valid {
+                conversation_id,
+                reply_id,
+            } => {
+                scope.validate()?;
+                let clean_text = proposals::validate_proposal_draft_text(text)?;
+                let tx = self.db.begin().await?;
+                proposals::check_proposal_draft_commit_fence_in_tx(
+                    &tx,
+                    scope,
+                    conversation_id,
+                    reply_id,
+                )
+                .await?;
+                let row = reply_draft::Entity::find_by_id(keys(scope))
+                    .lock_exclusive()
+                    .one(&tx)
+                    .await?
+                    .ok_or_else(|| error("reply draft not found"))?;
+                let binding = proposals::lock_active_proposal_draft_binding_model_in_tx(
+                    &tx,
+                    scope,
+                    conversation_id,
+                    reply_id,
+                )
+                .await?;
+                authority
+                    .lock_publication(&tx, scope, Some(session_hash))
+                    .await
+                    .map_err(|e| error(&e))?;
+                let mut state = Self::draft_control(&tx, scope, row).await?;
+                if state.revision != expected {
+                    return Err(error("stale draft").into());
+                }
+                state.restore_text = Some(std::mem::replace(&mut state.text, clean_text));
+                state.revision += 1;
+                state.session_hash = Some(session_hash.to_vec());
+                if state.running() {
+                    state.cancel()?;
+                }
+                let revision = state.revision;
+                let timestamp = now(&tx).await?;
+                proposals::sync_saved_proposal_draft_binding_in_tx(
+                    &tx, binding, revision, timestamp,
+                )
+                .await?;
+                Self::save_draft_row(tx, scope, &state).await?;
+                Ok(revision)
+            }
+            proposals::ProposalDraftScope::NotProposal => {
+                let (tx, mut state, _) = self.locked_draft(scope).await?;
+                authority
+                    .lock_publication(&tx, scope, Some(session_hash))
+                    .await
+                    .map_err(|e| error(&e))?;
+                if state.revision != expected {
+                    return Err(error("stale draft").into());
+                }
+                state.restore_text = Some(std::mem::replace(&mut state.text, text.into()));
+                state.revision += 1;
+                if state.running() {
+                    state.cancel()?;
+                }
+                let revision = state.revision;
+                Self::save_draft_row(tx, scope, &state).await?;
+                Ok(revision)
+            }
         }
-        state.restore_text = Some(std::mem::replace(&mut state.text, text.into()));
-        state.revision += 1;
-        if state.running() {
-            state.cancel()?;
-        }
-        let revision = state.revision;
-        Self::save_draft_row(tx, scope, &state).await?;
-        Ok(revision)
     }
 
-    /// Saves the receipt and the revision request, pinning the workspace's
-    /// current source observation in the same transaction. The same key and
-    /// command answers `Duplicate` and keeps the original pin; the same key
-    /// with a different command is an idempotency collision. A refused
-    /// command leaves no receipt, so the physician may retry it once the
-    /// draft allows. Listening workers are told in the same transaction;
-    /// `origin` is the accepting request's trace context.
-    pub async fn accept_revision(
-        &self,
+    /// Single owner archiving any prior accepted revision on a locked `reply_draft`,
+    /// pinning current workspace sources, starting a new revision run, and committing `tx`.
+    /// Returns `Ok(false)` (rolling `tx` back on drop) when `expected_revision` does not
+    /// match an idle draft.
+    #[expect(
+        clippy::too_many_arguments,
+        reason = "locked draft revision transaction inputs"
+    )]
+    pub(super) async fn accept_locked_draft_revision_in_tx(
+        tx: sea_orm::DatabaseTransaction,
         scope: &Scope,
+        row: reply_draft::Model,
         input: &RevisionInput,
         session_hash: Vec<u8>,
         skills: &crate::physician_chat::PhysicianSkills,
         recipe: &engine::recipe::RequestRecipe,
         origin: Option<TraceContext>,
-    ) -> Result<RevisionAccepted, RuntimeError> {
-        scope.validate()?;
-        if session_hash.len() != 32 {
-            return Err(error("invalid session reference").into());
-        }
-        if [&input.key, &input.instruction, &input.timezone]
-            .iter()
-            .any(|s| s.trim().is_empty())
-        {
-            return Err(error("empty command field").into());
-        }
-        let tx = self.db.begin().await?;
-        let command = serde_json::json!({"scope": scope, "revise": input});
-        match receipt::record(&tx, &scope.practice, &scope.physician, &input.key, &command).await? {
-            Receipt::New => {}
-            Receipt::Same => {
-                tx.commit().await?;
-                return Ok(RevisionAccepted::Duplicate);
-            }
-            Receipt::Different => return Err(error("idempotency collision").into()),
-        }
-        let Some(row) = reply_draft::Entity::find_by_id(keys(scope))
-            .lock_exclusive()
-            .one(&tx)
-            .await?
-        else {
-            // Dropping the transaction rolls the receipt back.
-            return Ok(RevisionAccepted::Refused);
-        };
+    ) -> Result<bool, RuntimeError> {
         let mut state = Self::draft_control(&tx, scope, row).await?;
         if state.revision != input.expected_revision || state.running() {
-            return Ok(RevisionAccepted::Refused);
+            tx.rollback().await?;
+            return Ok(false);
         }
         // Retain the previous revision's request and pinned sources in its
         // history row. Attempts and events stay in their existing rows; the
@@ -1040,10 +1080,10 @@ impl Store {
         state.failures = state.runs.start(Uuid::new_v4().to_string())?;
         state.base_text = state.text.clone();
         state.allowance_after = 0;
-        let recipe = recipe.bind(Some(scope.cache_key("chords-reply")));
+        let bound_recipe = recipe.bind(Some(scope.cache_key("chords-reply")));
         state.accepted = Some(AcceptedRevision {
             input: input.clone(),
-            binding: super::frozen::keep_binding(&tx, scope, &recipe).await?,
+            binding: super::frozen::keep_binding(&tx, scope, &bound_recipe).await?,
             skills: super::frozen::keep_skills(&tx, scope, skills).await?,
         });
         state.sources = observation.sources;
@@ -1057,7 +1097,154 @@ impl Store {
         )
         .await?;
         Self::save_draft_row(tx, scope, &state).await?;
-        Ok(RevisionAccepted::New)
+        Ok(true)
+    }
+
+    /// Saves the receipt and the revision request, pinning the workspace's
+    /// current source observation in the same transaction. The same key and
+    /// command answers `Duplicate` and keeps the original pin; the same key
+    /// with a different command is an idempotency collision. A refused
+    /// command leaves no receipt, so the physician may retry it once the
+    /// draft allows. Listening workers are told in the same transaction;
+    /// `origin` is the accepting request's trace context.
+    pub async fn accept_revision(
+        &self,
+        scope: &Scope,
+        input: &RevisionInput,
+        session_hash: Vec<u8>,
+        skills: &crate::physician_chat::PhysicianSkills,
+        recipe: &engine::recipe::RequestRecipe,
+        origin: Option<TraceContext>,
+    ) -> Result<RevisionAccepted, RuntimeError> {
+        scope.validate()?;
+        if session_hash.len() != 32 {
+            return Err(error("invalid session reference").into());
+        }
+        if [&input.key, &input.instruction, &input.timezone]
+            .iter()
+            .any(|s| s.trim().is_empty())
+        {
+            return Err(error("empty command field").into());
+        }
+        let command = serde_json::json!({"scope": scope, "revise": input});
+        match proposals::classify_proposal_draft_chat(&scope.chat) {
+            proposals::ProposalDraftScope::Malformed => {
+                Err(error("invalid proposal draft scope").into())
+            }
+            proposals::ProposalDraftScope::Valid {
+                conversation_id,
+                reply_id,
+            } => {
+                let tx = self.db.begin().await?;
+                match receipt::check(&tx, &scope.practice, &scope.physician, &input.key, &command)
+                    .await?
+                {
+                    Some(Receipt::Same) => {
+                        tx.commit().await?;
+                        return Ok(RevisionAccepted::Duplicate);
+                    }
+                    Some(Receipt::Different) => {
+                        tx.rollback().await?;
+                        return Err(error("idempotency collision").into());
+                    }
+                    None | Some(Receipt::New) => {}
+                }
+                if proposals::check_proposal_draft_commit_fence_in_tx(
+                    &tx,
+                    scope,
+                    conversation_id,
+                    reply_id,
+                )
+                .await
+                .is_err()
+                {
+                    tx.rollback().await?;
+                    return Ok(RevisionAccepted::Refused);
+                }
+                let Some(row) = reply_draft::Entity::find_by_id(keys(scope))
+                    .lock_exclusive()
+                    .one(&tx)
+                    .await?
+                else {
+                    tx.rollback().await?;
+                    return Ok(RevisionAccepted::Refused);
+                };
+                if !proposals::lock_active_proposal_draft_binding_in_tx(
+                    &tx,
+                    scope,
+                    conversation_id,
+                    reply_id,
+                )
+                .await?
+                {
+                    tx.rollback().await?;
+                    return Ok(RevisionAccepted::Refused);
+                }
+                match receipt::record(&tx, &scope.practice, &scope.physician, &input.key, &command)
+                    .await?
+                {
+                    Receipt::New => {}
+                    Receipt::Same => {
+                        tx.commit().await?;
+                        return Ok(RevisionAccepted::Duplicate);
+                    }
+                    Receipt::Different => return Err(error("idempotency collision").into()),
+                }
+                if Self::accept_locked_draft_revision_in_tx(
+                    tx,
+                    scope,
+                    row,
+                    input,
+                    session_hash,
+                    skills,
+                    recipe,
+                    origin,
+                )
+                .await?
+                {
+                    Ok(RevisionAccepted::New)
+                } else {
+                    Ok(RevisionAccepted::Refused)
+                }
+            }
+            proposals::ProposalDraftScope::NotProposal => {
+                let tx = self.db.begin().await?;
+                match receipt::record(&tx, &scope.practice, &scope.physician, &input.key, &command)
+                    .await?
+                {
+                    Receipt::New => {}
+                    Receipt::Same => {
+                        tx.commit().await?;
+                        return Ok(RevisionAccepted::Duplicate);
+                    }
+                    Receipt::Different => return Err(error("idempotency collision").into()),
+                }
+                let Some(row) = reply_draft::Entity::find_by_id(keys(scope))
+                    .lock_exclusive()
+                    .one(&tx)
+                    .await?
+                else {
+                    // Dropping the transaction rolls the receipt back.
+                    return Ok(RevisionAccepted::Refused);
+                };
+                if Self::accept_locked_draft_revision_in_tx(
+                    tx,
+                    scope,
+                    row,
+                    input,
+                    session_hash,
+                    skills,
+                    recipe,
+                    origin,
+                )
+                .await?
+                {
+                    Ok(RevisionAccepted::New)
+                } else {
+                    Ok(RevisionAccepted::Refused)
+                }
+            }
+        }
     }
 
     /// Resume a failed or held revision within the command receipt transaction.
@@ -1072,12 +1259,58 @@ impl Store {
         if scope.chat != work_item_id {
             return Ok(super::Resumed::Refused);
         }
-        let Some(row) = reply_draft::Entity::find_by_id(keys(scope))
-            .lock_exclusive()
-            .one(&tx)
-            .await?
-        else {
-            return Self::resume_practice_job_in_tx(tx, scope, work_item_id, expected_run_id).await;
+        let row = match proposals::classify_proposal_draft_chat(&scope.chat) {
+            proposals::ProposalDraftScope::Malformed => return Ok(super::Resumed::Refused),
+            proposals::ProposalDraftScope::Valid {
+                conversation_id,
+                reply_id,
+            } => {
+                if proposals::check_proposal_draft_commit_fence_in_tx(
+                    &tx,
+                    scope,
+                    conversation_id,
+                    reply_id,
+                )
+                .await
+                .is_err()
+                {
+                    return Ok(super::Resumed::Refused);
+                }
+                let Some(row) = reply_draft::Entity::find_by_id(keys(scope))
+                    .lock_exclusive()
+                    .one(&tx)
+                    .await?
+                else {
+                    return Ok(super::Resumed::Refused);
+                };
+                if !proposals::lock_active_proposal_draft_binding_in_tx(
+                    &tx,
+                    scope,
+                    conversation_id,
+                    reply_id,
+                )
+                .await?
+                {
+                    return Ok(super::Resumed::Refused);
+                }
+                row
+            }
+            proposals::ProposalDraftScope::NotProposal => {
+                let Some(row) = reply_draft::Entity::find_by_id(keys(scope))
+                    .lock_exclusive()
+                    .one(&tx)
+                    .await?
+                else {
+                    return Self::resume_practice_job_in_tx(
+                        tx,
+                        scope,
+                        work_item_id,
+                        expected_run_id,
+                    )
+                    .await;
+                };
+                row
+            }
         };
         let mut state = Self::draft_control(&tx, scope, row).await?;
         if !state
@@ -1500,7 +1733,39 @@ impl Store {
         authority: &mut dyn Authority,
     ) -> Result<RevisionCommit, ProductError> {
         let text = revised_text(response).map_err(error)?;
-        let (tx, mut state, _) = self.locked_draft(&claim.scope).await?;
+        let proposal_binding = match proposals::classify_proposal_draft_chat(&claim.scope.chat) {
+            proposals::ProposalDraftScope::Malformed => {
+                return Err(error("invalid proposal draft scope").into());
+            }
+            proposals::ProposalDraftScope::Valid {
+                conversation_id,
+                reply_id,
+            } => Some((conversation_id.to_owned(), reply_id)),
+            proposals::ProposalDraftScope::NotProposal => None,
+        };
+        let (tx, mut state) = if let Some((ref conv_id, reply_id)) = proposal_binding {
+            claim.scope.validate()?;
+            let tx = self.db.begin().await?;
+            proposals::check_proposal_draft_commit_fence_in_tx(
+                &tx,
+                &claim.scope,
+                conv_id,
+                reply_id,
+            )
+            .await?;
+            let row = reply_draft::Entity::find_by_id(keys(&claim.scope))
+                .lock_exclusive()
+                .one(&tx)
+                .await?
+                .ok_or_else(|| error("reply draft not found"))?;
+            proposals::lock_proposal_draft_binding_in_tx(&tx, &claim.scope, conv_id, reply_id)
+                .await?;
+            let state = Self::draft_control(&tx, &claim.scope, row).await?;
+            (tx, state)
+        } else {
+            let (tx, state, _) = self.locked_draft(&claim.scope).await?;
+            (tx, state)
+        };
         Self::revision_events(&tx, &claim.scope, &mut state.attempts).await?;
         authority
             .lock_publication(&tx, &claim.scope, state.session_hash.as_deref())
@@ -1580,8 +1845,21 @@ impl Store {
         }
         attempt.status = AttemptStatus::Completed;
         state.finish_run(RunOutcome::Completed)?;
-        state.restore_text = Some(std::mem::replace(&mut state.text, text));
+        let replaced_text = std::mem::replace(&mut state.text, text);
+        state.restore_text = Some(replaced_text.clone());
         state.revision += 1;
+        if let Some((ref conv_id, reply_id)) = proposal_binding {
+            proposals::record_committed_proposal_draft_revision_in_tx(
+                &tx,
+                &claim.scope,
+                conv_id,
+                reply_id,
+                &replaced_text,
+                state.revision,
+                now,
+            )
+            .await?;
+        }
         Self::save_draft_row(tx, &claim.scope, &state).await?;
         Ok(RevisionCommit::Committed)
     }
