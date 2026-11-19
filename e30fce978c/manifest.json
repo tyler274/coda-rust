@@ -1,0 +1,56 @@
+{
+  "branch": "tyler-eng-441-1-chat-finish-currency-gate",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Physician chat recipe and runtime unit checks with chart finish currency gate",
+      "kind": "run",
+      "revision": "e30fce978cc2e50057c5681998bc2301dfcaaeb6",
+      "dirty": false,
+      "recorded": "2026-11-19T00:57:13+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo test --locked -p local-product --lib && cargo test --locked -p boundaries --lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-Physician-chat-recipe-and-runtime-unit-checks-wi.log"
+      ],
+      "seconds": 42.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "PostgreSQL physician_chat_recipe suite after finish currency gate",
+      "kind": "run",
+      "revision": "e30fce978cc2e50057c5681998bc2301dfcaaeb6",
+      "dirty": false,
+      "recorded": "2026-11-19T00:57:55+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--test",
+        "physician_chat_recipe",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-PostgreSQL-physician_chat_recipe-suite-after-fin.log"
+      ],
+      "seconds": 43.7,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
