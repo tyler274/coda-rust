@@ -1,0 +1,202 @@
+{
+  "branch": "fix-pr-e2-k1-memory-steps-and-summary-direction",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "Pre-fix: physician_chat hides memory write steps and reviews.rs shows a step for memory reads (contradicting Memory.Code.21)",
+      "label": "pre-fix-memory-code-21-steps",
+      "kind": "run",
+      "revision": "0b89cef58003aea95e8523e0e52458b1607bf5ef",
+      "dirty": false,
+      "recorded": "2026-11-19T21:00:28+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "! rg -q \"ChatTool::Memory => Ok\\(None\\)\" crates/local-product/src/physician_chat.rs && ! rg -q \"MemoryTool::reads\" crates/physician-sample/src/reviews.rs"
+      ],
+      "expect": "Memory.Code.21 is violated before PR-E2: physician_chat drops all MemoryTool steps and reviews.rs displays a step on MemoryTool::reads",
+      "expect_fail": true,
+      "files": [
+        "01-pre-fix-memory-code-21-steps.log"
+      ],
+      "seconds": 0.1,
+      "exit": 1,
+      "expect_matched": false,
+      "ok": false,
+      "kept": {
+        "revision": "b8d50038689a97ec25e3b03ca6cb3ffc7c5b51ce",
+        "reason": "Pre-fix baseline on 0b89cef58 demonstrating Memory.Code.21 contradiction before PR-E2"
+      },
+      "superseded": "Pre-fix grep commands used -q with a prose --expect string instead of stdout regex; entries #3-#9 prove every AC at clean HEAD b8d5003868"
+    },
+    {
+      "id": 2,
+      "claim": "Pre-fix: chat and reply memory guidance omits the physician-over-chart disagreement rule (Memory.Code.7)",
+      "label": "pre-fix-memory-code-7-guidance",
+      "kind": "run",
+      "revision": "0b89cef58003aea95e8523e0e52458b1607bf5ef",
+      "dirty": false,
+      "recorded": "2026-11-19T21:00:28+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "rg -q \"When the physician and the chart disagree, follow the physician, and state both in memory, each with its date\\.\" crates/local-product/src/runtime/memory/tools.rs"
+      ],
+      "expect": "Memory.Code.7 guidance is missing from memory/tools.rs before PR-E2",
+      "expect_fail": true,
+      "files": [
+        "02-pre-fix-memory-code-7-guidance.log"
+      ],
+      "seconds": 0.0,
+      "exit": 1,
+      "expect_matched": false,
+      "ok": false,
+      "kept": {
+        "revision": "b8d50038689a97ec25e3b03ca6cb3ffc7c5b51ce",
+        "reason": "Pre-fix baseline on 0b89cef58 demonstrating missing Memory.Code.7 guidance before PR-E2"
+      },
+      "superseded": "Pre-fix grep commands used -q with a prose --expect string instead of stdout regex; entries #3-#9 prove every AC at clean HEAD b8d5003868"
+    },
+    {
+      "id": 3,
+      "claim": "AC1/AC3/AC4 unit tests, fmt --check, host + wasm32 clippy -D warnings, and boundaries 25/25 pass at clean HEAD",
+      "label": "unit-clippy-boundaries",
+      "kind": "run",
+      "revision": "b8d50038689a97ec25e3b03ca6cb3ffc7c5b51ce",
+      "dirty": false,
+      "recorded": "2026-11-19T22:00:56+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo fmt --all --check\ncargo clippy -p physician-wire -p physician-client -p local-product -p physician-sample -p physician-app --all-targets -- -D warnings\ncargo clippy -p physician-app --target wasm32-unknown-unknown --lib --bins -- -D warnings\ncargo test -p boundaries\ncargo test -p physician-wire --lib\ncargo test -p physician-app --lib\ncargo test -p physician-sample --lib reviews::\ncargo test -p local-product --lib physician_chat::\ncargo test -p local-product --lib physician_sources::citations::\ncargo test -p local-product --lib runtime::memory::\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-unit-clippy-boundaries.log"
+      ],
+      "seconds": 406.7,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "Postgres suites prove Memory.Code.20/21/22, rounds folding, K1.3 reply feedback export, K1.11 note citations with message provenance, and K1.12 non-approval",
+      "label": "postgres-memory-rounds-feedback",
+      "kind": "run",
+      "revision": "b8d50038689a97ec25e3b03ca6cb3ffc7c5b51ce",
+      "dirty": false,
+      "recorded": "2026-11-19T22:07:43+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo test -p local-product --lib runtime::tests::memory_tests:: -- --ignored\ncargo test -p local-product --lib runtime::tests::memory_edit_tests:: -- --ignored\ncargo test -p local-product --lib runtime::tests::rounds_tests:: -- --ignored\ncargo test -p physician-sample --test feedback -- --test-threads=1\ncargo test -p physician-sample --test feedback -- --ignored --test-threads=1\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-postgres-memory-rounds-feedback.log"
+      ],
+      "seconds": 110.4,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "Headless Chromium + Postgres E2E proves Summary/Direction render, pages/person/log stay hidden, inline edit saves note N2, and rounds fold it into Direction v2",
+      "label": "chromium-site-patient-memory",
+      "kind": "run",
+      "revision": "b8d50038689a97ec25e3b03ca6cb3ffc7c5b51ce",
+      "dirty": false,
+      "recorded": "2026-11-19T22:09:34+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site_patient_memory",
+        "--",
+        "--ignored",
+        "--nocapture"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-chromium-site-patient-memory.log"
+      ],
+      "seconds": 67.4,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 6,
+      "claim": "AC2 (Memory.Code.20)",
+      "label": "memory-summary-direction",
+      "kind": "screenshot",
+      "revision": "b8d50038689a97ec25e3b03ca6cb3ffc7c5b51ce",
+      "dirty": false,
+      "recorded": "2026-11-19T22:12:11+00:00",
+      "files": [
+        "06-01-patient-memory-summary-and-direction.png"
+      ],
+      "source": "target/verification/captures/pr-e2-patient-memory/01-patient-memory-summary-and-direction.png",
+      "ok": true
+    },
+    {
+      "id": 7,
+      "claim": "AC2 (Memory.Code.22)",
+      "label": "memory-edit-saved-as-note",
+      "kind": "screenshot",
+      "revision": "b8d50038689a97ec25e3b03ca6cb3ffc7c5b51ce",
+      "dirty": false,
+      "recorded": "2026-11-19T22:12:11+00:00",
+      "files": [
+        "07-02-patient-memory-edit-saved-as-note.png"
+      ],
+      "source": "target/verification/captures/pr-e2-patient-memory/02-patient-memory-edit-saved-as-note.png",
+      "ok": true
+    },
+    {
+      "id": 8,
+      "claim": "AC2 (Memory.Code.22 rounds)",
+      "label": "memory-after-rounds-folded",
+      "kind": "screenshot",
+      "revision": "b8d50038689a97ec25e3b03ca6cb3ffc7c5b51ce",
+      "dirty": false,
+      "recorded": "2026-11-19T22:12:11+00:00",
+      "files": [
+        "08-03-patient-memory-after-rounds-folded.png"
+      ],
+      "source": "target/verification/captures/pr-e2-patient-memory/03-patient-memory-after-rounds-folded.png",
+      "ok": true
+    },
+    {
+      "id": 9,
+      "claim": "AGENTS.md mandatory physician-site Chromium qualification suite passes against disposable Postgres",
+      "label": "chromium-site-suite",
+      "kind": "run",
+      "revision": "b8d50038689a97ec25e3b03ca6cb3ffc7c5b51ce",
+      "dirty": false,
+      "recorded": "2026-11-19T22:12:11+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "09-chromium-site-suite.log"
+      ],
+      "seconds": 260.7,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}

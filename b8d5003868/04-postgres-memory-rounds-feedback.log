@@ -1,0 +1,85 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.36s
+     Running unittests src/lib.rs (/tmp/coda-target-gcp/debug/deps/local_product-75b90368433a4db7)
+
+running 21 tests
+test runtime::tests::memory_tests::a_deleted_summary_leaves_the_memory_a_conversation_starts_with ... ok
+test runtime::tests::memory_tests::a_patient_with_no_summary_direction_or_note_starts_with_no_memory ... ok
+test runtime::tests::memory_tests::a_call_saves_one_version_when_an_edit_applied_and_none_when_none_did ... ok
+test runtime::tests::memory_tests::notes_added_at_the_same_time_each_take_a_place_and_one_call_saves_one_note ... ok
+test runtime::tests::memory_tests::a_conversation_starts_with_only_its_own_patients_memory ... ok
+test runtime::tests::memory_tests::a_note_keeps_its_stamp_across_a_new_connection_and_a_repeat_adds_nothing ... ok
+test runtime::tests::memory_tests::a_conversation_starts_with_the_summary_the_direction_and_the_newest_notes ... ok
+test runtime::tests::memory_tests::notes_over_their_start_budget_load_newest_first_whole_with_the_count_and_days_of_the_rest ... ok
+test runtime::tests::memory_tests::a_write_applies_to_the_current_file_two_at_once_both_land_and_earlier_versions_stay_readable ... ok
+test runtime::tests::memory_tests::a_summary_over_its_start_budget_is_cut_at_a_line_end_and_points_to_the_rest ... ok
+test runtime::tests::memory_tests::a_deleted_file_leaves_the_list_and_search_keeps_its_versions_and_comes_back_with_a_create ... ok
+test runtime::tests::memory_tests::a_note_keeps_the_quote_it_was_given ... ok
+test runtime::tests::memory_tests::another_practice_or_patient_reads_and_writes_nothing_of_this_patient ... ok
+test runtime::tests::memory_tests::search_matches_every_word_of_a_line_in_each_file_that_exists_and_the_log ... ok
+test runtime::tests::memory_tests::reply_feedback_for_evaluation_exports_instructions_draft_edits_and_copies ... ok
+test runtime::tests::memory_tests::physician_memory_view_exposes_only_summary_and_direction_and_edits_save_notes_folded_by_rounds ... ok
+test runtime::tests::memory_tests::a_chat_host_answers_a_saved_notes_outcome_and_adds_nothing ... ok
+test runtime::tests::memory_tests::physician_correction_note_is_cited_with_message_provenance_and_never_approves_earlier_reading ... ok
+test runtime::tests::memory_tests::a_notes_origin_is_the_newest_message_of_its_steered_work ... ok
+test runtime::tests::memory_tests::a_chat_note_is_its_words_and_its_result_gives_its_number_and_day ... ok
+test runtime::tests::memory_tests::memory_as_a_conversation_started_leaves_out_what_was_saved_after_it ... ok
+
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 193 filtered out; finished in 2.25s
+
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.69s
+     Running unittests src/lib.rs (/tmp/coda-target-gcp/debug/deps/local_product-75b90368433a4db7)
+
+running 9 tests
+test runtime::tests::memory_edit_tests::a_write_saves_the_edits_that_apply_and_names_each_edit_left_out ... ok
+test runtime::tests::memory_edit_tests::the_line_as_read_with_its_bullet_names_its_place_and_a_shared_tag_names_both_lines ... ok
+test runtime::tests::memory_edit_tests::a_spaced_capitalised_page_id_saves_and_reads_back_under_its_normal_path ... ok
+test runtime::tests::memory_edit_tests::a_write_where_no_edit_applies_saves_no_version ... ok
+test runtime::tests::memory_edit_tests::the_one_tool_edits_each_kind_of_file_and_gives_one_result ... ok
+test runtime::tests::memory_edit_tests::a_replace_that_differs_by_a_quote_or_a_dash_is_left_out_and_the_other_edit_saves ... ok
+test runtime::tests::memory_edit_tests::a_delete_takes_the_file_out_of_the_list_and_an_append_brings_it_back ... ok
+test runtime::tests::memory_edit_tests::a_path_to_a_log_day_or_no_memory_file_is_refused ... ok
+test runtime::tests::memory_edit_tests::a_chat_run_edits_its_own_patients_memory ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 205 filtered out; finished in 0.14s
+
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.59s
+     Running unittests src/lib.rs (/tmp/coda-target-gcp/debug/deps/local_product-75b90368433a4db7)
+
+running 9 tests
+test runtime::tests::rounds_tests::a_run_a_limit_stops_ends_not_finished_and_keeps_what_it_saved ... ok
+test runtime::tests::rounds_tests::a_run_with_nothing_new_changes_no_file_but_logs_its_mark_and_cannot_add_a_note ... ok
+test runtime::tests::rounds_tests::a_run_whose_provider_fails_after_an_edit_keeps_the_edit_and_the_next_run_sees_the_same_notes ... ok
+test runtime::tests::rounds_tests::a_run_that_folds_notes_into_a_page_the_direction_and_the_summary_ends_finished ... ok
+test runtime::tests::rounds_tests::a_finished_run_saves_one_rounds_mark_that_its_log_day_shows_in_time_order ... ok
+test runtime::tests::rounds_tests::a_note_saved_while_a_run_is_under_way_is_new_to_the_next_conversation_and_the_next_rounds ... ok
+test runtime::tests::rounds_tests::a_conversation_that_started_before_a_run_finished_keeps_its_message ... ok
+test runtime::tests::rounds_tests::a_run_opens_with_its_memory_then_when_rounds_last_finished_today_and_the_notes_since ... ok
+test runtime::tests::rounds_tests::a_conversation_after_a_finished_run_starts_with_only_the_notes_saved_since_it_started ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 205 filtered out; finished in 5.14s
+
+   Compiling physician-sample v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 11s
+     Running tests/feedback.rs (/tmp/coda-target-gcp/debug/deps/feedback-2ef1d82d7ff7bcd5)
+
+running 4 tests
+test feedback_stays_on_its_response_and_with_its_author ... ok
+test staff_feedback_export_includes_physician_reply_draft_edits ... ignored, requires explicit local Postgres
+test staff_read_feedback_with_its_response_and_author ... ok
+test unreadable_feedback_keeps_the_conversation ... ok
+
+test result: ok. 3 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 15.22s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.85s
+     Running tests/feedback.rs (/tmp/coda-target-gcp/debug/deps/feedback-2ef1d82d7ff7bcd5)
+
+running 1 test
+test staff_feedback_export_includes_physician_reply_draft_edits ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 1.65s
+
