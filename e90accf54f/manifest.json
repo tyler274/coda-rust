@@ -1,0 +1,103 @@
+{
+  "branch": "tyler-eng-399-1-follow-up-reassessment-recipe",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC-FU-RECIPE",
+      "label": "Follow-up reassessment recipe and skill unit tests",
+      "kind": "run",
+      "revision": "1cbfd9c419eb336803ff0a3d2b0e0778698617f1",
+      "dirty": false,
+      "recorded": "2026-11-19T01:05:19+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--lib",
+        "follow_up_reassessment",
+        "--",
+        "--exact",
+        "follow_up_reassessment::tests::follow_up_reassessment_recipe_uses_background_lane_preloads_skills_and_has_unique_tools"
+      ],
+      "expect": "test result: ok\\. 1 passed",
+      "expect_fail": false,
+      "files": [
+        "01-Follow-up-reassessment-recipe-and-skill-unit-tes.log"
+      ],
+      "seconds": 50.4,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "e90accf54fde353867983ffc60e976df1ab027f5",
+        "reason": "Rebased onto final PR 91 (562055b56d); seam files preserved and full workspace/PG16/Chromium suites verified at PR 104 tip 59829dacb"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC-FU-CHAT-LANE",
+      "label": "Physician chat recipe and follow-up reassessment job boundary tests",
+      "kind": "run",
+      "revision": "1cbfd9c419eb336803ff0a3d2b0e0778698617f1",
+      "dirty": false,
+      "recorded": "2026-11-19T01:06:35+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--lib",
+        "physician_chat"
+      ],
+      "expect": "test result: ok\\. 13 passed",
+      "expect_fail": false,
+      "files": [
+        "02-Physician-chat-recipe-and-follow-up-reassessment.log"
+      ],
+      "seconds": 2.6,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "e90accf54fde353867983ffc60e976df1ab027f5",
+        "reason": "Rebased onto final PR 91 (562055b56d); seam files preserved and full workspace/PG16/Chromium suites verified at PR 104 tip 59829dacb"
+      }
+    },
+    {
+      "id": 3,
+      "claim": "AC-PRELOADED-SKILLS-PG",
+      "label": "Initial understanding model text audit with preloaded skills in PostgreSQL",
+      "kind": "run",
+      "revision": "1cbfd9c419eb336803ff0a3d2b0e0778698617f1",
+      "dirty": false,
+      "recorded": "2026-11-19T01:06:49+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "local-product",
+        "--test",
+        "initial_understanding_postgres",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": "test result: ok\\. 6 passed",
+      "expect_fail": false,
+      "files": [
+        "03-Initial-understanding-model-text-audit-with-prel.log"
+      ],
+      "seconds": 59.7,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "e90accf54fde353867983ffc60e976df1ab027f5",
+        "reason": "Rebased onto final PR 91 (562055b56d); seam files preserved and full workspace/PG16/Chromium suites verified at PR 104 tip 59829dacb"
+      }
+    }
+  ]
+}
