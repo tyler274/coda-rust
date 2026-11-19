@@ -33,7 +33,7 @@ shard_1_targets=(--lib --test migrations_postgres --test postgres
   --test source_refresh_postgres --test practice_schedule_postgres --test physician_run_recovery
   --test patient_reviews_postgres --test visit_briefings_postgres --test today_updates_postgres
   --test spruce_matching --test reply_proposals --test follow_ups_postgres
-  --test attachments
+  --test withdrawal_postgres --test attachments
   --test redis --test fanout --test worker --test try_again --test pool_budget
   --bin physician-worker)
 shard_2_targets=(--test stop --test chat_draft --test feedback --test reply_revision
@@ -81,6 +81,7 @@ shard_1() {
   pg_test --test spruce_matching -- --test-threads=1
   pg_test --test reply_proposals -- --ignored --test-threads=1
   pg_test --test follow_ups_postgres -- --ignored --test-threads=1
+  pg_test --test withdrawal_postgres -- --ignored --test-threads=1
   pg_test --test attachments -- --ignored --test-threads=1
   # The worker's source boundary: a developer plan refuses non-synthetic sources.
   pg_test --bin physician-worker -- --ignored --test-threads=1
