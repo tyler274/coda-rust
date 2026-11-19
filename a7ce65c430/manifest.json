@@ -1,0 +1,63 @@
+{
+  "branch": "tyler-eng-463-worker-attempt-log-drill",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "telemetry, workspace-tools, physician-sample lib, and physician-worker tests under PHYSICIAN_TEST_DATABASE_URL and ignored runtime tests",
+      "kind": "run",
+      "revision": "a7ce65c4303968d5d3b19dd4c3d881af233b447e",
+      "dirty": false,
+      "recorded": "2026-11-19T02:13:32+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo test --locked -p telemetry -p workspace-tools && cargo test --locked -p physician-sample --lib && PHYSICIAN_TEST_DATABASE_URL=\"postgres://postgres@127.0.0.1:55483/postgres\" cargo test --locked -p physician-sample --bin physician-worker && PHYSICIAN_RUNTIME_TEST_DATABASE_URL=\"postgres://postgres@127.0.0.1:55483/postgres\" cargo test --locked -p physician-sample --bin physician-worker -- --ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-telemetry-workspace-tools-physician-sample-lib-a.log"
+      ],
+      "seconds": 45.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Observability documentation mdbook build",
+      "kind": "run",
+      "revision": "a7ce65c4303968d5d3b19dd4c3d881af233b447e",
+      "dirty": false,
+      "recorded": "2026-11-19T02:14:18+00:00",
+      "command": [
+        "mdbook",
+        "build",
+        "book",
+        "-d",
+        "/tmp/mdbook-pr56"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-Observability-documentation-mdbook-build.log"
+      ],
+      "seconds": 1.9,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "",
+      "kind": "gap",
+      "revision": "a7ce65c4303968d5d3b19dd4c3d881af233b447e",
+      "dirty": false,
+      "recorded": "2026-11-19T02:14:20+00:00",
+      "reason": "Live Langfuse staging endpoint readback drill requires external staging credentials",
+      "ok": false,
+      "files": []
+    }
+  ]
+}
