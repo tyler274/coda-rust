@@ -1,0 +1,45 @@
+{
+  "branch": "tyler-eng-434-3-synthetic-staging-suite",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Synthetic staging control suite under PHYSICIAN_TEST_DATABASE_URL without initdb",
+      "kind": "run",
+      "revision": "1ece8078d2c3dde18b5ffb011c8fa602fc0d5115",
+      "dirty": false,
+      "recorded": "2026-11-19T02:01:03+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "synthetic_staging_control",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": "\\b3 passed; 0 failed\\b",
+      "expect_fail": false,
+      "files": [
+        "01-Synthetic-staging-control-suite-under-PHYSICIAN_.log"
+      ],
+      "seconds": 59.9,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "End-to-end staging browser walk requires Wave 4 surfaces",
+      "kind": "gap",
+      "revision": "1ece8078d2c3dde18b5ffb011c8fa602fc0d5115",
+      "dirty": false,
+      "recorded": "2026-11-19T02:02:03+00:00",
+      "reason": "staging_synthetic_end_to_end_walk_browser_and_cli asserts durable /today and /briefings endpoints wired in PR 43-48; verified 4/4 without initdb on Wave 4 tip (#59)",
+      "ok": false,
+      "files": []
+    }
+  ]
+}
