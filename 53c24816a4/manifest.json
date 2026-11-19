@@ -27,7 +27,7 @@
       "expect_matched": true,
       "ok": true,
       "kept": {
-        "revision": "b9e6a406a998b67946859fd93d478add3028784c",
+        "revision": "53c24816a4631c70f2505ee7806253c85e55c9d0",
         "reason": "Pre-fix failing baselines before filtered-mail chat tools and For my doctor implementation"
       }
     },
@@ -56,7 +56,7 @@
       "expect_matched": true,
       "ok": true,
       "kept": {
-        "revision": "b9e6a406a998b67946859fd93d478add3028784c",
+        "revision": "53c24816a4631c70f2505ee7806253c85e55c9d0",
         "reason": "Pre-fix failing baselines before filtered-mail chat tools and For my doctor implementation"
       }
     },
@@ -241,7 +241,11 @@
       ],
       "seconds": 227.0,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "kept": {
+        "revision": "53c24816a4631c70f2505ee7806253c85e55c9d0",
+        "reason": "Only crates/physician-sample/tests/migrations_postgres.rs expected ledger list updated after b9e6a406a9; zero product/UI code changed"
+      }
     },
     {
       "id": 11,
@@ -263,7 +267,11 @@
       ],
       "seconds": 73.9,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "kept": {
+        "revision": "53c24816a4631c70f2505ee7806253c85e55c9d0",
+        "reason": "Only crates/physician-sample/tests/migrations_postgres.rs expected ledger list updated after b9e6a406a9; zero product/UI code changed"
+      }
     },
     {
       "id": 12,
@@ -285,7 +293,11 @@
       ],
       "seconds": 419.8,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "kept": {
+        "revision": "53c24816a4631c70f2505ee7806253c85e55c9d0",
+        "reason": "Only crates/physician-sample/tests/migrations_postgres.rs expected ledger list updated after b9e6a406a9; zero product/UI code changed"
+      }
     },
     {
       "id": 13,
@@ -306,6 +318,32 @@
         "13-Chromium-browser-site_matching_reply_followups-a.log"
       ],
       "seconds": 378.4,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "53c24816a4631c70f2505ee7806253c85e55c9d0",
+        "reason": "Only crates/physician-sample/tests/migrations_postgres.rs expected ledger list updated after b9e6a406a9; zero product/UI code changed"
+      }
+    },
+    {
+      "id": 14,
+      "claim": "Half2",
+      "label": "migrations_postgres ledger parity, front-door, connected_care_and_filtered_chat, fmt, host+wasm32 clippy, and boundaries",
+      "kind": "run",
+      "revision": "53c24816a4631c70f2505ee7806253c85e55c9d0",
+      "dirty": false,
+      "recorded": "2026-11-19T22:44:53+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail\n    cargo fmt --all --check\n    cargo clippy --workspace --all-targets --quiet -- -D warnings\n    cargo clippy -p physician-app -p duet-app -p mobile -p ui-gallery --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web --quiet -- -D warnings\n    cargo test -p boundaries\n    cargo test -p physician-sample --test migrations_postgres -- --ignored --test-threads=1\n    cargo test -p front-door\n    cargo test -p local-product --test connected_care_and_filtered_chat"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "14-migrations_postgres-ledger-parity-front-door-con.log"
+      ],
+      "seconds": 178.8,
       "exit": 0,
       "ok": true
     }
