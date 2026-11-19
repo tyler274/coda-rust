@@ -11,6 +11,7 @@ use sea_orm::{ColumnTrait, DbErr, EntityTrait, QueryFilter, QueryOrder, QuerySel
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
+use super::citation_layouts::{CitationLayoutSpec, LayoutSourceKey, render_structured_record};
 use super::entities::{
     conversation, reply_draft, reply_revision, source, source_pull, source_version,
 };
@@ -632,12 +633,24 @@ pub fn cited_record_title(provenance: &Value, record_type: &str, candidate_id: &
 
 /// Formats a cited source as human-readable clinical prose for physician
 /// inspection, omitting a redundant `part.label` when it matches `title`
-/// case-insensitively and rendering JSON `raw_content` as `"Key: value"` lines
+/// case-insensitively and rendering JSON `raw_content` using the general view
 /// when `readable_parts` is empty (`raw_content` stays only in `raw_content`).
 pub fn format_cited_source_body(
     title: &str,
     readable_parts: &[ReadablePart],
     raw_content: &str,
+) -> String {
+    format_cited_source_body_with_layout(title, readable_parts, raw_content, None)
+}
+
+/// Formats a cited source as human-readable clinical prose, preferring
+/// `readable_parts` when non-empty (`Layout 1`), otherwise applying `layout`
+/// when present (`Layout 2`) or the general view (`Layout 3`).
+pub fn format_cited_source_body_with_layout(
+    title: &str,
+    readable_parts: &[ReadablePart],
+    raw_content: &str,
+    layout: Option<&CitationLayoutSpec>,
 ) -> String {
     let normalized_title = collapse_whitespace(title).to_lowercase();
     let sections: Vec<String> = readable_parts
@@ -659,95 +672,21 @@ pub fn format_cited_source_body(
     if !sections.is_empty() {
         return sections.join("\n\n");
     }
-    format_readable_fallback(raw_content)
+    format_readable_fallback_with_layout(raw_content, layout)
 }
 
-fn humanize_json_key(key: &str) -> String {
-    let replaced = key.replace(['_', '-'], " ");
-    let collapsed = collapse_whitespace(&replaced);
-    let mut chars = collapsed.chars();
-    match chars.next() {
-        Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
-        None => String::new(),
-    }
-}
-
-fn render_json_lines(prefix: Option<&str>, value: &Value, out: &mut Vec<String>) {
-    match value {
-        Value::Null => {}
-        Value::Bool(flag) => {
-            let word = if *flag { "Yes" } else { "No" };
-            match prefix {
-                Some(key) if !key.is_empty() => out.push(format!("{key}: {word}")),
-                _ => out.push(word.to_owned()),
-            }
-        }
-        Value::Number(num) => match prefix {
-            Some(key) if !key.is_empty() => out.push(format!("{key}: {num}")),
-            _ => out.push(num.to_string()),
-        },
-        Value::String(text) => {
-            let trimmed = text.trim();
-            if !trimmed.is_empty() {
-                match prefix {
-                    Some(key) if !key.is_empty() => out.push(format!("{key}: {trimmed}")),
-                    _ => out.push(trimmed.to_owned()),
-                }
-            }
-        }
-        Value::Array(items) => {
-            let all_scalar = items
-                .iter()
-                .all(|item| matches!(item, Value::String(_) | Value::Number(_) | Value::Bool(_)));
-            if all_scalar {
-                let joined: Vec<String> = items
-                    .iter()
-                    .filter_map(|item| match item {
-                        Value::String(s) if !s.trim().is_empty() => Some(s.trim().to_owned()),
-                        Value::Number(n) => Some(n.to_string()),
-                        Value::Bool(b) => Some(if *b { "Yes" } else { "No" }.to_owned()),
-                        _ => None,
-                    })
-                    .collect();
-                if !joined.is_empty() {
-                    let list = joined.join(", ");
-                    match prefix {
-                        Some(key) if !key.is_empty() => out.push(format!("{key}: {list}")),
-                        _ => out.push(list),
-                    }
-                }
-            } else {
-                for item in items {
-                    render_json_lines(prefix, item, out);
-                }
-            }
-        }
-        Value::Object(map) => {
-            for (key, nested) in map {
-                let label = humanize_json_key(key);
-                let full_key = match prefix {
-                    Some(parent) if !parent.is_empty() && !label.is_empty() => {
-                        format!("{parent} · {label}")
-                    }
-                    Some(parent) if !parent.is_empty() => parent.to_owned(),
-                    _ => label,
-                };
-                render_json_lines(Some(&full_key), nested, out);
-            }
-        }
-    }
-}
-
-fn format_readable_fallback(raw_content: &str) -> String {
+fn format_readable_fallback_with_layout(
+    raw_content: &str,
+    layout: Option<&CitationLayoutSpec>,
+) -> String {
     let trimmed = raw_content.trim();
     if trimmed.is_empty() {
         return String::new();
     }
     if let Ok(parsed) = serde_json::from_str::<Value>(trimmed) {
-        let mut lines = Vec::new();
-        render_json_lines(None, &parsed, &mut lines);
-        if !lines.is_empty() {
-            return lines.join("\n");
+        let rendered = render_structured_record(&parsed, layout);
+        if !rendered.is_empty() {
+            return rendered;
         }
     }
     trimmed.to_owned()
@@ -809,6 +748,7 @@ struct TurnCitationContext<'a> {
     tombstone_withdrawn_candidates: &'a HashSet<String>,
     work_reads: &'a HashMap<(String, String), ObservedRead>,
     source_labels: &'a HashMap<String, String>,
+    citation_layouts: &'a BTreeMap<LayoutSourceKey, CitationLayoutSpec>,
 }
 
 struct ReconstructedFinishedTurn {
@@ -888,7 +828,15 @@ fn reconstruct_finished_turn(
                 .unwrap_or_else(|| rev.source_id.clone());
             let title = cited_record_title(&rev.provenance, &rev.record_type, &rev.candidate_id);
             let external_url = provenance_string(&rev.provenance, &["external_url", "url", "href"]);
-            let raw_body = format_cited_source_body(&title, &rev.readable_parts, &rev.content);
+            let layout = LayoutSourceKey::new(&rev.source_id, &rev.record_type)
+                .ok()
+                .and_then(|key| ctx.citation_layouts.get(&key));
+            let raw_body = format_cited_source_body_with_layout(
+                &title,
+                &rev.readable_parts,
+                &rev.content,
+                layout,
+            );
             let (body, origin) =
                 apply_description_fallback(raw_body, &mark.source, finished.descriptions());
             let quote = passage_quote.unwrap_or_else(|| truncate_clean(&body, 220));
@@ -1426,6 +1374,9 @@ impl Store {
                 tombstone_withdrawn_candidates.insert(row.candidate);
             }
         }
+        let citation_layouts = self
+            .citation_layouts_for_revisions(saved_revisions.values().map(|(_, rev)| rev))
+            .await?;
 
         let mut reads_by_work: HashMap<String, HashMap<(String, String), ObservedRead>> =
             HashMap::new();
@@ -1617,6 +1568,7 @@ impl Store {
                                 tombstone_withdrawn_candidates: &tombstone_withdrawn_candidates,
                                 work_reads,
                                 source_labels: &source_labels,
+                                citation_layouts: &citation_layouts,
                             };
                             let ReconstructedFinishedTurn {
                                 segments,
@@ -1770,12 +1722,14 @@ mod unit_tests {
         let tombstones = HashSet::new();
         let work_reads = HashMap::new();
         let source_labels = HashMap::new();
+        let citation_layouts = BTreeMap::new();
         let ctx = TurnCitationContext {
             reply_id: "att-1:reply",
             saved_revisions: &saved_revisions,
             tombstone_withdrawn_candidates: &tombstones,
             work_reads: &work_reads,
             source_labels: &source_labels,
+            citation_layouts: &citation_layouts,
         };
         let ReconstructedFinishedTurn {
             segments,
@@ -2055,12 +2009,14 @@ mod unit_tests {
         let saved_revisions = HashMap::new();
         let tombstones = HashSet::new();
         let source_labels = HashMap::new();
+        let citation_layouts = BTreeMap::new();
         let ctx = TurnCitationContext {
             reply_id: "work-ld:reply",
             saved_revisions: &saved_revisions,
             tombstone_withdrawn_candidates: &tombstones,
             work_reads: &work_reads,
             source_labels: &source_labels,
+            citation_layouts: &citation_layouts,
         };
         let ReconstructedFinishedTurn {
             segments, sources, ..

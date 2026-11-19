@@ -37,6 +37,8 @@ pub mod care_plan;
 pub mod chat_draft;
 /// Patient starting context, readability limits, durable memory, source refresh, and chat tool dispatch.
 pub mod chat_operations;
+/// Durable per-`(source_id, record_type)` declarative citation layouts (`Citations` Layout 2–5, Code 12–14).
+pub mod citation_layouts;
 /// Patient concerns raised, revised, and retired by Coda, and cleared `Done` by physicians.
 pub mod concerns;
 mod control;

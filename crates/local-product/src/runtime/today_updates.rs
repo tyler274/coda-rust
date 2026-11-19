@@ -4348,6 +4348,7 @@ impl Store {
             .map(|row| (row.source_id, row.source_label))
             .collect();
 
+        let citation_layouts = self.citation_layouts_for_revisions(by_ref.values()).await?;
         let mut citations = Vec::with_capacity(refs.len());
         for reference in refs {
             let unavailable_reason = fence
@@ -4381,8 +4382,18 @@ impl Store {
                     &found.record_type,
                     &reference.candidate_id,
                 );
-                let formatted =
-                    format_today_cited_body(&display_label, &found.readable_parts, &found.content);
+                let layout = super::citation_layouts::LayoutSourceKey::new(
+                    &found.source_id,
+                    &found.record_type,
+                )
+                .ok()
+                .and_then(|key| citation_layouts.get(&key));
+                let formatted = format_today_cited_body_with_layout(
+                    &display_label,
+                    &found.readable_parts,
+                    &found.content,
+                    layout,
+                );
                 let body = if formatted.trim().is_empty() {
                     "Chart record on file.".to_owned()
                 } else {
@@ -4481,6 +4492,7 @@ impl Store {
                 .entry((row.candidate, decoded.revision.clone()))
                 .or_insert(decoded);
         }
+        let citation_layouts = self.citation_layouts_for_revisions(by_ref.values()).await?;
         for citation in &mut citations {
             let unavailable_reason = fence
                 .candidate_unavailable_reason(&citation.reference.candidate_id)
@@ -4506,10 +4518,17 @@ impl Store {
                 citation.reference.candidate_id.clone(),
                 citation.reference.revision.clone(),
             )) {
-                let formatted = format_today_cited_body(
+                let layout = super::citation_layouts::LayoutSourceKey::new(
+                    &found.source_id,
+                    &found.record_type,
+                )
+                .ok()
+                .and_then(|key| citation_layouts.get(&key));
+                let formatted = format_today_cited_body_with_layout(
                     &citation.display_label,
                     &found.readable_parts,
                     &found.content,
+                    layout,
                 );
                 if !formatted.trim().is_empty() {
                     citation.body = formatted;
@@ -7132,10 +7151,11 @@ fn is_generic_structural_part_label(label: &str) -> bool {
     )
 }
 
-fn format_today_cited_body(
+fn format_today_cited_body_with_layout(
     display_label: &str,
     readable_parts: &[ReadablePart],
     raw_content: &str,
+    layout: Option<&super::citation_layouts::CitationLayoutSpec>,
 ) -> String {
     let cleaned_parts: Vec<ReadablePart> = readable_parts
         .iter()
@@ -7148,7 +7168,12 @@ fn format_today_cited_body(
             text: part.text.clone(),
         })
         .collect();
-    super::history::format_cited_source_body(display_label, &cleaned_parts, raw_content)
+    super::history::format_cited_source_body_with_layout(
+        display_label,
+        &cleaned_parts,
+        raw_content,
+        layout,
+    )
 }
 
 fn extract_record_native_uri(workspace: &str, found: &SourceRevision) -> Option<String> {
