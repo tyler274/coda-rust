@@ -1,0 +1,67 @@
+{
+  "branch": "tyler-eng-9-1-link-correction-settlement",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Forward-only link correction runtime migration ledger and rerun idempotency",
+      "kind": "run",
+      "revision": "c19ff73cd8fe060b190504adb50c1dcdff8a4dc3",
+      "dirty": false,
+      "recorded": "2026-11-18T23:34:18+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "runtime::tests::migration",
+        "--",
+        "--ignored"
+      ],
+      "expect": "test result: ok\\. [1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "01-Forward-only-link-correction-runtime-migration-l.log"
+      ],
+      "seconds": 30.7,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "a6684c73fb834569904ad28f619bd53bf1610e23",
+        "reason": "Rebased cleanly onto patched upstream PR 81; the only downstream adjustment in PR 82..91 adds the PHYSICIAN_TEST_DATABASE_URL fallback in link_correction_postgres.rs (PR 84)."
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Finished answer redaction and citation label stripping unit suite",
+      "kind": "run",
+      "revision": "c19ff73cd8fe060b190504adb50c1dcdff8a4dc3",
+      "dirty": false,
+      "recorded": "2026-11-18T23:34:49+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "citations"
+      ],
+      "expect": "test result: ok\\. [1-9][0-9]* passed; 0 failed",
+      "expect_fail": false,
+      "files": [
+        "02-Finished-answer-redaction-and-citation-label-str.log"
+      ],
+      "seconds": 2.5,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "a6684c73fb834569904ad28f619bd53bf1610e23",
+        "reason": "Rebased cleanly onto patched upstream PR 81; the only downstream adjustment in PR 82..91 adds the PHYSICIAN_TEST_DATABASE_URL fallback in link_correction_postgres.rs (PR 84)."
+      }
+    }
+  ]
+}
