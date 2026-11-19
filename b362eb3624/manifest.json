@@ -1,0 +1,36 @@
+{
+  "branch": "tyler-eng-311-1-spruce-matching-schema-rules",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "PostgreSQL Spruce matching schema migration and ledger lockstep",
+      "kind": "run",
+      "revision": "ec73c025fc496d9fc396397d0e1ea24916de6153",
+      "dirty": false,
+      "recorded": "2026-11-18T22:47:13+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "runtime::tests::migration",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-PostgreSQL-Spruce-matching-schema-migration-and-.log"
+      ],
+      "seconds": 25.9,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "b362eb3624b839b43e28cdb7711424ddf05f7e8f",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    }
+  ]
+}
