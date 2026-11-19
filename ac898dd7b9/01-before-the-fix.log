@@ -1,0 +1,27 @@
+   Compiling physician-wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/physician-wire)
+   Compiling ui v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/ui)
+   Compiling physician-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/physician-client)
+   Compiling physician-app v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/physician-app)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 22.15s
+     Running unittests src/lib.rs (target/debug/deps/physician_app-6da83c5f23b9e436)
+
+running 1 test
+test shell::tests::native_source_citation_does_not_say_prepared_by_coda ... FAILED
+
+failures:
+
+---- shell::tests::native_source_citation_does_not_say_prepared_by_coda stdout ----
+
+thread 'shell::tests::native_source_citation_does_not_say_prepared_by_coda' (185289) panicked at crates/physician-app/src/shell.rs:2472:9:
+assertion `left == right` failed
+  left: Some("Prepared by Coda · as of April 13, 2026")
+ right: Some("As of April 13, 2026")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    shell::tests::native_source_citation_does_not_say_prepared_by_coda
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 103 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p physician-app --lib`

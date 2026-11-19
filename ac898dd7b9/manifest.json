@@ -1,0 +1,289 @@
+{
+  "branch": "fix-p1-composer-queue-steps-provenance",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC3",
+      "label": "before the fix",
+      "kind": "run",
+      "revision": "513bd8647381aca33248ae7164eea9e27e127acb",
+      "dirty": true,
+      "recorded": "2026-11-19T10:56:09+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib",
+        "native_source_citation_does_not_say_prepared_by_coda"
+      ],
+      "expect": "Prepared by Coda",
+      "expect_fail": true,
+      "files": [
+        "01-before-the-fix.log"
+      ],
+      "seconds": 22.3,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+        "reason": "deliberately before the fix"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC3",
+      "label": "after the fix",
+      "kind": "run",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:03:12+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib",
+        "native_source_citation_does_not_say_prepared_by_coda"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-after-the-fix.log"
+      ],
+      "seconds": 21.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC1",
+      "label": "ui, boundaries, physician-wire, physician-app, physician-sample unit tests",
+      "kind": "run",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:03:34+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "ui",
+        "-p",
+        "boundaries",
+        "-p",
+        "physician-wire",
+        "-p",
+        "physician-app",
+        "-p",
+        "physician-sample",
+        "--lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-ui-boundaries-physician-wire-physician-app-physi.log"
+      ],
+      "seconds": 4.7,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC5",
+      "label": "sessionStorage pending command recovery unit tests",
+      "kind": "run",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:03:39+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib",
+        "local_command"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-sessionStorage-pending-command-recovery-unit-tes.log"
+      ],
+      "seconds": 2.0,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "AC6",
+      "label": "queue and browser_tz command builder unit tests",
+      "kind": "run",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:03:41+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib",
+        "queue_and_delivery_commands_carry_expected_payloads"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-queue-and-browser_tz-command-builder-unit-tests.log"
+      ],
+      "seconds": 2.0,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 6,
+      "claim": "AC4",
+      "label": "steps projection without tool names unit test",
+      "kind": "run",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:03:43+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-app",
+        "--lib",
+        "project_steps_uses_physician_words_without_tool_names"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-steps-projection-without-tool-names-unit-test.log"
+      ],
+      "seconds": 2.0,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 7,
+      "claim": "AC2",
+      "label": "Postgres chat queue, edit/withdraw/send_now, failure preservation, and stop tests",
+      "kind": "run",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:03:46+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--test",
+        "chat_queue_postgres",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "07-Postgres-chat-queue-edit-withdraw-send_now-failu.log"
+      ],
+      "seconds": 3.5,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 8,
+      "claim": "AC2",
+      "label": "Stop holds turn across restart and resume",
+      "kind": "run",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:03:50+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "stop"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "08-Stop-holds-turn-across-restart-and-resume.log"
+      ],
+      "seconds": 18.7,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 9,
+      "claim": "AC4",
+      "label": "Browser test: composer keys, queue, WorkTrace, stop return, auto-retry, browser_tz",
+      "kind": "run",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:04:09+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "p1_composer_queue_stop_steps_retry_and_provenance",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "09-Browser-test-composer-keys-queue-WorkTrace-stop-.log"
+      ],
+      "seconds": 43.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 10,
+      "claim": "AC1",
+      "label": "Multiline message, WorkingMark pulsing dots, and open WorkTrace in Chromium",
+      "kind": "screenshot",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:04:52+00:00",
+      "files": [
+        "10-p1-working-trace-and-queue.png"
+      ],
+      "source": "target/verification/proof/p1-b1-shots/p1-working-trace-and-queue.png",
+      "ok": true
+    },
+    {
+      "id": 11,
+      "claim": "AC4",
+      "label": "WorkTrace stayed open across Working -> Finished after queued turn drained",
+      "kind": "screenshot",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:04:52+00:00",
+      "files": [
+        "11-p1-trace-still-open-after-finish.png"
+      ],
+      "source": "target/verification/proof/p1-b1-shots/p1-trace-still-open-after-finish.png",
+      "ok": true
+    },
+    {
+      "id": 12,
+      "claim": "AC2",
+      "label": "Stop halted turn and returned queued message to composer",
+      "kind": "screenshot",
+      "revision": "ac898dd7b956348005f8649c79e3df0d6e1d776e",
+      "dirty": false,
+      "recorded": "2026-11-19T12:04:52+00:00",
+      "files": [
+        "12-p1-stop-returned-queue.png"
+      ],
+      "source": "target/verification/proof/p1-b1-shots/p1-stop-returned-queue.png",
+      "ok": true
+    }
+  ]
+}
