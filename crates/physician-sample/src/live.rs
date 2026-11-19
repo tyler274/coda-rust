@@ -209,10 +209,35 @@ struct SubmitPayload {
     chat_id: String,
     text: String,
     physician_time_zone: String,
+    #[serde(default)]
+    delivery: physician_wire::SubmitDelivery,
     /// The rehearsal scenario. Only a simulation practice's session on the
     /// hosted path may send one; see [`crate::hosting::SimulationPractices`].
     #[serde(default)]
     scenario: Option<String>,
+}
+
+#[derive(Deserialize)]
+struct QueueEditPayload {
+    patient_workspace_id: String,
+    chat_id: String,
+    message_id: String,
+    text: String,
+}
+
+#[derive(Deserialize)]
+struct QueueWithdrawPayload {
+    patient_workspace_id: String,
+    chat_id: String,
+    message_id: String,
+}
+
+#[derive(Deserialize)]
+struct QueueSendNowPayload {
+    patient_workspace_id: String,
+    chat_id: String,
+    message_id: String,
+    physician_time_zone: String,
 }
 
 /// Accepts chat, Stop/Resume, item.open, and reply-revision commands into the durable owner.
@@ -245,6 +270,15 @@ pub(crate) async fn submit(
     }
     if body.kind == "work.stop" {
         return stop_durable(live, auth_ctx, body).await;
+    }
+    if body.kind == "message.queue_edit" {
+        return queue_edit_durable(live, auth_ctx, body).await;
+    }
+    if body.kind == "message.withdraw" {
+        return queue_withdraw_durable(live, auth_ctx, body).await;
+    }
+    if body.kind == "message.queue_send_now" {
+        return queue_send_now_durable(live, auth_ctx, body).await;
     }
     if body.kind != "message.submit" {
         return Json(json!({
@@ -363,6 +397,7 @@ async fn accept_durable(
     let Ok(scenario) = chat.admit_scenario(&scope.practice, payload.scenario) else {
         return rejected_scenario();
     };
+    let delivery = payload.delivery;
     let input = local_product::runtime::Input {
         key: idempotency_key,
         text: payload.text,
@@ -370,7 +405,10 @@ async fn accept_durable(
         scenario,
     };
     let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
-    match chat.accept(&scope, &input, session_hash).await {
+    match chat
+        .accept_with_delivery(&scope, &input, session_hash, delivery)
+        .await
+    {
         Ok(accepted) => {
             if accepted == local_product::runtime::Accepted::New
                 && live
@@ -523,6 +561,7 @@ fn snapshot_body(
                         body: src.body.clone(),
                         raw_content: (!src.raw_content.is_empty()).then(|| src.raw_content.clone()),
                         external_url: src.external_url.clone(),
+                        origin: src.origin,
                     },
                 )
             })
@@ -572,10 +611,14 @@ fn snapshot_body(
         SnapshotFeedback::Loaded(_) => physician_wire::SnapshotFeedback::Loaded,
         SnapshotFeedback::Unavailable => physician_wire::SnapshotFeedback::Unavailable,
     };
+    let queued = conversation
+        .map(local_product::runtime::Conversation::queued_messages)
+        .unwrap_or_default();
     Ok(ChatSnapshot {
         transcript,
         feedback,
         sources,
+        queued,
     })
 }
 
@@ -684,30 +727,33 @@ async fn stop_durable(
     };
     let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
     match chat
-        .stop(&scope, &key, session_hash, &payload.work_item_id)
+        .stop_chat(&scope, &key, session_hash, &payload.work_item_id)
         .await
     {
-        Ok(local_product::runtime::Stopped::Refused) => rejected("work.stop"),
-        Ok(outcome) => {
-            if outcome == local_product::runtime::Stopped::Held
-                && live
-                    .bus
-                    .publish(Event::WorkspaceChanged {
-                        workspace_id: payload.patient_workspace_id.clone(),
-                    })
-                    .await
-                    .is_err()
-            {
-                tracing::warn!("physician workspace invalidation not published");
+        Ok(stopped) => match stopped.outcome {
+            local_product::runtime::Stopped::Refused => rejected("work.stop"),
+            outcome => {
+                if outcome == local_product::runtime::Stopped::Held
+                    && live
+                        .bus
+                        .publish(Event::WorkspaceChanged {
+                            workspace_id: payload.patient_workspace_id.clone(),
+                        })
+                        .await
+                        .is_err()
+                {
+                    tracing::warn!("physician workspace invalidation not published");
+                }
+                Json(json!({
+                    "outcome": "accepted",
+                    "patient_workspace_id": payload.patient_workspace_id,
+                    "chat_id": payload.chat_id,
+                    "work_item_id": payload.work_item_id,
+                    "returned_messages": stopped.returned_messages,
+                }))
+                .into_response()
             }
-            Json(json!({
-                "outcome": "accepted",
-                "patient_workspace_id": payload.patient_workspace_id,
-                "chat_id": payload.chat_id,
-                "work_item_id": payload.work_item_id,
-            }))
-            .into_response()
-        }
+        },
         Err(_) => {
             tracing::warn!("physician work stop failed");
             (
@@ -720,6 +766,168 @@ async fn stop_durable(
                 .into_response()
         }
     }
+}
+
+async fn queue_mutation_response(
+    live: &Live,
+    workspace_id: &str,
+    chat_id: &str,
+    message_id: &str,
+    command_type: &str,
+    result: Result<local_product::runtime::QueueMutation, String>,
+) -> Response {
+    match result {
+        Ok(local_product::runtime::QueueMutation::Refused) => rejected(command_type),
+        Ok(outcome) => {
+            if outcome == local_product::runtime::QueueMutation::Applied
+                && live
+                    .bus
+                    .publish(Event::WorkspaceChanged {
+                        workspace_id: workspace_id.to_owned(),
+                    })
+                    .await
+                    .is_err()
+            {
+                tracing::warn!("physician workspace invalidation not published");
+            }
+            Json(json!({
+                "outcome": "accepted",
+                "patient_workspace_id": workspace_id,
+                "chat_id": chat_id,
+                "message_id": message_id,
+            }))
+            .into_response()
+        }
+        Err(_) => (
+            StatusCode::SERVICE_UNAVAILABLE,
+            Json(json!({
+                "outcome": "rejected",
+                "message": rejection_message(command_type),
+            })),
+        )
+            .into_response(),
+    }
+}
+
+async fn queue_edit_durable(
+    live: Arc<Live>,
+    auth_ctx: Option<Extension<AuthContext>>,
+    body: CommandBody,
+) -> Response {
+    let Some(Extension(ctx)) = auth_ctx else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let Some(payload) = body
+        .payload
+        .and_then(|value| serde_json::from_value::<QueueEditPayload>(value).ok())
+    else {
+        return rejected("message.queue_edit");
+    };
+    let Some(key) = body.idempotency_key.filter(|key| !key.trim().is_empty()) else {
+        return rejected("message.queue_edit");
+    };
+    let scope = local_product::runtime::Scope {
+        practice: ctx.identity.practice_id.clone(),
+        physician: ctx.identity.physician_id.clone(),
+        workspace: payload.patient_workspace_id.clone(),
+        chat: payload.chat_id.clone(),
+    };
+    let result = live
+        .chat
+        .edit_queued_message(&scope, &key, &payload.message_id, &payload.text)
+        .await;
+    queue_mutation_response(
+        &live,
+        &payload.patient_workspace_id,
+        &payload.chat_id,
+        &payload.message_id,
+        "message.queue_edit",
+        result,
+    )
+    .await
+}
+
+async fn queue_withdraw_durable(
+    live: Arc<Live>,
+    auth_ctx: Option<Extension<AuthContext>>,
+    body: CommandBody,
+) -> Response {
+    let Some(Extension(ctx)) = auth_ctx else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let Some(payload) = body
+        .payload
+        .and_then(|value| serde_json::from_value::<QueueWithdrawPayload>(value).ok())
+    else {
+        return rejected("message.withdraw");
+    };
+    let Some(key) = body.idempotency_key.filter(|key| !key.trim().is_empty()) else {
+        return rejected("message.withdraw");
+    };
+    let scope = local_product::runtime::Scope {
+        practice: ctx.identity.practice_id.clone(),
+        physician: ctx.identity.physician_id.clone(),
+        workspace: payload.patient_workspace_id.clone(),
+        chat: payload.chat_id.clone(),
+    };
+    let result = live
+        .chat
+        .withdraw_queued_message(&scope, &key, &payload.message_id)
+        .await;
+    queue_mutation_response(
+        &live,
+        &payload.patient_workspace_id,
+        &payload.chat_id,
+        &payload.message_id,
+        "message.withdraw",
+        result,
+    )
+    .await
+}
+
+async fn queue_send_now_durable(
+    live: Arc<Live>,
+    auth_ctx: Option<Extension<AuthContext>>,
+    body: CommandBody,
+) -> Response {
+    let Some(Extension(ctx)) = auth_ctx else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let Some(payload) = body
+        .payload
+        .and_then(|value| serde_json::from_value::<QueueSendNowPayload>(value).ok())
+    else {
+        return rejected("message.queue_send_now");
+    };
+    let Some(key) = body.idempotency_key.filter(|key| !key.trim().is_empty()) else {
+        return rejected("message.queue_send_now");
+    };
+    let scope = local_product::runtime::Scope {
+        practice: ctx.identity.practice_id.clone(),
+        physician: ctx.identity.physician_id.clone(),
+        workspace: payload.patient_workspace_id.clone(),
+        chat: payload.chat_id.clone(),
+    };
+    let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
+    let result = live
+        .chat
+        .send_queued_now(
+            &scope,
+            &key,
+            session_hash,
+            &payload.message_id,
+            &payload.physician_time_zone,
+        )
+        .await;
+    queue_mutation_response(
+        &live,
+        &payload.patient_workspace_id,
+        &payload.chat_id,
+        &payload.message_id,
+        "message.queue_send_now",
+        result,
+    )
+    .await
 }
 
 fn rejected(kind: &str) -> Response {
@@ -961,6 +1169,8 @@ mod tests {
             opened_at: 1,
             last_activity_at: 2,
             scenario: None,
+            queued: Vec::new(),
+            stopped_queue: None,
         };
 
         let redacted =

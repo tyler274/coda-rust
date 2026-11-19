@@ -10,6 +10,7 @@
 mod composer;
 mod feedback;
 mod follow_ups;
+mod local_command;
 mod local_draft;
 mod matching_reply;
 mod panels;
@@ -30,8 +31,8 @@ use physician_wire::briefings::BriefingSummaryItemWire;
 use physician_wire::{
     ActiveReviewRun, AnswerState, ChatSnapshot, HistoryWorkOutcome, PastWorkItem, PastWorkTarget,
     PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation, ResponseId,
-    SignInResponse, SnapshotFeedback, WhoamiResponse, WorkResumeTarget, WorkStopTarget,
-    WorkspaceReply,
+    SignInResponse, SnapshotFeedback, SubmitDelivery, WhoamiResponse, WorkResumeTarget,
+    WorkStopTarget, WorkspaceReply,
 };
 
 use panels::Panel;
@@ -42,18 +43,18 @@ use schedule_briefing::{
 };
 use shell::{
     AppendedRosterPages, CONVERSATION_EMPTY, ChatView, ConnectedSourceStanding, Drawer, KeyInput,
-    NavCommand, PAST_WORK_EMPTY, REPLY_ASK, REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED,
-    REPLY_REVISION_STALE, REPLY_TELL_CODA, RESUME, ReadView, ReplyReviewAction, RosterContinuation,
-    STOP, SourceChip, SynopsisPiece, TODAY_LOADING, TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE,
-    TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, WORKSPACE_CLOSED, WORKSPACE_EMPTY,
-    WORKSPACE_UNAVAILABLE, WorkspaceRecordsState, active_now_concern, answer_to, chat_view,
-    chip_name, citation_inspection, connection_lines, demographic_card_view, format_context_time,
-    format_local_date, format_waited, keyboard_command, message_pieces, need_you_words,
-    panel_target, past_work_copy, read_view, reply_channel_label, reply_review_actions,
-    reply_revision_words, reply_urgency_words, resolve_roster_view, row_icon, row_tone,
-    schedule_empty_copy, search_row_detail, shows_today_schedule, source_lines, summary_times,
-    synopsis_pieces, today_lines, today_view, work_end_reason, work_heading,
-    workspace_records_state,
+    NavCommand, PAST_WORK_EMPTY, ProjectedStepKind, ProjectedSteps, REPLY_ASK, REPLY_CLOSED_NOTICE,
+    REPLY_COPY, REPLY_NO_NEEDED, REPLY_REVISION_STALE, REPLY_TELL_CODA, RESUME, ReadView,
+    ReplyReviewAction, RosterContinuation, STOP, SourceChip, SynopsisPiece, TODAY_LOADING,
+    TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine,
+    TodayView, WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, WorkspaceRecordsState,
+    active_now_concern, answer_to, chat_view, chip_name, citation_inspection, connection_lines,
+    demographic_card_view, format_context_time, format_local_date, format_waited, keyboard_command,
+    message_pieces, need_you_words, panel_target, past_work_copy, project_steps, read_view,
+    reply_channel_label, reply_review_actions, reply_revision_words, reply_urgency_words,
+    resolve_roster_view, row_icon, row_tone, schedule_empty_copy, search_row_detail,
+    shows_today_schedule, source_lines, summary_times, synopsis_pieces, today_lines, today_view,
+    work_end_reason, work_heading, workspace_records_state,
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
@@ -686,6 +687,7 @@ impl SessionState {
     fn drop_patient_content(mut self) {
         panels::forget_all();
         local_draft::forget_everything();
+        local_command::forget_everything();
         self.forget_place();
         *self.generation.write() += 1;
     }
@@ -696,6 +698,7 @@ impl SessionState {
         panels::forget_all();
         // No old account's unsent text outlives its session in this tab.
         local_draft::forget_everything();
+        local_command::forget_everything();
         self.expired.set(false);
         self.removed.set(false);
         self.signed_in.set(false);
@@ -1117,8 +1120,50 @@ fn PhysicianShell(
     let reply_slot = use_command_slot();
     let send_slot = use_command_slot();
     let resume_slot = use_command_slot();
-    let chat_resume_slot = use_command_slot();
-    let chat_stop_slot = use_command_slot();
+    let chat_resume_slot = use_persisted_command_slot(
+        "chat-resume",
+        client,
+        whoami,
+        selected,
+        open_chat,
+        move |_| {
+            *snapshot_attempt.write() += 1;
+            *workspace_attempt.write() += 1;
+        },
+    );
+    let chat_stop_slot = use_persisted_command_slot(
+        "chat-stop",
+        client,
+        whoami,
+        selected,
+        open_chat,
+        move |value| {
+            let returned = returned_queue_texts(&value);
+            if !returned.is_empty()
+                && let (Some(ws), Some(chat)) = (selected.peek().clone(), open_chat.peek().clone())
+            {
+                let target = DraftTarget {
+                    workspace: ws,
+                    chat,
+                };
+                composer.write().restore_returned_queue(&target, &returned);
+                autosave(composer, client, target);
+            }
+            *snapshot_attempt.write() += 1;
+            *workspace_attempt.write() += 1;
+        },
+    );
+    let queue_slot = use_persisted_command_slot(
+        "chat-queue",
+        client,
+        whoami,
+        selected,
+        open_chat,
+        move |_| {
+            *snapshot_attempt.write() += 1;
+            *workspace_attempt.write() += 1;
+        },
+    );
     let work_slot = use_command_slot();
     let workspace_briefings_res = use_resource(move || {
         let _today = today_attempt();
@@ -1554,19 +1599,39 @@ fn PhysicianShell(
             }
         });
     }
-    // Send, from the button or the keyboard: one snapshot of the target,
-    // text, edit generation and command, which Check again reuses.
-    let mut send_message = move || {
+    let practice_zone_now = move || {
+        today
+            .peek()
+            .as_ref()
+            .and_then(|res| res.as_ref().ok())
+            .and_then(|list| list.time_zone.clone())
+            .or_else(|| {
+                practice
+                    .peek()
+                    .as_ref()
+                    .and_then(|res| res.as_ref().ok())
+                    .map(|d| d.time_zone.clone())
+            })
+            .or_else(|| {
+                workspace_cache
+                    .peek()
+                    .as_ref()
+                    .and_then(|open| open.time_zone.clone())
+            })
+            .unwrap_or_else(|| "UTC".to_owned())
+    };
+    // Send (or Send next), from the button or the keyboard: one snapshot of the
+    // target, text, edit generation and command, which Check again reuses.
+    let mut send_message_with_delivery = move |delivery: SubmitDelivery| {
         let target = draft_target();
         let text = composer.peek().text(target.as_ref());
-        let command = message_command(
+        let tz = browser_time_zone(&practice_zone_now());
+        let command = message_command_with_delivery(
             selected(),
             open_chat(),
-            workspace_cache
-                .read()
-                .as_ref()
-                .and_then(|open| open.time_zone.clone()),
+            Some(tz),
             text.clone(),
+            delivery,
         );
         let (Some(target), Ok(command)) = (target, command.clone()) else {
             send_slot.run_or_refuse(client.read().clone(), command, || {});
@@ -1601,14 +1666,8 @@ fn PhysicianShell(
         if send_slot.sending() {
             return;
         }
-        let command = update_answer_command(
-            selected(),
-            open_chat(),
-            workspace_cache
-                .read()
-                .as_ref()
-                .and_then(|open| open.time_zone.clone()),
-        );
+        let tz = browser_time_zone(&practice_zone_now());
+        let command = update_answer_command(selected(), open_chat(), Some(tz));
         let mut snapshot_attempt = snapshot_attempt;
         let mut workspace_attempt = workspace_attempt;
         send_slot.run_or_refuse(client.read().clone(), command, move || {
@@ -1901,7 +1960,10 @@ fn PhysicianShell(
             let answer = match &asked {
                 (Some(workspace_id), Some(chat_id)) => {
                     match client.chat_snapshot(workspace_id, chat_id).await {
-                        Ok(page) => Ok(conversation_lines(&page.snapshot)),
+                        Ok(page) => Ok((
+                            conversation_lines(&page.snapshot),
+                            page.snapshot.queued.clone(),
+                        )),
                         Err(error) => {
                             if matches!(
                                 error,
@@ -1917,7 +1979,7 @@ fn PhysicianShell(
                         }
                     }
                 }
-                _ => Ok(Vec::new()),
+                _ => Ok((Vec::new(), Vec::new())),
             };
             (asked, answer)
         }
@@ -2001,8 +2063,9 @@ fn PhysicianShell(
     // its turns and any open details dialog stay; one conversation's lines
     // never stand in for another's.
     let mut last_conversation = use_signal(|| None);
+    let mut last_queued = use_signal(|| None);
     use_effect(move || {
-        if let Some((asked, Ok(lines))) = snapshot.read().as_ref() {
+        if let Some((asked, Ok((lines, queued_items)))) = snapshot.read().as_ref() {
             if let (Some(workspace), Some(chat)) = asked.clone() {
                 let reads = lines.iter().filter_map(|line| match &line.response {
                     Some((id, feedback::Read::Loaded(Some(saved)))) => Some((id, saved)),
@@ -2013,13 +2076,22 @@ fn PhysicianShell(
                     .remember(&feedback::ChatKey { workspace, chat }, reads);
             }
             last_conversation.set(Some((asked.clone(), lines.clone())));
+            last_queued.set(Some((asked.clone(), queued_items.clone())));
         }
     });
     let asking = (selected(), open_chat());
     let conversation = read_view(
         answer_to(&asking, last_conversation.read().as_ref()).cloned(),
-        answer_to(&asking, snapshot.read().as_ref()).cloned(),
+        answer_to(&asking, snapshot.read().as_ref()).map(|res| match res {
+            Ok((lines, _)) => Ok(lines.clone()),
+            Err(()) => Err(()),
+        }),
     );
+    let queued = answer_to(&asking, snapshot.read().as_ref())
+        .and_then(|res| res.as_ref().ok())
+        .map(|(_, queued)| queued.clone())
+        .or_else(|| answer_to(&asking, last_queued.read().as_ref()).cloned())
+        .unwrap_or_default();
     let active_now = today_state.content().and_then(|rows| {
         let opened = opened_now_items.read();
         let remaining: Vec<TodayLine> = rows
@@ -2341,11 +2413,6 @@ fn PhysicianShell(
                         let _ = client.dictate().await;
                         composer.write().say(DICTATION_UNAVAILABLE);
                     });
-                    return;
-                }
-                if key == "Enter" && (event.modifiers().meta() || event.modifiers().ctrl()) {
-                    event.prevent_default();
-                    send_message();
                     return;
                 }
                 let rail = if place() == Place::Workspace {
@@ -2737,7 +2804,7 @@ fn PhysicianShell(
                             },
                             on_activate_visit: move |row: ScheduleVisitRow| activate_schedule_visit(row),
                             on_resume: {
-                                let zone = practice_zone.clone();
+                                let zone = browser_tz.clone();
                                 move |line: TodayLine| {
                                     if let Some(command) = resume_command(&line, &zone) {
                                         resume_slot.run(client.read().clone(), command, move || *today_attempt.write() += 1);
@@ -2969,11 +3036,7 @@ fn PhysicianShell(
                             work_notice: work_slot.notice(client),
                             resume_notice: resume_slot.notice(client),
                             on_resume: {
-                                let zone = workspace_cache
-                                    .read()
-                                    .as_ref()
-                                    .and_then(|open| open.time_zone.clone())
-                                    .unwrap_or_else(|| practice_zone.clone());
+                                let zone = browser_tz.clone();
                                 move |line: TodayLine| {
                                     if let Some(command) = resume_command(&line, &zone) {
                                         resume_slot.run(client.read().clone(), command, move || {
@@ -3005,6 +3068,7 @@ fn PhysicianShell(
                                                 as_of: rec.recorded_at,
                                                 open_label: Some(rec.source_label),
                                                 open_uri: None,
+                                                origin: physician_wire::CitationOrigin::SourceRecord,
                                             };
                                             reading.set(Some(source_reading(chip)));
                                         }
@@ -3019,6 +3083,9 @@ fn PhysicianShell(
                                 }
                             },
                             conversation: conversation.clone(),
+                            queued: queued.clone(),
+                            queue_busy: queue_slot.sending(),
+                            queue_notice: queue_slot.notice(client),
                             on_conversation_retry: move |_| *snapshot_attempt.write() += 1,
                             conversation_resume_busy: chat_resume_slot.sending(),
                             conversation_resume_notice: chat_resume_slot.notice(client),
@@ -3037,14 +3104,69 @@ fn PhysicianShell(
                                 if let Some(command) =
                                     chat_stop_command(selected(), open_chat(), &target)
                                 {
-                                    chat_stop_slot.run(client.read().clone(), command, move || {
-                                        *snapshot_attempt.write() += 1;
-                                    });
+                                    let target_ws = selected();
+                                    let target_chat = open_chat();
+                                    chat_stop_slot.run_with_response(
+                                        client.read().clone(),
+                                        command,
+                                        move |value| {
+                                            let returned = returned_queue_texts(&value);
+                                            if !returned.is_empty()
+                                                && let (Some(ws), Some(chat)) =
+                                                    (target_ws.clone(), target_chat.clone())
+                                            {
+                                                let draft = DraftTarget {
+                                                    workspace: ws,
+                                                    chat,
+                                                };
+                                                composer
+                                                    .write()
+                                                    .restore_returned_queue(&draft, &returned);
+                                                autosave(composer, client, draft);
+                                            }
+                                            *snapshot_attempt.write() += 1;
+                                        },
+                                    );
                                 }
                             },
                             on_open_chat: move |id: String| open_chat.set(Some(id)),
                             on_new_chat: move |_| start_chat(),
-                            on_send: move |_| send_message(),
+                            on_send: move |_| send_message_with_delivery(SubmitDelivery::SendNow),
+                            on_send_next: move |_| send_message_with_delivery(SubmitDelivery::SendNext),
+                            on_queue_edit: move |(message_id, text): (String, String)| {
+                                if let Some(command) =
+                                    queue_edit_command(selected(), open_chat(), message_id, text)
+                                {
+                                    queue_slot.run(client.read().clone(), command, move || {
+                                        *snapshot_attempt.write() += 1;
+                                    });
+                                }
+                            },
+                            on_queue_withdraw: move |message_id: String| {
+                                if let Some(command) =
+                                    queue_withdraw_command(selected(), open_chat(), message_id)
+                                {
+                                    queue_slot.run(client.read().clone(), command, move || {
+                                        *snapshot_attempt.write() += 1;
+                                    });
+                                }
+                            },
+                            on_queue_send_now: {
+                                let zone = browser_tz.clone();
+                                move |message_id: String| {
+                                    if let Some(command) = queue_send_now_command(
+                                        selected(),
+                                        open_chat(),
+                                        message_id,
+                                        zone.clone(),
+                                    ) {
+                                        queue_slot.run(client.read().clone(), command, move || {
+                                            *snapshot_attempt.write() += 1;
+                                            *workspace_attempt.write() += 1;
+                                        });
+                                    }
+                                }
+                            },
                             on_update_answer: move |_| send_update_answer(),
                             on_open_patient_row: move |line: TodayLine| open_today_line(line),
                             on_done_patient_row: move |line: TodayLine| {
@@ -3110,35 +3232,33 @@ fn PhysicianShell(
                                     }),
                                 );
                             },
-                            on_revise_reply: move |(reply_id, revision, instruction): (String, u64, String)| {
-                                let Some(ws_id) = selected() else { return };
-                                let zone = workspace_cache
-                                    .read()
-                                    .as_ref()
-                                    .and_then(|open| open.time_zone.clone())
-                                    .unwrap_or_default();
-                                reply_notice.set(String::new());
-                                // The command names the revision the physician
-                                // was shown; a refusal rereads the workspace so
-                                // the current draft replaces the stale one.
-                                reply_slot.run_answered(
-                                    client.read().clone(),
-                                    Command::new(
-                                        "reply.revise",
-                                        serde_json::json!({
-                                            "patient_workspace_id": ws_id,
-                                            "reply_work_id": reply_id,
-                                            "expected_draft_revision": revision,
-                                            "instruction": instruction,
-                                            "physician_time_zone": zone,
+                            on_revise_reply: {
+                                let zone = browser_tz.clone();
+                                move |(reply_id, revision, instruction): (String, u64, String)| {
+                                    let Some(ws_id) = selected() else { return };
+                                    reply_notice.set(String::new());
+                                    // The command names the revision the physician
+                                    // was shown; a refusal rereads the workspace so
+                                    // the current draft replaces the stale one.
+                                    reply_slot.run_answered(
+                                        client.read().clone(),
+                                        Command::new(
+                                            "reply.revise",
+                                            serde_json::json!({
+                                                "patient_workspace_id": ws_id,
+                                                "reply_work_id": reply_id,
+                                                "expected_draft_revision": revision,
+                                                "instruction": instruction,
+                                                "physician_time_zone": zone,
+                                            }),
+                                        ),
+                                        Callback::new(move |()| *workspace_attempt.write() += 1),
+                                        Callback::new(move |()| {
+                                            reply_notice.set(REPLY_REVISION_STALE.to_owned());
+                                            *workspace_attempt.write() += 1;
                                         }),
-                                    ),
-                                    Callback::new(move |()| *workspace_attempt.write() += 1),
-                                    Callback::new(move |()| {
-                                        reply_notice.set(REPLY_REVISION_STALE.to_owned());
-                                        *workspace_attempt.write() += 1;
-                                    }),
-                                );
+                                    );
+                                }
                             },
                             on_open_patient: move |id: String| {
                                 open_briefing.set(None);
@@ -3254,7 +3374,7 @@ fn PhysicianShell(
                 state: past_work_state.clone(),
                 briefings: patient_briefings.clone(),
                 browser_tz: browser_tz.clone(),
-                time_zone: practice_zone.clone(),
+                time_zone: browser_tz.clone(),
                 server_now: server_now.clone(),
                 on_retry: move |_| *past_work_attempt.write() += 1,
                 on_open_briefing: move |target: OpenBriefingTarget| {
@@ -3397,7 +3517,7 @@ impl Command {
 /// How a command was answered.
 #[derive(Debug, PartialEq)]
 enum Answer {
-    Accepted,
+    Accepted(serde_json::Value),
     Refused(String),
     /// No answer arrived, so whether it took is unknown.
     Unconfirmed,
@@ -3405,7 +3525,8 @@ enum Answer {
 
 fn answer(result: &Result<serde_json::Value, physician_client::HttpError>) -> Answer {
     match result {
-        Ok(value) => command_rejection(value).map_or(Answer::Accepted, Answer::Refused),
+        Ok(value) => command_rejection(value)
+            .map_or_else(|| Answer::Accepted(value.clone()), Answer::Refused),
         // The server answered and said no: a refusal, with its reason when given.
         Err(physician_client::HttpError::Status { status, body })
             if (400..500).contains(status) && !matches!(status, 408 | 429) =>
@@ -3426,13 +3547,82 @@ fn answer(result: &Result<serde_json::Value, physician_client::HttpError>) -> An
     }
 }
 
+/// Optional same-tab persistence binding for chat commands so `Pending` /
+/// `Unconfirmed` commands survive a page reload (`Chat Command 8`, `Chat Rule 13`).
+#[derive(Clone, Copy, PartialEq)]
+struct SlotPersistence {
+    slot_id: &'static str,
+    client: Signal<PhysicianClient>,
+    whoami: Signal<Option<WhoamiResponse>>,
+    workspace: Signal<Option<String>>,
+    chat: Signal<Option<String>>,
+}
+
+impl SlotPersistence {
+    #[cfg(target_arch = "wasm32")]
+    fn save(self, command: &Command, stage: local_command::PersistedCommandStage) {
+        let Some(account) = self.whoami.peek().clone() else {
+            return;
+        };
+        let Some(workspace) = self.workspace.peek().clone() else {
+            return;
+        };
+        let Some(scope) = local_draft::Scope::new(
+            self.client.peek().base(),
+            &account.practice_id,
+            &account.physician_id,
+        ) else {
+            return;
+        };
+        if let Some(storage) = local_draft::SessionStorage::open() {
+            local_command::write(
+                &storage,
+                &scope,
+                &local_command::PersistedCommand {
+                    slot: self.slot_id.to_owned(),
+                    workspace,
+                    chat: self.chat.peek().clone().unwrap_or_default(),
+                    command: command.0.clone(),
+                    stage,
+                },
+            );
+        }
+    }
+
+    #[cfg(not(target_arch = "wasm32"))]
+    fn save(self, _command: &Command, _stage: local_command::PersistedCommandStage) {}
+
+    #[cfg(target_arch = "wasm32")]
+    fn clear(self) {
+        let Some(account) = self.whoami.peek().clone() else {
+            return;
+        };
+        let Some(scope) = local_draft::Scope::new(
+            self.client.peek().base(),
+            &account.practice_id,
+            &account.physician_id,
+        ) else {
+            return;
+        };
+        if let Some(storage) = local_draft::SessionStorage::open() {
+            local_command::remove(&storage, &scope, self.slot_id);
+        }
+    }
+
+    #[cfg(not(target_arch = "wasm32"))]
+    fn clear(self) {}
+}
+
+type StoredSlotCommand = (Command, Callback<serde_json::Value>, Option<Callback>);
+
 /// One command at a time on one item: what is in flight, and what Check again resends.
 #[derive(Clone, Copy, PartialEq)]
 struct CommandSlot {
     stage: Signal<CommandStage>,
     /// The unconfirmed command, what runs once it is taken, and what runs if
     /// it is refused.
-    last: Signal<Option<(Command, Callback, Option<Callback>)>>,
+    last: Signal<Option<StoredSlotCommand>>,
+    persistence: Option<SlotPersistence>,
 }
 
 /// A schedule rail shows while its day is loading or failed: only an answered day
@@ -3456,6 +3646,97 @@ fn use_command_slot() -> CommandSlot {
     CommandSlot {
         stage: use_signal(|| CommandStage::Idle),
         last: use_signal(|| None),
+        persistence: None,
+    }
+}
+
+fn use_persisted_command_slot(
+    slot_id: &'static str,
+    client: Signal<PhysicianClient>,
+    whoami: Signal<Option<WhoamiResponse>>,
+    workspace: Signal<Option<String>>,
+    chat: Signal<Option<String>>,
+    on_restored_accepted: impl FnMut(serde_json::Value) + 'static,
+) -> CommandSlot {
+    let slot = CommandSlot {
+        stage: use_signal(|| CommandStage::Idle),
+        last: use_signal(|| None),
+        persistence: Some(SlotPersistence {
+            slot_id,
+            client,
+            whoami,
+            workspace,
+            chat,
+        }),
+    };
+    let on_accepted = Callback::new(on_restored_accepted);
+    #[cfg(target_arch = "wasm32")]
+    {
+        let mut slot_stage = slot.stage;
+        let mut slot_last = slot.last;
+        let mut restored_for = use_signal(|| None::<String>);
+        use_effect(move || {
+            let Some(account) = whoami.read().clone() else {
+                return;
+            };
+            let Some(ws) = workspace.read().clone() else {
+                return;
+            };
+            let chat_id = chat.read().clone().unwrap_or_default();
+            let base = client.read().base().to_owned();
+            let scope_key = format!(
+                "{slot_id}|{}|{}|{ws}|{chat_id}",
+                account.practice_id, account.physician_id
+            );
+            if restored_for.peek().as_deref() == Some(scope_key.as_str()) {
+                return;
+            }
+            restored_for.set(Some(scope_key));
+            let Some(scope) =
+                local_draft::Scope::new(&base, &account.practice_id, &account.physician_id)
+            else {
+                return;
+            };
+            let Some(storage) = local_draft::SessionStorage::open() else {
+                return;
+            };
+            let Some(saved) = local_command::read(&storage, &scope, slot_id) else {
+                return;
+            };
+            if saved.workspace != ws || (!saved.chat.is_empty() && saved.chat != chat_id) {
+                return;
+            }
+            if *slot_stage.peek() != CommandStage::Idle {
+                return;
+            }
+            let cmd = Command(saved.command);
+            match saved.stage {
+                local_command::PersistedCommandStage::Pending => {
+                    slot.send(client.peek().clone(), cmd, on_accepted, None);
+                }
+                local_command::PersistedCommandStage::Unconfirmed => {
+                    slot_last.set(Some((cmd, on_accepted, None)));
+                    slot_stage.set(CommandStage::Unconfirmed);
+                }
+            }
+        });
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    let _ = on_accepted;
+    slot
+}
+
+const COMMAND_AUTO_RETRY_DELAY_MS: u32 = 500;
+
+/// Sends `command` once, automatically asking again once on `Answer::Unconfirmed`
+/// before settling into `Unconfirmed` (`Chat Command 4/6`).
+async fn dispatch_with_auto_retry(client: &PhysicianClient, command: &serde_json::Value) -> Answer {
+    match answer(&client.command(command).await) {
+        Answer::Unconfirmed => {
+            sleep_ms(COMMAND_AUTO_RETRY_DELAY_MS).await;
+            answer(&client.command(command).await)
+        }
+        settled => settled,
     }
 }
 
@@ -3466,7 +3747,17 @@ impl CommandSlot {
 
     /// Sends `command` unless one is already in flight; `then` runs once it is taken.
     fn run(self, client: PhysicianClient, command: Command, mut then: impl FnMut() + 'static) {
-        self.send(client, command, Callback::new(move |()| then()), None);
+        self.run_with_response(client, command, move |_| then());
+    }
+
+    /// Like `run`, passing the server's accepted JSON payload to `then`.
+    fn run_with_response(
+        self,
+        client: PhysicianClient,
+        command: Command,
+        then: impl FnMut(serde_json::Value) + 'static,
+    ) {
+        self.send(client, command, Callback::new(then), None);
     }
 
     /// Like `run`; `refused` runs when the server answers and does not take it.
@@ -3477,14 +3768,19 @@ impl CommandSlot {
         then: Callback,
         refused: Callback,
     ) {
-        self.send(client, command, then, Some(refused));
+        self.send(
+            client,
+            command,
+            Callback::new(move |_| then.call(())),
+            Some(refused),
+        );
     }
 
     fn send(
         mut self,
         client: PhysicianClient,
         command: Command,
-        then: Callback,
+        then: Callback<serde_json::Value>,
         refused: Option<Callback>,
     ) {
         if *self.stage.peek() == CommandStage::Sending {
@@ -3492,21 +3788,35 @@ impl CommandSlot {
         }
         self.last.set(Some((command.clone(), then, refused)));
         self.stage.set(CommandStage::Sending);
+        if let Some(p) = self.persistence {
+            p.save(&command, local_command::PersistedCommandStage::Pending);
+        }
         spawn(async move {
-            match answer(&client.command(&command.0).await) {
-                Answer::Accepted => {
+            match dispatch_with_auto_retry(&client, &command.0).await {
+                Answer::Accepted(value) => {
                     self.stage.set(CommandStage::Idle);
                     self.last.set(None);
-                    then.call(());
+                    if let Some(p) = self.persistence {
+                        p.clear();
+                    }
+                    then.call(value);
                 }
                 Answer::Refused(reason) => {
                     self.stage.set(CommandStage::Refused(reason));
                     self.last.set(None);
+                    if let Some(p) = self.persistence {
+                        p.clear();
+                    }
                     if let Some(refused) = refused {
                         refused.call(());
                     }
                 }
-                Answer::Unconfirmed => self.stage.set(CommandStage::Unconfirmed),
+                Answer::Unconfirmed => {
+                    self.stage.set(CommandStage::Unconfirmed);
+                    if let Some(p) = self.persistence {
+                        p.save(&command, local_command::PersistedCommandStage::Unconfirmed);
+                    }
+                }
             }
         });
     }
@@ -3555,7 +3865,7 @@ mod command_answer_tests {
     fn a_command_is_taken_refused_with_its_reason_or_unconfirmed() {
         assert_eq!(
             answer(&Ok(serde_json::json!({ "outcome": "accepted" }))),
-            Answer::Accepted
+            Answer::Accepted(serde_json::json!({ "outcome": "accepted" }))
         );
         assert_eq!(
             answer(&Ok(
@@ -4476,9 +4786,16 @@ fn PatientSurface(
     #[props(default)] on_open_demo_source: Option<EventHandler<String>>,
     on_draft: EventHandler<String>,
     on_send: EventHandler,
+    on_send_next: EventHandler,
     on_dictate: EventHandler,
     on_editing: EventHandler<bool>,
     conversation: ReadView<Vec<ConversationLine>>,
+    queued: Vec<physician_wire::QueuedMessageWire>,
+    queue_busy: bool,
+    queue_notice: Element,
+    on_queue_edit: EventHandler<(String, String)>,
+    on_queue_withdraw: EventHandler<String>,
+    on_queue_send_now: EventHandler<String>,
     on_conversation_retry: EventHandler,
     conversation_resume_busy: bool,
     conversation_resume_notice: Element,
@@ -4520,6 +4837,10 @@ fn PatientSurface(
     on_patient_gone: EventHandler<String>,
     on_open_discuss_chat: EventHandler<String>,
 ) -> Element {
+    let mut editing_queue = use_signal(|| None::<(String, String)>);
+    let is_working = conversation
+        .content()
+        .is_some_and(|lines| lines.iter().any(|line| line.working));
     let clinic_demographic = workspace
         .as_ref()
         .is_some_and(PatientWorkspaceResponse::is_clinic_demographic);
@@ -4929,7 +5250,7 @@ fn PatientSurface(
                 patient_reviews_panel::PatientReviewsPanel {
                     workspace_id: open.patient_workspace_id.clone(),
                     server_now: server_now.clone(),
-                    time_zone: open.time_zone.clone().unwrap_or_default(),
+                    time_zone: browser_tz.clone(),
                     context: reviews_context,
                     on_open_source,
                 }
@@ -5075,9 +5396,124 @@ fn PatientSurface(
                         if conversation_open && conversation.content().is_some_and(Vec::is_empty) {
                             h3 { class: "conversation-empty", "{CONVERSATION_EMPTY}" }
                         }
-                        for line in conversation.content().cloned().unwrap_or_default() {
-                            if let Some(target) = line.stop {
-                                div { class: "conversation-mechanical", role: "status",
+                        for (line_idx, line) in conversation.content().cloned().unwrap_or_default().into_iter().enumerate() {
+                            if line.author == Some(Author::Person) {
+                                ui::Message { key: "person-{line_idx}", author: Author::Person, by: "You",
+                                    LiteralWords { text: line.text }
+                                }
+                            } else if !line.work_item_id.is_empty() && (line.stop.is_some() || line.resume.is_some() || line.author == Some(Author::Assistant)) {
+                                {
+                                    let has_trace = !line.steps.steps.is_empty() || line.steps.unavailable;
+                                    let trace_label = line.steps.line_label.clone().unwrap_or_else(|| {
+                                        if line.working { "Working".to_owned() } else { "Steps".to_owned() }
+                                    });
+                                    let steps_unavailable = line.steps.unavailable;
+                                    let steps_items = line.steps.steps;
+                                    rsx! {
+                                        div { key: "work-{line.work_item_id}", class: "conversation-turn-end",
+                                            if has_trace {
+                                                ui::WorkTrace {
+                                                    label: trace_label,
+                                                    working: line.working,
+                                                    detail: None,
+                                                    if steps_unavailable && steps_items.is_empty() {
+                                                        ui::WorkStep {
+                                                            icon: IconName::Alert,
+                                                            label: "Coda couldn’t load the steps for this turn.".to_owned(),
+                                                            state: ui::StepState::Failed,
+                                                            detail: None,
+                                                        }
+                                                    } else {
+                                                        for (step_idx, step) in steps_items.into_iter().enumerate() {
+                                                            ui::WorkStep {
+                                                                key: "{step_idx}",
+                                                                icon: step_icon(step.kind),
+                                                                label: step.label,
+                                                                state: step.state,
+                                                                detail: step.detail,
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            if let Some(target) = line.stop {
+                                                div { class: "conversation-mechanical", role: "status",
+                                                    if !has_trace {
+                                                        ui::WorkingMark {}
+                                                    }
+                                                    p { "{line.text}" }
+                                                    Button {
+                                                        compact: true,
+                                                        disabled: conversation_stop_busy,
+                                                        onclick: move |_| on_conversation_stop.call(target.clone()),
+                                                        "{STOP}"
+                                                    }
+                                                }
+                                            } else if let Some(target) = line.resume {
+                                                div { class: "conversation-mechanical", role: "status",
+                                                    p { "{line.text}" }
+                                                    Button {
+                                                        compact: true,
+                                                        disabled: conversation_resume_busy,
+                                                        onclick: move |_| on_conversation_resume.call(target.clone()),
+                                                        if line.held { "{RESUME}" } else { "{TRY_AGAIN}" }
+                                                    }
+                                                }
+                                            } else if line.author == Some(Author::Assistant) {
+                                                ui::Message { author: Author::Assistant, by: "Coda",
+                                                    actions: feedback_chat.clone().zip(line.response).map(|(chat, (response, read))| rsx! {
+                                                        feedback::ResponseRating { chat, response, read }
+                                                    }),
+                                                    if line.freshness == AnswerFreshness::NewerRecordsArrived {
+                                                        div {
+                                                            class: "answer-update-banner",
+                                                            role: "status",
+                                                            "data-answer-freshness": "newer-records",
+                                                            span { "{ANSWER_NEWER_RECORDS}" }
+                                                            Button {
+                                                                compact: true,
+                                                                onclick: move |_| on_update_answer.call(()),
+                                                                "Update"
+                                                            }
+                                                        }
+                                                    }
+                                                    if !line.body_pieces.is_empty() {
+                                                        CitedMessage { pieces: line.body_pieces, on_open_source }
+                                                    } else {
+                                                        MessageWords { text: line.text }
+                                                    }
+                                                    if !line.basis_pieces.is_empty() {
+                                                        AnswerBasis { pieces: line.basis_pieces, on_open_source }
+                                                    }
+                                                    if !line.sources.is_empty()
+                                                        && let Some(open_demo_source) = on_open_demo_source
+                                                    {
+                                                        div { class: "message-sources",
+                                                            for (idx, src) in line.sources.iter().enumerate() {
+                                                                {
+                                                                    let record_id = src.record_id.clone();
+                                                                    let label = src.title.clone();
+                                                                    rsx! {
+                                                                        ui::CitationChip {
+                                                                            index: idx + 1,
+                                                                            label,
+                                                                            onclick: move |_| open_demo_source.call(record_id.clone()),
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            } else {
+                                                MessageWords { text: line.text }
+                                            }
+                                        }
+                                    }
+                                }
+                            } else if let Some(target) = line.stop {
+                                div { key: "stop-{line_idx}", class: "conversation-mechanical", role: "status",
+                                    ui::WorkingMark {}
                                     p { "{line.text}" }
                                     Button {
                                         compact: true,
@@ -5087,7 +5523,7 @@ fn PatientSurface(
                                     }
                                 }
                             } else if let Some(target) = line.resume {
-                                div { class: "conversation-mechanical", role: "status",
+                                div { key: "resume-{line_idx}", class: "conversation-mechanical", role: "status",
                                     p { "{line.text}" }
                                     Button {
                                         compact: true,
@@ -5096,55 +5532,9 @@ fn PatientSurface(
                                         if line.held { "{RESUME}" } else { "{TRY_AGAIN}" }
                                     }
                                 }
-                            } else if line.author == Some(Author::Person) {
-                                ui::Message { author: Author::Person, by: "You",
-                                    LiteralWords { text: line.text }
-                                }
                             } else if line.author == Some(Author::Assistant) {
-                                ui::Message { author: Author::Assistant, by: "Coda",
-                                    actions: feedback_chat.clone().zip(line.response).map(|(chat, (response, read))| rsx! {
-                                        feedback::ResponseRating { chat, response, read }
-                                    }),
-                                    if line.freshness == AnswerFreshness::NewerRecordsArrived {
-                                        div {
-                                            class: "answer-update-banner",
-                                            role: "status",
-                                            "data-answer-freshness": "newer-records",
-                                            span { "{ANSWER_NEWER_RECORDS}" }
-                                            Button {
-                                                compact: true,
-                                                onclick: move |_| on_update_answer.call(()),
-                                                "Update"
-                                            }
-                                        }
-                                    }
-                                    if !line.body_pieces.is_empty() {
-                                        CitedMessage { pieces: line.body_pieces, on_open_source }
-                                    } else {
-                                        MessageWords { text: line.text }
-                                    }
-                                    if !line.basis_pieces.is_empty() {
-                                        AnswerBasis { pieces: line.basis_pieces, on_open_source }
-                                    }
-                                    if !line.sources.is_empty()
-                                        && let Some(open_demo_source) = on_open_demo_source
-                                    {
-                                        div { class: "message-sources",
-                                            for (idx, src) in line.sources.iter().enumerate() {
-                                                {
-                                                    let record_id = src.record_id.clone();
-                                                    let label = src.title.clone();
-                                                    rsx! {
-                                                        ui::CitationChip {
-                                                            index: idx + 1,
-                                                            label,
-                                                            onclick: move |_| open_demo_source.call(record_id.clone()),
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+                                ui::Message { key: "kept-{line_idx}", author: Author::Assistant, by: "Coda",
+                                    MessageWords { text: line.text }
                                 }
                             } else {
                                 MessageWords { text: line.text }
@@ -5152,6 +5542,82 @@ fn PatientSurface(
                         }
                         {conversation_resume_notice}
                         {conversation_stop_notice}
+                        {queue_notice}
+                        if !queued.is_empty() {
+                            ui::MessageQueue {
+                                ui::MessageStatus {
+                                    words: "Sends after Coda's reply".to_owned(),
+                                    icon: Some(IconName::Clock),
+                                }
+                                for item in queued {
+                                    if let Some((_, draft_edit)) = editing_queue.read().as_ref().filter(|(id, _)| id == &item.id.0).cloned() {
+                                        {
+                                            let edit_id = item.id.0.clone();
+                                            let save_id = item.id.0.clone();
+                                            rsx! {
+                                                ui::MessageEditor {
+                                                    key: "{item.id.0}",
+                                                    label: "Edit queued message".to_owned(),
+                                                    value: draft_edit,
+                                                    on_input: move |next| {
+                                                        editing_queue.set(Some((edit_id.clone(), next)));
+                                                    },
+                                                    on_save: move |next| {
+                                                        editing_queue.set(None);
+                                                        on_queue_edit.call((save_id.clone(), next));
+                                                    },
+                                                    on_cancel: move |_| editing_queue.set(None),
+                                                    save_label: "Update".to_owned(),
+                                                    cancel_label: "Cancel".to_owned(),
+                                                    note: None,
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        {
+                                            let send_now_id = item.id.0.clone();
+                                            let edit_id = item.id.0.clone();
+                                            let edit_text = item.text.clone();
+                                            let withdraw_id = item.id.0.clone();
+                                            rsx! {
+                                                ui::Message {
+                                                    key: "{item.id.0}",
+                                                    author: Author::Person,
+                                                    by: "You",
+                                                    state: ui::MessageState::Queued,
+                                                    actions: Some(rsx! {
+                                                        ui::MessageActions {
+                                                            label: "Queued message actions".to_owned(),
+                                                            Button {
+                                                                compact: true,
+                                                                disabled: queue_busy,
+                                                                onclick: move |_| on_queue_send_now.call(send_now_id.clone()),
+                                                                "Send now"
+                                                            }
+                                                            Button {
+                                                                compact: true,
+                                                                disabled: queue_busy,
+                                                                onclick: move |_| {
+                                                                    editing_queue.set(Some((edit_id.clone(), edit_text.clone())));
+                                                                },
+                                                                "Edit"
+                                                            }
+                                                            Button {
+                                                                compact: true,
+                                                                disabled: queue_busy,
+                                                                onclick: move |_| on_queue_withdraw.call(withdraw_id.clone()),
+                                                                "Delete"
+                                                            }
+                                                        }
+                                                    }),
+                                                    LiteralWords { text: item.text }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                         div { class: "composer-dock",
                             ui::Composer {
                                 label: "Message",
@@ -5159,6 +5625,18 @@ fn PatientSurface(
                                 value: draft.clone(),
                                 on_input: move |text| on_draft.call(text),
                                 on_submit: move |_| on_send.call(()),
+                                on_key_down: move |event: KeyboardEvent| {
+                                    if event.key() != Key::Enter || event.is_composing() || event.modifiers().shift() {
+                                        return;
+                                    }
+                                    event.prevent_default();
+                                    event.stop_propagation();
+                                    if (event.modifiers().meta() || event.modifiers().ctrl()) && is_working {
+                                        on_send_next.call(());
+                                    } else {
+                                        on_send.call(());
+                                    }
+                                },
                                 on_editing: move |editing| {
                                     on_editing.call(editing);
                                     if !editing {
@@ -5186,7 +5664,16 @@ fn PatientSurface(
                                     }
                                 }),
                                 Button { compact: true, onclick: move |_| on_dictate.call(()), "Dictate" }
-                                Button { variant: ButtonVariant::Primary, compact: true, submit: true, "Send" }
+                                if is_working {
+                                    Button {
+                                        compact: true,
+                                        onclick: move |_| on_send_next.call(()),
+                                        "Send next"
+                                    }
+                                    Button { variant: ButtonVariant::Primary, compact: true, submit: true, "Send now" }
+                                } else {
+                                    Button { variant: ButtonVariant::Primary, compact: true, submit: true, "Send" }
+                                }
                             }
                         }
                         if recovery_unavailable {
@@ -5773,10 +6260,12 @@ fn ShortcutsDialog(on_close: EventHandler) -> Element {
                 div { class: "shortcut", span { "Search your panel" } kbd { "/  ⌘ K" } }
                 div { class: "shortcut", span { "Move between patients or conversations" } kbd { "J  K" } }
                 div { class: "shortcut", span { "Open the focused item" } kbd { "Enter" } }
-                div { class: "shortcut", span { "Update the response in progress" } kbd { "⌘ Enter" } }
+                div { class: "shortcut", span { "Send message (or Send now while Coda works)" } kbd { "Enter" } }
+                div { class: "shortcut", span { "New line in message" } kbd { "Shift + Enter" } }
+                div { class: "shortcut", span { "Send next after Coda's reply" } kbd { "⌘ Enter / Ctrl + Enter" } }
                 div { class: "shortcut", span { "Close the current preview or dialog" } kbd { "Esc" } }
                 div { class: "shortcut", span { "Hold to record; release to transcribe" } kbd { "Ctrl+Shift+Space" } }
-                p { class: "dialog-note", "Navigation shortcuts pause while you are typing. Dictation works in text fields while this tab has focus. Esc cancels dictation." }
+                p { class: "dialog-note", "Navigation shortcuts pause while you are typing. Dictation works in text fields while this tab has focus." }
         }
     }
 }
@@ -5892,6 +6381,7 @@ fn forget_workspace_drafts(
         && let Some(storage) = local_draft::SessionStorage::open()
     {
         local_draft::forget_workspace(&storage, &scope, workspace);
+        local_command::forget_workspace(&storage, &scope, workspace);
     }
     #[cfg(not(target_arch = "wasm32"))]
     let _ = (client, whoami);
@@ -6053,27 +6543,40 @@ fn writer_id() -> String {
     format!("doc-{}-{n}", now_millis())
 }
 
-/// The message the physician wrote, as one command. Nothing goes without a
-/// patient, a conversation and the practice's time zone.
-fn message_command(
+/// Maps a projected step kind to its UI icon.
+fn step_icon(kind: ProjectedStepKind) -> IconName {
+    match kind {
+        ProjectedStepKind::Search => IconName::Search,
+        ProjectedStepKind::Read => IconName::File,
+        ProjectedStepKind::Conversation => IconName::Message,
+    }
+}
+
+/// The message the physician wrote, as one command with its delivery mode.
+/// Nothing goes without a patient, a conversation and a time zone.
+fn message_command_with_delivery(
     workspace_id: Option<String>,
     chat_id: Option<String>,
     time_zone: Option<String>,
     text: String,
+    delivery: SubmitDelivery,
 ) -> Result<Command, String> {
     let (Some(workspace_id), Some(chat_id), Some(time_zone)) = (workspace_id, chat_id, time_zone)
     else {
         return Err(MESSAGE_REFUSED.to_owned());
     };
-    Ok(Command::new(
-        "message.submit",
-        serde_json::json!({
-            "patient_workspace_id": workspace_id,
-            "chat_id": chat_id,
-            "text": text,
-            "physician_time_zone": time_zone,
-        }),
-    ))
+    let mut payload = serde_json::json!({
+        "patient_workspace_id": workspace_id,
+        "chat_id": chat_id,
+        "text": text,
+        "physician_time_zone": time_zone,
+    });
+    if delivery == SubmitDelivery::SendNext
+        && let Some(obj) = payload.as_object_mut()
+    {
+        obj.insert("delivery".to_owned(), serde_json::json!("send_next"));
+    }
+    Ok(Command::new("message.submit", payload))
 }
 
 /// Builds the "Update this answer" message command directly without altering
@@ -6083,12 +6586,86 @@ fn update_answer_command(
     chat_id: Option<String>,
     time_zone: Option<String>,
 ) -> Result<Command, String> {
-    message_command(
+    message_command_with_delivery(
         workspace_id,
         chat_id,
         time_zone,
         UPDATE_ANSWER_PROMPT.to_owned(),
+        SubmitDelivery::SendNow,
     )
+}
+
+/// Extracts queued message texts returned to the composer when Coda stops.
+fn returned_queue_texts(value: &serde_json::Value) -> Vec<String> {
+    value
+        .get("returned_messages")
+        .and_then(serde_json::Value::as_array)
+        .map(|items| {
+            items
+                .iter()
+                .filter_map(serde_json::Value::as_str)
+                .map(str::to_owned)
+                .collect()
+        })
+        .unwrap_or_default()
+}
+
+fn queue_edit_command(
+    workspace_id: Option<String>,
+    chat_id: Option<String>,
+    message_id: String,
+    text: String,
+) -> Option<Command> {
+    let (Some(workspace_id), Some(chat_id)) = (workspace_id, chat_id) else {
+        return None;
+    };
+    Some(Command::new(
+        "message.queue_edit",
+        serde_json::json!({
+            "patient_workspace_id": workspace_id,
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "text": text,
+        }),
+    ))
+}
+
+fn queue_withdraw_command(
+    workspace_id: Option<String>,
+    chat_id: Option<String>,
+    message_id: String,
+) -> Option<Command> {
+    let (Some(workspace_id), Some(chat_id)) = (workspace_id, chat_id) else {
+        return None;
+    };
+    Some(Command::new(
+        "message.withdraw",
+        serde_json::json!({
+            "patient_workspace_id": workspace_id,
+            "chat_id": chat_id,
+            "message_id": message_id,
+        }),
+    ))
+}
+
+fn queue_send_now_command(
+    workspace_id: Option<String>,
+    chat_id: Option<String>,
+    message_id: String,
+    time_zone: String,
+) -> Option<Command> {
+    let (Some(workspace_id), Some(chat_id)) = (workspace_id, chat_id) else {
+        return None;
+    };
+    Some(Command::new(
+        "message.queue_send_now",
+        serde_json::json!({
+            "patient_workspace_id": workspace_id,
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "physician_time_zone": time_zone,
+        }),
+    ))
 }
 
 /// Whether newer clinical records arrived after Coda published an answer.
@@ -6118,6 +6695,13 @@ struct ConversationLine {
     author: Option<Author>,
     resume: Option<WorkResumeTarget>,
     stop: Option<WorkStopTarget>,
+    /// Stable exchange identifier on the turn's ending line, so `WorkTrace` keeps
+    /// its open/closed state when `Working` finishes.
+    work_item_id: String,
+    /// Whether this turn is currently in progress.
+    working: bool,
+    /// Physician-readable steps of this turn.
+    steps: ProjectedSteps,
     /// This resume is an intentional Stop. A failed turn's resume is Try again.
     held: bool,
     /// On one of Coda's published responses: its response id, which
@@ -6177,6 +6761,9 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
         author,
         resume: None,
         stop: None,
+        work_item_id: String::new(),
+        working: false,
+        steps: ProjectedSteps::default(),
         held: false,
         response: None,
         sources: Vec::new(),
@@ -6184,6 +6771,9 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
     let mut lines = Vec::new();
     for exchange in &snapshot.transcript {
         let exchange_sources = extract_exchange_sources(&exchange.steps);
+        let working = matches!(exchange.answer, AnswerState::Working { .. });
+        let steps = project_steps(&exchange.steps, working);
+        let work_item_id = exchange.work_item_id.0.clone();
         lines.extend(
             exchange
                 .messages
@@ -6199,6 +6789,9 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
         match &exchange.answer {
             AnswerState::Working { stop, .. } => lines.push(ConversationLine {
                 stop: Some(stop.clone()),
+                work_item_id,
+                working: true,
+                steps,
                 ..line(WRITING, None)
             }),
             AnswerState::Finished {
@@ -6233,6 +6826,8 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
                     body_pieces,
                     basis_pieces,
                     freshness,
+                    work_item_id,
+                    steps,
                     response: Some((response_id.clone(), read)),
                     sources: exchange_sources,
                     ..line(text, Some(Author::Assistant))
@@ -6240,6 +6835,8 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
             }
             AnswerState::Stopped { resume } => lines.push(ConversationLine {
                 resume: resume.clone(),
+                work_item_id,
+                steps,
                 held: true,
                 ..line(shell::STOPPED, None)
             }),
@@ -6255,11 +6852,15 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
                 };
                 lines.push(ConversationLine {
                     resume: try_again.clone(),
+                    work_item_id,
+                    steps,
                     ..line(&text, None)
                 });
             }
             AnswerState::CouldntFinish { try_again } => lines.push(ConversationLine {
                 resume: try_again.clone(),
+                work_item_id,
+                steps,
                 ..line(COULDNT_FINISH, None)
             }),
         }
@@ -6435,6 +7036,7 @@ mod conversation_line_tests {
                 kept: kept.iter().map(|text| (*text).to_owned()).collect(),
                 answer,
             }],
+            queued: Vec::new(),
             feedback,
             sources: std::collections::BTreeMap::new(),
         }
@@ -6449,9 +7051,19 @@ mod conversation_line_tests {
             author,
             resume: None,
             stop: None,
+            work_item_id: String::new(),
+            working: false,
+            steps: Default::default(),
             held: false,
             response: None,
             sources: Vec::new(),
+        }
+    }
+
+    fn ending_line(text: &str, author: Option<Author>) -> ConversationLine {
+        ConversationLine {
+            work_item_id: "work-1".into(),
+            ..line(text, author)
         }
     }
 
@@ -6489,7 +7101,8 @@ mod conversation_line_tests {
                         stop: Some(WorkStopTarget {
                             work_item_id: WorkItemId("work-1".into()),
                         }),
-                        ..line(WRITING, None)
+                        working: true,
+                        ..ending_line(WRITING, None)
                     },
                 ],
             ),
@@ -6500,7 +7113,7 @@ mod conversation_line_tests {
                     kept.clone(),
                     ConversationLine {
                         response: Some((ResponseId("r-1".into()), feedback::Read::Loaded(None))),
-                        ..line("The rest.", Some(Author::Assistant))
+                        ..ending_line("The rest.", Some(Author::Assistant))
                     },
                 ],
             ),
@@ -6512,7 +7125,7 @@ mod conversation_line_tests {
                 vec![ConversationLine {
                     resume: Some(target()),
                     held: true,
-                    ..line(STOPPED, None)
+                    ..ending_line(STOPPED, None)
                 }],
             ),
             (
@@ -6524,7 +7137,7 @@ mod conversation_line_tests {
                     kept.clone(),
                     ConversationLine {
                         resume: Some(target()),
-                        ..line("Partial response. Choose Try again to continue.", None)
+                        ..ending_line("Partial response. Choose Try again to continue.", None)
                     },
                 ],
             ),
@@ -6535,7 +7148,7 @@ mod conversation_line_tests {
                 &[],
                 vec![ConversationLine {
                     resume: Some(target()),
-                    ..line(
+                    ..ending_line(
                         "Coda reached its limit for this response. Choose Try again to continue.",
                         None,
                     )
@@ -6544,12 +7157,15 @@ mod conversation_line_tests {
             (
                 AnswerState::CutOff { try_again: None },
                 &["The saved part."],
-                vec![kept.clone(), line("Partial response.", None)],
+                vec![kept.clone(), ending_line("Partial response.", None)],
             ),
             (
                 AnswerState::CutOff { try_again: None },
                 &[],
-                vec![line("Coda reached its limit for this response.", None)],
+                vec![ending_line(
+                    "Coda reached its limit for this response.",
+                    None,
+                )],
             ),
             (
                 AnswerState::CouldntFinish {
@@ -6558,13 +7174,13 @@ mod conversation_line_tests {
                 &[],
                 vec![ConversationLine {
                     resume: Some(target()),
-                    ..line(COULDNT_FINISH, None)
+                    ..ending_line(COULDNT_FINISH, None)
                 }],
             ),
             (
                 AnswerState::CouldntFinish { try_again: None },
                 &[],
-                vec![line(COULDNT_FINISH, None)],
+                vec![ending_line(COULDNT_FINISH, None)],
             ),
         ];
         for (answer, kept, ending) in cases {
@@ -6806,5 +7422,69 @@ mod conversation_line_tests {
             )
             .is_err()
         );
+    }
+
+    #[test]
+    fn queue_and_delivery_commands_carry_expected_payloads() {
+        let now_cmd = super::message_command_with_delivery(
+            Some("pw-1".into()),
+            Some("chat-1".into()),
+            Some("America/Chicago".into()),
+            "Check sodium".into(),
+            physician_wire::SubmitDelivery::SendNow,
+        )
+        .unwrap();
+        assert_eq!(now_cmd.0["type"], "message.submit");
+        assert!(now_cmd.0["payload"].get("delivery").is_none());
+
+        let next_cmd = super::message_command_with_delivery(
+            Some("pw-1".into()),
+            Some("chat-1".into()),
+            Some("America/Chicago".into()),
+            "Then check potassium".into(),
+            physician_wire::SubmitDelivery::SendNext,
+        )
+        .unwrap();
+        assert_eq!(next_cmd.0["payload"]["delivery"], "send_next");
+        assert_eq!(
+            next_cmd.0["payload"]["physician_time_zone"],
+            "America/Chicago"
+        );
+
+        let edit = super::queue_edit_command(
+            Some("pw-1".into()),
+            Some("chat-1".into()),
+            "q-1".into(),
+            "Edited".into(),
+        )
+        .unwrap();
+        assert_eq!(edit.0["type"], "message.queue_edit");
+        assert_eq!(edit.0["payload"]["message_id"], "q-1");
+        assert_eq!(edit.0["payload"]["text"], "Edited");
+
+        let withdraw =
+            super::queue_withdraw_command(Some("pw-1".into()), Some("chat-1".into()), "q-1".into())
+                .unwrap();
+        assert_eq!(withdraw.0["type"], "message.withdraw");
+        assert_eq!(withdraw.0["payload"]["message_id"], "q-1");
+
+        let promote = super::queue_send_now_command(
+            Some("pw-1".into()),
+            Some("chat-1".into()),
+            "q-1".into(),
+            "America/New_York".into(),
+        )
+        .unwrap();
+        assert_eq!(promote.0["type"], "message.queue_send_now");
+        assert_eq!(
+            promote.0["payload"]["physician_time_zone"],
+            "America/New_York"
+        );
+
+        let returned = super::returned_queue_texts(&serde_json::json!({
+            "outcome": "accepted",
+            "returned_messages": ["First queued", "Second queued"]
+        }));
+        assert_eq!(returned, vec!["First queued", "Second queued"]);
     }
 }

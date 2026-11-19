@@ -1260,6 +1260,7 @@ fn source_chip_from_cited(source: &CitedSourceWire) -> SourceChip {
         as_of: source.recorded_at.clone().unwrap_or_default(),
         open_label,
         open_uri,
+        origin: source.origin,
     }
 }
 

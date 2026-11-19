@@ -882,6 +882,17 @@ pub struct ChatSnapshotResponse {
     pub snapshot: ChatSnapshot,
 }
 
+/// Where a cited source's displayed text came from.
+#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum CitationOrigin {
+    /// Copied or decoded from the source record itself.
+    #[default]
+    SourceRecord,
+    /// Coda's own short description because the source had nothing of its own to show.
+    PreparedByCoda,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 /// One cited record backing claims in a conversation snapshot.
 pub struct CitedSourceWire {
@@ -909,6 +920,9 @@ pub struct CitedSourceWire {
     #[serde(default)]
     /// Direct link into the connected chart when available.
     pub external_url: Option<String>,
+    #[serde(default)]
+    /// Whether the body is from the source record or Coda's fallback description.
+    pub origin: CitationOrigin,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -937,6 +951,28 @@ fn is_false(value: &bool) -> bool {
     !*value
 }
 
+/// How a submitted message should be delivered relative to active work.
+#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum SubmitDelivery {
+    /// Send immediately (starts a turn when idle/stopped/failed, or steers active work).
+    #[default]
+    SendNow,
+    /// Queue while Coda is working; sent together once the answer finishes.
+    SendNext,
+}
+
+/// One physician message queued on the server waiting for the current answer to finish.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct QueuedMessageWire {
+    /// The idempotency key the page sent the message with.
+    pub id: MessageKey,
+    /// The message as the physician wrote or edited it.
+    pub text: String,
+    /// When the server saved it.
+    pub saved_at: SavedAt,
+}
+
 /// The conversation's transcript and whether its feedback could be read.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct ChatSnapshot {
@@ -947,6 +983,9 @@ pub struct ChatSnapshot {
     #[serde(default, skip_serializing_if = "std::collections::BTreeMap::is_empty")]
     /// Verified cited sources referenced by [`AnswerState::Finished`] segments and Basis.
     pub sources: std::collections::BTreeMap<String, CitedSourceWire>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    /// Physician messages queued behind active/cut-off/failed work.
+    pub queued: Vec<QueuedMessageWire>,
 }
 
 /// One piece of accepted work: the messages that started or steered it, the

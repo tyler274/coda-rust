@@ -566,6 +566,39 @@ impl Composer {
         held.pending_clear = true;
         held.settle();
     }
+
+    /// Appends queued message texts returned by Stop back into `target`'s composer,
+    /// keeping any unsent text the physician was already typing there.
+    pub(crate) fn restore_returned_queue(&mut self, target: &DraftTarget, returned: &[String]) {
+        if returned.is_empty() {
+            return;
+        }
+        self.open(Some(target));
+        let Some(held) = self.held.get_mut(target) else {
+            return;
+        };
+        let mut combined = held.text.clone();
+        for text in returned {
+            let trimmed = text.trim();
+            if trimmed.is_empty() {
+                continue;
+            }
+            if !combined.trim().is_empty() {
+                if !combined.ends_with('\n') {
+                    combined.push('\n');
+                }
+            } else {
+                combined.clear();
+            }
+            combined.push_str(text);
+        }
+        if combined != held.text {
+            held.text = combined;
+            held.generation += 1;
+            held.failed = false;
+            held.settle();
+        }
+    }
 }
 
 #[cfg(test)]

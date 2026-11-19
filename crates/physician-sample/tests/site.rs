@@ -1839,6 +1839,15 @@ impl Drop for ChatBrowserServer {
 }
 
 async fn serve_chat_browser(site: &std::path::Path, reply: &str) -> ChatBrowserServer {
+    serve_chat_browser_with_stub(site, 0, "[]", reply).await
+}
+
+async fn serve_chat_browser_with_stub(
+    site: &std::path::Path,
+    delay_ms: u64,
+    rounds: &str,
+    reply: &str,
+) -> ChatBrowserServer {
     let state = env::temp_dir().join(format!("coda-chat-browser-{}", uuid::Uuid::new_v4()));
     let _ = fs::remove_dir_all(&state);
     fs::create_dir_all(&state).unwrap();
@@ -1863,7 +1872,7 @@ async fn serve_chat_browser(site: &std::path::Path, reply: &str) -> ChatBrowserS
     let worker_port = scale::free_port();
     let valkey = scale::Valkey::start().await;
     let redis = valkey.url();
-    let stub = scale::ResponsesStub::start_with_reply(&state, 0, 0, "[]", reply).await;
+    let stub = scale::ResponsesStub::start_with_reply(&state, 0, delay_ms, rounds, reply).await;
     let listen = format!("127.0.0.1:{worker_port}");
     let mut worker = scale::Process::spawn(
         "worker",
@@ -5391,10 +5400,7 @@ async fn first_source_path_renders_saved_patient_summary_and_evidence_without_pr
 
     // Click citation chip 1 inside Patient summary -> side-panel source inspection opens!
     browser.click("section[aria-label=\"Patient summary\"] button[aria-label*=\"Source 1:\"]");
-    browser.wait_for_text(
-        "Prepared by Coda · as of 2026-08-20",
-        Duration::from_secs(10),
-    );
+    browser.wait_for_text("As of 2026-08-20", Duration::from_secs(10));
     browser.wait_for_text(
         "CONSULTATION NOTE (2026-08-20): Persistent atrial fibrillation",
         Duration::from_secs(10),
@@ -5431,4 +5437,273 @@ async fn first_source_path_renders_saved_patient_summary_and_evidence_without_pr
         env::remove_var("PHYSICIAN_AUTH");
         env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
     }
+}
+
+/// End-to-end browser verification of composer enter/shift-enter/ctrl-enter keys,
+/// server-backed MessageQueue (Send next, inline Edit/Update, Delete), WorkTrace
+/// steps without tool names staying open across Working -> Finished and across
+/// reload, Stop returning queued items to the composer, CommandSlot single
+/// automatic retry on lost receipt, and browser IANA timezone forwarding.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn p1_composer_queue_stop_steps_retry_and_provenance() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    let rounds = serde_json::json!([
+        [{
+            "name": "search_patient_information",
+            "arguments": {"query": "sodium", "record_type": null, "after": null}
+        }]
+    ])
+    .to_string();
+    let server = serve_chat_browser_with_stub(&site, 5_000, &rounds, scale::FIXED_TEXT).await;
+    let address = server.address;
+    let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
+    let chat = "chat-p1-composer-queue";
+    let chat_url = format!("http://{address}/?patient={patient}&chat={chat}");
+
+    let mut tab = Tab::open(&format!("http://{address}/"));
+    tab.wait_for_text("Work email", Duration::from_secs(20));
+    tab.request_sign_in("physician@codahealth.test");
+    tab.wait_for_text("Nothing needs you right now.", Duration::from_secs(20));
+    tab.navigate(&chat_url);
+    tab.wait_for_text(
+        "What would you like Coda to review?",
+        Duration::from_secs(20),
+    );
+
+    // 1. Shortcuts dialog matches shipped shortcuts (no false dictation Esc text).
+    tab.click_named("button", "Keyboard shortcuts");
+    let shortcuts_dom = tab.wait_for_text("Send next after Coda's reply", Duration::from_secs(10));
+    assert!(
+        !shortcuts_dom.contains("Esc cancels dictation"),
+        "stale dictation Esc text remained in ShortcutsDialog:\n{shortcuts_dom}"
+    );
+    tab.click("dialog button[aria-label=\"Close\"]");
+    let dialog_deadline = Instant::now() + Duration::from_secs(5);
+    while tab.eval("Boolean(document.querySelector('dialog'))") == serde_json::json!(true) {
+        assert!(
+            Instant::now() < dialog_deadline,
+            "ShortcutsDialog did not close"
+        );
+        tokio::time::sleep(Duration::from_millis(25)).await;
+    }
+
+    let send_enter = |tab: &mut Tab, modifiers: i64, with_text: bool| {
+        tab.step("focusEnd", serde_json::json!(["textarea.composer-input"]));
+        assert_eq!(
+            tab.step("hasFocus", serde_json::json!(["textarea.composer-input"])),
+            serde_json::json!(true),
+            "composer did not take focus before key dispatch"
+        );
+        let mut down = serde_json::json!({
+            "type": "keyDown",
+            "key": "Enter",
+            "code": "Enter",
+            "windowsVirtualKeyCode": 13,
+            "nativeVirtualKeyCode": 13,
+            "modifiers": modifiers
+        });
+        if with_text {
+            down["text"] = serde_json::json!("\r");
+            down["unmodifiedText"] = serde_json::json!("\r");
+        }
+        tab.call("Input.dispatchKeyEvent", down);
+        tab.call(
+            "Input.dispatchKeyEvent",
+            serde_json::json!({
+                "type": "keyUp",
+                "key": "Enter",
+                "code": "Enter",
+                "windowsVirtualKeyCode": 13,
+                "nativeVirtualKeyCode": 13,
+                "modifiers": modifiers
+            }),
+        );
+    };
+
+    // 2. Shift+Enter inserts a newline without sending; bare Enter sends.
+    tab.type_composer("First line");
+    send_enter(&mut tab, 8, true);
+    tab.call(
+        "Input.insertText",
+        serde_json::json!({ "text": "Second line" }),
+    );
+    tab.eval("(() => { const b = document.querySelector('textarea.composer-input'); b.dispatchEvent(new Event('input', { bubbles: true })); return true; })()");
+    let composer_now = tab.composer().0;
+    assert!(
+        composer_now.contains("First line\nSecond line")
+            || composer_now.contains("First line\rSecond line"),
+        "Shift+Enter did not add a newline without sending: {composer_now:?}"
+    );
+    send_enter(&mut tab, 0, false);
+
+    // 3. While working: WorkingMark + WorkTrace + Send next / Send now toolbar buttons.
+    tab.wait_for_text("Send next", Duration::from_secs(15));
+    let working_buttons = tab.eval(
+        "[...document.querySelectorAll('.composer-toolbar button')].map(b => b.textContent.trim())",
+    );
+    assert_eq!(
+        working_buttons,
+        serde_json::json!(["Dictate", "Send next", "Send now"]),
+        "unexpected working composer buttons: {working_buttons}"
+    );
+    assert_eq!(
+        tab.eval("Boolean(document.querySelector('.working-dots'))"),
+        serde_json::json!(true),
+        "WorkingMark pulsing dots missing while working"
+    );
+
+    // WorkTrace appears with physician-readable steps and no raw tool names; open it before finish!
+    tab.wait_for_text("patient chart", Duration::from_secs(15));
+    tab.click(".work-trace-line");
+    assert_eq!(
+        tab.eval("document.querySelector('.work-trace')?.getAttribute('data-state')"),
+        serde_json::json!("open"),
+        "WorkTrace did not open on click while working"
+    );
+    let working_dom = tab
+        .eval("document.documentElement.outerHTML")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    for internal in [
+        "search_patient_information",
+        "read_patient_sources",
+        "finish_answer",
+    ] {
+        assert!(
+            !working_dom.contains(internal),
+            "raw tool name {internal} leaked into DOM:\n{working_dom}"
+        );
+    }
+
+    // Queue 2 follow-ups (one via Ctrl+Enter, one via Send next button), edit the first, delete the second.
+    tab.type_composer("Queued alpha");
+    send_enter(&mut tab, 2, false);
+    tab.wait_for_text("Sends after Coda's reply", Duration::from_secs(10));
+    tab.wait_for_text("Queued alpha", Duration::from_secs(10));
+
+    tab.type_composer("Queued beta");
+    tab.click_named(".composer-toolbar button", "Send next");
+    tab.wait_for_text("Queued beta", Duration::from_secs(10));
+    tab.save_picture("p1-working-trace-and-queue");
+
+    tab.click_named(".message-queue button", "Edit");
+    tab.wait_for_text("Update", Duration::from_secs(5));
+    tab.eval(
+        "(() => { const box = document.querySelector('textarea.message-editor-input'); const d = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value'); d.set.call(box, 'Queued alpha edited'); box.dispatchEvent(new Event('input', { bubbles: true })); return true; })()",
+    );
+    tab.click_named(".message-queue button", "Update");
+    tab.wait_for_text("Queued alpha edited", Duration::from_secs(10));
+
+    assert_eq!(
+        tab.eval(
+            "(() => { const msgs = [...document.querySelectorAll('.message-queue .message')]; const btns = msgs[1] ? [...msgs[1].querySelectorAll('button')] : []; const del = btns.find(b => b.textContent.trim() === 'Delete'); del?.click(); return Boolean(del); })()",
+        ),
+        serde_json::json!(true),
+        "Delete button missing on second queued item"
+    );
+    let start_del = Instant::now();
+    while start_del.elapsed() < Duration::from_secs(10) {
+        let html = tab
+            .eval("document.querySelector('.message-queue')?.innerText ?? ''")
+            .as_str()
+            .unwrap_or_default()
+            .to_owned();
+        if !html.contains("Queued beta") {
+            break;
+        }
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    }
+
+    // 4. Both Turn 1 and drained queued Turn 2 finish; Turn 1 WorkTrace stays OPEN across Working -> Finished!
+    tab.wait_for_text(scale::FIXED_TEXT, Duration::from_secs(30));
+    let trace_deadline = Instant::now() + Duration::from_secs(30);
+    loop {
+        let count_finished =
+            tab.eval("document.querySelectorAll('[aria-label=\"Conversation\"] .message').length");
+        if count_finished.as_u64().unwrap_or(0) >= 4
+            && tab.eval("document.querySelectorAll('.message-queue').length")
+                == serde_json::json!(0)
+        {
+            break;
+        }
+        assert!(
+            Instant::now() < trace_deadline,
+            "queued turn did not drain and finish cleanly"
+        );
+        tokio::time::sleep(Duration::from_millis(100)).await;
+    }
+    assert_eq!(
+        tab.eval("document.querySelector('.work-trace')?.getAttribute('data-state')"),
+        serde_json::json!("open"),
+        "WorkTrace did not stay open across Working -> Finished transition"
+    );
+    tab.save_picture("p1-trace-still-open-after-finish");
+
+    // 5. Reopen conversation across reload -> WorkTrace still renders saved steps in start order.
+    tab.reload();
+    tab.wait_for_text(scale::FIXED_TEXT, Duration::from_secs(20));
+    tab.wait_for_text("Queued alpha edited", Duration::from_secs(15));
+    assert!(
+        tab.eval("document.querySelectorAll('.work-trace').length")
+            .as_u64()
+            .unwrap_or(0)
+            >= 1,
+        "WorkTrace missing after conversation reopen"
+    );
+
+    // 6. Stop during active work returns queued messages directly into the composer.
+    tab.type_composer("Stop target turn");
+    send_enter(&mut tab, 0, false);
+    tab.wait_for_text("Stop target turn", Duration::from_secs(10));
+    tab.wait_for_text("Send next", Duration::from_secs(10));
+    tab.type_composer("Return this on Stop");
+    send_enter(&mut tab, 2, false);
+    tab.wait_for_text("Return this on Stop", Duration::from_secs(10));
+    tab.click_named(".conversation-mechanical button", "Stop");
+    tab.wait_composer("Return this on Stop", Duration::from_secs(15));
+    tab.save_picture("p1-stop-returned-queue");
+    tab.type_composer("");
+
+    // 7. Auto-retry ONCE with the same idempotency_key when response is dropped, plus browser timezone.
+    let expected_tz = tab
+        .eval("Intl.DateTimeFormat().resolvedOptions().timeZone")
+        .as_str()
+        .unwrap_or("UTC")
+        .to_owned();
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/commands", "requestStage": "Response" }] }),
+    );
+    tab.type_composer("Auto retry once message");
+    send_enter(&mut tab, 0, false);
+    let dropped_req = tab.held_request("POST");
+    let first_key = held_body(&dropped_req)["idempotency_key"].clone();
+    assert_eq!(
+        held_body(&dropped_req)["payload"]["physician_time_zone"]
+            .as_str()
+            .unwrap_or_default(),
+        expected_tz,
+        "command did not carry browser IANA timezone"
+    );
+    tab.call(
+        "Fetch.failRequest",
+        serde_json::json!({ "requestId": dropped_req["requestId"], "errorReason": "Failed" }),
+    );
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/commands", "requestStage": "Request" }] }),
+    );
+    let retry_req = tab.held_request("POST");
+    assert_eq!(
+        held_body(&retry_req)["idempotency_key"],
+        first_key,
+        "automatic retry did not preserve idempotency_key"
+    );
+    tab.release(&retry_req);
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.release_all();
+    tab.wait_for_text("Auto retry once message", Duration::from_secs(15));
 }

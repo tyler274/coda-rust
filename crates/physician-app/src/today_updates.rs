@@ -174,6 +174,7 @@ pub(crate) fn item_citation_to_chip(index: usize, citation: &ItemCitationWire) -
         preview: full_record,
         open_label,
         open_uri: citation.native_uri.clone(),
+        origin: physician_wire::CitationOrigin::SourceRecord,
     }
 }
 

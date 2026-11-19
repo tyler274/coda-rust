@@ -271,6 +271,7 @@ fn project_briefing(
             body,
             raw_content,
             external_url: citation.native_uri.clone(),
+            origin: Default::default(),
         };
         sources.insert(source_key.clone(), wire_source);
         index_by_ref.insert(

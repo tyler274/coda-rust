@@ -275,6 +275,7 @@ mod tests {
                 }],
                 feedback: SnapshotFeedback::Loaded,
                 sources: Default::default(),
+                queued: Vec::new(),
             },
         })
         .unwrap()

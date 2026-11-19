@@ -189,6 +189,9 @@ pub struct CitedSourceReadback {
     pub raw_content: String,
     /// Direct link into the originating EHR or source when available.
     pub external_url: Option<String>,
+    /// Whether the readable body comes from the source record or Coda's fallback description.
+    #[serde(default)]
+    pub origin: physician_wire::CitationOrigin,
 }
 
 /// One turn in a reopened conversation, with structured segments, Basis, and
@@ -742,17 +745,20 @@ fn apply_description_fallback(
     body: String,
     source: &SourceVersion,
     descriptions: &[Description],
-) -> String {
+) -> (String, physician_wire::CitationOrigin) {
     if !body.trim().is_empty() {
-        return body;
+        return (body, physician_wire::CitationOrigin::SourceRecord);
     }
     if let Some(desc) = descriptions
         .iter()
         .find(|desc| desc.source == *source && !desc.text.trim().is_empty())
     {
-        return format!("Prepared by Coda\n{}", desc.text.trim());
+        return (
+            format!("Prepared by Coda\n{}", desc.text.trim()),
+            physician_wire::CitationOrigin::PreparedByCoda,
+        );
     }
-    body
+    (body, physician_wire::CitationOrigin::SourceRecord)
 }
 
 struct TurnCitationContext<'a> {
@@ -827,6 +833,7 @@ fn reconstruct_finished_turn(
                 body: withdrawn_note,
                 raw_content: String::new(),
                 external_url: None,
+                origin: physician_wire::CitationOrigin::SourceRecord,
             }
         } else if let Some((observed_at, rev)) = ctx.saved_revisions.get(&version_key) {
             max_cited_version =
@@ -840,7 +847,8 @@ fn reconstruct_finished_turn(
             let title = cited_record_title(&rev.provenance, &rev.record_type, &rev.candidate_id);
             let external_url = provenance_string(&rev.provenance, &["external_url", "url", "href"]);
             let raw_body = format_cited_source_body(&title, &rev.readable_parts, &rev.content);
-            let body = apply_description_fallback(raw_body, &mark.source, finished.descriptions());
+            let (body, origin) =
+                apply_description_fallback(raw_body, &mark.source, finished.descriptions());
             let quote = passage_quote.unwrap_or_else(|| truncate_clean(&body, 220));
             CitedSourceReadback {
                 source_key: source_key.clone(),
@@ -856,6 +864,7 @@ fn reconstruct_finished_turn(
                 body,
                 raw_content: rev.content.clone(),
                 external_url,
+                origin,
             }
         } else if let Some(read) = ctx.work_reads.get(&version_key) {
             let source_label =
@@ -868,7 +877,7 @@ fn reconstruct_finished_turn(
             );
             let external_url =
                 provenance_string(&read.fallback_provenance, &["external_url", "url", "href"]);
-            let body = apply_description_fallback(
+            let (body, origin) = apply_description_fallback(
                 read.fallback_body.clone(),
                 &mark.source,
                 finished.descriptions(),
@@ -894,9 +903,10 @@ fn reconstruct_finished_turn(
                 body,
                 raw_content: read.fallback_raw.clone(),
                 external_url,
+                origin,
             }
         } else {
-            let body =
+            let (body, origin) =
                 apply_description_fallback(String::new(), &mark.source, finished.descriptions());
             let quote = truncate_clean(&body, 220);
             CitedSourceReadback {
@@ -913,6 +923,7 @@ fn reconstruct_finished_turn(
                 body,
                 raw_content: String::new(),
                 external_url: None,
+                origin,
             }
         };
         turn_sources.insert(source_key, cited.clone());
@@ -1420,6 +1431,7 @@ impl Store {
                             body: reason,
                             raw_content: String::new(),
                             external_url: None,
+                            origin: physician_wire::CitationOrigin::SourceRecord,
                         });
                 } else {
                     if let Some((observed_at, _)) = saved_revisions.get(&key) {

@@ -4,7 +4,8 @@
 //! left waiting on a second step here.
 use crate::hosting::{ScenarioRefused, SimulationPractices};
 use local_product::runtime::{
-    Accepted, Authority, Conversation, Input, Resumed, Scope, Stopped, Store,
+    Accepted, Authority, ChatStopped, Conversation, Input, QueueMutation, Resumed, Scope, Stopped,
+    Store,
     delivery::TraceContext,
     reply::{RevisionAccepted, RevisionInput},
 };
@@ -86,6 +87,24 @@ impl DurableChat {
         input: &Input,
         session_hash: Vec<u8>,
     ) -> Result<Accepted, String> {
+        self.accept_with_delivery(
+            scope,
+            input,
+            session_hash,
+            physician_wire::SubmitDelivery::SendNow,
+        )
+        .await
+    }
+
+    /// Saves the receipt and input using the requested delivery mode (`SendNow`
+    /// starts or steers; `SendNext` queues while Coda is working).
+    pub async fn accept_with_delivery(
+        &self,
+        scope: &Scope,
+        input: &Input,
+        session_hash: Vec<u8>,
+        delivery: physician_wire::SubmitDelivery,
+    ) -> Result<Accepted, String> {
         let chat_recipe = self
             .store
             .chat_recipe_with_understanding(
@@ -98,10 +117,73 @@ impl DurableChat {
             .await
             .map_err(|e| e.to_string())?;
         self.store
-            .accept_authorized(
+            .accept_with_delivery_authorized(
                 scope,
                 input,
                 session_hash,
+                delivery,
+                &self.skills,
+                &chat_recipe,
+                request_context(),
+            )
+            .await
+            .map_err(|e| e.to_string())
+    }
+
+    /// Edits one queued message in `scope`.
+    pub async fn edit_queued_message(
+        &self,
+        scope: &Scope,
+        key: &str,
+        message_id: &str,
+        new_text: &str,
+    ) -> Result<QueueMutation, String> {
+        self.store
+            .edit_queued_message_authorized(scope, key, message_id, new_text)
+            .await
+            .map_err(|e| e.to_string())
+    }
+
+    /// Removes one queued message from `scope`.
+    pub async fn withdraw_queued_message(
+        &self,
+        scope: &Scope,
+        key: &str,
+        message_id: &str,
+    ) -> Result<QueueMutation, String> {
+        self.store
+            .withdraw_queued_message_authorized(scope, key, message_id)
+            .await
+            .map_err(|e| e.to_string())
+    }
+
+    /// Promotes one queued message to `Send now` under `scope`.
+    pub async fn send_queued_now(
+        &self,
+        scope: &Scope,
+        key: &str,
+        session_hash: Vec<u8>,
+        message_id: &str,
+        timezone: &str,
+    ) -> Result<QueueMutation, String> {
+        let chat_recipe = self
+            .store
+            .chat_recipe_with_understanding(
+                &self.roles.chat,
+                local_product::physician_chat::INSTRUCTIONS,
+                &self.skills,
+                &scope.practice,
+                &scope.workspace,
+            )
+            .await
+            .map_err(|e| e.to_string())?;
+        self.store
+            .send_queued_now_authorized(
+                scope,
+                key,
+                session_hash,
+                message_id,
+                timezone,
                 &self.skills,
                 &chat_recipe,
                 request_context(),
@@ -166,6 +248,20 @@ impl DurableChat {
     ) -> Result<Stopped, String> {
         self.store
             .stop_authorized(scope, key, session_hash, work_item_id)
+            .await
+            .map_err(|error| error.to_string())
+    }
+
+    /// Hosted chat Stop, returning any queued messages sent back to the composer.
+    pub async fn stop_chat(
+        &self,
+        scope: &Scope,
+        key: &str,
+        session_hash: Vec<u8>,
+        work_item_id: &str,
+    ) -> Result<ChatStopped, String> {
+        self.store
+            .stop_chat_authorized(scope, key, session_hash, work_item_id)
             .await
             .map_err(|error| error.to_string())
     }
