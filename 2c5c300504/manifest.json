@@ -1,0 +1,36 @@
+{
+  "branch": "tyler-eng-311-3-spruce-confirmation-and-moves",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC2",
+      "label": "Spruce confirmation, undo window, and wrong-patient moves + PostgreSQL ledger check",
+      "kind": "run",
+      "revision": "37bdae08f35fbb801449be427b6cf7138b7e04c5",
+      "dirty": false,
+      "recorded": "2026-11-18T22:52:48+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "local-product",
+        "--lib",
+        "runtime::tests::migration",
+        "--",
+        "--ignored"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-Spruce-confirmation-undo-window-and-wrong-patien.log"
+      ],
+      "seconds": 25.1,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "2c5c3005043f252026bbf3ebf7e3c3f17861cda6",
+        "reason": "Rebased cleanly onto PR 60 (e374cd7738); slice diff and behavior unchanged"
+      }
+    }
+  ]
+}
