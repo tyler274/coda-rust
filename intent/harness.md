@@ -245,6 +245,7 @@ The lead can give parts of the work to workers, following Codex's design.
 
 - The loop runs the same way with simulated triggers.
 - A simulation supplies the triggers, events and actors.
+- A persisted, advancing practice simulation clock defines "today" consistently across Today, scheduled pulls and cadences, visit preparation, follow-ups and multi-week simulation rounds, surviving service restarts.
 - A stub behind a product tool or the provider can return source data or a failure.
 - Nothing reads markers from the person's message, and nothing scripts the model's calls. The model chooses its calls and draws its own conclusions.
 
@@ -393,7 +394,6 @@ Reply text:
 
 These are undecided. When one is answered, the answer goes into every spec it touches and the question leaves this list. Answer by ID.
 
-- **E11. The simulation's clock.** What "today" means once the clock moves.
 - **E17. Recent messages in a fresh window.** Whether a fresh window also carries the last few messages word for word.
 - **E18. Pausing for the person.** Whether a run can stop to ask the person a question, or for approval of an exact action, and resume with the answer, as Codex, Hermes and OpenClaw can. Closing it means deciding how the model asks (a tool), how a waiting run is kept (held durably, taking no slot), how the answer returns (a saved input carried into the next request once, like a steer), what happens when no answer comes, and that an approval covers exactly the action shown. Physician write-back needs it first.
 - **E19. Steering a running worker.** Whether the lead can message or stop a worker while it runs, as Codex and OpenClaw allow.

@@ -38,7 +38,7 @@ Coda's shared principles (README.md) govern this spec. These are the ones specif
 
 **Coda.** The team of agents. It investigates, synthesizes and recommends instead of pushing routine judgment back to the physician.
 
-**Roster.** The practice's patients, as its EHR lists them. A patient with a live Duet connection is active, and Coda works on active patients first. A patient in the EHR with no connection stays on the roster, to the side, as not active. How the first practice's roster is filled and kept current is not decided yet.
+**Roster.** The practice's patients, as its EHR lists them. A patient with a live Duet connection is active, and Coda works on active patients first. A patient in the EHR with no connection stays on the roster, to the side, as not active. Hint Health and Elation FHIR supply and keep the practice's patient roster current through their adapters.
 
 **Today.** The physician's to-do list. It shows the most salient things: what needs their attention, what's urgent, what's wrong. It is one flat list across patients, one row per thing, each naming its patient, ordered by urgency (now, then today) and then by how long it has waited. Coda decides what goes on Today, what goes to Updates and what stays on the patient page. Three things are fixed regardless of that judgment: only people with access see a patient's item, nothing broken, behind or unhandled is silent to someone who can act, and nothing reaches a patient without the physician's approval.
 
@@ -188,7 +188,7 @@ Along the way:
 
 This is how we prove principle 4, Design for the patient who does nothing.
 
-1. A multi-week world of synthetic patients and a practice runs on the real coda-rust services. Time advances, the app closes and services restart.
+1. A multi-week world of synthetic patients and a practice runs on the real coda-rust services driven by a persisted, advancing practice simulation clock. Advancing simulation time moves "today" consistently across Today, scheduled pulls and cadences, visit preparation, follow-ups and simulation rounds, surviving app closes and service restarts.
 2. Coda checks each patient on its schedule, reviews when something changed, and runs follow-ups on their own schedules. On staging the simulation drives this.
 3. Patients never act. Coda notices what changed and carries each episode to the physician's decision and follow-through.
 4. The physician sees only what needs them, and everything else is logged in Updates.
@@ -204,11 +204,11 @@ Physicians sign in only through Chords, with an emailed link and no password or 
 
 Inside the workspace:
 
-1. Which patients a physician may access, and whether a practice has roles, are not decided yet. Everything here follows that decision.
+1. Each physician has an assigned panel of patients within their practice, and practice administrators manage practice accounts and panel assignments. A physician sees the full chart and clinical work for patients allowed on their panel, at most clinic demographics for practice patients off their panel, and nothing for denied or other-practice patients.
 2. When a physician loses access to a patient, that patient's screens close at once and anything that physician personally started stops; practice-owned work continues.
 3. Every list across patients reads within the physician's access. A list that couldn't check a patient skips only that patient and says it may be missing someone.
 4. Spruce conversations show only for patients the physician may access.
-5. Any practice member can invite a patient from that patient's page. To discharge a patient, the practice asks Coda. The connection itself belongs to Connected care.
+5. Any active practice member can invite a patient from that patient's page and invite colleague physicians to the practice. To discharge a patient, the practice asks Coda. The connection itself belongs to Connected care.
 6. Authorized operators inspect and adjust cadence by practice or patient. Physicians don't change it, but they can ask Coda for specific scheduled jobs for a patient.
 7. Authorized Coda staff may inspect submitted feedback and the minimum evidence linked to it.
 8. Drafts and seen state live on the server, not in the browser.
@@ -297,7 +297,7 @@ Everything Coda reads in the MVP is read only.
 
 - **The practice's EHR.** No EHR is chosen in advance. Choose sources based on the first practice's needs, available access, and what the adapters can read.
 - **For practices using Hint**, the planned adapter uses Coda's Chrome extension in the practice's own Chrome. The physician signs into Hint as usual, and the extension reads the chart's structured data in the background under that sign-in. It downloads nothing, never sees the physician's password or MFA codes, and keeps Hint's session only inside Chrome. Coda's access lasts as long as the physician's Hint sign-in. When Hint signs out, Coda keeps what it read and catches up the next time the physician signs in. Pulls run during the practice's business hours, and Coda asks the physician to reconnect only when fresh Hint data is needed and access is missing.
-- **The schedule**, from the practice's EHR or another scheduler. Which one is not decided yet.
+- **The schedule**, supplied by Hint Health and Elation FHIR through their adapters.
 - **Patient mail** from the practice’s Spruce connection.
 - **Attachments**, including scans and faxes read through OCR.
 - **A connected patient's Duet data**, which lives in Coda's record for that patient and never in the EHR. Connected care owns what crosses.
