@@ -14,7 +14,7 @@ use crate::{
 use async_trait::async_trait;
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectOptions, Database, DatabaseConnection, DbErr,
-    EntityTrait, QueryFilter, Set, TransactionTrait,
+    EntityTrait, QueryFilter, QueryOrder, Set, TransactionTrait,
 };
 
 /// The SQL-backed store.
@@ -66,6 +66,12 @@ impl PostgresFrontDoorStore {
             .one(&self.db)
             .await?;
         crate::migration::restriction::Entity::find()
+            .one(&self.db)
+            .await?;
+        crate::migration::ForMyDoctorShares::find()
+            .one(&self.db)
+            .await?;
+        crate::migration::SharedRecords::find()
             .one(&self.db)
             .await?;
         Ok(())
@@ -587,6 +593,366 @@ impl FrontDoorStore for PostgresFrontDoorStore {
                 premium: row.premium,
             })
             .unwrap_or(Premium { premium: false })
+    }
+
+    async fn send_for_my_doctor(
+        &self,
+        account_id: uuid::Uuid,
+        request: crate::ForMyDoctorSendRequest,
+        now: u64,
+    ) -> Result<crate::ForMyDoctorShare, crate::ForMyDoctorError> {
+        use crate::ForMyDoctorError;
+        use crate::migration::for_my_doctor_share;
+        let share_key = request.share_key.trim();
+        let title = request.title.trim();
+        let summary_text = request.summary_text.trim();
+        if share_key.is_empty() {
+            return Err(ForMyDoctorError::InvalidInput(
+                "share_key must be non-empty",
+            ));
+        }
+        if title.is_empty() {
+            return Err(ForMyDoctorError::InvalidInput("title must be non-empty"));
+        }
+        if summary_text.is_empty() {
+            return Err(ForMyDoctorError::InvalidInput(
+                "summary_text must be non-empty",
+            ));
+        }
+        let origin_label = request
+            .origin_label
+            .as_deref()
+            .map(str::trim)
+            .filter(|s| !s.is_empty())
+            .unwrap_or("Duet — For my doctor")
+            .to_owned();
+
+        let txn = self.db.begin().await?;
+        let account = Accounts::find_by_id(account_id)
+            .one(&txn)
+            .await?
+            .ok_or(ForMyDoctorError::Unlinked)?;
+        let (Some(practice_id), Some(patient_id)) =
+            (account.linked_practice_id, account.linked_patient_id)
+        else {
+            return Err(ForMyDoctorError::Unlinked);
+        };
+        if let Some(existing) = crate::migration::ForMyDoctorShares::find()
+            .filter(for_my_doctor_share::Column::AccountId.eq(account_id))
+            .filter(for_my_doctor_share::Column::ShareKey.eq(share_key))
+            .one(&txn)
+            .await?
+        {
+            if existing.title == title
+                && existing.summary_text == summary_text
+                && existing.origin_label == origin_label
+            {
+                txn.commit().await?;
+                return Ok(share_row(existing));
+            }
+            return Err(ForMyDoctorError::Conflict);
+        }
+        let consent = Consents::find_by_id(account_id)
+            .one(&txn)
+            .await?
+            .map(Self::consent_row)
+            .unwrap_or(Consent::None);
+        let Consent::Granted { at: consent_at } = consent else {
+            return Err(ForMyDoctorError::ConsentRequired);
+        };
+        let share_id = format!("fmd-{}", uuid::Uuid::new_v4().simple());
+        let active = crate::migration::ForMyDoctorShareActiveModel {
+            share_id: Set(share_id.clone()),
+            account_id: Set(account_id),
+            practice_id: Set(practice_id.clone()),
+            patient_id: Set(patient_id.clone()),
+            share_key: Set(share_key.to_owned()),
+            title: Set(title.to_owned()),
+            summary_text: Set(summary_text.to_owned()),
+            origin_label: Set(origin_label.clone()),
+            sent_at: Set(now as i64),
+            consent_at: Set(consent_at as i64),
+            received_at: Set(None),
+        };
+        active.insert(&txn).await?;
+        txn.commit().await?;
+        Ok(crate::ForMyDoctorShare {
+            share_id,
+            account_id,
+            patient: RosterPatient {
+                practice_id,
+                patient_id,
+            },
+            share_key: share_key.to_owned(),
+            title: title.to_owned(),
+            summary_text: summary_text.to_owned(),
+            origin_label,
+            sent_at: now,
+            consent_at,
+            standing: crate::ForMyDoctorShareStatus::Sent,
+        })
+    }
+
+    async fn for_my_doctor_shares_for_account(
+        &self,
+        account_id: uuid::Uuid,
+    ) -> Result<Vec<crate::ForMyDoctorShare>, crate::ForMyDoctorError> {
+        use crate::migration::for_my_doctor_share::Column;
+        let account = Accounts::find_by_id(account_id)
+            .one(&self.db)
+            .await?
+            .ok_or(crate::ForMyDoctorError::Unlinked)?;
+        if account.linked_practice_id.is_none() || account.linked_patient_id.is_none() {
+            return Err(crate::ForMyDoctorError::Unlinked);
+        }
+        let rows = crate::migration::ForMyDoctorShares::find()
+            .filter(Column::AccountId.eq(account_id))
+            .order_by_asc(Column::SentAt)
+            .order_by_asc(Column::ShareId)
+            .all(&self.db)
+            .await?;
+        Ok(rows.into_iter().map(share_row).collect())
+    }
+
+    async fn pending_for_my_doctor_shares_for_practice(
+        &self,
+        practice_id: &str,
+    ) -> Result<Vec<crate::ForMyDoctorShare>, crate::ForMyDoctorError> {
+        use crate::migration::for_my_doctor_share::Column;
+        let rows = crate::migration::ForMyDoctorShares::find()
+            .filter(Column::PracticeId.eq(practice_id))
+            .filter(Column::ReceivedAt.is_null())
+            .order_by_asc(Column::SentAt)
+            .order_by_asc(Column::ShareId)
+            .all(&self.db)
+            .await?;
+        let mut out = Vec::new();
+        for row in rows {
+            let consented = Consents::find_by_id(row.account_id)
+                .one(&self.db)
+                .await?
+                .is_some_and(|c| c.withdrawn_at.is_none());
+            if consented {
+                out.push(share_row(row));
+            }
+        }
+        Ok(out)
+    }
+
+    async fn mark_for_my_doctor_received(
+        &self,
+        practice_id: &str,
+        share_id: &str,
+        received_at: u64,
+    ) -> Result<crate::ForMyDoctorShare, crate::ForMyDoctorError> {
+        let txn = self.db.begin().await?;
+        let existing = crate::migration::ForMyDoctorShares::find_by_id(share_id.to_owned())
+            .one(&txn)
+            .await?
+            .filter(|row| row.practice_id == practice_id)
+            .ok_or(crate::ForMyDoctorError::NotFound)?;
+        let model = if existing.received_at.is_none() {
+            let mut active: crate::migration::ForMyDoctorShareActiveModel = existing.into();
+            active.received_at = Set(Some(received_at as i64));
+            active.update(&txn).await?
+        } else {
+            existing
+        };
+        txn.commit().await?;
+        Ok(share_row(model))
+    }
+
+    async fn upsert_shared_records(
+        &self,
+        account_id: uuid::Uuid,
+        records: &[crate::SharedPatientRecordInput],
+        now: u64,
+    ) -> Result<(), crate::ForMyDoctorError> {
+        use crate::ForMyDoctorError;
+        use crate::migration::shared_record::Column;
+        for rec in records {
+            if rec.record_id.trim().is_empty()
+                || rec.revision.trim().is_empty()
+                || rec.record_type.trim().is_empty()
+                || rec.title.trim().is_empty()
+                || rec.content_text.trim().is_empty()
+            {
+                return Err(ForMyDoctorError::InvalidInput(
+                    "shared record fields must be non-empty",
+                ));
+            }
+        }
+        let txn = self.db.begin().await?;
+        let exists = Accounts::find_by_id(account_id).one(&txn).await?.is_some();
+        if !exists {
+            return Err(ForMyDoctorError::Unlinked);
+        }
+        for rec in records {
+            crate::migration::SharedRecords::insert(crate::migration::SharedRecordActiveModel {
+                account_id: Set(account_id),
+                record_id: Set(rec.record_id.trim().to_owned()),
+                revision: Set(rec.revision.trim().to_owned()),
+                record_type: Set(rec.record_type.trim().to_owned()),
+                title: Set(rec.title.trim().to_owned()),
+                content_text: Set(rec.content_text.trim().to_owned()),
+                recorded_at: Set(rec.recorded_at as i64),
+                updated_at: Set(now as i64),
+            })
+            .on_conflict(
+                sea_orm::sea_query::OnConflict::columns([Column::AccountId, Column::RecordId])
+                    .update_columns([
+                        Column::Revision,
+                        Column::RecordType,
+                        Column::Title,
+                        Column::ContentText,
+                        Column::RecordedAt,
+                        Column::UpdatedAt,
+                    ])
+                    .to_owned(),
+            )
+            .exec(&txn)
+            .await?;
+        }
+        txn.commit().await?;
+        Ok(())
+    }
+
+    async fn consented_links_for_practice(
+        &self,
+        practice_id: &str,
+    ) -> Result<Vec<crate::ConsentedPatientLink>, crate::ForMyDoctorError> {
+        let rows = Accounts::find()
+            .filter(crate::migration::account::Column::LinkedPracticeId.eq(practice_id))
+            .filter(crate::migration::account::Column::LinkedPatientId.is_not_null())
+            .order_by_asc(crate::migration::account::Column::Id)
+            .all(&self.db)
+            .await?;
+        let mut out = Vec::new();
+        for row in rows {
+            let consent = Consents::find_by_id(row.id)
+                .one(&self.db)
+                .await?
+                .map(Self::consent_row)
+                .unwrap_or(Consent::None);
+            let Consent::Granted { at } = consent else {
+                continue;
+            };
+            let account = Self::account_row(row);
+            if let Some(patient) = account.link.clone() {
+                out.push(crate::ConsentedPatientLink {
+                    account,
+                    patient,
+                    consented_at: at,
+                });
+            }
+        }
+        Ok(out)
+    }
+
+    async fn shared_records_for_practice_patient(
+        &self,
+        practice_id: &str,
+        patient_id: &str,
+    ) -> Result<Vec<crate::SharedPatientRecord>, crate::ForMyDoctorError> {
+        use crate::migration::account;
+        use crate::migration::shared_record::Column;
+        let accounts = Accounts::find()
+            .filter(account::Column::LinkedPracticeId.eq(practice_id))
+            .filter(account::Column::LinkedPatientId.eq(patient_id))
+            .order_by_asc(account::Column::Id)
+            .all(&self.db)
+            .await?;
+        let mut out = Vec::new();
+        for acct in accounts {
+            let consented = Consents::find_by_id(acct.id)
+                .one(&self.db)
+                .await?
+                .is_some_and(|c| c.withdrawn_at.is_none());
+            if !consented {
+                continue;
+            }
+            let recs = crate::migration::SharedRecords::find()
+                .filter(Column::AccountId.eq(acct.id))
+                .order_by_asc(Column::RecordId)
+                .all(&self.db)
+                .await?;
+            for rec in recs {
+                out.push(crate::SharedPatientRecord {
+                    account_id: acct.id,
+                    patient: RosterPatient {
+                        practice_id: practice_id.to_owned(),
+                        patient_id: patient_id.to_owned(),
+                    },
+                    record_id: rec.record_id,
+                    revision: rec.revision,
+                    record_type: rec.record_type,
+                    title: rec.title,
+                    content_text: rec.content_text,
+                    recorded_at: rec.recorded_at.max(0) as u64,
+                    updated_at: rec.updated_at.max(0) as u64,
+                });
+            }
+        }
+        Ok(out)
+    }
+
+    async fn connected_care_practices(&self) -> Result<Vec<String>, crate::ForMyDoctorError> {
+        use crate::migration::{account, consent, for_my_doctor_share};
+        use std::collections::BTreeSet;
+        let consented_ids: Vec<uuid::Uuid> = Consents::find()
+            .filter(consent::Column::WithdrawnAt.is_null())
+            .all(&self.db)
+            .await?
+            .into_iter()
+            .map(|c| c.account_id)
+            .collect();
+        if consented_ids.is_empty() {
+            return Ok(Vec::new());
+        }
+        let mut practices = BTreeSet::new();
+        let linked_accounts = Accounts::find()
+            .filter(account::Column::Id.is_in(consented_ids.clone()))
+            .filter(account::Column::LinkedPracticeId.is_not_null())
+            .filter(account::Column::LinkedPatientId.is_not_null())
+            .all(&self.db)
+            .await?;
+        for acct in linked_accounts {
+            if let Some(practice_id) = acct.linked_practice_id {
+                practices.insert(practice_id);
+            }
+        }
+        let pending_shares = crate::migration::ForMyDoctorShares::find()
+            .filter(for_my_doctor_share::Column::AccountId.is_in(consented_ids))
+            .filter(for_my_doctor_share::Column::ReceivedAt.is_null())
+            .all(&self.db)
+            .await?;
+        for share in pending_shares {
+            practices.insert(share.practice_id);
+        }
+        Ok(practices.into_iter().collect())
+    }
+}
+
+fn share_row(row: crate::migration::ForMyDoctorShareRow) -> crate::ForMyDoctorShare {
+    crate::ForMyDoctorShare {
+        share_id: row.share_id,
+        account_id: row.account_id,
+        patient: RosterPatient {
+            practice_id: row.practice_id,
+            patient_id: row.patient_id,
+        },
+        share_key: row.share_key,
+        title: row.title,
+        summary_text: row.summary_text,
+        origin_label: row.origin_label,
+        sent_at: row.sent_at.max(0) as u64,
+        consent_at: row.consent_at.max(0) as u64,
+        standing: match row.received_at {
+            Some(ts) => crate::ForMyDoctorShareStatus::Received {
+                received_at: ts.max(0) as u64,
+            },
+            None => crate::ForMyDoctorShareStatus::Sent,
+        },
     }
 }
 

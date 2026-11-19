@@ -26,7 +26,7 @@ mod error;
 pub mod http;
 mod store;
 
-pub use error::{InviteError, LinkError, SessionError, SignInError};
+pub use error::{ForMyDoctorError, InviteError, LinkError, SessionError, SignInError};
 pub use store::PostgresFrontDoorStore;
 
 /// Durable Identity Platform mapping and Duet permission authority.
@@ -111,6 +111,111 @@ pub struct Premium {
     pub premium: bool,
 }
 
+/// Patient-facing delivery standing of a `"For my doctor"` share.
+///
+/// Tracks only initial delivery vs pickup by the practice's agents (`Received`),
+/// never whether a physician looked at it.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "status", rename_all = "snake_case")]
+pub enum ForMyDoctorShareStatus {
+    /// Sent by the patient and waiting pickup by practice agents.
+    Sent,
+    /// Picked up by the practice's agents at `received_at`.
+    Received {
+        /// Unix second the practice's agents picked up the share.
+        received_at: u64,
+    },
+}
+
+/// Request payload to send one patient-prepared `"For my doctor"` share from Duet.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ForMyDoctorSendRequest {
+    /// Caller-supplied idempotency key unique per patient account.
+    pub share_key: String,
+    /// Concise share headline.
+    pub title: String,
+    /// Approved patient-prepared summary text.
+    pub summary_text: String,
+    /// Optional explicit origin description; defaults to `"Duet — For my doctor"`.
+    pub origin_label: Option<String>,
+}
+
+/// Durable `"For my doctor"` share held at the front door.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ForMyDoctorShare {
+    /// Stable front-door share identifier.
+    pub share_id: String,
+    /// Owning Duet patient account.
+    pub account_id: Uuid,
+    /// Linked practice and roster patient.
+    pub patient: RosterPatient,
+    /// Caller-supplied idempotency key.
+    pub share_key: String,
+    /// Share headline.
+    pub title: String,
+    /// Approved patient-prepared summary text.
+    pub summary_text: String,
+    /// Explicit patient-prepared origin description.
+    pub origin_label: String,
+    /// Unix second the patient sent the share.
+    pub sent_at: u64,
+    /// Consent timestamp verified when sent.
+    pub consent_at: u64,
+    /// Delivery status visible to Duet (`Sent` or `Received`, never `"physician looked"`).
+    pub standing: ForMyDoctorShareStatus,
+}
+
+/// Patient-logged or Duet-held shared health record input uploaded by an active account.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SharedPatientRecordInput {
+    /// Stable record identifier within the patient's Duet store.
+    pub record_id: String,
+    /// Monotonic revision token for this shared record.
+    pub revision: String,
+    /// Clinical/patient record kind (e.g. `"Observation"`, `"DocumentReference"`).
+    pub record_type: String,
+    /// Human-readable title for the chart.
+    pub title: String,
+    /// Patient-approved clinical/log text.
+    pub content_text: String,
+    /// Unix second when this observation or note was recorded.
+    pub recorded_at: u64,
+}
+
+/// Shared patient record visible to the linked practice when sharing consent is on.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SharedPatientRecord {
+    /// Owning Duet account.
+    pub account_id: Uuid,
+    /// Linked practice and roster patient.
+    pub patient: RosterPatient,
+    /// Stable record identifier.
+    pub record_id: String,
+    /// Revision token.
+    pub revision: String,
+    /// Record kind.
+    pub record_type: String,
+    /// Title.
+    pub title: String,
+    /// Shared record text.
+    pub content_text: String,
+    /// Unix second recorded.
+    pub recorded_at: u64,
+    /// Unix second staged/updated in front door.
+    pub updated_at: u64,
+}
+
+/// Active linked patient with current sharing consent for a practice.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ConsentedPatientLink {
+    /// Linked Duet account.
+    pub account: Account,
+    /// Linked roster patient.
+    pub patient: RosterPatient,
+    /// Latest active consent timestamp (`Consent::Granted { at }`).
+    pub consented_at: u64,
+}
+
 /// The durable front-door owner.
 ///
 /// `&self` everywhere so the server can share one store across handlers.
@@ -177,6 +282,50 @@ pub trait FrontDoorStore: Send + Sync {
     /// Reads one linked patient's premium status. Patients without a status
     /// row read free.
     async fn premium(&self, patient: &RosterPatient) -> Premium;
+    /// Sends one patient-prepared `"For my doctor"` share when linked and consented.
+    async fn send_for_my_doctor(
+        &self,
+        account_id: Uuid,
+        request: ForMyDoctorSendRequest,
+        now: u64,
+    ) -> Result<ForMyDoctorShare, ForMyDoctorError>;
+    /// Lists `"For my doctor"` shares sent by `account_id`, showing only `Sent` vs `Received`.
+    async fn for_my_doctor_shares_for_account(
+        &self,
+        account_id: Uuid,
+    ) -> Result<Vec<ForMyDoctorShare>, ForMyDoctorError>;
+    /// Lists unreceived (`Sent`) `"For my doctor"` shares awaiting pickup by `practice_id`.
+    async fn pending_for_my_doctor_shares_for_practice(
+        &self,
+        practice_id: &str,
+    ) -> Result<Vec<ForMyDoctorShare>, ForMyDoctorError>;
+    /// Marks one `"For my doctor"` share as `Received` once picked up by the practice's agents.
+    async fn mark_for_my_doctor_received(
+        &self,
+        practice_id: &str,
+        share_id: &str,
+        received_at: u64,
+    ) -> Result<ForMyDoctorShare, ForMyDoctorError>;
+    /// Stages or updates existing Duet shared records on `account_id` (readable by practice only with consent).
+    async fn upsert_shared_records(
+        &self,
+        account_id: Uuid,
+        records: &[SharedPatientRecordInput],
+        now: u64,
+    ) -> Result<(), ForMyDoctorError>;
+    /// Lists linked patients in `practice_id` whose sharing consent is currently granted.
+    async fn consented_links_for_practice(
+        &self,
+        practice_id: &str,
+    ) -> Result<Vec<ConsentedPatientLink>, ForMyDoctorError>;
+    /// Lists existing Duet shared records for `patient_id` in `practice_id` when actively linked and consented.
+    async fn shared_records_for_practice_patient(
+        &self,
+        practice_id: &str,
+        patient_id: &str,
+    ) -> Result<Vec<SharedPatientRecord>, ForMyDoctorError>;
+    /// Lists distinct `practice_id`s that have actively consented linked patients or pending `"For my doctor"` shares.
+    async fn connected_care_practices(&self) -> Result<Vec<String>, ForMyDoctorError>;
 }
 
 /// The SHA-256 of a presented token: the only form the store keeps.
@@ -198,6 +347,19 @@ struct MemoryState {
     sessions: HashMap<[u8; 32], (Uuid, u64, u64)>,
     consents: HashMap<Uuid, Consent>,
     premium: HashMap<(String, String), Premium>,
+    for_my_doctor_shares: HashMap<String, ForMyDoctorShare>,
+    shared_records: HashMap<(Uuid, String), StoredSharedRecord>,
+}
+
+#[derive(Debug, Clone)]
+struct StoredSharedRecord {
+    record_id: String,
+    revision: String,
+    record_type: String,
+    title: String,
+    content_text: String,
+    recorded_at: u64,
+    updated_at: u64,
 }
 
 #[derive(Debug, Clone)]
@@ -543,6 +705,273 @@ impl FrontDoorStore for MemoryFrontDoorStore {
             .get(&(patient.practice_id.clone(), patient.patient_id.clone()))
             .cloned()
             .unwrap_or(Premium { premium: false })
+    }
+
+    async fn send_for_my_doctor(
+        &self,
+        account_id: Uuid,
+        request: ForMyDoctorSendRequest,
+        now: u64,
+    ) -> Result<ForMyDoctorShare, ForMyDoctorError> {
+        let share_key = request.share_key.trim();
+        let title = request.title.trim();
+        let summary_text = request.summary_text.trim();
+        if share_key.is_empty() {
+            return Err(ForMyDoctorError::InvalidInput(
+                "share_key must be non-empty",
+            ));
+        }
+        if title.is_empty() {
+            return Err(ForMyDoctorError::InvalidInput("title must be non-empty"));
+        }
+        if summary_text.is_empty() {
+            return Err(ForMyDoctorError::InvalidInput(
+                "summary_text must be non-empty",
+            ));
+        }
+        let origin_label = request
+            .origin_label
+            .as_deref()
+            .map(str::trim)
+            .filter(|s| !s.is_empty())
+            .unwrap_or("Duet — For my doctor")
+            .to_owned();
+
+        let mut state = self.state.lock().expect("front-door state");
+        let account = state
+            .accounts
+            .get(&account_id)
+            .cloned()
+            .ok_or(ForMyDoctorError::Unlinked)?;
+        let patient = account.link.ok_or(ForMyDoctorError::Unlinked)?;
+        if let Some(existing) = state
+            .for_my_doctor_shares
+            .values()
+            .find(|s| s.account_id == account_id && s.share_key == share_key)
+        {
+            if existing.title == title
+                && existing.summary_text == summary_text
+                && existing.origin_label == origin_label
+            {
+                return Ok(existing.clone());
+            }
+            return Err(ForMyDoctorError::Conflict);
+        }
+        let consent_at = match state.consents.get(&account_id).copied() {
+            Some(Consent::Granted { at }) => at,
+            _ => return Err(ForMyDoctorError::ConsentRequired),
+        };
+        let share = ForMyDoctorShare {
+            share_id: format!("fmd-{}", Uuid::new_v4().simple()),
+            account_id,
+            patient,
+            share_key: share_key.to_owned(),
+            title: title.to_owned(),
+            summary_text: summary_text.to_owned(),
+            origin_label,
+            sent_at: now,
+            consent_at,
+            standing: ForMyDoctorShareStatus::Sent,
+        };
+        state
+            .for_my_doctor_shares
+            .insert(share.share_id.clone(), share.clone());
+        Ok(share)
+    }
+
+    async fn for_my_doctor_shares_for_account(
+        &self,
+        account_id: Uuid,
+    ) -> Result<Vec<ForMyDoctorShare>, ForMyDoctorError> {
+        let state = self.state.lock().expect("front-door state");
+        if state
+            .accounts
+            .get(&account_id)
+            .and_then(|acc| acc.link.as_ref())
+            .is_none()
+        {
+            return Err(ForMyDoctorError::Unlinked);
+        }
+        let mut out: Vec<_> = state
+            .for_my_doctor_shares
+            .values()
+            .filter(|s| s.account_id == account_id)
+            .cloned()
+            .collect();
+        out.sort_by(|a, b| a.sent_at.cmp(&b.sent_at).then(a.share_id.cmp(&b.share_id)));
+        Ok(out)
+    }
+
+    async fn pending_for_my_doctor_shares_for_practice(
+        &self,
+        practice_id: &str,
+    ) -> Result<Vec<ForMyDoctorShare>, ForMyDoctorError> {
+        let state = self.state.lock().expect("front-door state");
+        let mut out: Vec<_> = state
+            .for_my_doctor_shares
+            .values()
+            .filter(|s| {
+                s.patient.practice_id == practice_id
+                    && matches!(s.standing, ForMyDoctorShareStatus::Sent)
+                    && matches!(
+                        state.consents.get(&s.account_id).copied(),
+                        Some(Consent::Granted { .. })
+                    )
+            })
+            .cloned()
+            .collect();
+        out.sort_by(|a, b| a.sent_at.cmp(&b.sent_at).then(a.share_id.cmp(&b.share_id)));
+        Ok(out)
+    }
+
+    async fn mark_for_my_doctor_received(
+        &self,
+        practice_id: &str,
+        share_id: &str,
+        received_at: u64,
+    ) -> Result<ForMyDoctorShare, ForMyDoctorError> {
+        let mut state = self.state.lock().expect("front-door state");
+        let share = state
+            .for_my_doctor_shares
+            .get_mut(share_id)
+            .filter(|s| s.patient.practice_id == practice_id)
+            .ok_or(ForMyDoctorError::NotFound)?;
+        if matches!(share.standing, ForMyDoctorShareStatus::Sent) {
+            share.standing = ForMyDoctorShareStatus::Received { received_at };
+        }
+        Ok(share.clone())
+    }
+
+    async fn upsert_shared_records(
+        &self,
+        account_id: Uuid,
+        records: &[SharedPatientRecordInput],
+        now: u64,
+    ) -> Result<(), ForMyDoctorError> {
+        for rec in records {
+            if rec.record_id.trim().is_empty()
+                || rec.revision.trim().is_empty()
+                || rec.record_type.trim().is_empty()
+                || rec.title.trim().is_empty()
+                || rec.content_text.trim().is_empty()
+            {
+                return Err(ForMyDoctorError::InvalidInput(
+                    "shared record fields must be non-empty",
+                ));
+            }
+        }
+        let mut state = self.state.lock().expect("front-door state");
+        if !state.accounts.contains_key(&account_id) {
+            return Err(ForMyDoctorError::Unlinked);
+        }
+        for rec in records {
+            let record_id = rec.record_id.trim().to_owned();
+            state.shared_records.insert(
+                (account_id, record_id.clone()),
+                StoredSharedRecord {
+                    record_id,
+                    revision: rec.revision.trim().to_owned(),
+                    record_type: rec.record_type.trim().to_owned(),
+                    title: rec.title.trim().to_owned(),
+                    content_text: rec.content_text.trim().to_owned(),
+                    recorded_at: rec.recorded_at,
+                    updated_at: now,
+                },
+            );
+        }
+        Ok(())
+    }
+
+    async fn consented_links_for_practice(
+        &self,
+        practice_id: &str,
+    ) -> Result<Vec<ConsentedPatientLink>, ForMyDoctorError> {
+        let state = self.state.lock().expect("front-door state");
+        let mut out = Vec::new();
+        for account in state.accounts.values() {
+            let Some(patient) = account.link.as_ref() else {
+                continue;
+            };
+            if patient.practice_id != practice_id {
+                continue;
+            }
+            if let Some(Consent::Granted { at }) = state.consents.get(&account.id).copied() {
+                out.push(ConsentedPatientLink {
+                    account: account.clone(),
+                    patient: patient.clone(),
+                    consented_at: at,
+                });
+            }
+        }
+        out.sort_by_key(|a| a.account.id);
+        Ok(out)
+    }
+
+    async fn shared_records_for_practice_patient(
+        &self,
+        practice_id: &str,
+        patient_id: &str,
+    ) -> Result<Vec<SharedPatientRecord>, ForMyDoctorError> {
+        let state = self.state.lock().expect("front-door state");
+        let mut out = Vec::new();
+        for account in state.accounts.values() {
+            let Some(patient) = account.link.as_ref() else {
+                continue;
+            };
+            if patient.practice_id != practice_id || patient.patient_id != patient_id {
+                continue;
+            }
+            if !matches!(
+                state.consents.get(&account.id).copied(),
+                Some(Consent::Granted { .. })
+            ) {
+                continue;
+            }
+            for ((acct_id, _), rec) in &state.shared_records {
+                if *acct_id == account.id {
+                    out.push(SharedPatientRecord {
+                        account_id: account.id,
+                        patient: patient.clone(),
+                        record_id: rec.record_id.clone(),
+                        revision: rec.revision.clone(),
+                        record_type: rec.record_type.clone(),
+                        title: rec.title.clone(),
+                        content_text: rec.content_text.clone(),
+                        recorded_at: rec.recorded_at,
+                        updated_at: rec.updated_at,
+                    });
+                }
+            }
+        }
+        out.sort_by(|a, b| a.record_id.cmp(&b.record_id));
+        Ok(out)
+    }
+
+    async fn connected_care_practices(&self) -> Result<Vec<String>, ForMyDoctorError> {
+        let state = self.state.lock().expect("front-door state");
+        let mut practices = std::collections::BTreeSet::new();
+        for account in state.accounts.values() {
+            let Some(patient) = account.link.as_ref() else {
+                continue;
+            };
+            if matches!(
+                state.consents.get(&account.id).copied(),
+                Some(Consent::Granted { .. })
+            ) {
+                practices.insert(patient.practice_id.clone());
+            }
+        }
+        for share in state.for_my_doctor_shares.values() {
+            if matches!(share.standing, ForMyDoctorShareStatus::Sent)
+                && matches!(
+                    state.consents.get(&share.account_id).copied(),
+                    Some(Consent::Granted { .. })
+                )
+            {
+                practices.insert(share.patient.practice_id.clone());
+            }
+        }
+        Ok(practices.into_iter().collect())
     }
 }
 

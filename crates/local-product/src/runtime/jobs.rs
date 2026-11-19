@@ -213,6 +213,29 @@ pub enum AssignmentError {
     },
 }
 
+/// Execution scheduling priority for accepted practice background runs.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Default, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum JobPriority {
+    /// Standard background queue ordering.
+    #[default]
+    Normal = 0,
+    /// Priority intake (e.g. `"For my doctor"` share or immediate connected-care join/rejoin wake).
+    Priority = 100,
+}
+
+impl JobPriority {
+    fn from_db(value: i16) -> Result<Self, DbErr> {
+        if value >= Self::Priority as i16 {
+            Ok(Self::Priority)
+        } else if value <= 0 {
+            Ok(Self::Normal)
+        } else {
+            Err(error("invalid practice job priority"))
+        }
+    }
+}
+
 /// The work and preloaded skills assigned to one practice background run.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Assignment {
@@ -224,6 +247,9 @@ pub struct Assignment {
     pub prompt: String,
     /// Skills loaded from [`PhysicianSkills`] at assignment creation.
     pub preloaded_skills: Vec<PreloadedSkill>,
+    /// Queue scheduling priority for this background run.
+    #[serde(default)]
+    pub priority: JobPriority,
     /// Optional structured context when this assignment runs initial or revised
     /// patient understanding.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -277,11 +303,19 @@ impl Assignment {
             key,
             prompt,
             preloaded_skills,
+            priority: JobPriority::Normal,
             understanding: None,
             review: None,
             visit_selection: None,
             visit_briefing: None,
         })
+    }
+
+    /// Assigns the queue scheduling priority for this assignment.
+    #[must_use]
+    pub const fn with_priority(mut self, priority: JobPriority) -> Self {
+        self.priority = priority;
+        self
     }
 
     /// Fixed synthetic-patient assignment stub that preloads chart retrieval
@@ -462,6 +496,8 @@ pub struct PracticeJob {
     pub sources: Vec<SourceRevision>,
     /// Saved output, once completed or held with partial text.
     pub result: Option<PracticeJobResult>,
+    /// Queue scheduling priority for this job.
+    pub priority: JobPriority,
     /// Earliest database-clock Unix second when recovery may republish this wakeup.
     pub dispatch_after: i64,
     /// Ordered attempts on this practice job.
@@ -752,6 +788,7 @@ fn decode_job(
             .map_err(conversion_error("practice_job.sources_version", "u64"))?,
         sources,
         result,
+        priority: JobPriority::from_db(row.priority)?,
         dispatch_after: row.dispatch_after,
         attempts,
         created_at: row.created_at,
@@ -879,6 +916,7 @@ fn job_active_model(job: &PracticeJob) -> Result<practice_job::ActiveModel, DbEr
                     .map_err(conversion_error("PracticeJobResult", "practice_job.result"))
             })
             .transpose()?),
+        priority: Set(job.priority as i16),
         dispatch_after: Set(job.dispatch_after),
         created_at: Set(job.created_at),
         updated_at: Set(job.updated_at),
@@ -1058,6 +1096,7 @@ impl Store {
             sources_version: observation.version,
             sources: observation.sources,
             result: None,
+            priority: assignment.priority,
             dispatch_after: 0,
             attempts: Vec::new(),
             created_at: clock,
@@ -1117,6 +1156,7 @@ impl Store {
                     .add(practice_job::Column::Status.eq(WorkStatus::Pending))
                     .add(practice_job::Column::Status.eq(WorkStatus::Active)),
             )
+            .order_by_desc(practice_job::Column::Priority)
             .order_by_asc(practice_job::Column::UpdatedAt)
             .order_by_asc(practice_job::Column::Workspace)
             .order_by_asc(practice_job::Column::JobId)
@@ -1153,6 +1193,43 @@ impl Store {
     ) -> Result<(Vec<Delivery>, Option<PracticeScope>), DbErr> {
         if !(1..=100).contains(&maximum) {
             return Err(error("invalid dispatch bounds"));
+        }
+        let mut priority_deliveries = Vec::new();
+        let mut seen_priority = std::collections::HashSet::new();
+        if after.is_none() {
+            let priority_rows = practice_job::Entity::find()
+                .filter(practice_job::Column::Priority.gt(0_i16))
+                .filter(
+                    Condition::any()
+                        .add(practice_job::Column::Status.eq(WorkStatus::Pending))
+                        .add(practice_job::Column::Status.eq(WorkStatus::Active)),
+                )
+                .order_by_desc(practice_job::Column::Priority)
+                .order_by_asc(practice_job::Column::UpdatedAt)
+                .order_by_asc(practice_job::Column::Practice)
+                .order_by_asc(practice_job::Column::Workspace)
+                .order_by_asc(practice_job::Column::JobId)
+                .limit(maximum as u64)
+                .all(&self.db)
+                .await?;
+            for row in priority_rows {
+                let scope = PracticeScope {
+                    practice: row.practice,
+                    workspace: row.workspace,
+                    job_id: row.job_id,
+                };
+                let (tx, job, clock) = self.locked_practice_job(&scope).await?;
+                if job.dispatch_after <= clock
+                    && (job.status == WorkStatus::Pending
+                        || (job.status == WorkStatus::Active
+                            && job.attempts.last().is_some_and(|a| a.expires <= clock)))
+                {
+                    seen_priority.insert(scope.clone());
+                    priority_deliveries
+                        .push(Delivery::practice_job(&scope, job.assignment.key.clone()));
+                }
+                tx.commit().await?;
+            }
         }
         let mut query = practice_job::Entity::find()
             .filter(
@@ -1191,8 +1268,11 @@ impl Store {
             })
             .collect();
         let next = (scopes.len() == maximum).then(|| scopes.last().unwrap().clone());
-        let mut deliveries = Vec::new();
+        let mut deliveries = priority_deliveries;
         for scope in scopes {
+            if seen_priority.contains(&scope) {
+                continue;
+            }
             let (tx, job, clock) = self.locked_practice_job(&scope).await?;
             if job.dispatch_after <= clock
                 && (job.status == WorkStatus::Pending

@@ -182,6 +182,7 @@ pub(super) async fn run(worker: Arc<Worker>, stop: watch::Receiver<bool>) {
         }
         if spruce_tick {
             worker.poll_spruce_channels().await;
+            worker.poll_connected_care().await;
         }
     }
     listener.abort();

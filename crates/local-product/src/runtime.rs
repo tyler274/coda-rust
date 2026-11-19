@@ -41,6 +41,8 @@ pub mod chat_operations;
 pub mod citation_layouts;
 /// Patient concerns raised, revised, and retired by Coda, and cleared `Done` by physicians.
 pub mod concerns;
+/// Connected-care intake from `front-door`: consented Duet records, join wakes, and `"For my doctor"` shares.
+pub mod connected_care;
 mod control;
 pub use control::Lease;
 /// Queue delivery recovery uses the conversation owner, not a parallel ledger.
@@ -2587,6 +2589,16 @@ impl Store {
     }
 }
 
+/// Shared authorization and review dispatch context supplied by a physician chat host
+/// so filtered-mail chat tools can check physician access and queue linked reviews.
+#[derive(Clone)]
+pub struct SpruceChatContext {
+    /// Practice authentication and panel/clock authority.
+    pub auth: std::sync::Arc<dyn physician_auth::AuthStore>,
+    /// Optional review receiver used when restoring a filtered message into a linked conversation.
+    pub review_receiver: Option<std::sync::Arc<dyn dispatch::ReviewReceiver>>,
+}
+
 /// Product access is checked on every dispatch and again before publication.
 #[async_trait]
 pub trait Authority: Send {
@@ -2606,6 +2618,10 @@ pub trait Authority: Send {
         _session_hash: Option<&[u8]>,
     ) -> Result<(), String> {
         Err("transactional publication authority is unavailable".into())
+    }
+    /// Optional auth and review-dispatch context for Spruce filtered-mail chat tools.
+    fn spruce_chat_context(&self) -> Option<SpruceChatContext> {
+        None
     }
 }
 
@@ -2902,6 +2918,7 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
         let store = self.store.clone();
         let claim = self.claim.clone();
         let call = call.clone();
+        let spruce_ctx = self.authority.spruce_chat_context();
         Box::pin(async move {
             store.assert_current(&claim).await?;
             if working_notes::is_tool(&call.name) {
@@ -2963,7 +2980,14 @@ impl<A: Authority, S: ShownStepSaved> Product for PhysicianHost<A, S> {
                 return Ok(ToolOutcome::History(page));
             }
             store
-                .execute_chat_tool(&claim, &state, &records, &call, arguments)
+                .execute_chat_tool_with_spruce(
+                    &claim,
+                    &state,
+                    &records,
+                    &call,
+                    arguments,
+                    spruce_ctx.as_ref(),
+                )
                 .await
         })
     }

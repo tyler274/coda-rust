@@ -854,6 +854,7 @@ pub(super) mod practice_job {
         pub sources: Json,
         #[sea_orm(column_type = "JsonBinary")]
         pub result: Option<Json>,
+        pub priority: i16,
         pub dispatch_after: i64,
         pub created_at: i64,
         pub updated_at: i64,
@@ -1465,6 +1466,59 @@ pub(super) mod today_work_dismissal {
         #[sea_orm(column_type = "Text")]
         pub cleared_by_physician: String,
         pub cleared_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Practice-scoped intake ledger recording synced `"For my doctor"` shares and
+/// whether `"received"` status has been written back to `front-door`.
+pub(super) mod connected_care_intake {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_connected_care_intake")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub share_id: String,
+        #[sea_orm(column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(column_type = "Text")]
+        pub candidate_id: String,
+        pub sent_at: i64,
+        #[sea_orm(column_type = "Text")]
+        pub command_key: String,
+        pub ingested_at: i64,
+        pub received_written_at: Option<i64>,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Practice-scoped watermark tracking the newest patient sharing consent timestamp
+/// synced into the patient's chart and review queue so join/rejoin wakes once per grant.
+pub(super) mod connected_care_consent {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_connected_care_consent")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        pub consented_at: i64,
+        #[sea_orm(column_type = "Text")]
+        pub command_key: String,
+        pub synced_at: i64,
     }
 
     #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

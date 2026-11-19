@@ -19,6 +19,7 @@ png = "0.18"
 reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
 thiserror = "2"
 async-trait = "0.1"
+front-door = { path = "../front-door" }
 harness = { path = "../harness" }
 patient-work = { path = "../patient-work" }
 physician-auth = { path = "../physician-auth" }
@@ -37,7 +38,6 @@ sha2 = "0.11"
 tracing = "0.1"
 
 [dev-dependencies]
-front-door = { path = "../front-door" }
 spruce = { path = "../spruce", features = ["test-util"] }
 tokio = { version = "1", features = ["macros", "rt"] }
 tower = { version = "0.5", features = ["util"] }

@@ -1500,7 +1500,8 @@ impl WorkspaceWrongPatientFence {
             }
             ReviewTrigger::PhysicianRequest { .. }
             | ReviewTrigger::FollowUp { .. }
-            | ReviewTrigger::Periodic { .. } => false,
+            | ReviewTrigger::Periodic { .. }
+            | ReviewTrigger::ForMyDoctor { .. } => false,
         }
     }
 
@@ -6790,6 +6791,18 @@ impl Store {
                         });
                     }
                     ReviewTrigger::Periodic { .. } => {}
+                    ReviewTrigger::ForMyDoctor {
+                        share_id,
+                        title,
+                        origin_label,
+                        ..
+                    } => {
+                        handed_work.push(UnfinishedReviewWork {
+                            topic: format!("Unreviewed For my doctor share {share_id}"),
+                            detail: format!("{title} ({origin_label})"),
+                            limit: None,
+                        });
+                    }
                 }
             }
 

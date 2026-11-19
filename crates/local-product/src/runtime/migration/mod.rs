@@ -26,6 +26,7 @@ mod m20261119_04_p4_panel_prefs_and_ehr_bridge;
 mod m20261119_05_practice_cadence;
 mod m20261119_06_care_plan_recommendations;
 mod m20261119_spruce_release_fence;
+mod m20261119_z_connected_care_intake;
 mod m20261120_citation_layouts;
 
 /// The table this chain records applied migrations in. The runtime shares the
@@ -68,6 +69,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261119_spruce_release_fence::Migration),
             Box::new(m20261119_06_care_plan_recommendations::Migration),
             Box::new(m20261120_citation_layouts::Migration),
+            Box::new(m20261119_z_connected_care_intake::Migration),
         ]
     }
 }

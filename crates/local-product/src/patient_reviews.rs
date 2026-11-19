@@ -138,6 +138,11 @@ elapsed, or a physician requested a focused reassessment, follow one disciplined
      follow-up, revise its summary or next due date when still awaited, or record any clinical \
      concern. A cancelled follow-up stays cancelled — never recreate it unless genuinely new \
      clinical information has arrived since cancellation.
+   - Patient-prepared \"For my doctor\" shares and connected Duet records: preserve their explicit \
+     patient-prepared origin and sent date (`Duet — For my doctor`), read the shared candidate in \
+     full with `read_patient_sources`, and escalate any urgent (`now`) or clinically important \
+     (`today`) findings onto Today via `patient_concern` citing `(candidate_id, revision)` without \
+     inferring unshared clinical chart records.
 
 6. Record your structured review outcome before finishing:
    - Preloaded assignment skills are already open below; do not reload them with `skill_view`. \
@@ -212,11 +217,28 @@ pub enum ReviewTrigger {
         /// Active `(candidate_id -> revision)` map observed when requested.
         record_versions: BTreeMap<String, String>,
     },
+    /// Patient-prepared `"For my doctor"` share delivered through connected care.
+    ForMyDoctor {
+        /// Stable front-door share identifier.
+        share_id: String,
+        /// Share headline.
+        title: String,
+        /// Explicit patient-prepared origin label (`"Duet — For my doctor"`).
+        origin_label: String,
+        /// Unix timestamp when the patient sent the share.
+        sent_at: i64,
+        /// Candidate record identifier filed in the patient's chart.
+        candidate_id: String,
+        /// Workspace source version observed when admitted.
+        workspace_version: u64,
+        /// Active `(candidate_id -> revision)` map observed when admitted.
+        record_versions: BTreeMap<String, String>,
+    },
 }
 
 impl ReviewTrigger {
     /// Canonical trigger reason label (`"new records"`, `"periodic"`, `"message"`,
-    /// `"follow-up"`, or `"physician request"`).
+    /// `"follow-up"`, `"physician request"`, or `"for my doctor"`).
     #[must_use]
     pub const fn reason_label(&self) -> &'static str {
         match self {
@@ -225,6 +247,7 @@ impl ReviewTrigger {
             Self::Message { .. } => ReviewReason::Message.as_str(),
             Self::FollowUp { .. } => ReviewReason::FollowUp.as_str(),
             Self::PhysicianRequest { .. } => "physician request",
+            Self::ForMyDoctor { .. } => ReviewReason::ForMyDoctor.as_str(),
         }
     }
 
@@ -245,6 +268,9 @@ impl ReviewTrigger {
                 workspace_version, ..
             }
             | Self::PhysicianRequest {
+                workspace_version, ..
+            }
+            | Self::ForMyDoctor {
                 workspace_version, ..
             } => *workspace_version,
         }
@@ -267,6 +293,9 @@ impl ReviewTrigger {
                 record_versions, ..
             }
             | Self::PhysicianRequest {
+                record_versions, ..
+            }
+            | Self::ForMyDoctor {
                 record_versions, ..
             } => record_versions,
         }
@@ -301,6 +330,15 @@ impl ReviewTrigger {
                 version: 1,
                 summary: String::new(),
                 due_at: 0,
+                workspace_version: request.workspace_version,
+                record_versions: request.record_versions.clone(),
+            },
+            ReviewReason::ForMyDoctor => Self::ForMyDoctor {
+                share_id: String::new(),
+                title: "For my doctor".to_owned(),
+                origin_label: "Duet — For my doctor".to_owned(),
+                sent_at: 0,
+                candidate_id: changed_candidates.into_iter().next().unwrap_or_default(),
                 workspace_version: request.workspace_version,
                 record_versions: request.record_versions.clone(),
             },
@@ -363,6 +401,17 @@ impl ReviewTrigger {
                         version: fu.version,
                         summary: fu.summary.clone(),
                         due_at: fu.due_at,
+                        workspace_version: request.workspace_version,
+                        record_versions: request.record_versions.clone(),
+                    });
+                }
+                ReviewDispatchInput::ForMyDoctor(share) => {
+                    triggers.push(Self::ForMyDoctor {
+                        share_id: share.share_id.clone(),
+                        title: share.title.clone(),
+                        origin_label: share.origin_label.clone(),
+                        sent_at: share.sent_at,
+                        candidate_id: share.candidate_id.clone(),
                         workspace_version: request.workspace_version,
                         record_versions: request.record_versions.clone(),
                     });
@@ -438,6 +487,15 @@ impl ReviewTrigger {
                 request_text,
                 ..
             } => format!("physician request from {physician_id}: {request_text}"),
+            Self::ForMyDoctor {
+                title,
+                origin_label,
+                sent_at,
+                candidate_id,
+                ..
+            } => format!(
+                "patient-prepared For my doctor share ({title}, origin: {origin_label}, sent unix {sent_at}, candidate: {candidate_id})"
+            ),
         }
     }
 }
@@ -746,6 +804,19 @@ impl ReviewStartingContext {
             } => {
                 lines.push(format!(
                     "Review trigger: physician request from {physician_id} at chart version {workspace_version}: {request_text}"
+                ));
+            }
+            ReviewTrigger::ForMyDoctor {
+                share_id,
+                title,
+                origin_label,
+                sent_at,
+                candidate_id,
+                workspace_version,
+                ..
+            } => {
+                lines.push(format!(
+                    "Review trigger: patient-prepared \"For my doctor\" share {share_id} ({title}, origin: {origin_label}, sent unix {sent_at}, candidate ID: {candidate_id}) at chart version {workspace_version}."
                 ));
             }
         }
@@ -1731,6 +1802,17 @@ pub fn assignment(
             ..
         } => format!(
             "Perform the physician-requested patient review ({physician_id}) for workspace {workspace} at chart version {workspace_version}: {request_text}"
+        ),
+        ReviewTrigger::ForMyDoctor {
+            share_id,
+            title,
+            origin_label,
+            sent_at,
+            candidate_id,
+            workspace_version,
+            ..
+        } => format!(
+            "Perform a priority clinical review of patient-prepared \"For my doctor\" share {share_id} ({title}, origin: {origin_label}, sent unix {sent_at}, candidate ID: {candidate_id}) for workspace {workspace} at chart version {workspace_version}."
         ),
     };
     let developer_context = starting_context.developer_text();

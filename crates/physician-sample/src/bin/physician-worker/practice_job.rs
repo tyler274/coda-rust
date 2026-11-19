@@ -545,6 +545,7 @@ mod tests {
                 None
             })
             .unwrap(),
+            skills: None,
         };
         let (_stop_tx, stop_rx) = watch::channel(false);
 
@@ -841,6 +842,7 @@ mod tests {
                 None
             })
             .unwrap(),
+            skills: None,
         });
         let app = router(Arc::clone(&worker));
 
@@ -1362,6 +1364,7 @@ mod tests {
                 None
             })
             .unwrap(),
+            skills: None,
         });
         let app = router(Arc::clone(&worker));
 
@@ -1447,5 +1450,211 @@ mod tests {
         crate::disposable::drop_database(&cleanup, &db_name).await;
         let _ = cleanup.close().await;
         let _ = std::fs::remove_dir_all(&temp_dir);
+    }
+
+    #[tokio::test]
+    async fn connected_care_bootstrap_discovers_practice_without_existing_patient_dispatch() {
+        use front_door::{
+            ForMyDoctorSendRequest, ForMyDoctorShareStatus, FrontDoorStore, PostgresFrontDoorStore,
+            RosterPatient,
+        };
+        use local_product::physician_chat::PhysicianSkills;
+
+        let gate_url = match std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL")
+            .or_else(|_| std::env::var("PHYSICIAN_DATABASE_URL"))
+        {
+            Ok(v) if !v.trim().is_empty() => v.trim().to_owned(),
+            _ => {
+                assert!(
+                    std::env::var_os("CODA_REQUIRE_POSTGRES_TESTS").is_none(),
+                    "PHYSICIAN_RUNTIME_TEST_DATABASE_URL is required when CODA_REQUIRE_POSTGRES_TESTS=1"
+                );
+                return;
+            }
+        };
+
+        let (server, _) = gate_url.rsplit_once('/').expect("database URL");
+        let admin_url = format!("{server}/postgres");
+        let db_name = format!(
+            "worker_ccare_boot_{}",
+            &Uuid::new_v4().simple().to_string()[..12]
+        );
+        let admin = sea_orm::Database::connect(&admin_url).await.unwrap();
+        crate::disposable::replace_database(&admin, &db_name).await;
+        admin.close().await.unwrap();
+        let url = format!("{server}/{db_name}");
+
+        let store = Store::connect(&url).await.unwrap();
+        store.migrate().await.unwrap();
+        let auth = PostgresAuthStore::connect_with_migrations(&url)
+            .await
+            .unwrap();
+        let front_door = PostgresFrontDoorStore::connect_with_migrations(&url)
+            .await
+            .unwrap();
+
+        assert!(
+            store
+                .registered_dispatch_practices()
+                .await
+                .unwrap()
+                .is_empty(),
+            "brand-new practice starts with zero patient_dispatch rows"
+        );
+
+        let now_u64 = 1_763_400_000_u64;
+        let practice = format!("practice-boot-{}", Uuid::new_v4().simple());
+        let workspace = format!("ws-boot-{}", Uuid::new_v4().simple());
+        let email = format!("boot-{}@patient.test", Uuid::new_v4().simple());
+        let invite = front_door
+            .invite(
+                &RosterPatient {
+                    practice_id: practice.clone(),
+                    patient_id: workspace.clone(),
+                },
+                &email,
+                "Boot Patient",
+                now_u64,
+            )
+            .await
+            .unwrap();
+        let (account_id, _) = front_door
+            .redeem_invitation(&email, &invite, now_u64 + 1)
+            .await
+            .unwrap();
+        front_door
+            .grant_consent(account_id, now_u64 + 2)
+            .await
+            .unwrap();
+        front_door
+            .send_for_my_doctor(
+                account_id,
+                ForMyDoctorSendRequest {
+                    share_key: "boot-share-1".into(),
+                    title: "First patient For my doctor".into(),
+                    summary_text: "Waking a practice before any patient_dispatch row exists."
+                        .into(),
+                    origin_label: None,
+                },
+                now_u64 + 3,
+            )
+            .await
+            .unwrap();
+
+        assert_eq!(
+            front_door.connected_care_practices().await.unwrap(),
+            vec![practice.clone()]
+        );
+
+        let skills = PhysicianSkills::configured(None, false).unwrap();
+        let roles = ModelRoles {
+            chat: ModelBinding {
+                model: "chat-interactive-lane".into(),
+                effort: "low".into(),
+                context_window_tokens: 128_000,
+                max_input_tokens: 100_000,
+                adapter: "openai-responses".into(),
+            },
+            background: ModelBinding {
+                model: "background-worker-lane".into(),
+                effort: "high".into(),
+                context_window_tokens: 272_000,
+                max_input_tokens: 250_000,
+                adapter: "openai-responses".into(),
+            },
+        };
+        let model = ModelSource {
+            transport: ModelTransport::Responses {
+                endpoint: "http://127.0.0.1:1/responses".into(),
+                key: "local-proof".into(),
+            },
+            roles: roles.clone(),
+        };
+        let quota: Arc<dyn harness::provider::QuotaGate> = Arc::new(store.clone());
+        let bus = physician_bus::from_env(|_| None, false).await.unwrap();
+        let wake = Arc::new(crate::WakeService {
+            auth: crate::WakeAuth::LoopbackEmulator,
+            mode: crate::WakeMode::RehearsalAllowed,
+            handler: Arc::new(crate::ScheduledWakeHandler {
+                dispatch: crate::StoreWakeHandler {
+                    store: store.clone(),
+                    auth: auth.clone(),
+                    roles,
+                    skills: Ok(skills.clone()),
+                },
+                visit_prep: crate::VisitPrepWakeHandler {
+                    store: store.clone(),
+                    auth: auth.clone(),
+                    bus: Arc::clone(&bus),
+                    model: model.clone(),
+                    quota: quota.clone(),
+                    skills_dir: None,
+                    calendar: None,
+                    elation: None,
+                },
+            }),
+            clinical_library: None,
+        });
+        let worker = Worker {
+            store: store.clone(),
+            auth: auth.clone(),
+            bus,
+            model,
+            quota,
+            pace: Pace {
+                poll: Duration::from_secs(1),
+                lease: 60,
+                concurrency: 4,
+                backoff: Backoff::IMMEDIATE,
+            },
+            wake,
+            origin: telemetry::genai::Origin::Simulation,
+            simulation_practices: physician_sample::hosting::SimulationPractices::from_env(|_| {
+                None
+            })
+            .unwrap(),
+            skills: Some(skills),
+        };
+
+        worker.poll_connected_care().await;
+
+        assert_eq!(
+            store.registered_dispatch_practices().await.unwrap(),
+            vec![practice.clone()],
+            "worker poll must discover and register first connected-care practice"
+        );
+        let shares = front_door
+            .for_my_doctor_shares_for_account(account_id)
+            .await
+            .unwrap();
+        assert!(
+            matches!(shares[0].standing, ForMyDoctorShareStatus::Received { .. }),
+            "expected Received status after bootstrap poll, got {:?}",
+            shares[0].standing
+        );
+        let reviews = store
+            .patient_reviews(&practice, &workspace, &auth)
+            .await
+            .unwrap();
+        let active_reviews: Vec<_> = reviews
+            .iter()
+            .filter(|r| r.state.status_str() != "superseded")
+            .collect();
+        assert_eq!(active_reviews.len(), 1);
+        assert!(
+            active_reviews[0].triggers.iter().any(|t| matches!(
+                t,
+                local_product::patient_reviews::ReviewTrigger::ForMyDoctor { .. }
+            )),
+            "expected ForMyDoctor trigger in {:?}",
+            active_reviews[0].triggers
+        );
+
+        drop(worker);
+        drop(store);
+        drop(auth);
+        let cleanup = sea_orm::Database::connect(&admin_url).await.unwrap();
+        crate::disposable::drop_database(&cleanup, &db_name).await;
+        let _ = cleanup.close().await;
     }
 }

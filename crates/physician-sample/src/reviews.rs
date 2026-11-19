@@ -896,6 +896,19 @@ fn project_trigger(trigger: &ReviewTrigger, context: &WorkspaceSourceContext) ->
             request_text: request_text.clone(),
             workspace_version: *workspace_version,
         },
+        ReviewTrigger::ForMyDoctor {
+            title,
+            origin_label,
+            sent_at,
+            workspace_version,
+            ..
+        } => ReviewTriggerWire::ChangedRecords {
+            workspace_version: *workspace_version,
+            changed_records: vec![format!(
+                "For my doctor: {title} ({origin_label}, {})",
+                unix_to_rfc3339(*sent_at)
+            )],
+        },
     }
 }
 

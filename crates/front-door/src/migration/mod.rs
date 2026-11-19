@@ -17,6 +17,8 @@ use sea_orm_migration::prelude::*;
 pub mod account;
 
 #[allow(missing_docs)]
+pub mod for_my_doctor_share;
+#[allow(missing_docs)]
 pub mod identity;
 mod m20261020_identity;
 mod m20261021_duet_conversation;
@@ -24,10 +26,13 @@ mod m20261021_luna_journal;
 mod m20261022_duet_execution;
 mod m20261023_duet_admission;
 mod m20261112_drop_premium_cadence;
+mod m20261119_for_my_doctor_shares;
 #[allow(missing_docs)]
 pub mod permission;
 #[allow(missing_docs)]
 pub mod restriction;
+#[allow(missing_docs)]
+pub mod shared_record;
 
 #[allow(missing_docs)]
 pub mod consent;
@@ -51,6 +56,10 @@ pub use account::Model as AccountRow;
 pub use account::{ActiveModel as AccountActiveModel, Entity as Accounts};
 pub use consent::Model as ConsentRow;
 pub use consent::{ActiveModel as ConsentActiveModel, Entity as Consents};
+pub use for_my_doctor_share::Model as ForMyDoctorShareRow;
+pub use for_my_doctor_share::{
+    ActiveModel as ForMyDoctorShareActiveModel, Entity as ForMyDoctorShares,
+};
 pub use invitation::Model as InvitationRow;
 pub use invitation::{ActiveModel as InvitationActiveModel, Entity as Invitations};
 pub use link::Model as LinkRow;
@@ -59,6 +68,8 @@ pub use premium::Model as PremiumRow;
 pub use premium::{ActiveModel as PremiumActiveModel, Entity as Premiums};
 pub use session::Model as SessionRow;
 pub use session::{ActiveModel as SessionActiveModel, Entity as Sessions};
+pub use shared_record::Model as SharedRecordRow;
+pub use shared_record::{ActiveModel as SharedRecordActiveModel, Entity as SharedRecords};
 pub use sign_in_token::Model as SignInTokenRow;
 pub use sign_in_token::{ActiveModel as SignInTokenActiveModel, Entity as SignInTokens};
 
@@ -89,6 +100,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261022_duet_execution::Migration),
             Box::new(m20261023_duet_admission::Migration),
             Box::new(m20261112_drop_premium_cadence::Migration),
+            Box::new(m20261119_for_my_doctor_shares::Migration),
         ]
     }
 }
@@ -467,6 +479,7 @@ mod tests {
                 "m20261022_duet_execution",
                 "m20261023_duet_admission",
                 "m20261112_drop_premium_cadence",
+                "m20261119_for_my_doctor_shares",
             ]
         );
     }

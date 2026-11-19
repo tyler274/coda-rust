@@ -179,8 +179,8 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
     assert!(versions.contains(&(front_door::migration::INIT_MIGRATION_NAME.to_owned(), 42)));
     assert_eq!(
         versions.len(),
-        7,
-        "legacy init plus identity, journal, conversation, admission and premium cadence cleanup"
+        8,
+        "legacy init plus identity, journal, conversation, admission, premium cadence cleanup and for-my-doctor shares"
     );
     assert!(
         versions
@@ -209,7 +209,7 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
     assert!(adopted.iter().any(|(name, applied_at)| {
         name == front_door::migration::INIT_MIGRATION_NAME && *applied_at == 43
     }));
-    assert_eq!(adopted.len(), 7);
+    assert_eq!(adopted.len(), 8);
     for legacy in ["seaql_migrations", "front_door_seaql_migrations"] {
         let rows = db
             .query_all_raw(sea_orm::Statement::from_string(
@@ -227,9 +227,9 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
 /// recorded. Fixture-only: production rollback of these extensions is refused
 /// because they hold durable history and privacy receipts.
 async fn rewind_to_legacy_init(db: &sea_orm::DatabaseConnection) {
-    <front_door::migration::Migrator as sea_orm_migration::MigratorTrait>::down(db, Some(1))
+    <front_door::migration::Migrator as sea_orm_migration::MigratorTrait>::down(db, Some(2))
         .await
-        .expect("restore legacy premium cadence column before rewinding earlier migrations");
+        .expect("restore schema before for-my-doctor shares and legacy premium cadence cleanup");
     db.execute_unprepared("DROP TABLE duet_model_execution_switch; DROP FUNCTION duet_switch_append_only(); DROP INDEX duet_conversation_allowance; ALTER TABLE duet_conversation_inputs DROP COLUMN admitted_at; DELETE FROM front_door_migrations WHERE version='m20261023_duet_admission'").await.unwrap();
     db.execute_unprepared("DROP TABLE duet_attempt_events,duet_conversation_attempts; DELETE FROM front_door_migrations WHERE version='m20261022_duet_execution'").await.unwrap();
     db.execute_unprepared("DROP TRIGGER duet_permission_interrupt ON front_door_permissions; DROP FUNCTION duet_permission_interrupt(); DROP FUNCTION duet_interrupt_accepted(uuid); DROP TABLE duet_conversation_messages,duet_conversation_inputs,duet_conversation_state; DELETE FROM front_door_migrations WHERE version='m20261021_duet_conversation'").await.unwrap();
@@ -317,6 +317,7 @@ async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
         "duet_model_execution_switch",
         "front_door_accounts",
         "front_door_consents",
+        "front_door_for_my_doctor_shares",
         "front_door_identities",
         "front_door_invitations",
         "front_door_links",
@@ -325,6 +326,7 @@ async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
         "front_door_permissions",
         "front_door_premium",
         "front_door_sessions",
+        "front_door_shared_records",
         "front_door_sign_in_tokens",
     ];
     assert_eq!(schema_tables(&url).await, expected);
