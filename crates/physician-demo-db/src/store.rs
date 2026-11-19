@@ -163,6 +163,9 @@ impl DemoStore {
             as_of: 1,
             connections,
             incomplete: Some(false),
+            also_reviewed: 0,
+            practice_outages: Vec::new(),
+            failed_parts: Vec::new(),
         })
     }
 
@@ -261,6 +264,10 @@ impl DemoStore {
         Ok(UpdatesResponse {
             active_runs: Vec::new(),
             rows,
+            today_items: Vec::new(),
+            reviewed_nothing_for_you: Vec::new(),
+            earlier_days: Vec::new(),
+            failed_parts: Vec::new(),
         })
     }
 

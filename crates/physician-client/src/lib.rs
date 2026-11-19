@@ -4,6 +4,7 @@
 
 pub mod briefings;
 mod reviews;
+pub mod today_updates;
 
 pub use http::HttpError;
 use physician_wire::{
