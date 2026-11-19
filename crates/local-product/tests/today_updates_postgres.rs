@@ -45,15 +45,17 @@ use sea_orm::{ConnectionTrait, Database, DatabaseConnection};
 use serde_json::json;
 use uuid::Uuid;
 
-/// Clinical reference time at `15:00:00Z` of the current UTC calendar day so
-/// 12-hour physician sessions stay valid against Postgres `clock_timestamp()`
-/// while intra-day appointment offsets share one UTC day.
+/// Current-day clinical reference time clamped within `[04:00Z, 22:00Z]` so
+/// intra-day relative offsets stay on the same UTC day while minted Postgres
+/// sessions remain live against wall-clock `NOW()`.
 fn base_now_unix() -> u64 {
-    let real_now = std::time::SystemTime::now()
+    let wall_now = std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
-        .expect("system clock after epoch")
+        .expect("system clock after unix epoch")
         .as_secs();
-    (real_now / 86_400) * 86_400 + 15 * 3_600
+    let day_start = (wall_now / 86_400) * 86_400;
+    let offset = (wall_now % 86_400).clamp(4 * 3_600, 22 * 3_600);
+    day_start + offset
 }
 const DAY_SECONDS: i64 = 86_400;
 

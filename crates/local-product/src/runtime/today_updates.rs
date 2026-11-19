@@ -31,7 +31,7 @@ use super::entities::{
 use super::jobs::PracticeJobKind;
 use super::receipt::{self, Receipt};
 use super::reviews::{RecordedReviewAction, ReviewHoldReason, ReviewLifecycleState};
-use super::understanding::{PatientSummary, SummaryCitation};
+use super::understanding::SummaryCitation;
 use super::{Authority, MessageRole, Store, WorkStatus, control, conversion_error};
 use crate::patient_reviews::{
     PriorPatientReviewSummary, ReviewCitation, ReviewOutcome, ReviewStartingContext, ReviewTrigger,
@@ -1006,6 +1006,163 @@ fn source_work_summary(work: &SourceWork) -> String {
     }
 }
 
+#[derive(Clone, Debug, Default)]
+struct WorkspaceWrongPatientFence {
+    withheld: super::link_correction::WithheldWorkspaceState,
+    withdrawn_candidates: BTreeSet<String>,
+    withdrawn_messages: BTreeSet<String>,
+    fenced_work_ids: BTreeSet<String>,
+}
+
+impl WorkspaceWrongPatientFence {
+    fn is_empty(&self) -> bool {
+        self.withheld.is_empty()
+            && self.withdrawn_candidates.is_empty()
+            && self.withdrawn_messages.is_empty()
+            && self.fenced_work_ids.is_empty()
+    }
+
+    fn candidate_fenced(&self, candidate_id: &str) -> bool {
+        self.withheld.candidate_ids.contains(candidate_id)
+            || self.withdrawn_candidates.contains(candidate_id)
+    }
+
+    fn candidate_unavailable_reason(&self, candidate_id: &str) -> Option<String> {
+        self.withheld
+            .reason_for_candidate(candidate_id)
+            .or_else(|| {
+                self.withdrawn_candidates.contains(candidate_id).then(|| {
+                    "Unavailable: patient message content was withdrawn after a wrong-patient link correction."
+                        .to_owned()
+                })
+            })
+    }
+
+    fn work_fenced(&self, work_id: &str) -> bool {
+        self.withheld.work_ids.contains(work_id) || self.fenced_work_ids.contains(work_id)
+    }
+
+    fn trigger_fenced(&self, trigger: &ReviewTrigger) -> bool {
+        match trigger {
+            ReviewTrigger::ChangedRecords {
+                record_versions,
+                changed_candidates,
+                ..
+            } => {
+                if !changed_candidates.is_empty() {
+                    changed_candidates
+                        .iter()
+                        .all(|cid| self.candidate_fenced(cid))
+                } else if !record_versions.is_empty() {
+                    record_versions.keys().all(|cid| self.candidate_fenced(cid))
+                } else {
+                    false
+                }
+            }
+            ReviewTrigger::PhysicianRequest { .. } | ReviewTrigger::Periodic { .. } => false,
+        }
+    }
+
+    fn review_is_fenced(
+        &self,
+        review_id: &str,
+        triggers: &[ReviewTrigger],
+        evidence_refs: &[ExactRecordReference],
+        state: &ReviewLifecycleState,
+    ) -> bool {
+        if self.is_empty() {
+            return false;
+        }
+        if self.work_fenced(review_id) {
+            return true;
+        }
+        if evidence_refs
+            .iter()
+            .any(|r| self.candidate_fenced(&r.candidate_id))
+        {
+            return true;
+        }
+        if let ReviewLifecycleState::Completed { outcome, .. } = state
+            && outcome
+                .citations()
+                .iter()
+                .any(|c| self.candidate_fenced(&c.reference.candidate_id))
+        {
+            return true;
+        }
+        !triggers.is_empty() && triggers.iter().all(|t| self.trigger_fenced(t))
+    }
+
+    fn visit_prep_is_fenced(&self, row: &visit_preparation::Model) -> bool {
+        !self.is_empty()
+            && (self.work_fenced(&row.selection_job_id)
+                || row
+                    .briefing_job_id
+                    .as_deref()
+                    .is_some_and(|jid| self.work_fenced(jid)))
+    }
+
+    fn visit_briefing_is_fenced(&self, row: &visit_briefing::Model) -> Result<bool, DbErr> {
+        if self.is_empty() {
+            return Ok(false);
+        }
+        if self.work_fenced(&row.briefing_id) {
+            return Ok(true);
+        }
+        let origin: super::briefings::BriefingOrigin =
+            serde_json::from_value(row.origin.clone())
+                .map_err(conversion_error("visit_briefing.origin", "BriefingOrigin"))?;
+        if self.work_fenced(&origin.job_id) || self.work_fenced(&origin.work_id) {
+            return Ok(true);
+        }
+        let basis_citations: Vec<ExactRecordReference> =
+            serde_json::from_value(row.basis_citations.clone()).map_err(conversion_error(
+                "visit_briefing.basis_citations",
+                "Vec<ExactRecordReference>",
+            ))?;
+        if basis_citations
+            .iter()
+            .any(|r| self.candidate_fenced(&r.candidate_id))
+        {
+            return Ok(true);
+        }
+        let citations: Vec<SummaryCitation> = serde_json::from_value(row.citations.clone())
+            .map_err(conversion_error(
+                "visit_briefing.citations",
+                "Vec<SummaryCitation>",
+            ))?;
+        Ok(citations
+            .iter()
+            .any(|c| self.candidate_fenced(&c.reference.candidate_id)))
+    }
+}
+
+async fn load_workspace_wrong_patient_fence<C: ConnectionTrait>(
+    conn: &C,
+    practice: &str,
+    workspace: &str,
+) -> Result<WorkspaceWrongPatientFence, DbErr> {
+    let withheld =
+        super::link_correction::load_workspace_withheld_state_in_tx(conn, workspace).await?;
+    let boundary =
+        super::follow_ups::load_workspace_withdrawal_boundary(conn, practice, workspace).await?;
+    let fenced_work_ids =
+        super::follow_ups::load_workspace_fenced_work_ids(conn, practice, workspace).await?;
+    let (withdrawn_candidates, withdrawn_messages) = match boundary {
+        Some(b) => (
+            b.candidate_ids.into_iter().collect(),
+            b.message_ids.into_iter().collect(),
+        ),
+        None => (BTreeSet::new(), BTreeSet::new()),
+    };
+    Ok(WorkspaceWrongPatientFence {
+        withheld,
+        withdrawn_candidates,
+        withdrawn_messages,
+        fenced_work_ids,
+    })
+}
+
 impl Store {
     async fn authorize_physician_read(
         &self,
@@ -1333,6 +1490,39 @@ impl Store {
         })
     }
 
+    async fn load_withheld_by_workspace(
+        &self,
+        workspaces: &[String],
+    ) -> Result<BTreeMap<String, super::link_correction::WithheldWorkspaceState>, String> {
+        let mut out = BTreeMap::new();
+        for ws in workspaces {
+            let state = super::link_correction::load_workspace_withheld_state_in_tx(&self.db, ws)
+                .await
+                .map_err(|err| err.to_string())?;
+            if !state.is_empty() {
+                out.insert(ws.clone(), state);
+            }
+        }
+        Ok(out)
+    }
+
+    async fn load_fences_by_workspace(
+        &self,
+        practice: &str,
+        workspaces: &[String],
+    ) -> Result<BTreeMap<String, WorkspaceWrongPatientFence>, String> {
+        let mut out = BTreeMap::new();
+        for ws in workspaces {
+            let fence = load_workspace_wrong_patient_fence(&self.db, practice, ws)
+                .await
+                .map_err(|err| err.to_string())?;
+            if !fence.is_empty() {
+                out.insert(ws.clone(), fence);
+            }
+        }
+        Ok(out)
+    }
+
     async fn read_today_concerns_slice(
         &self,
         ctx: &AuthorizedReadContext,
@@ -1347,6 +1537,9 @@ impl Store {
         self.reconcile_visit_concerns(&ctx.identity.practice_id, ctx.clinical_now_unix)
             .await
             .map_err(|err| err.to_string())?;
+        let withheld_by_ws = self
+            .load_withheld_by_workspace(&ctx.allowed_workspaces)
+            .await?;
 
         let concern_rows = concern::Entity::find()
             .filter(concern::Column::Practice.eq(ctx.identity.practice_id.as_str()))
@@ -1393,6 +1586,17 @@ impl Store {
                 .map_err(|err| format!("invalid concern id: {err}"))?;
             let records: Vec<ExactRecordReference> = serde_json::from_value(row.records)
                 .map_err(|err| format!("decode concern records: {err}"))?;
+            let source_work: SourceWork = serde_json::from_value(row.source_work)
+                .map_err(|err| format!("decode concern source_work: {err}"))?;
+            if let Some(withheld) = withheld_by_ws.get(&row.workspace)
+                && super::link_correction::concern_is_withheld(
+                    withheld,
+                    &source_work.work_id,
+                    &records,
+                )
+            {
+                continue;
+            }
             let visit_slot = visit_slot_by_concern
                 .get(&(row.workspace.clone(), row.id.clone()))
                 .cloned();
@@ -1451,6 +1655,9 @@ impl Store {
         if ctx.allowed_workspaces.is_empty() {
             return Ok((Vec::new(), BTreeSet::new()));
         }
+        let fences_by_ws = self
+            .load_fences_by_workspace(&ctx.identity.practice_id, &ctx.allowed_workspaces)
+            .await?;
         let review_rows = patient_review::Entity::find()
             .filter(patient_review::Column::Practice.eq(ctx.identity.practice_id.as_str()))
             .filter(
@@ -1471,8 +1678,16 @@ impl Store {
             let unfinished_work: Vec<UnfinishedReviewWork> =
                 serde_json::from_value(row.unfinished_work)
                     .map_err(|err| format!("decode review unfinished_work: {err}"))?;
+            let evidence_refs: Vec<ExactRecordReference> =
+                serde_json::from_value(row.evidence_read)
+                    .map_err(|err| format!("decode review evidence_read: {err}"))?;
             let state: ReviewLifecycleState = serde_json::from_value(row.state)
                 .map_err(|err| format!("decode review state: {err}"))?;
+            if fences_by_ws.get(&row.workspace).is_some_and(|fence| {
+                fence.review_is_fenced(&row.review_id, &triggers, &evidence_refs, &state)
+            }) {
+                continue;
+            }
             let patient_display_name = names
                 .get(&row.workspace)
                 .cloned()
@@ -1651,6 +1866,9 @@ impl Store {
         if ctx.allowed_workspaces.is_empty() {
             return Ok(Vec::new());
         }
+        let fences_by_ws = self
+            .load_fences_by_workspace(&ctx.identity.practice_id, &ctx.allowed_workspaces)
+            .await?;
         let prep_rows = visit_preparation::Entity::find()
             .filter(visit_preparation::Column::Practice.eq(ctx.identity.practice_id.as_str()))
             .filter(
@@ -1665,6 +1883,12 @@ impl Store {
 
         let mut out = Vec::with_capacity(prep_rows.len());
         for row in prep_rows {
+            if fences_by_ws
+                .get(&row.workspace)
+                .is_some_and(|fence| fence.visit_prep_is_fenced(&row))
+            {
+                continue;
+            }
             let key_str = format!(
                 "unhandled-visit:{}:{}:{}:{}",
                 row.workspace, row.source_id, row.appointment_id, row.starts_at_unix
@@ -1759,9 +1983,18 @@ impl Store {
             .into_iter()
             .collect();
 
+        let fences_by_ws = self
+            .load_fences_by_workspace(&ctx.identity.practice_id, &ctx.allowed_workspaces)
+            .await?;
         let mut out = Vec::new();
         for job in failed_jobs {
             if job.sources_version <= 0 {
+                continue;
+            }
+            if fences_by_ws
+                .get(&job.workspace)
+                .is_some_and(|fence| fence.work_fenced(&job.job_id))
+            {
                 continue;
             }
             if let Some(saved_version) = covered_versions.get(&job.workspace)
@@ -1840,6 +2073,9 @@ impl Store {
             .await
             .map_err(|err| err.to_string())?;
 
+        let fences_by_ws = self
+            .load_fences_by_workspace(&ctx.identity.practice_id, &ctx.allowed_workspaces)
+            .await?;
         let mut out = Vec::with_capacity(conv_rows.len());
         for row in conv_rows {
             let chat_id = row.chat.clone();
@@ -1847,6 +2083,12 @@ impl Store {
             let revision = row.revision;
             let state = control::conversation(row, Vec::new())
                 .map_err(|err| format!("decode running conversation: {err}"))?;
+            if fences_by_ws
+                .get(&workspace)
+                .is_some_and(|fence| fence.work_fenced(&chat_id) || fence.work_fenced(&state.work))
+            {
+                continue;
+            }
             let latest_question = state
                 .messages
                 .iter()
@@ -2159,6 +2401,9 @@ impl Store {
         self.reconcile_visit_concerns(&ctx.identity.practice_id, ctx.clinical_now_unix)
             .await
             .map_err(|err| err.to_string())?;
+        let withheld_by_ws = self
+            .load_withheld_by_workspace(&ctx.allowed_workspaces)
+            .await?;
 
         let rows = concern::Entity::find()
             .filter(concern::Column::Practice.eq(ctx.identity.practice_id.as_str()))
@@ -2171,6 +2416,19 @@ impl Store {
 
         let mut entries = Vec::with_capacity(rows.len());
         for row in rows {
+            let records: Vec<ExactRecordReference> = serde_json::from_value(row.records)
+                .map_err(|err| format!("decode concern records: {err}"))?;
+            let source_work: SourceWork = serde_json::from_value(row.source_work)
+                .map_err(|err| format!("decode concern source_work: {err}"))?;
+            if let Some(withheld) = withheld_by_ws.get(&row.workspace)
+                && super::link_correction::concern_is_withheld(
+                    withheld,
+                    &source_work.work_id,
+                    &records,
+                )
+            {
+                continue;
+            }
             let urgency = match row.urgency.as_str() {
                 "now" => ConcernUrgency::Now,
                 "today" => ConcernUrgency::Today,
@@ -2265,6 +2523,9 @@ impl Store {
         if ctx.allowed_workspaces.is_empty() {
             return Ok((Vec::new(), Vec::new()));
         }
+        let fences_by_ws = self
+            .load_fences_by_workspace(&ctx.identity.practice_id, &ctx.allowed_workspaces)
+            .await?;
         let rows = patient_review::Entity::find()
             .filter(patient_review::Column::Practice.eq(ctx.identity.practice_id.as_str()))
             .filter(
@@ -2278,8 +2539,18 @@ impl Store {
         let mut active_runs = Vec::new();
         let mut entries = Vec::new();
         for row in rows {
+            let triggers: Vec<ReviewTrigger> = serde_json::from_value(row.triggers)
+                .map_err(|err| format!("decode review triggers: {err}"))?;
+            let evidence_refs: Vec<ExactRecordReference> =
+                serde_json::from_value(row.evidence_read)
+                    .map_err(|err| format!("decode review evidence_read: {err}"))?;
             let state: ReviewLifecycleState = serde_json::from_value(row.state)
                 .map_err(|err| format!("decode review state: {err}"))?;
+            if fences_by_ws.get(&row.workspace).is_some_and(|fence| {
+                fence.review_is_fenced(&row.review_id, &triggers, &evidence_refs, &state)
+            }) {
+                continue;
+            }
             let patient_display_name = names
                 .get(&row.workspace)
                 .cloned()
@@ -2386,6 +2657,9 @@ impl Store {
         if ctx.allowed_workspaces.is_empty() {
             return Ok((Vec::new(), Vec::new()));
         }
+        let fences_by_ws = self
+            .load_fences_by_workspace(&ctx.identity.practice_id, &ctx.allowed_workspaces)
+            .await?;
         let prep_rows = visit_preparation::Entity::find()
             .filter(visit_preparation::Column::Practice.eq(ctx.identity.practice_id.as_str()))
             .filter(
@@ -2400,6 +2674,12 @@ impl Store {
         let mut entries = Vec::new();
 
         for row in prep_rows {
+            if fences_by_ws
+                .get(&row.workspace)
+                .is_some_and(|fence| fence.visit_prep_is_fenced(&row))
+            {
+                continue;
+            }
             let patient_display_name = names
                 .get(&row.workspace)
                 .cloned()
@@ -2498,6 +2778,13 @@ impl Store {
             .map_err(|err| err.to_string())?;
 
         for row in briefing_rows {
+            if let Some(fence) = fences_by_ws.get(&row.workspace)
+                && fence
+                    .visit_briefing_is_fenced(&row)
+                    .map_err(|err| err.to_string())?
+            {
+                continue;
+            }
             let patient_display_name = names
                 .get(&row.workspace)
                 .cloned()
@@ -2543,6 +2830,9 @@ impl Store {
             return Ok((Vec::new(), Vec::new()));
         }
 
+        let fences_by_ws = self
+            .load_fences_by_workspace(&ctx.identity.practice_id, &ctx.allowed_workspaces)
+            .await?;
         let running_jobs = practice_job::Entity::find()
             .filter(practice_job::Column::Practice.eq(ctx.identity.practice_id.as_str()))
             .filter(
@@ -2557,6 +2847,12 @@ impl Store {
 
         let mut active_runs = Vec::with_capacity(running_jobs.len());
         for job in running_jobs {
+            if fences_by_ws
+                .get(&job.workspace)
+                .is_some_and(|fence| fence.work_fenced(&job.job_id))
+            {
+                continue;
+            }
             let patient_display_name = names
                 .get(&job.workspace)
                 .cloned()
@@ -2570,29 +2866,19 @@ impl Store {
             });
         }
 
-        // Select ONLY summary columns — never OperatingIndex.
-        let summary_rows = patient_understanding::Entity::find()
-            .select_only()
-            .column(patient_understanding::Column::Workspace)
-            .column(patient_understanding::Column::Revision)
-            .column(patient_understanding::Column::Summary)
-            .column(patient_understanding::Column::UpdatedAt)
-            .filter(patient_understanding::Column::Practice.eq(ctx.identity.practice_id.as_str()))
-            .filter(
-                patient_understanding::Column::Workspace
-                    .is_in(ctx.allowed_workspaces.iter().map(String::as_str)),
-            )
-            .into_tuple::<(String, i64, Value, i64)>()
-            .all(&self.db)
+        let summaries_by_ws = self
+            .patient_summaries_for_workspaces(&ctx.allowed_workspaces)
             .await
             .map_err(|err| err.to_string())?;
 
-        let mut entries = Vec::with_capacity(summary_rows.len());
-        for (workspace, revision_i64, summary_json, updated_at) in summary_rows {
-            let revision =
-                u64::try_from(revision_i64).map_err(|err| format!("summary revision: {err}"))?;
-            let summary: PatientSummary = serde_json::from_value(summary_json)
-                .map_err(|err| format!("decode patient summary: {err}"))?;
+        let mut entries = Vec::with_capacity(summaries_by_ws.len());
+        for (workspace, view) in summaries_by_ws {
+            if view.practice != ctx.identity.practice_id {
+                continue;
+            }
+            let revision = view.revision;
+            let summary = view.summary;
+            let updated_at = view.updated_at;
             let patient_display_name = names
                 .get(&workspace)
                 .cloned()
@@ -2671,7 +2957,13 @@ impl Store {
             .unwrap_or_else(|| workspace.to_owned());
 
         let (mut detail, snapshot, open_concern_id) = self
-            .load_item_work_evidence_and_snapshot(&ctx, workspace, item_key, &patient_display_name)
+            .load_item_work_evidence_and_snapshot(
+                auth,
+                &ctx,
+                workspace,
+                item_key,
+                &patient_display_name,
+            )
             .await?;
 
         if let Some(concern_id) = open_concern_id {
@@ -2757,12 +3049,14 @@ impl Store {
 
     async fn resolve_exact_record_citations(
         &self,
+        practice: &str,
         workspace: &str,
         refs: &[ExactRecordReference],
     ) -> Result<Vec<ItemEvidenceCitation>, DbErr> {
         if refs.is_empty() {
             return Ok(Vec::new());
         }
+        let fence = load_workspace_wrong_patient_fence(&self.db, practice, workspace).await?;
         let candidate_ids: Vec<&str> = refs.iter().map(|r| r.candidate_id.as_str()).collect();
         let rows = source::Entity::find()
             .filter(source::Column::Workspace.eq(workspace))
@@ -2771,8 +3065,18 @@ impl Store {
             .all(&self.db)
             .await?;
 
+        let mut seen_latest_candidate: BTreeSet<String> = BTreeSet::new();
+        let mut tombstoned_candidates: BTreeSet<String> = BTreeSet::new();
         let mut by_ref: BTreeMap<(String, String), SourceRevision> = BTreeMap::new();
         for row in rows {
+            let is_latest = seen_latest_candidate.insert(row.candidate.clone());
+            if is_latest && row.revision.is_none() {
+                tombstoned_candidates.insert(row.candidate);
+                continue;
+            }
+            if tombstoned_candidates.contains(&row.candidate) {
+                continue;
+            }
             let Some(rev_json) = row.revision else {
                 continue;
             };
@@ -2793,6 +3097,29 @@ impl Store {
 
         let mut citations = Vec::with_capacity(refs.len());
         for reference in refs {
+            let unavailable_reason = fence
+                .candidate_unavailable_reason(&reference.candidate_id)
+                .or_else(|| {
+                    tombstoned_candidates
+                        .contains(&reference.candidate_id)
+                        .then(|| {
+                            "Unavailable: patient message content was withdrawn after a wrong-patient link correction."
+                                .to_owned()
+                        })
+                });
+            if let Some(reason) = unavailable_reason {
+                citations.push(ItemEvidenceCitation {
+                    reference: reference.clone(),
+                    source_id: "unavailable".to_owned(),
+                    source_label: "Unavailable".to_owned(),
+                    display_label: "Unavailable · Withdrawn chart record".to_owned(),
+                    as_of: None,
+                    excerpt: reason.clone(),
+                    body: reason,
+                    native_uri: None,
+                });
+                continue;
+            }
             if let Some(found) =
                 by_ref.get(&(reference.candidate_id.clone(), reference.revision.clone()))
             {
@@ -2862,12 +3189,14 @@ impl Store {
 
     async fn enrich_citations_from_store(
         &self,
+        practice: &str,
         workspace: &str,
         mut citations: Vec<ItemEvidenceCitation>,
     ) -> Result<Vec<ItemEvidenceCitation>, DbErr> {
         if citations.is_empty() {
             return Ok(citations);
         }
+        let fence = load_workspace_wrong_patient_fence(&self.db, practice, workspace).await?;
         let candidate_ids: Vec<&str> = citations
             .iter()
             .map(|c| c.reference.candidate_id.as_str())
@@ -2878,8 +3207,18 @@ impl Store {
             .order_by_desc(source::Column::ObservedAtVersion)
             .all(&self.db)
             .await?;
+        let mut seen_latest_candidate: BTreeSet<String> = BTreeSet::new();
+        let mut tombstoned_candidates: BTreeSet<String> = BTreeSet::new();
         let mut by_ref: BTreeMap<(String, String), SourceRevision> = BTreeMap::new();
         for row in rows {
+            let is_latest = seen_latest_candidate.insert(row.candidate.clone());
+            if is_latest && row.revision.is_none() {
+                tombstoned_candidates.insert(row.candidate);
+                continue;
+            }
+            if tombstoned_candidates.contains(&row.candidate) {
+                continue;
+            }
             let Some(rev_json) = row.revision else {
                 continue;
             };
@@ -2890,6 +3229,26 @@ impl Store {
                 .or_insert(decoded);
         }
         for citation in &mut citations {
+            let unavailable_reason = fence
+                .candidate_unavailable_reason(&citation.reference.candidate_id)
+                .or_else(|| {
+                    tombstoned_candidates
+                        .contains(&citation.reference.candidate_id)
+                        .then(|| {
+                            "Unavailable: patient message content was withdrawn after a wrong-patient link correction."
+                                .to_owned()
+                        })
+                });
+            if let Some(reason) = unavailable_reason {
+                citation.source_id = "unavailable".to_owned();
+                citation.source_label = "Unavailable".to_owned();
+                citation.display_label = "Unavailable · Withdrawn chart record".to_owned();
+                citation.as_of = None;
+                citation.excerpt = reason.clone();
+                citation.body = reason;
+                citation.native_uri = None;
+                continue;
+            }
             if let Some(found) = by_ref.get(&(
                 citation.reference.candidate_id.clone(),
                 citation.reference.revision.clone(),
@@ -2916,6 +3275,7 @@ impl Store {
 
     async fn load_item_work_evidence_and_snapshot(
         &self,
+        auth: &dyn AuthStore,
         ctx: &AuthorizedReadContext,
         workspace: &str,
         item_key: &SeenItemKey,
@@ -2966,6 +3326,7 @@ impl Store {
             };
             if constituents.len() == 1 {
                 let (mut sub_detail, _, _) = Box::pin(self.load_item_work_evidence_and_snapshot(
+                    auth,
                     ctx,
                     workspace,
                     &constituents[0].item_key,
@@ -2984,6 +3345,7 @@ impl Store {
             let mut seen_refs = BTreeSet::new();
             for constituent in &constituents {
                 let (sub, _, _) = Box::pin(self.load_item_work_evidence_and_snapshot(
+                    auth,
                     ctx,
                     workspace,
                     &constituent.item_key,
@@ -3063,8 +3425,21 @@ impl Store {
             )?;
             let source_work: SourceWork = serde_json::from_value(row.source_work)
                 .map_err(conversion_error("concern source_work", "SourceWork"))?;
+            let fence = load_workspace_wrong_patient_fence(&self.db, practice, workspace).await?;
+            if super::link_correction::concern_is_withheld(
+                &fence.withheld,
+                &source_work.work_id,
+                &refs,
+            ) || fence.work_fenced(&source_work.work_id)
+                || refs.iter().any(|r| fence.candidate_fenced(&r.candidate_id))
+            {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
             let citations = self
-                .resolve_exact_record_citations(workspace, &refs)
+                .resolve_exact_record_citations(practice, workspace, &refs)
                 .await?;
             let version_id = format!("rev:{}", row.revision);
 
@@ -3156,6 +3531,7 @@ impl Store {
                 ))
                 .one(&self.db)
                 .await?
+                && !fence.visit_briefing_is_fenced(&briefing_row)?
             {
                 clinical_body = format!(
                     "{}\n\nVisit briefing:\n{}",
@@ -3226,11 +3602,20 @@ impl Store {
                     "unfinished_work",
                     "Vec<UnfinishedReviewWork>",
                 ))?;
+            let triggers: Vec<ReviewTrigger> = serde_json::from_value(row.triggers)
+                .map_err(conversion_error("review triggers", "Vec<ReviewTrigger>"))?;
             let evidence_refs: Vec<ExactRecordReference> =
                 serde_json::from_value(row.evidence_read).map_err(conversion_error(
                     "evidence_read",
                     "Vec<ExactRecordReference>",
                 ))?;
+            let fence = load_workspace_wrong_patient_fence(&self.db, practice, workspace).await?;
+            if fence.review_is_fenced(&row.review_id, &triggers, &evidence_refs, &state) {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
 
             match state {
                 ReviewLifecycleState::Completed {
@@ -3245,7 +3630,7 @@ impl Store {
                         .map(review_citation_to_evidence)
                         .collect();
                     let citations = self
-                        .enrich_citations_from_store(workspace, base_citations)
+                        .enrich_citations_from_store(practice, workspace, base_citations)
                         .await?;
                     let basis = Some(outcome.basis_and_limitations().to_owned());
                     let (kind_label, headline, detail) = match &outcome {
@@ -3300,7 +3685,7 @@ impl Store {
                         format!("Unhandled follow-up: {}", topics.join("; "))
                     };
                     let citations = self
-                        .resolve_exact_record_citations(workspace, &evidence_refs)
+                        .resolve_exact_record_citations(practice, workspace, &evidence_refs)
                         .await?;
                     let snapshot = SeenItemSnapshot {
                         version_id: version_id.clone(),
@@ -3348,7 +3733,7 @@ impl Store {
                         format!("Unhandled follow-up: {}", topics.join("; "))
                     };
                     let citations = self
-                        .resolve_exact_record_citations(workspace, &evidence_refs)
+                        .resolve_exact_record_citations(practice, workspace, &evidence_refs)
                         .await?;
                     let snapshot = SeenItemSnapshot {
                         version_id: version_id.clone(),
@@ -3383,7 +3768,7 @@ impl Store {
                     let detail =
                         "Coda is reviewing the requested records for this patient.".to_owned();
                     let citations = self
-                        .resolve_exact_record_citations(workspace, &evidence_refs)
+                        .resolve_exact_record_citations(practice, workspace, &evidence_refs)
                         .await?;
                     let snapshot = SeenItemSnapshot {
                         version_id: version_id.clone(),
@@ -3436,6 +3821,13 @@ impl Store {
                     workspace: workspace.to_owned(),
                     item_key: key.to_owned(),
                 })?;
+            let fence = load_workspace_wrong_patient_fence(&self.db, practice, workspace).await?;
+            if fence.visit_briefing_is_fenced(&row)? {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
             let raw_citations: Vec<SummaryCitation> = serde_json::from_value(row.citations)
                 .map_err(conversion_error(
                     "briefing citations",
@@ -3446,7 +3838,7 @@ impl Store {
                 .map(summary_citation_to_evidence)
                 .collect();
             let citations = self
-                .enrich_citations_from_store(workspace, base_citations)
+                .enrich_citations_from_store(practice, workspace, base_citations)
                 .await?;
             let version_id = format!("v{}:{}", row.source_version, row.updated_at);
             let headline = summarize_one_line(&row.visit_card_orientation, 120);
@@ -3483,32 +3875,36 @@ impl Store {
                     item_key: key.to_owned(),
                 });
             }
-            let row = patient_understanding::Entity::find()
-                .select_only()
-                .column(patient_understanding::Column::Revision)
-                .column(patient_understanding::Column::SourceVersion)
-                .column(patient_understanding::Column::Summary)
-                .filter(patient_understanding::Column::Practice.eq(practice))
-                .filter(patient_understanding::Column::Workspace.eq(workspace))
-                .into_tuple::<(i64, i64, Value)>()
-                .one(&self.db)
-                .await?
+            let view = self
+                .patient_summary_for_physician(auth, &ctx.identity, workspace)
+                .await
+                .map_err(|err| match err {
+                    super::understanding::PhysicianSummaryAccessError::Unauthorized {
+                        membership,
+                        ..
+                    } => TodayUpdatesError::AccessDenied {
+                        reason: format!("{membership:?}"),
+                    },
+                    super::understanding::PhysicianSummaryAccessError::Database(db_err) => {
+                        TodayUpdatesError::from(db_err)
+                    }
+                })?
                 .ok_or_else(|| TodayUpdatesError::NotFound {
                     workspace: workspace.to_owned(),
                     item_key: key.to_owned(),
                 })?;
-            let (revision_i64, source_version, summary_json) = row;
-            let summary: PatientSummary = serde_json::from_value(summary_json)
-                .map_err(conversion_error("patient summary", "PatientSummary"))?;
+            let revision = view.revision;
+            let source_version = view.source_version;
+            let summary = view.summary;
             let base_citations = summary
                 .citations
                 .iter()
                 .map(summary_citation_to_evidence)
                 .collect();
             let citations = self
-                .enrich_citations_from_store(workspace, base_citations)
+                .enrich_citations_from_store(practice, workspace, base_citations)
                 .await?;
-            let version_id = format!("rev:{revision_i64}");
+            let version_id = format!("rev:{revision}");
             let headline = summarize_one_line(&summary.narrative, 120);
             let basis = if summary.material_gaps.is_empty() {
                 summary
@@ -3538,7 +3934,7 @@ impl Store {
                     clinical_body: summary.narrative,
                     basis_and_limitations: basis,
                     citations,
-                    origin_summary: format!("Patient summary v{revision_i64}"),
+                    origin_summary: format!("Patient summary v{revision}"),
                     chat_id: None,
                     seen_standing: SeenStanding::Unseen,
                 },
@@ -3576,6 +3972,14 @@ impl Store {
                 workspace: workspace.to_owned(),
                 item_key: key.to_owned(),
             })?;
+
+            let fence = load_workspace_wrong_patient_fence(&self.db, practice, workspace).await?;
+            if row.workspace != workspace || fence.visit_prep_is_fenced(&row) {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
 
             let (kind_label, headline, detail, version_id) = match row.state.as_str() {
                 "could_not_finish" => {
@@ -3668,6 +4072,13 @@ impl Store {
                 workspace: workspace.to_owned(),
                 item_key: key.to_owned(),
             })?;
+            let fence = load_workspace_wrong_patient_fence(&self.db, practice, workspace).await?;
+            if fence.work_fenced(&job.job_id) {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
             let status_tag = match job.status {
                 WorkStatus::Failed => "failed",
                 WorkStatus::Held => "held",
@@ -3734,6 +4145,13 @@ impl Store {
             })?;
             let revision = row.revision;
             let state = control::conversation(row, Vec::new())?;
+            let fence = load_workspace_wrong_patient_fence(&self.db, practice, workspace).await?;
+            if fence.work_fenced(chat_id) || fence.work_fenced(&state.work) {
+                return Err(TodayUpdatesError::NotFound {
+                    workspace: workspace.to_owned(),
+                    item_key: key.to_owned(),
+                });
+            }
             let latest_question = state
                 .messages
                 .iter()
@@ -4019,6 +4437,7 @@ impl Store {
             .filter_map(|row| row.completed_at.or(Some(row.updated_at)))
             .max();
 
+        let fence = load_workspace_wrong_patient_fence(&self.db, practice, workspace).await?;
         let mut handed_off = Vec::new();
         for row in review_rows {
             let state: ReviewLifecycleState = serde_json::from_value(row.state)
@@ -4030,9 +4449,17 @@ impl Store {
                     "unfinished_work",
                     "Vec<UnfinishedReviewWork>",
                 ))?;
+            let evidence_refs: Vec<ExactRecordReference> =
+                serde_json::from_value(row.evidence_read).map_err(conversion_error(
+                    "evidence_read",
+                    "Vec<ExactRecordReference>",
+                ))?;
             let actions: Vec<RecordedReviewAction> = serde_json::from_value(row.actions)
                 .map_err(conversion_error("actions", "Vec<RecordedReviewAction>"))?;
 
+            if fence.review_is_fenced(&row.review_id, &triggers, &evidence_refs, &state) {
+                continue;
+            }
             if !review_creates_unhandled_today_row(&triggers, &unfinished_work, &state) {
                 continue;
             }
@@ -4071,11 +4498,12 @@ impl Store {
                         record_versions,
                         changed_candidates,
                     } => {
-                        let candidates: Vec<String> = if changed_candidates.is_empty() {
+                        let mut candidates: Vec<String> = if changed_candidates.is_empty() {
                             record_versions.keys().cloned().collect()
                         } else {
                             changed_candidates.clone()
                         };
+                        candidates.retain(|cid| !fence.candidate_fenced(cid));
                         if !candidates.is_empty() {
                             handed_work.push(UnfinishedReviewWork {
                                 topic: format!("Unreviewed chart results from {}", row.review_id),
@@ -4191,6 +4619,7 @@ async fn active_workspace_unhandled_constituents<C: ConnectionTrait>(
     patient_display_name: &str,
     dismissals: &BTreeSet<(String, String, String)>,
 ) -> Result<Vec<TodayRow>, DbErr> {
+    let fence = load_workspace_wrong_patient_fence(conn, practice, workspace).await?;
     let mut constituents = Vec::new();
 
     let review_rows = patient_review::Entity::find()
@@ -4206,8 +4635,16 @@ async fn active_workspace_unhandled_constituents<C: ConnectionTrait>(
                 "unfinished_work",
                 "Vec<UnfinishedReviewWork>",
             ))?;
+        let evidence_refs: Vec<ExactRecordReference> = serde_json::from_value(row.evidence_read)
+            .map_err(conversion_error(
+                "evidence_read",
+                "Vec<ExactRecordReference>",
+            ))?;
         let state: ReviewLifecycleState = serde_json::from_value(row.state)
             .map_err(conversion_error("review state", "ReviewLifecycleState"))?;
+        if fence.review_is_fenced(&row.review_id, &triggers, &evidence_refs, &state) {
+            continue;
+        }
         if !review_creates_unhandled_today_row(&triggers, &unfinished_work, &state) {
             continue;
         }
@@ -4295,6 +4732,9 @@ async fn active_workspace_unhandled_constituents<C: ConnectionTrait>(
         .all(conn)
         .await?;
     for row in prep_rows {
+        if fence.visit_prep_is_fenced(&row) {
+            continue;
+        }
         let key_str = format!(
             "unhandled-visit:{workspace}:{}:{}:{}",
             row.source_id, row.appointment_id, row.starts_at_unix
@@ -4347,7 +4787,10 @@ async fn active_workspace_unhandled_constituents<C: ConnectionTrait>(
             .one(conn)
             .await?;
         for job in failed_jobs {
-            if job.sources_version <= 0 || saved_version.is_some_and(|v| v >= job.sources_version) {
+            if job.sources_version <= 0
+                || fence.work_fenced(&job.job_id)
+                || saved_version.is_some_and(|v| v >= job.sources_version)
+            {
                 continue;
             }
             let key_str = format!("unhandled-understanding:{workspace}:{}", job.job_id);
