@@ -46,6 +46,8 @@ pub mod dispatch;
 mod entities;
 /// Physician feedback on Coda's responses.
 pub mod feedback;
+/// Durable physician and Coda job follow-ups and wrong-patient withdrawal fencing.
+pub mod follow_ups;
 mod frozen;
 /// Read-only queries over saved conversations and work.
 pub mod history;

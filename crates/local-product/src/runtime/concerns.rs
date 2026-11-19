@@ -361,7 +361,7 @@ impl SourceWork {
         })
     }
 
-    fn validate(&self) -> Result<Self, ConcernInputError> {
+    pub(crate) fn validate(&self) -> Result<Self, ConcernInputError> {
         Self::new(&self.job, &self.work_id, &self.attempt_id)
     }
 }
