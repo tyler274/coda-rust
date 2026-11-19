@@ -14,7 +14,10 @@ async fn main() {
         std::env::var("CLINICAL_LIBRARY_BIND").unwrap_or_else(|_| "0.0.0.0:8085".to_owned());
 
     let result = async {
-        let store = clinical_library::Store::connect(&database_url).await?;
+        let mut store = clinical_library::Store::connect(&database_url).await?;
+        if let Some(encoder) = clinical_library::SubprocessBgeEncoder::from_env() {
+            store = store.with_embedder(std::sync::Arc::new(encoder));
+        }
         if std::env::var("CLINICAL_LIBRARY_AUTO_MIGRATE").as_deref() == Ok("1") {
             store.migrate().await?;
         }

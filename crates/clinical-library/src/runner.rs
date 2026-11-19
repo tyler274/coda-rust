@@ -91,6 +91,7 @@ impl JobError for StoreError {
             | Self::NotTonightsSource(_)
             | Self::InvalidMove(_)
             | Self::Corpus(_)
+            | Self::Embed(_)
             | Self::Corrupt { .. } => Failure::Code(FailureCode::known(STORE_FAILED)),
         }
     }

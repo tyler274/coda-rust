@@ -10,6 +10,7 @@
 //! from the runner.
 
 use std::collections::BTreeSet;
+use std::sync::Arc;
 use std::time::Duration;
 
 use sea_orm::sea_query::{Expr, Func, OnConflict, Query, SimpleExpr};
@@ -39,6 +40,7 @@ use crate::stop_rule::{self, HistoryEntry, Next, StopReason};
 #[derive(Debug, Clone)]
 pub struct Store {
     db: DatabaseConnection,
+    embedder: Option<Arc<dyn crate::semantic::TextEmbedder>>,
 }
 
 /// What came of asking for a slot. A night that doesn't get the slot has
@@ -140,6 +142,9 @@ pub enum StoreError {
     /// A corpus document or passage unit violated domain invariants.
     #[error("invalid clinical corpus document")]
     Corpus(#[from] crate::corpus::CorpusError),
+    /// Generating or validating a semantic embedding failed.
+    #[error("clinical library semantic embedding failed")]
+    Embed(#[from] crate::semantic::EmbedError),
     /// A stored row doesn't match any state the types allow.
     #[error("a stored {table} row is invalid")]
     Corrupt {
@@ -206,7 +211,18 @@ impl Store {
 
     /// Uses an existing pool.
     pub fn from_connection(db: DatabaseConnection) -> Self {
-        Self { db }
+        Self { db, embedder: None }
+    }
+
+    /// Returns a clone bound to a semantic [`crate::semantic::TextEmbedder`].
+    pub fn with_embedder(mut self, embedder: Arc<dyn crate::semantic::TextEmbedder>) -> Self {
+        self.embedder = Some(embedder);
+        self
+    }
+
+    /// Configured semantic text embedder, if any.
+    pub fn embedder(&self) -> Option<&dyn crate::semantic::TextEmbedder> {
+        self.embedder.as_deref()
     }
 
     /// Applies every pending migration.

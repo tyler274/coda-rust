@@ -17,6 +17,7 @@ pkgs.mkShell {
     python314
     uv
     poppler-utils
+    tesseract
     postgres
     pgformatter
     gcc

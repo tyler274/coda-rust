@@ -528,3 +528,106 @@ async fn ac3_freshness_report_tracks_unrun_lagging_failed_and_current_states() {
 
     scratch.drop().await;
 }
+
+#[tokio::test]
+async fn ac4_bge_semantic_vector_search_ranks_semantically_related_unit_without_keyword_overlap() {
+    use std::sync::Arc;
+
+    use async_trait::async_trait;
+    use clinical_library::{BGE_EMBEDDING_DIM, BgeEmbedding, EmbedError, TextEmbedder};
+
+    #[derive(Debug)]
+    struct ConceptEmbedder;
+
+    fn topic_vec(primary_idx: usize, secondary_idx: usize, secondary_weight: f32) -> BgeEmbedding {
+        let mut raw = vec![0.0_f32; BGE_EMBEDDING_DIM];
+        raw[primary_idx] = 1.0;
+        raw[secondary_idx] = secondary_weight;
+        BgeEmbedding::new(raw).unwrap()
+    }
+
+    #[async_trait]
+    impl TextEmbedder for ConceptEmbedder {
+        async fn embed_query(&self, query: &str) -> Result<BgeEmbedding, EmbedError> {
+            let q = query.to_ascii_lowercase();
+            if q.contains("renal") || q.contains("sglt2") {
+                Ok(topic_vec(0, 1, 0.2))
+            } else {
+                Ok(topic_vec(10, 11, 0.1))
+            }
+        }
+
+        async fn embed_passages(&self, texts: &[String]) -> Result<Vec<BgeEmbedding>, EmbedError> {
+            texts
+                .iter()
+                .map(|text| {
+                    let t = text.to_ascii_lowercase();
+                    if t.contains("dapagliflozin") || t.contains("chronic kidney disease") {
+                        Ok(topic_vec(0, 1, 0.25))
+                    } else if t.contains("norepinephrine") {
+                        Ok(topic_vec(5, 6, 0.1))
+                    } else {
+                        Ok(topic_vec(20, 21, 0.1))
+                    }
+                })
+                .collect()
+        }
+    }
+
+    let scratch = Scratch::new().await;
+    let store = scratch
+        .store()
+        .await
+        .with_embedder(Arc::new(ConceptEmbedder));
+    let slot = SlotName::new("nightly").unwrap();
+
+    let feed = vec![
+        CorpusFeedItem::DailyMedSpl {
+            setid: "dm-sem-1".into(),
+            xml: DAILYMED_SPL_VALID.to_owned(),
+        },
+        CorpusFeedItem::PmcJats {
+            pmcid: "PMC9911001".into(),
+            xml: PMC_JATS_VALID.to_owned(),
+        },
+    ];
+    let job = CorpusNightJob::new(
+        vec![Source::Pmc, Source::DailyMed],
+        VersionId::new("v-sem-1").unwrap(),
+        feed,
+    );
+    let night = run_night(&store, &Says(HolderState::Alive), &slot, RunId::new(), &job)
+        .await
+        .unwrap();
+    assert!(
+        matches!(night, Night::Finished(NightOutcome::Succeeded(_))),
+        "clean semantic ingestion must publish cleanly, got: {night:?}"
+    );
+
+    // Query shares zero stemmed keywords with "dapagliflozin / chronic kidney disease" ->
+    // pure FTS returns 0 hits, while BGE pgvector cosine distance + RRF returns all 3 units
+    // and ranks DailyMed #1!
+    let fts_only_store = scratch.store().await;
+    let fts_only = fts_only_store
+        .search_active("renal protection SGLT2", None, 10)
+        .await
+        .unwrap();
+    assert!(fts_only.candidates.is_empty());
+
+    let semantic_only = store
+        .search_active("renal protection SGLT2", None, 10)
+        .await
+        .unwrap();
+    assert_eq!(semantic_only.candidates.len(), 3);
+    assert_eq!(semantic_only.candidates[0].source_code, "dailymed");
+    assert_eq!(semantic_only.candidates[0].native_document_id, "dm-sem-1");
+
+    // Hybrid query matching both FTS ("dapagliflozin") and vector similarity returns DailyMed #1.
+    let hybrid = store
+        .search_active("dapagliflozin", None, 10)
+        .await
+        .unwrap();
+    assert_eq!(hybrid.candidates[0].native_document_id, "dm-sem-1");
+
+    scratch.drop().await;
+}
