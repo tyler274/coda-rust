@@ -180,6 +180,15 @@ async fn cod61_live_uploader_streams_to_front_door_excludes_private_notes_and_su
 
     let (status, _) = http(&app, "PUT", "/api/auth/account", None, json!({})).await;
     assert_eq!(status, StatusCode::OK.as_u16());
+    let (terms_status, _) = http(
+        &app,
+        "PUT",
+        "/api/auth/account/terms",
+        None,
+        json!({ "version": "2026-09-23" }),
+    )
+    .await;
+    assert_eq!(terms_status, StatusCode::OK.as_u16());
     let ctx = durable
         .identity
         .authenticate("duet-patient-token", false)
@@ -510,6 +519,16 @@ async fn cod61_live_uploader_streams_to_front_door_excludes_private_notes_and_su
     )
     .await;
     assert_eq!(b_acct_status, StatusCode::OK.as_u16());
+    let (b_terms_status, _) = http_as(
+        &app,
+        "duet-patient-b-token",
+        "PUT",
+        "/api/auth/account/terms",
+        None,
+        json!({ "version": "2026-09-23" }),
+    )
+    .await;
+    assert_eq!(b_terms_status, StatusCode::OK.as_u16());
     let ctx_b = durable
         .identity
         .authenticate("duet-patient-b-token", false)
