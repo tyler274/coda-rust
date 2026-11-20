@@ -43,6 +43,7 @@ struct Document {
 }
 struct SiteState {
     pages: HashMap<String, Document>,
+    invite: Document,
     not_found: Document,
     assets: AssetTable,
     sitemap: Representation,
@@ -104,6 +105,7 @@ fn router_with_gate(
             .into_iter()
             .map(|(path, page)| (path, document(page)))
             .collect(),
+        invite: document(pages.invite),
         not_found: document(pages.not_found),
         assets,
         sitemap: Representation::new(sitemap, "application/xml; charset=utf-8"),
@@ -292,6 +294,7 @@ async fn serve(
                 .robots
                 .respond(&headers, &method, StatusCode::OK, HTML_CACHE);
         }
+        "/invite" => return serve_invite(&state, &uri, &headers, &method),
         _ => {}
     }
     if let Some(asset) = state.assets.assets.get(uri.path()) {
@@ -326,6 +329,98 @@ async fn serve(
             .insert("x-robots-tag", "noindex, nofollow".parse().unwrap());
     }
     response
+}
+
+/// Platform target selected from the visitor's User-Agent on `/invite`.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum InvitePlatform {
+    Ios,
+    Android,
+    Fallback,
+}
+
+fn invite_platform(headers: &HeaderMap) -> InvitePlatform {
+    let ua = headers
+        .get(header::USER_AGENT)
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("")
+        .to_ascii_lowercase();
+    if ua.contains("android") {
+        InvitePlatform::Android
+    } else if ua.contains("iphone") || ua.contains("ipad") || ua.contains("ipod") {
+        InvitePlatform::Ios
+    } else {
+        InvitePlatform::Fallback
+    }
+}
+
+fn sanitized_invite_deep_link(query: Option<&str>) -> String {
+    let Some(query) = query else {
+        return "duet://invite".to_owned();
+    };
+    let mut kept = Vec::new();
+    for pair in query.split('&') {
+        let Some((key, value)) = pair.split_once('=') else {
+            continue;
+        };
+        if matches!(key, "token" | "code")
+            && !value.is_empty()
+            && value.len() <= 128
+            && value
+                .chars()
+                .all(|c| c.is_ascii_alphanumeric() || c == '-' || c == '_' || c == '.')
+        {
+            kept.push(format!("{key}={value}"));
+        }
+    }
+    if kept.is_empty() {
+        "duet://invite".to_owned()
+    } else {
+        format!("duet://invite?{}", kept.join("&"))
+    }
+}
+
+fn serve_invite(state: &SiteState, uri: &Uri, headers: &HeaderMap, method: &Method) -> Response {
+    match invite_platform(headers) {
+        InvitePlatform::Ios => Response::builder()
+            .status(StatusCode::FOUND)
+            .header(header::LOCATION, &state.runtime.app_store_url)
+            .header(header::CACHE_CONTROL, "no-store")
+            .header("x-robots-tag", "noindex, nofollow")
+            .body(Body::empty())
+            .unwrap(),
+        InvitePlatform::Android => Response::builder()
+            .status(StatusCode::FOUND)
+            .header(header::LOCATION, &state.runtime.play_store_url)
+            .header(header::CACHE_CONTROL, "no-store")
+            .header("x-robots-tag", "noindex, nofollow")
+            .body(Body::empty())
+            .unwrap(),
+        InvitePlatform::Fallback => {
+            let deep_link = sanitized_invite_deep_link(uri.query());
+            let mut response = if deep_link == "duet://invite" {
+                state
+                    .invite
+                    .representation
+                    .respond(headers, method, StatusCode::OK, "no-store")
+            } else {
+                // Inject only validated `[A-Za-z0-9_.-]` query params into the static href.
+                let html = std::str::from_utf8(state.invite.representation.identity_bytes())
+                    .unwrap_or("")
+                    .replace("href=\"duet://invite\"", &format!("href=\"{deep_link}\""));
+                Representation::new(html, "text/html; charset=utf-8").respond(
+                    headers,
+                    method,
+                    StatusCode::OK,
+                    "no-store",
+                )
+            };
+            response
+                .headers_mut()
+                .insert("x-robots-tag", "noindex, nofollow".parse().unwrap());
+            response
+        }
+    }
 }
 
 fn probe(ready: bool, method: &Method) -> Response {
@@ -400,6 +495,7 @@ mod tests {
         };
         PageTable {
             pages: [("/".into(), page.clone())].into_iter().collect(),
+            invite: page.clone(),
             not_found: page,
         }
     }
@@ -802,6 +898,10 @@ mod tests {
         };
         let state = Arc::new(SiteState {
             pages: HashMap::new(),
+            invite: Document {
+                representation: Representation::new("invite", "text/plain"),
+                noindex: true,
+            },
             not_found: Document {
                 representation: Representation::new("missing", "text/plain"),
                 noindex: true,

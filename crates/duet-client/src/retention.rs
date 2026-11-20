@@ -100,8 +100,18 @@ const STORAGE_KINDS: &[&str] = &[
     "doctor-operation-archive",
     "health-outbox",
     "health-scopes",
+    "account-state",
+    "you-cache",
+    "shared-cache",
+    "active-tab",
+    "appearance",
 ];
-const DEVICE_KEYS: &[&str] = &["cleanup-pending", "health-installation", "active-identity"];
+const DEVICE_KEYS: &[&str] = &[
+    "cleanup-pending",
+    "health-installation",
+    "active-identity",
+    "pending-invite",
+];
 
 /// Whether `key` is one this phone is allowed to write.
 pub fn registered_storage_key(key: &str) -> bool {
@@ -114,15 +124,19 @@ pub fn registered_storage_key(key: &str) -> bool {
 /// Storage failures shared with the health outbox.
 pub use duet_health::outbox::StorageError as HealthStorageError;
 
-/// Provider refresh credential and its verified Duet owner. Never Debug/log this type.
+/// Retained non-expiring device session and its verified Duet owner. Never Debug/log this type.
 #[derive(Clone, Serialize, Deserialize)]
 pub struct RetainedIdentity {
-    /// Identity Platform subject, verified by the account endpoint.
+    /// Account subject identifier (`email:<uuid>` or provider subject).
     pub subject: String,
-    /// Internal UUID plus incarnation, not email or provider subject.
+    /// Internal UUID plus incarnation (`<account_id>:<incarnation>`).
     pub owner: String,
-    /// Refresh token; ID tokens are held only in memory.
-    pub refresh_token: String,
+    /// Non-expiring opaque bearer token (`ds1.`).
+    #[serde(alias = "refresh_token")]
+    pub session_token: String,
+    /// Verified email address associated with this account when signed in via email.
+    #[serde(default)]
+    pub email: Option<String>,
 }
 
 /// Exact local edit and the base it was edited against. Approval is a separate server action.
@@ -334,12 +348,175 @@ impl RetentionOwner {
         };
         self.recover(&fence)
     }
-    /// Rotate a verified refresh credential without changing the UI/session generation.
+    /// Unlock the retained account offline using protected storage, granting no network authority.
+    pub fn restore_offline_session(
+        &self,
+    ) -> Result<Option<(RetainedIdentity, SessionFence)>, String> {
+        let _guard = self.gate.lock().unwrap();
+        if self.store.cleanup_pending()? {
+            return Err("Secure sign-out cleanup must finish before sign-in".into());
+        }
+        let Some(identity) = self.retained_identity()? else {
+            return Ok(None);
+        };
+        let fence = self.session.switch(Some(identity.owner.clone())).unwrap();
+        Ok(Some((identity, fence)))
+    }
+    /// Persist the last active tab index (`0` = You, `1` = Shared) for this account.
+    pub fn save_active_tab(&self, fence: &SessionFence, tab: usize) -> Result<(), String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        self.store.write(
+            &key("active-tab", fence.owner()),
+            tab.to_string().as_bytes(),
+        )
+    }
+    /// Load the last active tab index (`None` when never saved).
+    pub fn load_active_tab(&self, fence: &SessionFence) -> Result<Option<usize>, String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        self.store
+            .read(&key("active-tab", fence.owner()))?
+            .map(|bytes| {
+                std::str::from_utf8(&bytes)
+                    .ok()
+                    .and_then(|s| s.parse::<usize>().ok())
+                    .ok_or_else(|| "Saved tab selection is unreadable".to_owned())
+            })
+            .transpose()
+    }
+    /// Persist the chosen UI appearance (`system`, `light`, or `dark`) for this account.
+    pub fn save_appearance(
+        &self,
+        fence: &SessionFence,
+        appearance: crate::identity::Appearance,
+    ) -> Result<(), String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        self.store.write(
+            &key("appearance", fence.owner()),
+            appearance.as_str().as_bytes(),
+        )
+    }
+    /// Load saved appearance preference (`None` when unset).
+    pub fn load_appearance(
+        &self,
+        fence: &SessionFence,
+    ) -> Result<Option<crate::identity::Appearance>, String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        self.store
+            .read(&key("appearance", fence.owner()))?
+            .map(|bytes| {
+                std::str::from_utf8(&bytes)
+                    .ok()
+                    .and_then(crate::identity::Appearance::parse)
+                    .ok_or_else(|| "Saved appearance setting is unreadable".to_owned())
+            })
+            .transpose()
+    }
+    /// Persist the latest verified `AccountState` snapshot for offline startup usability.
+    pub fn save_account_state(
+        &self,
+        fence: &SessionFence,
+        state: &duet_wire::models::AccountState,
+    ) -> Result<(), String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        let bytes = serde_json::to_vec(state).map_err(|_| "Cannot encode account state")?;
+        self.store
+            .write(&key("account-state", fence.owner()), &bytes)
+    }
+    /// Load cached `AccountState` snapshot (`None` when absent).
+    pub fn load_account_state(
+        &self,
+        fence: &SessionFence,
+    ) -> Result<Option<duet_wire::models::AccountState>, String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        self.store
+            .read(&key("account-state", fence.owner()))?
+            .map(|bytes| {
+                serde_json::from_slice(&bytes)
+                    .map_err(|_| "Cached account state is damaged".to_owned())
+            })
+            .transpose()
+    }
+    /// Cache the latest `You` library page for offline startup usability.
+    pub fn save_you_cache(
+        &self,
+        fence: &SessionFence,
+        page: &duet_wire::models::EvidenceLibraryPage,
+    ) -> Result<(), String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        let bytes = serde_json::to_vec(page).map_err(|_| "Cannot encode health library")?;
+        self.store.write(&key("you-cache", fence.owner()), &bytes)
+    }
+    /// Load cached `You` library page for offline display.
+    pub fn load_you_cache(
+        &self,
+        fence: &SessionFence,
+    ) -> Result<Option<duet_wire::models::EvidenceLibraryPage>, String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        self.store
+            .read(&key("you-cache", fence.owner()))?
+            .map(|bytes| {
+                serde_json::from_slice(&bytes)
+                    .map_err(|_| "Cached health library is damaged".to_owned())
+            })
+            .transpose()
+    }
+    /// Cache the latest `Shared` collection snapshot for offline startup usability.
+    pub fn save_shared_cache(
+        &self,
+        fence: &SessionFence,
+        collection: &duet_wire::models::DoctorCollection,
+    ) -> Result<(), String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        let bytes = serde_json::to_vec(collection).map_err(|_| "Cannot encode shared page")?;
+        self.store
+            .write(&key("shared-cache", fence.owner()), &bytes)
+    }
+    /// Load cached `Shared` collection snapshot for offline display.
+    pub fn load_shared_cache(
+        &self,
+        fence: &SessionFence,
+    ) -> Result<Option<duet_wire::models::DoctorCollection>, String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        self.store
+            .read(&key("shared-cache", fence.owner()))?
+            .map(|bytes| {
+                serde_json::from_slice(&bytes)
+                    .map_err(|_| "Cached shared page is damaged".to_owned())
+            })
+            .transpose()
+    }
+    /// Persist or clear a pending practice invitation token/code across sign-in handoff.
+    pub fn set_pending_invite(&self, invite: Option<&str>) -> Result<(), String> {
+        match invite.map(str::trim).filter(|s| !s.is_empty()) {
+            Some(value) => self.store.write("pending-invite", value.as_bytes()),
+            None => self.store.remove("pending-invite"),
+        }
+    }
+    /// Read any pending practice invitation handed into Duet from a link.
+    pub fn pending_invite(&self) -> Result<Option<String>, String> {
+        self.store
+            .read("pending-invite")?
+            .map(|bytes| {
+                String::from_utf8(bytes).map_err(|_| "Pending invitation is damaged".to_owned())
+            })
+            .transpose()
+    }
+    /// Rotate a verified session credential without changing the UI/session generation.
     pub fn rotate_credential(
         &self,
         fence: &SessionFence,
         subject: &str,
-        refresh_token: String,
+        session_token: String,
     ) -> Result<(), String> {
         let _guard = self.gate.lock().unwrap();
         self.require(fence)?;
@@ -350,7 +527,7 @@ impl RetentionOwner {
         if retained.owner != fence.owner() || retained.subject != subject {
             return Err("Credential owner changed".into());
         }
-        retained.refresh_token = refresh_token;
+        retained.session_token = session_token;
         self.store.write(
             "active-identity",
             &serde_json::to_vec(&retained).map_err(|_| "Cannot encode credential")?,
@@ -591,12 +768,17 @@ impl RetentionOwner {
             .write(&health_key(fence.owner(), scope), bytes)
             .map_err(HealthStorageError::Unavailable)
     }
-    /// Drops every account-owned record: drafts, operations, and queued health uploads.
+    /// Drops every account-owned record: drafts, operations, caches, preferences, and health queues.
     fn erase_account(&self, owner: &str) -> Result<(), String> {
         self.store.remove(&key("doctor-draft", owner))?;
         self.store.remove(&key("doctor-operation", owner))?;
         self.store.remove(&key("doctor-conflict", owner))?;
         self.store.remove(&key("doctor-operation-archive", owner))?;
+        self.store.remove(&key("account-state", owner))?;
+        self.store.remove(&key("you-cache", owner))?;
+        self.store.remove(&key("shared-cache", owner))?;
+        self.store.remove(&key("active-tab", owner))?;
+        self.store.remove(&key("appearance", owner))?;
         let scopes = self.health_scopes(owner)?;
         for scope in scopes {
             self.store.remove(&health_key(owner, &scope))?;
@@ -638,6 +820,18 @@ impl RetentionOwner {
         } else {
             Err("Account changed; response ignored".into())
         }
+    }
+}
+
+/// Install the native inactive/background screen cover (and Android FLAG_SECURE) without touching secrets.
+pub fn install_privacy_cover() -> Result<(), String> {
+    #[cfg(any(target_os = "ios", target_os = "android"))]
+    {
+        platform_call(serde_json::json!({"op":"install_privacy_cover"})).map(|_| ())
+    }
+    #[cfg(not(any(target_os = "ios", target_os = "android")))]
+    {
+        Ok(())
     }
 }
 

@@ -93,8 +93,22 @@ async fn main() {
             .expect("valid FRONT_DOOR_URL");
         privacy = privacy.with_front_door_closer(Arc::new(closer));
     }
+    let origin = env::var("DUET_PUBLIC_ORIGIN").expect("public origin");
+    let mailer: Arc<dyn duet_api::email_auth::AuthMailer> =
+        match env::var("DUET_MAIL_TRANSPORT").as_deref() {
+            Ok("smtp-relay") => {
+                let from = env::var("DUET_MAIL_FROM").expect("DUET_MAIL_FROM for smtp-relay");
+                Arc::new(
+                    duet_api::email_auth::SmtpRelayMailer::new(&from)
+                        .expect("valid DUET_MAIL_FROM relay configuration"),
+                )
+            }
+            _ => Arc::new(duet_api::email_auth::UnconfiguredMailer),
+        };
+    let email_auth =
+        duet_api::email_auth::EmailAuthStore::new(database.clone(), mailer, origin.clone());
     let state = DurableState {
-        identity: IdentityStore::new(database.clone(), verifier),
+        identity: IdentityStore::with_email_auth(database.clone(), verifier, email_auth),
         privacy,
         evidence,
     };
@@ -220,7 +234,7 @@ async fn main() {
     if parked_routes.is_enabled() {
         app = app.merge(duet_api::durable::parked_legacy_router(state));
     }
-    let mut app = app
+    let app = app
         .route("/health", axum::routing::get(duet_api::hosting::live))
         .route(
             "/readyz",
@@ -233,13 +247,6 @@ async fn main() {
             }),
         )
         .layer(telemetry::http_layer());
-    if let Some(directory) = env::var_os("DUET_SITE_DIR") {
-        let directory = std::path::PathBuf::from(directory);
-        for name in ["index.html", "duet-app.js", "duet-app_bg.wasm"] {
-            assert!(directory.join(name).is_file(), "missing Duet asset: {name}");
-        }
-        app = app.merge(duet_api::site::router(directory));
-    }
     let address = env::var("DUET_LISTEN_ADDR").unwrap_or_else(|_| {
         env::var("PORT")
             .map(|port| format!("0.0.0.0:{port}"))

@@ -22,6 +22,10 @@ pub struct RuntimeConfig {
     pub request_timeout: Duration,
     /// Optional separate loopback-only probe listener; never mounted on public HTTP.
     pub internal_probe_addr: Option<SocketAddr>,
+    /// Canonical Apple App Store destination for `/invite` iOS visitors.
+    pub app_store_url: String,
+    /// Canonical Google Play Store destination for `/invite` Android visitors.
+    pub play_store_url: String,
 }
 impl Default for RuntimeConfig {
     fn default() -> Self {
@@ -36,6 +40,9 @@ impl Default for RuntimeConfig {
             max_concurrency: 1024,
             request_timeout: Duration::from_secs(5),
             internal_probe_addr: None,
+            app_store_url: "https://apps.apple.com/app/duet-by-coda-health".into(),
+            play_store_url: "https://play.google.com/store/apps/details?id=ai.codahealth.duet"
+                .into(),
         }
     }
 }
@@ -131,6 +138,20 @@ impl RuntimeConfig {
                 return Err("PUBLIC_SITE_INTERNAL_PROBE_ADDR must bind loopback only".into());
             }
             config.internal_probe_addr = Some(addr);
+        }
+        if let Some(value) = nonempty("DUET_APP_STORE_URL") {
+            let parsed = url::Url::parse(&value)?;
+            if parsed.scheme() != "https" {
+                return Err("DUET_APP_STORE_URL must use https".into());
+            }
+            config.app_store_url = parsed.into();
+        }
+        if let Some(value) = nonempty("DUET_PLAY_STORE_URL") {
+            let parsed = url::Url::parse(&value)?;
+            if parsed.scheme() != "https" {
+                return Err("DUET_PLAY_STORE_URL must use https".into());
+            }
+            config.play_store_url = parsed.into();
         }
         // Missing or malformed staging audience aborts startup above. Local and
         // public production do not require IAP configuration.

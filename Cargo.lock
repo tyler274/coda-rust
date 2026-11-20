@@ -2495,6 +2495,7 @@ dependencies = [
  "duet-notify",
  "duet_wire",
  "front-door",
+ "gmail",
  "harness",
  "http-body-util",
  "jsonwebtoken",
@@ -2507,10 +2508,12 @@ dependencies = [
  "sha2 0.11.1",
  "sqlx",
  "telemetry",
+ "thiserror 2.0.21",
  "tokio",
  "tower",
  "tracing",
  "tracing-subscriber",
+ "url",
  "uuid",
 ]
 
@@ -2518,8 +2521,10 @@ dependencies = [
 name = "duet-app"
 version = "0.1.0"
 dependencies = [
+ "axum",
  "chrono",
  "dioxus",
+ "dioxus-ssr",
  "duet-client",
  "duet-notify",
  "duet_wire",
@@ -2530,6 +2535,7 @@ dependencies = [
  "serde",
  "serde_json",
  "thiserror 2.0.21",
+ "tokio",
  "ui",
  "url",
  "uuid",

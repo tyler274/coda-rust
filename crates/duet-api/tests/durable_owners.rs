@@ -147,6 +147,12 @@ async fn run_durable_owners() {
     let a = identities.authenticate("a", true).await.unwrap();
     assert_eq!(a.account_id, existing);
     let b = identities.authenticate("b", true).await.unwrap();
+    sqlx::query("update public.users set terms_version='2026-09-23' where id in ($1,$2)")
+        .bind(a.account_id)
+        .bind(b.account_id)
+        .execute(&mut owner)
+        .await
+        .unwrap();
     assert_ne!(a.account_id, b.account_id);
     let door = Uuid::new_v4();
     identities.map_front_door(&a, door).await.unwrap();
@@ -689,6 +695,12 @@ async fn canonical_ingestion_authority_removal_and_batch() {
     let identities = IdentityStore::new(db.clone(), Arc::new(Verifier));
     let a = identities.authenticate("a", true).await.unwrap();
     let b = identities.authenticate("b", true).await.unwrap();
+    sqlx::query("update public.users set terms_version='2026-09-23' where id in ($1,$2)")
+        .bind(a.account_id)
+        .bind(b.account_id)
+        .execute(&mut owner)
+        .await
+        .unwrap();
     let evidence = EvidenceStore::new(db.clone());
     let connector = IngestAuthority::connector("epic", "epic-connection-1").unwrap();
     assert!(IngestAuthority::connector("appleHealth", "x").is_err());

@@ -4,7 +4,7 @@ use crate::{
     database::{AccountDatabase, orm},
     evidence_entity::{account, clinical_note, health_evidence, membership, revision},
     follow_up_entity::{command, conversation_event, follow_up, occurrence, settings, tool_effect},
-    identity::{AccountContext, check_current},
+    identity::{AccessLevel, AccountContext, check_current},
     privacy_entity::{
         NoteSourceLabel, WithdrawnSourceKind, deleted_identity, device_snapshot, doctor_item,
         doctor_proposal, doctor_save, front_door_mapping, legacy_account, legacy_replay,
@@ -423,12 +423,7 @@ impl PrivacyStore {
             }
             r
         } else {
-            check_current(&mut tx, context, false).await?;
-            if operation == Restriction::AccountDelete
-                && Utc::now() - context.authenticated_at > chrono::Duration::minutes(5)
-            {
-                return Err(ApiError::Unauthorized);
-            }
+            check_current(&mut tx, context, AccessLevel::RightsOnly).await?;
             // Publication replacement takes this same account lock. Bind a new
             // revoke operation to the reviewed active publication before applying
             // the restriction and inserting its receipt in this transaction.
@@ -2170,6 +2165,13 @@ mod tests {
             let identities = Arc::new(IdentityStore::new(db.clone(), Arc::new(TestVerifier)));
             let a = identities.authenticate("a", true).await.unwrap();
             let b = identities.authenticate("b", true).await.unwrap();
+            sqlx::query("update public.users set terms_version=$1 where id in ($2,$3)")
+                .bind(crate::session::CURRENT_TERMS_VERSION)
+                .bind(a.account_id)
+                .bind(b.account_id)
+                .execute(&mut owner)
+                .await
+                .unwrap();
             let journal_dir = std::env::temp_dir().join(format!("privacy-unit-journal-{suffix}"));
             let journal = Arc::new(FileJournal::open(journal_dir.clone()).await.unwrap());
             let privacy = PrivacyStore::new(db.clone(), journal);

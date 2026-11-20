@@ -106,7 +106,8 @@ pub fn api_error_class(e: &ApiError) -> &'static str {
         | ApiError::AbsentAccount
         | ApiError::Forbidden
         | ApiError::TermsRequired
-        | ApiError::AgreementChanged => "identity",
+        | ApiError::AgreementChanged
+        | ApiError::InvalidChallenge(_) => "identity",
         ApiError::Conflict(_) => "conflict",
         ApiError::NotFound => "not_found",
         ApiError::Unavailable(_) | ApiError::IdentityResponse(_) => "unavailable",
@@ -141,6 +142,10 @@ mod tests {
             (ApiError::Forbidden, "identity"),
             (ApiError::TermsRequired, "identity"),
             (ApiError::AgreementChanged, "identity"),
+            (
+                ApiError::InvalidChallenge("This link no longer works"),
+                "identity",
+            ),
             (ApiError::Conflict("claim"), "conflict"),
             (ApiError::NotFound, "not_found"),
             (ApiError::Unavailable("provider"), "unavailable"),

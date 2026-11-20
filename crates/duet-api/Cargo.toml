@@ -18,7 +18,9 @@ clinical-library = { path = "../clinical-library" }
 duet-notify = { path = "../duet-notify" }
 duet_wire = { path = "../duet-wire" }
 front-door = { path = "../front-door" }
+gmail = { path = "../gmail" }
 harness = { path = "../harness" }
+url = "2"
 jsonwebtoken = { version = "11", default-features = false, features = ["aws_lc_rs", "use_pem"] }
 rand = "0.10"
 reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
@@ -29,6 +31,7 @@ serde_json = "1"
 sha2 = "0.11"
 sqlx = { version = "0.9", default-features = false, features = ["runtime-tokio", "postgres", "uuid", "chrono", "json", "tls-rustls", "derive"] }
 telemetry = { path = "../telemetry" }
+thiserror = "2"
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "fs", "signal", "time", "sync", "io-util"] }
 tracing = "0.1"
 uuid = { version = "1", features = ["serde", "v4"] }

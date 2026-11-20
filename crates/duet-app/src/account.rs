@@ -1,12 +1,18 @@
 //! One account lifecycle above every private route. Keyed remount drops old UI/tasks.
+use crate::settings::SettingsScreen;
 use dioxus::prelude::*;
 use duet_client::{
     DuetClient,
-    identity::{IdentityError, IdentityPlatformClient, ProviderCredential},
+    identity::{Appearance, ChallengeCredential, IdentityError},
     retention::{RetainedIdentity, RetentionOwner},
 };
 use std::sync::Arc;
-use ui::{ActionRow, Button, ButtonVariant};
+use ui::{
+    ActionRow, Button, ButtonVariant, Checkbox, Disclosure, Notice, PageTitle, TextField, TextKind,
+    Tone,
+};
+
+pub(crate) const CURRENT_TERMS_VERSION: &str = "2026-09-23";
 
 /// Account-scoped owner available to editor controls and delayed-response checks.
 #[derive(Clone)]
@@ -15,9 +21,20 @@ pub struct PatientSession {
     pub retention: RetentionOwner,
     /// Captured before dispatch; check before applying responses.
     pub fence: duet_client::session::SessionFence,
-    /// Current ID token; never persisted. New requests observe rotations; no mutation is replayed.
+    /// Current session token; new requests observe updates; no mutation is replayed.
     pub access_token: Signal<String>,
 }
+
+/// Live reachability status surfaced in tab headings (`"Connecting…"` while offline/checking).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum ConnectionStatus {
+    Online,
+    Connecting,
+}
+
+#[derive(Clone, Copy)]
+pub(crate) struct AccountConnection(pub Signal<ConnectionStatus>);
+
 #[derive(Clone)]
 pub(crate) struct RefusalSender(
     pub  futures_channel::mpsc::UnboundedSender<(
@@ -26,99 +43,143 @@ pub(crate) struct RefusalSender(
     )>,
 );
 
-#[derive(Clone)]
-struct Active {
-    bearer: String,
-    fence: duet_client::session::SessionFence,
-    expires_at: Option<std::time::Instant>,
-}
-fn provider() -> IdentityPlatformClient {
-    IdentityPlatformClient::new(
-        option_env!("DUET_IDENTITY_PLATFORM_API_KEY")
-            .unwrap_or_default()
-            .into(),
-        option_env!("DUET_IOS_BUNDLE_ID").map(str::to_owned),
-    )
-}
-/// Where Apple returns an authorization, web or native: an HTTPS URL fixed at build time.
-fn apple_redirect_uri() -> Result<&'static str, SignInError> {
-    https_redirect_uri(option_env!("DUET_APPLE_REDIRECT_URI"))
+/// Active signed-in session rendered above Terms and private tabs.
+#[derive(Clone, Debug, PartialEq)]
+pub(crate) struct ActiveSession {
+    pub bearer: String,
+    pub fence: duet_client::session::SessionFence,
+    pub email: Option<String>,
+    pub appearance: Appearance,
+    pub account_state: Option<duet_wire::models::AccountState>,
 }
 
-fn https_redirect_uri(uri: Option<&str>) -> Result<&str, SignInError> {
-    let uri = uri.ok_or(SignInError::NotConfigured)?;
-    let parsed = url::Url::parse(uri).map_err(SignInError::RedirectUri)?;
-    if parsed.scheme() != "https" {
-        return Err(SignInError::RedirectNotHttps);
+/// Incoming practice invitation token or short code.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum InviteHandoff {
+    /// Invitation token carried in `/invite` or `duet://invite` links.
+    Token(String),
+    /// Human-entered or short invitation code fallback.
+    ShortCode(String),
+}
+
+impl InviteHandoff {
+    /// Underlying invitation credential value.
+    pub fn value(&self) -> &str {
+        match self {
+            Self::Token(value) | Self::ShortCode(value) => value,
+        }
     }
-    Ok(uri)
 }
 
-/// Why signing in produced no account session. Each case keeps what went
-/// wrong; its `Display` is what the sign-in screen shows.
+/// Parsed incoming deep link / universal link routed into Duet.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum AppDeepLink {
+    /// Open a practice invitation inside the signed-in (or newly signed-in) account.
+    Invite(InviteHandoff),
+    /// Complete passwordless email sign-in/sign-up via single-use link token.
+    EmailSignIn {
+        /// Single-use `dl1.` link token.
+        token: String,
+        /// Optional practice invitation carried across sign-up.
+        invite: Option<String>,
+    },
+    /// Confirm a verified change-email link while signed in.
+    EmailChange {
+        /// Single-use `dl1.` email-change token.
+        token: String,
+    },
+}
+
+fn valid_link_param(value: &str) -> bool {
+    !value.is_empty()
+        && value.len() <= 256
+        && value
+            .chars()
+            .all(|c| c.is_ascii_alphanumeric() || c == '-' || c == '_' || c == '.')
+}
+
+/// Parse an incoming `duet://` or `https://` deep link into a typed [`AppDeepLink`].
+pub fn parse_app_link(raw: &str) -> Option<AppDeepLink> {
+    let parsed = url::Url::parse(raw.trim()).ok()?;
+    let route = match parsed.scheme() {
+        "duet" => {
+            let host = parsed.host_str().unwrap_or("");
+            let path = parsed.path().trim_matches('/');
+            if path.is_empty() {
+                host.to_owned()
+            } else if host.is_empty() {
+                path.to_owned()
+            } else {
+                format!("{host}/{path}")
+            }
+        }
+        "https" | "http" => parsed.path().trim_matches('/').to_owned(),
+        _ => return None,
+    };
+    let mut token: Option<String> = None;
+    let mut code: Option<String> = None;
+    let mut invite: Option<String> = None;
+    for (k, v) in parsed.query_pairs() {
+        if !valid_link_param(&v) {
+            continue;
+        }
+        match k.as_ref() {
+            "token" => token = Some(v.into_owned()),
+            "code" => code = Some(v.into_owned()),
+            "invite" => invite = Some(v.into_owned()),
+            _ => {}
+        }
+    }
+    match route.as_str() {
+        "invite" => {
+            if let Some(tok) = token {
+                Some(AppDeepLink::Invite(InviteHandoff::Token(tok)))
+            } else {
+                code.map(|c| AppDeepLink::Invite(InviteHandoff::ShortCode(c)))
+            }
+        }
+        "auth/email" => token.map(|tok| AppDeepLink::EmailSignIn {
+            token: tok,
+            invite: invite.or(code),
+        }),
+        "auth/email-change" => token.map(|tok| AppDeepLink::EmailChange { token: tok }),
+        _ => None,
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+enum EmailSignInStep {
+    EnterEmail {
+        email: String,
+        invite: String,
+        submitting: bool,
+        error: Option<String>,
+    },
+    CheckEmail {
+        email: String,
+        code: String,
+        invite: String,
+        submitting: bool,
+        status: String,
+        error: Option<String>,
+    },
+}
+
+/// Why startup verification produced no online update.
 #[derive(Debug)]
 enum SignInError {
-    /// The build has no Apple Services ID or return URL.
-    NotConfigured,
-    /// The build's Apple return URL is not a URL.
-    RedirectUri(url::ParseError),
-    /// The build's Apple return URL is not HTTPS.
-    RedirectNotHttps,
-    /// Apple's web authorization produced no credential.
-    #[cfg(target_arch = "wasm32")]
-    Web(crate::browser_identity::AppleWebError),
-    /// This host cannot start native Sign in with Apple.
-    #[cfg(not(target_arch = "wasm32"))]
-    NativeUnavailable(IdentityError),
-    /// Native Sign in with Apple was cancelled or failed on the device.
-    #[cfg(not(target_arch = "wasm32"))]
-    Native(IdentityError),
-    /// Native Sign in with Apple gave no answer in time.
-    #[cfg(not(target_arch = "wasm32"))]
-    TimedOut,
-    /// The identity provider did not accept Apple's credential.
-    Exchange(IdentityError),
-    /// Restoring the retained session failed at the identity provider.
-    Refresh(IdentityError),
-    /// No client for the account service could be built.
     Client(String),
-    /// Duet did not accept the account.
     Account(IdentityError),
-    /// Duet could not read the account's context.
     Context(IdentityError),
-    /// The protected store could not hold the new identity; its own words.
     Retention(String),
-    /// A newer sign-in or sign-out started first.
     Superseded,
 }
 
 impl std::fmt::Display for SignInError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::NotConfigured | Self::RedirectUri(_) | Self::RedirectNotHttps => {
-                f.write_str("Sign in with Apple is not set up for this build of Duet.")
-            }
-            #[cfg(target_arch = "wasm32")]
-            Self::Web(crate::browser_identity::AppleWebError::Script(_)) => {
-                f.write_str("Sign in with Apple did not complete. Try again.")
-            }
-            #[cfg(target_arch = "wasm32")]
-            Self::Web(_) => f.write_str("Invalid Apple response."),
-            #[cfg(not(target_arch = "wasm32"))]
-            Self::NativeUnavailable(_) => {
-                f.write_str("Native Sign in with Apple is not available in this host.")
-            }
-            #[cfg(not(target_arch = "wasm32"))]
-            Self::Native(_) => f.write_str("Sign-in cancelled or unavailable."),
-            #[cfg(not(target_arch = "wasm32"))]
-            Self::TimedOut => f.write_str("Sign-in timed out. Try again."),
-            Self::Exchange(_) => f.write_str("Apple sign-in could not be verified."),
-            Self::Refresh(_) => f.write_str("Could not restore sign-in. Your protected draft has not been discarded. Unlock your device or retry when online."),
             Self::Client(cause) => write!(f, "Duet is unavailable: {cause}"),
-            Self::Account(_) => {
-                f.write_str("Duet could not verify your account. Your saved draft is unchanged.")
-            }
-            Self::Context(_) => f.write_str("Duet could not read your account context."),
+            Self::Account(err) | Self::Context(err) => f.write_str(&err.to_string()),
             Self::Retention(words) => f.write_str(words),
             Self::Superseded => f.write_str("Account changed; sign-in ignored."),
         }
@@ -128,108 +189,40 @@ impl std::fmt::Display for SignInError {
 impl std::error::Error for SignInError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         match self {
-            #[cfg(target_arch = "wasm32")]
-            Self::Web(error) => Some(error),
-            #[cfg(not(target_arch = "wasm32"))]
-            Self::NativeUnavailable(error) | Self::Native(error) => Some(error),
-            Self::Exchange(error)
-            | Self::Refresh(error)
-            | Self::Account(error)
-            | Self::Context(error) => Some(error),
-            Self::RedirectUri(error) => Some(error),
+            Self::Account(err) | Self::Context(err) => Some(err),
             _ => None,
         }
     }
 }
 
-async fn verify(
-    base: &str,
-    credential: ProviderCredential,
-    owner: &RetentionOwner,
-    current: impl Fn() -> bool,
-) -> Result<Active, SignInError> {
-    let client =
-        DuetClient::new(base, &credential.id_token, "0", "0.1.0").map_err(SignInError::Client)?;
-    client
-        .ensure_account()
-        .await
-        .map_err(SignInError::Account)?;
-    let context = client
-        .account_context()
-        .await
-        .map_err(SignInError::Context)?;
-    if !current() {
-        return Err(SignInError::Superseded);
-    }
-    let fence = owner
-        .activate(RetainedIdentity {
-            subject: credential.subject,
-            owner: context.owner(),
-            refresh_token: credential.refresh_token,
-        })
-        .map_err(SignInError::Retention)?;
-    Ok(Active {
-        bearer: credential.id_token,
-        fence,
-        expires_at: Some(
-            std::time::Instant::now() + std::time::Duration::from_secs(credential.expires_in),
-        ),
-    })
-}
-
-async fn restore(
-    base: &str,
-    supplied: String,
-    owner: &RetentionOwner,
-    current: impl Fn() -> bool,
-) -> Result<Option<Active>, SignInError> {
-    if !supplied.is_empty() {
-        let api = DuetClient::new(base, &supplied, "0", "0.1.0").map_err(SignInError::Client)?;
-        api.ensure_account().await.map_err(SignInError::Account)?;
-        let context = api.account_context().await.map_err(SignInError::Context)?;
-        if !current() {
-            return Err(SignInError::Superseded);
-        }
-        return Ok(Some(Active {
-            bearer: supplied,
-            fence: owner.activate_ephemeral(context.owner()),
-            expires_at: None,
-        }));
-    }
-    let Some(identity) = owner.retained_identity().map_err(SignInError::Retention)? else {
-        return Ok(None);
-    };
-    let credential = provider()
-        .refresh(&identity.subject, &identity.refresh_token)
-        .await
-        .map_err(SignInError::Refresh)?;
-    if !current() {
-        return Err(SignInError::Superseded);
-    }
-    verify(base, credential, owner, current).await.map(Some)
-}
-
-/// Standalone verified Identity Platform entry. Practice linking is optional, never a login gate.
+/// Standalone email-authenticated entry. Practice linking stays optional, never a login gate.
 #[component]
-pub fn DuetRoot(base_url: String, bearer: String) -> Element {
+pub fn DuetRoot(
+    base_url: String,
+    bearer: String,
+    #[props(default)] initial_link: Option<String>,
+) -> Element {
     let retention = use_hook(|| {
-        #[cfg(target_arch = "wasm32")]
+        let _ = duet_client::retention::install_privacy_cover();
+        #[cfg(any(target_os = "ios", target_os = "android"))]
+        {
+            RetentionOwner::new(Arc::new(duet_client::retention::NativeProtectedStore))
+        }
+        #[cfg(not(any(target_os = "ios", target_os = "android")))]
         {
             RetentionOwner::new(Arc::new(
                 duet_client::retention::VolatileSessionStore::default(),
             ))
-        }
-        #[cfg(not(target_arch = "wasm32"))]
-        {
-            RetentionOwner::new(Arc::new(duet_client::retention::NativeProtectedStore))
         }
     });
     let drop_session = retention.session();
     use_drop(move || {
         drop_session.switch(None);
     });
+
     let mut offline_draft = use_signal(|| None::<(String, duet_client::retention::DoctorDraft)>);
-    let mut active = use_signal(|| None::<Active>);
+    let mut active = use_signal(|| None::<ActiveSession>);
+    let mut connection = use_signal(|| ConnectionStatus::Online);
     let mut message = use_signal(String::new);
     let mut busy = use_signal(|| true);
     let mut retry = use_signal(|| 0u64);
@@ -237,6 +230,38 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
     let mut cleanup_pending = use_signal(|| false);
     let mut lifecycle = use_signal(|| 0u64);
     let mut confirm_sign_out = use_signal(|| false);
+    let mut settings_open = use_signal(|| false);
+    let mut agreed_terms = use_signal(|| false);
+    let mut terms_submitting = use_signal(|| false);
+    let mut terms_error = use_signal(|| None::<String>);
+    let mut upgrade_required = use_signal(|| None::<String>);
+    let mut pending_invite = use_signal(|| retention.pending_invite().ok().flatten());
+    let initial_parsed_link = use_hook(|| {
+        initial_link
+            .as_deref()
+            .and_then(parse_app_link)
+            .or_else(browser_deep_link)
+    });
+    let mut sign_in_step = use_signal(|| {
+        let initial_invite = match &initial_parsed_link {
+            Some(AppDeepLink::Invite(handoff)) => handoff.value().to_owned(),
+            Some(AppDeepLink::EmailSignIn {
+                invite: Some(inv), ..
+            }) => inv.clone(),
+            _ => retention
+                .pending_invite()
+                .ok()
+                .flatten()
+                .unwrap_or_default(),
+        };
+        EmailSignInStep::EnterEmail {
+            email: String::new(),
+            invite: initial_invite,
+            submitting: false,
+            error: None,
+        }
+    });
+
     let account_ui = AccountUi {
         lifecycle,
         signed_out,
@@ -247,6 +272,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
         message,
         confirm: confirm_sign_out,
     };
+
     let (refusal_sender, refusal_receiver) = use_hook(|| {
         let (sender, receiver) = futures_channel::mpsc::unbounded();
         (
@@ -255,6 +281,8 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
         )
     });
     use_context_provider(|| RefusalSender(refusal_sender));
+    use_context_provider(|| AccountConnection(connection));
+
     let refusal_owner = retention.clone();
     use_future(move || {
         let owner = refusal_owner.clone();
@@ -274,8 +302,12 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                 }
                 match refusal {
                     duet_client::refusal::SessionRefusal::Revoked
-                    | duet_client::refusal::SessionRefusal::Absent => account_ui.ended(&owner),
+                    | duet_client::refusal::SessionRefusal::Absent => {
+                        settings_open.set(false);
+                        account_ui.ended(&owner);
+                    }
                     duet_client::refusal::SessionRefusal::Invalid => {
+                        settings_open.set(false);
                         account_ui.close();
                         message.set("Duet could not authorize this session. Sign in again. Unsent text on this screen is no longer shown; protected drafts remain on this device. No pending operation was retried.".into());
                     }
@@ -283,9 +315,11 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
             }
         }
     });
+
     let restore_owner = retention.clone();
     let restore_url = base_url.clone();
     let supplied = bearer;
+    let startup_link = initial_parsed_link.clone();
     use_effect(move || {
         let _ = retry();
         if *signed_out.peek() {
@@ -296,9 +330,9 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
         let owner = restore_owner.clone();
         let base = restore_url.clone();
         let supplied = supplied.clone();
+        let startup_link = startup_link.clone();
         busy.set(true);
         spawn(async move {
-            // Remove historical browser storage; never use its contents as credentials.
             let _ = crate::roots::recalled_session();
             if owner.cleanup_required().unwrap_or(true) {
                 cleanup_pending.set(true);
@@ -307,210 +341,369 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                 busy.set(false);
                 return;
             }
-            let result = restore(&base, supplied, &owner, || lifecycle() == epoch).await;
-            if lifecycle() != epoch {
+            if let Some(AppDeepLink::Invite(ref handoff)) = startup_link {
+                let _ = owner.set_pending_invite(Some(handoff.value()));
+                pending_invite.set(Some(handoff.value().to_owned()));
+            }
+            // Handle incoming email sign-in magic link immediately on startup if present.
+            if let Some(AppDeepLink::EmailSignIn {
+                ref token,
+                ref invite,
+            }) = startup_link
+            {
+                if let Some(inv) = invite {
+                    let _ = owner.set_pending_invite(Some(inv));
+                    pending_invite.set(Some(inv.clone()));
+                }
+                match complete_link_sign_in(&base, token, &owner, || lifecycle() == epoch).await {
+                    Ok(session) => {
+                        if lifecycle() != epoch {
+                            return;
+                        }
+                        connection.set(ConnectionStatus::Online);
+                        offline_draft.set(None);
+                        active.set(Some(session));
+                        message.set(String::new());
+                        busy.set(false);
+                        return;
+                    }
+                    Err(err) => {
+                        if lifecycle() != epoch {
+                            return;
+                        }
+                        message.set(err.to_string());
+                        busy.set(false);
+                        return;
+                    }
+                }
+            }
+
+            if !supplied.is_empty() {
+                let result =
+                    restore_supplied(&base, supplied, &owner, || lifecycle() == epoch).await;
+                if lifecycle() != epoch {
+                    return;
+                }
+                connection.set(ConnectionStatus::Online);
+                account_ui.restored(&owner, result);
                 return;
             }
-            account_ui.restored(&owner, result);
+
+            // Non-expiring offline-first restore from protected storage.
+            match owner.restore_offline_session() {
+                Ok(Some((retained, fence))) => {
+                    let cached_state = owner.load_account_state(&fence).ok().flatten();
+                    let cached_appearance = owner
+                        .load_appearance(&fence)
+                        .ok()
+                        .flatten()
+                        .unwrap_or_default();
+                    offline_draft.set(None);
+                    connection.set(ConnectionStatus::Connecting);
+                    active.set(Some(ActiveSession {
+                        bearer: retained.session_token.clone(),
+                        fence: fence.clone(),
+                        email: retained.email.clone(),
+                        appearance: cached_appearance,
+                        account_state: cached_state,
+                    }));
+                    busy.set(false);
+
+                    // Validate session in background without dropping cached content if unreachable.
+                    let validation = validate_retained(
+                        &base,
+                        &retained.session_token,
+                        &owner,
+                        &fence,
+                        startup_link.as_ref(),
+                        || lifecycle() == epoch,
+                    )
+                    .await;
+                    if lifecycle() != epoch {
+                        return;
+                    }
+                    match validation {
+                        Ok((state, profile)) => {
+                            let _ = owner.save_account_state(&fence, &state);
+                            let _ = owner.save_appearance(&fence, profile.appearance);
+                            connection.set(ConnectionStatus::Online);
+                            let snapshot = active.peek().clone();
+                            if let Some(mut cur) = snapshot
+                                && cur.fence == fence
+                            {
+                                cur.account_state = Some(state);
+                                cur.appearance = profile.appearance;
+                                if profile.email.is_some() {
+                                    cur.email = profile.email;
+                                }
+                                active.set(Some(cur));
+                            }
+                            message.set(String::new());
+                        }
+                        Err(SignInError::Account(IdentityError::Ended))
+                        | Err(SignInError::Context(IdentityError::Ended)) => {
+                            account_ui.ended(&owner);
+                        }
+                        Err(
+                            SignInError::Account(IdentityError::AgreementChanged)
+                            | SignInError::Context(IdentityError::AgreementChanged),
+                        ) => {
+                            connection.set(ConnectionStatus::Online);
+                            upgrade_required.set(Some(IdentityError::AgreementChanged.to_string()));
+                        }
+                        Err(SignInError::Account(IdentityError::Unauthorized))
+                        | Err(SignInError::Context(IdentityError::Unauthorized)) => {
+                            account_ui.close();
+                            message.set(
+                                "Duet could not authorize this session. Sign in again.".into(),
+                            );
+                        }
+                        Err(_) => {
+                            // Unreachable/offline: stay mounted with cached data and `"Connecting…"`.
+                            connection.set(ConnectionStatus::Connecting);
+                        }
+                    }
+                }
+                Ok(None) => {
+                    message.set(String::new());
+                    busy.set(false);
+                }
+                Err(error) => {
+                    message.set(error);
+                    busy.set(false);
+                }
+            }
         });
     });
-    // Independent expiry watchdog: a hung provider request must not keep expired routes open.
-    let expiry_owner = retention.clone();
-    use_future(move || {
-        let owner = expiry_owner.clone();
-        async move {
-            loop {
-                futures_timer::Delay::new(std::time::Duration::from_secs(5)).await;
-                let snapshot = active.peek().clone();
-                if let Some(current) = snapshot
-                    && current
-                        .expires_at
-                        .is_some_and(|deadline| std::time::Instant::now() >= deadline)
-                {
-                    owner.session().switch(None);
-                    active.set(None);
-                    offline_draft.set(step_offline_draft(offline_draft(), DraftTransition::Expire));
-                    message.set("Sign-in expired. Your draft remains retained; no pending operation was replayed.".into());
-                }
+
+    let start_email = {
+        let base = base_url.clone();
+        let owner = retention.clone();
+        move |_| {
+            let EmailSignInStep::EnterEmail {
+                email,
+                invite,
+                submitting,
+                ..
+            } = sign_in_step()
+            else {
+                return;
+            };
+            if submitting {
+                return;
             }
-        }
-    });
-    let refresh_owner = retention.clone();
-    let refresh_url = base_url.clone();
-    use_future(move || {
-        let owner = refresh_owner.clone();
-        let base = refresh_url.clone();
-        async move {
-            loop {
-                futures_timer::Delay::new(std::time::Duration::from_secs(30)).await;
-                let Some(current) = active.peek().clone() else {
-                    continue;
-                };
-                let Some(expiry) = current.expires_at else {
-                    continue;
-                };
-                if expiry
-                    .saturating_duration_since(std::time::Instant::now())
-                    .as_secs()
-                    > 120
-                {
-                    continue;
+            let normalized = email.trim().to_owned();
+            if normalized.is_empty() {
+                sign_in_step.set(EmailSignInStep::EnterEmail {
+                    email,
+                    invite,
+                    submitting: false,
+                    error: Some("Enter your email address.".into()),
+                });
+                return;
+            }
+            let invite_trimmed = invite.trim().to_owned();
+            let _ = owner.set_pending_invite(
+                (!invite_trimmed.is_empty()).then_some(invite_trimmed.as_str()),
+            );
+            if !invite_trimmed.is_empty() {
+                pending_invite.set(Some(invite_trimmed.clone()));
+            }
+            sign_in_step.set(EmailSignInStep::EnterEmail {
+                email: normalized.clone(),
+                invite: invite_trimmed.clone(),
+                submitting: true,
+                error: None,
+            });
+            let base = base.clone();
+            spawn(async move {
+                let result = async {
+                    let api = DuetClient::new(&base, "", "0", "0.1.0")
+                        .map_err(|_| IdentityError::Unavailable)?;
+                    api.begin_email_sign_in(
+                        &normalized,
+                        (!invite_trimmed.is_empty()).then_some(invite_trimmed.as_str()),
+                    )
+                    .await
                 }
-                let identity = match owner.retained_identity() {
-                    Ok(Some(i)) => i,
-                    _ => {
-                        if std::time::Instant::now() >= expiry {
-                            owner.session().switch(None);
-                            active.set(None);
-                            offline_draft
-                                .set(step_offline_draft(offline_draft(), DraftTransition::Expire));
-                            message.set("Sign-in expired while secure storage was unavailable. Your draft remains protected.".into());
-                        }
-                        continue;
+                .await;
+                match result {
+                    Ok(status) => {
+                        sign_in_step.set(EmailSignInStep::CheckEmail {
+                            email: normalized,
+                            code: String::new(),
+                            invite: invite_trimmed,
+                            submitting: false,
+                            status,
+                            error: None,
+                        });
                     }
-                };
-                let result = provider()
-                    .refresh(&identity.subject, &identity.refresh_token)
-                    .await;
-                if !owner.session().is_current(&current.fence) {
-                    continue;
+                    Err(err) => {
+                        sign_in_step.set(EmailSignInStep::EnterEmail {
+                            email: normalized,
+                            invite: invite_trimmed,
+                            submitting: false,
+                            error: Some(err.to_string()),
+                        });
+                    }
+                }
+            });
+        }
+    };
+
+    let verify_code = {
+        let base = base_url.clone();
+        let owner = retention.clone();
+        move |_| {
+            let EmailSignInStep::CheckEmail {
+                email,
+                code,
+                invite,
+                submitting,
+                status,
+                ..
+            } = sign_in_step()
+            else {
+                return;
+            };
+            if submitting {
+                return;
+            }
+            sign_in_step.set(EmailSignInStep::CheckEmail {
+                email: email.clone(),
+                code: code.clone(),
+                invite: invite.clone(),
+                submitting: true,
+                status: status.clone(),
+                error: None,
+            });
+            lifecycle.set(lifecycle() + 1);
+            let epoch = lifecycle();
+            let base = base.clone();
+            let owner = owner.clone();
+            spawn(async move {
+                let result =
+                    complete_code_sign_in(&base, &email, &code, &owner, || lifecycle() == epoch)
+                        .await;
+                if lifecycle() != epoch {
+                    return;
                 }
                 match result {
-                    Ok(token) => {
-                        let context = match DuetClient::new(&base, &token.id_token, "0", "0.1.0") {
-                            Ok(api) => api.account_context().await,
-                            Err(_) => Err(duet_client::identity::IdentityError::Unavailable),
-                        };
-                        if !owner.session().is_current(&current.fence) {
-                            continue;
-                        }
-                        if matches!(context, Err(IdentityError::Ended)) {
-                            if owner.session().invalidate(&current.fence) {
-                                account_ui.ended(&owner);
-                            }
-                            continue;
-                        }
-                        if matches!(context, Err(IdentityError::Unauthorized)) {
-                            if owner.session().invalidate(&current.fence) {
-                                account_ui.close();
-                                message.set("Duet could not authorize this session. Sign in again. Protected drafts remain on this device; no pending operation was retried.".into());
-                            }
-                            continue;
-                        }
-                        if let Ok(context) = context
-                            && context.owner() == current.fence.owner()
-                            && owner
-                                .rotate_credential(
-                                    &current.fence,
-                                    &token.subject,
-                                    token.refresh_token,
-                                )
-                                .is_ok()
-                        {
-                            active.set(Some(Active {
-                                bearer: token.id_token,
-                                fence: current.fence,
-                                expires_at: Some(
-                                    std::time::Instant::now()
-                                        + std::time::Duration::from_secs(token.expires_in),
-                                ),
-                            }));
-                            continue;
-                        }
+                    Ok(session) => {
+                        connection.set(ConnectionStatus::Online);
+                        signed_out.set(false);
+                        upgrade_required.set(None);
+                        let owner_id = session.fence.owner().to_owned();
+                        offline_draft.set(step_offline_draft(
+                            offline_draft(),
+                            DraftTransition::Activate { owner: owner_id },
+                        ));
+                        active.set(Some(session));
+                        message.set(String::new());
                     }
-                    Err(duet_client::identity::IdentityError::Expired) => {
-                        account_ui.ended(&owner);
-                        continue;
+                    Err(err) => {
+                        sign_in_step.set(EmailSignInStep::CheckEmail {
+                            email,
+                            code,
+                            invite,
+                            submitting: false,
+                            status,
+                            error: Some(err.to_string()),
+                        });
                     }
-                    Err(_) => (),
                 }
-                if std::time::Instant::now() >= expiry {
-                    owner.session().switch(None);
-                    active.set(None);
-                    offline_draft.set(step_offline_draft(offline_draft(), DraftTransition::Expire));
-                    message.set("Sign-in could not be refreshed. Reconnect or sign in again; uncertain saves were not replayed.".into());
-                }
-            }
+            });
         }
-    });
+    };
+
+    let resend_email = {
+        let base = base_url.clone();
+        move |_| {
+            let EmailSignInStep::CheckEmail {
+                email,
+                code,
+                invite,
+                submitting,
+                ..
+            } = sign_in_step()
+            else {
+                return;
+            };
+            if submitting {
+                return;
+            }
+            let base = base.clone();
+            let email_req = email.clone();
+            let invite_req = invite.clone();
+            spawn(async move {
+                if let Ok(api) = DuetClient::new(&base, "", "0", "0.1.0")
+                    && let Ok(status) = api
+                        .begin_email_sign_in(
+                            &email_req,
+                            (!invite_req.is_empty()).then_some(invite_req.as_str()),
+                        )
+                        .await
+                {
+                    sign_in_step.set(EmailSignInStep::CheckEmail {
+                        email: email_req,
+                        code,
+                        invite: invite_req,
+                        submitting: false,
+                        status,
+                        error: None,
+                    });
+                }
+            });
+        }
+    };
+
+    let accept_terms = {
+        let base = base_url.clone();
+        let owner = retention.clone();
+        move |_| {
+            let Some(mut cur) = active() else {
+                return;
+            };
+            if !agreed_terms() || terms_submitting() {
+                return;
+            }
+            terms_submitting.set(true);
+            terms_error.set(None);
+            let base = base.clone();
+            let owner = owner.clone();
+            let bearer = cur.bearer.clone();
+            let fence = cur.fence.clone();
+            spawn(async move {
+                let result = async {
+                    let api = DuetClient::new(&base, &bearer, "0", "0.1.0")
+                        .map_err(|_| IdentityError::Unavailable)?;
+                    api.accept_terms(CURRENT_TERMS_VERSION).await
+                }
+                .await;
+                match result {
+                    Ok(state) => {
+                        let _ = owner.save_account_state(&fence, &state);
+                        cur.account_state = Some(state);
+                        active.set(Some(cur));
+                        upgrade_required.set(None);
+                        connection.set(ConnectionStatus::Online);
+                    }
+                    Err(IdentityError::AgreementChanged) => {
+                        upgrade_required
+                            .set(Some("Update Duet to review the current terms.".into()));
+                    }
+                    Err(err) => terms_error.set(Some(err.to_string())),
+                }
+                terms_submitting.set(false);
+            });
+        }
+    };
+
     let logout_owner = retention.clone();
     let prompt_owner = retention.clone();
     let anyway_owner = retention.clone();
-    let sign_out = move |_| {
+    let retry_cleanup = move |_| {
         apply_sign_out(&logout_owner, account_ui, false);
-    };
-    let login_owner = retention.clone();
-    let login_url = base_url.clone();
-    let login = move |_| {
-        if busy() || cleanup_pending() {
-            return;
-        }
-        busy.set(true);
-        lifecycle.set(lifecycle() + 1);
-        let epoch = lifecycle();
-        let owner = login_owner.clone();
-        let base = login_url.clone();
-        spawn(async move {
-            #[cfg(target_arch = "wasm32")]
-            let result = async {
-                let redirect_uri = apple_redirect_uri()?;
-                let services_id = option_env!("DUET_APPLE_SERVICES_ID")
-                    .filter(|id| !id.is_empty())
-                    .ok_or(SignInError::NotConfigured)?;
-                let apple = crate::browser_identity::sign_in(services_id, redirect_uri)
-                    .await
-                    .map_err(SignInError::Web)?;
-                let credential = provider()
-                    .apple(apple, redirect_uri)
-                    .await
-                    .map_err(SignInError::Exchange)?;
-                verify(&base, credential, &owner, || lifecycle() == epoch).await
-            }
-            .await;
-            #[cfg(not(target_arch = "wasm32"))]
-            let result = async {
-                let redirect_uri = apple_redirect_uri()?;
-                duet_client::identity::start_native_sign_in()
-                    .map_err(SignInError::NativeUnavailable)?;
-                for _ in 0..240 {
-                    futures_timer::Delay::new(std::time::Duration::from_millis(500)).await;
-                    if lifecycle() != epoch {
-                        return Err(SignInError::Superseded);
-                    }
-                    let apple = match duet_client::identity::poll_native_sign_in() {
-                        Ok(Some(apple)) => apple,
-                        Ok(None) => continue,
-                        Err(error) => return Err(SignInError::Native(error)),
-                    };
-                    let credential = provider()
-                        .apple(apple, redirect_uri)
-                        .await
-                        .map_err(SignInError::Exchange)?;
-                    if lifecycle() != epoch {
-                        return Err(SignInError::Superseded);
-                    }
-                    return verify(&base, credential, &owner, || lifecycle() == epoch).await;
-                }
-                Err(SignInError::TimedOut)
-            }
-            .await;
-            if lifecycle() != epoch {
-                return;
-            }
-            match result {
-                Ok(value) => {
-                    let owner = value.fence.owner().to_owned();
-                    offline_draft.set(step_offline_draft(
-                        offline_draft(),
-                        DraftTransition::Activate { owner },
-                    ));
-                    active.set(Some(value));
-                    message.set(String::new());
-                }
-                Err(error) => message.set(error.to_string()),
-            }
-            busy.set(false);
-        });
     };
     let offline_owner = retention.clone();
     let draft_viewer = offline_owner
@@ -518,68 +711,260 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
         .ok()
         .flatten()
         .map(|identity| identity.owner);
+
     rsx! {
         ui::Stylesheet {}
         if let Some(current) = active() {
-            AccountRoutes { key: "{current.fence.generation()}", base_url, bearer: current.bearer, retention: retention.clone(), fence: current.fence }
-            if cfg!(target_arch = "wasm32") { p { role: "status", "Browser sign-in, drafts and operation retry identities are memory-only. Keep this tab open while any write is uncertain. After a reload, sign in and use ‘Recover or resolve a previous operation’ to read current server state before a new approval; do not assume the previous operation succeeded or recreate it as a retry." } }
-            if confirm_sign_out() {
-                p { role: "alert", "{message}" }
-                Button { variant: ButtonVariant::Quiet, compact: true, onclick: move |_| {
-                    confirm_sign_out.set(false);
-                    message.set(String::new());
-                }, "Stay signed in" }
-                Button { variant: ButtonVariant::Primary, compact: true, onclick: move |_| {
-                    apply_sign_out(&anyway_owner, account_ui, true);
-                }, "Sign out anyway" }
+            if settings_open() {
+                main { class: "duet theme-duet", "data-theme": "{current.appearance.as_str()}",
+                    SettingsScreen {
+                        base_url: base_url.clone(),
+                        active: current.clone(),
+                        retention: retention.clone(),
+                        on_close: move |_| settings_open.set(false),
+                        on_profile_updated: move |(new_name, new_appearance, new_email)| {
+                            if let Some(mut cur) = active() {
+                                cur.appearance = new_appearance;
+                                cur.email = new_email;
+                                if let Some(ref mut state) = cur.account_state {
+                                    state.display_name = Some(new_name);
+                                }
+                                active.set(Some(cur));
+                            }
+                        },
+                        on_signed_out: move |note| {
+                            settings_open.set(false);
+                            account_ui.close();
+                            if let Some(msg) = note {
+                                message.set(msg);
+                            }
+                        },
+                    }
+                }
+            } else if let Some(upgrade_msg) = upgrade_required() {
+                main { class: "duet theme-duet", "data-theme": "{current.appearance.as_str()}",
+                    div { class: "duet-page",
+                        PageTitle { text: "Update Duet".to_owned(), eyebrow: Some("Terms updated".to_owned()) }
+                        Notice { tone: Tone::Warning, title: upgrade_msg }
+                        ActionRow {
+                            Button { onclick: move |_| settings_open.set(true), "Settings" }
+                            Button { variant: ButtonVariant::Quiet, onclick: move |_| apply_sign_out(&prompt_owner, account_ui, true), "Sign out" }
+                        }
+                    }
+                }
+            } else if current.account_state.as_ref().and_then(|s| s.terms_accepted) != Some(true) {
+                main { class: "duet theme-duet", "data-theme": "{current.appearance.as_str()}",
+                    div { class: "duet-page",
+                        PageTitle { text: "Duet Terms".to_owned(), eyebrow: Some("Before you continue".to_owned()) }
+                        if connection() == ConnectionStatus::Connecting {
+                            p { class: "duet-status", "{crate::roots::CONNECTING}" }
+                        }
+                        p { "Please review and accept the Duet Terms of Service and Privacy Policy before using You and Shared." }
+                        if let Some(err) = terms_error() {
+                            Notice { tone: Tone::Error, title: err }
+                        }
+                        Checkbox {
+                            label: "I am 18 or older and live in the United States".to_owned(),
+                            detail: Some("Duet is for U.S. adults and does not provide emergency care or medical diagnosis.".to_owned()),
+                            checked: agreed_terms(),
+                            on_change: move |val| agreed_terms.set(val),
+                        }
+                        ActionRow {
+                            Button {
+                                variant: ButtonVariant::Primary,
+                                disabled: !agreed_terms() || terms_submitting(),
+                                onclick: accept_terms,
+                                "I agree and continue"
+                            }
+                            Button { onclick: move |_| settings_open.set(true), "Settings" }
+                            Button { variant: ButtonVariant::Quiet, onclick: move |_| apply_sign_out(&prompt_owner, account_ui, true), "Sign out" }
+                        }
+                    }
+                }
             } else {
-                Button { variant: ButtonVariant::Quiet, compact: true, onclick: move |_| {
-                    apply_sign_out(&prompt_owner, account_ui, true);
-                }, "Sign out" }
+                AccountRoutes {
+                    key: "{current.fence.generation()}",
+                    base_url,
+                    bearer: current.bearer.clone(),
+                    appearance: current.appearance,
+                    retention: retention.clone(),
+                    fence: current.fence.clone(),
+                    pending_invite: pending_invite(),
+                    on_open_settings: move |_| settings_open.set(true),
+                    on_clear_invite: move |_| {
+                        let _ = retention.set_pending_invite(None);
+                        pending_invite.set(None);
+                    },
+                }
+                if confirm_sign_out() {
+                    p { role: "alert", "{message}" }
+                    Button { variant: ButtonVariant::Quiet, compact: true, onclick: move |_| {
+                        confirm_sign_out.set(false);
+                        message.set(String::new());
+                    }, "Stay signed in" }
+                    Button { variant: ButtonVariant::Primary, compact: true, onclick: move |_| {
+                        apply_sign_out(&anyway_owner, account_ui, true);
+                    }, "Sign out anyway" }
+                }
             }
         } else {
             main { class: "duet theme-duet",
-                h1 { "Duet" }
-                p { "Sign in to your Duet account. A practice invitation is not required." }
-                if !message().is_empty() { p { role: "alert", "{message}" } }
-                if busy() { p { "Checking sign-in…" } }
-                ActionRow {
-                    Button { variant: ButtonVariant::Primary, disabled: busy() || cleanup_pending(), onclick: login, "Sign in with Apple" }
-                    Button { disabled: busy() || cleanup_pending(), onclick: move |_| { signed_out.set(false); retry.set(retry() + 1); }, "Retry saved sign-in" }
-                    if cleanup_pending() { Button { onclick: sign_out, "Retry secure cleanup" } }
-                    Button { disabled: busy() || cleanup_pending() || signed_out(), onclick: move |_| {
-                        match offline_owner.recover_offline() {
-                            Ok(duet_client::retention::DraftRecovery::Draft(draft)) => {
-                                if let Some(owner) = offline_owner
-                                    .retained_identity()
-                                    .ok()
-                                    .flatten()
-                                    .map(|identity| identity.owner)
-                                {
-                                    offline_draft.set(step_offline_draft(
-                                        offline_draft(),
-                                        DraftTransition::Recover {
-                                            owner,
-                                            draft: *draft,
-                                        },
-                                    ));
-                                }
-                            }
-                            Ok(duet_client::retention::DraftRecovery::Damaged) => message.set("The protected draft is damaged; it has not been discarded.".into()),
-                            Ok(_) => message.set("No retained draft on this device.".into()),
-                            Err(error) => message.set(error),
+                div { class: "duet-page",
+                    h1 { "Duet" }
+                    p { "Sign in to your Duet account. A practice invitation is not required." }
+                    if !message().is_empty() { p { role: "alert", "{message}" } }
+                    if busy() { p { "Checking sign-in…" } }
+                    if cleanup_pending() {
+                        ActionRow {
+                            Button { onclick: retry_cleanup, "Retry secure cleanup" }
                         }
-                    }, "View protected draft offline" }
-                }
-                if let Some(draft) = shown_offline_draft(offline_draft(), true, draft_viewer.as_deref()) {
-                    section {
-                        h2 { "Unsaved doctor draft — offline" }
-                        p { "This is not the approved page. Reconnect and verify your account before saving or sharing." }
-                        p { "{crate::field_text(&draft.save.page.name)}" }
-                        p { "{crate::field_text(&draft.save.note)}" }
-                        for question in draft.save.page.questions.iter().flatten() { p { "{question}" } }
-                        for item in draft.base.items.iter().flatten().filter(|item| draft.save.item_ids.contains(&item.id)) { p { "{item.title}" } }
-                        Button { onclick: move |_| offline_draft.set(None), "Close protected draft" }
+                    } else {
+                        match sign_in_step() {
+                            EmailSignInStep::EnterEmail { email, invite, submitting, error } => {
+                                let invite_for_email = invite.clone();
+                                rsx! {
+                                TextField {
+                                    label: "Email".to_owned(),
+                                    kind: TextKind::Email,
+                                    value: email,
+                                    placeholder: "you@example.com".to_owned(),
+                                    error,
+                                    disabled: submitting || busy(),
+                                    on_input: move |value| sign_in_step.set(EmailSignInStep::EnterEmail {
+                                        email: value,
+                                        invite: invite_for_email.clone(),
+                                        submitting: false,
+                                        error: None,
+                                    }),
+                                }
+                                Disclosure {
+                                    title: "Have an invitation code?".to_owned(),
+                                    detail: !invite.is_empty(),
+                                    TextField {
+                                        label: "Invitation code".to_owned(),
+                                        value: invite.clone(),
+                                        placeholder: "Paste invitation code".to_owned(),
+                                        disabled: submitting,
+                                        on_input: move |value| {
+                                            if let EmailSignInStep::EnterEmail { email, .. } = sign_in_step() {
+                                                sign_in_step.set(EmailSignInStep::EnterEmail {
+                                                    email,
+                                                    invite: value,
+                                                    submitting: false,
+                                                    error: None,
+                                                });
+                                            }
+                                        },
+                                    }
+                                }
+                                ActionRow {
+                                    Button {
+                                        variant: ButtonVariant::Primary,
+                                        disabled: submitting || busy(),
+                                        onclick: start_email,
+                                        "Continue"
+                                    }
+                                    Button {
+                                        variant: ButtonVariant::Quiet,
+                                        disabled: busy(),
+                                        onclick: move |_| {
+                                            signed_out.set(false);
+                                            retry.set(retry() + 1);
+                                        },
+                                        "Retry saved sign-in"
+                                    }
+                                }
+                                }
+                            },
+                            EmailSignInStep::CheckEmail { email, code, invite, submitting, status, error } => {
+                                let email_for_input = email.clone();
+                                let invite_for_input = invite.clone();
+                                let status_for_input = status.clone();
+                                rsx! {
+                                Notice {
+                                    tone: Tone::Primary,
+                                    title: status.clone(),
+                                    detail: Some(format!("Open the link or enter the 6-digit code sent to {email}.")),
+                                }
+                                TextField {
+                                    label: "6-digit code".to_owned(),
+                                    value: code,
+                                    placeholder: "123456".to_owned(),
+                                    error,
+                                    disabled: submitting,
+                                    on_input: move |value| sign_in_step.set(EmailSignInStep::CheckEmail {
+                                        email: email_for_input.clone(),
+                                        code: value,
+                                        invite: invite_for_input.clone(),
+                                        submitting: false,
+                                        status: status_for_input.clone(),
+                                        error: None,
+                                    }),
+                                }
+                                ActionRow {
+                                    Button {
+                                        variant: ButtonVariant::Primary,
+                                        disabled: submitting,
+                                        onclick: verify_code,
+                                        "Verify"
+                                    }
+                                    Button {
+                                        variant: ButtonVariant::Quiet,
+                                        disabled: submitting,
+                                        onclick: resend_email,
+                                        "Resend"
+                                    }
+                                    Button {
+                                        variant: ButtonVariant::Quiet,
+                                        disabled: submitting,
+                                        onclick: move |_| sign_in_step.set(EmailSignInStep::EnterEmail {
+                                            email: String::new(),
+                                            invite: invite.clone(),
+                                            submitting: false,
+                                            error: None,
+                                        }),
+                                        "Use a different email"
+                                    }
+                                }
+                                }
+                            },
+                        }
+                    }
+                    ActionRow {
+                        Button { disabled: busy() || cleanup_pending() || signed_out(), onclick: move |_| {
+                            match offline_owner.recover_offline() {
+                                Ok(duet_client::retention::DraftRecovery::Draft(draft)) => {
+                                    if let Some(owner) = offline_owner
+                                        .retained_identity()
+                                        .ok()
+                                        .flatten()
+                                        .map(|identity| identity.owner)
+                                    {
+                                        offline_draft.set(step_offline_draft(
+                                            offline_draft(),
+                                            DraftTransition::Recover {
+                                                owner,
+                                                draft: *draft,
+                                            },
+                                        ));
+                                    }
+                                }
+                                Ok(duet_client::retention::DraftRecovery::Damaged) => message.set("The protected draft is damaged; it has not been discarded.".into()),
+                                Ok(_) => message.set("No retained draft on this device.".into()),
+                                Err(error) => message.set(error),
+                            }
+                        }, "View protected draft offline" }
+                    }
+                    if let Some(draft) = shown_offline_draft(offline_draft(), true, draft_viewer.as_deref()) {
+                        section {
+                            h2 { "Unsaved doctor draft — offline" }
+                            p { "This is not the approved page. Reconnect and verify your account before saving or sharing." }
+                            p { "{crate::field_text(&draft.save.page.name)}" }
+                            p { "{crate::field_text(&draft.save.note)}" }
+                            for question in draft.save.page.questions.iter().flatten() { p { "{question}" } }
+                            for item in draft.base.items.iter().flatten().filter(|item| draft.save.item_ids.contains(&item.id)) { p { "{item.title}" } }
+                            Button { onclick: move |_| offline_draft.set(None), "Close protected draft" }
+                        }
                     }
                 }
             }
@@ -587,12 +972,150 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
     }
 }
 
+async fn complete_link_sign_in(
+    base: &str,
+    token: &str,
+    owner: &RetentionOwner,
+    current: impl Fn() -> bool,
+) -> Result<ActiveSession, SignInError> {
+    let api = DuetClient::new(base, "", "0", "0.1.0").map_err(SignInError::Client)?;
+    let signed = api
+        .complete_email_sign_in(None, &ChallengeCredential::LinkToken(token.to_owned()))
+        .await
+        .map_err(SignInError::Account)?;
+    finish_email_sign_in(base, signed, owner, current).await
+}
+
+async fn complete_code_sign_in(
+    base: &str,
+    email: &str,
+    code: &str,
+    owner: &RetentionOwner,
+    current: impl Fn() -> bool,
+) -> Result<ActiveSession, SignInError> {
+    let api = DuetClient::new(base, "", "0", "0.1.0").map_err(SignInError::Client)?;
+    let signed = api
+        .complete_email_sign_in(
+            Some(email),
+            &ChallengeCredential::ShortCode(code.to_owned()),
+        )
+        .await
+        .map_err(SignInError::Account)?;
+    finish_email_sign_in(base, signed, owner, current).await
+}
+
+async fn finish_email_sign_in(
+    base: &str,
+    signed: duet_client::identity::EmailSignInResult,
+    owner: &RetentionOwner,
+    current: impl Fn() -> bool,
+) -> Result<ActiveSession, SignInError> {
+    if !current() {
+        return Err(SignInError::Superseded);
+    }
+    let client =
+        DuetClient::new(base, &signed.bearer, "0", "0.1.0").map_err(SignInError::Client)?;
+    let state = client.account_state().await.map_err(SignInError::Account)?;
+    if !current() {
+        return Err(SignInError::Superseded);
+    }
+    let owner_id = signed.owner();
+    let fence = owner
+        .activate(RetainedIdentity {
+            subject: format!("email:{}", signed.account_id),
+            owner: owner_id,
+            session_token: signed.bearer.clone(),
+            email: Some(signed.email.clone()),
+        })
+        .map_err(SignInError::Retention)?;
+    let _ = owner.save_account_state(&fence, &state);
+    let _ = owner.save_appearance(&fence, signed.appearance);
+    Ok(ActiveSession {
+        bearer: signed.bearer,
+        fence,
+        email: Some(signed.email),
+        appearance: signed.appearance,
+        account_state: Some(state),
+    })
+}
+
+async fn restore_supplied(
+    base: &str,
+    supplied: String,
+    owner: &RetentionOwner,
+    current: impl Fn() -> bool,
+) -> Result<Option<ActiveSession>, SignInError> {
+    let api = DuetClient::new(base, &supplied, "0", "0.1.0").map_err(SignInError::Client)?;
+    let state = api.ensure_account().await.map_err(SignInError::Account)?;
+    let context = api.account_context().await.map_err(SignInError::Context)?;
+    if !current() {
+        return Err(SignInError::Superseded);
+    }
+    Ok(Some(ActiveSession {
+        bearer: supplied,
+        fence: owner.activate_ephemeral(context.owner()),
+        email: None,
+        appearance: Appearance::System,
+        account_state: Some(state),
+    }))
+}
+
+async fn validate_retained(
+    base: &str,
+    bearer: &str,
+    owner: &RetentionOwner,
+    fence: &duet_client::session::SessionFence,
+    startup_link: Option<&AppDeepLink>,
+    current: impl Fn() -> bool,
+) -> Result<
+    (
+        duet_wire::models::AccountState,
+        duet_client::identity::AccountProfile,
+    ),
+    SignInError,
+> {
+    let api = DuetClient::new(base, bearer, "0", "0.1.0").map_err(SignInError::Client)?;
+    let context = api.account_context().await.map_err(SignInError::Context)?;
+    if !current() || !owner.session().is_current(fence) || context.owner() != fence.owner() {
+        return Err(SignInError::Superseded);
+    }
+    if let Some(AppDeepLink::EmailChange { token }) = startup_link {
+        let _ = api
+            .confirm_email_change(None, &ChallengeCredential::LinkToken(token.clone()))
+            .await;
+    }
+    let state = api.account_state().await.map_err(SignInError::Account)?;
+    let profile = api
+        .account_profile()
+        .await
+        .unwrap_or(duet_client::identity::AccountProfile {
+            email: None,
+            appearance: Appearance::System,
+        });
+    Ok((state, profile))
+}
+
+#[cfg(target_arch = "wasm32")]
+fn browser_deep_link() -> Option<AppDeepLink> {
+    let href = web_sys::window()?.location().href().ok()?;
+    parse_app_link(&href)
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn browser_deep_link() -> Option<AppDeepLink> {
+    None
+}
+
 #[component]
 fn AccountRoutes(
     base_url: String,
     bearer: String,
+    appearance: Appearance,
     retention: RetentionOwner,
     fence: duet_client::session::SessionFence,
+    pending_invite: Option<String>,
+    on_open_settings: EventHandler<()>,
+    on_clear_invite: EventHandler<()>,
 ) -> Element {
     let mut access_token = use_signal(|| bearer.clone());
     let fresh = bearer.clone();
@@ -600,8 +1123,6 @@ fn AccountRoutes(
     let credential_fence = fence.clone();
     use_effect(use_reactive(&fresh, move |value| {
         if *access_token.peek() != value {
-            // This synchronous publication cannot interleave with a request task:
-            // both its bearer and refusal revision advance in the same effect.
             credential_session.rotate_credential(&credential_fence);
             access_token.set(value);
         }
@@ -611,22 +1132,23 @@ fn AccountRoutes(
         fence,
         access_token,
     });
-    rsx! { crate::PrivateRoot { base_url, bearer } }
+    rsx! {
+        crate::PrivateRoot {
+            base_url,
+            bearer,
+            appearance,
+            pending_invite,
+            on_open_settings,
+            on_clear_invite,
+        }
+    }
 }
 
 /// Account-shell transition for the offline doctor draft.
-///
-/// Recovery remembers the owner. Activation, expiry, and sign-out drop it, so
-/// a later signed-out render cannot show another person's draft.
 #[derive(Clone, Debug, PartialEq, Eq)]
 enum DraftTransition<T> {
-    /// A signed-out recovery of this owner's protected draft.
     Recover { owner: String, draft: T },
-    /// A verified sign-in, including a different person without a remount.
     Activate { owner: String },
-    /// A watchdog or refresh path that clears the active session.
-    Expire,
-    /// An explicit sign-out.
     SignOut,
 }
 
@@ -636,9 +1158,7 @@ fn step_offline_draft<T>(
 ) -> Option<(String, T)> {
     match event {
         DraftTransition::Recover { owner, draft } => Some((owner, draft)),
-        DraftTransition::Activate { owner: _ }
-        | DraftTransition::Expire
-        | DraftTransition::SignOut => None,
+        DraftTransition::Activate { owner: _ } | DraftTransition::SignOut => None,
     }
 }
 
@@ -655,7 +1175,7 @@ fn shown_offline_draft<T>(
 struct AccountUi {
     lifecycle: Signal<u64>,
     signed_out: Signal<bool>,
-    active: Signal<Option<Active>>,
+    active: Signal<Option<ActiveSession>>,
     offline_draft: Signal<Option<(String, duet_client::retention::DoctorDraft)>>,
     busy: Signal<bool>,
     cleanup_pending: Signal<bool>,
@@ -664,7 +1184,11 @@ struct AccountUi {
 }
 
 impl AccountUi {
-    fn restored(mut self, owner: &RetentionOwner, result: Result<Option<Active>, SignInError>) {
+    fn restored(
+        mut self,
+        owner: &RetentionOwner,
+        result: Result<Option<ActiveSession>, SignInError>,
+    ) {
         match result {
             Ok(Some(value)) => {
                 self.offline_draft.set(None);
@@ -673,8 +1197,7 @@ impl AccountUi {
             }
             Ok(None) => self.message.set(String::new()),
             Err(
-                SignInError::Refresh(IdentityError::Expired)
-                | SignInError::Account(IdentityError::Ended)
+                SignInError::Account(IdentityError::Ended)
                 | SignInError::Context(IdentityError::Ended),
             ) => self.ended(owner),
             Err(error) => self.message.set(error.to_string()),
@@ -708,6 +1231,15 @@ impl AccountUi {
             Ok(()) => leaving.removed(),
             Err(error) => format!("This session ended. Secure cleanup needs retry: {error}"),
         });
+    }
+}
+
+pub(crate) fn sign_out_local(owner: &RetentionOwner) -> Option<String> {
+    match owner.sign_out() {
+        Ok(()) => None,
+        Err(error) => Some(format!(
+            "Signed out on this screen. Secure cleanup needs retry: {error}"
+        )),
     }
 }
 
@@ -755,7 +1287,8 @@ mod tests {
             .activate(RetainedIdentity {
                 subject: "synthetic-patient".into(),
                 owner: "synthetic-account:incarnation".into(),
-                refresh_token: "synthetic-refresh".into(),
+                session_token: "synthetic-session".into(),
+                email: Some("ada@example.test".into()),
             })
             .unwrap();
         let draft = DoctorDraft {
@@ -784,11 +1317,8 @@ mod tests {
         let dom = VirtualDom::new(|| rsx! {});
         dom.in_scope(ScopeId::ROOT, || {
             for (error, ended) in [
-                (SignInError::Refresh(IdentityError::Expired), true),
                 (SignInError::Account(IdentityError::Ended), true),
                 (SignInError::Context(IdentityError::Ended), true),
-                (SignInError::Refresh(IdentityError::Unavailable), false),
-                (SignInError::Refresh(IdentityError::Unauthorized), false),
                 (SignInError::Account(IdentityError::Unavailable), false),
                 (SignInError::Account(IdentityError::Unauthorized), false),
                 (SignInError::Context(IdentityError::Unavailable), false),
@@ -798,17 +1328,11 @@ mod tests {
                 let case = format!("{error:?}");
                 let store = Arc::new(VolatileSessionStore::default());
                 let draft = retained_work(store.clone());
-                // Startup has no mounted account. Only the protected store
-                // survives; apply the result at the same boundary as restore.
                 let owner = RetentionOwner::new(store.clone());
                 let ui = startup_ui();
                 ui.restored(&owner, Err(error));
                 assert!(!(ui.busy)(), "{case}");
-                assert_eq!(
-                    (ui.signed_out)(),
-                    ended,
-                    "startup refusal left offline recovery enabled: {case}"
-                );
+                assert_eq!((ui.signed_out)(), ended, "{case}");
                 assert!(!(ui.cleanup_pending)(), "{case}");
                 let restarted = RetentionOwner::new(store);
                 if ended {
@@ -868,12 +1392,9 @@ mod tests {
             store.fail.store(true, Ordering::SeqCst);
             let owner = RetentionOwner::new(store.clone());
             let ui = startup_ui();
-            ui.restored(&owner, Err(SignInError::Refresh(IdentityError::Expired)));
+            ui.restored(&owner, Err(SignInError::Account(IdentityError::Ended)));
             assert!((ui.signed_out)());
-            assert!(
-                (ui.cleanup_pending)(),
-                "failed erase must expose secure cleanup retry"
-            );
+            assert!((ui.cleanup_pending)());
             assert!((ui.message)().contains("Secure cleanup needs retry"));
             let restarted = RetentionOwner::new(store.clone());
             assert!(restarted.cleanup_required().unwrap());
@@ -891,32 +1412,35 @@ mod tests {
     }
 
     #[test]
-    fn only_a_parsed_https_return_url_lets_apple_sign_in_start() {
-        assert!(matches!(
-            https_redirect_uri(None),
-            Err(SignInError::NotConfigured)
-        ));
-        for malformed in ["https://", "https://[", "https://exa mple.com", ""] {
-            assert!(
-                matches!(
-                    https_redirect_uri(Some(malformed)),
-                    Err(SignInError::RedirectUri(_))
-                ),
-                "{malformed:?} was accepted"
-            );
-        }
-        assert!(matches!(
-            https_redirect_uri(Some("http://duet.example.test/apple")),
-            Err(SignInError::RedirectNotHttps)
-        ));
+    fn parse_app_link_accepts_invite_sign_in_and_email_change_links() {
         assert_eq!(
-            https_redirect_uri(Some("https://duet.example.test/apple")).unwrap(),
-            "https://duet.example.test/apple"
+            parse_app_link("duet://invite?token=inv_123"),
+            Some(AppDeepLink::Invite(InviteHandoff::Token("inv_123".into())))
         );
+        assert_eq!(
+            parse_app_link("https://codahealth.ai/invite?code=CODE99"),
+            Some(AppDeepLink::Invite(InviteHandoff::ShortCode(
+                "CODE99".into()
+            )))
+        );
+        assert_eq!(
+            parse_app_link("https://codahealth.ai/auth/email?token=dl1.tok&invite=inv_1"),
+            Some(AppDeepLink::EmailSignIn {
+                token: "dl1.tok".into(),
+                invite: Some("inv_1".into()),
+            })
+        );
+        assert_eq!(
+            parse_app_link("duet://auth/email-change?token=dl1.chg"),
+            Some(AppDeepLink::EmailChange {
+                token: "dl1.chg".into(),
+            })
+        );
+        assert_eq!(parse_app_link("duet://invite?token=bad/param"), None);
     }
 
     #[test]
-    fn recovered_draft_is_empty_after_another_account_signs_in_and_expires() {
+    fn recovered_draft_is_empty_after_another_account_signs_in() {
         let mut draft = None;
         draft = step_offline_draft(
             draft,
@@ -929,15 +1453,12 @@ mod tests {
             shown_offline_draft(draft.clone(), true, Some("alice")),
             Some("alice-note")
         );
-        // Sign in as someone else without remounting the account shell.
         draft = step_offline_draft(
             draft,
             DraftTransition::Activate {
                 owner: "bob".into(),
             },
         );
-        assert!(draft.is_none());
-        draft = step_offline_draft(draft, DraftTransition::Expire);
         assert!(draft.is_none());
         assert!(shown_offline_draft(draft, true, Some("bob")).is_none());
     }

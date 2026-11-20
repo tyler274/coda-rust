@@ -104,6 +104,12 @@ async fn empty_database_producer_restart_fences_and_withdrawal() {
     let identities = IdentityStore::new(db.clone(), Arc::new(TestIdentity));
     let a = identities.authenticate("producer-a", true).await.unwrap();
     let b = identities.authenticate("producer-b", true).await.unwrap();
+    sqlx::query("update public.users set terms_version='2026-09-23' where id in ($1,$2)")
+        .bind(a.account_id)
+        .bind(b.account_id)
+        .execute(&mut owner)
+        .await
+        .unwrap();
     let source = EvidenceStore::new(db.clone());
     let producer = HealthContextProducer::connect(&writer_url).await.unwrap();
     assert!(HealthContextProducer::connect(&reader_url).await.is_err());
@@ -146,7 +152,7 @@ async fn empty_database_producer_restart_fences_and_withdrawal() {
     assert_eq!(stored.uncalculated.len(), 1);
     assert_eq!(stored.dependencies.len(), 4);
     let mut validation = db.begin(a.account_id).await.unwrap();
-    identity::check_current(&mut validation, &a, false)
+    identity::check_current(&mut validation, &a, identity::AccessLevel::AcceptedTerms)
         .await
         .unwrap();
     health_context::validate_current_in_transaction(&mut validation, a.account_id)

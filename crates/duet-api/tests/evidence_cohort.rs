@@ -72,7 +72,14 @@ async fn paginated_exact_membership_account_revision_and_restore_fences() {
         .unwrap();
     let identity = IdentityStore::new(db.clone(), Arc::new(Identity));
     let a = identity.authenticate("a", true).await.unwrap();
-    let _b = identity.authenticate("b", true).await.unwrap();
+    let b = identity.authenticate("b", true).await.unwrap();
+    sqlx::query("update public.users set terms_version='2026-09-23' where id in ($1,$2)")
+        .bind(a.account_id)
+        .bind(b.account_id)
+        .execute(&mut owner)
+        .await
+        .unwrap();
+    let _b = b;
     let evidence = EvidenceStore::new(db.clone());
     let mut addresses = Vec::new();
     for i in 0..55 {

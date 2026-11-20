@@ -1,52 +1,177 @@
-//! Existing Identity Platform transport, separate from optional practice invitations.
+//! Email authentication, non-expiring sessions, Terms, and account settings transport.
 use crate::DuetClient;
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 /// Verified internal account context returned by `/api/auth/account/context`.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct AccountContext {
     /// Internal owner; never inferred from email.
-    pub account_id: uuid::Uuid,
+    pub account_id: Uuid,
     /// Restored/deleted/recreated owner fence.
-    pub incarnation: uuid::Uuid,
+    pub incarnation: Uuid,
     /// Current permission fence.
     pub permission_revision: i64,
-    /// Provider authentication time.
+    /// Session or authentication creation time.
     pub authenticated_at: String,
 }
+
 impl AccountContext {
     /// Protected cache namespace includes account incarnation.
     pub fn owner(&self) -> String {
         format!("{}:{}", self.account_id, self.incarnation)
     }
 }
-/// Errors do not include credential-bearing URLs or response bodies.
+
+/// Caller proof submitted for email sign-in/sign-up or verified email change.
+#[derive(Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "kind", content = "value", rename_all = "snake_case")]
+pub enum ChallengeCredential {
+    /// Single-use URL token from the emailed link.
+    LinkToken(String),
+    /// Six-digit fallback code from the email.
+    ShortCode(String),
+}
+
+impl std::fmt::Debug for ChallengeCredential {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::LinkToken(_) => f.write_str("ChallengeCredential::LinkToken(<redacted>)"),
+            Self::ShortCode(_) => f.write_str("ChallengeCredential::ShortCode(<redacted>)"),
+        }
+    }
+}
+
+/// User-chosen Duet appearance preference.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum Appearance {
+    /// Follow the device's light or dark setting.
+    #[default]
+    System,
+    /// Always use light surfaces.
+    Light,
+    /// Always use dark surfaces.
+    Dark,
+}
+
+impl Appearance {
+    /// Canonical wire/storage name.
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::System => "system",
+            Self::Light => "light",
+            Self::Dark => "dark",
+        }
+    }
+
+    /// Parse stored preference string, defaulting to `None` when unknown.
+    pub fn parse(raw: &str) -> Option<Self> {
+        match raw.trim() {
+            "system" => Some(Self::System),
+            "light" => Some(Self::Light),
+            "dark" => Some(Self::Dark),
+            _ => None,
+        }
+    }
+}
+
+/// Signed-in account email and appearance preference.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct AccountProfile {
+    /// Verified email address on file for this account.
+    pub email: Option<String>,
+    /// Selected appearance preference.
+    pub appearance: Appearance,
+}
+
+/// Non-expiring opaque session returned after email link or code verification.
+#[derive(Clone, PartialEq, Eq, Deserialize)]
+pub struct EmailSignInResult {
+    /// Opaque `ds1.` session token.
+    pub bearer: String,
+    /// Internal Duet account UUID.
+    pub account_id: Uuid,
+    /// Active account incarnation UUID.
+    pub incarnation: Uuid,
+    /// Verified email address.
+    pub email: String,
+    /// Selected appearance preference.
+    pub appearance: Appearance,
+}
+
+impl std::fmt::Debug for EmailSignInResult {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("EmailSignInResult")
+            .field("bearer", &"<redacted>")
+            .field("account_id", &self.account_id)
+            .field("incarnation", &self.incarnation)
+            .field("email", &self.email)
+            .field("appearance", &self.appearance)
+            .finish()
+    }
+}
+
+impl EmailSignInResult {
+    /// Cache/retention owner namespace (`<account_id>:<incarnation>`).
+    pub fn owner(&self) -> String {
+        format!("{}:{}", self.account_id, self.incarnation)
+    }
+}
+
+/// Closed privacy operations callable from Settings without waiting on Terms.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum PrivacyRestrictionKind {
+    /// Disconnect Apple Health / device snapshots.
+    DeviceWithdraw,
+    /// Disconnect clinical Health Records imports.
+    RecordsWithdraw,
+    /// Revoke all sessions on every device.
+    SessionsRevoke,
+    /// Permanently delete this account and all associated state.
+    AccountDelete,
+}
+
+/// Errors never expose raw credential-bearing URLs or raw server payloads.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum IdentityError {
     /// No valid credential; do not infer account deletion.
     Unauthorized,
-    /// The server refused a verified session because it was revoked or the account is gone.
-    /// Local content for that account is removed. An expired token is not this error.
+    /// The server refused this session because it was revoked or deleted.
     Ended,
-    /// Provider explicitly rejected an expired/revoked/disabled refresh credential.
-    Expired,
-    /// Configuration, network, locked storage or service outage; keep drafts.
+    /// A single-use email link or code was invalid, expired, or already used.
+    InvalidChallenge(String),
+    /// Current Duet Terms must be accepted before accessing `You` or `Shared`.
+    TermsRequired,
+    /// App must be updated before reviewing newer Terms.
+    AgreementChanged,
+    /// Request conflicted with existing server state (for example duplicate email).
+    Conflict(String),
+    /// Caller supplied invalid input (for example malformed email).
+    InvalidInput(String),
+    /// Network or service outage; preserve saved local state.
     Unavailable,
-    /// A response could not be read; the redacted transport cause is retained.
+    /// Unreadable HTTP response with redacted transport cause.
     Response(crate::refusal::TransportCause),
 }
+
 impl std::fmt::Display for IdentityError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.write_str(match self {
-            Self::Unauthorized => "no valid credential",
-            Self::Ended => "this session has ended",
-            Self::Expired => "the credential is expired, revoked or disabled",
+        match self {
+            Self::Unauthorized => f.write_str("No valid session. Sign in again."),
+            Self::Ended => f.write_str("This session has ended."),
+            Self::InvalidChallenge(message) => f.write_str(message),
+            Self::TermsRequired => f.write_str("Accept the current Duet Terms to continue."),
+            Self::AgreementChanged => f.write_str("Update Duet to review the current terms."),
+            Self::Conflict(message) | Self::InvalidInput(message) => f.write_str(message),
             Self::Unavailable | Self::Response(_) => {
-                "the identity service is unavailable or not configured"
+                f.write_str("Duet couldn’t reach the server right now. Saved information on this phone stays available.")
             }
-        })
+        }
     }
 }
+
 impl std::error::Error for IdentityError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         match self {
@@ -55,242 +180,306 @@ impl std::error::Error for IdentityError {
         }
     }
 }
+
 impl DuetClient {
-    /// Establish standalone account with the existing identity DTO; no invitation required.
-    pub async fn ensure_account(&self) -> Result<duet_wire::models::AccountState, IdentityError> {
+    fn authed(&self, method: reqwest::Method, path: &str) -> reqwest::RequestBuilder {
+        let mut req = self
+            .configuration
+            .client
+            .request(method, format!("{}{path}", self.configuration.base_path));
+        if let Some(token) = &self.configuration.bearer_access_token
+            && !token.is_empty()
+        {
+            req = req.bearer_auth(token);
+        }
+        req
+    }
+
+    /// Start the unified email sign-up / sign-in challenge flow.
+    pub async fn begin_email_sign_in(
+        &self,
+        email: &str,
+        invite: Option<&str>,
+    ) -> Result<String, IdentityError> {
+        #[derive(Deserialize)]
+        struct Started {
+            message: String,
+        }
         let response = self
             .configuration
             .client
-            .put(format!("{}/api/auth/account", self.configuration.base_path))
-            .bearer_auth(
-                self.configuration
-                    .bearer_access_token
-                    .as_deref()
-                    .unwrap_or_default(),
-            )
+            .post(format!(
+                "{}/api/auth/email/start",
+                self.configuration.base_path
+            ))
+            .json(&serde_json::json!({ "email": email, "invite": invite }))
+            .send()
+            .await
+            .map_err(|_| IdentityError::Unavailable)?;
+        let started: Started = self.decode_checked(response, false).await?;
+        Ok(started.message)
+    }
+
+    /// Complete email sign-up / sign-in using a single-use link token or 6-digit fallback code.
+    pub async fn complete_email_sign_in(
+        &self,
+        email: Option<&str>,
+        credential: &ChallengeCredential,
+    ) -> Result<EmailSignInResult, IdentityError> {
+        let response = self
+            .configuration
+            .client
+            .post(format!(
+                "{}/api/auth/email/verify",
+                self.configuration.base_path
+            ))
+            .json(&serde_json::json!({ "email": email, "credential": credential }))
+            .send()
+            .await
+            .map_err(|_| IdentityError::Unavailable)?;
+        self.decode_checked(response, false).await
+    }
+
+    /// Sign out ONLY the current device session without revoking other signed-in devices.
+    pub async fn sign_out_device(&self) -> Result<(), IdentityError> {
+        let response = self
+            .authed(reqwest::Method::POST, "/api/auth/session/sign-out")
+            .send()
+            .await
+            .map_err(|_| IdentityError::Unavailable)?;
+        let _: serde_json::Value = self.decode_checked(response, true).await?;
+        Ok(())
+    }
+
+    /// Ensure an external-provider account exists (`PUT /api/auth/account`).
+    pub async fn ensure_account(&self) -> Result<duet_wire::models::AccountState, IdentityError> {
+        let response = self
+            .authed(reqwest::Method::PUT, "/api/auth/account")
             .json(&duet_wire::models::AccountIdentityRequest::new())
             .send()
             .await
             .map_err(|_| IdentityError::Unavailable)?;
-        decode(response).await
+        self.decode_checked(response, true).await
     }
-    /// Read the verified account/incarnation before rendering private routes.
+
+    /// Read current account state (`GET /api/auth/account`), allowed while Terms wait.
+    pub async fn account_state(&self) -> Result<duet_wire::models::AccountState, IdentityError> {
+        let response = self
+            .authed(reqwest::Method::GET, "/api/auth/account")
+            .send()
+            .await
+            .map_err(|_| IdentityError::Unavailable)?;
+        self.decode_checked(response, true).await
+    }
+
+    /// Update or clear display name (`PUT /api/auth/account`), allowed while Terms wait.
+    pub async fn update_display_name(
+        &self,
+        display_name: Option<&str>,
+    ) -> Result<duet_wire::models::AccountState, IdentityError> {
+        let mut body = duet_wire::models::AccountIdentityRequest::new();
+        body.display_name = Some(display_name.map(str::to_owned));
+        let response = self
+            .authed(reqwest::Method::PUT, "/api/auth/account")
+            .json(&body)
+            .send()
+            .await
+            .map_err(|_| IdentityError::Unavailable)?;
+        self.decode_checked(response, true).await
+    }
+
+    /// Record explicit Terms acceptance for `version`.
+    pub async fn accept_terms(
+        &self,
+        version: &str,
+    ) -> Result<duet_wire::models::AccountState, IdentityError> {
+        let response = self
+            .authed(reqwest::Method::PUT, "/api/auth/account/terms")
+            .json(&duet_wire::models::TermsAcceptanceRequest::new(
+                version.to_owned(),
+            ))
+            .send()
+            .await
+            .map_err(|_| IdentityError::Unavailable)?;
+        self.decode_checked(response, true).await
+    }
+
+    /// Read verified account context before rendering private routes.
     pub async fn account_context(&self) -> Result<AccountContext, IdentityError> {
         let response = self
-            .configuration
-            .client
-            .get(format!(
-                "{}/api/auth/account/context",
-                self.configuration.base_path
-            ))
-            .bearer_auth(
-                self.configuration
-                    .bearer_access_token
-                    .as_deref()
-                    .unwrap_or_default(),
-            )
+            .authed(reqwest::Method::GET, "/api/auth/account/context")
             .send()
             .await
             .map_err(|_| IdentityError::Unavailable)?;
-        decode(response).await
+        self.decode_checked(response, true).await
     }
-}
-async fn decode<T: serde::de::DeserializeOwned>(
-    response: reqwest::Response,
-) -> Result<T, IdentityError> {
-    if !response.status().is_success() {
-        let status = response.status();
-        let body = response
-            .text()
-            .await
-            .map_err(|error| IdentityError::Response(error.into()))?;
-        return Err(match crate::refusal::classify(status, &body) {
-            Some(
-                crate::refusal::SessionRefusal::Revoked | crate::refusal::SessionRefusal::Absent,
-            ) => IdentityError::Ended,
-            Some(crate::refusal::SessionRefusal::Invalid) => IdentityError::Unauthorized,
-            None => IdentityError::Unavailable,
-        });
-    }
-    response
-        .json()
-        .await
-        .map_err(|_| IdentityError::Unavailable)
-}
-/// Short-lived access plus refresh credential. Intentionally does not implement Debug.
-#[derive(Clone)]
-pub struct ProviderCredential {
-    /// Provider-verified subject, compared on every refresh.
-    pub subject: String,
-    /// ID token, memory only.
-    pub id_token: String,
-    /// Device-protected refresh token.
-    pub refresh_token: String,
-    /// Provider TTL; never guessed from an unverified JWT.
-    pub expires_in: u64,
-}
-/// Existing public provider configuration, not a new backend login contract.
-#[derive(Clone)]
-pub struct IdentityPlatformClient {
-    api_key: String,
-    client: reqwest::Client,
-    bundle_id: Option<String>,
-}
-impl IdentityPlatformClient {
-    /// Use the existing Identity Platform project API key and restricted iOS bundle identifier.
-    pub fn new(api_key: String, bundle_id: Option<String>) -> Self {
-        Self {
-            api_key,
-            bundle_id,
-            client: {
-                #[cfg(not(target_arch = "wasm32"))]
-                {
-                    reqwest::Client::builder()
-                        .timeout(std::time::Duration::from_secs(20))
-                        .build()
-                        .expect("Identity HTTP client")
-                }
-                #[cfg(target_arch = "wasm32")]
-                {
-                    reqwest::Client::new()
-                }
-            },
-        }
-    }
-    fn request(&self, url: &str) -> Result<reqwest::RequestBuilder, IdentityError> {
-        if self.api_key.is_empty() {
-            return Err(IdentityError::Unavailable);
-        }
-        let mut request = self.client.post(url).query(&[("key", &self.api_key)]);
-        if let Some(bundle) = &self.bundle_id {
-            request = request.header("X-Ios-Bundle-Identifier", bundle);
-        }
-        Ok(request)
-    }
-    /// Refresh directly with Google's existing securetoken API. Different subjects fail closed.
-    pub async fn refresh(
-        &self,
-        subject: &str,
-        refresh_token: &str,
-    ) -> Result<ProviderCredential, IdentityError> {
-        let form = encoded(&[
-            ("grant_type", "refresh_token"),
-            ("refresh_token", refresh_token),
-        ]);
+
+    /// Read email and appearance settings, accessible while Terms wait.
+    pub async fn account_profile(&self) -> Result<AccountProfile, IdentityError> {
         let response = self
-            .request("https://securetoken.googleapis.com/v1/token")?
-            .header("Content-Type", "application/x-www-form-urlencoded")
-            .body(form)
+            .authed(reqwest::Method::GET, "/api/auth/account/profile")
             .send()
             .await
             .map_err(|_| IdentityError::Unavailable)?;
-        #[derive(Deserialize)]
-        struct Token {
-            user_id: String,
-            id_token: String,
-            refresh_token: String,
-            expires_in: String,
-        }
-        if response.status() == reqwest::StatusCode::BAD_REQUEST
-            || response.status() == reqwest::StatusCode::UNAUTHORIZED
-        {
-            let body: serde_json::Value = response
-                .json()
-                .await
-                .map_err(|_| IdentityError::Unavailable)?;
-            return Err(match body["error"]["message"].as_str() {
-                Some(
-                    "TOKEN_EXPIRED" | "INVALID_REFRESH_TOKEN" | "USER_DISABLED" | "USER_NOT_FOUND",
-                ) => IdentityError::Expired,
-                _ => IdentityError::Unavailable,
-            });
-        }
-        let token: Token = decode(response).await?;
-        if token.user_id != subject || token.id_token.is_empty() || token.refresh_token.is_empty() {
-            return Err(IdentityError::Unauthorized);
-        }
-        Ok(ProviderCredential {
-            subject: token.user_id,
-            id_token: token.id_token,
-            refresh_token: token.refresh_token,
-            expires_in: token
-                .expires_in
-                .parse::<u64>()
-                .ok()
-                .filter(|ttl| *ttl > 60 && *ttl <= 86400)
-                .ok_or(IdentityError::Unavailable)?,
-        })
+        self.decode_checked(response, true).await
     }
-    /// Exchange the native Apple authorization using the original Identity Platform contract.
-    pub async fn apple(
+
+    /// Save appearance preference (`system`, `light`, or `dark`).
+    pub async fn set_appearance(
         &self,
-        credential: AppleCredential,
-        redirect_uri: &str,
-    ) -> Result<ProviderCredential, IdentityError> {
-        if !redirect_uri.starts_with("https://") {
-            return Err(IdentityError::Unavailable);
-        }
-        let body = encoded(&[
-            ("id_token", &credential.identity_token),
-            ("providerId", "apple.com"),
-            ("nonce", &credential.nonce),
-        ]);
-        let response = self.request("https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp")?
-            .json(&serde_json::json!({"requestUri":redirect_uri,"postBody":body,"returnSecureToken":true,"returnIdpCredential":true}))
-            .send().await.map_err(|_| IdentityError::Unavailable)?;
+        appearance: Appearance,
+    ) -> Result<AccountProfile, IdentityError> {
+        let response = self
+            .authed(reqwest::Method::PUT, "/api/auth/account/appearance")
+            .json(&serde_json::json!({ "appearance": appearance }))
+            .send()
+            .await
+            .map_err(|_| IdentityError::Unavailable)?;
+        self.decode_checked(response, true).await
+    }
+
+    /// Send verification link + code to confirm a new verified email address.
+    pub async fn begin_email_change(&self, new_email: &str) -> Result<String, IdentityError> {
         #[derive(Deserialize)]
-        #[serde(rename_all = "camelCase")]
-        struct Token {
-            local_id: String,
-            id_token: String,
-            refresh_token: String,
-            expires_in: String,
+        struct Started {
+            message: String,
         }
-        let token: Token = decode(response).await?;
-        if token.local_id.is_empty() || token.id_token.is_empty() || token.refresh_token.is_empty()
+        let response = self
+            .authed(reqwest::Method::POST, "/api/auth/email-change/start")
+            .json(&serde_json::json!({ "new_email": new_email }))
+            .send()
+            .await
+            .map_err(|_| IdentityError::Unavailable)?;
+        let started: Started = self.decode_checked(response, true).await?;
+        Ok(started.message)
+    }
+
+    /// Confirm verified email change with single-use link token or 6-digit fallback code.
+    pub async fn confirm_email_change(
+        &self,
+        new_email: Option<&str>,
+        credential: &ChallengeCredential,
+    ) -> Result<AccountProfile, IdentityError> {
+        let response = self
+            .authed(reqwest::Method::POST, "/api/auth/email-change/confirm")
+            .json(&serde_json::json!({ "new_email": new_email, "credential": credential }))
+            .send()
+            .await
+            .map_err(|_| IdentityError::Unavailable)?;
+        self.decode_checked(response, true).await
+    }
+
+    /// Commit a Rights-never-wait privacy restriction (source disconnect, sign-out everywhere, or account delete).
+    pub async fn commit_privacy_restriction(
+        &self,
+        event_id: Uuid,
+        operation: PrivacyRestrictionKind,
+        scope_id: Option<Uuid>,
+        scope_version: i64,
+    ) -> Result<serde_json::Value, IdentityError> {
+        let response = self
+            .authed(reqwest::Method::POST, "/api/auth/privacy-restrictions")
+            .json(&serde_json::json!({
+                "event_id": event_id,
+                "operation": operation,
+                "scope_id": scope_id,
+                "scope_version": scope_version,
+            }))
+            .send()
+            .await
+            .map_err(|_| IdentityError::Unavailable)?;
+        self.decode_checked(response, true).await
+    }
+
+    async fn decode_checked<T: serde::de::DeserializeOwned>(
+        &self,
+        response: reqwest::Response,
+        observe_session: bool,
+    ) -> Result<T, IdentityError> {
+        let status = response.status();
+        if !status.is_success() {
+            let body = response
+                .text()
+                .await
+                .map_err(|error| IdentityError::Response(error.into()))?;
+            if observe_session {
+                self.observe_refusal(status, &body);
+            }
+            return Err(classify_identity_error(status, &body));
+        }
+        response
+            .json()
+            .await
+            .map_err(|error| IdentityError::Response(error.into()))
+    }
+}
+
+fn classify_identity_error(status: reqwest::StatusCode, body: &str) -> IdentityError {
+    if let Ok(value) = serde_json::from_str::<serde_json::Value>(body) {
+        let detail = &value["detail"];
+        if let Some(code) = detail["code"].as_str() {
+            let msg = detail["message"]
+                .as_str()
+                .unwrap_or("This link no longer works")
+                .to_owned();
+            match code {
+                "challenge_invalid" => return IdentityError::InvalidChallenge(msg),
+                "terms_acceptance_required" => return IdentityError::TermsRequired,
+                "agreement_version_changed" => return IdentityError::AgreementChanged,
+                "stale_state" => return IdentityError::Conflict(msg),
+                _ => {}
+            }
+        }
+        if status == reqwest::StatusCode::UNPROCESSABLE_ENTITY
+            && let Some(msg) = detail.as_str()
         {
-            return Err(IdentityError::Unauthorized);
+            return IdentityError::InvalidInput(msg.to_owned());
         }
-        Ok(ProviderCredential {
-            subject: token.local_id,
-            id_token: token.id_token,
-            refresh_token: token.refresh_token,
-            expires_in: token
-                .expires_in
-                .parse::<u64>()
-                .ok()
-                .filter(|ttl| *ttl > 60 && *ttl <= 86400)
-                .ok_or(IdentityError::Unavailable)?,
-        })
+    }
+    match crate::refusal::classify(status, body) {
+        Some(crate::refusal::SessionRefusal::Revoked | crate::refusal::SessionRefusal::Absent) => {
+            IdentityError::Ended
+        }
+        Some(crate::refusal::SessionRefusal::Invalid) => IdentityError::Unauthorized,
+        None => IdentityError::Unavailable,
     }
 }
-fn encoded(pairs: &[(&str, &str)]) -> String {
-    let mut url = reqwest::Url::parse("https://localhost/").unwrap();
-    url.query_pairs_mut().extend_pairs(pairs.iter().copied());
-    url.query().unwrap_or_default().to_owned()
-}
-/// Native Apple response, held only in memory. Rust passes it directly to Identity Platform.
-#[derive(Deserialize)]
-pub struct AppleCredential {
-    /// Apple-signed identity token.
-    pub identity_token: String,
-    /// Cryptographic nonce passed to the native authorization.
-    pub nonce: String,
-}
-/// Start native Sign in with Apple. Unsupported hosts fail closed rather than require invitations.
-pub fn start_native_sign_in() -> Result<(), IdentityError> {
-    crate::retention::platform_call(serde_json::json!({"op":"apple_start"}))
-        .map(|_| ())
-        .map_err(|_| IdentityError::Unavailable)
-}
-/// Poll the native authorization result. The UI bounds polling and never persists Apple credentials.
-pub fn poll_native_sign_in() -> Result<Option<AppleCredential>, IdentityError> {
-    let result = crate::retention::platform_call(serde_json::json!({"op":"apple_poll"}))
-        .map_err(|_| IdentityError::Unavailable)?;
-    if result.is_null() {
-        return Ok(None);
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn classifies_challenge_terms_upgrade_and_conflict_without_triggering_session_end() {
+        let challenge = classify_identity_error(
+            reqwest::StatusCode::UNAUTHORIZED,
+            r#"{"detail":{"code":"challenge_invalid","message":"This link no longer works"}}"#,
+        );
+        assert_eq!(
+            challenge,
+            IdentityError::InvalidChallenge("This link no longer works".into())
+        );
+        assert!(
+            crate::refusal::classify(
+                reqwest::StatusCode::UNAUTHORIZED,
+                r#"{"detail":{"code":"challenge_invalid","message":"This link no longer works"}}"#,
+            )
+            .is_none()
+        );
+
+        assert_eq!(
+            classify_identity_error(
+                reqwest::StatusCode::FORBIDDEN,
+                r#"{"detail":{"code":"terms_acceptance_required"}}"#,
+            ),
+            IdentityError::TermsRequired
+        );
+        assert_eq!(
+            classify_identity_error(
+                reqwest::StatusCode::CONFLICT,
+                r#"{"detail":{"code":"agreement_version_changed"}}"#,
+            ),
+            IdentityError::AgreementChanged
+        );
     }
-    serde_json::from_value(result)
-        .map(Some)
-        .map_err(|_| IdentityError::Unauthorized)
 }

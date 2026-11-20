@@ -9,10 +9,10 @@
 mod account;
 #[cfg(target_os = "ios")]
 mod apple_health;
-mod browser_identity;
 mod records;
 mod roots;
-pub use account::{DuetRoot, PatientSession};
+mod settings;
+pub use account::{AppDeepLink, DuetRoot, InviteHandoff, PatientSession, parse_app_link};
 
 use std::cell::Cell;
 use std::rc::Rc;
@@ -25,7 +25,10 @@ use roots::{
     ALLOW_NOTIFICATIONS, CONNECTING, DoctorPage, LIBRARY_EMPTY, LIBRARY_UNAVAILABLE, LibraryKind,
     LibraryRecord, LibraryRoot, OPEN_NOTIFICATION_SETTINGS, TRY_AGAIN, doctor_page, library_root,
 };
-use ui::{ActionRow, Button, ButtonVariant, Icon, IconName, NavigationControl, TabBar, TryAgain};
+use ui::{
+    ActionRow, Button, ButtonVariant, Icon, IconName, NavigationControl, Notice, TabBar, Tone,
+    TryAgain,
+};
 
 const TABS: [&str; 2] = ["You", "Shared"];
 
@@ -34,13 +37,43 @@ const DUET_STYLES: &str = include_str!("../assets/duet.css");
 pub use roots::{api_base_url, api_bearer};
 
 #[component]
-fn PrivateRoot(base_url: String, bearer: String) -> Element {
-    let mut tab = use_signal(|| 0usize);
+fn PrivateRoot(
+    base_url: String,
+    bearer: String,
+    appearance: duet_client::identity::Appearance,
+    pending_invite: Option<String>,
+    on_open_settings: EventHandler<()>,
+    on_clear_invite: EventHandler<()>,
+) -> Element {
+    let patient = use_context::<PatientSession>();
+    let initial_tab = patient
+        .retention
+        .load_active_tab(&patient.fence)
+        .ok()
+        .flatten()
+        .filter(|index| *index < TABS.len())
+        .unwrap_or(0);
+    let mut tab = use_signal(move || initial_tab);
     let mut alerts = use_signal(|| PlatformAlerts.snapshot());
+    let tab_owner = patient.retention.clone();
+    let tab_fence = patient.fence.clone();
     rsx! {
         ui::Stylesheet { app: DUET_STYLES }
-        main { class: "duet theme-duet",
+        main { class: "duet theme-duet", "data-theme": "{appearance.as_str()}",
             div { class: "duet-page",
+                ActionRow {
+                    Button { variant: ButtonVariant::Quiet, compact: true, onclick: move |_| on_open_settings.call(()), "Settings" }
+                }
+                if let Some(invite) = pending_invite {
+                    Notice {
+                        tone: Tone::Primary,
+                        title: "Practice invitation".to_owned(),
+                        detail: Some(format!("Invitation {invite} is open in your Duet account.")),
+                        ActionRow {
+                            Button { compact: true, onclick: move |_| on_clear_invite.call(()), "Done" }
+                        }
+                    }
+                }
                 div { hidden: tab() != 0,
                     YouTab {
                         base_url: base_url.clone(),
@@ -62,6 +95,7 @@ fn PrivateRoot(base_url: String, bearer: String) -> Element {
                 selected: tab(),
                 on_select: move |index| {
                     tab.set(index);
+                    let _ = tab_owner.save_active_tab(&tab_fence, index);
                     if index == 0 {
                         alerts.set(PlatformAlerts.snapshot());
                     }
@@ -97,10 +131,12 @@ fn use_deferred_status(loading: Signal<bool>) -> bool {
 #[component]
 fn TabHeading(name: String, loading: Signal<bool>) -> Element {
     let waiting = use_deferred_status(loading);
+    let offline = try_consume_context::<account::AccountConnection>()
+        .is_some_and(|conn| (conn.0)() == account::ConnectionStatus::Connecting);
     rsx! {
         div { class: "duet-heading",
             h1 { "{name}" }
-            p { class: "duet-status", if waiting { "{CONNECTING}" } }
+            p { class: "duet-status", if waiting || offline { "{CONNECTING}" } }
         }
     }
 }
@@ -199,11 +235,16 @@ struct EvidenceEdit {
 fn SharedTab(base_url: String, bearer: String) -> Element {
     let mut attempt = use_signal(|| 0u32);
     let mut loading = use_signal(|| true);
-    let mut doctor = use_signal(|| None);
+    let patient = use_context::<PatientSession>();
+    let cached_doctor = patient
+        .retention
+        .load_shared_cache(&patient.fence)
+        .ok()
+        .flatten();
+    let mut doctor = use_signal(move || cached_doctor);
     let mut doctor_open = use_signal(|| false);
     let mut saving_page = use_signal(|| false);
     let mut page_failed = use_signal(|| false);
-    let patient = use_context::<PatientSession>();
     let draft_owner = patient.retention.clone();
     let draft_fence = patient.fence.clone();
     let mut retained = use_signal(|| draft_owner.recover(&draft_fence));
@@ -348,6 +389,7 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
                         _ => retention_error.set("The exact save receipt could not confirm your request. Your draft is retained; no mutation was replayed.".into()),
                     }
             }
+            let _ = reconcile_owner.save_shared_cache(&reconcile_fence, &collection);
             doctor.set(Some(collection));
         }
     });
@@ -822,7 +864,13 @@ fn YouTab(
 ) -> Element {
     let mut attempt = use_signal(|| 0u32);
     let mut loading = use_signal(|| true);
-    let mut cache = use_signal(|| None);
+    let patient = use_context::<PatientSession>();
+    let cached_you = patient
+        .retention
+        .load_you_cache(&patient.fence)
+        .ok()
+        .flatten();
+    let mut cache = use_signal(move || cached_you);
     let mut menu = use_signal(|| false);
     let mut editor = use_signal(|| None::<YouEditor>);
     let mut medication = use_signal(String::new);
@@ -849,9 +897,12 @@ fn YouTab(
             }
         }
     });
+    let you_retention = patient.retention.clone();
+    let you_fence = patient.fence.clone();
     use_effect(move || {
         loading.set(resource().is_none());
         if let Some(Ok(page)) = resource() {
+            let _ = you_retention.save_you_cache(&you_fence, &page);
             cache.set(Some(page));
         }
     });

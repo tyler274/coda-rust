@@ -46,7 +46,8 @@ fn identity(owner: &str) -> RetainedIdentity {
     RetainedIdentity {
         subject: format!("subject-{owner}"),
         owner: owner.into(),
-        refresh_token: "secret".into(),
+        session_token: "secret".into(),
+        email: None,
     }
 }
 

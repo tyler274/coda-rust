@@ -40,7 +40,8 @@ fn identity(owner: &str) -> RetainedIdentity {
     RetainedIdentity {
         subject: owner.into(),
         owner: owner.into(),
-        refresh_token: "secret".into(),
+        session_token: "secret".into(),
+        email: None,
     }
 }
 fn draft() -> DoctorDraft {
@@ -77,7 +78,8 @@ fn sign_out_switch_and_new_incarnation_remove_queued_health() {
     let same_subject = RetainedIdentity {
         subject: "acct-a:incarnation-1".into(),
         owner: "acct-a:incarnation-2".into(),
-        refresh_token: "secret".into(),
+        session_token: "secret".into(),
+        email: None,
     };
     // The switch above signed B in. Put A back, then return as a new incarnation.
     let a = owner.activate(identity("acct-a:incarnation-1")).unwrap();
@@ -373,7 +375,7 @@ fn rotation_preserves_fences_and_uncertain_bytes_cannot_be_replaced() {
     owner.rotate_credential(&a, "a", "rotated".into()).unwrap();
     assert!(owner.session().is_current(&a));
     assert_eq!(
-        owner.retained_identity().unwrap().unwrap().refresh_token,
+        owner.retained_identity().unwrap().unwrap().session_token,
         "rotated"
     );
     assert!(owner.rotate_credential(&a, "other", "bad".into()).is_err());
@@ -400,4 +402,57 @@ fn offline_recovery_never_discards_or_approves_a_draft() {
 fn missing_native_host_never_falls_back_to_plaintext() {
     #[cfg(not(any(target_os = "ios", target_os = "android")))]
     assert!(NativeProtectedStore.write("credential", b"secret").is_err());
+}
+#[test]
+fn tab_appearance_and_offline_caches_restore_and_wipe_cleanly_on_sign_out() {
+    let store = Arc::new(Store::default());
+    let owner = RetentionOwner::new(store.clone());
+    owner.set_pending_invite(Some("inv-42")).unwrap();
+    assert_eq!(owner.pending_invite().unwrap().as_deref(), Some("inv-42"));
+    owner.set_pending_invite(None).unwrap();
+    assert!(owner.pending_invite().unwrap().is_none());
+
+    let fence = owner.activate(identity("acct-a:inc-1")).unwrap();
+    owner.save_active_tab(&fence, 1).unwrap();
+    owner
+        .save_appearance(&fence, duet_client::identity::Appearance::Dark)
+        .unwrap();
+    let mut acct = duet_wire::models::AccountState::new();
+    acct.terms_accepted = Some(true);
+    owner.save_account_state(&fence, &acct).unwrap();
+    let page = duet_wire::models::EvidenceLibraryPage::default();
+    owner.save_you_cache(&fence, &page).unwrap();
+    let coll = duet_wire::models::DoctorCollection::new(3);
+    owner.save_shared_cache(&fence, &coll).unwrap();
+
+    for key in store.values.lock().unwrap().keys() {
+        assert!(registered_storage_key(key), "unregistered key {key}");
+    }
+
+    // Offline restart restores retained identity and cached data cleanly without wiping.
+    let restarted = RetentionOwner::new(store.clone());
+    let (_, offline_fence) = restarted.restore_offline_session().unwrap().unwrap();
+    assert_eq!(restarted.load_active_tab(&offline_fence).unwrap(), Some(1));
+    assert_eq!(
+        restarted.load_appearance(&offline_fence).unwrap(),
+        Some(duet_client::identity::Appearance::Dark)
+    );
+    assert_eq!(
+        restarted
+            .load_account_state(&offline_fence)
+            .unwrap()
+            .and_then(|s| s.terms_accepted),
+        Some(true)
+    );
+    assert!(restarted.load_you_cache(&offline_fence).unwrap().is_some());
+    assert_eq!(
+        restarted
+            .load_shared_cache(&offline_fence)
+            .unwrap()
+            .map(|c| c.note_generation),
+        Some(3)
+    );
+
+    restarted.sign_out().unwrap();
+    assert!(store.values.lock().unwrap().is_empty());
 }

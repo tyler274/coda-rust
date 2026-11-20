@@ -224,17 +224,54 @@ pub struct AccountContext {
     /// Authentication time checked again by mutation owners.
     pub authenticated_at: DateTime<Utc>,
 }
+/// Required authorization level when locking an account in [`check_current`].
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum AccessLevel {
+    /// Active non-revoked session and matching account incarnation; does not require Terms acceptance.
+    RightsOnly,
+    /// Requires `RightsOnly` plus accepted `CURRENT_TERMS_VERSION`.
+    AcceptedTerms,
+    /// Requires `AcceptedTerms` plus active Luna consent and matching permission revision.
+    AcceptedLuna,
+}
+
 /// Durable identity and account settings owner.
 #[derive(Clone)]
 pub struct IdentityStore {
     /// Shared account transaction boundary.
     pub database: AccountDatabase,
     verifier: Arc<dyn IdentityVerifier>,
+    email_auth: Arc<crate::email_auth::EmailAuthStore>,
 }
 impl IdentityStore {
-    /// Construct with a production or explicit test verifier.
+    /// Construct with a production or explicit test verifier and unconfigured email delivery.
     pub fn new(database: AccountDatabase, verifier: Arc<dyn IdentityVerifier>) -> Self {
-        Self { database, verifier }
+        let email_auth = Arc::new(crate::email_auth::EmailAuthStore::new(
+            database.clone(),
+            Arc::new(crate::email_auth::UnconfiguredMailer),
+            "https://codahealth.ai",
+        ));
+        Self {
+            database,
+            verifier,
+            email_auth,
+        }
+    }
+    /// Construct with an explicit email authentication store (for production mail delivery or test mailers).
+    pub fn with_email_auth(
+        database: AccountDatabase,
+        verifier: Arc<dyn IdentityVerifier>,
+        email_auth: crate::email_auth::EmailAuthStore,
+    ) -> Self {
+        Self {
+            database,
+            verifier,
+            email_auth: Arc::new(email_auth),
+        }
+    }
+    /// Shared email authentication, session, and profile store.
+    pub fn email_auth(&self) -> &crate::email_auth::EmailAuthStore {
+        &self.email_auth
     }
     /// Verify and map a subject; provisioning is explicit and never invitation gated.
     pub async fn authenticate(
@@ -242,6 +279,9 @@ impl IdentityStore {
         bearer: &str,
         provision: bool,
     ) -> Result<AccountContext, ApiError> {
+        if bearer.starts_with(crate::email_auth::SESSION_TOKEN_PREFIX) {
+            return self.email_auth.verify_session(bearer).await;
+        }
         let identity = self.verifier.verify(bearer).await?;
         if self.database.subject_deleted(&identity.subject).await? {
             return Err(ApiError::AbsentAccount);
@@ -292,6 +332,9 @@ impl IdentityStore {
         &self,
         bearer: &str,
     ) -> Result<AccountContext, ApiError> {
+        if bearer.starts_with(crate::email_auth::SESSION_TOKEN_PREFIX) {
+            return self.email_auth.verify_session(bearer).await;
+        }
         let identity = self.verifier.verify(bearer).await?;
         if let Some((account_id, incarnation)) =
             self.database.deleted_subject(&identity.subject).await?
@@ -329,7 +372,7 @@ impl IdentityStore {
         front_door_account: Uuid,
     ) -> Result<(), ApiError> {
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::RightsOnly).await?;
         sqlx::query("insert into public.duet_front_door_mapping(front_door_account_id,user_id) values($1,$2) on conflict(user_id) do nothing").bind(front_door_account).bind(context.account_id).execute(&mut *tx).await?;
         let actual: Uuid = sqlx::query_scalar(
             "select front_door_account_id from public.duet_front_door_mapping where user_id=$1",
@@ -344,11 +387,11 @@ impl IdentityStore {
         Ok(())
     }
 }
-/// Lock the account before mutations/accepted work; denies stale authentication, permissions or incarnations.
+/// Lock the account before mutations/accepted work; denies stale authentication, terms, permissions, or incarnations.
 pub async fn check_current(
     tx: &mut sqlx::Transaction<'_, sqlx::Postgres>,
     context: &AccountContext,
-    require_luna: bool,
+    level: AccessLevel,
 ) -> Result<(), ApiError> {
     let row=sqlx::query("select duet_incarnation,intelligence_control_revision,sessions_revoked_before,terms_version,luna_consent_decision,luna_consent_version,intelligence_enabled from public.users where id=$1 for update").bind(context.account_id).fetch_optional(&mut **tx).await?.ok_or(ApiError::AbsentAccount)?;
     if row.get::<Uuid, _>("duet_incarnation") != context.incarnation {
@@ -360,11 +403,17 @@ pub async fn check_current(
     {
         return Err(ApiError::SessionRevoked);
     }
-    if require_luna
+    if matches!(
+        level,
+        AccessLevel::AcceptedTerms | AccessLevel::AcceptedLuna
+    ) && row.get::<Option<String>, _>("terms_version").as_deref()
+        != Some(crate::session::CURRENT_TERMS_VERSION)
+    {
+        return Err(ApiError::TermsRequired);
+    }
+    if level == AccessLevel::AcceptedLuna
         && (row.get::<i64, _>("intelligence_control_revision") != context.permission_revision
             || !row.get::<bool, _>("intelligence_enabled")
-            || row.get::<Option<String>, _>("terms_version").as_deref()
-                != Some(crate::session::CURRENT_TERMS_VERSION)
             || row
                 .get::<Option<String>, _>("luna_consent_decision")
                 .as_deref()

@@ -1,4 +1,4 @@
-//! Loads both modes in Chromium. A physician page is not the Duet tabs.
+//! Loads the Duet mobile shell in Chromium and verifies no runtime Physician/Duet switch exists.
 
 use std::env;
 use std::fs;
@@ -10,31 +10,20 @@ use std::time::Duration;
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
-async fn physician_and_client_modes_render() {
+async fn duet_shell_renders_only_duet_without_mode_chooser() {
     let site = build_site();
     let address = serve(site);
     let chrome = chromium();
-    let client = dump_dom(&chrome, &format!("http://{address}/?mode=client")).await;
-    // Patient sign-in is independent of practice invitations. Without an
-    // authenticated account the tabs remain gated; duet_journey proves the
-    // authenticated shell against the live synthetic identity adapter.
-    assert!(
-        client.contains("Sign in to your Duet account")
-            && client.contains("A practice invitation is not required")
-            && !client.contains("Find patient"),
-        "client mode did not show the account sign-in gate:\n{client}"
-    );
-    assert!(
-        !client.contains("Find patient"),
-        "client mode leaked the physician shell:\n{client}"
-    );
-    let physician = dump_dom(&chrome, &format!("http://{address}/?mode=physician")).await;
-    assert!(
-        physician.contains("Today")
-            && physician.contains("Find patient")
-            && !physician.contains("Shared"),
-        "physician mode did not show the physician shell:\n{physician}"
-    );
+    for query in ["/", "/?mode=client", "/?mode=physician"] {
+        let dom = dump_dom(&chrome, &format!("http://{address}{query}")).await;
+        assert!(
+            dom.contains("Sign in to your Duet account")
+                && !dom.contains("Choose a mode")
+                && !dom.contains("Switch mode")
+                && !dom.contains("Find patient"),
+            "mobile shell exposed mode chooser or physician shell for {query}:\n{dom}"
+        );
+    }
 }
 
 fn serve(dir: PathBuf) -> std::net::SocketAddr {

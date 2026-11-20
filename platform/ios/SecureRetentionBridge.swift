@@ -1,9 +1,7 @@
-// Duet-only native bridge. Link this file and Security/AuthenticationServices/CryptoKit
+// Duet-only native bridge. Link this file and Security/UIKit
 // into the iOS application target alongside HealthKitBridge.swift.
 import Foundation
 import Security
-import AuthenticationServices
-import CryptoKit
 import UIKit
 
 private enum RetentionFailure: Error { case unavailable }
@@ -67,17 +65,10 @@ private func retentionCall(_ request: [String: Any]) throws -> Any {
         guard Thread.isMainThread ? present() : DispatchQueue.main.sync(execute: present) else { throw RetentionFailure.unavailable }
         return NSNull()
     }
-    if operation == "apple_start" {
-        let begin = { AppleAuthorization.shared.start() }
-        let started = Thread.isMainThread ? begin() : DispatchQueue.main.sync(execute: begin)
-        guard started else { throw RetentionFailure.unavailable }
+    if operation == "install_privacy_cover" {
+        let install = { PrivacyCoverCoordinator.shared.install() }
+        if Thread.isMainThread { install() } else { DispatchQueue.main.sync(execute: install) }
         return NSNull()
-    }
-    if operation == "apple_poll" {
-        guard Thread.isMainThread else {
-            return DispatchQueue.main.sync { AppleAuthorization.shared.takeResult() }
-        }
-        return AppleAuthorization.shared.takeResult()
     }
     guard let key = request["key"] as? String, !key.isEmpty, key.utf8.count < 1024 else {
         throw RetentionFailure.unavailable
@@ -132,51 +123,62 @@ public func duetSecureCall(_ pointer: UnsafePointer<CChar>?) -> UnsafeMutablePoi
 @_cdecl("duet_secure_free")
 public func duetSecureFree(_ pointer: UnsafeMutablePointer<CChar>?) { free(pointer) }
 
-// Sign in with Apple is the existing provider, not a new Duet login endpoint.
-// Only raw Apple credentials cross to Rust for the existing Identity Platform exchange.
-private final class AppleAuthorization: NSObject, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
-    static let shared = AppleAuthorization()
-    private var nonce: String?
-    private var controller: ASAuthorizationController?
-    private var result: [String: Any]?
-    private var window: UIWindow?
-    func start() -> Bool {
-        guard controller == nil else { return false }
-        result = nil
-        window = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
-            .flatMap { $0.windows }.first { $0.isKeyWindow }
-        guard window != nil else { result = ["error": "unavailable"]; return false }
-        var random = [UInt8](repeating: 0, count: 32)
-        guard SecRandomCopyBytes(kSecRandomDefault, random.count, &random) == errSecSuccess else {
-            result = ["error": "unavailable"]; return false
+// Covers the Duet window whenever the app is inactive or backgrounded without touching Keychain state.
+private final class PrivacyCoverCoordinator {
+    static let shared = PrivacyCoverCoordinator()
+    private var installed = false
+    private var coverView: UIView?
+
+    func install() {
+        guard !installed else { return }
+        installed = true
+        let center = NotificationCenter.default
+        center.addObserver(forName: UIApplication.willResignActiveNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.show()
         }
-        let raw = random.map { String(format: "%02x", $0) }.joined()
-        nonce = raw
-        let request = ASAuthorizationAppleIDProvider().createRequest()
-        request.requestedScopes = [.fullName, .email]
-        request.nonce = SHA256.hash(data: Data(raw.utf8)).map { String(format: "%02x", $0) }.joined()
-        let authorization = ASAuthorizationController(authorizationRequests: [request])
-        controller = authorization
-        authorization.delegate = self
-        authorization.presentationContextProvider = self
-        authorization.performRequests()
-        return true
+        center.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.show()
+        }
+        center.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.hide()
+        }
+        center.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.hide()
+        }
     }
-    func takeResult() -> Any {
-        guard let result else { return NSNull() }
-        self.result = nil
-        return result
+
+    private func show() {
+        guard let window = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap({ $0.windows })
+            .first(where: { $0.isKeyWindow }) else { return }
+        let overlay = coverView ?? {
+            let view = UIView(frame: window.bounds)
+            view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            view.backgroundColor = UIColor.systemBackground
+            view.isAccessibilityElement = true
+            view.accessibilityLabel = "Duet protected screen"
+            let label = UILabel()
+            label.text = "Duet"
+            label.font = UIFont.preferredFont(forTextStyle: .title2)
+            label.textColor = UIColor.secondaryLabel
+            label.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(label)
+            NSLayoutConstraint.activate([
+                label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                label.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            ])
+            coverView = view
+            return view
+        }()
+        overlay.frame = window.bounds
+        if overlay.superview !== window {
+            window.addSubview(overlay)
+        }
+        window.bringSubviewToFront(overlay)
     }
-    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor { window! }
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-        defer { self.controller = nil; nonce = nil; window = nil }
-        guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
-              let data = credential.identityToken, let token = String(data: data, encoding: .utf8),
-              let nonce else { result = ["error": "unavailable"]; return }
-        result = ["identity_token": token, "nonce": nonce]
-    }
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        result = ["error": "cancelled"]
-        self.controller = nil; nonce = nil; window = nil
+
+    private func hide() {
+        coverView?.removeFromSuperview()
     }
 }

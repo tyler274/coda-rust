@@ -275,8 +275,7 @@ serve coda-duet-api "$duet_port" \
   -e DUET_SHL_VIEWER_URL=http://127.0.0.1/shl
 expect_status "http://127.0.0.1:$duet_port/health" 200
 expect_status "http://127.0.0.1:$duet_port/readyz" 200
-expect_status "http://127.0.0.1:$duet_port/" 200
-expect_status "http://127.0.0.1:$duet_port/duet-app_bg.wasm" 200
+expect_status "http://127.0.0.1:$duet_port/" 404
 
 # Graceful stop on SIGTERM, as Cloud Run sends before scale-down.
 for container in "${servers[@]}"; do
