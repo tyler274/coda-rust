@@ -1,0 +1,155 @@
+{
+  "branch": "feat-cc1-front-door-single-owner-multi-practice",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC2",
+      "label": "before fix: session expiry and multi-practice conflict",
+      "kind": "run",
+      "revision": "2b33273ecc83e2b7c019b33640baba2121fcc5ac",
+      "dirty": true,
+      "recorded": "2026-11-20T00:47:01+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "front-door",
+        "--lib",
+        "existing_account_can_be_invited_to_a_second_practice_without_expiry"
+      ],
+      "expect": "session does not expire after 30 days",
+      "expect_fail": true,
+      "files": [
+        "01-before-fix-session-expiry-and-multi-practice-con.log"
+      ],
+      "seconds": 33.3,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "86b45df3b11f69fc09255afb9f519e24e366817e",
+        "reason": "deliberately before the fix"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC1",
+      "label": "front-door unit + Postgres suites (multi-practice connections & no invitation/session expiry)",
+      "kind": "run",
+      "revision": "86b45df3b11f69fc09255afb9f519e24e366817e",
+      "dirty": false,
+      "recorded": "2026-11-20T01:43:14+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail; cargo test --locked -j 4 -p front-door --lib; cargo test --locked -j 4 -p front-door --test migrations --test postgres --test identity --test luna_journal -- --test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-front-door-unit-Postgres-suites-multi-practice-c.log"
+      ],
+      "seconds": 32.4,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC4",
+      "label": "physician-auth, physician-wire, and physician-demo-db unit + Postgres suites (patient_links retired)",
+      "kind": "run",
+      "revision": "86b45df3b11f69fc09255afb9f519e24e366817e",
+      "dirty": false,
+      "recorded": "2026-11-20T01:43:47+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail; cargo test --locked -j 4 -p physician-auth --lib; cargo test --locked -j 4 -p physician-auth --test migrations --test postgres --test publication -- --test-threads=1; cargo test --locked -j 4 -p physician-wire -p physician-demo-db --lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-physician-auth-physician-wire-and-physician-demo.log"
+      ],
+      "seconds": 64.7,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC5",
+      "label": "physician-sample, duet-api, and local-product unit + Postgres suites",
+      "kind": "run",
+      "revision": "86b45df3b11f69fc09255afb9f519e24e366817e",
+      "dirty": false,
+      "recorded": "2026-11-20T01:44:51+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail; cargo test --locked -j 4 -p duet-api -p physician-sample --lib; cargo test --locked -j 4 -p physician-sample --test migrations_postgres -- --ignored --test-threads=1; cargo test --locked -j 4 -p physician-sample --test front_door_postgres --test source_check_and_reconnect -- --test-threads=1; cargo test --locked -j 4 -p physician-sample --bin physician-worker connected_care_bootstrap; cargo test --locked -j 4 -p local-product --lib; cargo test --locked -j 4 -p local-product --test connected_care_and_filtered_chat --test practice_jobs_dispatch -- --test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-physician-sample-duet-api-and-local-product-unit.log"
+      ],
+      "seconds": 815.2,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "AC6",
+      "label": "fmt, check-sql, boundaries, and workspace host + wasm32 clippy",
+      "kind": "run",
+      "revision": "86b45df3b11f69fc09255afb9f519e24e366817e",
+      "dirty": false,
+      "recorded": "2026-11-20T01:58:27+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail; cargo fmt --all --check; python3 scripts/check-sql.py; cargo test --locked -j 4 -p boundaries; cargo clippy --locked -j 4 --workspace --all-targets -- -D warnings; cargo clippy --locked -j 4 --target wasm32-unknown-unknown -p physician-app --features physician-app/web -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-fmt-check-sql-boundaries-and-workspace-host-wasm.log"
+      ],
+      "seconds": 156.9,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 6,
+      "claim": "AC6",
+      "label": "physician-sample browser qualification (tests/site -- --ignored)",
+      "kind": "run",
+      "revision": "86b45df3b11f69fc09255afb9f519e24e366817e",
+      "dirty": false,
+      "recorded": "2026-11-20T02:01:42+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-j",
+        "4",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-physician-sample-browser-qualification-tests-sit.log"
+      ],
+      "seconds": 330.9,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
