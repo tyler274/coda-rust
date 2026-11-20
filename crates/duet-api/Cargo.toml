@@ -15,9 +15,12 @@ async-trait = "0.1"
 axum = "0.8"
 base64 = "0.23"
 chrono = { version = "0.4", default-features = false, features = ["clock", "std", "serde"] }
+clinical-library = { path = "../clinical-library" }
+duet-notify = { path = "../duet-notify" }
 duet-page = { path = "../duet-page" }
 duet_wire = { path = "../duet-wire" }
 front-door = { path = "../front-door" }
+harness = { path = "../harness" }
 jsonwebtoken = { version = "11", default-features = false, features = ["aws_lc_rs", "use_pem"] }
 rand = "0.10"
 reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }

@@ -90,11 +90,17 @@ async fn main() {
         .expect("base64url key")
         .try_into()
         .expect("256-bit key");
-    let producer_router = if let Some(context) = health_context_producer {
-        duet_api::producer_routes::router(duet_api::producer_routes::ProducerState {
-            durable: state.clone(),
-            context,
-        })
+    let parked_routes =
+        duet_api::assistant_harness::ParkedRoutesPolicy::from_env(|key| env::var(key).ok());
+    let producer_router = if parked_routes.is_enabled() {
+        if let Some(context) = health_context_producer {
+            duet_api::producer_routes::router(duet_api::producer_routes::ProducerState {
+                durable: state.clone(),
+                context,
+            })
+        } else {
+            axum::Router::new()
+        }
     } else {
         axum::Router::new()
     };
@@ -110,11 +116,48 @@ async fn main() {
         service: portal_service.clone(),
         diagnostics_token: env::var("DUET_PORTALS_DIAGNOSTICS_TOKEN").ok(),
     });
+    let push_transport: Arc<dyn duet_api::push::PushTransport> =
+        if let Ok(endpoint) = env::var("DUET_PUSH_RELAY_URL") {
+            Arc::new(
+                duet_api::push::HttpPushTransport::new(
+                    &endpoint,
+                    env::var("DUET_PUSH_RELAY_BEARER").ok(),
+                )
+                .expect("push relay configuration"),
+            )
+        } else {
+            Arc::new(duet_api::push::UnconfiguredPushTransport)
+        };
+    let push_state = duet_api::push::PushState {
+        durable: state.clone(),
+        push: duet_api::push::PushStore::new(database.clone(), push_transport),
+    };
+    let clinical_library: Option<Arc<dyn duet_api::assistant_harness::ClinicalLibraryReader>> =
+        env::var("DUET_CLINICAL_LIBRARY_URL").ok().map(|url| {
+            Arc::new(
+                duet_api::assistant_harness::HttpClinicalLibraryReader::new(&url)
+                    .expect("clinical library URL"),
+            ) as Arc<dyn duet_api::assistant_harness::ClinicalLibraryReader>
+        });
+    let operator_switch = match env::var("DUET_AI_OPERATOR_ENABLED").as_deref() {
+        Ok("1" | "true") => duet_api::assistant_harness::AssistantOperatorSwitch::On,
+        _ => duet_api::assistant_harness::AssistantOperatorSwitch::Off,
+    };
+    let assistant_store = duet_api::assistant_harness::AssistantFoundationStore::new(
+        database.clone(),
+        operator_switch,
+        parked_routes,
+        clinical_library,
+    );
+    let assistant_state = duet_api::assistant_harness::AssistantState {
+        durable: state.clone(),
+        assistant: assistant_store.clone(),
+    };
     let doctor = duet_api::doctor_routes::DoctorState {
         durable: state.clone(),
         workspace: duet_api::workspace::WorkspaceStore::new(database.clone()),
         publications: duet_api::publication::PublicationStore::new(
-            database,
+            database.clone(),
             env::var("DUET_PUBLIC_ORIGIN").expect("public origin"),
             env::var("DUET_SHL_VIEWER_URL").expect("SHL viewer URL"),
             key,
@@ -123,6 +166,10 @@ async fn main() {
     };
     tokio::spawn(duet_api::background::recover_privacy(state.privacy.clone()));
     tokio::spawn(duet_api::background::refresh_portals(portal_service));
+    tokio::spawn(duet_api::background::prune_expired_memory(
+        assistant_store,
+        database,
+    ));
     let front_door = match env::var("FRONT_DOOR_DATABASE_URL") {
         Ok(front_url) => Some(Arc::new(
             front_door::PostgresFrontDoorStore::connect_without_migrations(&front_url)
@@ -132,10 +179,16 @@ async fn main() {
         Err(_) => None,
     };
     let mut app = router(state.clone())
-        .merge(duet_api::evidence_routes::router(state))
+        .merge(duet_api::evidence_routes::router(state.clone()))
+        .merge(duet_api::push::router(push_state))
+        .merge(duet_api::assistant_harness::router(assistant_state))
         .merge(duet_api::doctor_routes::router(doctor))
         .merge(producer_router)
-        .merge(portal_router)
+        .merge(portal_router);
+    if parked_routes.is_enabled() {
+        app = app.merge(duet_api::durable::parked_legacy_router(state));
+    }
+    let mut app = app
         .route("/health", axum::routing::get(duet_api::hosting::live))
         .route(
             "/readyz",

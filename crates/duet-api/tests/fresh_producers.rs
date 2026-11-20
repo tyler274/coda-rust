@@ -126,12 +126,12 @@ async fn fresh_http_health_context_isolates_accounts_and_restricts() {
     let producer = duet_api::health_context::HealthContextProducer::connect(&context_url)
         .await
         .unwrap();
-    let app = duet_api::durable::router(durable.clone()).merge(duet_api::producer_routes::router(
-        ProducerState {
+    let app = duet_api::durable::router(durable.clone())
+        .merge(duet_api::durable::parked_legacy_router(durable.clone()))
+        .merge(duet_api::producer_routes::router(ProducerState {
             durable: durable.clone(),
             context: producer.clone(),
-        },
-    ));
+        }));
     for who in ["a", "b"] {
         ok(&app, "PUT", "/api/auth/account", who, json!({})).await;
         ok(
