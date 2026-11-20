@@ -476,9 +476,10 @@ async fn spawn_site_with_patient(linked: bool) -> (std::net::SocketAddr, String)
             }),
         );
     let api = duet_stub::router(store)
-        .merge(duet_api::front_door_router(duet_api::DuetApi::new(
-            front_door_store,
-        )))
+        .merge(front_door::http::router_with(
+            front_door::http::FrontDoorState::new(front_door_store),
+            true,
+        ))
         .merge(identity);
     let app = site_router(site, api);
     tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });

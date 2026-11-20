@@ -30,9 +30,9 @@ use tokio::sync::watch;
 
 use crate::{
     Account, AccountCreateOutcome, AccountSetupError, AuthStore, AuthorityFeed, ClockUpdateError,
-    Membership, PanelError, PatientLink, PhysicianIdentity, PracticeClock, PracticeRecord,
-    PracticeSetupError, PracticeSetupOutcome, Session, SessionActivity, SessionError,
-    SessionRenewal, SignInError, StoreUnavailable, SyntheticClockUpdate, token_hash,
+    Membership, PanelError, PhysicianIdentity, PracticeClock, PracticeRecord, PracticeSetupError,
+    PracticeSetupOutcome, Session, SessionActivity, SessionError, SessionRenewal, SignInError,
+    StoreUnavailable, SyntheticClockUpdate, token_hash,
 };
 
 /// The Postgres channel the authority triggers notify.
@@ -588,68 +588,6 @@ impl AuthStore for CachedAuthStore {
         self.invalidate();
         done
     }
-
-    async fn invite_patient(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        now: u64,
-    ) -> Result<String, SignInError> {
-        self.inner
-            .invite_patient(practice_id, patient_workspace_id, now)
-            .await
-    }
-
-    async fn accept_patient_invitation(
-        &self,
-        token: &str,
-        duet_account_id: &str,
-        now: u64,
-    ) -> Result<PatientLink, SignInError> {
-        self.inner
-            .accept_patient_invitation(token, duet_account_id, now)
-            .await
-    }
-
-    async fn grant_patient_consent(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        duet_account_id: &str,
-        consent_version: &str,
-        now: u64,
-    ) -> Result<PatientLink, SignInError> {
-        self.inner
-            .grant_patient_consent(
-                practice_id,
-                patient_workspace_id,
-                duet_account_id,
-                consent_version,
-                now,
-            )
-            .await
-    }
-
-    async fn revoke_patient_consent(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        now: u64,
-    ) -> Result<PatientLink, SignInError> {
-        self.inner
-            .revoke_patient_consent(practice_id, patient_workspace_id, now)
-            .await
-    }
-
-    async fn patient_link(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-    ) -> Option<PatientLink> {
-        self.inner
-            .patient_link(practice_id, patient_workspace_id)
-            .await
-    }
 }
 
 #[cfg(test)]
@@ -865,38 +803,6 @@ mod tests {
         }
         async fn remove_account(&self, a: &str) -> bool {
             self.inner.remove_account(a).await
-        }
-        async fn invite_patient(&self, a: &str, b: &str, c: u64) -> Result<String, SignInError> {
-            self.inner.invite_patient(a, b, c).await
-        }
-        async fn accept_patient_invitation(
-            &self,
-            a: &str,
-            b: &str,
-            c: u64,
-        ) -> Result<PatientLink, SignInError> {
-            self.inner.accept_patient_invitation(a, b, c).await
-        }
-        async fn grant_patient_consent(
-            &self,
-            a: &str,
-            b: &str,
-            c: &str,
-            d: &str,
-            e: u64,
-        ) -> Result<PatientLink, SignInError> {
-            self.inner.grant_patient_consent(a, b, c, d, e).await
-        }
-        async fn revoke_patient_consent(
-            &self,
-            a: &str,
-            b: &str,
-            c: u64,
-        ) -> Result<PatientLink, SignInError> {
-            self.inner.revoke_patient_consent(a, b, c).await
-        }
-        async fn patient_link(&self, a: &str, b: &str) -> Option<PatientLink> {
-            self.inner.patient_link(a, b).await
         }
     }
 

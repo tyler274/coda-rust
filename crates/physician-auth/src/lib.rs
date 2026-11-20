@@ -45,28 +45,6 @@ pub const SIGN_IN_TOKEN_TTL_SECONDS: u64 = 86_400;
 /// An invitation is redeemable for fourteen days.
 pub const INVITATION_TTL_SECONDS: u64 = 14 * 86_400;
 
-/// The front-door link between a practice's roster patient `(practice_id, patient_workspace_id)`
-/// and the patient's Duet account, including versioned sharing consent.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct PatientLink {
-    /// The practice that owns the roster patient.
-    pub practice_id: String,
-    /// The roster patient's workspace id.
-    pub patient_workspace_id: String,
-    /// The linked Duet account id, once the patient accepts the practice invitation.
-    pub duet_account_id: Option<String>,
-    /// Whether the patient has accepted the explicit practice invitation.
-    pub linked: bool,
-    /// Whether "share with my physician" consent is currently active.
-    pub sharing_consented: bool,
-    /// The version of the consent agreement accepted by the patient (e.g. `"v1"`).
-    pub consent_version: Option<String>,
-    /// The Unix second consent was granted.
-    pub consented_at: Option<u64>,
-    /// The Unix second consent was revoked, if revoked.
-    pub revoked_at: Option<u64>,
-}
-
 /// A physician's practice-scoped identity, as the projections key it.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct PhysicianIdentity {
@@ -620,45 +598,6 @@ pub trait AuthStore: Send + Sync {
     async fn reactivate(&self, email: &str) -> bool;
     /// Removes one account and ends its sessions.
     async fn remove_account(&self, email: &str) -> bool;
-    /// Explicitly invites a roster patient `(practice_id, patient_workspace_id)` to link Duet.
-    ///
-    /// Never guesses identity; stores only the SHA-256 hash of the single-use invitation token.
-    async fn invite_patient(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        now: u64,
-    ) -> Result<String, SignInError>;
-    /// Redeems a single-use patient invitation token and links `(practice_id, patient_workspace_id)`
-    /// to `duet_account_id`.
-    async fn accept_patient_invitation(
-        &self,
-        token: &str,
-        duet_account_id: &str,
-        now: u64,
-    ) -> Result<PatientLink, SignInError>;
-    /// Records versioned `"share with my physician"` consent for a linked roster patient.
-    async fn grant_patient_consent(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        duet_account_id: &str,
-        consent_version: &str,
-        now: u64,
-    ) -> Result<PatientLink, SignInError>;
-    /// Revokes `"share with my physician"` consent in one step (`stop sharing`).
-    async fn revoke_patient_consent(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        now: u64,
-    ) -> Result<PatientLink, SignInError>;
-    /// Reads the `PatientLink` for `(practice_id, patient_workspace_id)`, if invited or configured.
-    async fn patient_link(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-    ) -> Option<PatientLink>;
 }
 
 /// The SHA-256 of a presented token: the only form the store keeps.
@@ -671,11 +610,6 @@ pub(crate) fn mint_token() -> String {
     format!("codas-{}", Uuid::new_v4().simple())
 }
 
-/// Mints one presented patient invitation token. The store keeps only its hash.
-pub(crate) fn mint_patient_token() -> String {
-    format!("codap-{}", Uuid::new_v4().simple())
-}
-
 #[derive(Debug, Default)]
 struct MemoryState {
     accounts: HashMap<String, Account>,
@@ -685,14 +619,6 @@ struct MemoryState {
     sessions: HashMap<[u8; 32], Session>,
     sign_ins: HashMap<String, (SignInPending, ())>,
     invitations: HashMap<String, InvitationPending>,
-    patient_links: HashMap<(String, String), PatientLinkRecord>,
-}
-
-#[derive(Debug, Clone)]
-struct PatientLinkRecord {
-    link: PatientLink,
-    pending_token_hash: Option<[u8; 32]>,
-    pending_expires_at: Option<u64>,
 }
 
 #[derive(Debug, Clone)]
@@ -1537,141 +1463,6 @@ impl AuthStore for MemoryAuthStore {
             });
         true
     }
-
-    async fn invite_patient(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        now: u64,
-    ) -> Result<String, SignInError> {
-        let practice_id = practice_id.trim();
-        let patient_workspace_id = patient_workspace_id.trim();
-        if practice_id.is_empty() || patient_workspace_id.is_empty() {
-            return Err(SignInError::Invalid);
-        }
-        let token = mint_patient_token();
-        let hash = token_hash(&token);
-        let mut state = self.state.lock().expect("auth state");
-        let entry = state
-            .patient_links
-            .entry((practice_id.to_owned(), patient_workspace_id.to_owned()))
-            .or_insert_with(|| PatientLinkRecord {
-                link: PatientLink {
-                    practice_id: practice_id.to_owned(),
-                    patient_workspace_id: patient_workspace_id.to_owned(),
-                    duet_account_id: None,
-                    linked: false,
-                    sharing_consented: false,
-                    consent_version: None,
-                    consented_at: None,
-                    revoked_at: None,
-                },
-                pending_token_hash: None,
-                pending_expires_at: None,
-            });
-        entry.pending_token_hash = Some(hash);
-        entry.pending_expires_at = Some(now + INVITATION_TTL_SECONDS);
-        Ok(token)
-    }
-
-    async fn accept_patient_invitation(
-        &self,
-        token: &str,
-        duet_account_id: &str,
-        now: u64,
-    ) -> Result<PatientLink, SignInError> {
-        let duet_account_id = duet_account_id.trim();
-        if duet_account_id.is_empty() {
-            return Err(SignInError::Invalid);
-        }
-        let hash = token_hash(token);
-        let mut state = self.state.lock().expect("auth state");
-        let Some(record) = state
-            .patient_links
-            .values_mut()
-            .find(|record| record.pending_token_hash == Some(hash))
-        else {
-            return Err(SignInError::Invalid);
-        };
-        let expires_at = record.pending_expires_at.unwrap_or(0);
-        // Consume the single-use pending invitation token on verification attempt.
-        record.pending_token_hash = None;
-        record.pending_expires_at = None;
-        if expires_at <= now {
-            return Err(SignInError::Invalid);
-        }
-        if record.link.duet_account_id.as_deref() != Some(duet_account_id) {
-            record.link.sharing_consented = false;
-            record.link.consent_version = None;
-            record.link.consented_at = None;
-            record.link.revoked_at = None;
-        }
-        record.link.duet_account_id = Some(duet_account_id.to_owned());
-        record.link.linked = true;
-        Ok(record.link.clone())
-    }
-
-    async fn grant_patient_consent(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        duet_account_id: &str,
-        consent_version: &str,
-        now: u64,
-    ) -> Result<PatientLink, SignInError> {
-        let consent_version = consent_version.trim();
-        let duet_account_id = duet_account_id.trim();
-        if consent_version.is_empty() || duet_account_id.is_empty() {
-            return Err(SignInError::Invalid);
-        }
-        let mut state = self.state.lock().expect("auth state");
-        let record = state
-            .patient_links
-            .get_mut(&(practice_id.to_owned(), patient_workspace_id.to_owned()))
-            .ok_or(SignInError::Invalid)?;
-        if !record.link.linked || record.link.duet_account_id.as_deref() != Some(duet_account_id) {
-            return Err(SignInError::Invalid);
-        }
-        if record.link.revoked_at.is_some() {
-            return Err(SignInError::Invalid);
-        }
-        record.link.sharing_consented = true;
-        record.link.consent_version = Some(consent_version.to_owned());
-        record.link.consented_at = Some(now);
-        Ok(record.link.clone())
-    }
-
-    async fn revoke_patient_consent(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        now: u64,
-    ) -> Result<PatientLink, SignInError> {
-        let mut state = self.state.lock().expect("auth state");
-        let record = state
-            .patient_links
-            .get_mut(&(practice_id.to_owned(), patient_workspace_id.to_owned()))
-            .ok_or(SignInError::Invalid)?;
-        if !record.link.linked {
-            return Err(SignInError::Invalid);
-        }
-        record.link.sharing_consented = false;
-        record.link.revoked_at = Some(now);
-        Ok(record.link.clone())
-    }
-
-    async fn patient_link(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-    ) -> Option<PatientLink> {
-        self.state
-            .lock()
-            .expect("auth state")
-            .patient_links
-            .get(&(practice_id.to_owned(), patient_workspace_id.to_owned()))
-            .map(|record| record.link.clone())
-    }
 }
 
 #[cfg(test)]
@@ -2318,93 +2109,6 @@ mod tests {
             store.membership(&doc, "pw-mary").await,
             Membership::ClinicDemographic
         );
-    }
-
-    #[tokio::test]
-    async fn patient_invitation_links_explicit_roster_patient_and_tracks_versioned_consent() {
-        let store = MemoryAuthStore::new();
-        let token = store
-            .invite_patient("practice-1", "pw-elena", NOW)
-            .await
-            .unwrap();
-        assert!(token.starts_with("codap-"));
-
-        // Before acceptance, the patient is not linked and has no active consent.
-        let initial = store
-            .patient_link("practice-1", "pw-elena")
-            .await
-            .expect("invited patient record");
-        assert!(!initial.linked);
-        assert!(!initial.sharing_consented);
-
-        // Consent cannot be granted before accepting the explicit practice invitation.
-        assert_eq!(
-            store
-                .grant_patient_consent("practice-1", "pw-elena", "duet-elena", "v1", NOW)
-                .await
-                .unwrap_err(),
-            SignInError::Invalid
-        );
-
-        // Accepting the invitation links `(practice_id, patient_workspace_id)` to `duet_account_id`.
-        let linked = store
-            .accept_patient_invitation(&token, "duet-elena", NOW + 10)
-            .await
-            .unwrap();
-        assert!(linked.linked);
-        assert_eq!(linked.duet_account_id.as_deref(), Some("duet-elena"));
-        assert!(!linked.sharing_consented);
-
-        // The single-use invitation token cannot be redeemed a second time.
-        assert_eq!(
-            store
-                .accept_patient_invitation(&token, "duet-other", NOW + 20)
-                .await
-                .unwrap_err(),
-            SignInError::Invalid
-        );
-
-        // Granting versioned consent activates sharing for that linked Duet account.
-        let consented = store
-            .grant_patient_consent("practice-1", "pw-elena", "duet-elena", "v1", NOW + 30)
-            .await
-            .unwrap();
-        assert!(consented.sharing_consented);
-        assert_eq!(consented.consent_version.as_deref(), Some("v1"));
-        assert_eq!(consented.consented_at, Some(NOW + 30));
-        assert_eq!(consented.revoked_at, None);
-
-        let serialized = serde_json::to_string(&consented).unwrap();
-        assert!(
-            !serialized.contains("premium")
-                && !serialized.contains("billing")
-                && !serialized.contains("cadence"),
-            "serialized link carries connection and consent only"
-        );
-
-        // One-step stop-sharing immediately revokes active consent.
-        let revoked = store
-            .revoke_patient_consent("practice-1", "pw-elena", NOW + 60)
-            .await
-            .unwrap();
-        assert!(revoked.linked);
-        assert!(!revoked.sharing_consented);
-        assert_eq!(revoked.consent_version.as_deref(), Some("v1"));
-        assert_eq!(revoked.revoked_at, Some(NOW + 60));
-
-        assert_eq!(
-            store
-                .grant_patient_consent("practice-1", "pw-elena", "duet-elena", "v1", NOW + 70)
-                .await
-                .unwrap_err(),
-            SignInError::Invalid
-        );
-        let still = store
-            .patient_link("practice-1", "pw-elena")
-            .await
-            .expect("link remains");
-        assert!(!still.sharing_consented);
-        assert_eq!(still.revoked_at, Some(NOW + 60));
     }
 
     #[tokio::test]

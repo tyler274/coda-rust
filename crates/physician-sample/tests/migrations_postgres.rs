@@ -78,6 +78,7 @@ async fn fresh_chains_and_shared_database_are_idempotent() {
                     "physician_auth_20261112_000008_drop_cadence_columns",
                     "physician_auth_20261113_000009_practice_time_zone",
                     "physician_auth_20261113_000010_practice_source_setup",
+                    "physician_auth_20261120_000011_retire_patient_links",
                 ]
             );
             histories.push(("physician_auth_migrations", rows));
@@ -95,6 +96,7 @@ async fn fresh_chains_and_shared_database_are_idempotent() {
                     "m20261023_duet_admission",
                     "m20261112_drop_premium_cadence",
                     "m20261119_for_my_doctor_shares",
+                    "m20261120_multi_practice_connections",
                 ]
             );
             histories.push((front_door::migration::MIGRATION_TABLE, rows));

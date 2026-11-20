@@ -21,8 +21,8 @@ use axum::{
     routing::post,
 };
 use front_door::{
-    ForMyDoctorError, ForMyDoctorSendRequest, ForMyDoctorShareStatus, FrontDoorStore,
-    PostgresFrontDoorStore, RosterPatient, SharedPatientRecordInput,
+    ConnectionEndReason, ForMyDoctorError, ForMyDoctorSendRequest, ForMyDoctorShareStatus,
+    FrontDoorStore, PostgresFrontDoorStore, RosterPatient, SharedPatientRecordInput,
 };
 use harness::provider::ResponsesProvider;
 use local_product::patient_reviews::COMPLETE_PATIENT_REVIEW_TOOL;
@@ -944,7 +944,7 @@ async fn connected_care_consent_join_rejoin_and_for_my_doctor_flow() {
             .unwrap();
     }
 
-    // 1. Invite and link patient in `front-door` (without sharing consent yet).
+    // 1. Invite patient in `front-door`. Before joining (`Connected`), "For my doctor" fails closed.
     let roster = RosterPatient {
         practice_id: practice.clone(),
         patient_id: workspace.clone(),
@@ -954,35 +954,31 @@ async fn connected_care_consent_join_rejoin_and_for_my_doctor_flow() {
         .invite(&roster, &patient_email, "Sam Rivera", now_u64)
         .await
         .unwrap();
-    let (account_id, _pt_session) = front_door
-        .redeem_invitation(&patient_email, &pt_invite, now_u64 + 1)
-        .await
-        .unwrap();
 
-    // Before consent, "For my doctor" send must be rejected explicitly.
-    let no_consent = front_door
+    let unlinked = front_door
         .send_for_my_doctor(
-            account_id,
+            Uuid::new_v4(),
             ForMyDoctorSendRequest {
-                share_key: "share-before-consent".into(),
-                title: "Pre-consent note".into(),
-                summary_text: "Should fail without consent".into(),
+                share_key: "share-before-connect".into(),
+                title: "Pre-connect note".into(),
+                summary_text: "Should fail without active connection".into(),
                 origin_label: None,
+                target: Some(roster.clone()),
             },
             now_u64 + 2,
         )
         .await
         .unwrap_err();
     assert!(
-        matches!(no_consent, ForMyDoctorError::ConsentRequired),
-        "expected ConsentRequired, got {no_consent:?}"
+        matches!(unlinked, ForMyDoctorError::Unlinked),
+        "expected Unlinked before connection, got {unlinked:?}"
     );
 
-    // 2. Grant sharing consent + stage Duet shared record `rec-bp-1` -> immediate sync & priority wake.
+    // 2. Redeem invitation (`Connected` = sharing is live) + stage Duet record -> immediate sync & priority wake.
     let roles = model_roles();
     let skills = load_skills();
-    front_door
-        .grant_consent(account_id, now_u64 + 10)
+    let (account_id, _pt_session) = front_door
+        .redeem_invitation(&patient_email, &pt_invite, now_u64 + 10)
         .await
         .unwrap();
     front_door
@@ -1038,7 +1034,7 @@ async fn connected_care_consent_join_rejoin_and_for_my_doctor_flow() {
         .expect("join wake job exists");
     assert_eq!(join_job.priority, JobPriority::Priority);
 
-    // Repeating sync at the same `consented_at` does not duplicate the join wake.
+    // Repeating sync at the same `connected_at` does not duplicate the join wake.
     let replay_join = store
         .sync_connected_care_from_front_door(
             auth.as_ref(),
@@ -1053,29 +1049,35 @@ async fn connected_care_consent_join_rejoin_and_for_my_doctor_flow() {
         .unwrap();
     assert_eq!(replay_join.consent_wakes_started, 0);
 
-    // 3. Withdraw consent: `send_for_my_doctor` fails, no new records sync, existing dated record stays.
+    // 3. End connection: `send_for_my_doctor` fails, no new records sync, existing dated record stays.
     front_door
-        .withdraw_consent(account_id, now_u64 + 20)
+        .end_connection(
+            account_id,
+            &roster,
+            ConnectionEndReason::PatientLeft,
+            now_u64 + 20,
+        )
         .await
         .unwrap();
-    let withdrawn_err = front_door
+    let ended_err = front_door
         .send_for_my_doctor(
             account_id,
             ForMyDoctorSendRequest {
-                share_key: "share-while-withdrawn".into(),
-                title: "Withdrawn note".into(),
+                share_key: "share-while-ended".into(),
+                title: "Ended note".into(),
                 summary_text: "Must be rejected".into(),
                 origin_label: None,
+                target: Some(roster.clone()),
             },
             now_u64 + 21,
         )
         .await
         .unwrap_err();
     assert!(
-        matches!(withdrawn_err, ForMyDoctorError::ConsentRequired),
-        "expected ConsentRequired after withdrawal, got {withdrawn_err:?}"
+        matches!(ended_err, ForMyDoctorError::Unlinked),
+        "expected Unlinked after connection ended, got {ended_err:?}"
     );
-    let withdrawn_sync = store
+    let ended_sync = store
         .sync_connected_care_from_front_door(
             auth.as_ref(),
             &front_door,
@@ -1087,7 +1089,7 @@ async fn connected_care_consent_join_rejoin_and_for_my_doctor_flow() {
         )
         .await
         .unwrap();
-    assert_eq!(withdrawn_sync.consented_workspaces_checked, 0);
+    assert_eq!(ended_sync.consented_workspaces_checked, 0);
     assert!(
         store
             .sources(&workspace)
@@ -1096,15 +1098,20 @@ async fn connected_care_consent_join_rejoin_and_for_my_doctor_flow() {
             .sources
             .iter()
             .any(|src| src.candidate_id == "duet-shared:rec-bp-1"),
-        "already-shared dated record must remain after consent withdrawal"
+        "already-shared dated record must remain after connection ends"
     );
 
-    // 4. Rejoin / re-consent + new Duet record + `"For my doctor"` share.
+    // 4. Re-invite and rejoin + new Duet record + `"For my doctor"` share.
     let rejoin_ts = now_u64 + 50;
-    front_door
-        .grant_consent(account_id, rejoin_ts)
+    let rejoin_invite = front_door
+        .invite(&roster, &patient_email, "Sam Rivera", rejoin_ts - 1)
         .await
         .unwrap();
+    let (rejoined_account_id, _) = front_door
+        .redeem_invitation(&patient_email, &rejoin_invite, rejoin_ts)
+        .await
+        .unwrap();
+    assert_eq!(rejoined_account_id, account_id);
     front_door
         .upsert_shared_records(
             account_id,
@@ -1131,6 +1138,7 @@ async fn connected_care_consent_join_rejoin_and_for_my_doctor_flow() {
                 summary_text:
                     "Patient reports chest tightness since last night alongside BP 162/100.".into(),
                 origin_label: None,
+                target: None,
             },
             sent_at,
         )
@@ -1444,10 +1452,6 @@ async fn cross_practice_connected_care_collision_refuses_foreign_chart_writes() 
         .await
         .unwrap();
     front_door
-        .grant_consent(foreign_account, now_u64 + 2)
-        .await
-        .unwrap();
-    front_door
         .upsert_shared_records(
             foreign_account,
             &[SharedPatientRecordInput {
@@ -1470,6 +1474,7 @@ async fn cross_practice_connected_care_collision_refuses_foreign_chart_writes() 
                 title: "Foreign Note".into(),
                 summary_text: "Should never enter Practice A chart.".into(),
                 origin_label: None,
+                target: None,
             },
             now_u64 + 3,
         )

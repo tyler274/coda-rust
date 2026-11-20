@@ -3,46 +3,43 @@
 /// Why a session resolution failed.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SessionError {
-    /// No account holds this token, or it expired.
+    /// No account holds this token.
     Invalid,
-    /// The account is removed or deactivated.
+    /// The account is removed or deactivated, or its sessions were ended.
     Inactive,
 }
 
 /// Why a sign-in or redemption step failed.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SignInError {
-    /// The email has no account, or the token is unknown, used, or expired.
+    /// The email has no account, the sign-in token is unknown/used/expired,
+    /// or the invitation is invalid or already redeemed.
     Invalid,
-    /// The account exists but may not sign in.
+    /// The account exists but may not sign in or accept new connections.
     Inactive,
 }
 
 /// Why an invitation step failed.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum InviteError {
-    /// The practice already invited this patient, or the roster patient is
-    /// unknown to the caller, or the email already holds a front-door account.
+    /// This roster patient already holds an active Connected connection.
     Conflict,
 }
 
-/// Why a link or consent step failed.
+/// Why a connection read or ending step failed.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum LinkError {
-    /// No Duet account holds this id, or the account carries no link.
+    /// No Duet account holds this id, or no active connection matches.
     Unlinked,
 }
 
-/// Why a `"For my doctor"` send, pickup, or consented record step failed.
+/// Why a `"For my doctor"` send, pickup, or connected-record step failed.
 #[derive(Debug, thiserror::Error)]
 pub enum ForMyDoctorError {
-    /// No Duet account holds this id, or the account carries no practice link.
-    #[error("patient account has no linked practice")]
+    /// No Duet account holds this id, or the target practice connection is not active.
+    #[error("patient account has no active connection to that practice")]
     Unlinked,
-    /// Sharing consent is absent or withdrawn.
-    #[error("patient sharing consent is required")]
-    ConsentRequired,
-    /// Required share or record fields are blank or invalid.
+    /// Required share or record fields are blank, or target practice is ambiguous.
     #[error("invalid connected-care payload: {0}")]
     InvalidInput(&'static str),
     /// A share with the same key already exists with different content.

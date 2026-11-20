@@ -19,9 +19,9 @@ use serde_json::json;
 use uuid::Uuid;
 
 use crate::{
-    Account, Consent, ForMyDoctorError, ForMyDoctorSendRequest, ForMyDoctorShare,
-    ForMyDoctorShareStatus, FrontDoorStore, Invitation, InviteError, LinkError, Premium,
-    RosterPatient, SessionError, SharedPatientRecordInput, SignInError,
+    Account, AccountConnection, ForMyDoctorError, ForMyDoctorSendRequest, ForMyDoctorShare,
+    ForMyDoctorShareStatus, FrontDoorStore, Invitation, InviteError, LinkError, RosterPatient,
+    SessionError, SharedPatientRecordInput, SignInError,
 };
 
 /// Why a route answered with an error status.
@@ -29,17 +29,15 @@ use crate::{
 pub enum ApiError {
     /// The presented bearer token resolves to no active account.
     Unauthorized,
-    /// The invitation or token is unknown, used, or expired.
+    /// The invitation or token is unknown or already used.
     Invalid,
-    /// The practice already invited this email, or the email holds an account.
+    /// The roster patient already holds an active Connected connection.
     Conflict,
     /// A `"For my doctor"` share key was reused with different content.
     ShareConflict,
-    /// Sharing consent is missing or withdrawn.
-    ConsentRequired,
-    /// Supplied connected-care share/record payload is malformed.
+    /// Supplied connected-care share/record payload is malformed or ambiguous.
     InvalidInput,
-    /// The account carries no link to a roster patient.
+    /// The account carries no active connection to that practice.
     Unlinked,
     /// The store failed; the caller cannot fix it by retrying differently.
     Storage,
@@ -55,21 +53,20 @@ impl IntoResponse for ApiError {
             ),
             Self::Conflict => (
                 StatusCode::CONFLICT,
-                "That email is already invited or has an account.",
+                "That patient already holds an active connection.",
             ),
             Self::ShareConflict => (
                 StatusCode::CONFLICT,
                 "That For my doctor share key already exists with different content.",
             ),
-            Self::ConsentRequired => (
-                StatusCode::PRECONDITION_REQUIRED,
-                "Turn on sharing consent before sending to your doctor.",
-            ),
             Self::InvalidInput => (
                 StatusCode::UNPROCESSABLE_ENTITY,
                 "Supply non-empty share details.",
             ),
-            Self::Unlinked => (StatusCode::NOT_FOUND, "No linked patient for this account."),
+            Self::Unlinked => (
+                StatusCode::NOT_FOUND,
+                "No active connection for this account.",
+            ),
             Self::Storage => (
                 StatusCode::SERVICE_UNAVAILABLE,
                 "The front door is unavailable.",
@@ -115,7 +112,6 @@ impl From<ForMyDoctorError> for ApiError {
     fn from(error: ForMyDoctorError) -> Self {
         match error {
             ForMyDoctorError::Unlinked | ForMyDoctorError::NotFound => Self::Unlinked,
-            ForMyDoctorError::ConsentRequired => Self::ConsentRequired,
             ForMyDoctorError::InvalidInput(_) => Self::InvalidInput,
             ForMyDoctorError::Conflict => Self::ShareConflict,
             ForMyDoctorError::Storage(_) => Self::Storage,
@@ -132,8 +128,8 @@ pub struct AccountView {
     pub email: String,
     /// The account's display name.
     pub display_name: String,
-    /// The linked roster patient, when the account carries one.
-    pub link: Option<RosterPatient>,
+    /// All practice connections (`Connected` and `Ended`) attached to this account.
+    pub connections: Vec<AccountConnection>,
 }
 
 impl From<Account> for AccountView {
@@ -142,37 +138,7 @@ impl From<Account> for AccountView {
             account_id: account.id,
             email: account.email,
             display_name: account.display_name,
-            link: account.link,
-        }
-    }
-}
-
-/// The consent state as the routes return it.
-#[derive(serde::Serialize)]
-#[serde(tag = "state", rename_all = "snake_case")]
-pub enum ConsentView {
-    /// Sharing is on.
-    Granted {
-        /// The Unix second consent was given.
-        at: u64,
-    },
-    /// Consent was withdrawn; what was shared stays dated evidence.
-    Withdrawn {
-        /// The Unix second consent was given.
-        at: u64,
-        /// The Unix second consent was withdrawn.
-        withdrawn_at: u64,
-    },
-    /// The patient was never asked, or never answered.
-    None,
-}
-
-impl From<Consent> for ConsentView {
-    fn from(consent: Consent) -> Self {
-        match consent {
-            Consent::Granted { at } => Self::Granted { at },
-            Consent::Withdrawn { at, withdrawn_at } => Self::Withdrawn { at, withdrawn_at },
-            Consent::None => Self::None,
+            connections: account.connections,
         }
     }
 }
@@ -186,8 +152,8 @@ pub struct InvitationView {
     pub email: String,
     /// The invitee's display name.
     pub display_name: String,
-    /// The Unix second the invitation stops redeeming.
-    pub expires_at: u64,
+    /// The Unix second the invitation was issued.
+    pub invited_at: u64,
     /// The redeem token, returned to the caller here; a real deployment
     /// delivers it to the patient instead.
     pub token: String,
@@ -199,7 +165,7 @@ impl InvitationView {
             patient: invitation.patient,
             email: invitation.email,
             display_name: invitation.display_name,
-            expires_at: invitation.expires_at,
+            invited_at: invitation.invited_at,
             token,
         }
     }
@@ -281,12 +247,7 @@ pub fn router_with(state: FrontDoorState, require_auth: bool) -> Router {
         .route("/front-door/sign-in", post(sign_in))
         .route("/front-door/sign-in/verify", post(verify))
         .route("/front-door/account", get(account))
-        .route("/front-door/link", get(link))
-        .route(
-            "/front-door/consent",
-            get(consent).post(grant_consent).delete(withdraw_consent),
-        )
-        .route("/front-door/premium", get(premium))
+        .route("/front-door/connections", get(connections))
         .route(
             "/front-door/for-my-doctor",
             post(send_for_my_doctor).get(list_for_my_doctor),
@@ -335,13 +296,13 @@ async fn invite(
         .await?;
     let invitation = state
         .store
-        .invitation(&body.email)
+        .invitation_for(&patient)
         .await
         .ok_or(ApiError::Storage)?;
     Ok(Json(InvitationView::from_pending(invitation, token)))
 }
 
-/// Redeems an invitation, creating the account and minting one session.
+/// Redeems an invitation, attaching `(account_id, practice_id, patient_id)` and minting one session.
 async fn redeem(
     State((state, _)): State<(FrontDoorState, bool)>,
     Json(body): Json<RedeemBody>,
@@ -361,7 +322,6 @@ async fn sign_in(
     State((state, _)): State<(FrontDoorState, bool)>,
     Json(body): Json<SignInBody>,
 ) -> Result<Json<SessionView>, ApiError> {
-    // The token itself is the response's proof; the account id lands on verify.
     let token = state
         .store
         .begin_sign_in(&body.email, (state.now)())
@@ -401,61 +361,19 @@ async fn account(
     Ok(Json(account.into()))
 }
 
-/// Resolves the presented session's link to its roster patient.
-async fn link(
+/// Lists the presented session's multi-practice connections.
+async fn connections(
     State((state, require_auth)): State<(FrontDoorState, bool)>,
     headers: HeaderMap,
-) -> Result<Json<RosterPatient>, ApiError> {
+) -> Result<Json<Vec<AccountConnection>>, ApiError> {
     let account_id = account_id(&state, require_auth, &headers).await?;
-    Ok(Json(state.store.link(account_id).await?))
-}
-
-/// Reads the presented session's consent state.
-async fn consent(
-    State((state, require_auth)): State<(FrontDoorState, bool)>,
-    headers: HeaderMap,
-) -> Result<Json<ConsentView>, ApiError> {
-    let account_id = account_id(&state, require_auth, &headers).await?;
-    Ok(Json(state.store.consent(account_id).await?.into()))
-}
-
-/// Records the presented session's consent to share.
-async fn grant_consent(
-    State((state, require_auth)): State<(FrontDoorState, bool)>,
-    headers: HeaderMap,
-) -> Result<StatusCode, ApiError> {
-    let account_id = account_id(&state, require_auth, &headers).await?;
-    state.store.grant_consent(account_id, (state.now)()).await?;
-    Ok(StatusCode::NO_CONTENT)
-}
-
-/// Withdraws the presented session's consent; one step.
-async fn withdraw_consent(
-    State((state, require_auth)): State<(FrontDoorState, bool)>,
-    headers: HeaderMap,
-) -> Result<StatusCode, ApiError> {
-    let account_id = account_id(&state, require_auth, &headers).await?;
-    state
-        .store
-        .withdraw_consent(account_id, (state.now)())
-        .await?;
-    Ok(StatusCode::NO_CONTENT)
-}
-
-/// Reads the presented session's linked patient's premium status. Duet
-/// reads only which premium features are on.
-async fn premium(
-    State((state, require_auth)): State<(FrontDoorState, bool)>,
-    headers: HeaderMap,
-) -> Result<Json<Premium>, ApiError> {
-    let account_id = account_id(&state, require_auth, &headers).await?;
-    let patient = state.store.link(account_id).await?;
-    Ok(Json(state.store.premium(&patient).await))
+    Ok(Json(state.store.connections(account_id).await?))
 }
 
 #[derive(serde::Serialize)]
 struct ForMyDoctorShareView {
     share_id: String,
+    patient: RosterPatient,
     share_key: String,
     title: String,
     summary_text: String,
@@ -469,6 +387,7 @@ impl From<ForMyDoctorShare> for ForMyDoctorShareView {
     fn from(share: ForMyDoctorShare) -> Self {
         Self {
             share_id: share.share_id,
+            patient: share.patient,
             share_key: share.share_key,
             title: share.title,
             summary_text: share.summary_text,
@@ -525,7 +444,7 @@ async fn upsert_shared_records(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{INVITATION_TTL_SECONDS, MemoryFrontDoorStore};
+    use crate::{ConnectionEndReason, MemoryFrontDoorStore};
     use axum::body::Body;
     use axum::http::Request;
     use tower::ServiceExt;
@@ -566,8 +485,7 @@ mod tests {
             .unwrap()
     }
 
-    /// Invites and redeems through the router, returning the bearer session.
-    async fn invited_session(app: &Router, _store: &MemoryFrontDoorStore) -> String {
+    async fn invited_session(app: &Router) -> String {
         let response = post(
             app,
             "/front-door/invitations",
@@ -630,10 +548,8 @@ mod tests {
         )
         .unwrap();
         assert_eq!(body["email"], "luna@example.test");
-        assert_eq!(
-            body["expires_at"].as_u64().unwrap(),
-            NOW + INVITATION_TTL_SECONDS
-        );
+        assert_eq!(body["invited_at"].as_u64().unwrap(), NOW);
+        assert!(body.get("expires_at").is_none());
         let token = body["token"].as_str().unwrap().to_owned();
         assert!(
             post(
@@ -665,11 +581,10 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn a_conflicting_invitation_answers_conflict() {
+    async fn a_connected_patient_conflicts_while_second_practice_can_invite_same_email() {
         let (state, store) = state(MemoryFrontDoorStore::new());
         let app = router_with(state, false);
-        // The email already holds a front-door account.
-        store.seed_linked_account(
+        let first_id = store.seed_linked_account(
             &RosterPatient {
                 practice_id: "practice".to_owned(),
                 patient_id: "patient-1".to_owned(),
@@ -682,7 +597,7 @@ mod tests {
             "/front-door/invitations",
             json!({
                 "practice_id": "practice",
-                "patient_id": "patient-2",
+                "patient_id": "patient-1",
                 "email": "LUNA@example.test",
                 "display_name": "Luna Park",
             }),
@@ -691,15 +606,58 @@ mod tests {
         assert_eq!(
             conflict.status(),
             StatusCode::CONFLICT,
-            "the practice cannot invite an email that already holds an account"
+            "already-connected roster patient conflicts"
+        );
+
+        let second_invite = post(
+            &app,
+            "/front-door/invitations",
+            json!({
+                "practice_id": "practice-2",
+                "patient_id": "patient-2",
+                "email": "LUNA@example.test",
+                "display_name": "Luna Park",
+            }),
+        )
+        .await;
+        assert_eq!(
+            second_invite.status(),
+            StatusCode::OK,
+            "existing Duet account can be invited by another practice"
+        );
+        let invite_body: serde_json::Value = serde_json::from_slice(
+            &axum::body::to_bytes(second_invite.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        let redeem = post(
+            &app,
+            "/front-door/invitations/redeem",
+            json!({
+                "email": "luna@example.test",
+                "token": invite_body["token"].as_str().unwrap(),
+            }),
+        )
+        .await;
+        assert_eq!(redeem.status(), StatusCode::OK);
+        let redeem_body: serde_json::Value = serde_json::from_slice(
+            &axum::body::to_bytes(redeem.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        assert_eq!(
+            redeem_body["account_id"].as_str().unwrap(),
+            first_id.to_string()
         );
     }
 
     #[tokio::test]
-    async fn the_account_read_resolves_the_session_bearer() {
-        let (state, store) = state(MemoryFrontDoorStore::new());
+    async fn the_account_and_connections_reads_resolve_the_session_bearer() {
+        let (state, _store) = state(MemoryFrontDoorStore::new());
         let app = router_with(state, true);
-        let session = invited_session(&app, &store).await;
+        let session = invited_session(&app).await;
         let response = get(&app, "/front-door/account", &session).await;
         assert_eq!(response.status(), StatusCode::OK);
         let body: serde_json::Value = serde_json::from_slice(
@@ -709,7 +667,19 @@ mod tests {
         )
         .unwrap();
         assert_eq!(body["email"], "luna@example.test");
-        assert_eq!(body["link"]["practice_id"], "practice");
+        assert_eq!(body["connections"][0]["patient"]["practice_id"], "practice");
+        assert_eq!(body["connections"][0]["status"], "connected");
+
+        let conns_resp = get(&app, "/front-door/connections", &session).await;
+        assert_eq!(conns_resp.status(), StatusCode::OK);
+        let conns: serde_json::Value = serde_json::from_slice(
+            &axum::body::to_bytes(conns_resp.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        assert_eq!(conns[0]["status"], "connected");
+
         let anonymous = app
             .clone()
             .oneshot(
@@ -726,103 +696,10 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn the_link_and_consent_and_premium_reads_follow_the_session() {
-        let (state, store) = state(MemoryFrontDoorStore::new());
-        let app = router_with(state, true);
-        let session = invited_session(&app, &store).await;
-        let link = get(&app, "/front-door/link", &session).await;
-        assert_eq!(link.status(), StatusCode::OK);
-        let consent = get(&app, "/front-door/consent", &session).await;
-        assert_eq!(consent.status(), StatusCode::OK);
-        let body: serde_json::Value = serde_json::from_slice(
-            &axum::body::to_bytes(consent.into_body(), usize::MAX)
-                .await
-                .unwrap(),
-        )
-        .unwrap();
-        assert_eq!(body["state"], "none", "consent is granted, never assumed");
-        assert_eq!(
-            app.clone()
-                .oneshot(
-                    Request::builder()
-                        .method("POST")
-                        .uri("/front-door/consent")
-                        .header("authorization", format!("Bearer {session}"))
-                        .body(Body::empty())
-                        .unwrap(),
-                )
-                .await
-                .unwrap()
-                .status(),
-            StatusCode::NO_CONTENT
-        );
-        let premium = get(&app, "/front-door/premium", &session).await;
-        assert_eq!(premium.status(), StatusCode::OK);
-        let body: serde_json::Value = serde_json::from_slice(
-            &axum::body::to_bytes(premium.into_body(), usize::MAX)
-                .await
-                .unwrap(),
-        )
-        .unwrap();
-        assert_eq!(body["premium"], false);
-        assert!(body.get("cadence").is_none());
-    }
-
-    #[tokio::test]
-    async fn withdrawal_answers_no_content_and_stays_one_step() {
-        let (state, store) = state(MemoryFrontDoorStore::new());
-        let app = router_with(state, true);
-        let session = invited_session(&app, &store).await;
-        // The grant that the withdrawal withdraws.
-        assert_eq!(
-            app.clone()
-                .oneshot(
-                    Request::builder()
-                        .method("POST")
-                        .uri("/front-door/consent")
-                        .header("authorization", format!("Bearer {session}"))
-                        .body(Body::empty())
-                        .unwrap(),
-                )
-                .await
-                .unwrap()
-                .status(),
-            StatusCode::NO_CONTENT
-        );
-        assert_eq!(
-            app.clone()
-                .oneshot(
-                    Request::builder()
-                        .method("DELETE")
-                        .uri("/front-door/consent")
-                        .header("authorization", format!("Bearer {session}"))
-                        .body(Body::empty())
-                        .unwrap(),
-                )
-                .await
-                .unwrap()
-                .status(),
-            StatusCode::NO_CONTENT,
-            "stopping sharing is one step"
-        );
-        // The grant second is preserved through the withdrawal.
-        let consent = get(&app, "/front-door/consent", &session).await;
-        assert_eq!(consent.status(), StatusCode::OK);
-        let body: serde_json::Value = serde_json::from_slice(
-            &axum::body::to_bytes(consent.into_body(), usize::MAX)
-                .await
-                .unwrap(),
-        )
-        .unwrap();
-        assert_eq!(body["state"], "withdrawn");
-    }
-
-    #[tokio::test]
     async fn sign_in_issues_and_verifies_one_token() {
-        let (state, store) = state(MemoryFrontDoorStore::new());
+        let (state, _store) = state(MemoryFrontDoorStore::new());
         let app = router_with(state, true);
-        let session = invited_session(&app, &store).await;
-        let _ = session;
+        let _session = invited_session(&app).await;
         let issued = post(
             &app,
             "/front-door/sign-in",
@@ -866,47 +743,10 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn for_my_doctor_route_requires_consent_and_tracks_sent_status() {
+    async fn for_my_doctor_route_requires_active_connection_and_tracks_sent_status() {
         let (state, store) = state(MemoryFrontDoorStore::new());
         let app = router_with(state, true);
-        let session = invited_session(&app, &store).await;
-        let denied = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .method("POST")
-                    .uri("/front-door/for-my-doctor")
-                    .header("content-type", "application/json")
-                    .header("authorization", format!("Bearer {session}"))
-                    .body(Body::from(
-                        json!({
-                            "share_key": "share-1",
-                            "title": "Pre-visit summary",
-                            "summary_text": "Home blood pressure averages 138/86."
-                        })
-                        .to_string(),
-                    ))
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        assert_eq!(denied.status(), StatusCode::PRECONDITION_REQUIRED);
-
-        // Grant consent -> send works -> idempotent resend -> status shows "sent" -> practice marks "received".
-        let consent_resp = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .method("POST")
-                    .uri("/front-door/consent")
-                    .header("authorization", format!("Bearer {session}"))
-                    .body(Body::empty())
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        assert_eq!(consent_resp.status(), StatusCode::NO_CONTENT);
-
+        let session = invited_session(&app).await;
         let payload = json!({
             "share_key": "share-1",
             "title": "Pre-visit summary",
@@ -974,5 +814,41 @@ mod tests {
         assert_eq!(item["received_at"], NOW + 5);
         assert!(item.get("physician_looked").is_none());
         assert!(item.get("looked_at").is_none());
+
+        // Ending the connection blocks subsequent sends cleanly.
+        let account = store.account_by_email("luna@example.test").await.unwrap();
+        store
+            .end_connection(
+                account.id,
+                &RosterPatient {
+                    practice_id: "practice".to_owned(),
+                    patient_id: "patient-1".to_owned(),
+                },
+                ConnectionEndReason::PatientLeft,
+                NOW + 10,
+            )
+            .await
+            .unwrap();
+        let denied = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/front-door/for-my-doctor")
+                    .header("content-type", "application/json")
+                    .header("authorization", format!("Bearer {session}"))
+                    .body(Body::from(
+                        json!({
+                            "share_key": "share-after-end",
+                            "title": "After leaving",
+                            "summary_text": "Should fail when Ended."
+                        })
+                        .to_string(),
+                    ))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(denied.status(), StatusCode::NOT_FOUND);
     }
 }

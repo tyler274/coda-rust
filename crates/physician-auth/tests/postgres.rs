@@ -177,60 +177,6 @@ async fn concurrent_sign_in_consumes_one_token_and_mints_one_session() {
     );
 }
 
-#[tokio::test]
-async fn concurrent_patient_invitation_keeps_the_winning_account() {
-    let Some(url) = fresh_database("concurrent_patient_invite").await else {
-        return;
-    };
-    let store = PostgresAuthStore::connect_with_migrations(&url)
-        .await
-        .unwrap();
-    let token = store
-        .invite_patient("pg-proof", "pw-elena", NOW)
-        .await
-        .unwrap();
-    let db = sea_orm::Database::connect(&url).await.unwrap();
-    let held = db.begin().await.unwrap();
-    physician_auth::migration::patient_link::Entity::find()
-        .lock_exclusive()
-        .one(&held)
-        .await
-        .unwrap()
-        .unwrap();
-    let redeem = |account: &'static str| {
-        let (store, token) = (store.clone(), token.clone());
-        tokio::spawn(async move { store.accept_patient_invitation(&token, account, NOW).await })
-    };
-    let first = redeem("duet-first");
-    let second = redeem("duet-second");
-    wait_for_two_lock_waiters(&db).await;
-    held.commit().await.unwrap();
-    let outcomes = [first.await.unwrap(), second.await.unwrap()];
-    assert_eq!(
-        outcomes.iter().filter(|result| result.is_ok()).count(),
-        1,
-        "{outcomes:?}"
-    );
-    assert_eq!(
-        outcomes
-            .iter()
-            .filter(|result| **result == Err(SignInError::Invalid))
-            .count(),
-        1
-    );
-    let winner = outcomes.into_iter().find_map(Result::ok).unwrap();
-    let persisted = store.patient_link("pg-proof", "pw-elena").await.unwrap();
-    assert_eq!(persisted.duet_account_id, winner.duet_account_id);
-    assert!(persisted.linked);
-    assert!(!persisted.sharing_consented);
-    assert_eq!(
-        store
-            .accept_patient_invitation(&token, "duet-replay", NOW)
-            .await,
-        Err(SignInError::Invalid)
-    );
-}
-
 /// Connects when the gate is set; `None` skips the suite quietly.
 ///
 /// Each test gets its own database — named after the gate URL's database plus
@@ -324,7 +270,6 @@ async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
         "physician_auth_migrations",
         "physician_invitations",
         "physician_memberships",
-        "physician_patient_links",
         "physician_patients",
         "physician_practice_source_setups",
         "physician_practices",
@@ -824,127 +769,6 @@ async fn practice_patients_resolve_clinic_demographic_and_persist_cadence_in_pos
     assert_eq!(
         store.membership(&doc, "pw-clinic-1").await,
         Membership::ClinicDemographic
-    );
-}
-
-#[tokio::test]
-async fn patient_invitation_and_consent_round_trip() {
-    let Some(store) = store("patient_link").await else {
-        return;
-    };
-    let token = store
-        .invite_patient("pg-proof", "pw-elena", NOW)
-        .await
-        .expect("patient invite");
-    let linked = store
-        .accept_patient_invitation(&token, "duet-elena", NOW + 5)
-        .await
-        .expect("accept invite");
-    assert!(linked.linked);
-    assert_eq!(linked.duet_account_id.as_deref(), Some("duet-elena"));
-
-    let consented = store
-        .grant_patient_consent("pg-proof", "pw-elena", "duet-elena", "v1", NOW + 10)
-        .await
-        .expect("grant consent");
-    assert!(consented.sharing_consented);
-    assert_eq!(consented.consent_version.as_deref(), Some("v1"));
-
-    let revoked = store
-        .revoke_patient_consent("pg-proof", "pw-elena", NOW + 20)
-        .await
-        .expect("revoke consent");
-    assert!(!revoked.sharing_consented);
-    assert_eq!(
-        store
-            .grant_patient_consent("pg-proof", "pw-elena", "duet-elena", "v1", NOW + 30)
-            .await
-            .expect_err("revoked consent is not restored"),
-        SignInError::Invalid
-    );
-    let still = store
-        .patient_link("pg-proof", "pw-elena")
-        .await
-        .expect("link remains");
-    assert!(!still.sharing_consented);
-    assert_eq!(still.revoked_at, Some(NOW + 20));
-}
-
-#[tokio::test]
-async fn relinking_a_workspace_does_not_transfer_patient_consent() {
-    let Some(store) = store("relink_consent").await else {
-        return;
-    };
-    let invite = store
-        .invite_patient("practice", "patient", NOW)
-        .await
-        .unwrap();
-    store
-        .accept_patient_invitation(&invite, "account-a", NOW)
-        .await
-        .unwrap();
-    store
-        .grant_patient_consent("practice", "patient", "account-a", "v1", NOW)
-        .await
-        .unwrap();
-    let invite = store
-        .invite_patient("practice", "patient", NOW + 1)
-        .await
-        .unwrap();
-    store
-        .accept_patient_invitation(&invite, "account-b", NOW + 1)
-        .await
-        .unwrap();
-    let link = store.patient_link("practice", "patient").await.unwrap();
-    assert_eq!(link.duet_account_id.as_deref(), Some("account-b"));
-    assert!(!link.sharing_consented);
-    assert_eq!((link.consented_at, link.consent_version), (None, None));
-    assert!(
-        store
-            .grant_patient_consent("practice", "patient", "account-a", "v1", NOW + 2)
-            .await
-            .is_err()
-    );
-}
-
-#[tokio::test]
-async fn expired_and_replaced_patient_invitations_cannot_link_an_account() {
-    let Some(store) = store("stale_patient_invite").await else {
-        return;
-    };
-    let expired = store
-        .invite_patient("pg-proof", "pw-elena", NOW)
-        .await
-        .unwrap();
-    let later = NOW + physician_auth::INVITATION_TTL_SECONDS;
-    assert_eq!(
-        store
-            .accept_patient_invitation(&expired, "duet-expired", later)
-            .await,
-        Err(SignInError::Invalid)
-    );
-    let replaced = store
-        .invite_patient("pg-proof", "pw-elena", later)
-        .await
-        .unwrap();
-    let current = store
-        .invite_patient("pg-proof", "pw-elena", later)
-        .await
-        .unwrap();
-    assert_eq!(
-        store
-            .accept_patient_invitation(&replaced, "duet-replaced", later)
-            .await,
-        Err(SignInError::Invalid)
-    );
-    assert_eq!(
-        store
-            .accept_patient_invitation(&current, "  duet-current  ", later)
-            .await
-            .unwrap()
-            .duet_account_id
-            .as_deref(),
-        Some("duet-current")
     );
 }
 

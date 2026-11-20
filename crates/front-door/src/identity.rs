@@ -145,8 +145,6 @@ impl PostgresFrontDoorStore {
             email: Set(principal.email.to_lowercase()),
             display_name: Set(String::new()),
             active: Set(true),
-            linked_practice_id: Set(None),
-            linked_patient_id: Set(None),
             sessions_ended_before: Set(0),
             created_at: Set(now),
         }

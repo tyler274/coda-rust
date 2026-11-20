@@ -1124,63 +1124,6 @@ impl AuthStore for FailingEnrollmentAuth {
     async fn remove_account(&self, email: &str) -> bool {
         self.inner.remove_account(email).await
     }
-    async fn invite_patient(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        now: u64,
-    ) -> Result<String, physician_auth::SignInError> {
-        self.inner
-            .invite_patient(practice_id, patient_workspace_id, now)
-            .await
-    }
-    async fn accept_patient_invitation(
-        &self,
-        token: &str,
-        duet_account_id: &str,
-        now: u64,
-    ) -> Result<physician_auth::PatientLink, physician_auth::SignInError> {
-        self.inner
-            .accept_patient_invitation(token, duet_account_id, now)
-            .await
-    }
-    async fn grant_patient_consent(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        duet_account_id: &str,
-        consent_version: &str,
-        now: u64,
-    ) -> Result<physician_auth::PatientLink, physician_auth::SignInError> {
-        self.inner
-            .grant_patient_consent(
-                practice_id,
-                patient_workspace_id,
-                duet_account_id,
-                consent_version,
-                now,
-            )
-            .await
-    }
-    async fn revoke_patient_consent(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        now: u64,
-    ) -> Result<physician_auth::PatientLink, physician_auth::SignInError> {
-        self.inner
-            .revoke_patient_consent(practice_id, patient_workspace_id, now)
-            .await
-    }
-    async fn patient_link(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-    ) -> Option<physician_auth::PatientLink> {
-        self.inner
-            .patient_link(practice_id, patient_workspace_id)
-            .await
-    }
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 4)]

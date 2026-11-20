@@ -1,4 +1,4 @@
-//! One practice invitation to a roster patient, at rest.
+//! One open practice invitation to a roster patient, at rest.
 
 use sea_orm::entity::prelude::*;
 
@@ -12,7 +12,7 @@ pub struct Model {
     pub practice_id: String,
     /// The roster patient the practice invited.
     pub patient_id: String,
-    /// The lower-cased email the invitation names; unique.
+    /// The lower-cased email the invitation names.
     pub email: String,
     /// The invitee's display name, as the practice wrote it.
     pub display_name: String,
@@ -20,8 +20,6 @@ pub struct Model {
     pub token_hash: Vec<u8>,
     /// The Unix second the invitation was issued.
     pub created_at: i64,
-    /// The Unix second the invitation stops redeeming.
-    pub expires_at: i64,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

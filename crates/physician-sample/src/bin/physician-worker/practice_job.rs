@@ -1523,10 +1523,6 @@ mod tests {
             .await
             .unwrap();
         front_door
-            .grant_consent(account_id, now_u64 + 2)
-            .await
-            .unwrap();
-        front_door
             .send_for_my_doctor(
                 account_id,
                 ForMyDoctorSendRequest {
@@ -1535,6 +1531,7 @@ mod tests {
                     summary_text: "Waking a practice before any patient_dispatch row exists."
                         .into(),
                     origin_label: None,
+                    target: None,
                 },
                 now_u64 + 3,
             )

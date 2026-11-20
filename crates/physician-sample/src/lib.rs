@@ -2020,16 +2020,19 @@ async fn roster(
         .iter()
         .map(|patient| patient.roster_row())
         .collect();
-    let (connected, store, practice_id) = (&connected, &*store, practice.as_str());
-    let links = auth::per_workspace(&rows, |ws_id| async move {
-        connected.link_wire(store, practice_id, &ws_id).await
-    })
-    .await;
-    for (row, link) in rows.iter_mut().zip(links) {
-        if let Some(link) = link {
-            row["duet_linked"] = json!(link.linked);
-            row["sharing_consented"] = json!(link.sharing_consented);
-        }
+    let front_door = connected.front_door(extensions);
+    let Ok(statuses) = front_door.practice_connections(practice.as_str()).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    for row in &mut rows {
+        let status = row
+            .get("patient_workspace_id")
+            .and_then(Value::as_str)
+            .and_then(|ws_id| statuses.get(ws_id))
+            .unwrap_or(&front_door::RosterConnectionStatus::NotInvited);
+        row["connection_status"] = json!(care::to_wire_status(status));
+        row["duet_linked"] = json!(status.is_connected());
+        row["sharing_consented"] = json!(status.is_connected());
     }
     Json(json!({ "patients": rows, "next_after": page.next_after, "match_mode": page.match_mode }))
         .into_response()
@@ -2536,12 +2539,19 @@ mod tests {
 
     #[tokio::test]
     async fn connected_care_patient_link() {
+        use front_door::{
+            ConnectionEndReason, FrontDoorStore, MemoryFrontDoorStore, RosterPatient,
+        };
         use physician_auth::{AuthStore, MemoryAuthStore};
         let patient_id = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
         let store = MemoryAuthStore::new();
         store.seed_patient("roger-synthetic-practice", patient_id);
         let store: std::sync::Arc<dyn AuthStore> = std::sync::Arc::new(store);
-        let app = router().layer(axum::Extension(store.clone()));
+        let front_door = std::sync::Arc::new(MemoryFrontDoorStore::new());
+        let front_door_dyn: std::sync::Arc<dyn FrontDoorStore> = front_door.clone();
+        let app = router()
+            .layer(axum::Extension(store.clone()))
+            .layer(axum::Extension(front_door_dyn));
 
         // 1. The practice site hosts neither patient acceptance nor consent.
         for (method, path, body) in [
@@ -2560,27 +2570,46 @@ mod tests {
             assert_eq!(status, StatusCode::NOT_FOUND, "{path}: {body}");
         }
 
-        // 2. Fixture setup stands in for the patient's invitation and consent.
-        let token = store
-            .invite_patient("roger-synthetic-practice", patient_id, 0)
+        // Before inviting: NotInvited.
+        let (status, ws_before) = request(
+            app.clone(),
+            "GET",
+            &format!("/patient-workspaces/{patient_id}"),
+            Body::empty(),
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK);
+        let ws_before_json: Value = serde_json::from_str(&ws_before).unwrap();
+        assert_eq!(ws_before_json["connection_status"], "not_invited");
+
+        // 2. Invite via front door: status becomes Invited.
+        let roster_patient = RosterPatient {
+            practice_id: "roger-synthetic-practice".to_owned(),
+            patient_id: patient_id.to_owned(),
+        };
+        let token = front_door
+            .invite(&roster_patient, "elena@example.test", "Elena Test", 10)
             .await
             .unwrap();
-        store
-            .accept_patient_invitation(&token, "duet-acct-elena", 0)
-            .await
-            .unwrap();
-        store
-            .grant_patient_consent(
-                "roger-synthetic-practice",
-                patient_id,
-                "duet-acct-elena",
-                "v1",
-                1,
-            )
+        let (status, ws_invited) = request(
+            app.clone(),
+            "GET",
+            &format!("/patient-workspaces/{patient_id}"),
+            Body::empty(),
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK);
+        let ws_invited_json: Value = serde_json::from_str(&ws_invited).unwrap();
+        assert_eq!(ws_invited_json["connection_status"], "invited");
+        assert_eq!(ws_invited_json["patient_link"]["linked"], false);
+
+        // Redeem invitation in Duet: status becomes Connected (which implies sharing).
+        let (account_id, _) = front_door
+            .redeem_invitation("elena@example.test", &token, 20)
             .await
             .unwrap();
 
-        // 3. The patient page and roster carry the link's consent state without any cadence copy.
+        // 3. The patient page and roster carry the connection state without any cadence copy.
         let (status, ws_body) = request(
             app.clone(),
             "GET",
@@ -2590,19 +2619,49 @@ mod tests {
         .await;
         assert_eq!(status, StatusCode::OK);
         let ws_json: Value = serde_json::from_str(&ws_body).unwrap();
+        assert_eq!(ws_json["connection_status"], "connected");
         assert_eq!(ws_json["patient_link"]["linked"], true);
         assert_eq!(ws_json["patient_link"]["sharing_consented"], true);
         assert!(ws_json["patient_link"].get("cadence").is_none());
         assert!(ws_json.get("review_cadence").is_none());
         assert!(ws_json.get("duet_records").is_none());
 
-        let (roster_status, roster_body) =
-            request(app, "GET", "/patient-roster?query=Mary", Body::empty()).await;
+        let (roster_status, roster_body) = request(
+            app.clone(),
+            "GET",
+            "/patient-roster?query=Mary",
+            Body::empty(),
+        )
+        .await;
         assert_eq!(roster_status, StatusCode::OK);
         let roster_json: Value = serde_json::from_str(&roster_body).unwrap();
+        assert_eq!(roster_json["patients"][0]["connection_status"], "connected");
         assert_eq!(roster_json["patients"][0]["duet_linked"], true);
         assert_eq!(roster_json["patients"][0]["sharing_consented"], true);
         assert!(roster_json["patients"][0].get("cadence").is_none());
+
+        // End connection from Duet: status becomes Ended.
+        front_door
+            .end_connection(
+                account_id,
+                &roster_patient,
+                ConnectionEndReason::PatientLeft,
+                30,
+            )
+            .await
+            .unwrap();
+        let (status, ws_ended) = request(
+            app,
+            "GET",
+            &format!("/patient-workspaces/{patient_id}"),
+            Body::empty(),
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK);
+        let ws_ended_json: Value = serde_json::from_str(&ws_ended).unwrap();
+        assert_eq!(ws_ended_json["connection_status"], "ended");
+        assert_eq!(ws_ended_json["patient_link"]["linked"], false);
+        assert_eq!(ws_ended_json["patient_link"]["sharing_consented"], false);
     }
 
     #[tokio::test]

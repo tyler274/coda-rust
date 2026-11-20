@@ -14,11 +14,6 @@ pub struct Model {
     pub display_name: String,
     /// Whether the account may sign in and hold sessions.
     pub active: bool,
-    /// The roster patient the account is linked to, when the practice's
-    /// invitation has been redeemed.
-    pub linked_practice_id: Option<String>,
-    /// The roster patient's id within the linked practice.
-    pub linked_patient_id: Option<String>,
     /// Sessions minted before this Unix second never resolve.
     pub sessions_ended_before: i64,
     /// The Unix second the account was created.
@@ -27,6 +22,8 @@ pub struct Model {
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
+    #[sea_orm(has_many = "super::connection::Entity")]
+    Connections,
     #[sea_orm(has_many = "super::session::Entity")]
     Sessions,
     #[sea_orm(has_many = "super::sign_in_token::Entity")]
