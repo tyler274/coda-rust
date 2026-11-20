@@ -53,13 +53,27 @@ fn person_lines(shown: Shown) -> Vec<String> {
     if let Some(source) = shown.source {
         lines.push(format!("Source: {source}"));
     }
-    if let Some(status) = shown
-        .source_status
-        .filter(|status| !status.trim().is_empty())
-    {
+    if let Some(status) = shown.source_status.as_deref().and_then(source_status_line) {
         lines.push(status);
     }
     lines
+}
+
+/// Plain-language explanation for a source-declared status, preserving the literal status.
+pub fn source_status_line(status: &str) -> Option<String> {
+    let raw = status.trim();
+    if raw.is_empty() {
+        return None;
+    }
+    let normalized = raw.to_ascii_lowercase().replace([' ', '_'], "-");
+    let explanation = match normalized.as_str() {
+        "entered-in-error" => "Marked by the source as recorded by mistake.",
+        "cancelled" | "canceled" => "Cancelled at the source and did not happen.",
+        "corrected" | "amended" => "Updated by the source after it was first recorded.",
+        "preliminary" => "Preliminary result; the source may still update it.",
+        _ => return Some(raw.to_owned()),
+    };
+    Some(format!("{raw} — {explanation}"))
 }
 
 /// Date or interval. The zone is appended when it is not already in the literal.
@@ -383,8 +397,15 @@ mod tests {
             "{lines:?}"
         );
         assert!(
-            lines.iter().any(|line| line == "entered-in-error"),
+            lines
+                .iter()
+                .any(|line| line.contains("entered-in-error")
+                    && line.contains("recorded by mistake")),
             "{lines:?}"
+        );
+        assert!(
+            source_status_line("cancelled")
+                .is_some_and(|line| line.contains("cancelled") && line.contains("did not happen"))
         );
         assert!(!lines.iter().any(|line| line.contains("HKQuantitySample")
             || line.contains("vital:steps")

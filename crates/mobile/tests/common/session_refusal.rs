@@ -132,6 +132,7 @@ async fn definitive_refusal_unmounts_private_content() {
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn late_a_refusal_cannot_end_mounted_b_session() {
     let second = Arc::new(AtomicU8::new(0));
+    let arm_trap = Arc::new(std::sync::atomic::AtomicBool::new(false));
     let entered = Arc::new(tokio::sync::Notify::new());
     let release = Arc::new(tokio::sync::Notify::new());
     let returned = Arc::new(tokio::sync::Notify::new());
@@ -141,6 +142,7 @@ async fn late_a_refusal_cannot_end_mounted_b_session() {
     let route_release = release.clone();
     let route_returned = returned.clone();
     let route_second = second.clone();
+    let route_arm_trap = arm_trap.clone();
     let stores: Vec<_> = (0..2)
         .map(|_| {
             duet_stub::router(Arc::new(Mutex::new(
@@ -161,12 +163,13 @@ async fn late_a_refusal_cannot_end_mounted_b_session() {
         }))
         .fallback(move |request: axum::http::Request<axum::body::Body>| {
             let index = usize::from(route_second.load(Ordering::SeqCst));
+            let armed = route_arm_trap.load(Ordering::SeqCst);
             let store = stores[index].clone();
             let entered = route_entered.clone();
             let release = route_release.clone();
             let returned = route_returned.clone();
             async move {
-                if index == 0 && request.method() == "POST" && request.uri().path() == "/api/evidence" {
+                if armed && index == 0 && request.method() == "POST" && request.uri().path() == "/api/evidence" {
                     let (send, receive) = tokio::sync::oneshot::channel();
                     tokio::spawn(async move {
                         entered.notify_one();
@@ -187,11 +190,13 @@ async fn late_a_refusal_cannot_end_mounted_b_session() {
     second.store(1, Ordering::SeqCst);
     seed_record(&base, "B private record").await;
     second.store(0, Ordering::SeqCst);
+    seed_record(&base, "A private record").await;
+    arm_trap.store(true, Ordering::SeqCst);
     let mut browser = Browser::launch();
     browser.resize(PHONE);
     browser.text_until(&format!("{base}/?mode=client&api={base}"), "Shared");
-    browser.wait_for("Lisinopril");
-    start_correction(&mut browser, "Lisinopril", "A pending correction");
+    browser.wait_for("A private record");
+    start_correction(&mut browser, "A private record", "A pending correction");
     tokio::time::timeout(Duration::from_secs(10), entered.notified())
         .await
         .unwrap();

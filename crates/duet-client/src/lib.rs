@@ -80,8 +80,17 @@ impl DuetClient {
 
     /// Reads the evidence library.
     pub async fn evidence_library(&self) -> Result<EvidenceLibraryPage, String> {
+        self.search_library("").await
+    }
+
+    /// Searches the evidence library (`text` empty returns the complete library).
+    pub async fn search_library(&self, text: &str) -> Result<EvidenceLibraryPage, String> {
         let mut query = EvidenceLibraryQuery::new();
         query.scope = Some(EvidenceLibraryScope::Summary);
+        let trimmed = text.trim();
+        if !trimmed.is_empty() {
+            query.text = Some(trimmed.to_owned());
+        }
         duet_wire::apis::default_api::evidence_library_api_evidence_library_post(
             &self.configuration,
             query,
@@ -175,6 +184,7 @@ impl DuetClient {
                     "concept_id".to_owned(),
                     serde_json::Value::String("medication:manual".to_owned()),
                 );
+                payload.insert("source".to_owned(), serde_json::json!({ "kind": "manual" }));
             }
             duet_wire::models::evidence_item::Entity::ClinicalNote => {
                 payload.insert(
@@ -187,7 +197,7 @@ impl DuetClient {
             .await
     }
 
-    /// Removes one library row. The id is the library entry id.
+    /// Removes one patient-entered library row. The id is the library entry id.
     pub async fn delete_evidence(
         &self,
         id: &str,
@@ -195,6 +205,9 @@ impl DuetClient {
     ) -> Result<(), String> {
         let mut item = duet_wire::models::EvidenceItem::new(entity, id.to_owned());
         item.operation = Some(duet_wire::models::evidence_item::Operation::Delete);
+        let mut payload = std::collections::HashMap::new();
+        payload.insert("source".to_owned(), serde_json::json!({ "kind": "manual" }));
+        item.payload = Some(payload);
         let mut request = duet_wire::models::EvidenceBatchRequest::new();
         request.items = Some(vec![item]);
         duet_wire::apis::default_api::ingest_evidence_api_evidence_post(
@@ -221,6 +234,7 @@ impl DuetClient {
             "source_label".to_owned(),
             serde_json::Value::String("Added in Duet".to_owned()),
         );
+        payload.insert("source".to_owned(), serde_json::json!({ "kind": "manual" }));
         self.store_evidence(
             id,
             duet_wire::models::evidence_item::Entity::HealthEvidence,
