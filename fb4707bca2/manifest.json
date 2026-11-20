@@ -1,0 +1,85 @@
+{
+  "branch": "doppler-fill",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "check against coda-rust/dev",
+      "kind": "run",
+      "revision": "fb4707bca2af32f3380f22a9a29fe44592779da5",
+      "dirty": false,
+      "recorded": "2026-11-20T09:54:58+00:00",
+      "command": [
+        "scripts/doppler-fill.sh",
+        "--check"
+      ],
+      "expect": "missing  OPENAI_API_KEY",
+      "expect_fail": false,
+      "files": [
+        "01-check-against-coda-rust-dev.log"
+      ],
+      "seconds": 0.1,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "prompt run against a stand-in doppler that records what it receives",
+      "kind": "run",
+      "revision": "fb4707bca2af32f3380f22a9a29fe44592779da5",
+      "dirty": false,
+      "recorded": "2026-11-20T09:54:58+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nstub=$(mktemp -d); log=$stub/log\nprintf \"%s\\n\" \"#!/usr/bin/env bash\" \"if [ \\\"\\$1 \\$2\\\" = \\\"secrets set\\\" ]; then printf \\\"name=%s arguments=[%s] stdin=[%s]\\\\n\\\" \\\"\\$3\\\" \\\"\\$*\\\" \\\"\\$(cat)\\\" >>$log; exit 0; fi\" \"echo {\\\\\\\"DD_API_KEY\\\\\\\":{}}\" >$stub/doppler\nchmod +x $stub/doppler\nprintf \"placeholder-one\\n\\nplaceholder-two\\n\" >$stub/answers\nPATH=$stub:$PATH script -qec scripts/doppler-fill.sh /dev/null <$stub/answers\necho; echo \"what the stand-in doppler received:\"; cat $log; rm -rf $stub\n"
+      ],
+      "expect": "stdin=\\[placeholder-one\\]",
+      "expect_fail": false,
+      "files": [
+        "02-prompt-run-against-a-stand-in-doppler-that-recor.log"
+      ],
+      "seconds": 0.3,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "no terminal",
+      "kind": "run",
+      "revision": "fb4707bca2af32f3380f22a9a29fe44592779da5",
+      "dirty": false,
+      "recorded": "2026-11-20T09:54:59+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "scripts/doppler-fill.sh </dev/null"
+      ],
+      "expect": "Run this in a terminal",
+      "expect_fail": true,
+      "files": [
+        "03-no-terminal.log"
+      ],
+      "seconds": 0.0,
+      "exit": 2,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC4",
+      "label": "",
+      "kind": "gap",
+      "revision": "fb4707bca2af32f3380f22a9a29fe44592779da5",
+      "dirty": false,
+      "recorded": "2026-11-20T09:54:59+00:00",
+      "reason": "dev stays empty until the developer types their own keys at the prompt; no real save to Doppler was run",
+      "ok": false,
+      "files": []
+    }
+  ]
+}

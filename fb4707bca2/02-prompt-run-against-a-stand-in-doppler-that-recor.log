@@ -1,0 +1,14 @@
+placeholder-one
+
+placeholder-two
+OPENAI_API_KEY (model calls and dictation when CODA_LOCAL_MODEL_EXECUTION=api): 
+saved    OPENAI_API_KEY
+kept     DD_API_KEY
+SPRUCE_API_KEY (the ignored live Spruce test, cargo test -p spruce --test live): 
+skipped  SPRUCE_API_KEY
+NCBI_API_KEY (optional: a higher PubMed rate limit for clinical-library-pubmed-status): 
+saved    NCBI_API_KEY
+
+what the stand-in doppler received:
+name=OPENAI_API_KEY arguments=[secrets set OPENAI_API_KEY --project coda-rust --config dev --silent --no-interactive] stdin=[placeholder-one]
+name=NCBI_API_KEY arguments=[secrets set NCBI_API_KEY --project coda-rust --config dev --silent --no-interactive] stdin=[placeholder-two]
