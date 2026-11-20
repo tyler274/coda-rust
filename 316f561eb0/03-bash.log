@@ -1,65 +1,69 @@
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.51s
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/http)
+   Compiling front-door v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/front-door)
+   Compiling duet-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/duet-client)
+   Compiling duet-api v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/duet-api)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 36.34s
      Running unittests src/lib.rs (/tmp/coda-target-concerns/debug/deps/duet_api-703920b8185f9595)
 
 running 58 tests
 test assistant_harness::tests::assistant_eligibility_enforces_terms_consent_and_operator_switch ... ok
 test hosting::tests::local_runs_start_without_any_profile ... ok
-test identity::local_tests::a_short_secret_is_refused ... ok
 test connected_care_sync::tests::source_origin_formats_exact_via_duet_labels ... ok
-test connected_care_sync::tests::header_values_strip_control_newlines ... ok
+test identity::local_tests::a_short_secret_is_refused ... ok
 test background::tests::every_api_error_has_a_class ... ok
 test hosting::tests::a_false_cloud_marker_is_still_hosted ... ok
 test assistant_harness::tests::parked_routes_policy_is_quarantined_by_default ... ok
+test connected_care_sync::tests::header_values_strip_control_newlines ... ok
 test hosting::tests::production_and_other_profiles_refuse_even_when_complete ... ok
 test hosting::tests::local_stand_ins_refuse_hosted_even_with_a_complete_profile ... ok
-test identity::refusal_tests::provider_outage_and_configuration_errors_are_not_session_refusals ... ok
-test email_auth::tests::email_validation_normalizes_and_rejects_invalid_inputs ... ok
-test assistant_harness::tests::recipe_embeds_standing_disclosure_and_clinical_library_tools_only ... ok
 test hosting::tests::staging_preview_is_the_only_hosted_profile ... ok
+test assistant_harness::tests::recipe_embeds_standing_disclosure_and_clinical_library_tools_only ... ok
+test email_auth::tests::email_validation_normalizes_and_rejects_invalid_inputs ... ok
+test identity::refusal_tests::provider_outage_and_configuration_errors_are_not_session_refusals ... ok
 test portals::tests::update_failure_day_formats_plain_copy ... ok
+test for_my_doctor::tests::summary_strips_lab_reference_ranges ... ok
 test portals::tests::portal_secrets_are_redacted_in_debug_output ... ok
 test evidence_routes::tests::undated_records_have_no_date_and_keep_literal_values ... ok
-test for_my_doctor::tests::summary_strips_lab_reference_ranges ... ok
 test evidence_routes::tests::projected_role_and_offset_are_literal ... ok
 test privacy::tests::restriction_enum_matches_wire_snake_case ... ok
-test portals::tests::vendor_kill_switch_filters_search_and_preserves_enabled_vendors ... ok
 test email_auth::tests::challenge_link_builds_cleanly_with_sanitized_invite ... ok
-test evidence_routes::tests::acquisition_interval_keeps_start_and_end_and_sorts_on_the_start ... ok
 test portals::tests::fhir_pagination_url_enforces_exact_https_origin ... ok
+test portals::tests::vendor_kill_switch_filters_search_and_preserves_enabled_vendors ... ok
 test connected_care_sync::tests::private_ai_notes_and_for_my_doctor_drafts_are_excluded_from_live_streaming ... ok
-test push::tests::device_id_validation_rejects_blank_or_control_characters ... ok
+test evidence_routes::tests::acquisition_interval_keeps_start_and_end_and_sorts_on_the_start ... ok
 test background::tests::failure_event_names_the_class_without_error_text ... ok
-test push::tests::push_secrets_are_redacted_in_debug_output ... ok
+test push::tests::device_id_validation_rejects_blank_or_control_characters ... ok
 test tests::the_schema_readiness_check_names_the_required_migration ... ok
+test push::tests::push_secrets_are_redacted_in_debug_output ... ok
 test workspace::tests::literal_entry_excludes_lab_printed_reference_ranges_and_keeps_values ... ok
-test hosting::tests::liveness_says_nothing_about_readiness ... ok
 test privacy_archive::tests::production_trust_and_object_namespace_cannot_be_configured_as_urls ... ok
 test assistant_harness::tests::http_clinical_library_reader_requires_https_except_loopback ... ok
 test push::tests::http_push_transport_enforces_https_except_loopback ... ok
 test connected_care_sync::tests::http_transport_requires_https_except_loopback ... ok
+test hosting::tests::liveness_says_nothing_about_readiness ... ok
 test identity::local_tests::verifies_a_signed_local_token ... ok
 test hosting::tests::ingress_guard_rate_limits_email_auth_and_rejects_oversized_bodies ... ok
 test identity::local_tests::refuses_forged_expired_foreign_and_future_tokens ... ok
-test connected_care_invitations::tests::http_port_preserves_dob_strike_lock_and_accept_without_creating_duplicate_account ... ok
-test privacy::tests::receipt_doctor_page_delete ... ok
-test privacy::tests::receipt_follow_up_cancel ... ok
-test privacy::tests::receipt_doctor_item_delete ... ok
-test privacy::tests::receipt_publication_revoke ... ok
-test privacy::tests::receipt_doctor_note_delete ... ok
-test privacy::tests::account_delete_propagates_to_front_door_and_rolls_back_when_closer_fails ... ok
-test privacy::tests::receipt_evidence_delete ... ok
-test privacy::tests::receipt_sessions_revoke ... ok
-test privacy::tests::receipt_follow_up_pause ... ok
-test privacy::tests::receipt_records_withdraw ... ok
-test privacy::tests::receipt_device_withdraw ... ok
-test privacy::tests::receipt_account_delete ... ok
-test privacy::tests::receipt_proactive_withdraw ... ok
-test privacy::tests::receipt_luna_withdraw ... ok
-test privacy_archive::tests::transport_timeout_and_cancellation_release_capacity ... ok
-test privacy_archive::tests::gcs_transport_and_postgres_recovery_reconcile_same_receipt_after_restart ... ok
-test privacy_archive::tests::chunked_readback_cannot_bypass_body_limit ... ok
-test privacy_archive::tests::metadata_failures_never_forward_credentials_or_follow_redirects ... ok
 test privacy_archive::tests::conditional_creation_ambiguous_readback_corruption_and_credentials ... ok
+test privacy_archive::tests::chunked_readback_cannot_bypass_body_limit ... ok
+test connected_care_invitations::tests::http_port_preserves_dob_strike_lock_and_accept_without_creating_duplicate_account ... ok
+test privacy::tests::receipt_records_withdraw ... ok
+test privacy::tests::receipt_evidence_delete ... ok
+test privacy::tests::account_delete_propagates_to_front_door_and_rolls_back_when_closer_fails ... ok
+test privacy::tests::receipt_doctor_note_delete ... ok
+test privacy::tests::receipt_doctor_item_delete ... ok
+test privacy::tests::receipt_account_delete ... ok
+test privacy::tests::receipt_publication_revoke ... ok
+test privacy::tests::receipt_doctor_page_delete ... ok
+test privacy::tests::receipt_luna_withdraw ... ok
+test privacy::tests::receipt_device_withdraw ... ok
+test privacy::tests::receipt_proactive_withdraw ... ok
+test privacy::tests::receipt_follow_up_pause ... ok
+test privacy::tests::receipt_sessions_revoke ... ok
+test privacy::tests::receipt_follow_up_cancel ... ok
+test privacy_archive::tests::gcs_transport_and_postgres_recovery_reconcile_same_receipt_after_restart ... ok
+test privacy_archive::tests::transport_timeout_and_cancellation_release_capacity ... ok
+test privacy_archive::tests::metadata_failures_never_forward_credentials_or_follow_redirects ... ok
 
 test result: ok. 58 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.10s
 
@@ -70,30 +74,31 @@ test cod53_duet_api_dob_gate_lock_and_share_connects_signed_in_account_in_postgr
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
 
+   Compiling duet-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/duet-client)
    Compiling duet-app v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/duet-app)
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 14.46s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 23.01s
      Running unittests src/lib.rs (/tmp/coda-target-concerns/debug/deps/boundaries-5a41687add103b3a)
 
 running 25 tests
-test tests::shipping_clients_stay_until_the_rust_journeys_match ... ok
-test shared_ui::a_new_file_counts_as_going_up_from_zero ... ok
-test shared_ui::a_count_reaching_zero_says_to_remove_the_entry ... ok
 test shared_ui::a_count_going_down_says_to_lower_the_number ... ok
-test shared_ui::a_matching_count_passes ... ok
 test shared_ui::a_count_going_up_says_to_use_the_shared_component_or_add_an_exception ... ok
-test tests::duet_screens_do_not_read_device_health_directly ... ok
-test shared_ui::counts_css_rules_naming_control_elements ... ok
+test shared_ui::a_matching_count_passes ... ok
+test shared_ui::a_count_reaching_zero_says_to_remove_the_entry ... ok
 test shared_ui::a_whole_test_file_counts_nothing ... ok
-test shared_ui::ignores_comments_strings_and_lookalikes ... ok
+test shared_ui::a_new_file_counts_as_going_up_from_zero ... ok
+test shared_ui::counts_css_rules_naming_control_elements ... ok
+test shared_ui::counts_card_markup_by_class_family_once_per_element ... ok
+test shared_ui::counts_rsx_held_in_other_macros_and_nested_rsx ... ok
+test tests::shipping_clients_stay_until_the_rust_journeys_match ... ok
 test tests::apps_do_not_import_each_others_clinical_crates ... ok
 test shared_ui::every_table_entry_has_one_row_and_a_reason ... ok
-test shared_ui::counts_rsx_held_in_other_macros_and_nested_rsx ... ok
-test shared_ui::counts_card_classes_set_apart_by_escaped_whitespace ... ok
-test shared_ui::counts_css_rules_naming_library_classes ... ok
-test shared_ui::counts_card_markup_by_class_family_once_per_element ... ok
+test tests::duet_screens_do_not_read_device_health_directly ... ok
 test shared_ui::counts_each_raw_control_inside_rsx ... ok
-test tests::the_clinical_library_is_product_neutral ... ok
+test shared_ui::counts_css_rules_naming_library_classes ... ok
+test shared_ui::ignores_comments_strings_and_lookalikes ... ok
+test shared_ui::counts_card_classes_set_apart_by_escaped_whitespace ... ok
 test shared_ui::ignores_test_code_but_not_code_kept_out_of_tests ... ok
+test tests::the_clinical_library_is_product_neutral ... ok
 test tests::gmail_and_spruce_are_product_neutral ... ok
 test shared_ui::the_check_reads_the_real_library ... ok
 test tests::every_ui_behaviour_is_run_as_its_kind ... ok
@@ -101,14 +106,14 @@ test tests::shared_harness_is_product_neutral_and_has_no_product_store ... ok
 test tests::the_ui_library_runs_its_browser_behaviour_without_eval ... ok
 test shared_ui::the_apps_match_the_shared_ui_table ... ok
 
-test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.75s
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.73s
 
      Running unittests src/lib.rs (/tmp/coda-target-concerns/debug/deps/duet_app-8e52449022970722)
 
 running 28 tests
-test roots::tests::notification_controls_name_their_permission ... ok
 test roots::tests::android_debug_api_reaches_the_emulator_host ... ok
 test account::tests::recovered_draft_is_empty_after_another_account_signs_in ... ok
+test roots::tests::notification_controls_name_their_permission ... ok
 test account::tests::account_delete_outcome_never_claims_deleted_on_session_revoked ... ok
 test for_my_doctor::tests::send_standing_label_never_mentions_physician_reading_status ... ok
 test for_my_doctor::tests::reconcile_pending_send_clears_confirmed_and_transitions_cod51_ended ... ok
@@ -117,18 +122,18 @@ test records::tests::undated_records_say_date_unknown ... ok
 test records::tests::removed_records_are_labelled_with_literal_values_and_zone ... ok
 test invitation::tests::dob_gate_withholds_preview_until_dob_matches_and_share_connects ... ok
 test trends::tests::multi_source_lab_trend_never_splices_across_labs ... ok
-test trends::tests::blood_pressure_keeps_both_numbers_and_sleep_uses_bars ... ok
 test records::tests::omitted_interval_end_stays_absent ... ok
+test trends::tests::blood_pressure_keeps_both_numbers_and_sleep_uses_bars ... ok
 test trends::tests::range_filter_keeps_points_in_selected_window ... ok
 test account::tests::parse_app_link_accepts_invite_sign_in_and_email_change_links ... ok
-test roots::tests::external_and_patient_editability_distinguish_sources ... ok
-test roots::tests::doctor_page_lists_the_saved_question ... ok
 test roots::tests::a_saved_doctor_page_excludes_cover_note_and_pdf_copy ... ok
-test duplicates::tests::finds_likely_duplicates_across_distinct_sources ... ok
 test records::tests::acquisition_interval_is_person_facing ... ok
+test roots::tests::doctor_page_lists_the_saved_question ... ok
+test duplicates::tests::finds_likely_duplicates_across_distinct_sources ... ok
 test roots::tests::past_condition_is_hidden_when_covered_by_current_condition ... ok
-test roots::tests::filter_library_root_searches_across_fields_and_hides_resolved_duplicates ... ok
 test roots::tests::library_empty_and_sections ... ok
+test roots::tests::external_and_patient_editability_distinguish_sources ... ok
+test roots::tests::filter_library_root_searches_across_fields_and_hides_resolved_duplicates ... ok
 test account::tests::close_resets_session_ui_state_between_accounts ... ok
 test account::tests::startup_refusal_blocks_recovery_across_restart_until_cleanup_retry_succeeds ... ok
 test invitation::tests::invite_panel_ssr_renders_dob_prompt_with_no_preview_leak ... ok
@@ -150,7 +155,7 @@ test app_link_parser_accepts_invite_and_auth_links ... ok
 test signed_out_mount_renders_email_flow_without_apple_sign_in ... ok
 test d1_post_signup_mounts_terms_gate_and_then_you_and_shared_tabs ... ok
 
-test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
 
      Running unittests src/lib.rs (/tmp/coda-target-concerns/debug/deps/duet_client-c62aca2437a38523)
 
@@ -167,7 +172,7 @@ test refusal::tests::refreshed_credential_survives_refusal_of_original_credentia
 test refusal::tests::health_generation_and_upload_refusals_invalidate_bound_session ... ok
 test tests::join_consent_and_premium_follow_the_front_door ... ok
 
-test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
 
      Running tests/background_acquire.rs (/tmp/coda-target-concerns/debug/deps/background_acquire-0eb9b9e3303ede55)
 
@@ -191,7 +196,7 @@ running 2 tests
 test client_export_and_sync_pending_before_sign_out ... ok
 test client_email_auth_terms_settings_change_email_and_rights ... ok
 
-test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
 
      Running tests/health_upload.rs (/tmp/coda-target-concerns/debug/deps/health_upload-5bdb28f5fceb074e)
 
@@ -204,8 +209,8 @@ test apple_health::a_late_permission_answer_cannot_connect_the_next_patient ... 
 test apple_health::a_withdrawal_during_the_sheet_cannot_authorize_a_later_generation ... ok
 test apple_health::refresh_imports_through_the_connected_queue ... ok
 test duet_client_transport_posts_the_canonical_batch ... ok
-test sign_out_and_account_switch_pause_and_isolate_the_queue ... ok
 test same_account_resumes_after_restart_with_the_same_operation_ids ... ok
+test sign_out_and_account_switch_pause_and_isolate_the_queue ... ok
 test a_retained_rejection_reports_only_after_the_queue_drains ... ok
 
 test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
@@ -224,21 +229,21 @@ test readback_requires_exact_content_order_and_generation ... ok
 test missing_native_host_never_falls_back_to_plaintext ... ok
 test damaged_draft_survives_read_and_write_until_explicit_discard ... ok
 test refusal_invalidates_views_without_deleting_protected_patient_work ... ok
-test locked_cleanup_invalidates_ui_but_preserves_marker_for_retry ... ok
 test pending_account_delete_marker_is_registered_and_wiped_on_erase ... ok
-test restart_recovers_exact_uncertain_edit_without_network ... ok
-test offline_recovery_never_discards_or_approves_a_draft ... ok
-test switch_erases_previous_owner_and_fences_late_response_even_after_switch_back ... ok
 test every_key_this_account_writes_is_registered ... ok
-test rotation_preserves_fences_and_uncertain_bytes_cannot_be_replaced ... ok
+test offline_recovery_never_discards_or_approves_a_draft ... ok
 test synced_anchor_only_health_outbox_reports_zero_unconfirmed_entries ... ok
+test rotation_preserves_fences_and_uncertain_bytes_cannot_be_replaced ... ok
+test restart_recovers_exact_uncertain_edit_without_network ... ok
+test locked_cleanup_invalidates_ui_but_preserves_marker_for_retry ... ok
+test switch_erases_previous_owner_and_fences_late_response_even_after_switch_back ... ok
+test sign_out_warning_accounts_for_for_my_doctor_drafts_and_pending_sends ... ok
 test clear_intent_survives_restart_cannot_rebase_and_is_erased_on_switch ... ok
 test boxed_recovery_preserves_v1_storage_bytes_and_subject_fence ... ok
-test conflict_release_requires_exact_definitive_refusal_and_preserves_draft ... ok
-test sign_out_warning_accounts_for_for_my_doctor_drafts_and_pending_sends ... ok
 test sign_out_warning_names_the_draft_the_save_and_the_health_queue ... ok
-test tab_appearance_and_offline_caches_restore_and_wipe_cleanly_on_sign_out ... ok
+test conflict_release_requires_exact_definitive_refusal_and_preserves_draft ... ok
 test sign_out_switch_and_new_incarnation_remove_queued_health ... ok
+test tab_appearance_and_offline_caches_restore_and_wipe_cleanly_on_sign_out ... ok
 
 test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
 
