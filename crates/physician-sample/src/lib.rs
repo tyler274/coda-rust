@@ -1864,7 +1864,10 @@ async fn workspace(
         moment.time_zone.as_str(),
         registry,
     );
-    let mut enriched = care::enrich_workspace(base_body, &id, request.extensions()).await;
+    let Ok(mut enriched) = care::enrich_workspace(base_body, &id, request.extensions()).await
+    else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
     if source_setup::enrich_workspace(
         &mut enriched,
         &id,
@@ -2662,6 +2665,232 @@ mod tests {
         assert_eq!(ws_ended_json["connection_status"], "ended");
         assert_eq!(ws_ended_json["patient_link"]["linked"], false);
         assert_eq!(ws_ended_json["patient_link"]["sharing_consented"], false);
+    }
+
+    #[tokio::test]
+    async fn front_door_outage_returns_503_on_workspace_and_roster() {
+        use std::collections::BTreeMap;
+
+        struct FailingFrontDoorStore {
+            inner: front_door::MemoryFrontDoorStore,
+        }
+
+        #[async_trait::async_trait]
+        impl front_door::FrontDoorStore for FailingFrontDoorStore {
+            async fn invite(
+                &self,
+                patient: &front_door::RosterPatient,
+                email: &str,
+                display_name: &str,
+                now: u64,
+            ) -> Result<String, front_door::InviteError> {
+                self.inner.invite(patient, email, display_name, now).await
+            }
+            async fn invitation(&self, email: &str) -> Option<front_door::Invitation> {
+                self.inner.invitation(email).await
+            }
+            async fn invitation_for(
+                &self,
+                patient: &front_door::RosterPatient,
+            ) -> Option<front_door::Invitation> {
+                self.inner.invitation_for(patient).await
+            }
+            async fn redeem_invitation(
+                &self,
+                email: &str,
+                token: &str,
+                now: u64,
+            ) -> Result<(uuid::Uuid, String), front_door::SignInError> {
+                self.inner.redeem_invitation(email, token, now).await
+            }
+            async fn begin_sign_in(
+                &self,
+                email: &str,
+                now: u64,
+            ) -> Result<String, front_door::SignInError> {
+                self.inner.begin_sign_in(email, now).await
+            }
+            async fn complete_sign_in(
+                &self,
+                email: &str,
+                token: &str,
+                now: u64,
+            ) -> Result<(uuid::Uuid, String), front_door::SignInError> {
+                self.inner.complete_sign_in(email, token, now).await
+            }
+            async fn session(
+                &self,
+                token: &str,
+                now: u64,
+            ) -> Result<uuid::Uuid, front_door::SessionError> {
+                self.inner.session(token, now).await
+            }
+            async fn end_session(&self, token: &str) {
+                self.inner.end_session(token).await
+            }
+            async fn account_by_email(&self, email: &str) -> Option<front_door::Account> {
+                self.inner.account_by_email(email).await
+            }
+            async fn account(&self, account_id: uuid::Uuid) -> Option<front_door::Account> {
+                self.inner.account(account_id).await
+            }
+            async fn connections(
+                &self,
+                account_id: uuid::Uuid,
+            ) -> Result<Vec<front_door::AccountConnection>, front_door::LinkError> {
+                self.inner.connections(account_id).await
+            }
+            async fn connected_accounts(
+                &self,
+                practice_id: &str,
+            ) -> Vec<(front_door::Account, front_door::RosterPatient)> {
+                self.inner.connected_accounts(practice_id).await
+            }
+            async fn end_connection(
+                &self,
+                account_id: uuid::Uuid,
+                patient: &front_door::RosterPatient,
+                reason: front_door::ConnectionEndReason,
+                now: u64,
+            ) -> Result<(), front_door::LinkError> {
+                self.inner
+                    .end_connection(account_id, patient, reason, now)
+                    .await
+            }
+            async fn leave_connection(
+                &self,
+                account_id: uuid::Uuid,
+                practice_id: &str,
+                now: u64,
+            ) -> Result<Vec<front_door::AccountConnection>, front_door::LinkError> {
+                self.inner
+                    .leave_connection(account_id, practice_id, now)
+                    .await
+            }
+            async fn discharge_connection(
+                &self,
+                patient: &front_door::RosterPatient,
+                now: u64,
+            ) -> Result<front_door::AccountConnection, front_door::LinkError> {
+                self.inner.discharge_connection(patient, now).await
+            }
+            async fn end_all_connections_for_account(
+                &self,
+                account_id: uuid::Uuid,
+                now: u64,
+            ) -> Result<usize, front_door::ForMyDoctorError> {
+                self.inner
+                    .end_all_connections_for_account(account_id, now)
+                    .await
+            }
+            async fn roster_connection(
+                &self,
+                _patient: &front_door::RosterPatient,
+            ) -> Result<front_door::RosterConnectionStatus, front_door::ForMyDoctorError>
+            {
+                Err(front_door::ForMyDoctorError::Storage(
+                    sea_orm::DbErr::Custom("simulated outage".to_owned()),
+                ))
+            }
+            async fn practice_connections(
+                &self,
+                _practice_id: &str,
+            ) -> Result<
+                BTreeMap<String, front_door::RosterConnectionStatus>,
+                front_door::ForMyDoctorError,
+            > {
+                Err(front_door::ForMyDoctorError::Storage(
+                    sea_orm::DbErr::Custom("simulated outage".to_owned()),
+                ))
+            }
+            async fn send_for_my_doctor(
+                &self,
+                account_id: uuid::Uuid,
+                request: front_door::ForMyDoctorSendRequest,
+                now: u64,
+            ) -> Result<front_door::ForMyDoctorShare, front_door::ForMyDoctorError> {
+                self.inner
+                    .send_for_my_doctor(account_id, request, now)
+                    .await
+            }
+            async fn for_my_doctor_shares_for_account(
+                &self,
+                account_id: uuid::Uuid,
+            ) -> Result<Vec<front_door::ForMyDoctorShare>, front_door::ForMyDoctorError>
+            {
+                self.inner
+                    .for_my_doctor_shares_for_account(account_id)
+                    .await
+            }
+            async fn pending_for_my_doctor_shares_for_practice(
+                &self,
+                practice_id: &str,
+            ) -> Result<Vec<front_door::ForMyDoctorShare>, front_door::ForMyDoctorError>
+            {
+                self.inner
+                    .pending_for_my_doctor_shares_for_practice(practice_id)
+                    .await
+            }
+            async fn mark_for_my_doctor_received(
+                &self,
+                practice_id: &str,
+                share_id: &str,
+                received_at: u64,
+            ) -> Result<front_door::ForMyDoctorShare, front_door::ForMyDoctorError> {
+                self.inner
+                    .mark_for_my_doctor_received(practice_id, share_id, received_at)
+                    .await
+            }
+            async fn upsert_shared_records(
+                &self,
+                account_id: uuid::Uuid,
+                records: &[front_door::SharedPatientRecordInput],
+                now: u64,
+            ) -> Result<(), front_door::ForMyDoctorError> {
+                self.inner
+                    .upsert_shared_records(account_id, records, now)
+                    .await
+            }
+            async fn consented_links_for_practice(
+                &self,
+                practice_id: &str,
+            ) -> Result<Vec<front_door::ConsentedPatientLink>, front_door::ForMyDoctorError>
+            {
+                self.inner.consented_links_for_practice(practice_id).await
+            }
+            async fn shared_records_for_practice_patient(
+                &self,
+                practice_id: &str,
+                patient_id: &str,
+            ) -> Result<Vec<front_door::SharedPatientRecord>, front_door::ForMyDoctorError>
+            {
+                self.inner
+                    .shared_records_for_practice_patient(practice_id, patient_id)
+                    .await
+            }
+            async fn connected_care_practices(
+                &self,
+            ) -> Result<Vec<String>, front_door::ForMyDoctorError> {
+                self.inner.connected_care_practices().await
+            }
+        }
+
+        let failing: std::sync::Arc<dyn front_door::FrontDoorStore> =
+            std::sync::Arc::new(FailingFrontDoorStore {
+                inner: front_door::MemoryFrontDoorStore::new(),
+            });
+        let app = router().layer(axum::Extension(failing));
+        let (ws_status, _) = request(
+            app.clone(),
+            "GET",
+            &format!("/patient-workspaces/{}", WORKSPACE_IDS[0]),
+            Body::empty(),
+        )
+        .await;
+        assert_eq!(ws_status, StatusCode::SERVICE_UNAVAILABLE);
+        let (roster_status, _) =
+            request(app, "GET", "/patient-roster?query=Mary", Body::empty()).await;
+        assert_eq!(roster_status, StatusCode::SERVICE_UNAVAILABLE);
     }
 
     #[tokio::test]

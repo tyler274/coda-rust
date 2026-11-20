@@ -141,6 +141,33 @@ impl PostgresFrontDoorStore {
         })
     }
 
+    async fn end_connection_row(
+        txn: &impl ConnectionTrait,
+        row: crate::migration::ConnectionRow,
+        reason: ConnectionEndReason,
+        now: u64,
+    ) -> Result<AccountConnection, DbErr> {
+        let patient = RosterPatient {
+            practice_id: row.practice_id.clone(),
+            patient_id: row.patient_id.clone(),
+        };
+        let connected_at = u64::try_from(row.connected_at).unwrap_or_default();
+        let mut active: crate::migration::ConnectionActiveModel = row.into();
+        active.status = Set("ended".to_owned());
+        active.ended_at = Set(Some(now as i64));
+        active.end_reason = Set(Some(reason.as_str().to_owned()));
+        active.updated_at = Set(now as i64);
+        active.update(txn).await?;
+        Ok(AccountConnection {
+            patient,
+            standing: ConnectionStanding::Ended {
+                connected_at,
+                ended_at: now,
+                reason,
+            },
+        })
+    }
+
     fn invitation_row(row: crate::migration::InvitationRow) -> Invitation {
         Invitation {
             patient: RosterPatient {
@@ -510,12 +537,9 @@ impl FrontDoorStore for PostgresFrontDoorStore {
     ) -> Result<Vec<AccountConnection>, LinkError> {
         let account = Accounts::find_by_id(account_id)
             .one(&self.db)
-            .await
-            .map_err(|_| LinkError::Unlinked)?
+            .await?
             .ok_or(LinkError::Unlinked)?;
-        let hydrated = Self::load_account_with_connections(&self.db, account)
-            .await
-            .map_err(|_| LinkError::Unlinked)?;
+        let hydrated = Self::load_account_with_connections(&self.db, account).await?;
         Ok(hydrated.connections)
     }
 
@@ -551,7 +575,7 @@ impl FrontDoorStore for PostgresFrontDoorStore {
         reason: ConnectionEndReason,
         now: u64,
     ) -> Result<(), LinkError> {
-        let txn = self.db.begin().await.map_err(|_| LinkError::Unlinked)?;
+        let txn = self.db.begin().await?;
         let existing = Connections::find_by_id((
             account_id,
             patient.practice_id.clone(),
@@ -559,30 +583,119 @@ impl FrontDoorStore for PostgresFrontDoorStore {
         ))
         .lock_exclusive()
         .one(&txn)
-        .await
-        .map_err(|_| LinkError::Unlinked)?
+        .await?
         .ok_or(LinkError::Unlinked)?;
         if existing.status != "connected" {
             return Err(LinkError::Unlinked);
         }
-        let mut active: crate::migration::ConnectionActiveModel = existing.into();
-        active.status = Set("ended".to_owned());
-        active.ended_at = Set(Some(now as i64));
-        active.end_reason = Set(Some(reason.as_str().to_owned()));
-        active.updated_at = Set(now as i64);
-        active.update(&txn).await.map_err(|_| LinkError::Unlinked)?;
-        txn.commit().await.map_err(|_| LinkError::Unlinked)?;
+        Self::end_connection_row(&txn, existing, reason, now).await?;
+        txn.commit().await?;
         Ok(())
     }
 
-    async fn roster_connection(&self, patient: &RosterPatient) -> RosterConnectionStatus {
+    async fn leave_connection(
+        &self,
+        account_id: uuid::Uuid,
+        practice_id: &str,
+        now: u64,
+    ) -> Result<Vec<AccountConnection>, LinkError> {
+        use crate::migration::connection::Column;
+        let txn = self.db.begin().await?;
+        let rows = Connections::find()
+            .filter(Column::AccountId.eq(account_id))
+            .filter(Column::PracticeId.eq(practice_id))
+            .filter(Column::Status.eq("connected"))
+            .order_by_asc(Column::PatientId)
+            .lock_exclusive()
+            .all(&txn)
+            .await?;
+        if rows.is_empty() {
+            return Err(LinkError::Unlinked);
+        }
+        let mut ended = Vec::with_capacity(rows.len());
+        for row in rows {
+            ended.push(
+                Self::end_connection_row(&txn, row, ConnectionEndReason::PatientLeft, now).await?,
+            );
+        }
+        txn.commit().await?;
+        Ok(ended)
+    }
+
+    async fn discharge_connection(
+        &self,
+        patient: &RosterPatient,
+        now: u64,
+    ) -> Result<AccountConnection, LinkError> {
+        use crate::migration::connection::Column;
+        let txn = self.db.begin().await?;
+        let existing = Connections::find()
+            .filter(Column::PracticeId.eq(&patient.practice_id))
+            .filter(Column::PatientId.eq(&patient.patient_id))
+            .filter(Column::Status.eq("connected"))
+            .lock_exclusive()
+            .one(&txn)
+            .await?
+            .ok_or(LinkError::Unlinked)?;
+        let ended =
+            Self::end_connection_row(&txn, existing, ConnectionEndReason::PracticeDischarged, now)
+                .await?;
+        txn.commit().await?;
+        Ok(ended)
+    }
+
+    async fn end_all_connections_for_account(
+        &self,
+        account_id: uuid::Uuid,
+        now: u64,
+    ) -> Result<usize, ForMyDoctorError> {
+        use crate::migration::{account, connection, session, sign_in_token};
+        let txn = self.db.begin().await?;
+        let rows = Connections::find()
+            .filter(connection::Column::AccountId.eq(account_id))
+            .filter(connection::Column::Status.eq("connected"))
+            .lock_exclusive()
+            .all(&txn)
+            .await?;
+        let count = rows.len();
+        for row in rows {
+            Self::end_connection_row(&txn, row, ConnectionEndReason::AccountDeleted, now).await?;
+        }
+        if let Some(acct) = Accounts::find_by_id(account_id)
+            .lock_exclusive()
+            .one(&txn)
+            .await?
+        {
+            let cutoff = acct.sessions_ended_before.max(now as i64);
+            let mut active_acct: crate::migration::AccountActiveModel = acct.into();
+            active_acct.active = Set(false);
+            active_acct.sessions_ended_before = Set(cutoff);
+            active_acct.update(&txn).await?;
+        } else {
+            let _ = account::Column::Id;
+        }
+        Sessions::delete_many()
+            .filter(session::Column::AccountId.eq(account_id))
+            .exec(&txn)
+            .await?;
+        SignInTokens::delete_many()
+            .filter(sign_in_token::Column::AccountId.eq(account_id))
+            .exec(&txn)
+            .await?;
+        txn.commit().await?;
+        Ok(count)
+    }
+
+    async fn roster_connection(
+        &self,
+        patient: &RosterPatient,
+    ) -> Result<RosterConnectionStatus, ForMyDoctorError> {
         use crate::migration::{connection, invitation};
         let conn_rows = Connections::find()
             .filter(connection::Column::PracticeId.eq(&patient.practice_id))
             .filter(connection::Column::PatientId.eq(&patient.patient_id))
             .all(&self.db)
-            .await
-            .unwrap_or_default();
+            .await?;
         let standings: Vec<(uuid::Uuid, ConnectionStanding)> = conn_rows
             .iter()
             .filter_map(|row| Some((row.account_id, Self::connection_standing(row)?)))
@@ -591,11 +704,12 @@ impl FrontDoorStore for PostgresFrontDoorStore {
             .filter(invitation::Column::PracticeId.eq(&patient.practice_id))
             .filter(invitation::Column::PatientId.eq(&patient.patient_id))
             .one(&self.db)
-            .await
-            .ok()
-            .flatten()
+            .await?
             .map(Self::invitation_row);
-        resolve_roster_status(standings.iter().map(|(aid, st)| (*aid, st)), inv.as_ref())
+        Ok(resolve_roster_status(
+            standings.iter().map(|(aid, st)| (*aid, st)),
+            inv.as_ref(),
+        ))
     }
 
     async fn practice_connections(

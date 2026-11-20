@@ -72,9 +72,30 @@ async fn main() {
         }
         None => EvidenceStore::new(database.clone()),
     };
+    let front_door = match env::var("FRONT_DOOR_DATABASE_URL") {
+        Ok(front_url) => Some(Arc::new(
+            front_door::PostgresFrontDoorStore::connect_without_migrations(&front_url)
+                .await
+                .expect("front-door database"),
+        )),
+        Err(_) => None,
+    };
+    let mut privacy = PrivacyStore::new(accepted_database.clone(), journal);
+    if let Some(fd) = front_door.clone() {
+        let fd_store: Arc<dyn front_door::FrontDoorStore> = fd;
+        privacy = privacy.with_front_door_closer(Arc::new(
+            duet_api::privacy::StoreFrontDoorConnectionCloser::new(fd_store),
+        ));
+    } else if let Ok(fd_url) = env::var("FRONT_DOOR_URL") {
+        let op_token = env::var("FRONT_DOOR_OPERATOR_TOKEN")
+            .expect("FRONT_DOOR_OPERATOR_TOKEN is required when FRONT_DOOR_URL is set");
+        let closer = duet_api::privacy::HttpFrontDoorConnectionCloser::new(fd_url, op_token)
+            .expect("valid FRONT_DOOR_URL");
+        privacy = privacy.with_front_door_closer(Arc::new(closer));
+    }
     let state = DurableState {
         identity: IdentityStore::new(database.clone(), verifier),
-        privacy: PrivacyStore::new(accepted_database.clone(), journal),
+        privacy,
         evidence,
     };
     // No listener exists until the independent inventory is read and replayed.
@@ -170,14 +191,6 @@ async fn main() {
         assistant_store,
         database,
     ));
-    let front_door = match env::var("FRONT_DOOR_DATABASE_URL") {
-        Ok(front_url) => Some(Arc::new(
-            front_door::PostgresFrontDoorStore::connect_without_migrations(&front_url)
-                .await
-                .expect("front-door database"),
-        )),
-        Err(_) => None,
-    };
     let mut app = router(state.clone())
         .merge(duet_api::evidence_routes::router(state.clone()))
         .merge(duet_api::push::router(push_state))

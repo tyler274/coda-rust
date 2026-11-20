@@ -7,8 +7,8 @@ use crate::{
     identity::{AccountContext, check_current},
     privacy_entity::{
         NoteSourceLabel, WithdrawnSourceKind, deleted_identity, device_snapshot, doctor_item,
-        doctor_proposal, doctor_save, legacy_account, legacy_replay, privacy_event, publication,
-        user_privacy,
+        doctor_proposal, doctor_save, front_door_mapping, legacy_account, legacy_replay,
+        privacy_event, publication, user_privacy,
     },
 };
 use async_trait::async_trait;
@@ -186,6 +186,151 @@ impl ReceiptJournal for FileJournal {
     }
 }
 
+/// Propagates Duet account deletion (`X3`) to Connected Care so active
+/// practice connections end at once with `ConnectionEndReason::AccountDeleted`.
+#[async_trait]
+pub trait FrontDoorConnectionCloser: Send + Sync {
+    /// Ends every active practice connection for `front_door_account_id` at `ended_at`.
+    async fn end_all_connections(
+        &self,
+        front_door_account_id: Uuid,
+        ended_at: u64,
+    ) -> Result<(), ApiError>;
+}
+
+const CLOSER_MAX_ATTEMPTS: usize = 3;
+
+/// Direct store-backed closer used when `duet-api` connects to `FRONT_DOOR_DATABASE_URL`.
+#[derive(Clone)]
+pub struct StoreFrontDoorConnectionCloser {
+    store: Arc<dyn front_door::FrontDoorStore>,
+}
+
+impl std::fmt::Debug for StoreFrontDoorConnectionCloser {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("StoreFrontDoorConnectionCloser")
+            .finish_non_exhaustive()
+    }
+}
+
+impl StoreFrontDoorConnectionCloser {
+    /// Wraps a [`front_door::FrontDoorStore`] for bounded-retry deletion propagation.
+    pub fn new(store: Arc<dyn front_door::FrontDoorStore>) -> Self {
+        Self { store }
+    }
+}
+
+#[async_trait]
+impl FrontDoorConnectionCloser for StoreFrontDoorConnectionCloser {
+    async fn end_all_connections(
+        &self,
+        front_door_account_id: Uuid,
+        ended_at: u64,
+    ) -> Result<(), ApiError> {
+        for attempt in 0..CLOSER_MAX_ATTEMPTS {
+            match self
+                .store
+                .end_all_connections_for_account(front_door_account_id, ended_at)
+                .await
+            {
+                Ok(_) => return Ok(()),
+                Err(_) if attempt + 1 < CLOSER_MAX_ATTEMPTS => {
+                    tokio::time::sleep(std::time::Duration::from_millis(25 * (attempt as u64 + 1)))
+                        .await;
+                }
+                Err(_) => return Err(ApiError::Unavailable("front_door_connection_end_failed")),
+            }
+        }
+        Err(ApiError::Unavailable("front_door_connection_end_failed"))
+    }
+}
+
+/// HTTP closer targeting `POST /front-door/accounts/{account_id}/end-connections`
+/// with operator bearer authentication and no redirect-following.
+#[derive(Clone)]
+pub struct HttpFrontDoorConnectionCloser {
+    client: reqwest::Client,
+    base_url: String,
+    operator_token: String,
+}
+
+impl std::fmt::Debug for HttpFrontDoorConnectionCloser {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("HttpFrontDoorConnectionCloser")
+            .field("base_url", &self.base_url)
+            .field("operator_token", &"<redacted>")
+            .finish()
+    }
+}
+
+impl HttpFrontDoorConnectionCloser {
+    /// Builds an HTTP closer validating `base_url` and rejecting empty operator secrets.
+    pub fn new(
+        base_url: impl Into<String>,
+        operator_token: impl Into<String>,
+    ) -> Result<Self, ApiError> {
+        let base_url = base_url.into().trim().trim_end_matches('/').to_owned();
+        let parsed = reqwest::Url::parse(&base_url)
+            .map_err(|_| ApiError::Internal("invalid front-door base URL"))?;
+        if !matches!(parsed.scheme(), "http" | "https")
+            || !parsed.username().is_empty()
+            || parsed.password().is_some()
+        {
+            return Err(ApiError::Internal("invalid front-door base URL"));
+        }
+        let operator_token = operator_token.into().trim().to_owned();
+        if operator_token.is_empty() {
+            return Err(ApiError::Internal("missing front-door operator token"));
+        }
+        let client = reqwest::Client::builder()
+            .redirect(reqwest::redirect::Policy::none())
+            .timeout(std::time::Duration::from_secs(10))
+            .build()
+            .map_err(|_| ApiError::Internal("front-door HTTP client build failed"))?;
+        Ok(Self {
+            client,
+            base_url,
+            operator_token,
+        })
+    }
+}
+
+#[async_trait]
+impl FrontDoorConnectionCloser for HttpFrontDoorConnectionCloser {
+    async fn end_all_connections(
+        &self,
+        front_door_account_id: Uuid,
+        _ended_at: u64,
+    ) -> Result<(), ApiError> {
+        let url = format!(
+            "{}/front-door/accounts/{front_door_account_id}/end-connections",
+            self.base_url
+        );
+        for attempt in 0..CLOSER_MAX_ATTEMPTS {
+            let outcome = self
+                .client
+                .post(&url)
+                .bearer_auth(&self.operator_token)
+                .send()
+                .await;
+            match outcome {
+                Ok(resp) if resp.status().is_success() => return Ok(()),
+                Ok(resp) if !resp.status().is_server_error() => {
+                    return Err(ApiError::Unavailable("front_door_connection_end_failed"));
+                }
+                Ok(_) | Err(_) if attempt + 1 < CLOSER_MAX_ATTEMPTS => {
+                    tokio::time::sleep(std::time::Duration::from_millis(25 * (attempt as u64 + 1)))
+                        .await;
+                }
+                Ok(_) | Err(_) => {
+                    return Err(ApiError::Unavailable("front_door_connection_end_failed"));
+                }
+            }
+        }
+        Err(ApiError::Unavailable("front_door_connection_end_failed"))
+    }
+}
+
 /// Single privacy owner, shared by HTTP actions and bounded recovery workers.
 #[derive(Clone)]
 pub struct PrivacyStore {
@@ -193,6 +338,7 @@ pub struct PrivacyStore {
     pub database: AccountDatabase,
     journal: Arc<dyn ReceiptJournal>,
     slots: Arc<tokio::sync::Semaphore>,
+    front_door_closer: Option<Arc<dyn FrontDoorConnectionCloser>>,
 }
 impl PrivacyStore {
     /// Construct with an independent journal adapter (never the SQL database itself).
@@ -201,7 +347,14 @@ impl PrivacyStore {
             database,
             journal,
             slots: Arc::new(tokio::sync::Semaphore::new(4)),
+            front_door_closer: None,
         }
+    }
+
+    /// Attaches the Connected Care connection closer invoked during [`Restriction::AccountDelete`].
+    pub fn with_front_door_closer(mut self, closer: Arc<dyn FrontDoorConnectionCloser>) -> Self {
+        self.front_door_closer = Some(closer);
+        self
     }
     /// Reconcile every independently retained receipt before binding a serving socket.
     /// Unknown legacy schemas or malformed inventory leave the entire process quarantined.
@@ -345,12 +498,32 @@ impl PrivacyStore {
                     .await?;
                 }
             }
+            let mapped_front_door = if operation == Restriction::AccountDelete {
+                orm::model::<front_door_mapping::Model>(
+                    &mut tx,
+                    &front_door_mapping::Entity::find()
+                        .filter(front_door_mapping::Column::UserId.eq(context.account_id))
+                        .into_query(),
+                )
+                .await?
+                .map(|row| row.front_door_account_id)
+            } else {
+                None
+            };
             if !apply(&mut tx, &r, ApplyMode::Live).await? {
                 return Err(ApiError::Conflict(
                     "restriction resource incarnation changed",
                 ));
             }
             insert_receipt(&mut tx, &r).await?;
+            if let Some(fd_id) = mapped_front_door {
+                let ended_at = u64::try_from(r.occurred_at.timestamp()).unwrap_or_default();
+                let closer = self
+                    .front_door_closer
+                    .as_ref()
+                    .ok_or(ApiError::Unavailable("front_door_closer_unconfigured"))?;
+                closer.end_all_connections(fd_id, ended_at).await?;
+            }
             r
         };
         tx.commit().await?;
@@ -2951,6 +3124,168 @@ mod tests {
                 && a_ev_left == 0
                 && b_ev_left == 1,
             "account_delete must record deleted identity tombstone and erase only target account rows"
+        );
+        fx.cleanup().await;
+    }
+
+    struct FailingCloser;
+
+    #[async_trait]
+    impl FrontDoorConnectionCloser for FailingCloser {
+        async fn end_all_connections(&self, _id: Uuid, _ended_at: u64) -> Result<(), ApiError> {
+            Err(ApiError::Unavailable("front_door_connection_end_failed"))
+        }
+    }
+
+    #[tokio::test]
+    async fn account_delete_propagates_to_front_door_and_rolls_back_when_closer_fails() {
+        let Some(mut fx) = PrivacyFixture::setup(false).await else {
+            return;
+        };
+        let front_door = Arc::new(front_door::MemoryFrontDoorStore::new());
+        let p_a = front_door::RosterPatient {
+            practice_id: "practice-a".into(),
+            patient_id: "pat-1".into(),
+        };
+        let p_b = front_door::RosterPatient {
+            practice_id: "practice-b".into(),
+            patient_id: "pat-2".into(),
+        };
+        let tok_a = front_door::FrontDoorStore::invite(
+            front_door.as_ref(),
+            &p_a,
+            "del@example.test",
+            "Del",
+            10,
+        )
+        .await
+        .unwrap();
+        let (fd_id, fd_sess) = front_door::FrontDoorStore::redeem_invitation(
+            front_door.as_ref(),
+            "del@example.test",
+            &tok_a,
+            11,
+        )
+        .await
+        .unwrap();
+        let tok_b = front_door::FrontDoorStore::invite(
+            front_door.as_ref(),
+            &p_b,
+            "del@example.test",
+            "Del",
+            12,
+        )
+        .await
+        .unwrap();
+        front_door::FrontDoorStore::redeem_invitation(
+            front_door.as_ref(),
+            "del@example.test",
+            &tok_b,
+            13,
+        )
+        .await
+        .unwrap();
+        fx.identities.map_front_door(&fx.a, fd_id).await.unwrap();
+
+        // When front-door propagation fails, AccountDelete fails closed and rolls back deletion.
+        let failing_privacy = fx
+            .privacy
+            .clone()
+            .with_front_door_closer(Arc::new(FailingCloser));
+        let err = failing_privacy
+            .restrict(
+                &fx.a,
+                Uuid::new_v4(),
+                Restriction::AccountDelete,
+                fx.a.account_id,
+                0,
+            )
+            .await
+            .unwrap_err();
+        assert!(matches!(
+            err,
+            ApiError::Unavailable("front_door_connection_end_failed")
+        ));
+        let user_still_present: i64 = sqlx::query_scalar("select count(*) from users where id=$1")
+            .bind(fx.a.account_id)
+            .fetch_one(&mut fx.owner)
+            .await
+            .unwrap();
+        assert_eq!(user_still_present, 1);
+        assert!(
+            front_door::FrontDoorStore::roster_connection(front_door.as_ref(), &p_a)
+                .await
+                .unwrap()
+                .is_connected()
+        );
+
+        // Once closer succeeds (via HTTP or store), AccountDelete commits and ends every connection.
+        let fd_router = front_door::http::router_with(
+            front_door::http::FrontDoorState::new(front_door.clone()).with_operator_auth(
+                front_door::http::OperatorAuth::from_secret("operator-secret-for-delete-test")
+                    .unwrap(),
+            ),
+            true,
+        );
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let addr = listener.local_addr().unwrap();
+        let server = tokio::spawn(async move { axum::serve(listener, fd_router).await.unwrap() });
+        let http_closer = HttpFrontDoorConnectionCloser::new(
+            format!("http://{addr}"),
+            "operator-secret-for-delete-test",
+        )
+        .unwrap();
+        assert!(
+            std::format!("{http_closer:?}")
+                .as_str()
+                .contains("<redacted>")
+        );
+
+        let wired_privacy = fx
+            .privacy
+            .clone()
+            .with_front_door_closer(Arc::new(http_closer));
+        wired_privacy
+            .restrict(
+                &fx.a,
+                Uuid::new_v4(),
+                Restriction::AccountDelete,
+                fx.a.account_id,
+                0,
+            )
+            .await
+            .unwrap();
+        server.abort();
+
+        let user_after: i64 = sqlx::query_scalar("select count(*) from users where id=$1")
+            .bind(fx.a.account_id)
+            .fetch_one(&mut fx.owner)
+            .await
+            .unwrap();
+        assert_eq!(user_after, 0);
+        assert!(matches!(
+            front_door::FrontDoorStore::roster_connection(front_door.as_ref(), &p_a)
+                .await
+                .unwrap(),
+            front_door::RosterConnectionStatus::Ended {
+                reason: front_door::ConnectionEndReason::AccountDeleted,
+                ..
+            }
+        ));
+        assert!(matches!(
+            front_door::FrontDoorStore::roster_connection(front_door.as_ref(), &p_b)
+                .await
+                .unwrap(),
+            front_door::RosterConnectionStatus::Ended {
+                reason: front_door::ConnectionEndReason::AccountDeleted,
+                ..
+            }
+        ));
+        assert_eq!(
+            front_door::FrontDoorStore::session(front_door.as_ref(), &fd_sess, 100)
+                .await
+                .unwrap_err(),
+            front_door::SessionError::Invalid
         );
         fx.cleanup().await;
     }
