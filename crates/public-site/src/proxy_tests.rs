@@ -25,7 +25,7 @@ fn fixed_origins_reject_credentials_and_nonlocal_plaintext() {
     assert!(
         ProxyConfig::new(
             "https://physician.test",
-            "https://staging.codahealth.ai",
+            "https://staging.coda.dabney.moe",
             None,
             true,
             true
@@ -41,7 +41,7 @@ fn fixed_origins_reject_credentials_and_nonlocal_plaintext() {
         assert!(
             ProxyConfig::new(
                 "https://physician.test",
-                "https://staging.codahealth.ai",
+                "https://staging.coda.dabney.moe",
                 Some(email.into()),
                 true,
                 true
@@ -264,7 +264,7 @@ fn mounts_own_only_their_path_family() {
 fn mounted_location_stays_inside_its_prefix_on_known_origins() {
     let config = ProxyConfig::new(
         "https://relay.test",
-        "https://staging.codahealth.ai",
+        "https://staging.coda.dabney.moe",
         None,
         true,
         false,
@@ -276,7 +276,7 @@ fn mounted_location_stays_inside_its_prefix_on_known_origins() {
         ("next", "/grafana/d/next"),
         ("https://relay.test/grafana/", "/grafana/"),
         (
-            "https://staging.codahealth.ai/grafana/login",
+            "https://staging.coda.dabney.moe/grafana/login",
             "/grafana/login",
         ),
         ("/grafana", "/grafana"),
@@ -293,7 +293,7 @@ fn mounted_location_stays_inside_its_prefix_on_known_origins() {
         "/grafana-other/",
         "../../physician/",
         "https://accounts.google.com/o/oauth2",
-        "https://staging.codahealth.ai/physician/",
+        "https://staging.coda.dabney.moe/physician/",
         "//evil.test/grafana/",
         "https://user@relay.test/grafana/",
         "javascript:alert(1)",

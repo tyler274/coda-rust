@@ -25,7 +25,7 @@ async fn staging_sign_in_reaches_the_physician_service() {
         physician_proxy: Some(
             ProxyConfig::new(
                 destination,
-                "https://staging.codahealth.ai",
+                "https://staging.coda.dabney.moe",
                 None,
                 true,
                 false,
@@ -144,14 +144,14 @@ async fn every_route_metadata_sitemap_and_retired_routes() {
     assert_eq!(
         locations,
         [
-            "https://codahealth.ai/",
-            "https://codahealth.ai/duet",
-            "https://codahealth.ai/clinical-transparency",
-            "https://codahealth.ai/privacy",
-            "https://codahealth.ai/terms",
-            "https://codahealth.ai/duet/privacy",
-            "https://codahealth.ai/duet/terms",
-            "https://codahealth.ai/duet/consumer-health-data",
+            "https://coda.dabney.moe/",
+            "https://coda.dabney.moe/duet",
+            "https://coda.dabney.moe/clinical-transparency",
+            "https://coda.dabney.moe/privacy",
+            "https://coda.dabney.moe/terms",
+            "https://coda.dabney.moe/duet/privacy",
+            "https://coda.dabney.moe/duet/terms",
+            "https://coda.dabney.moe/duet/consumer-health-data",
         ]
     );
     let response = app
@@ -166,7 +166,7 @@ async fn every_route_metadata_sitemap_and_retired_routes() {
         .unwrap();
     assert_eq!(
         to_bytes(response.into_body(), usize::MAX).await.unwrap(),
-        "User-Agent: *\nAllow: /\n\nHost: https://codahealth.ai\nSitemap: https://codahealth.ai/sitemap.xml\n"
+        "User-Agent: *\nAllow: /\n\nHost: https://coda.dabney.moe\nSitemap: https://coda.dabney.moe/sitemap.xml\n"
     );
     for path in [
         "/physicians",

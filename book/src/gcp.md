@@ -37,12 +37,10 @@ not `.#agent`, which loads no credentials.
 ## Public marketing site
 
 The separate [`infra/gcp/public-site`](/infra/gcp/public-site) root runs the
-stateless Rust marketing server on Cloud Run. The site belongs to the company,
-not to a product, so both environments live in the Coda Health projects:
-`staging.codahealth.ai` behind direct Cloud Run IAP in `coda-health-staging`, and
-`codahealth.ai` and `www.codahealth.ai` behind a load balancer and Cloud CDN in
-`coda-health-prod`, apart from the physician and Duet projects such as
-`coda-rust-staging`. The root shares no physician/Duet databases. CI deploys
+stateless Rust public-site server on Cloud Run, while static showcase exports
+(`ORIGIN=https://dabney.moe`, `BASE_PATH=/coda`) live under `dabney.moe/coda/`.
+Live hosted backends target `coda.dabney.moe` (`staging.coda.dabney.moe` behind
+direct Cloud Run IAP). The root shares no physician/Duet databases. CI deploys
 staging from `main`; production receives staging-tested images through manual
 promotion, and operator applies require explicit operator authorization. [Public
 site](public-site.md) owns the architecture, IAP and cache controls, runtime
@@ -510,6 +508,22 @@ CPU, memory, request concurrency and timeouts bound individual executions;
 migration jobs have one task, a 600-second timeout and no automatic retries.
 SQL disk growth is capped and backups/PITR are retained for seven days. Redis,
 SQL, minimum instances and networking can incur charges while no requests run.
+
+On `coda.dabney.moe` and staging Cloud Run services, `physician-sample`, `duet-api`,
+and `public-site` share one HTTP ingress abuse boundary in
+[`ingress.rs`](/crates/http/src/ingress.rs) (`IngressGuard`). It enforces fixed-window
+per-client IP rate limits (`429 Too Many Requests` with `Retry-After` and
+`Cache-Control: no-store`) keyed from the rightmost trusted `X-Forwarded-For` hop,
+strictly tightens quotas on unauthenticated auth/magic-link/OTP/invite/sync paths,
+rejects oversized bodies fast (`413 Payload Too Large` + `DefaultBodyLimit`), bounds
+concurrent in-flight non-probe requests (`503 Service Unavailable`), caps tracked
+client buckets in memory, and exempts health/readiness probes (`/health`, `/healthz`,
+`/readyz`, `/api/health`). Runtime knobs are `CODA_RATE_LIMIT_RPM`,
+`CODA_AUTH_RATE_LIMIT_RPM`, `CODA_MAX_REQUEST_BODY_BYTES`,
+`CODA_MAX_CONCURRENT_REQUESTS`, `CODA_TRUSTED_PROXY_HOPS`, and
+`CODA_RATE_LIMIT_ENFORCE_LOOPBACK` (automatically enforced when `K_SERVICE`,
+`CODA_HOSTED`, `APP_ENV`, or `CODA_ENVIRONMENT` is set, exempting local
+loopback tests otherwise).
 
 Before a rehearsal, compare the deployed Cloud Run services/jobs, SQL settings
 and worker settings with the reviewed root inputs. Record identifiers and

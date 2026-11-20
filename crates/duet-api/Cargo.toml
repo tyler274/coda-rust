@@ -20,6 +20,7 @@ duet_wire = { path = "../duet-wire" }
 front-door = { path = "../front-door" }
 gmail = { path = "../gmail" }
 harness = { path = "../harness" }
+http = { path = "../http", package = "coda-http", features = ["ingress"] }
 url = "2"
 jsonwebtoken = { version = "11", default-features = false, features = ["aws_lc_rs", "use_pem"] }
 rand = "0.10"

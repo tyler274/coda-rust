@@ -1,6 +1,6 @@
 use super::brand::{Product, ProductLockup};
 use super::phones::Phones;
-use crate::{Config, PhysicianLink};
+use crate::{Config, PhysicianLink, site};
 use dioxus::prelude::*;
 
 #[component]
@@ -13,7 +13,7 @@ pub fn Home() -> Element {
                 p { class: "lede rv", style: "--d:.12s", "A physician-directed AI care team." }
                 div { class: "hero-cta rv", style: "--d:.18s",
                     div { class: "hero-cta-row",
-                        a { class: "btn", href: "mailto:hello@codahealth.ai",
+                        a { class: "btn", href: site::contact_mailto(),
                             "Partner with us "
                             icons::arrow_right {}
                         }
@@ -365,7 +365,7 @@ pub fn Home() -> Element {
                             b { "Built by physicians." }
                             " Founded by a physician at Mass General and an MIT computer scientist."
                         }
-                        a { class: "tlink", href: "mailto:hello@codahealth.ai",
+                        a { class: "tlink", href: site::contact_mailto(),
                             "Partner with Coda "
                             span { "aria-hidden": "true", "→" }
                         }
@@ -1369,7 +1369,7 @@ pub fn Home() -> Element {
                         div { class: "closer-cta",
                             a {
                                 class: "btn btn-light",
-                                href: "mailto:hello@codahealth.ai",
+                                href: site::contact_mailto(),
                                 "Partner with Coda "
                                 icons::arrow_right {}
                             }
@@ -1382,8 +1382,8 @@ pub fn Home() -> Element {
                             } else {
                                 a {
                                     class: "btn-ghost",
-                                    href: "mailto:hello@codahealth.ai",
-                                    "hello@codahealth.ai"
+                                    href: site::contact_mailto(),
+                                    "{site::CONTACT_EMAIL}"
                                 }
                             }
                         }

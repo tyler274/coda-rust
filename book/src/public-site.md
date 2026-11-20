@@ -1,13 +1,15 @@
 # Public site
 
-`crates/public-site` is the Rust public marketing site. It serves `codahealth.ai`
-and `www.codahealth.ai` from `coda-health-prod`, and `staging.codahealth.ai` behind
-IAP from `coda-health-staging`. It is separate from the physician runtime and Duet:
-no database, physician accounts, model execution, or clinical types are introduced
-by the site. Sign-in exists only where `PHYSICIAN_APP_URL` is configured: that one
-setting mounts the same-origin `/physician/` proxy and renders the nav's Sign in
-link. Staging sets it; production doesn't, so production offers no sign-in and
-`/physician/` is an ordinary 404.
+`crates/public-site` is the Rust public marketing site and static showcase builder.
+The live server serves `coda.dabney.moe` (and `staging.coda.dabney.moe` behind IAP
+in staging), while static exports via `scripts/build-pages-site.sh` (default
+`ORIGIN=https://dabney.moe`) power subpath showcases such as `dabney.moe/coda/`.
+It is separate from the physician runtime and Duet: no database, physician
+accounts, model execution, or clinical types are introduced by the site. Sign-in
+exists only where `PHYSICIAN_APP_URL` is configured: that one setting mounts
+the same-origin `/physician/` proxy and renders the nav's Sign in link. Production
+leaves it unset, so production offers no sign-in and `/physician/` is an ordinary
+404.
 
 ## Application contract
 
@@ -59,8 +61,10 @@ query.
 
 Static export mode (`public-site --export-dir <dir> --base-path <prefix> --origin <url>`)
 renders the same startup pages, `404.html`, `sitemap.xml`, `robots.txt`, `.nojekyll`,
-and hashed/raw assets to disk for subpath hosting such as GitHub Pages (with the
-architecture book built alongside under `/book/` by [`.github/workflows/pages.yml`](/.github/workflows/pages.yml)).
+and hashed/raw assets to disk for subpath hosting such as `https://dabney.moe/coda/`
+or GitHub Pages (with the architecture book and WASM SQLite physician demo built
+alongside by [`scripts/build-pages-site.sh`](/scripts/build-pages-site.sh) with
+`ORIGIN` defaulting to `https://dabney.moe`).
 
 Legal documents are data. Each current document is one record in
 `data/<document>.json` holding every word of it: heading, title, intro, date and
@@ -113,8 +117,8 @@ Runtime configuration:
   `OBSERVABILITY_RELAY_URL` is set.
   No browser credential supplies this value.
 - `PUBLIC_SITE_ORIGIN`: optional exact browser origin for the physician proxy's
-  unsafe-method Origin validation. Defaults to `https://staging.codahealth.ai` in staging,
-  `https://codahealth.ai` in production, and the local listener origin otherwise.
+  unsafe-method Origin validation. Defaults to `https://staging.coda.dabney.moe` in staging,
+  `https://coda.dabney.moe` in production, and the local listener origin otherwise.
   Unspecified local bind addresses (`0.0.0.0` or `::`) map to the corresponding
   loopback browser host. Alternate hosts or mapped container ports must set this
   origin explicitly so unsafe-method Origin checks match the browser.
@@ -134,6 +138,18 @@ Runtime configuration:
   does not impose a second deadline, and streaming response bodies are not
   capped by this header deadline.
 - `PUBLIC_SITE_INTERNAL_PROBE_ADDR`: optional, loopback-only probe address.
+- Shared HTTP ingress protection ([`ingress.rs`](/crates/http/src/ingress.rs)):
+  `CODA_RATE_LIMIT_RPM` (default `240`; `0` disables rate limiting),
+  `CODA_AUTH_RATE_LIMIT_RPM` (default `20` for `/auth/*`, `/physician/auth/*`,
+  `/api/auth/email/*`, `/api/auth/email-change/*`, `/api/connected-care/sync`,
+  `/front-door/sign-in/*`, and
+  `/front-door/invitations/*`), `CODA_MAX_REQUEST_BODY_BYTES` (`64 KiB` default on
+  standalone `public-site`, `8 MiB` when `/physician/` or `/grafana/` proxy mounts
+  are active), `CODA_MAX_CONCURRENT_REQUESTS` (default `64` on the ingress guard),
+  `CODA_TRUSTED_PROXY_HOPS` (default `1` rightmost `X-Forwarded-For` hop across
+  all header lines), and `CODA_RATE_LIMIT_ENFORCE_LOOPBACK` (`1`/`true` or
+  non-empty `K_SERVICE`, `CODA_HOSTED`, `APP_ENV`, or `CODA_ENVIRONMENT`
+  enforces quotas on loopback clients too). Health probes stay exempt.
 
 Local startup (from the workspace root):
 
