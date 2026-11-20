@@ -1,0 +1,19 @@
+// Route Maven Central through Google's official GCS mirror before falling back
+// to repo.maven.apache.org, which Cloudflare can block or rate-limit on shared
+// GitHub Actions runner IPs.
+gradle.beforeProject { proj ->
+    proj.buildscript.repositories {
+        google()
+        maven {
+            name = "GoogleMavenCentralMirror"
+            url = "https://maven-central.storage-download.googleapis.com/maven2/"
+        }
+    }
+    proj.repositories {
+        google()
+        maven {
+            name = "GoogleMavenCentralMirror"
+            url = "https://maven-central.storage-download.googleapis.com/maven2/"
+        }
+    }
+}

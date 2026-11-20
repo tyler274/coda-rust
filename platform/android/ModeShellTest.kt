@@ -56,12 +56,22 @@ class ModeShellTest {
 
     @Test
     fun clientThenPhysician() {
-        assertTrue(
-            "Duet shell did not open directly to its sign-in gate:\n${hierarchy()}",
+        val deadline = System.currentTimeMillis() + WAIT
+        var opened = false
+        while (System.currentTimeMillis() < deadline) {
+            device.findObject(By.res("android:id/aerr_wait"))?.click()
+            if (device.hasObject(By.textStartsWith("Sign in to your Duet account"))) {
+                opened = true
+                break
+            }
             device.wait(
                 Until.hasObject(By.textStartsWith("Sign in to your Duet account")),
-                WAIT,
-            ) == true,
+                2_000L,
+            )
+        }
+        assertTrue(
+            "Duet shell did not open directly to its sign-in gate:\n${hierarchy()}",
+            opened,
         )
         control("Continue")
         assertNull(

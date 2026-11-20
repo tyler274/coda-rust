@@ -18,6 +18,8 @@ const BUILD_TOOLS: &str = "37.0.0";
 
 const WRAPPER_TIMEOUT: &str = "networkTimeout=120000";
 
+const MAVEN_CENTRAL_MIRROR: &str = "https://maven-central.storage-download.googleapis.com/maven2/";
+
 const HARDWARE_KEYS: &str = "\
     // duet-hardware-keys
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
@@ -72,9 +74,30 @@ pub fn workspace_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..")
 }
 
+/// Returns where `dx build --android` places its generated Gradle project, honoring
+/// `CARGO_TARGET_DIR` when set and falling back to `<workspace>/target/dx/mobile`.
+pub fn dx_generated_dir(workspace: &Path) -> PathBuf {
+    dx_generated_dir_with(workspace, env::var_os("CARGO_TARGET_DIR").as_deref())
+}
+
+fn dx_generated_dir_with(workspace: &Path, cargo_target_dir: Option<&std::ffi::OsStr>) -> PathBuf {
+    let target = cargo_target_dir
+        .filter(|dir| !dir.is_empty())
+        .map(PathBuf::from)
+        .map(|dir| {
+            if dir.is_relative() {
+                workspace.join(dir)
+            } else {
+                dir
+            }
+        })
+        .unwrap_or_else(|| workspace.join("target"));
+    target.join("dx/mobile")
+}
+
 pub fn build(workspace: &Path) -> Result<(), Failure> {
     run_dx(workspace)?;
-    let generated = workspace.join("target/dx/mobile");
+    let generated = dx_generated_dir(workspace);
     patch_generated_android_project(workspace, &generated)?;
     assemble_debug(&generated)
 }
@@ -92,6 +115,7 @@ pub fn patch_generated_android_project(workspace: &Path, generated: &Path) -> Re
     }
     for path in &gradle_files {
         rewrite(path, patch_build_tools)?;
+        rewrite(path, patch_maven_repositories)?;
     }
     for path in find(generated, |path| {
         path.file_name()
@@ -222,13 +246,17 @@ fn run_dx(workspace: &Path) -> Result<(), Failure> {
     Ok(())
 }
 
-/// dx has generated the Gradle project by the time it assembles, so two of its
-/// Gradle failures are recoverable: the missing build-tools 34 (patched to 37)
-/// and the wrapper's 10 s download timeout (patched to 120 s). `gradlew
-/// assembleDebug` then retries with the patched project.
+/// dx has generated the Gradle project by the time it assembles, so three of its
+/// Gradle failures are recoverable: the missing build-tools 34 (patched to 37),
+/// the wrapper's 10 s download timeout (patched to 120 s), and Maven Central
+/// blocking/rate-limiting on shared CI IPs (patched to try Google's Maven Central
+/// mirror before `mavenCentral()`). `gradlew assembleDebug` then retries with
+/// the patched project.
 fn assembly_continues(log: &str) -> bool {
     log.contains("build-tools")
         || (log.contains("services.gradle.org/distributions/") && log.contains("timeout"))
+        || (log.contains("Could not resolve all artifacts for configuration 'classpath'")
+            && log.contains("repo.maven.apache.org/maven2/"))
 }
 
 fn dx_program() -> Result<PathBuf, Failure> {
@@ -283,6 +311,27 @@ fn patch_wrapper_timeout(text: &str) -> String {
         .collect::<Vec<_>>()
         .join("\n")
         + "\n"
+}
+
+/// Prepends Google's official Maven Central mirror ahead of `mavenCentral()` so
+/// shared CI runners do not fail when Cloudflare blocks `repo.maven.apache.org`.
+fn patch_maven_repositories(text: &str) -> String {
+    if !text.contains("mavenCentral()") || text.contains(MAVEN_CENTRAL_MIRROR) {
+        return text.to_owned();
+    }
+    let mut out = String::with_capacity(text.len() + 160);
+    for line in text.split_inclusive('\n') {
+        if line.trim() == "mavenCentral()" {
+            let indent_len = line.len() - line.trim_start().len();
+            let indent = &line[..indent_len];
+            out.push_str(indent);
+            out.push_str(&format!(
+                "maven {{ url = uri(\"{MAVEN_CENTRAL_MIRROR}\") }}\n"
+            ));
+        }
+        out.push_str(line);
+    }
+    out
 }
 
 fn patch_build_tools(text: &str) -> String {
@@ -567,7 +616,58 @@ mod tests {
         assert!(assembly_continues(
             "build-tools;34.0.0 Android SDK Build-Tools 34"
         ));
+        assert!(assembly_continues(
+            "Could not resolve all artifacts for configuration 'classpath'.\n  - https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-gradle-plugin/2.0.20/kotlin-gradle-plugin-2.0.20.pom"
+        ));
         assert!(!assembly_continues("error[E0425]: cannot find value"));
+        assert!(!assembly_continues(
+            "Could not resolve all artifacts for configuration 'classpath'.\n  - https://example.invalid/missing.pom"
+        ));
+    }
+
+    #[test]
+    fn maven_mirror_patch_prepends_google_mirror_and_is_idempotent() {
+        let input = "\
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+";
+        let patched = patch_maven_repositories(input);
+        assert_eq!(patched.matches(MAVEN_CENTRAL_MIRROR).count(), 2);
+        let mirror_pos = patched.find(MAVEN_CENTRAL_MIRROR).unwrap();
+        let central_pos = patched.find("mavenCentral()").unwrap();
+        assert!(mirror_pos < central_pos);
+        assert_eq!(patch_maven_repositories(&patched), patched);
+    }
+
+    #[test]
+    fn dx_generated_dir_honors_cargo_target_dir() {
+        let workspace = Path::new("/repo");
+        assert_eq!(
+            dx_generated_dir_with(workspace, None),
+            PathBuf::from("/repo/target/dx/mobile")
+        );
+        assert_eq!(
+            dx_generated_dir_with(workspace, Some(std::ffi::OsStr::new(""))),
+            PathBuf::from("/repo/target/dx/mobile")
+        );
+        assert_eq!(
+            dx_generated_dir_with(workspace, Some(std::ffi::OsStr::new("/tmp/custom-target"))),
+            PathBuf::from("/tmp/custom-target/dx/mobile")
+        );
+        assert_eq!(
+            dx_generated_dir_with(workspace, Some(std::ffi::OsStr::new("alt-target"))),
+            PathBuf::from("/repo/alt-target/dx/mobile")
+        );
     }
 
     #[test]
@@ -610,6 +710,14 @@ mod tests {
         fs::write(
             workspace.join("scripts/wire-duet-android.py"),
             "import pathlib, sys\npath = pathlib.Path(sys.argv[1])\npath.write_text(path.read_text() + '<!-- duet-android-wired -->\\n')\n",
+        )
+        .unwrap();
+
+        let root_gradle = generated.join("build.gradle.kts");
+        fs::create_dir_all(root_gradle.parent().unwrap()).unwrap();
+        fs::write(
+            &root_gradle,
+            "buildscript {\n    repositories {\n        google()\n        mavenCentral()\n    }\n}\n",
         )
         .unwrap();
 
@@ -677,9 +785,11 @@ dependencies {
         assert!(!wrapper.contains("networkTimeout=10000"));
         assert!(wrapper.contains("gradle-9.1.0-bin.zip"));
 
+        let root_gradle = fs::read_to_string(root_gradle).unwrap();
         let library = fs::read_to_string(library).unwrap();
         let app = fs::read_to_string(app).unwrap();
         let manifest = fs::read_to_string(manifest).unwrap();
+        assert!(root_gradle.contains(MAVEN_CENTRAL_MIRROR));
         assert!(library.contains("buildToolsVersion = \"37.0.0\""));
         assert!(app.contains("buildToolsVersion = \"37.0.0\""));
         assert!(manifest.contains("android:usesCleartextTraffic=\"true\""));
