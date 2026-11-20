@@ -1,0 +1,221 @@
+Checked 10 authored SQL files with pg_format version 5.11
+.......PASS P1 step: observed
+.PASS P1 step: observed
+FAIL P1 step: observed
+.PASS P1 step: observed
+..usage: scenarios.py [-h] [--only ONLY] [--require-complete]
+                    [--evidence EVIDENCE]
+scenarios.py: error: --only selected no journeys; available: P1, D1, L1
+.PASS L1 measure: rate=16.67
+.FAIL D1 cargo test exit: cargo test --locked -p duet-api --test database_foundation --test public_budget -- --test-threads=1 exited 101
+PASS D1 fresh_and_upgrade_keep_identity_and_enforce_account_scope: ok: fresh and upgraded schema keep identity; one account cannot read another's rows
+PASS D1 public_retrieval_budget_spans_pools_and_publication: ok: the public retrieval budget holds across pools and counts publication reads and misses
+..
+----------------------------------------------------------------------
+Ran 15 tests in 0.016s
+
+OK
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.77s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.22s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.28s
+     Running unittests src/lib.rs (/tmp/coda-target-gcp/debug/deps/boundaries-94cce9dbaff1c954)
+
+running 25 tests
+test shared_ui::a_whole_test_file_counts_nothing ... ok
+test shared_ui::a_matching_count_passes ... ok
+test shared_ui::a_count_going_down_says_to_lower_the_number ... ok
+test shared_ui::a_count_reaching_zero_says_to_remove_the_entry ... ok
+test shared_ui::a_new_file_counts_as_going_up_from_zero ... ok
+test shared_ui::a_count_going_up_says_to_use_the_shared_component_or_add_an_exception ... ok
+test shared_ui::counts_card_classes_set_apart_by_escaped_whitespace ... ok
+test shared_ui::counts_css_rules_naming_control_elements ... ok
+test tests::duet_screens_do_not_read_device_health_directly ... ok
+test shared_ui::every_table_entry_has_one_row_and_a_reason ... ok
+test shared_ui::counts_css_rules_naming_library_classes ... ok
+test shared_ui::counts_card_markup_by_class_family_once_per_element ... ok
+test tests::apps_do_not_import_each_others_clinical_crates ... ok
+test shared_ui::ignores_comments_strings_and_lookalikes ... ok
+test shared_ui::counts_each_raw_control_inside_rsx ... ok
+test shared_ui::counts_rsx_held_in_other_macros_and_nested_rsx ... ok
+test tests::shipping_clients_stay_until_the_rust_journeys_match ... ok
+test shared_ui::ignores_test_code_but_not_code_kept_out_of_tests ... ok
+test tests::the_clinical_library_is_product_neutral ... ok
+test tests::gmail_and_spruce_are_product_neutral ... ok
+test shared_ui::the_check_reads_the_real_library ... ok
+test tests::every_ui_behaviour_is_run_as_its_kind ... ok
+test tests::shared_harness_is_product_neutral_and_has_no_product_store ... ok
+test tests::the_ui_library_runs_its_browser_behaviour_without_eval ... ok
+test shared_ui::the_apps_match_the_shared_ui_table ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+
+   Doc-tests boundaries
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.67s
+     Running unittests src/lib.rs (/tmp/coda-target-gcp/debug/deps/duet_health-dfb993d54c79b5b7)
+
+running 11 tests
+test tests::a_host_build_does_not_invent_a_phone_source ... ok
+test tests::host_build_does_not_invent_samples ... ok
+test tests::healthkit_thrown_read_is_unreadable ... ok
+test tests::healthkit_unavailable_has_no_readings ... ok
+test tests::healthkit_unknown_code_is_unreadable ... ok
+test tests::status_codes_are_the_four_store_states ... ok
+test tests::healthkit_connected_omits_ungranted_rows ... ok
+test tests::healthkit_connected_keeps_an_empty_store ... ok
+test tests::health_connect_origins_keep_their_names ... ok
+test tests::healthkit_permission_can_be_requested_and_hides_readings ... ok
+test tests::ungranted_readings_are_omitted ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/native_adapters.rs (/tmp/coda-target-gcp/debug/deps/native_adapters-2498c8b75efb1d28)
+
+running 15 tests
+test permission_request_completion_is_not_readable_data ... ok
+test health_connect_defaults_to_approved_scope_and_disabled_gate_still_reports_not_enabled ... ok
+test exact_value_unit_timezone_and_provenance_are_preserved ... ok
+test page_limit_is_respected_across_types ... ok
+test deletions_pass_through_with_the_sample_identity ... ok
+test whole_store_failures_are_typed_and_commit_nothing ... ok
+test health_connect_errors_are_typed ... ok
+test bridge_replies_decode_to_typed_results ... ok
+test oxygen_saturation_percent_is_scaled_once_from_the_native_fraction ... ok
+test first_read_is_bounded_by_the_initial_window_and_the_bound_is_stable ... ok
+test health_connect_records_without_an_exact_value_are_reported_not_uploaded ... ok
+test a_failed_type_keeps_its_old_sub_anchor_while_others_advance ... ok
+test health_connect_pages_the_changes_feed_and_keeps_the_writing_package ... ok
+test a_type_with_an_invalidated_anchor_rereads_only_itself ... ok
+test health_connect_filters_granted_types_reads_initial_history_and_states_limits ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/outbox.rs (/tmp/coda-target-gcp/debug/deps/outbox-e462f12046a825d4)
+
+running 13 tests
+test another_scope_cannot_open_the_document ... ok
+test rejections_are_typed_and_retained ... ok
+test original_value_unit_and_time_zone_are_sent_exactly_and_unknown_dates_stay_absent ... ok
+test empty_error_and_permission_loss_never_delete_but_explicit_deletion_does ... ok
+test locked_storage_pauses_and_resumes_without_losing_work ... ok
+test corrections_follow_the_acknowledged_revision_in_order ... ok
+test crash_after_dispatch_and_uncertain_ack_retry_the_same_operation_id_and_bytes ... ok
+test same_generation_disconnect_resumes_a_lost_acknowledgement ... ok
+test bounded_retries_park_work_without_dropping_it ... ok
+test generation_bump_and_disconnect_fence_stale_work ... ok
+test pending_bound_applies_backpressure_and_oversized_items_are_rejected_locally ... ok
+test crash_between_record_persist_and_cursor_commit_rereads_without_duplicates ... ok
+test full_multi_page_pagination_commits_each_page_with_its_anchor ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s
+
+   Doc-tests duet_health
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.00s
+     Running unittests src/lib.rs (/tmp/coda-target-gcp/debug/deps/duet_client-f723e8b8dabaa037)
+
+running 6 tests
+test session::tests::switch_and_signout_fence_delayed_responses_and_clear_drafts ... ok
+test refusal::tests::only_product_refusal_ends_the_current_session ... ok
+test tests::reads_the_library ... ok
+test refusal::tests::health_generation_and_upload_refusals_invalidate_bound_session ... ok
+test refusal::tests::refreshed_credential_survives_refusal_of_original_credential ... ok
+test tests::join_consent_and_premium_follow_the_front_door ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/background_acquire.rs (/tmp/coda-target-gcp/debug/deps/background_acquire-80248fe436007f56)
+
+running 3 tests
+test background_on_locked_storage_completes_as_a_typed_pause ... ok
+test the_registered_handler_is_what_the_native_observer_waits_for ... ok
+test background_completes_after_the_durable_write_without_uploading ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/doctor_controls.rs (/tmp/coda-target-gcp/debug/deps/doctor_controls-d6166c40822a819b)
+
+running 1 test
+test authenticated_contracts_exact_retry_and_redacted_errors ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/health_upload.rs (/tmp/coda-target-gcp/debug/deps/health_upload-e996d3a1ec5fb6c6)
+
+running 11 tests
+test http_outcomes_are_classified_without_guessing ... ok
+test pending_secure_cleanup_refuses_queue_access ... ok
+test locked_protected_storage_pauses_then_resumes ... ok
+test apple_health::a_refused_session_never_opens_the_sheet ... ok
+test apple_health::a_late_permission_answer_cannot_connect_the_next_patient ... ok
+test apple_health::a_withdrawal_during_the_sheet_cannot_authorize_a_later_generation ... ok
+test apple_health::refresh_imports_through_the_connected_queue ... ok
+test duet_client_transport_posts_the_canonical_batch ... ok
+test same_account_resumes_after_restart_with_the_same_operation_ids ... ok
+test sign_out_and_account_switch_pause_and_isolate_the_queue ... ok
+test a_retained_rejection_reports_only_after_the_queue_drains ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/portals_and_health_connect.rs (/tmp/coda-target-gcp/debug/deps/portals_and_health_connect-17e7b05d787b680c)
+
+running 1 test
+test client_handles_portals_vendor_disabled_not_now_and_phone_disconnect_sync ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/retention.rs (/tmp/coda-target-gcp/debug/deps/retention-0707252a4a6f8123)
+
+running 15 tests
+test readback_requires_exact_content_order_and_generation ... ok
+test missing_native_host_never_falls_back_to_plaintext ... ok
+test refusal_invalidates_views_without_deleting_protected_patient_work ... ok
+test locked_cleanup_invalidates_ui_but_preserves_marker_for_retry ... ok
+test every_key_this_account_writes_is_registered ... ok
+test switch_erases_previous_owner_and_fences_late_response_even_after_switch_back ... ok
+test damaged_draft_survives_read_and_write_until_explicit_discard ... ok
+test offline_recovery_never_discards_or_approves_a_draft ... ok
+test restart_recovers_exact_uncertain_edit_without_network ... ok
+test rotation_preserves_fences_and_uncertain_bytes_cannot_be_replaced ... ok
+test publication_intent_survives_restart_cannot_rebase_and_is_erased_on_switch ... ok
+test sign_out_switch_and_new_incarnation_remove_queued_health ... ok
+test boxed_recovery_preserves_v1_storage_bytes_and_subject_fence ... ok
+test conflict_release_requires_exact_definitive_refusal_and_preserves_draft ... ok
+test sign_out_warning_names_the_draft_the_save_and_the_health_queue ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests duet_client
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.29s
+     Running unittests src/lib.rs (/tmp/coda-target-gcp/debug/deps/duet_app-33e4370db0cb822a)
+
+running 13 tests
+test roots::tests::notification_controls_name_their_permission ... ok
+test roots::tests::android_debug_api_reaches_the_emulator_host ... ok
+test account::tests::recovered_draft_is_empty_after_another_account_signs_in_and_expires ... ok
+test records::tests::omitted_interval_end_stays_absent ... ok
+test records::tests::undated_records_say_date_unknown ... ok
+test account::tests::only_a_parsed_https_return_url_lets_apple_sign_in_start ... ok
+test records::tests::removed_records_are_labelled_with_literal_values_and_zone ... ok
+test records::tests::acquisition_interval_is_person_facing ... ok
+test roots::tests::doctor_page_lists_the_saved_question ... ok
+test roots::tests::library_empty_and_sections ... ok
+test account::tests::startup_refusal_blocks_recovery_across_restart_until_cleanup_retry_succeeds ... ok
+test account::tests::startup_refusal_erases_retained_work_but_temporary_failure_preserves_it ... ok
+test roots::tests::a_saved_doctor_page_uses_the_letter_layout ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+

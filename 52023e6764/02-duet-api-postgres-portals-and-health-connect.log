@@ -1,0 +1,127 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.00s
+     Running unittests src/lib.rs (/tmp/coda-target-gcp/debug/deps/duet_api-f7cabe06c5aaeebe)
+
+running 45 tests
+test identity::local_tests::a_short_secret_is_refused ... ok
+test hosting::tests::local_runs_start_without_any_profile ... ok
+test background::tests::every_api_error_has_a_class ... ok
+test privacy::tests::restriction_enum_matches_wire_snake_case ... ok
+test hosting::tests::a_false_cloud_marker_is_still_hosted ... ok
+test hosting::tests::production_and_other_profiles_refuse_even_when_complete ... ok
+test portals::tests::update_failure_day_formats_plain_copy ... ok
+test hosting::tests::local_stand_ins_refuse_hosted_even_with_a_complete_profile ... ok
+test identity::refusal_tests::provider_outage_and_configuration_errors_are_not_session_refusals ... ok
+test hosting::tests::staging_preview_is_the_only_hosted_profile ... ok
+test evidence_routes::tests::undated_records_have_no_date_and_keep_literal_values ... ok
+test portals::tests::vendor_kill_switch_filters_search_and_preserves_enabled_vendors ... ok
+test background::tests::failure_event_names_the_class_without_error_text ... ok
+test evidence_routes::tests::projected_role_and_offset_are_literal ... ok
+test tests::the_schema_readiness_check_names_the_required_migration ... ok
+test evidence_routes::tests::acquisition_interval_keeps_start_and_end_and_sorts_on_the_start ... ok
+test hosting::tests::liveness_says_nothing_about_readiness ... ok
+test identity::local_tests::verifies_a_signed_local_token ... ok
+test identity::local_tests::refuses_forged_expired_foreign_and_future_tokens ... ok
+test tests::an_unknown_session_cannot_read_premium_or_grant_consent ... ok
+test privacy_archive::tests::production_trust_and_object_namespace_cannot_be_configured_as_urls ... ok
+test tests::a_joined_patient_holds_a_session_that_reads_the_link ... ok
+test tests::a_used_or_wrong_invitation_redeems_never_again ... ok
+test tests::consent_follows_the_presented_session_not_a_dev_header ... ok
+test tests::premium_reads_free_until_the_front_door_says_otherwise ... ok
+test site::tests::serves_only_named_assets_with_wasm_mime ... ok
+test tests::consent_grants_reads_and_withdraws_in_one_step ... ok
+test privacy_archive::tests::gcs_transport_and_postgres_recovery_reconcile_same_receipt_after_restart ... ok
+test privacy_archive::tests::conditional_creation_ambiguous_readback_corruption_and_credentials ... ok
+test privacy_archive::tests::chunked_readback_cannot_bypass_body_limit ... ok
+test privacy_archive::tests::metadata_failures_never_forward_credentials_or_follow_redirects ... ok
+test privacy::tests::receipt_account_delete ... ok
+test privacy::tests::receipt_sessions_revoke ... ok
+test privacy::tests::receipt_follow_up_cancel ... ok
+test privacy::tests::receipt_records_withdraw ... ok
+test privacy::tests::receipt_doctor_item_delete ... ok
+test privacy::tests::receipt_follow_up_pause ... ok
+test privacy::tests::receipt_doctor_note_delete ... ok
+test privacy::tests::receipt_evidence_delete ... ok
+test privacy::tests::receipt_device_withdraw ... ok
+test privacy::tests::receipt_luna_withdraw ... ok
+test privacy::tests::receipt_doctor_page_delete ... ok
+test privacy::tests::receipt_publication_revoke ... ok
+test privacy::tests::receipt_proactive_withdraw ... ok
+test privacy_archive::tests::transport_timeout_and_cancellation_release_capacity ... ok
+
+test result: ok. 45 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.10s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.86s
+     Running tests/database_foundation.rs (/tmp/coda-target-gcp/debug/deps/database_foundation-7c929047a69cc16d)
+
+running 1 test
+test fresh_and_upgrade_keep_identity_and_enforce_account_scope ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.27s
+
+     Running tests/durable_owners.rs (/tmp/coda-target-gcp/debug/deps/durable_owners-1036747145680ca6)
+
+running 2 tests
+test canonical_ingestion_authority_removal_and_batch ... ok
+test durable_identity_evidence_privacy_and_restore ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.98s
+
+     Running tests/evidence_cohort.rs (/tmp/coda-target-gcp/debug/deps/evidence_cohort-d923e0ef1324a116)
+
+running 1 test
+test paginated_exact_membership_account_revision_and_restore_fences ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.48s
+
+     Running tests/fresh_producers.rs (/tmp/coda-target-gcp/debug/deps/fresh_producers-29d79254f57e3f16)
+
+running 1 test
+test fresh_http_health_context_isolates_accounts_and_restricts ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.77s
+
+     Running tests/health_context_producer.rs (/tmp/coda-target-gcp/debug/deps/health_context_producer-ff97ad085d36f232)
+
+running 1 test
+test empty_database_producer_restart_fences_and_withdrawal ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.81s
+
+     Running tests/hosting.rs (/tmp/coda-target-gcp/debug/deps/hosting-baf657fb873cc0fc)
+
+running 3 tests
+test product_migration_requires_explicit_database_authority ... ok
+test hosted_startup_rejects_unqualified_runtime_before_database_access ... ok
+test production_refuses_to_start_even_with_the_staging_profile ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/phone_outbox.rs (/tmp/coda-target-gcp/debug/deps/phone_outbox-69ac4203caf8b20c)
+
+running 1 test
+test phone_outbox_drains_into_canonical_evidence_on_postgres ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.82s
+
+     Running tests/portals_and_health_connect.rs (/tmp/coda-target-gcp/debug/deps/portals_and_health_connect-662dbd44ada90dad)
+
+running 2 tests
+test cod63_portals_multi_org_daily_refresh_partial_broken_kill_switch_not_now_and_overdue ... ok
+test cod64_health_connect_outbox_phone_disconnect_and_apple_health_deletion_recompute ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.02s
+
+     Running tests/public_budget.rs (/tmp/coda-target-gcp/debug/deps/public_budget-999564c245f63d2a)
+
+running 1 test
+test public_retrieval_budget_spans_pools_and_publication ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s
+
+     Running tests/sql_layout.rs (/tmp/coda-target-gcp/debug/deps/sql_layout-6d832207a0716cf6)
+
+running 1 test
+test schema_readiness_query_preserves_the_original_sql ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
