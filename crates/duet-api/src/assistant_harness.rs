@@ -42,7 +42,7 @@ use crate::assistant_entity::{
 };
 use crate::database::{AccountDatabase, orm};
 use crate::durable::DurableState;
-use crate::identity::{AccountContext, check_current};
+use crate::identity::{AccessLevel, AccountContext, check_current};
 
 /// Exact fixed standing notice required whenever Duet's AI is surfaced (`intent/duet.md`).
 pub const STANDING_AI_DISCLOSURE: &str = "Duet's AI isn't a doctor. It explains health information and doesn't diagnose or treat. In an emergency, call 911.";
@@ -545,7 +545,7 @@ impl AssistantFoundationStore {
         context: &AccountContext,
     ) -> Result<AssistantFoundationSnapshot, ApiError> {
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::RightsOnly).await?;
 
         let user = orm::model::<user_gate::Model>(
             &mut tx,
@@ -600,7 +600,7 @@ impl AssistantFoundationStore {
         now: DateTime<Utc>,
     ) -> Result<AssistantFoundationSnapshot, ApiError> {
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::RightsOnly).await?;
 
         let existing = orm::model::<ai_preference::Model>(
             &mut tx,
@@ -662,7 +662,7 @@ impl AssistantFoundationStore {
         now: DateTime<Utc>,
     ) -> Result<i64, ApiError> {
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
 
         let prior = orm::model::<private_memory::Model>(
             &mut tx,
@@ -737,7 +737,7 @@ impl AssistantFoundationStore {
         context: &AccountContext,
     ) -> Result<Option<(i64, Value)>, ApiError> {
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let current = orm::model::<private_memory::Model>(
             &mut tx,
             &private_memory::Entity::find_by_id(context.account_id).into_query(),
@@ -754,7 +754,7 @@ impl AssistantFoundationStore {
         now: DateTime<Utc>,
     ) -> Result<Vec<RetainedMemoryVersion>, ApiError> {
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let rows = orm::models::<memory_version::Model>(
             &mut tx,
             &memory_version::Entity::find()
@@ -841,7 +841,7 @@ impl AssistantFoundationStore {
             .map_err(|_| ApiError::Internal("prompt cache key serialization failed"))?;
         {
             let mut tx = self.database.begin(context.account_id).await?;
-            check_current(&mut tx, context, true).await?;
+            check_current(&mut tx, context, AccessLevel::AcceptedLuna).await?;
             let insert = Query::insert()
                 .into_table(harness_run::Entity.table_ref())
                 .columns([
@@ -973,7 +973,7 @@ impl AssistantFoundationStore {
         run_id: &str,
     ) -> Result<Option<(String, usize)>, ApiError> {
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let row = orm::model::<harness_run::Model>(
             &mut tx,
             &harness_run::Entity::find()
@@ -1089,7 +1089,7 @@ impl Product for DuetHarnessProduct {
             .begin(self.context.account_id)
             .await
             .map_err(|error| ProductError::Failed(error.to_string().into()))?;
-        match check_current(&mut tx, &self.context, true).await {
+        match check_current(&mut tx, &self.context, AccessLevel::AcceptedLuna).await {
             Ok(()) => Ok(()),
             Err(ApiError::Forbidden | ApiError::SessionRevoked | ApiError::AbsentAccount) => {
                 Err(NotCurrent::Withdrawn.into())

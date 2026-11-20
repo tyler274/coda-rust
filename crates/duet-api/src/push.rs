@@ -29,7 +29,7 @@ use uuid::Uuid;
 use crate::ApiError;
 use crate::database::{AccountDatabase, orm};
 use crate::durable::DurableState;
-use crate::identity::{AccountContext, check_current};
+use crate::identity::{AccessLevel, AccountContext, check_current};
 use crate::push_entity::{account_fence, delivery, device};
 
 /// Maximum accepted length of a device installation identifier.
@@ -331,7 +331,7 @@ impl PushStore {
         let now = Utc::now();
 
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::RightsOnly).await?;
 
         let insert = Query::insert()
             .into_table(device::Entity.table_ref())
@@ -391,7 +391,7 @@ impl PushStore {
         context: &AccountContext,
     ) -> Result<Vec<RegisteredDeviceSummary>, ApiError> {
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::RightsOnly).await?;
         prune_revoked_sessions_in(&mut tx, context.account_id).await?;
 
         let rows = orm::models::<device::Model>(
@@ -417,7 +417,7 @@ impl PushStore {
     ) -> Result<DeviceCleanupOutcome, ApiError> {
         let device_id = validate_device_id(raw_device_id)?;
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::RightsOnly).await?;
 
         let cancelled_pending_alerts = orm::execute(
             &mut tx,
@@ -450,7 +450,7 @@ impl PushStore {
         context: &AccountContext,
     ) -> Result<DeviceCleanupOutcome, ApiError> {
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::RightsOnly).await?;
 
         let cancelled_pending_alerts = orm::execute(
             &mut tx,

@@ -3,7 +3,7 @@ use crate::{
     ApiError,
     database::AccountDatabase,
     evidence::{AddressedRecordRevision, exact_in_transaction},
-    identity::{AccountContext, check_current},
+    identity::{AccessLevel, AccountContext, check_current},
 };
 use chrono::Utc;
 use duet_wire::models::{CanonicalRecordSelection, DoctorPageSave};
@@ -25,7 +25,7 @@ impl WorkspaceStore {
     /// Return existing consumer DoctorCollection JSON, retaining string source identities.
     pub async fn read(&self, c: &AccountContext) -> Result<Value, ApiError> {
         let mut tx = self.database.begin(c.account_id).await?;
-        check_current(&mut tx, c, false).await?;
+        check_current(&mut tx, c, AccessLevel::AcceptedTerms).await?;
         collection(&mut tx, c.account_id).await
     }
     /// Select one exact current canonical revision. A mutable search result is never accepted.
@@ -35,7 +35,7 @@ impl WorkspaceStore {
         selection: &CanonicalRecordSelection,
     ) -> Result<Value, ApiError> {
         let mut tx = self.database.begin(c.account_id).await?;
-        check_current(&mut tx, c, false).await?;
+        check_current(&mut tx, c, AccessLevel::AcceptedTerms).await?;
         let row=sqlx::query("select entity,client_record_id from evidence_sync_changes where user_id=$1 and record_id=$2 and not deleted").bind(c.account_id).bind(selection.record_id).fetch_optional(&mut *tx).await?.ok_or(ApiError::NotFound)?;
         let entity = serde_json::from_value(json!(row.get::<String, _>("entity")))
             .map_err(|_| ApiError::NotFound)?;
@@ -94,7 +94,7 @@ impl WorkspaceStore {
             }
         }
         let mut tx = self.database.begin(c.account_id).await?;
-        check_current(&mut tx, c, false).await?;
+        check_current(&mut tx, c, AccessLevel::AcceptedTerms).await?;
         let generation: i32 =
             sqlx::query_scalar("select apple_health_generation from users where id=$1")
                 .bind(c.account_id)
@@ -122,13 +122,13 @@ impl WorkspaceStore {
     /// Read the latest immutable dated device snapshot, or explicit absence (never fabricated measurements).
     pub async fn device_snapshot(&self, c: &AccountContext) -> Result<Value, ApiError> {
         let mut tx = self.database.begin(c.account_id).await?;
-        check_current(&mut tx, c, false).await?;
+        check_current(&mut tx, c, AccessLevel::AcceptedTerms).await?;
         sqlx::query_scalar("select payload from duet_device_snapshots where user_id=$1 order by received_at desc,id desc limit 1").bind(c.account_id).fetch_optional(&mut *tx).await?.ok_or(ApiError::NotFound)
     }
     /// Select a literal dated fact from the latest device snapshot.
     pub async fn select_fact(&self, c: &AccountContext, fact_id: &str) -> Result<Value, ApiError> {
         let mut tx = self.database.begin(c.account_id).await?;
-        check_current(&mut tx, c, false).await?;
+        check_current(&mut tx, c, AccessLevel::AcceptedTerms).await?;
         let row=sqlx::query("select id,payload from duet_device_snapshots where user_id=$1 order by received_at desc,id desc limit 1").bind(c.account_id).fetch_optional(&mut *tx).await?.ok_or(ApiError::NotFound)?;
         let payload: Value = row.get("payload");
         let snapshot: Uuid = row.get("id");
@@ -150,7 +150,7 @@ impl WorkspaceStore {
     /// Require an explicitly saved current generation before PDF/share checks.
     pub async fn approved_read(&self, c: &AccountContext) -> Result<Value, ApiError> {
         let mut tx = self.database.begin(c.account_id).await?;
-        check_current(&mut tx, c, false).await?;
+        check_current(&mut tx, c, AccessLevel::AcceptedTerms).await?;
         let page = collection(&mut tx, c.account_id).await?;
         let saved:bool=sqlx::query_scalar("select exists(select 1 from duet_doctor_saves where user_id=$1 and (result->>'note_generation')::bigint=$2)").bind(c.account_id).bind(page["note_generation"].as_i64().ok_or(ApiError::Internal("doctor page is missing its generation"))?).fetch_one(&mut *tx).await?;
         if !saved {
@@ -165,7 +165,7 @@ impl WorkspaceStore {
     /// Only the current approved generation is retained; privacy deletion cannot resurrect older content.
     pub async fn save_receipt(&self, c: &AccountContext, expected: i64) -> Result<Value, ApiError> {
         let mut tx = self.database.begin(c.account_id).await?;
-        check_current(&mut tx, c, false).await?;
+        check_current(&mut tx, c, AccessLevel::AcceptedTerms).await?;
         sqlx::query_scalar(
             "select result from duet_doctor_saves where user_id=$1 and expected_generation=$2",
         )
@@ -216,7 +216,7 @@ impl WorkspaceStore {
     ) -> Result<Value, ApiError> {
         let value = json!(request);
         let mut tx = self.database.begin(c.account_id).await?;
-        check_current(&mut tx, c, false).await?;
+        check_current(&mut tx, c, AccessLevel::AcceptedTerms).await?;
         if let Some(row)=sqlx::query("select request,result from duet_doctor_saves where user_id=$1 and expected_generation=$2").bind(c.account_id).bind(i64::from(request.expected_generation)).fetch_optional(&mut *tx).await? {
    if row.get::<Value,_>("request")==value{return Ok(row.get("result"));}return Err(ApiError::Conflict("workspace generation already saved"));
   }

@@ -23,7 +23,6 @@ use duet_api::{
     evidence_routes,
     identity::{IdentityStore, IdentityVerifier, VerifiedIdentity},
     privacy::{FileJournal, PrivacyStore, Restriction},
-    publication::PublicationStore,
     workspace::WorkspaceStore,
 };
 use serde_json::{Value, json};
@@ -132,14 +131,7 @@ async fn email_auth_sessions_terms_rights_and_retired_routes() {
         };
         let doctor = DoctorState {
             durable: state.clone(),
-            workspace: WorkspaceStore::new(db.clone()),
-            publications: PublicationStore::new(
-                db,
-                "https://codahealth.ai".into(),
-                "https://viewer.codahealth.test".into(),
-                [7u8; 32],
-            )
-            .unwrap(),
+            workspace: WorkspaceStore::new(db),
         };
         durable::router(state.clone())
             .merge(evidence_routes::router(state))
@@ -255,11 +247,7 @@ async fn email_auth_sessions_terms_rights_and_retired_routes() {
     for (method, path, payload) in [
         ("GET", "/api/evidence/library", None),
         ("GET", "/api/doctor-collection", None),
-        (
-            "PUT",
-            "/api/auth/account/today-stats",
-            Some(json!({ "stat_ids": ["metric:steps"] })),
-        ),
+        ("GET", "/api/apple-health/generation", None),
     ] {
         let (status, err) = http(&restarted, method, path, Some(&bearer_1), payload).await;
         assert_eq!(status, StatusCode::FORBIDDEN, "{path} must require terms");
