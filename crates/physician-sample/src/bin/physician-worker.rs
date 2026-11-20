@@ -1002,6 +1002,8 @@ struct Worker {
     simulation_practices: SimulationPractices,
     /// Pre-validated physician skill package used to dispatch restored filtered-message reviews.
     skills: Option<local_product::physician_chat::PhysicianSkills>,
+    /// Operational health tracker surfacing connected-care sync failures to telemetry/alerts.
+    connected_care_health: local_product::runtime::connected_care::ConnectedCareSyncHealth,
 }
 
 struct WorkerConfig {
@@ -1200,6 +1202,8 @@ impl Worker {
             origin: config.origin,
             simulation_practices: config.simulation_practices.clone(),
             skills,
+            connected_care_health:
+                local_product::runtime::connected_care::ConnectedCareSyncHealth::default(),
         })
     }
 
@@ -1309,7 +1313,7 @@ impl Worker {
                 .practice_clock(&practice)
                 .await
                 .map_or(real_now as i64, |clock| clock.now(real_now) as i64);
-            if let Err(error) = self
+            match self
                 .store
                 .sync_connected_care_from_front_door(
                     &self.auth,
@@ -1322,7 +1326,14 @@ impl Worker {
                 )
                 .await
             {
-                tracing::warn!(practice = %practice, %error, "connected-care intake poll failed");
+                Ok(_) => self.connected_care_health.record_success(&practice, now_ts),
+                Err(error) => {
+                    self.connected_care_health.record_failure(
+                        &practice,
+                        error.error_class(),
+                        now_ts,
+                    );
+                }
             }
         }
     }
@@ -1343,7 +1354,12 @@ async fn connected_care_target_practices(
         match front_door.connected_care_practices().await {
             Ok(fd_practices) => all.extend(fd_practices),
             Err(error) => {
-                tracing::warn!(%error, "connected-care practice discovery failed");
+                tracing::error!(
+                    event = "physician.connected_care_sync.discovery_failed",
+                    otel.status_code = "ERROR",
+                    %error,
+                    "connected-care practice discovery failed"
+                );
             }
         }
     }
@@ -1598,7 +1614,13 @@ impl StoreWakeHandler {
                     )
                     .await
             {
-                tracing::warn!(practice = %practice, %error, "connected-care sync skipped during wake");
+                tracing::error!(
+                    event = "physician.connected_care_sync.wake_failed",
+                    otel.status_code = "ERROR",
+                    practice = %practice,
+                    error_class = error.error_class(),
+                    "connected-care sync failed during scheduled wake"
+                );
             }
             let receiver = local_product::runtime::reviews::PatientReviewReceiver::new(
                 &self.store,

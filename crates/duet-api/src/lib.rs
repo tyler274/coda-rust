@@ -10,6 +10,7 @@
 mod assistant_entity;
 pub mod assistant_harness;
 pub mod background;
+pub mod connected_care_sync;
 #[expect(
     clippy::disallowed_methods,
     reason = "converting raw SQL to the typed database API"

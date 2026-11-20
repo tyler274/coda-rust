@@ -189,8 +189,37 @@ async fn main() {
     tokio::spawn(duet_api::background::refresh_portals(portal_service));
     tokio::spawn(duet_api::background::prune_expired_memory(
         assistant_store,
-        database,
+        database.clone(),
     ));
+    let connected_care_transport: Option<
+        Arc<dyn duet_api::connected_care_sync::FrontDoorSyncTransport>,
+    > = if let Ok(front_door_url) = env::var("FRONT_DOOR_URL") {
+        Some(Arc::new(
+            duet_api::connected_care_sync::HttpFrontDoorSyncTransport::new(&front_door_url)
+                .expect("front-door URL for connected-care sync"),
+        ))
+    } else {
+        front_door.clone().map(|store| {
+            Arc::new(
+                duet_api::connected_care_sync::DirectFrontDoorSyncTransport::new(
+                    store,
+                    Arc::new(|| chrono::Utc::now().timestamp().max(0) as u64),
+                ),
+            ) as Arc<dyn duet_api::connected_care_sync::FrontDoorSyncTransport>
+        })
+    };
+    let connected_care_router = connected_care_transport.map(|transport| {
+        duet_api::connected_care_sync::router(
+            duet_api::connected_care_sync::ConnectedCareSyncState {
+                durable: state.clone(),
+                uploader: duet_api::connected_care_sync::ConnectedCareUploader::new(
+                    database.clone(),
+                    state.evidence.clone(),
+                    transport,
+                ),
+            },
+        )
+    });
     let mut app = router(state.clone())
         .merge(duet_api::evidence_routes::router(state.clone()))
         .merge(duet_api::push::router(push_state))
@@ -198,6 +227,9 @@ async fn main() {
         .merge(duet_api::doctor_routes::router(doctor))
         .merge(producer_router)
         .merge(portal_router);
+    if let Some(connected_care_router) = connected_care_router {
+        app = app.merge(connected_care_router);
+    }
     if parked_routes.is_enabled() {
         app = app.merge(duet_api::durable::parked_legacy_router(state));
     }
