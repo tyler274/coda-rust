@@ -1,0 +1,211 @@
+   Compiling duet-api v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-api)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 36.82s
+     Running unittests src/lib.rs (/tmp/coda-target-physician-ui/debug/deps/duet_api-3a0de25a4fcc1d9b)
+
+running 55 tests
+test assistant_harness::tests::assistant_eligibility_enforces_terms_consent_and_operator_switch ... ok
+test assistant_harness::tests::http_clinical_library_reader_requires_https_except_loopback ... ok
+test assistant_harness::tests::parked_routes_policy_is_quarantined_by_default ... ok
+test assistant_harness::tests::recipe_embeds_standing_disclosure_and_clinical_library_tools_only ... ok
+test background::tests::every_api_error_has_a_class ... ok
+test background::tests::failure_event_names_the_class_without_error_text ... ok
+test connected_care_sync::tests::header_values_strip_control_newlines ... ok
+test connected_care_sync::tests::http_transport_requires_https_except_loopback ... ok
+test connected_care_sync::tests::private_ai_notes_and_for_my_doctor_drafts_are_excluded_from_live_streaming ... ok
+test connected_care_sync::tests::source_origin_formats_exact_via_duet_labels ... ok
+test email_auth::tests::challenge_link_builds_cleanly_with_sanitized_invite ... ok
+test email_auth::tests::email_validation_normalizes_and_rejects_invalid_inputs ... ok
+test evidence_routes::tests::acquisition_interval_keeps_start_and_end_and_sorts_on_the_start ... ok
+test evidence_routes::tests::projected_role_and_offset_are_literal ... ok
+test evidence_routes::tests::undated_records_have_no_date_and_keep_literal_values ... ok
+test hosting::tests::a_false_cloud_marker_is_still_hosted ... ok
+test hosting::tests::liveness_says_nothing_about_readiness ... ok
+test hosting::tests::local_runs_start_without_any_profile ... ok
+test hosting::tests::local_stand_ins_refuse_hosted_even_with_a_complete_profile ... ok
+test hosting::tests::production_and_other_profiles_refuse_even_when_complete ... ok
+test hosting::tests::staging_preview_is_the_only_hosted_profile ... ok
+test identity::local_tests::a_short_secret_is_refused ... ok
+test identity::local_tests::refuses_forged_expired_foreign_and_future_tokens ... ok
+test identity::local_tests::verifies_a_signed_local_token ... ok
+test identity::refusal_tests::provider_outage_and_configuration_errors_are_not_session_refusals ... ok
+test portals::tests::fhir_pagination_url_enforces_exact_https_origin ... ok
+test portals::tests::portal_secrets_are_redacted_in_debug_output ... ok
+test portals::tests::update_failure_day_formats_plain_copy ... ok
+test portals::tests::vendor_kill_switch_filters_search_and_preserves_enabled_vendors ... ok
+test privacy::tests::account_delete_propagates_to_front_door_and_rolls_back_when_closer_fails ... ok
+test privacy::tests::receipt_account_delete ... ok
+test privacy::tests::receipt_device_withdraw ... ok
+test privacy::tests::receipt_doctor_item_delete ... ok
+test privacy::tests::receipt_doctor_note_delete ... ok
+test privacy::tests::receipt_doctor_page_delete ... ok
+test privacy::tests::receipt_evidence_delete ... ok
+test privacy::tests::receipt_follow_up_cancel ... ok
+test privacy::tests::receipt_follow_up_pause ... ok
+test privacy::tests::receipt_luna_withdraw ... ok
+test privacy::tests::receipt_proactive_withdraw ... ok
+test privacy::tests::receipt_publication_revoke ... ok
+test privacy::tests::receipt_records_withdraw ... ok
+test privacy::tests::receipt_sessions_revoke ... ok
+test privacy::tests::restriction_enum_matches_wire_snake_case ... ok
+test privacy_archive::tests::chunked_readback_cannot_bypass_body_limit ... ok
+test privacy_archive::tests::conditional_creation_ambiguous_readback_corruption_and_credentials ... ok
+test privacy_archive::tests::gcs_transport_and_postgres_recovery_reconcile_same_receipt_after_restart ... ok
+test privacy_archive::tests::metadata_failures_never_forward_credentials_or_follow_redirects ... ok
+test privacy_archive::tests::production_trust_and_object_namespace_cannot_be_configured_as_urls ... ok
+test privacy_archive::tests::transport_timeout_and_cancellation_release_capacity ... ok
+test push::tests::device_id_validation_rejects_blank_or_control_characters ... ok
+test push::tests::http_push_transport_enforces_https_except_loopback ... ok
+test push::tests::push_secrets_are_redacted_in_debug_output ... ok
+test tests::the_schema_readiness_check_names_the_required_migration ... ok
+test workspace::tests::literal_entry_excludes_lab_printed_reference_ranges_and_keeps_values ... ok
+
+test result: ok. 55 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.36s
+
+     Running unittests src/main.rs (/tmp/coda-target-physician-ui/debug/deps/duet_api-055fcd1b2a09f7fd)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/duet-map-front-door.rs (/tmp/coda-target-physician-ui/debug/deps/duet_map_front_door-bfe008b4c8b2c448)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/duet-migrate.rs (/tmp/coda-target-physician-ui/debug/deps/duet_migrate-058a69a2b0196006)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/duet-privacy-delivery.rs (/tmp/coda-target-physician-ui/debug/deps/duet_privacy_delivery-a230d9d2dc153cb7)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/duet-privacy-replay.rs (/tmp/coda-target-physician-ui/debug/deps/duet_privacy_replay-f0e21d704a3e67a1)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/connected_care_sync.rs (/tmp/coda-target-physician-ui/debug/deps/connected_care_sync-b9462fde67e64d86)
+
+running 1 test
+test cod61_live_uploader_streams_to_front_door_excludes_private_notes_and_surfaces_failures ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+
+     Running tests/database_foundation.rs (/tmp/coda-target-physician-ui/debug/deps/database_foundation-a7274e8e737f346d)
+
+running 1 test
+test fresh_and_upgrade_keep_identity_and_enforce_account_scope ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
+
+     Running tests/durable_owners.rs (/tmp/coda-target-physician-ui/debug/deps/durable_owners-c6e8f4881c8961a1)
+
+running 2 tests
+test canonical_ingestion_authority_removal_and_batch ... ok
+test durable_identity_evidence_privacy_and_restore ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.94s
+
+     Running tests/email_auth_and_terms.rs (/tmp/coda-target-physician-ui/debug/deps/email_auth_and_terms-bfc4583d4b9b81ed)
+
+running 1 test
+test email_auth_sessions_terms_rights_and_retired_routes ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.42s
+
+     Running tests/evidence_cohort.rs (/tmp/coda-target-physician-ui/debug/deps/evidence_cohort-abc2fad8ad5ee2f2)
+
+running 1 test
+test paginated_exact_membership_account_revision_and_restore_fences ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.97s
+
+     Running tests/fresh_producers.rs (/tmp/coda-target-physician-ui/debug/deps/fresh_producers-51be20d5641232e9)
+
+running 1 test
+test fresh_http_health_context_isolates_accounts_and_restricts ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.64s
+
+     Running tests/health_context_producer.rs (/tmp/coda-target-physician-ui/debug/deps/health_context_producer-e4504ec43eea6f28)
+
+running 1 test
+test empty_database_producer_restart_fences_and_withdrawal ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.31s
+
+     Running tests/hosting.rs (/tmp/coda-target-physician-ui/debug/deps/hosting-ce865aee9affe809)
+
+running 3 tests
+test hosted_startup_rejects_unqualified_runtime_before_database_access ... ok
+test product_migration_requires_explicit_database_authority ... ok
+test production_refuses_to_start_even_with_the_staging_profile ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/phone_outbox.rs (/tmp/coda-target-physician-ui/debug/deps/phone_outbox-a594792658203421)
+
+running 1 test
+test phone_outbox_drains_into_canonical_evidence_on_postgres ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.69s
+
+     Running tests/portals_and_health_connect.rs (/tmp/coda-target-physician-ui/debug/deps/portals_and_health_connect-2cc8fd9b530b5286)
+
+running 3 tests
+test cod63_disconnect_during_inflight_refresh_never_resurrects_tokens_or_publishes ... ok
+test cod63_portals_multi_org_daily_refresh_partial_broken_kill_switch_not_now_and_overdue ... ok
+test cod64_health_connect_outbox_phone_disconnect_and_apple_health_deletion_recompute ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.14s
+
+     Running tests/public_budget.rs (/tmp/coda-target-physician-ui/debug/deps/public_budget-21002b99e9270a03)
+
+running 1 test
+test public_retrieval_budget_spans_pools ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+     Running tests/push_harness_and_memory_retention.rs (/tmp/coda-target-physician-ui/debug/deps/push_harness_and_memory_retention-5cbd4e07ef4d889a)
+
+running 3 tests
+test cod67_harness_clinical_library_consent_and_memory_retention ... ok
+test cod67_multi_device_generic_push_and_sign_out_cleanup ... ok
+test cod67_parked_legacy_routes_are_quarantined_by_default ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.91s
+
+     Running tests/sql_layout.rs (/tmp/coda-target-physician-ui/debug/deps/sql_layout-a9e8e3c1fcf101cc)
+
+running 1 test
+test schema_readiness_query_preserves_the_original_sql ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling mobile v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/mobile)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 19.46s
+     Running tests/duet_journey.rs (/tmp/coda-target-physician-ui/debug/deps/duet_journey-76e02fc93e027296)
+
+running 12 tests
+test durable_d2::d2_records_browse_correct_remove_and_erase_on_durable_services ... ok
+test durable_doctor::backend_process ... ignored, server helper launched by durable browser qualification
+test durable_doctor::saved_page_publishes_and_revokes_through_real_durable_routes ... ignored, browser qualification; run explicitly with --ignored
+test durable_doctor::switching_accounts_shows_only_the_current_patients_imported_measurements ... ignored, browser qualification; run explicitly with --ignored
+test patient_tabs_do_not_offer_or_request_physician_sharing ... ignored, browser qualification; run explicitly with --ignored
+test session_refusal::definitive_refusal_unmounts_private_content ... ignored, browser qualification; run explicitly with --ignored
+test session_refusal::late_a_refusal_cannot_end_mounted_b_session ... ignored, browser qualification; run explicitly with --ignored
+test shared_tries_a_failed_workspace_read_again ... ignored, browser qualification; run explicitly with --ignored
+test static_site_serves_assets_without_escaping_its_root ... ok
+test the_duet_journey_runs_on_a_live_stub_backend ... ignored, browser qualification; run explicitly with --ignored
+test the_mode_switch_walks_the_tabs_in_the_browser ... ignored, browser qualification; run explicitly with --ignored
+test you_search_trends_duplicates_and_conditions_in_browser ... ignored, browser qualification; run explicitly with --ignored
+
+test result: ok. 2 passed; 0 failed; 10 ignored; 0 measured; 0 filtered out; finished in 8.78s
+
