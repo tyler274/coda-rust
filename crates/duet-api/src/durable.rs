@@ -53,6 +53,7 @@ pub fn router(state: DurableState) -> Router {
         .route("/api/auth/email/verify", post(email_verify))
         .route("/api/auth/session/sign-out", post(sign_out_device))
         .route("/api/auth/account", get(account).put(ensure))
+        .route("/api/auth/account/export", get(account_export_handler))
         .route("/api/auth/account/context", get(context))
         .route("/api/auth/account/profile", get(profile))
         .route("/api/auth/account/appearance", put(appearance))
@@ -141,6 +142,14 @@ async fn account(
     let mut tx = s.identity.database.begin(c.account_id).await?;
     check_current(&mut tx, &c, AccessLevel::RightsOnly).await?;
     Ok(Json(state_in(&mut tx, c.account_id).await?))
+}
+async fn account_export_handler(
+    State(s): State<DurableState>,
+    headers: HeaderMap,
+) -> Result<axum::response::Response, ApiError> {
+    let c = s.authenticate(&headers).await?;
+    let export = crate::account_export::build_export(&s.identity.database, &c).await?;
+    Ok(crate::account_export::export_response(export))
 }
 #[derive(Deserialize)]
 struct EmailStartRequest {

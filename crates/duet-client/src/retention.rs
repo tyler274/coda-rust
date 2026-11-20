@@ -105,6 +105,7 @@ const STORAGE_KINDS: &[&str] = &[
     "shared-cache",
     "active-tab",
     "appearance",
+    "pending-account-delete",
 ];
 const DEVICE_KEYS: &[&str] = &[
     "cleanup-pending",
@@ -222,6 +223,11 @@ impl AccountLeaving {
         !self.draft && !self.pending_operation && self.health_uploads == 0
     }
 
+    /// Exact count of local entries waiting for server confirmation.
+    pub fn unconfirmed_count(&self) -> usize {
+        usize::from(self.draft) + usize::from(self.pending_operation) + self.health_uploads
+    }
+
     fn parts(&self) -> Vec<String> {
         let mut parts = Vec::new();
         if self.draft {
@@ -244,8 +250,10 @@ impl AccountLeaving {
         if parts.is_empty() {
             return String::new();
         }
+        let count = self.unconfirmed_count();
+        let entry_word = if count == 1 { "entry" } else { "entries" };
         format!(
-            "Signing out removes {} from this phone. Stay signed in, or sign out anyway.",
+            "{count} unconfirmed {entry_word} ({}). Signing out removes them from this phone. Stay signed in, or sign out anyway.",
             join_parts(&parts)
         )
     }
@@ -544,6 +552,19 @@ impl RetentionOwner {
         let Some(identity) = self.retained_identity()? else {
             return Ok(AccountLeaving::default());
         };
+        let mut health_uploads = 0usize;
+        for scope in self.health_scopes(&identity.owner)? {
+            let Some(bytes) = self.store.read(&health_key(&identity.owner, &scope))? else {
+                continue;
+            };
+            if let Ok(val) = serde_json::from_slice::<serde_json::Value>(&bytes)
+                && let Some(items) = val.get("items").and_then(|v| v.as_array())
+            {
+                health_uploads += items.len();
+            } else {
+                health_uploads += 1;
+            }
+        }
         Ok(AccountLeaving {
             draft: self
                 .store
@@ -553,8 +574,52 @@ impl RetentionOwner {
                 .store
                 .read(&key("doctor-operation", &identity.owner))?
                 .is_some(),
-            health_uploads: self.health_scopes(&identity.owner)?.len(),
+            health_uploads,
         })
+    }
+
+    /// Persist an in-flight account deletion event ID so interrupted deletion can resume idempotently.
+    pub fn save_pending_delete(
+        &self,
+        fence: &SessionFence,
+        event_id: uuid::Uuid,
+    ) -> Result<(), String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        self.store.write(
+            &key("pending-account-delete", fence.owner()),
+            event_id.to_string().as_bytes(),
+        )
+    }
+
+    /// Load an interrupted account deletion event ID for the current session owner.
+    pub fn load_pending_delete(&self, fence: &SessionFence) -> Result<Option<uuid::Uuid>, String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        self.store
+            .read(&key("pending-account-delete", fence.owner()))?
+            .map(|bytes| {
+                std::str::from_utf8(&bytes)
+                    .ok()
+                    .and_then(|s| uuid::Uuid::parse_str(s.trim()).ok())
+                    .ok_or_else(|| "Pending account deletion state is damaged".to_owned())
+            })
+            .transpose()
+    }
+
+    /// Clear the pending account deletion marker.
+    pub fn clear_pending_delete(&self, fence: &SessionFence) -> Result<(), String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        self.store
+            .remove(&key("pending-account-delete", fence.owner()))
+    }
+
+    /// List registered health outbox scopes for the current session owner.
+    pub fn health_scopes_for_fence(&self, fence: &SessionFence) -> Result<Vec<String>, String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        self.health_scopes(fence.owner())
     }
     /// Invalidate visible state FIRST. Failed erase leaves the protected marker for cleanup retry.
     pub fn sign_out(&self) -> Result<(), String> {
@@ -779,6 +844,7 @@ impl RetentionOwner {
         self.store.remove(&key("shared-cache", owner))?;
         self.store.remove(&key("active-tab", owner))?;
         self.store.remove(&key("appearance", owner))?;
+        self.store.remove(&key("pending-account-delete", owner))?;
         let scopes = self.health_scopes(owner)?;
         for scope in scopes {
             self.store.remove(&health_key(owner, &scope))?;

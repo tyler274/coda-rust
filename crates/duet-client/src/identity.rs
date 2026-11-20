@@ -85,6 +85,291 @@ pub struct AccountProfile {
     pub appearance: Appearance,
 }
 
+/// Exported account profile and consent standing.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct AccountProfileExport {
+    /// Internal account ID.
+    pub account_id: Uuid,
+    /// Verified email address.
+    pub email: Option<String>,
+    /// Chosen display name.
+    pub display_name: Option<String>,
+    /// Chosen appearance (`system`, `light`, or `dark`).
+    pub appearance: String,
+    /// Sharing label.
+    pub sharing_label: String,
+    /// Accepted Terms version, if any.
+    pub terms_version: Option<String>,
+    /// When Terms were accepted.
+    pub terms_accepted_at: Option<String>,
+    /// Current AI permission flag.
+    pub ai_enabled: bool,
+    /// Accepted AI consent version, if any.
+    pub ai_consent_version: Option<String>,
+    /// AI consent decision, if recorded.
+    pub ai_consent_decision: Option<String>,
+    /// When AI consent was recorded.
+    pub ai_consent_at: Option<String>,
+    /// Apple Health source generation.
+    pub apple_health_generation: i32,
+    /// Apple Health disconnect timestamp, if disconnected.
+    pub apple_health_disconnected_at: Option<String>,
+    /// Health Records source generation.
+    pub health_records_generation: i32,
+    /// Health Records disconnect timestamp, if disconnected.
+    pub health_records_disconnected_at: Option<String>,
+    /// Health Connect source generation.
+    pub health_connect_generation: i32,
+    /// Health Connect disconnect timestamp, if disconnected.
+    pub health_connect_disconnected_at: Option<String>,
+    /// Account creation timestamp.
+    pub created_at: String,
+}
+
+/// Exported immutable canonical revision.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct ExportedEvidenceRevision {
+    /// Monotonic account revision number.
+    pub revision: i64,
+    /// Date Duet retained this revision.
+    pub retained_at: String,
+    /// Original literal payload for this revision.
+    pub payload: serde_json::Value,
+}
+
+/// Exported health evidence record with provenance, dates, and retained revisions.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct ExportedEvidenceRecord {
+    /// Canonical record ID.
+    pub id: Uuid,
+    /// Concept identifier.
+    pub concept_id: String,
+    /// Source kind.
+    pub source_kind: String,
+    /// Connection identifier, when imported from a source connection.
+    pub source_connection_id: Option<String>,
+    /// Source-native record ID.
+    pub source_record_id: Option<String>,
+    /// Measurement date declared by the source, if known.
+    pub measured_at: Option<String>,
+    /// Date Duet received the latest revision.
+    pub received_at: String,
+    /// Date the record was first saved.
+    pub created_at: String,
+    /// Date the record was last updated.
+    pub updated_at: String,
+    /// Latest literal JSON payload.
+    pub payload: serde_json::Value,
+    /// Complete revision history retained for this record.
+    pub revisions: Vec<ExportedEvidenceRevision>,
+}
+
+/// Exported clinical note with source and dates.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct ExportedClinicalNote {
+    /// Canonical note ID.
+    pub id: Uuid,
+    /// Human-readable source label.
+    pub source_label: String,
+    /// Source-native note identifier.
+    pub source_id: Option<String>,
+    /// Note title.
+    pub title: String,
+    /// Note preview, if any.
+    pub preview: Option<String>,
+    /// Full note body, if any.
+    pub body: Option<String>,
+    /// Date declared by the source, if known.
+    pub recorded_at: Option<String>,
+    /// Date Duet stored the note.
+    pub created_at: String,
+    /// Original source payload, if retained.
+    pub source_payload: Option<serde_json::Value>,
+    /// Complete revision history retained for this note.
+    pub revisions: Vec<ExportedEvidenceRevision>,
+}
+
+/// Exported device snapshot.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct ExportedDeviceSnapshot {
+    /// Snapshot ID.
+    pub id: Uuid,
+    /// Date the snapshot was generated on the device.
+    pub generated_at: String,
+    /// Date Duet received the snapshot.
+    pub received_at: String,
+    /// Snapshot JSON payload.
+    pub payload: serde_json::Value,
+}
+
+/// Exported `For my doctor` workspace and saved items.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct ExportedDoctorPage {
+    /// Saved patient note.
+    pub note: Option<String>,
+    /// Current note/page generation.
+    pub note_generation: i64,
+    /// Saved page structure.
+    pub page: serde_json::Value,
+    /// Date the page was last updated.
+    pub page_updated_at: String,
+    /// Saved items on `For my doctor`.
+    pub items: Vec<ExportedDoctorItem>,
+}
+
+/// One exported item from `For my doctor`.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct ExportedDoctorItem {
+    /// Item ID.
+    pub id: Uuid,
+    /// Item kind.
+    pub kind: String,
+    /// Source identifier.
+    pub source_id: String,
+    /// Display title.
+    pub title: String,
+    /// Detail text.
+    pub detail: String,
+    /// Linked evidence entries.
+    pub evidence: serde_json::Value,
+    /// Range start, if any.
+    pub range_start: Option<String>,
+    /// Range end, if any.
+    pub range_end: Option<String>,
+    /// Date saved onto the page.
+    pub saved_at: String,
+    /// Order index.
+    pub position: i32,
+    /// Rendered entry structure, if saved.
+    pub page_entry: Option<serde_json::Value>,
+    /// Whether the patient confirmed this medication.
+    pub medication_confirmed: bool,
+}
+
+/// Exported connected portal organization metadata (zero OAuth secrets).
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ExportedPortalConnection {
+    /// Connection ID.
+    pub id: Uuid,
+    /// Portal vendor.
+    pub vendor: String,
+    /// Organization display name.
+    pub organization_name: String,
+    /// Brand name.
+    pub brand: String,
+    /// Connection state.
+    pub state: String,
+    /// Last successful sync date.
+    pub last_synced_at: Option<String>,
+    /// First failing date if broken.
+    pub failing_since: Option<String>,
+    /// Non-secret failure reason.
+    pub failure_reason: Option<String>,
+    /// Disconnected date, if disconnected.
+    pub disconnected_at: Option<String>,
+    /// Connection created date.
+    pub created_at: String,
+    /// Connection updated date.
+    pub updated_at: String,
+}
+
+/// Exported conversation turn.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct ExportedConversationTurn {
+    /// Turn ID.
+    pub id: Uuid,
+    /// Patient message.
+    pub input: String,
+    /// Turn completion state.
+    pub state: String,
+    /// Assistant reply payload, if completed.
+    pub reply: Option<serde_json::Value>,
+    /// Turn creation date.
+    pub created_at: String,
+}
+
+/// Exported assistant conversation.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct ExportedConversation {
+    /// Conversation ID.
+    pub id: Uuid,
+    /// Conversation created date.
+    pub created_at: String,
+    /// Turns belonging to this conversation in chronological order.
+    pub turns: Vec<ExportedConversationTurn>,
+}
+
+/// Exported Duet private memory state.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct ExportedPrivateMemory {
+    /// Current memory revision.
+    pub revision: i64,
+    /// Structured memory content.
+    pub content: serde_json::Value,
+}
+
+/// Exported privacy restriction receipt metadata.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ExportedPrivacyReceipt {
+    /// Idempotent event identity.
+    pub event_id: Uuid,
+    /// Privacy operation name.
+    pub operation: String,
+    /// Target resource or account scope ID.
+    pub scope_id: Uuid,
+    /// Date committed.
+    pub occurred_at: String,
+    /// Date confirmed in independent privacy journal.
+    pub journaled_at: Option<String>,
+}
+
+/// Complete portable personal data export returned by `/api/auth/account/export`.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct AccountExport {
+    /// Export schema version.
+    pub schema_version: u32,
+    /// UTC timestamp when Duet produced this export.
+    pub exported_at: String,
+    /// Account identity profile, preferences, and consent standing.
+    pub account: AccountProfileExport,
+    /// Imported and user-entered canonical health records and retained source revisions.
+    pub health_evidence: Vec<ExportedEvidenceRecord>,
+    /// Clinical notes with source label, date, and retained revisions.
+    pub clinical_notes: Vec<ExportedClinicalNote>,
+    /// Raw device snapshots retained on the account.
+    pub device_snapshots: Vec<ExportedDeviceSnapshot>,
+    /// Current saved `For my doctor` page and selected items.
+    pub doctor_page: ExportedDoctorPage,
+    /// Connected or disconnected portal accounts (metadata only, zero OAuth secrets).
+    pub portal_connections: Vec<ExportedPortalConnection>,
+    /// Assistant conversations and turn records.
+    pub conversations: Vec<ExportedConversation>,
+    /// Duet's current understanding/memory of the person.
+    pub private_memory: Option<ExportedPrivateMemory>,
+    /// Committed privacy restriction receipts.
+    pub privacy_receipts: Vec<ExportedPrivacyReceipt>,
+}
+
+impl AccountExport {
+    /// Human-readable one-line summary of exported record categories.
+    pub fn summary_text(&self) -> String {
+        format!(
+            "Export ready: {} health record(s), {} note(s), {} portal(s), {} doctor item(s), {} conversation(s), {} privacy receipt(s).",
+            self.health_evidence.len(),
+            self.clinical_notes.len(),
+            self.portal_connections.len(),
+            self.doctor_page.items.len(),
+            self.conversations.len(),
+            self.privacy_receipts.len(),
+        )
+    }
+
+    /// Encode this export as pretty-printed UTF-8 JSON for saving or download.
+    pub fn to_pretty_json(&self) -> Result<String, serde_json::Error> {
+        serde_json::to_string_pretty(self)
+    }
+}
+
 /// Non-expiring opaque session returned after email link or code verification.
 #[derive(Clone, PartialEq, Eq, Deserialize)]
 pub struct EmailSignInResult {
@@ -138,8 +423,10 @@ pub enum PrivacyRestrictionKind {
 pub enum IdentityError {
     /// No valid credential; do not infer account deletion.
     Unauthorized,
-    /// The server refused this session because it was revoked or deleted.
+    /// The server refused this session because it was revoked (another device or sign-out everywhere).
     Ended,
+    /// The server confirmed this account is absent (already deleted).
+    AccountAbsent,
     /// A single-use email link or code was invalid, expired, or already used.
     InvalidChallenge(String),
     /// Current Duet Terms must be accepted before accessing `You` or `Shared`.
@@ -156,11 +443,19 @@ pub enum IdentityError {
     Response(crate::refusal::TransportCause),
 }
 
+impl IdentityError {
+    /// Whether the server ended either this session (`Ended`) or the account itself (`AccountAbsent`).
+    pub fn is_ended(&self) -> bool {
+        matches!(self, Self::Ended | Self::AccountAbsent)
+    }
+}
+
 impl std::fmt::Display for IdentityError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Unauthorized => f.write_str("No valid session. Sign in again."),
             Self::Ended => f.write_str("This session has ended."),
+            Self::AccountAbsent => f.write_str("This account was deleted."),
             Self::InvalidChallenge(message) => f.write_str(message),
             Self::TermsRequired => f.write_str("Accept the current Duet Terms to continue."),
             Self::AgreementChanged => f.write_str("Update Duet to review the current terms."),
@@ -391,6 +686,16 @@ impl DuetClient {
         self.decode_checked(response, true).await
     }
 
+    /// Rights-never-wait full personal data export. Accessible before Terms acceptance or refresh.
+    pub async fn export_account_data(&self) -> Result<AccountExport, IdentityError> {
+        let response = self
+            .authed(reqwest::Method::GET, "/api/auth/account/export")
+            .send()
+            .await
+            .map_err(|_| IdentityError::Unavailable)?;
+        self.decode_checked(response, true).await
+    }
+
     async fn decode_checked<T: serde::de::DeserializeOwned>(
         &self,
         response: reqwest::Response,
@@ -437,9 +742,8 @@ fn classify_identity_error(status: reqwest::StatusCode, body: &str) -> IdentityE
         }
     }
     match crate::refusal::classify(status, body) {
-        Some(crate::refusal::SessionRefusal::Revoked | crate::refusal::SessionRefusal::Absent) => {
-            IdentityError::Ended
-        }
+        Some(crate::refusal::SessionRefusal::Revoked) => IdentityError::Ended,
+        Some(crate::refusal::SessionRefusal::Absent) => IdentityError::AccountAbsent,
         Some(crate::refusal::SessionRefusal::Invalid) => IdentityError::Unauthorized,
         None => IdentityError::Unavailable,
     }
@@ -480,6 +784,20 @@ mod tests {
                 r#"{"detail":{"code":"agreement_version_changed"}}"#,
             ),
             IdentityError::AgreementChanged
+        );
+        assert_eq!(
+            classify_identity_error(
+                reqwest::StatusCode::UNAUTHORIZED,
+                r#"{"detail":{"code":"session_revoked"}}"#,
+            ),
+            IdentityError::Ended
+        );
+        assert_eq!(
+            classify_identity_error(
+                reqwest::StatusCode::UNAUTHORIZED,
+                r#"{"detail":{"code":"account_absent"}}"#,
+            ),
+            IdentityError::AccountAbsent
         );
     }
 }

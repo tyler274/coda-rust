@@ -9,6 +9,7 @@
 mod account;
 #[cfg(target_os = "ios")]
 mod apple_health;
+mod export;
 mod records;
 mod roots;
 mod settings;

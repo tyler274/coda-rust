@@ -7,6 +7,7 @@
     reason = "converting to errors that keep their cause"
 )]
 
+pub mod account_export;
 mod assistant_entity;
 pub mod assistant_harness;
 pub mod background;
