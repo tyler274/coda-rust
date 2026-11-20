@@ -23,7 +23,7 @@ run "staging_proxy_uses_own_identity" {
     error_message = "SSE needs a bounded 300s service timeout."
   }
   assert {
-    condition     = google_cloud_run_v2_service.site.iap_enabled && !google_cloud_run_v2_service.site.invoker_iam_disabled && google_iap_web_cloud_run_service_iam_binding.team[0].members == toset(["group:gcp-engineering@codahealth.ai"])
+    condition     = google_cloud_run_v2_service.site.iap_enabled && !google_cloud_run_v2_service.site.invoker_iam_disabled && google_iap_web_cloud_run_service_iam_binding.team[0].members == toset(["group:gcp-engineering@dabney.moe"])
     error_message = "Proxying must not weaken the public staging IAP gate."
   }
 }
@@ -109,7 +109,7 @@ run "staging_origin_is_protected" {
     error_message = "IAP invocation must be scoped to this Cloud Run service, not the project."
   }
   assert {
-    condition     = length(google_iap_web_cloud_run_service_iam_binding.team) == 1 && google_iap_web_cloud_run_service_iam_binding.team[0].role == "roles/iap.httpsResourceAccessor" && google_iap_web_cloud_run_service_iam_binding.team[0].members == toset(["group:gcp-engineering@codahealth.ai"])
+    condition     = length(google_iap_web_cloud_run_service_iam_binding.team) == 1 && google_iap_web_cloud_run_service_iam_binding.team[0].role == "roles/iap.httpsResourceAccessor" && google_iap_web_cloud_run_service_iam_binding.team[0].members == toset(["group:gcp-engineering@dabney.moe"])
     error_message = "The authoritative staging accessor binding must contain only the engineering Google Group."
   }
   assert {
@@ -256,7 +256,7 @@ run "reject_zero_project_number" {
 run "reject_domain_access" {
   command = plan
   variables {
-    iap_group = "codahealth.ai"
+    iap_group = "dabney.moe"
   }
   expect_failures = [var.iap_group]
 }

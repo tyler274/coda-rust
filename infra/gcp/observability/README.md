@@ -291,7 +291,7 @@ returns Grafana to its root path for port-forward.
 
 - **Only the engineering group, only through IAP, in every environment.**
   Every way a person reaches Grafana passes Google IAP, and IAP
-  admits only `group:gcp-engineering@codahealth.ai` plus the named service
+  admits only `group:gcp-engineering@dabney.moe` plus the named service
   accounts the route needs (in staging, public-site's account on the relay).
   No `allUsers`, `allAuthenticatedUsers`, `domain:` or single `user:` grant
   reaches it, and Grafana, which signs people in from the IAP assertion,

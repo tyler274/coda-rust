@@ -19,7 +19,7 @@ operator from reviewed saved plans:
 content policy.
 
 Grafana shows telemetry that can carry PHI, so people reach it only through
-Google IAP, and IAP admits only `group:gcp-engineering@codahealth.ai` plus the
+Google IAP, and IAP admits only `group:gcp-engineering@dabney.moe` plus the
 named service accounts a route needs to hop between services. It is not granted
 to `allUsers`, `allAuthenticatedUsers`, a `domain:` or a single `user:`, and it
 has no listener that skips IAP. Langfuse is the hosted HIPAA cloud project, under
@@ -626,7 +626,7 @@ To turn scaling on:
    be on `main` with a successful `Deploy staging` job. Skills/docs-only pushes skip
    that job, so overall CI success is not deployment evidence. The plan refuses to
    run without a digest in `images.physician.worker`.
-2. **Decide who applies.** The plan creates bindings `group:gcp-engineering@codahealth.ai`
+2. **Decide who applies.** The plan creates bindings `group:gcp-engineering@dabney.moe`
    cannot write: the worker's project-level Cloud SQL and Monitoring metric-writer
    roles. Apply as the project Owner, or grant engineering Project IAM Admin
    conditioned on

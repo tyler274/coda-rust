@@ -265,7 +265,7 @@ identity's image access is explicit and limited to that repository. OpenTofu
 rejects any `image` outside `REGION-docker.pkg.dev/PROJECT_ID/public-site/` that
 is not digest-pinned (see [Checks](#checks)).
 
-**Local builds.** Engineers in `gcp-engineering@codahealth.ai` read the two
+**Local builds.** Engineers in `gcp-engineering@dabney.moe` read the two
 base-image repositories. Authenticate Docker once through gcloud's credential
 helper; no key file or password is involved:
 
@@ -311,7 +311,7 @@ no load balancer:
   an authoritative binding on this service only. There is no `allUsers` grant,
   and CI or deployer identities get no implicit website access.
 - The only `roles/iap.httpsResourceAccessor` member is
-  `group:gcp-engineering@codahealth.ai` (variable `iap_group`). This is also an
+  `group:gcp-engineering@dabney.moe` (variable `iap_group`). This is also an
   authoritative binding on this service only, not a project or domain grant.
 - `PUBLIC_SITE_IAP_AUDIENCE` comes from `project_number`, `region` and the service
   name, and it is set directly on the container. The output
@@ -496,7 +496,7 @@ branch to deploy, which matches the provider's attribute condition. The job:
 
 CI and deployment identities have no website-access grant, so the job checks only
 that anonymous requests are sent to sign-in; an authenticated render is a manual
-check by a member of `gcp-engineering@codahealth.ai`.
+check by a member of `gcp-engineering@dabney.moe`.
 
 `env/staging.tfvars` keeps the last operator-reviewed digest; a local plan run
 from it after a CI deploy shows the image going back. Pass the current digest
