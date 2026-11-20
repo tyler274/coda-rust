@@ -69,9 +69,15 @@ impl AddressedRecordRevision {
 /// Source kinds whose originals only server-side connectors may write.
 pub const SERVER_SOURCE_KINDS: [&str; 4] = ["epic", "oracleHealth", "healow", "googleHealth"];
 /// Health evidence source kinds a device upload may write.
-pub const DEVICE_SOURCE_KINDS: [&str; 4] = ["appleHealth", "healthRecords", "physical", "manual"];
+pub const DEVICE_SOURCE_KINDS: [&str; 5] = [
+    "appleHealth",
+    "healthConnect",
+    "healthRecords",
+    "physical",
+    "manual",
+];
 /// Device kinds whose native source may explicitly remove a record.
-pub const DEVICE_REMOVABLE_KINDS: [&str; 2] = ["appleHealth", "healthRecords"];
+pub const DEVICE_REMOVABLE_KINDS: [&str; 3] = ["appleHealth", "healthConnect", "healthRecords"];
 /// Clinical note labels a device upload may create. Fixed at creation.
 pub const DEVICE_NOTE_LABELS: [&str; 2] = ["Health Records", "Added in Duet"];
 /// Patient-authored note label; such wording must carry its own date.
@@ -260,6 +266,7 @@ pub struct EvidenceBatchResult {
 pub struct EvidenceStore {
     /// Shared account database boundary.
     pub database: AccountDatabase,
+    health_context: Option<crate::health_context::HealthContextProducer>,
 }
 fn entity_name(entity: Entity) -> &'static str {
     match entity {
@@ -327,10 +334,34 @@ fn source_of(payload: &Value) -> (Option<&str>, Option<&str>) {
     )
 }
 
+fn is_phone_measurement_delete(mutation: &EvidenceMutation) -> bool {
+    if mutation.operation != EvidenceOperation::Delete || mutation.entity != Entity::HealthEvidence
+    {
+        return false;
+    }
+    matches!(
+        source_of(&mutation.payload).0,
+        Some("appleHealth" | "healthConnect")
+    )
+}
+
 impl EvidenceStore {
     /// Construct an evidence owner over the shared boundary.
     pub fn new(database: AccountDatabase) -> Self {
-        Self { database }
+        Self {
+            database,
+            health_context: None,
+        }
+    }
+    /// Attach the canonical health-context producer so explicit Apple Health /
+    /// Health Connect deletions immediately recalculate day totals and drop
+    /// empty days (`intent/duet.md` D2.10).
+    pub fn with_health_context(
+        mut self,
+        producer: crate::health_context::HealthContextProducer,
+    ) -> Self {
+        self.health_context = Some(producer);
+        self
     }
     /// Source generation for a new, explicit Apple Health connection. An existing
     /// connection keeps its captured generation until the patient reconnects.
@@ -340,6 +371,26 @@ impl EvidenceStore {
         let account = account_fences(&mut tx, context.account_id).await?;
         tx.commit().await?;
         Ok(account.apple_health_generation)
+    }
+    /// Source generation for a new, explicit Android Health Connect connection.
+    pub async fn health_connect_generation(
+        &self,
+        context: &AccountContext,
+    ) -> Result<i32, ApiError> {
+        let mut tx = self.database.begin(context.account_id).await?;
+        check_current(&mut tx, context, false).await?;
+        let account = account_fences(&mut tx, context.account_id).await?;
+        tx.commit().await?;
+        Ok(account.health_connect_generation)
+    }
+    async fn recompute_after_phone_deletion(
+        &self,
+        context: &AccountContext,
+    ) -> Result<(), ApiError> {
+        if let Some(producer) = &self.health_context {
+            let _ = producer.refresh(context).await?;
+        }
+        Ok(())
     }
     /// Device upload. Idempotent, optimistic; locks the account so cursor order equals commit order.
     pub async fn ingest(
@@ -362,6 +413,9 @@ impl EvidenceStore {
         check_current(&mut tx, context, false).await?;
         let address = apply(&mut tx, context.account_id, authority, mutation).await?;
         tx.commit().await?;
+        if is_phone_measurement_delete(mutation) {
+            self.recompute_after_phone_deletion(context).await?;
+        }
         Ok(address)
     }
     /// Device batch upload; see [`EvidenceStore::ingest_batch_with_authority`].
@@ -390,11 +444,15 @@ impl EvidenceStore {
         let mut tx = self.database.begin(context.account_id).await?;
         check_current(&mut tx, context, false).await?;
         let mut results = Vec::with_capacity(batch.items.len());
+        let mut phone_deletion_committed = false;
         for (index, item) in batch.items.iter().enumerate() {
             let mut savepoint = tx.begin().await?;
             match apply(&mut savepoint, context.account_id, authority, item).await {
                 Ok(address) => {
                     savepoint.commit().await?;
+                    if is_phone_measurement_delete(item) {
+                        phone_deletion_committed = true;
+                    }
                     results.push(EvidenceItemOutcome::Accepted {
                         index,
                         operation_id: item.operation_id,
@@ -412,6 +470,9 @@ impl EvidenceStore {
             }
         }
         tx.commit().await?;
+        if phone_deletion_committed {
+            self.recompute_after_phone_deletion(context).await?;
+        }
         Ok(EvidenceBatchResult { results })
     }
     /// Read exactly the addressed revision, optionally requiring that it remains current.
@@ -738,6 +799,8 @@ async fn fence_generation(
     let fences = account_fences(tx, account_id).await?;
     let generation = if kind == Some("appleHealth") {
         fences.apple_health_generation
+    } else if kind == Some("healthConnect") {
+        fences.health_connect_generation
     } else if kind == Some("healthRecords") || health_records_note {
         fences.health_records_generation
     } else {
@@ -1127,7 +1190,8 @@ async fn remove(
                 return Err(refused());
             }
             if !DEVICE_REMOVABLE_KINDS.contains(&kind)
-                || (kind == "appleHealth" && mutation.entity != Entity::HealthEvidence)
+                || (matches!(kind, "appleHealth" | "healthConnect")
+                    && mutation.entity != Entity::HealthEvidence)
             {
                 return Err(ApiError::Unprocessable("invalid source removal"));
             }

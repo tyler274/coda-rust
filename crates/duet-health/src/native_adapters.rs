@@ -544,12 +544,53 @@ fn decode_reply<T: serde::de::DeserializeOwned>(body: &str) -> Result<T, BridgeE
 // Health Connect
 // ---------------------------------------------------------------------------
 
-/// Which Health Connect types may be acquired. Disabled until the Android
-/// type scope (and its permissions and background work) is agreed.
-#[derive(Clone, Debug, Default, PartialEq, Eq)]
+/// Google-approved Android Health Connect record types acquired by Duet
+/// (`intent/duet.md` D2.14). Names match `HealthConnectBridge.kt`.
+pub fn default_health_connect_types() -> Vec<TypeSpec> {
+    [
+        ("StepsRecord", "activity:steps", "count"),
+        (
+            "ActiveCaloriesBurnedRecord",
+            "activity:active_energy",
+            "kcal",
+        ),
+        ("ExerciseSessionRecord", "activity:exercise", "min"),
+        ("DistanceRecord", "activity:distance", "m"),
+        ("NutritionRecord", "nutrition:dietary_energy", "kcal"),
+        ("HydrationRecord", "nutrition:water", "L"),
+        ("HeartRateRecord", "vital:heart_rate", "count/min"),
+        (
+            "RestingHeartRateRecord",
+            "vital:resting_heart_rate",
+            "count/min",
+        ),
+        ("WeightRecord", "body:weight", "kg"),
+        ("SleepSessionRecord", "sleep:duration", "min"),
+        ("BloodPressureRecord", "vital:blood_pressure", "mmHg"),
+        ("BodyFatRecord", "body:fat_percentage", "%"),
+        ("LeanBodyMassRecord", "body:lean_mass", "kg"),
+        ("HeightRecord", "body:height", "m"),
+        ("BloodGlucoseRecord", "lab:glucose", "mg/dL"),
+        ("BodyTemperatureRecord", "vital:body_temperature", "degC"),
+        (
+            "BasalBodyTemperatureRecord",
+            "vital:basal_body_temperature",
+            "degC",
+        ),
+        ("OxygenSaturationRecord", "vital:oxygen_saturation", "%"),
+        ("Vo2MaxRecord", "fitness:vo2_max", "mL/kg/min"),
+    ]
+    .into_iter()
+    .map(|(data_type, concept, unit)| TypeSpec::new(data_type, concept, unit))
+    .collect()
+}
+
+/// Which Health Connect types may be acquired. Defaults to the Google-approved
+/// type scope ([`HealthConnectScope::approved`]); [`HealthConnectScope::Disabled`]
+/// remains available to explicitly gate off acquisition with [`CoverageError::NotEnabled`].
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub enum HealthConnectScope {
     /// No acquisition; every read reports [`CoverageError::NotEnabled`].
-    #[default]
     Disabled,
     /// Acquire these record types (Health Connect record type names).
     Enabled {
@@ -558,11 +599,54 @@ pub enum HealthConnectScope {
     },
 }
 
+impl Default for HealthConnectScope {
+    fn default() -> Self {
+        Self::approved()
+    }
+}
+
+impl HealthConnectScope {
+    /// Scope covering every Google-approved Health Connect record type supported by Duet.
+    pub fn approved() -> Self {
+        Self::Enabled {
+            types: default_health_connect_types(),
+        }
+    }
+
+    /// Narrow the approved Health Connect types to those the person granted in
+    /// Google's permission sheet, returning both the narrowed scope and any
+    /// granted type names that Duet does not support yet.
+    pub fn for_granted(granted_record_types: &[String]) -> (Self, Vec<String>) {
+        let approved = default_health_connect_types();
+        let granted_set: BTreeSet<&str> = granted_record_types
+            .iter()
+            .map(String::as_str)
+            .map(str::trim)
+            .filter(|name| !name.is_empty())
+            .collect();
+        let unsupported: Vec<String> = {
+            let approved_names: BTreeSet<&str> =
+                approved.iter().map(|t| t.data_type.as_str()).collect();
+            granted_set
+                .iter()
+                .copied()
+                .filter(|name| !approved_names.contains(*name))
+                .map(str::to_owned)
+                .collect()
+        };
+        let types: Vec<TypeSpec> = approved
+            .into_iter()
+            .filter(|spec| granted_set.contains(spec.data_type.as_str()))
+            .collect();
+        (Self::Enabled { types }, unsupported)
+    }
+}
+
 /// Coverage key for the type-independent Health Connect changes feed.
 /// Deletions carry it because `DeletionChange` has no record type.
 pub const HEALTH_CONNECT_FEED: &str = "healthConnect:changes";
 
-/// One Health Connect record from the changes feed.
+/// One Health Connect record from the changes feed or initial history read.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct HealthConnectRecord {
     /// Record type name (e.g. `HeartRateRecord`).
@@ -591,12 +675,26 @@ pub struct HealthConnectChanges {
     pub token_expired: bool,
 }
 
-/// Low-level, type-independent Health Connect bridge.
+/// Low-level Health Connect bridge: granted-type inspection, initial bounded
+/// history reads, and the type-independent changes feed.
 pub trait HealthConnectBridge {
     /// `getChangesToken(ChangesTokenRequest(types))`.
     fn changes_token(&self, record_types: &[String]) -> Result<String, BridgeError>;
     /// `getChanges(token)`.
     fn changes(&self, token: &str) -> Result<HealthConnectChanges, BridgeError>;
+    /// Record types currently granted in Health Connect (`None` when the bridge
+    /// does not report a separate grant list and defers to the adapter's scope).
+    fn granted_record_types(&self) -> Result<Option<Vec<String>>, BridgeError> {
+        Ok(None)
+    }
+    /// Bounded initial history read for one granted record type before paging changes.
+    fn read_initial_records(
+        &self,
+        _record_type: &str,
+        _limit: usize,
+    ) -> Result<Vec<HealthConnectRecord>, BridgeError> {
+        Ok(Vec::new())
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -610,14 +708,15 @@ pub fn health_connect_native_id(id: &str) -> String {
     format!("HealthConnect/{id}")
 }
 
-/// [`HealthSourceAdapter`] over a [`HealthConnectBridge`], gated by scope.
+/// [`HealthSourceAdapter`] over a [`HealthConnectBridge`], scoped to approved
+/// and granted Health Connect record types.
 pub struct HealthConnectAdapter<B> {
     bridge: B,
     scope: HealthConnectScope,
 }
 
 impl<B: HealthConnectBridge> HealthConnectAdapter<B> {
-    /// Adapter with the default (disabled) scope.
+    /// Adapter enabled with the Google-approved Health Connect type scope.
     pub fn new(bridge: B) -> Self {
         Self {
             bridge,
@@ -647,6 +746,29 @@ fn adapter_error(error: BridgeError) -> AdapterError {
     }
 }
 
+fn health_connect_record_into_acquisition(
+    upsert: HealthConnectRecord,
+    spec: &TypeSpec,
+) -> Option<AcquisitionRecord> {
+    if upsert.sample.value.is_empty() {
+        return None;
+    }
+    let sample = upsert.sample;
+    let provenance = Provenance {
+        source_name: sample
+            .writer_id
+            .as_deref()
+            .map(crate::source_name)
+            .filter(|name| !name.is_empty())
+            .map(str::to_owned)
+            .or(sample.source_name.clone()),
+        writer_id: sample.writer_id.clone(),
+        device: sample.device.clone(),
+    };
+    let native_id = health_connect_native_id(&sample.id);
+    Some(sample.into_record(native_id, spec, provenance))
+}
+
 impl<B: HealthConnectBridge> HealthSourceAdapter for HealthConnectAdapter<B> {
     fn source(&self) -> PhoneSource {
         PhoneSource::HealthConnect
@@ -669,26 +791,104 @@ impl<B: HealthConnectBridge> HealthSourceAdapter for HealthConnectAdapter<B> {
             HealthConnectScope::Enabled { types } => types,
         };
         let Some(anchor) = &request.anchor else {
-            // Establish the changes token. Initial history needs type-specific
-            // reads, which wait on the agreed scope: report it, never "empty".
-            let names: Vec<String> = types.iter().map(|t| t.data_type.clone()).collect();
+            let granted_filter = self.bridge.granted_record_types().map_err(adapter_error)?;
+            let mut active_specs: Vec<&TypeSpec> = Vec::new();
+            let mut coverage: Vec<TypeCoverage> = Vec::new();
+            let mut unsupported_granted: Vec<String> = Vec::new();
+            if let Some(granted) = &granted_filter {
+                let granted_set: BTreeSet<&str> = granted.iter().map(String::as_str).collect();
+                let scope_names: BTreeSet<&str> =
+                    types.iter().map(|t| t.data_type.as_str()).collect();
+                for spec in types {
+                    if granted_set.contains(spec.data_type.as_str()) {
+                        active_specs.push(spec);
+                    } else {
+                        coverage.push(TypeCoverage {
+                            data_type: spec.data_type.clone(),
+                            outcome: CoverageOutcome::PermissionLost,
+                        });
+                    }
+                }
+                for name in &granted_set {
+                    if !scope_names.contains(*name) {
+                        unsupported_granted.push((*name).to_owned());
+                    }
+                }
+                if active_specs.is_empty() {
+                    return Err(AdapterError::PermissionLost);
+                }
+            } else {
+                active_specs.extend(types.iter());
+            }
+            // Capture the changes token before reading initial history so any
+            // record written concurrently is caught on the next changes pass.
+            let names: Vec<String> = active_specs.iter().map(|t| t.data_type.clone()).collect();
             let token = self.bridge.changes_token(&names).map_err(adapter_error)?;
-            let mut coverage: Vec<TypeCoverage> = types
-                .iter()
-                .map(|spec| TypeCoverage {
-                    data_type: spec.data_type.clone(),
+            let mut records = Vec::new();
+            let mut remaining = request.limit.max(1);
+            for spec in &active_specs {
+                if remaining == 0 {
+                    coverage.push(TypeCoverage {
+                        data_type: spec.data_type.clone(),
+                        outcome: CoverageOutcome::Empty,
+                    });
+                    continue;
+                }
+                match self.bridge.read_initial_records(&spec.data_type, remaining) {
+                    Ok(initial) => {
+                        let mut type_count = 0usize;
+                        let mut had_unextracted = false;
+                        for item in initial.into_iter().take(remaining) {
+                            if let Some(record) = health_connect_record_into_acquisition(item, spec)
+                            {
+                                records.push(record);
+                                type_count += 1;
+                            } else {
+                                had_unextracted = true;
+                            }
+                        }
+                        remaining = remaining.saturating_sub(type_count);
+                        coverage.push(TypeCoverage {
+                            data_type: spec.data_type.clone(),
+                            outcome: if had_unextracted {
+                                CoverageOutcome::Error {
+                                    error: CoverageError::QueryFailed {
+                                        message: "value_not_extracted".into(),
+                                    },
+                                }
+                            } else if type_count > 0 {
+                                CoverageOutcome::Data
+                            } else {
+                                CoverageOutcome::Empty
+                            },
+                        });
+                    }
+                    Err(error) => {
+                        coverage.push(TypeCoverage {
+                            data_type: spec.data_type.clone(),
+                            outcome: coverage_error(&error),
+                        });
+                    }
+                }
+            }
+            for unsupported in unsupported_granted {
+                coverage.push(TypeCoverage {
+                    data_type: unsupported,
                     outcome: CoverageOutcome::Error {
-                        error: CoverageError::QueryFailed {
-                            message: "initial_history_not_read".into(),
-                        },
+                        error: CoverageError::Unsupported,
                     },
-                })
-                .collect();
+                });
+            }
             coverage.push(TypeCoverage {
                 data_type: HEALTH_CONNECT_FEED.into(),
-                outcome: CoverageOutcome::Empty,
+                outcome: if records.is_empty() {
+                    CoverageOutcome::Empty
+                } else {
+                    CoverageOutcome::Data
+                },
             });
             return Ok(AcquisitionPage {
+                records,
                 coverage,
                 next_anchor: Some(encode_hc_anchor(token)),
                 has_more: true,
@@ -719,28 +919,14 @@ impl<B: HealthConnectBridge> HealthSourceAdapter for HealthConnectAdapter<B> {
             let Some(spec) = by_type.get(upsert.record_type.as_str()) else {
                 continue; // Out of scope: never uploaded.
             };
-            if upsert.sample.value.is_empty() {
+            if let Some(record) = health_connect_record_into_acquisition(upsert, spec) {
+                with_data.insert(spec.data_type.clone());
+                page.records.push(record);
+            } else {
                 // The bridge has no exact-value extraction for this type yet.
                 // Never upload an empty literal; report the gap instead.
                 unextracted.insert(spec.data_type.clone());
-                continue;
             }
-            with_data.insert(spec.data_type.clone());
-            let sample = upsert.sample;
-            let provenance = Provenance {
-                source_name: sample
-                    .writer_id
-                    .as_deref()
-                    .map(crate::source_name)
-                    .filter(|name| !name.is_empty())
-                    .map(str::to_owned)
-                    .or(sample.source_name.clone()),
-                writer_id: sample.writer_id.clone(),
-                device: sample.device.clone(),
-            };
-            let native_id = health_connect_native_id(&sample.id);
-            page.records
-                .push(sample.into_record(native_id, spec, provenance));
         }
         for spec in types {
             page.coverage.push(TypeCoverage {
@@ -793,6 +979,16 @@ pub fn decode_changes_token_reply(body: &str) -> Result<String, BridgeError> {
 
 /// Decodes a Health Connect changes reply (`{"ok": HealthConnectChanges}`).
 pub fn decode_changes_reply(body: &str) -> Result<HealthConnectChanges, BridgeError> {
+    decode_reply(body)
+}
+
+/// Decodes a Health Connect granted-types reply (`{"ok": ["StepsRecord", ...]}`).
+pub fn decode_granted_types_reply(body: &str) -> Result<Vec<String>, BridgeError> {
+    decode_reply(body)
+}
+
+/// Decodes a Health Connect initial-records reply (`{"ok": [HealthConnectRecord, ...]}`).
+pub fn decode_initial_records_reply(body: &str) -> Result<Vec<HealthConnectRecord>, BridgeError> {
     decode_reply(body)
 }
 
@@ -979,5 +1175,26 @@ impl HealthConnectBridge for AndroidHealthConnectBridge {
         let body = crate::android_call_string(jni::jni_str!("getChanges"), token)
             .map_err(|message| BridgeError::Failed { message })?;
         decode_changes_reply(&body)
+    }
+
+    fn granted_record_types(&self) -> Result<Option<Vec<String>>, BridgeError> {
+        let body = crate::android_call_string(jni::jni_str!("grantedRecordTypes"), "")
+            .map_err(|message| BridgeError::Failed { message })?;
+        decode_granted_types_reply(&body).map(Some)
+    }
+
+    fn read_initial_records(
+        &self,
+        record_type: &str,
+        limit: usize,
+    ) -> Result<Vec<HealthConnectRecord>, BridgeError> {
+        let request = serde_json::json!({
+            "record_type": record_type,
+            "limit": limit,
+        })
+        .to_string();
+        let body = crate::android_call_string(jni::jni_str!("readInitialRecords"), &request)
+            .map_err(|message| BridgeError::Failed { message })?;
+        decode_initial_records_reply(&body)
     }
 }

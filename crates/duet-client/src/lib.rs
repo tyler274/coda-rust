@@ -9,11 +9,18 @@
 
 #[cfg(not(target_arch = "wasm32"))]
 pub mod apple_health;
+#[cfg(not(target_arch = "wasm32"))]
+pub mod health_connect;
 #[cfg(target_os = "android")]
 pub use duet_health::request_health_connect_permission;
+pub use duet_health::{
+    APPLE_HEALTH_WEARABLE_INSTRUCTION, HEALTH_CONNECT_BACKGROUND_LIMIT_NOTICE,
+    unsupported_health_connect_notice,
+};
 pub mod doctor;
 pub mod health_upload;
 pub mod identity;
+pub mod portals;
 pub mod retention;
 pub mod session;
 

@@ -53,10 +53,29 @@ async fn main() {
             .expect("accepted-work producer boundary"),
         Err(_) => database.clone(),
     };
+    let health_context_producer = if let Ok(url) = env::var("DUET_HEALTH_CONTEXT_DATABASE_URL") {
+        assert!(
+            env::var("DUET_ACCEPTED_WORK_DATABASE_URL").is_ok(),
+            "producer routes require separately scoped accepted-work credentials"
+        );
+        Some(
+            duet_api::health_context::HealthContextProducer::connect(&url)
+                .await
+                .expect("canonical context producer boundary"),
+        )
+    } else {
+        None
+    };
+    let evidence = match &health_context_producer {
+        Some(producer) => {
+            EvidenceStore::new(database.clone()).with_health_context(producer.clone())
+        }
+        None => EvidenceStore::new(database.clone()),
+    };
     let state = DurableState {
         identity: IdentityStore::new(database.clone(), verifier),
         privacy: PrivacyStore::new(accepted_database.clone(), journal),
-        evidence: EvidenceStore::new(database.clone()),
+        evidence,
     };
     // No listener exists until the independent inventory is read and replayed.
     // Unsupported historical receipt schemas fail this gate, never reopen restored content.
@@ -71,20 +90,26 @@ async fn main() {
         .expect("base64url key")
         .try_into()
         .expect("256-bit key");
-    let producer_router = if let Ok(url) = env::var("DUET_HEALTH_CONTEXT_DATABASE_URL") {
-        assert!(
-            env::var("DUET_ACCEPTED_WORK_DATABASE_URL").is_ok(),
-            "producer routes require separately scoped accepted-work credentials"
-        );
+    let producer_router = if let Some(context) = health_context_producer {
         duet_api::producer_routes::router(duet_api::producer_routes::ProducerState {
             durable: state.clone(),
-            context: duet_api::health_context::HealthContextProducer::connect(&url)
-                .await
-                .expect("canonical context producer boundary"),
+            context,
         })
     } else {
         axum::Router::new()
     };
+    let portal_service = duet_api::portals::PortalService::new(
+        database.clone(),
+        state.evidence.clone(),
+        duet_api::portals::VendorSwitches::from_env(|key| env::var(key).ok()),
+        env::var("DUET_EPIC_CLIENT_ID").unwrap_or_default(),
+        env::var("DUET_ORACLE_CLIENT_ID").unwrap_or_default(),
+    );
+    let portal_router = duet_api::portals::router(duet_api::portals::PortalState {
+        durable: state.clone(),
+        service: portal_service.clone(),
+        diagnostics_token: env::var("DUET_PORTALS_DIAGNOSTICS_TOKEN").ok(),
+    });
     let doctor = duet_api::doctor_routes::DoctorState {
         durable: state.clone(),
         workspace: duet_api::workspace::WorkspaceStore::new(database.clone()),
@@ -97,6 +122,7 @@ async fn main() {
         .expect("publication configuration"),
     };
     tokio::spawn(duet_api::background::recover_privacy(state.privacy.clone()));
+    tokio::spawn(duet_api::background::refresh_portals(portal_service));
     let front_door = match env::var("FRONT_DOOR_DATABASE_URL") {
         Ok(front_url) => Some(Arc::new(
             front_door::PostgresFrontDoorStore::connect_without_migrations(&front_url)
@@ -109,6 +135,7 @@ async fn main() {
         .merge(duet_api::evidence_routes::router(state))
         .merge(duet_api::doctor_routes::router(doctor))
         .merge(producer_router)
+        .merge(portal_router)
         .route("/health", axum::routing::get(duet_api::hosting::live))
         .route(
             "/readyz",

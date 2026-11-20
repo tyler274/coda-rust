@@ -37,6 +37,9 @@ fn notice_for(error: &AppleHealthError) -> &'static str {
         AppleHealthError::Generation(_) => {
             "Could not check this account’s Apple Health connection."
         }
+        AppleHealthError::DisconnectSync(_) => {
+            "Apple Health disconnected on this iPhone, but Duet could not confirm with the server yet."
+        }
         AppleHealthError::Permission(_) => "Apple Health could not finish the permission request.",
         AppleHealthError::Reader(_) => "Apple Health could not finish reading.",
         AppleHealthError::Clock(_) => "Could not check the device time for upload.",
@@ -47,6 +50,7 @@ fn notice_for(error: &AppleHealthError) -> &'static str {
 enum Action {
     Connect,
     Refresh,
+    Disconnect,
 }
 
 #[component]
@@ -73,10 +77,14 @@ pub(crate) fn AppleHealthControl(base_url: String, refreshed: Signal<u32>) -> El
         notice.set(String::new());
         spawn(async move {
             let result = async {
-                if matches!(action, Action::Connect) {
-                    source.connect(&client).await?;
+                match action {
+                    Action::Connect => {
+                        source.connect(&client).await?;
+                        source.refresh(&client).await
+                    }
+                    Action::Refresh => source.refresh(&client).await,
+                    Action::Disconnect => source.disconnect_and_sync(&client).await,
                 }
-                source.refresh(&client).await
             }
             .await;
             let next = *refreshed.peek() + 1;
@@ -128,16 +136,12 @@ pub(crate) fn AppleHealthControl(base_url: String, refreshed: Signal<u32>) -> El
             span { class: "source-name", "Apple Health" }
             if connected {
                 Button { disabled: busy(), onclick: move |_| run(import_source.clone(), Action::Refresh), "Refresh" }
-                Button { disabled: busy(), onclick: move |_| {
-                    match source.disconnect() {
-                        Ok(()) => notice.set(String::new()),
-                        Err(error) => notice.set(notice_for(&error).into()),
-                    }
-                }, "Disconnect" }
+                Button { disabled: busy(), onclick: move |_| run(source.clone(), Action::Disconnect), "Disconnect" }
             } else {
                 Button { disabled: busy(), onclick: move |_| run(import_source.clone(), Action::Connect), "Connect Apple Health" }
             }
         }
+        p { class: "source-guidance", "{duet_client::APPLE_HEALTH_WEARABLE_INSTRUCTION}" }
         if busy() { p { role: "status", "Checking Apple Health…" } }
         if !notice().is_empty() { p { role: "alert", "{notice}" } }
     }

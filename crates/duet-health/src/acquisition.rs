@@ -11,10 +11,9 @@ use serde_json::{Map, Value};
 
 /// Phone sources that may write canonical evidence from a device.
 ///
-/// The names are the server's device source kinds. Android Health Connect has
-/// no server source kind yet: [`PhoneSource::HealthConnect`] exists so the
-/// gated adapter can name itself, but it stays out of the uploader until the
-/// server accepts it and its type scope is agreed.
+/// The names are the server's device source kinds: Apple HealthKit samples
+/// (`appleHealth`), HealthKit clinical records (`healthRecords`), and Android
+/// Health Connect records (`healthConnect`).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum PhoneSource {
     /// HealthKit samples (`appleHealth`).
@@ -23,8 +22,7 @@ pub enum PhoneSource {
     /// HealthKit clinical records on the phone (`healthRecords`).
     #[serde(rename = "healthRecords")]
     HealthRecords,
-    /// Android Health Connect (`healthConnect`). Not accepted by the server
-    /// yet; acquisition is gated off by default.
+    /// Android Health Connect (`healthConnect`).
     #[serde(rename = "healthConnect")]
     HealthConnect,
 }

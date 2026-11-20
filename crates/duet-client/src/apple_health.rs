@@ -31,6 +31,9 @@ pub enum AppleHealthError {
     /// The authenticated generation read failed.
     #[error("reading the account’s Apple Health generation failed")]
     Generation(#[source] GenerationError),
+    /// Synchronizing disconnect state to `duet-api` failed.
+    #[error("synchronizing Apple Health disconnect state failed")]
+    DisconnectSync(#[source] crate::portals::PortalClientError),
     /// The native permission request did not finish successfully.
     #[error("HealthKit authorization failed")]
     Permission(#[from] AuthorizationError),
@@ -129,6 +132,16 @@ impl<D: AppleHealthDevice> AppleHealth<D> {
     /// Disconnect this installation without erasing previously imported records.
     pub fn disconnect(&self) -> Result<(), AppleHealthError> {
         self.queue.disconnect().map_err(AppleHealthError::from)
+    }
+    /// Disconnect locally and notify `duet-api` while keeping imported history intact
+    /// (`intent/duet.md` D2.11).
+    pub async fn disconnect_and_sync(&self, client: &DuetClient) -> Result<(), AppleHealthError> {
+        self.queue.disconnect().map_err(AppleHealthError::from)?;
+        let _ = client
+            .disconnect_phone_source(crate::portals::PhoneSourceKind::AppleHealth)
+            .await
+            .map_err(AppleHealthError::DisconnectSync)?;
+        Ok(())
     }
     /// Read on a worker thread because HealthKit's bounded read is synchronous.
     /// Each durable write and each batch rechecks the original session.

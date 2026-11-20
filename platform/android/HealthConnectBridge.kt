@@ -15,6 +15,7 @@ import androidx.health.connect.client.records.BodyFatRecord
 import androidx.health.connect.client.records.BodyTemperatureRecord
 import androidx.health.connect.client.records.DistanceRecord
 import androidx.health.connect.client.records.ExerciseSessionRecord
+import androidx.health.connect.client.records.HeartRateRecord
 import androidx.health.connect.client.records.HeightRecord
 import androidx.health.connect.client.records.HydrationRecord
 import androidx.health.connect.client.records.LeanBodyMassRecord
@@ -42,9 +43,6 @@ import org.json.JSONObject
  * the app that wrote them. This bridge does not invent a sample.
  */
 object HealthConnectBridge {
-    // Extension point for the Health Connect type list. The types below are
-    // the ones this bridge already reads. Further types wait on the list
-    // Tyler is agreeing with Dev (ENG-22) before they are added here.
     private val recordTypes: List<KClass<out androidx.health.connect.client.records.Record>> = listOf(
         StepsRecord::class,
         ActiveCaloriesBurnedRecord::class,
@@ -52,6 +50,7 @@ object HealthConnectBridge {
         DistanceRecord::class,
         NutritionRecord::class,
         HydrationRecord::class,
+        HeartRateRecord::class,
         RestingHeartRateRecord::class,
         WeightRecord::class,
         SleepSessionRecord::class,
@@ -118,11 +117,48 @@ object HealthConnectBridge {
         }
     }
 
-    // ---- Type-independent changes feed (duet_health::native_adapters) ----
-    //
-    // Rust owns the scope gate (disabled until ENG-22 settles the type list),
-    // the committed token and coverage. These two calls only page the feed and
-    // report typed errors. No new permission is declared here.
+    // ---- Acquisition bridge (duet_health::native_adapters) ----
+
+    /** `{"ok": ["StepsRecord", ...]}` for currently granted Health Connect record types. */
+    @JvmStatic
+    fun grantedRecordTypes(context: Context, @Suppress("UNUSED_PARAMETER") unused: String = ""): String = reply {
+        val granted = runBlocking {
+            HealthConnectClient.getOrCreate(context).permissionController.getGrantedPermissions()
+        }
+        val names = JSONArray()
+        for (type in recordTypes) {
+            if (granted.contains(HealthPermission.getReadPermission(type))) {
+                type.simpleName?.let { names.put(it) }
+            }
+        }
+        JSONObject().put("ok", names)
+    }
+
+    /** Bounded initial history read for one granted record type: `{"ok": [HealthConnectRecord, ...]}`. */
+    @JvmStatic
+    fun readInitialRecords(context: Context, requestJson: String): String = reply {
+        val request = JSONObject(requestJson)
+        val typeName = request.optString("record_type", "")
+        val limit = request.optInt("limit", 100).coerceIn(1, 1000)
+        val type = recordTypes.firstOrNull { it.simpleName == typeName }
+            ?: return@reply errorJson("unsupported")
+        val client = HealthConnectClient.getOrCreate(context)
+        val records = runBlocking {
+            client.readRecords(
+                ReadRecordsRequest(
+                    recordType = type,
+                    timeRangeFilter = TimeRangeFilter.before(Instant.now()),
+                    ascendingOrder = false,
+                    pageSize = limit,
+                ),
+            ).records
+        }
+        val out = JSONArray()
+        for (record in records) {
+            out.put(upsertJson(record))
+        }
+        JSONObject().put("ok", out)
+    }
 
     /** `{"ok": "<token>"}` for the JSON array of record type simple names. */
     @JvmStatic
@@ -141,9 +177,8 @@ object HealthConnectBridge {
     /**
      * One `getChanges(token)` page: `{"ok": {"upserts", "deleted",
      * "next_token", "has_more", "token_expired"}}`. Upserts carry the record
-     * type, identity, times, offsets and `dataOrigin.packageName`. The exact
-     * value is left empty until the type-specific extraction is agreed; Rust
-     * reports such records as not extracted rather than uploading them.
+     * type, identity, exact literal value & unit, times, offsets, and
+     * `dataOrigin.packageName`.
      */
     @JvmStatic
     fun getChanges(context: Context, token: String): String = reply {
@@ -167,25 +202,54 @@ object HealthConnectBridge {
         )
     }
 
+    private fun extractValueAndUnit(record: androidx.health.connect.client.records.Record): Pair<String, String?> =
+        when (record) {
+            is StepsRecord -> record.count.toString() to "count"
+            is ActiveCaloriesBurnedRecord -> record.energy.inKilocalories.toString() to "kcal"
+            is ExerciseSessionRecord -> minutesBetween(record.startTime, record.endTime).toString() to "min"
+            is DistanceRecord -> record.distance.inMeters.toString() to "m"
+            is NutritionRecord -> (record.energy?.inKilocalories?.toString() ?: "") to "kcal"
+            is HydrationRecord -> record.volume.inLiters.toString() to "L"
+            is HeartRateRecord -> (record.samples.lastOrNull()?.beatsPerMinute?.toString() ?: "") to "count/min"
+            is RestingHeartRateRecord -> record.beatsPerMinute.toString() to "count/min"
+            is WeightRecord -> record.weight.inKilograms.toString() to "kg"
+            is SleepSessionRecord -> minutesBetween(record.startTime, record.endTime).toString() to "min"
+            is BloodPressureRecord ->
+                "${record.systolic.inMillimetersOfMercury}/${record.diastolic.inMillimetersOfMercury}" to "mmHg"
+            is BodyFatRecord -> record.percentage.value.toString() to "%"
+            is LeanBodyMassRecord -> record.mass.inKilograms.toString() to "kg"
+            is HeightRecord -> record.height.inMeters.toString() to "m"
+            is BloodGlucoseRecord -> record.level.inMilligramsPerDeciliter.toString() to "mg/dL"
+            is BodyTemperatureRecord -> record.temperature.inCelsius.toString() to "degC"
+            is BasalBodyTemperatureRecord -> record.temperature.inCelsius.toString() to "degC"
+            is OxygenSaturationRecord -> record.percentage.value.toString() to "%"
+            is Vo2MaxRecord -> record.vo2MillilitersPerMinuteKilogram.toString() to "mL/kg/min"
+            else -> "" to null
+        }
+
     private fun upsertJson(record: androidx.health.connect.client.records.Record): JSONObject {
+        val (literal, unit) = extractValueAndUnit(record)
         val json = JSONObject()
             .put("record_type", record::class.simpleName ?: "")
             .put("id", record.metadata.id)
-            .put("value", "")
+            .put("value", literal)
             .put("writer_id", record.metadata.dataOrigin.packageName)
+        unit?.let { json.put("unit", it) }
         record.metadata.device?.let { device ->
             listOfNotNull(device.manufacturer, device.model).joinToString(" ").takeIf { it.isNotEmpty() }?.let {
                 json.put("device", it)
             }
         }
         span(record)?.let { (start, end) -> json.put("start", start).put("end", end) }
-        json.put(
-            "metadata",
-            JSONObject()
-                .put("last_modified", record.metadata.lastModifiedTime.toString())
-                .put("client_record_id", record.metadata.clientRecordId ?: JSONObject.NULL)
-                .put("client_record_version", record.metadata.clientRecordVersion),
-        )
+        val meta = JSONObject()
+            .put("last_modified", record.metadata.lastModifiedTime.toString())
+            .put("client_record_id", record.metadata.clientRecordId ?: JSONObject.NULL)
+            .put("client_record_version", record.metadata.clientRecordVersion)
+        if (record is BloodPressureRecord) {
+            meta.put("systolic_mmhg", record.systolic.inMillimetersOfMercury)
+            meta.put("diastolic_mmhg", record.diastolic.inMillimetersOfMercury)
+        }
+        json.put("metadata", meta)
         return json
     }
 
@@ -211,6 +275,7 @@ object HealthConnectBridge {
             is ActiveCaloriesBurnedRecord -> between(record.startTime, record.startZoneOffset, record.endTime, record.endZoneOffset)
             is DistanceRecord -> between(record.startTime, record.startZoneOffset, record.endTime, record.endZoneOffset)
             is ExerciseSessionRecord -> between(record.startTime, record.startZoneOffset, record.endTime, record.endZoneOffset)
+            is HeartRateRecord -> between(record.startTime, record.startZoneOffset, record.endTime, record.endZoneOffset)
             is HydrationRecord -> between(record.startTime, record.startZoneOffset, record.endTime, record.endZoneOffset)
             is NutritionRecord -> between(record.startTime, record.startZoneOffset, record.endTime, record.endZoneOffset)
             is SleepSessionRecord -> between(record.startTime, record.startZoneOffset, record.endTime, record.endZoneOffset)

@@ -378,6 +378,8 @@ struct FakeConnect {
     tokens: RefCell<Vec<Vec<String>>>,
     changes: RefCell<VecDeque<Result<HealthConnectChanges, BridgeError>>>,
     seen: RefCell<Vec<String>>,
+    granted: RefCell<Option<Vec<String>>>,
+    initial: RefCell<BTreeMap<String, Vec<HealthConnectRecord>>>,
 }
 
 impl HealthConnectBridge for &FakeConnect {
@@ -392,14 +394,36 @@ impl HealthConnectBridge for &FakeConnect {
             .pop_front()
             .unwrap_or_else(|| Ok(HealthConnectChanges::default()))
     }
+    fn granted_record_types(&self) -> Result<Option<Vec<String>>, BridgeError> {
+        Ok(self.granted.borrow().clone())
+    }
+    fn read_initial_records(
+        &self,
+        record_type: &str,
+        limit: usize,
+    ) -> Result<Vec<HealthConnectRecord>, BridgeError> {
+        Ok(self
+            .initial
+            .borrow()
+            .get(record_type)
+            .cloned()
+            .unwrap_or_default()
+            .into_iter()
+            .take(limit)
+            .collect())
+    }
 }
 
 #[test]
-fn health_connect_is_disabled_by_default_and_says_so() {
+fn health_connect_defaults_to_approved_scope_and_disabled_gate_still_reports_not_enabled() {
     let fake = FakeConnect::default();
-    let adapter = HealthConnectAdapter::new(&fake);
-    assert_eq!(adapter.scope(), &HealthConnectScope::Disabled);
-    let page = adapter.read_page(&request(None)).unwrap();
+    let default_adapter = HealthConnectAdapter::new(&fake);
+    assert_eq!(default_adapter.scope(), &HealthConnectScope::approved());
+    assert_eq!(default_health_connect_types().len(), 19);
+
+    let disabled = HealthConnectAdapter::new(&fake).with_scope(HealthConnectScope::Disabled);
+    assert_eq!(disabled.scope(), &HealthConnectScope::Disabled);
+    let page = disabled.read_page(&request(None)).unwrap();
     assert!(page.records.is_empty() && page.deletions.is_empty());
     assert_eq!(
         page.coverage,
@@ -415,6 +439,88 @@ fn health_connect_is_disabled_by_default_and_says_so() {
         "never silent empty"
     );
     assert!(fake.tokens.borrow().is_empty() && fake.seen.borrow().is_empty());
+}
+
+#[test]
+fn health_connect_filters_granted_types_reads_initial_history_and_states_limits() {
+    let fake = FakeConnect::default();
+    *fake.granted.borrow_mut() = Some(vec!["StepsRecord".into(), "UnsupportedCustomRecord".into()]);
+    let mut step = sample("s-init-1", "4200", "count");
+    step.writer_id = Some("com.google.android.apps.fitness".into());
+    step.source_name = None;
+    fake.initial.borrow_mut().insert(
+        "StepsRecord".into(),
+        vec![HealthConnectRecord {
+            record_type: "StepsRecord".into(),
+            sample: step,
+        }],
+    );
+
+    let adapter = HealthConnectAdapter::new(&fake).with_scope(HealthConnectScope::Enabled {
+        types: vec![
+            TypeSpec::new("StepsRecord", "activity:steps", "count"),
+            TypeSpec::new("WeightRecord", "body:weight", "kg"),
+        ],
+    });
+    let page = adapter.read_page(&request(None)).unwrap();
+    assert_eq!(fake.tokens.borrow()[0], vec!["StepsRecord".to_string()]);
+    assert_eq!(page.records.len(), 1);
+    assert_eq!(page.records[0].native_id, "HealthConnect/s-init-1");
+    assert_eq!(page.records[0].value.literal, "4200");
+    assert_eq!(
+        page.records[0].provenance.source_name.as_deref(),
+        Some("Google Health")
+    );
+    assert!(page.deletions.is_empty());
+    assert_eq!(
+        page.coverage
+            .iter()
+            .find(|c| c.data_type == "StepsRecord")
+            .map(|c| &c.outcome),
+        Some(&CoverageOutcome::Data)
+    );
+    assert_eq!(
+        page.coverage
+            .iter()
+            .find(|c| c.data_type == "WeightRecord")
+            .map(|c| &c.outcome),
+        Some(&CoverageOutcome::PermissionLost)
+    );
+    assert_eq!(
+        page.coverage
+            .iter()
+            .find(|c| c.data_type == "UnsupportedCustomRecord")
+            .map(|c| &c.outcome),
+        Some(&CoverageOutcome::Error {
+            error: CoverageError::Unsupported
+        })
+    );
+
+    let (narrowed, unsupported) = HealthConnectScope::for_granted(&[
+        "StepsRecord".into(),
+        "HeartRateRecord".into(),
+        "UnsupportedCustomRecord".into(),
+    ]);
+    assert_eq!(unsupported, vec!["UnsupportedCustomRecord".to_string()]);
+    assert!(matches!(
+        narrowed,
+        HealthConnectScope::Enabled { ref types } if types.len() == 2
+    ));
+    let notice =
+        duet_health::unsupported_health_connect_notice(&unsupported).expect("unsupported notice");
+    assert!(notice.contains("UnsupportedCustomRecord"));
+    assert_eq!(duet_health::unsupported_health_connect_notice(&[]), None);
+    assert!(duet_health::APPLE_HEALTH_WEARABLE_INSTRUCTION.contains("HealthKit"));
+    assert!(duet_health::HEALTH_CONNECT_BACKGROUND_LIMIT_NOTICE.contains("background"));
+
+    assert_eq!(
+        decode_granted_types_reply(r#"{"ok":["StepsRecord","WeightRecord"]}"#),
+        Ok(vec!["StepsRecord".into(), "WeightRecord".into()])
+    );
+    assert_eq!(
+        decode_initial_records_reply(r#"{"error":{"code":"permission_denied"}}"#),
+        Err(BridgeError::PermissionDenied)
+    );
 }
 
 fn enabled(fake: &FakeConnect) -> HealthConnectAdapter<&FakeConnect> {

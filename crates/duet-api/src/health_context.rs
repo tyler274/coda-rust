@@ -762,6 +762,150 @@ fn str_at<'a>(v: &'a Value, path: &str) -> &'a str {
 fn timestamp(s: &str) -> Option<DateTime<Utc>> {
     s.parse().ok()
 }
+fn default_phone_display_name(concept_id: &str) -> Option<&'static str> {
+    match concept_id {
+        "activity:steps" | "steps" => Some("Steps"),
+        "activity:active_energy" => Some("Active energy"),
+        "activity:exercise" => Some("Exercise"),
+        "activity:distance" => Some("Distance"),
+        "nutrition:dietary_energy" => Some("Dietary energy"),
+        "nutrition:water" => Some("Water"),
+        "vital:heart_rate" => Some("Heart rate"),
+        "vital:resting_heart_rate" => Some("Resting heart rate"),
+        "vital:blood_pressure_systolic" => Some("Blood pressure (systolic)"),
+        "vital:blood_pressure_diastolic" => Some("Blood pressure (diastolic)"),
+        "vital:oxygen_saturation" => Some("Oxygen saturation"),
+        "vital:body_temperature" => Some("Body temperature"),
+        "vital:basal_body_temperature" => Some("Basal body temperature"),
+        "body:weight" => Some("Weight"),
+        "body:height" => Some("Height"),
+        "body:fat_percentage" => Some("Body fat"),
+        "body:lean_mass" => Some("Lean body mass"),
+        "lab:glucose" => Some("Blood glucose"),
+        "sleep:duration" => Some("Sleep"),
+        "fitness:vo2_max" => Some("VO2 max"),
+        _ => None,
+    }
+}
+
+fn default_phone_aggregation(concept_id: &str) -> &'static str {
+    match concept_id {
+        "activity:steps"
+        | "steps"
+        | "activity:active_energy"
+        | "activity:exercise"
+        | "activity:distance"
+        | "nutrition:dietary_energy"
+        | "nutrition:water"
+        | "sleep:duration" => "daily_sum",
+        _ => "",
+    }
+}
+
+struct ScalarMeasurement {
+    value: f64,
+    unit: String,
+    display_name: String,
+    aggregation: String,
+}
+
+/// Single owner for extracting an exact scalar measurement from either the
+/// canonical `value.quantity` envelope or the phone outbox `value.literal`
+/// envelope (`appleHealth` / `healthConnect`).
+fn extract_scalar_measurement(p: &Value) -> Result<ScalarMeasurement, &'static str> {
+    let concept = str_at(p, "/concept_id");
+    if concept.is_empty() {
+        return Err("Measurement identity and display name required");
+    }
+    let aggregation = {
+        let explicit = str_at(p, "/context/aggregation");
+        if explicit.is_empty() {
+            let source_kind = str_at(p, "/source/kind");
+            if matches!(source_kind, "appleHealth" | "healthConnect") {
+                default_phone_aggregation(concept)
+            } else {
+                ""
+            }
+        } else {
+            explicit
+        }
+    };
+    if (p["method"] == "daily_aggregate" || !aggregation.is_empty())
+        && !matches!(
+            aggregation,
+            "daily_sum"
+                | "daily_event_count"
+                | "latest_reading_in_day"
+                | "mean_of_readings_in_day"
+                | "asleep_minutes_ending_in_day"
+        )
+    {
+        return Err("Unestablished daily aggregation");
+    }
+    if p["value"]["type"] == "quantity" {
+        if !p["value"]["quantity"]["comparator"].is_null() {
+            return Err("Bound is not an exact value");
+        }
+        let Some(value) = p["value"]["quantity"]["canonical_value"]
+            .as_f64()
+            .filter(|v| v.is_finite())
+        else {
+            return Err("Exact canonical quantity and established unit required");
+        };
+        let unit = str_at(p, "/value/quantity/canonical_unit");
+        if unit.is_empty() {
+            return Err("Exact canonical quantity and established unit required");
+        }
+        let display_name = str_at(p, "/display_name");
+        if display_name.is_empty() {
+            return Err("Measurement identity and display name required");
+        }
+        return Ok(ScalarMeasurement {
+            value,
+            unit: unit.to_owned(),
+            display_name: display_name.to_owned(),
+            aggregation: aggregation.to_owned(),
+        });
+    }
+    if let Some(literal) = p.pointer("/value/literal").and_then(Value::as_str) {
+        let trimmed = literal.trim();
+        if trimmed.starts_with('<') || trimmed.starts_with('>') {
+            return Err("Bound is not an exact value");
+        }
+        let Ok(value) = trimmed.parse::<f64>() else {
+            return Err(
+                "Only exact scalar quantities are implemented; components/ranges/ratios/text require their exact reader",
+            );
+        };
+        if !value.is_finite() {
+            return Err("Exact canonical quantity and established unit required");
+        }
+        let unit = str_at(p, "/value/unit");
+        if unit.is_empty() {
+            return Err("Exact canonical quantity and established unit required");
+        }
+        let display_name = {
+            let explicit = str_at(p, "/display_name");
+            if !explicit.is_empty() {
+                explicit.to_owned()
+            } else if let Some(name) = default_phone_display_name(concept) {
+                name.to_owned()
+            } else {
+                return Err("Measurement identity and display name required");
+            }
+        };
+        return Ok(ScalarMeasurement {
+            value,
+            unit: unit.to_owned(),
+            display_name,
+            aggregation: aggregation.to_owned(),
+        });
+    }
+    Err(
+        "Only exact scalar quantities are implemented; components/ranges/ratios/text require their exact reader",
+    )
+}
+
 fn limit(p: &Value) -> Option<&'static str> {
     if p["verification"] == "staged" {
         return Some("Unconfirmed staged evidence");
@@ -793,38 +937,7 @@ fn limit(p: &Value) -> Option<&'static str> {
     if p["source"]["provenance"] == "copied" && str_at(p, "/source/issuer").is_empty() {
         return Some("Copied measurement has unknown original source");
     }
-    if p["value"]["type"] != "quantity" {
-        return Some(
-            "Only exact scalar quantities are implemented; components/ranges/ratios/text require their exact reader",
-        );
-    }
-    if !p["value"]["quantity"]["comparator"].is_null() {
-        return Some("Bound is not an exact value");
-    }
-    if p["value"]["quantity"]["canonical_value"]
-        .as_f64()
-        .is_none_or(|v| !v.is_finite())
-        || str_at(p, "/value/quantity/canonical_unit").is_empty()
-    {
-        return Some("Exact canonical quantity and established unit required");
-    }
-    let aggregation = str_at(p, "/context/aggregation");
-    if (p["method"] == "daily_aggregate" || !aggregation.is_empty())
-        && !matches!(
-            aggregation,
-            "daily_sum"
-                | "daily_event_count"
-                | "latest_reading_in_day"
-                | "mean_of_readings_in_day"
-                | "asleep_minutes_ending_in_day"
-        )
-    {
-        return Some("Unestablished daily aggregation");
-    }
-    if str_at(p, "/concept_id").is_empty() || str_at(p, "/display_name").is_empty() {
-        return Some("Measurement identity and display name required");
-    }
-    None
+    extract_scalar_measurement(p).err()
 }
 async fn prepare_series(
     tx: &mut Transaction<'_, Postgres>,
@@ -866,7 +979,12 @@ async fn prepare_series(
             });
             continue;
         }
-        let Some(at) = timestamp(str_at(p, "/measured_interval/start")) else {
+        let Ok(measurement) = extract_scalar_measurement(p) else {
+            continue;
+        };
+        let Some(at) = timestamp(str_at(p, "/measured_interval/start"))
+            .or_else(|| timestamp(str_at(p, "/measured_at")))
+        else {
             limits.push(CalculationLimit {
                 address: record.address.clone(),
                 reason: "Explicit measured_interval.start required".into(),
@@ -894,7 +1012,7 @@ async fn prepare_series(
         }
         let connection = p["source"]["connection_id"].as_str().map(str::to_owned);
         let concept = str_at(p, "/concept_id");
-        let unit = str_at(p, "/value/quantity/canonical_unit");
+        let unit = measurement.unit.as_str();
         let identity = if p["catalog"]["resolution"] == "resolved"
             && !str_at(p, "/catalog/series_id").is_empty()
         {
@@ -910,7 +1028,14 @@ async fn prepare_series(
             "{source_kind}|{}|{issuer}|{identity}|{unit}",
             connection.as_deref().unwrap_or("")
         );
-        let zone = str_at(p, "/context/day_timezone");
+        let zone = {
+            let ctx_zone = str_at(p, "/context/day_timezone");
+            if !ctx_zone.is_empty() {
+                ctx_zone
+            } else {
+                str_at(p, "/timezone")
+            }
+        };
         let valid: bool =
             sqlx::query_scalar("select exists(select 1 from pg_timezone_names where name=$1)")
                 .bind(zone)
@@ -939,15 +1064,12 @@ async fn prepare_series(
             readings: if p["method"] == "daily_aggregate" {
                 vec![]
             } else {
-                vec![(
-                    at,
-                    p["value"]["quantity"]["canonical_value"].as_f64().unwrap(),
-                )]
+                vec![(at, measurement.value)]
             },
             available: timestamp(str_at(p, "/source_synced_at"))
                 .or_else(|| timestamp(str_at(p, "/received_at")))
                 .unwrap_or(at),
-            value: p["value"]["quantity"]["canonical_value"].as_f64().unwrap(),
+            value: measurement.value,
             partial: p["context"]["day_partial"] == true
                 || str_at(p, "/context/day_partial").eq_ignore_ascii_case("true"),
             aggregate: p["method"] == "daily_aggregate",
@@ -991,16 +1113,17 @@ async fn prepare_series(
             .or_insert_with(|| Series {
                 key,
                 concept: concept.into(),
-                title: str_at(p, "/display_name").into(),
-                unit: unit.into(),
+                title: measurement.display_name.clone(),
+                unit: measurement.unit.clone(),
                 kind: source_kind.into(),
                 connection,
                 name: p["context"]["source_name"]
                     .as_str()
+                    .or_else(|| p["source"]["source_name"].as_str())
                     .or_else(|| p["source"]["label"].as_str())
                     .unwrap_or(source_kind)
                     .into(),
-                aggregation: str_at(p, "/context/aggregation").into(),
+                aggregation: measurement.aggregation.clone(),
                 sensitivity: sensitivity.into(),
                 points: vec![],
             });
@@ -1021,7 +1144,11 @@ async fn prepare_series(
             let raw: Vec<_> = readings.iter().filter(|p| !p.aggregate).collect();
             let mut daily = readings.last().unwrap().clone();
             if !raw.is_empty() {
-                daily.value = raw.iter().map(|p| p.value).sum::<f64>() / raw.len() as f64;
+                daily.value = match series.aggregation.as_str() {
+                    "daily_sum" | "daily_event_count" => raw.iter().map(|p| p.value).sum::<f64>(),
+                    "latest_reading_in_day" => raw.last().unwrap().value,
+                    _ => raw.iter().map(|p| p.value).sum::<f64>() / raw.len() as f64,
+                };
                 daily.aggregate = false;
                 daily.readings = raw
                     .iter()
@@ -1074,10 +1201,12 @@ fn fact(
                 .collect::<Vec<_>>()
                 .join("; "),
         ));
-        fields.push((
-            "day_value",
-            "average of every reading taken that day".into(),
-        ));
+        let day_value_label = match s.aggregation.as_str() {
+            "daily_sum" | "daily_event_count" => "sum of every reading taken that day",
+            "latest_reading_in_day" => "latest reading taken that day",
+            _ => "average of every reading taken that day",
+        };
+        fields.push(("day_value", day_value_label.into()));
     }
     fields.extend(extras);
     let mut f: HealthFactInput = serde_json::from_value(json!({"id":"pending-id","kind":kind,"concept_ids":[s.concept],"title":s.title,"window":window,"range_start":start,"range_end":end,"value":value,"unit":s.unit,"comparison_value":comparison,"support_count":points.len(),"sensitivity":s.sensitivity,"evidence":[{"id":format!("stat:{}:{}",s.concept,&digest(&s.key)[..12]),"kind":"stat","title":s.title,"concept_id":s.concept,"window":window,"range_start":start,"range_end":end,"source_kind":s.kind,"source_connection_ids":s.connection.iter().collect::<Vec<_>>(),"source_fields":fields.into_iter().map(|(name,value)|json!({"name":name,"value":value})).collect::<Vec<_>>()}]})).expect("typed producer fact");
