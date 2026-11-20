@@ -1,0 +1,687 @@
+Checked 10 authored SQL files with pg_format version 5.11
+.......PASS P1 step: observed
+.PASS P1 step: observed
+FAIL P1 step: observed
+.PASS P1 step: observed
+..usage: scenarios.py [-h] [--only ONLY] [--require-complete]
+                    [--evidence EVIDENCE]
+scenarios.py: error: --only selected no journeys; available: P1, D1, L1
+.PASS L1 measure: rate=16.67
+.FAIL D1 cargo test exit: cargo test --locked -p duet-api --test database_foundation --test public_budget -- --test-threads=1 exited 101
+PASS D1 fresh_and_upgrade_keep_identity_and_enforce_account_scope: ok: fresh and upgraded schema keep identity; one account cannot read another's rows
+PASS D1 public_retrieval_budget_spans_pools_and_publication: ok: the public retrieval budget holds across pools and counts publication reads and misses
+..
+----------------------------------------------------------------------
+Ran 15 tests in 0.013s
+
+OK
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Checking libc v0.2.190
+    Checking futures-util v0.3.34
+    Checking stable_deref_trait v1.2.1
+    Checking bitflags v2.13.2
+   Compiling num-traits v0.2.19
+    Checking subtle v2.6.1
+    Checking serde_json v1.0.154
+    Checking hashbrown v0.17.1
+    Checking bytemuck v1.25.2
+   Compiling crossbeam-utils v0.8.23
+   Compiling slab v0.4.12
+    Checking crypto-common v0.1.7
+    Checking yoke v0.8.3
+   Compiling darling_core v0.20.11
+    Checking hashbrown v0.16.1
+    Checking simd-adler32 v0.3.10
+    Checking crc32fast v1.5.2
+    Checking strict-num v0.1.1
+    Checking pdf-writer v0.15.0
+    Checking zerocopy v0.8.63
+    Checking regex-syntax v0.8.11
+    Checking byteorder v1.5.0
+    Checking typst-assets v0.15.1
+    Checking opentelemetry v0.33.1
+    Checking strum v0.28.0
+    Checking tower-http v0.7.1
+    Checking keyboard-types v0.7.0
+    Checking digest v0.10.7
+    Checking futures-timer v3.0.4
+    Checking pulldown-cmark v0.13.6
+    Checking font-types v0.11.3
+    Checking tiny-skia-path v0.12.0
+   Compiling crossbeam-queue v0.3.14
+    Checking miniz_oxide v0.9.1
+    Checking zerovec v0.11.8
+    Checking zerotrie v0.2.5
+    Checking getrandom v0.4.3
+    Checking errno v0.3.14
+    Checking mio v1.2.4
+    Checking socket2 v0.6.5
+    Checking getrandom v0.2.17
+   Compiling jobserver v0.1.35
+    Checking parking_lot_core v0.9.12
+    Checking memmap2 v0.9.11
+    Checking indexmap v2.14.2
+    Checking read-fonts v0.39.2
+    Checking read-fonts v0.37.0
+    Checking hashlink v0.11.1
+    Checking parking_lot v0.12.5
+    Checking flate2 v1.1.11
+    Checking getrandom v0.3.4
+    Checking sha2 v0.10.9
+    Checking signal-hook-registry v1.4.8
+   Compiling cc v1.8.0
+   Compiling rand v0.10.4
+    Checking tinystr v0.8.4
+    Checking potential_utf v0.1.6
+    Checking chrono v0.4.45
+    Checking rust_decimal v1.43.0
+    Checking float-cmp v0.9.0
+    Checking fontdb v0.23.0
+    Checking atoi v2.0.0
+    Checking ordered-float v4.6.0
+    Checking crypto-common v0.2.2
+    Checking uuid v1.29.2
+    Checking futures-intrusive v0.5.0
+   Compiling tokio v1.54.1
+    Checking icu_collections v2.3.0
+   Compiling darling_macro v0.20.11
+    Checking rand_core v0.9.5
+    Checking futures-executor v0.3.34
+    Checking num-integer v0.1.47
+    Checking generational-box v0.7.10
+    Checking subsecond v0.7.10
+    Checking euclid v0.22.14
+    Checking regex-automata v0.4.18
+    Checking digest v0.11.3
+    Checking universal-hash v0.6.1
+    Checking cipher v0.5.2
+    Checking aead v0.6.1
+    Checking icu_locale_core v2.3.0
+   Compiling cmake v0.1.58
+    Checking dioxus-core v0.7.10
+   Compiling ring v0.17.14
+    Checking polyval v0.7.3
+    Checking num-bigint v0.4.8
+    Checking sha2 v0.11.1
+    Checking hmac v0.13.0
+    Checking md-5 v0.11.0
+   Compiling aws-lc-sys v0.46.0
+    Checking aes v0.9.3
+    Checking ctr v0.10.1
+    Checking ghash v0.6.0
+    Checking hkdf v0.13.0
+    Checking icu_provider v2.3.1
+    Checking aes-gcm v0.11.1
+    Checking icu_properties v2.3.0
+    Checking icu_normalizer v2.3.0
+    Checking duet-health v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-health)
+    Checking simple_asn1 v0.6.4
+    Checking ppv-lite86 v0.2.21
+    Checking dioxus-signals v0.7.10
+    Checking dioxus-history v0.7.10
+    Checking matchers v0.2.0
+    Checking rand_chacha v0.9.0
+    Checking idna_adapter v1.2.2
+    Checking tracing-subscriber v0.3.23
+    Checking skrifa v0.40.0
+    Checking harfrust v0.5.2
+    Checking idna v1.1.0
+    Checking rand v0.9.5
+    Checking url v2.5.8
+    Checking skrifa v0.42.1
+    Checking write-fonts v0.48.1
+    Checking dioxus-hooks v0.7.10
+    Checking dioxus-stores v0.7.10
+    Checking opentelemetry_sdk v0.33.1
+    Checking dioxus-html v0.7.10
+   Compiling tokio-stream v0.1.19
+    Checking hyper v1.12.0
+    Checking tower v0.5.3
+    Checking opentelemetry-proto v0.33.1
+    Checking dioxus-document v0.7.10
+    Checking tracing-opentelemetry v0.34.0
+    Checking hyper-util v0.1.21
+    Checking dioxus v0.7.10
+    Checking tower-http v0.6.11
+    Checking ui v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/ui)
+    Checking cosmic-text v0.19.0
+    Checking axum v0.8.9
+    Checking reqwest v0.13.5
+    Checking opentelemetry-http v0.33.1
+    Checking subsetter v0.2.6
+    Checking opentelemetry-otlp v0.33.1
+   Compiling darling v0.20.11
+   Compiling sea-query-derive v1.0.0
+    Checking krilla v0.8.2
+    Checking duet-page v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-page)
+   Compiling rustls v0.23.46
+    Checking rustls-webpki v0.103.16
+    Checking sea-query v1.0.2
+    Checking tokio-rustls v0.26.6
+    Checking sqlx-core v0.9.0
+    Checking hyper-rustls v0.27.10
+    Checking reqwest v0.12.28
+    Checking duet_wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-wire)
+    Checking coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/http)
+    Checking telemetry v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/telemetry)
+    Checking sqlx-postgres v0.9.0
+    Checking duet-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-client)
+    Checking duet-app v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-app)
+   Compiling sqlx-macros-core v0.9.0
+   Compiling sqlx-macros v0.9.0
+    Checking sqlx v0.9.0
+    Checking sea-query-sqlx v0.9.1
+    Checking sea-schema v0.18.1
+    Checking sea-orm v2.0.4
+   Compiling aws-lc-rs v1.18.2
+    Checking sea-orm-migration v2.0.4
+    Checking jsonwebtoken v11.1.0
+    Checking front-door v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/front-door)
+    Checking duet-api v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-api)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1m 22s
+    Checking js-sys v0.3.106
+    Checking duet-health v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-health)
+    Checking web-sys v0.3.106
+    Checking wasm-bindgen-futures v0.4.79
+    Checking chrono v0.4.45
+    Checking gloo-timers v0.4.0
+    Checking futures-timer v3.0.4
+    Checking subsecond v0.7.10
+    Checking reqwest v0.12.28
+    Checking dioxus-core v0.7.10
+    Checking duet_wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-wire)
+    Checking coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/http)
+    Checking dioxus-signals v0.7.10
+    Checking dioxus-history v0.7.10
+    Checking dioxus-hooks v0.7.10
+    Checking dioxus-stores v0.7.10
+    Checking dioxus-html v0.7.10
+    Checking dioxus-document v0.7.10
+    Checking duet-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-client)
+    Checking dioxus v0.7.10
+    Checking ui v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/ui)
+    Checking duet-app v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-app)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 28.07s
+   Compiling winnow v1.0.4
+   Compiling toml_writer v1.2.0+spec-1.1.0
+   Compiling serde_core v1.0.229
+   Compiling unicode-ident v1.0.27
+   Compiling boundaries v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/boundaries)
+   Compiling proc-macro2 v1.0.107
+   Compiling toml_parser v1.1.5+spec-1.1.0
+   Compiling toml_datetime v1.1.3+spec-1.1.0
+   Compiling serde_spanned v1.1.3
+   Compiling toml v1.2.1+spec-1.1.0
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.43s
+     Running unittests src/lib.rs (/tmp/coda-target-gcp/debug/deps/boundaries-94cce9dbaff1c954)
+
+running 25 tests
+test shared_ui::a_new_file_counts_as_going_up_from_zero ... ok
+test shared_ui::a_matching_count_passes ... ok
+test shared_ui::a_count_going_up_says_to_use_the_shared_component_or_add_an_exception ... ok
+test shared_ui::a_count_going_down_says_to_lower_the_number ... ok
+test shared_ui::a_whole_test_file_counts_nothing ... ok
+test shared_ui::counts_css_rules_naming_control_elements ... ok
+test shared_ui::a_count_reaching_zero_says_to_remove_the_entry ... ok
+test tests::shipping_clients_stay_until_the_rust_journeys_match ... ok
+test tests::duet_screens_do_not_read_device_health_directly ... ok
+test shared_ui::counts_rsx_held_in_other_macros_and_nested_rsx ... ok
+test shared_ui::counts_card_classes_set_apart_by_escaped_whitespace ... ok
+test shared_ui::counts_card_markup_by_class_family_once_per_element ... ok
+test shared_ui::counts_css_rules_naming_library_classes ... ok
+test shared_ui::every_table_entry_has_one_row_and_a_reason ... ok
+test tests::apps_do_not_import_each_others_clinical_crates ... ok
+test shared_ui::ignores_comments_strings_and_lookalikes ... ok
+test shared_ui::counts_each_raw_control_inside_rsx ... ok
+test tests::the_clinical_library_is_product_neutral ... ok
+test shared_ui::ignores_test_code_but_not_code_kept_out_of_tests ... ok
+test tests::gmail_and_spruce_are_product_neutral ... ok
+test shared_ui::the_check_reads_the_real_library ... ok
+test tests::every_ui_behaviour_is_run_as_its_kind ... ok
+test tests::shared_harness_is_product_neutral_and_has_no_product_store ... ok
+test tests::the_ui_library_runs_its_browser_behaviour_without_eval ... ok
+test shared_ui::the_apps_match_the_shared_ui_table ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.76s
+
+   Doc-tests boundaries
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling typenum v1.20.1
+   Compiling cfg-if v1.0.5
+   Compiling const-oid v0.10.2
+   Compiling memchr v2.8.3
+   Compiling cpufeatures v0.3.1
+   Compiling itoa v1.0.18
+   Compiling futures-core v0.3.34
+   Compiling proc-macro2 v1.0.107
+   Compiling serde_core v1.0.229
+   Compiling libc v0.2.190
+   Compiling zmij v1.0.23
+   Compiling futures-channel v0.3.34
+   Compiling quote v1.0.47
+   Compiling syn v3.0.9
+   Compiling hybrid-array v0.4.15
+   Compiling getrandom v0.4.3
+   Compiling crypto-common v0.2.2
+   Compiling block-buffer v0.12.1
+   Compiling thiserror-impl v2.0.21
+   Compiling serde_derive v1.0.229
+   Compiling digest v0.11.3
+   Compiling serde_json v1.0.154
+   Compiling uuid v1.29.2
+   Compiling sha2 v0.11.1
+   Compiling thiserror v2.0.21
+   Compiling serde v1.0.229
+   Compiling duet-health v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-health)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 21.68s
+     Running unittests src/lib.rs (/tmp/coda-target-gcp/debug/deps/duet_health-dfb993d54c79b5b7)
+
+running 11 tests
+test tests::healthkit_thrown_read_is_unreadable ... ok
+test tests::ungranted_readings_are_omitted ... ok
+test tests::status_codes_are_the_four_store_states ... ok
+test tests::healthkit_connected_keeps_an_empty_store ... ok
+test tests::health_connect_origins_keep_their_names ... ok
+test tests::healthkit_unknown_code_is_unreadable ... ok
+test tests::healthkit_unavailable_has_no_readings ... ok
+test tests::a_host_build_does_not_invent_a_phone_source ... ok
+test tests::healthkit_permission_can_be_requested_and_hides_readings ... ok
+test tests::healthkit_connected_omits_ungranted_rows ... ok
+test tests::host_build_does_not_invent_samples ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/native_adapters.rs (/tmp/coda-target-gcp/debug/deps/native_adapters-2498c8b75efb1d28)
+
+running 15 tests
+test oxygen_saturation_percent_is_scaled_once_from_the_native_fraction ... ok
+test whole_store_failures_are_typed_and_commit_nothing ... ok
+test page_limit_is_respected_across_types ... ok
+test a_type_with_an_invalidated_anchor_rereads_only_itself ... ok
+test health_connect_errors_are_typed ... ok
+test health_connect_defaults_to_approved_scope_and_disabled_gate_still_reports_not_enabled ... ok
+test bridge_replies_decode_to_typed_results ... ok
+test health_connect_pages_the_changes_feed_and_keeps_the_writing_package ... ok
+test a_failed_type_keeps_its_old_sub_anchor_while_others_advance ... ok
+test health_connect_records_without_an_exact_value_are_reported_not_uploaded ... ok
+test deletions_pass_through_with_the_sample_identity ... ok
+test permission_request_completion_is_not_readable_data ... ok
+test first_read_is_bounded_by_the_initial_window_and_the_bound_is_stable ... ok
+test exact_value_unit_timezone_and_provenance_are_preserved ... ok
+test health_connect_filters_granted_types_reads_initial_history_and_states_limits ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/outbox.rs (/tmp/coda-target-gcp/debug/deps/outbox-e462f12046a825d4)
+
+running 13 tests
+test another_scope_cannot_open_the_document ... ok
+test rejections_are_typed_and_retained ... ok
+test crash_after_dispatch_and_uncertain_ack_retry_the_same_operation_id_and_bytes ... ok
+test locked_storage_pauses_and_resumes_without_losing_work ... ok
+test empty_error_and_permission_loss_never_delete_but_explicit_deletion_does ... ok
+test bounded_retries_park_work_without_dropping_it ... ok
+test original_value_unit_and_time_zone_are_sent_exactly_and_unknown_dates_stay_absent ... ok
+test same_generation_disconnect_resumes_a_lost_acknowledgement ... ok
+test corrections_follow_the_acknowledged_revision_in_order ... ok
+test generation_bump_and_disconnect_fence_stale_work ... ok
+test pending_bound_applies_backpressure_and_oversized_items_are_rejected_locally ... ok
+test crash_between_record_persist_and_cursor_commit_rereads_without_duplicates ... ok
+test full_multi_page_pagination_commits_each_page_with_its_anchor ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.24s
+
+   Doc-tests duet_health
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling stable_deref_trait v1.2.1
+   Compiling pin-project-lite v0.2.17
+   Compiling bytes v1.12.1
+   Compiling futures-core v0.3.34
+   Compiling once_cell v1.21.4
+   Compiling smallvec v1.16.3
+   Compiling litemap v0.8.3
+   Compiling writeable v0.6.4
+   Compiling log v0.4.34
+   Compiling utf8_iter v1.0.4
+   Compiling percent-encoding v2.3.2
+   Compiling tower-service v0.3.3
+   Compiling slab v0.4.12
+   Compiling futures-task v0.3.34
+   Compiling zeroize v1.9.1
+   Compiling untrusted v0.9.0
+   Compiling try-lock v0.2.5
+   Compiling atomic-waker v1.1.2
+   Compiling cc v1.8.0
+   Compiling httpdate v1.0.3
+   Compiling base64 v0.23.1
+   Compiling tower-layer v0.3.3
+   Compiling libc v0.2.190
+   Compiling serde_core v1.0.229
+   Compiling icu_properties_data v2.3.0
+   Compiling icu_normalizer_data v2.3.0
+   Compiling futures-util v0.3.34
+   Compiling sync_wrapper v1.0.2
+   Compiling want v0.3.2
+   Compiling httparse v1.10.1
+   Compiling futures-channel v0.3.34
+   Compiling ipnet v2.12.2
+   Compiling syn v3.0.9
+   Compiling memchr v2.8.3
+   Compiling subtle v2.6.1
+   Compiling ryu v1.0.23
+   Compiling tracing-core v0.1.36
+   Compiling rustls-pki-types v1.15.1
+   Compiling form_urlencoded v1.2.2
+   Compiling num-traits v0.2.19
+   Compiling bitflags v2.13.2
+   Compiling base64 v0.22.1
+   Compiling http v1.5.0
+   Compiling iana-time-zone v0.1.65
+   Compiling mime v0.3.17
+   Compiling matchit v0.8.4
+   Compiling webpki-roots v1.0.10
+   Compiling tracing v0.1.44
+   Compiling http-body v1.1.0
+   Compiling http-body-util v0.1.5
+   Compiling mio v1.2.4
+   Compiling socket2 v0.6.5
+   Compiling getrandom v0.2.17
+   Compiling getrandom v0.4.3
+   Compiling ring v0.17.14
+   Compiling axum-core v0.5.6
+   Compiling serde_json v1.0.154
+   Compiling uuid v1.29.2
+   Compiling serde_path_to_error v0.1.20
+   Compiling synstructure v0.14.0
+   Compiling darling_core v0.24.1
+   Compiling zerovec-derive v0.11.6
+   Compiling displaydoc v0.2.7
+   Compiling tokio-macros v2.7.2
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.21
+   Compiling serde_repr v0.1.21
+   Compiling zerofrom-derive v0.1.8
+   Compiling yoke-derive v0.8.4
+   Compiling darling_macro v0.24.1
+   Compiling tokio v1.54.1
+   Compiling thiserror v2.0.21
+   Compiling zerofrom v0.1.8
+   Compiling yoke v0.8.3
+   Compiling zerovec v0.11.8
+   Compiling zerotrie v0.2.5
+   Compiling tinystr v0.8.4
+   Compiling potential_utf v0.1.6
+   Compiling darling v0.24.1
+   Compiling icu_collections v2.3.0
+   Compiling icu_locale_core v2.3.0
+   Compiling serde_with_macros v3.24.0
+   Compiling serde v1.0.229
+   Compiling serde_urlencoded v0.7.1
+   Compiling chrono v0.4.45
+   Compiling duet-health v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-health)
+   Compiling icu_provider v2.3.1
+   Compiling icu_properties v2.3.0
+   Compiling icu_normalizer v2.3.0
+   Compiling hyper v1.12.0
+   Compiling tower v0.5.3
+   Compiling idna_adapter v1.2.2
+   Compiling idna v1.1.0
+   Compiling hyper-util v0.1.21
+   Compiling url v2.5.8
+   Compiling tower-http v0.6.11
+   Compiling axum v0.8.9
+   Compiling serde_with v3.24.0
+   Compiling rustls v0.23.46
+   Compiling rustls-webpki v0.103.16
+   Compiling tokio-rustls v0.26.6
+   Compiling hyper-rustls v0.27.10
+   Compiling reqwest v0.12.28
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/http)
+   Compiling duet_wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-wire)
+   Compiling duet-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-client)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 12s
+     Running unittests src/lib.rs (/tmp/coda-target-gcp/debug/deps/duet_client-f723e8b8dabaa037)
+
+running 6 tests
+test session::tests::switch_and_signout_fence_delayed_responses_and_clear_drafts ... ok
+test refusal::tests::only_product_refusal_ends_the_current_session ... ok
+test tests::reads_the_library ... ok
+test refusal::tests::refreshed_credential_survives_refusal_of_original_credential ... ok
+test refusal::tests::health_generation_and_upload_refusals_invalidate_bound_session ... ok
+test tests::join_consent_and_premium_follow_the_front_door ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/background_acquire.rs (/tmp/coda-target-gcp/debug/deps/background_acquire-80248fe436007f56)
+
+running 3 tests
+test background_on_locked_storage_completes_as_a_typed_pause ... ok
+test the_registered_handler_is_what_the_native_observer_waits_for ... ok
+test background_completes_after_the_durable_write_without_uploading ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/doctor_controls.rs (/tmp/coda-target-gcp/debug/deps/doctor_controls-d6166c40822a819b)
+
+running 1 test
+test authenticated_contracts_exact_retry_and_redacted_errors ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/health_upload.rs (/tmp/coda-target-gcp/debug/deps/health_upload-e996d3a1ec5fb6c6)
+
+running 11 tests
+test http_outcomes_are_classified_without_guessing ... ok
+test pending_secure_cleanup_refuses_queue_access ... ok
+test locked_protected_storage_pauses_then_resumes ... ok
+test apple_health::a_refused_session_never_opens_the_sheet ... ok
+test apple_health::a_late_permission_answer_cannot_connect_the_next_patient ... ok
+test apple_health::a_withdrawal_during_the_sheet_cannot_authorize_a_later_generation ... ok
+test apple_health::refresh_imports_through_the_connected_queue ... ok
+test duet_client_transport_posts_the_canonical_batch ... ok
+test same_account_resumes_after_restart_with_the_same_operation_ids ... ok
+test sign_out_and_account_switch_pause_and_isolate_the_queue ... ok
+test a_retained_rejection_reports_only_after_the_queue_drains ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/portals_and_health_connect.rs (/tmp/coda-target-gcp/debug/deps/portals_and_health_connect-17e7b05d787b680c)
+
+running 1 test
+test client_handles_portals_vendor_disabled_not_now_and_phone_disconnect_sync ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/retention.rs (/tmp/coda-target-gcp/debug/deps/retention-0707252a4a6f8123)
+
+running 15 tests
+test readback_requires_exact_content_order_and_generation ... ok
+test missing_native_host_never_falls_back_to_plaintext ... ok
+test refusal_invalidates_views_without_deleting_protected_patient_work ... ok
+test locked_cleanup_invalidates_ui_but_preserves_marker_for_retry ... ok
+test switch_erases_previous_owner_and_fences_late_response_even_after_switch_back ... ok
+test damaged_draft_survives_read_and_write_until_explicit_discard ... ok
+test every_key_this_account_writes_is_registered ... ok
+test restart_recovers_exact_uncertain_edit_without_network ... ok
+test offline_recovery_never_discards_or_approves_a_draft ... ok
+test rotation_preserves_fences_and_uncertain_bytes_cannot_be_replaced ... ok
+test sign_out_warning_names_the_draft_the_save_and_the_health_queue ... ok
+test publication_intent_survives_restart_cannot_rebase_and_is_erased_on_switch ... ok
+test sign_out_switch_and_new_incarnation_remove_queued_health ... ok
+test conflict_release_requires_exact_definitive_refusal_and_preserves_draft ... ok
+test boxed_recovery_preserves_v1_storage_bytes_and_subject_fence ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests duet_client
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Blocking waiting for file lock on package cache
+   Compiling smallvec v1.16.3
+   Compiling stable_deref_trait v1.2.1
+   Compiling futures-task v0.3.34
+   Compiling slab v0.4.12
+   Compiling rustc-hash v2.1.3
+   Compiling scopeguard v1.2.0
+   Compiling num-traits v0.2.19
+   Compiling unicode-segmentation v1.13.3
+   Compiling konst_macro_rules v0.2.19
+   Compiling libloading v0.8.9
+   Compiling serde_core v1.0.229
+   Compiling libm v0.2.16
+   Compiling longest-increasing-subsequence v0.1.0
+   Compiling dioxus-core-types v0.7.10
+   Compiling proc-macro2-diagnostics v0.10.1
+   Compiling memmap2 v0.9.11
+   Compiling anyhow v1.0.104
+   Compiling parking_lot_core v0.9.12
+   Compiling lock_api v0.4.14
+   Compiling tokio v1.54.1
+   Compiling thiserror v2.0.21
+   Compiling tracing v0.1.44
+   Compiling futures-util v0.3.34
+   Compiling bytemuck v1.25.2
+   Compiling konst v0.2.20
+   Compiling pin-project v1.1.13
+   Compiling arrayvec v0.7.8
+   Compiling zerofrom v0.1.8
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.3
+   Compiling keyboard-types v0.7.0
+   Compiling adler2 v2.0.1
+   Compiling simd-adler32 v0.3.10
+   Compiling tinyvec v1.13.3
+   Compiling convert_case v0.8.0
+   Compiling oxiarc-core v0.4.2
+   Compiling enumset v1.1.14
+   Compiling crc32fast v1.5.2
+   Compiling arrayref v0.3.9
+   Compiling strict-num v0.1.1
+   Compiling oxifont-core v0.2.2
+   Compiling yoke v0.8.3
+   Compiling font-types v0.11.3
+   Compiling parking_lot v0.12.5
+   Compiling warnings v0.2.1
+   Compiling polycool v0.4.0
+   Compiling pdf-writer v0.15.0
+   Compiling const_format v0.2.36
+   Compiling dioxus-config-macros v0.7.10
+   Compiling self_cell v1.3.0
+   Compiling unicode-script v0.5.8
+   Compiling sys-locale v0.3.2
+   Compiling siphasher v1.0.4
+   Compiling unicase v2.10.0
+   Compiling smol_str v0.3.7
+   Compiling linebender_resource_handle v0.1.1
+   Compiling bumpalo v3.20.3
+   Compiling tiny-skia-path v0.12.0
+   Compiling miniz_oxide v0.9.1
+   Compiling zerovec v0.11.8
+   Compiling zerotrie v0.2.5
+   Compiling dioxus-html-internal-macro v0.7.10
+   Compiling indexmap v2.14.2
+   Compiling dioxus-stores-macro v0.7.10
+   Compiling generational-box v0.7.10
+   Compiling kurbo v0.13.1
+   Compiling oxiarc-deflate v0.4.2
+   Compiling unicode-linebreak v0.1.5
+   Compiling xmp-writer v0.3.3
+   Compiling rangemap v1.8.0
+   Compiling unicode-bidi v0.3.18
+   Compiling typst-assets v0.15.1
+   Compiling pulldown-cmark v0.13.6
+   Compiling futures-timer v3.0.4
+   Compiling duet-notify v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-notify)
+   Compiling qrcode v0.14.1
+   Compiling read-fonts v0.39.2
+   Compiling core_maths v0.1.1
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.154
+   Compiling uuid v1.29.2
+   Compiling serde_with v3.24.0
+   Compiling flate2 v1.1.11
+   Compiling ttf-parser v0.25.1
+   Compiling read-fonts v0.37.0
+   Compiling tinystr v0.8.4
+   Compiling potential_utf v0.1.6
+   Compiling slotmap v1.1.1
+   Compiling subsecond-types v0.7.10
+   Compiling serde_urlencoded v0.7.1
+   Compiling icu_locale_core v2.3.0
+   Compiling icu_collections v2.3.0
+   Compiling subsecond v0.7.10
+   Compiling duet-health v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-health)
+   Compiling oxifont-bundled v0.2.2
+   Compiling dioxus-core v0.7.10
+   Compiling icu_provider v2.3.1
+   Compiling icu_properties v2.3.0
+   Compiling icu_normalizer v2.3.0
+   Compiling oxifont-parser v0.2.2
+   Compiling fontdb v0.23.0
+   Compiling hyper v1.12.0
+   Compiling tokio-rustls v0.26.6
+   Compiling tower v0.5.3
+   Compiling dioxus-signals v0.7.10
+   Compiling dioxus-history v0.7.10
+   Compiling hyper-util v0.1.21
+   Compiling dioxus-hooks v0.7.10
+   Compiling idna_adapter v1.2.2
+   Compiling idna v1.1.0
+   Compiling dioxus-rsx v0.7.10
+   Compiling hyper-rustls v0.27.10
+   Compiling url v2.5.8
+   Compiling tower-http v0.6.11
+   Compiling dioxus-core-macro v0.7.10
+   Compiling reqwest v0.12.28
+   Compiling harfrust v0.5.2
+   Compiling skrifa v0.40.0
+   Compiling skrifa v0.42.1
+   Compiling write-fonts v0.48.1
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/http)
+   Compiling dioxus-stores v0.7.10
+   Compiling cosmic-text v0.19.0
+   Compiling euclid v0.22.14
+   Compiling float-cmp v0.9.0
+   Compiling chrono v0.4.45
+   Compiling duet_wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-wire)
+   Compiling subsetter v0.2.6
+   Compiling krilla v0.8.2
+   Compiling dioxus-html v0.7.10
+   Compiling duet-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-client)
+   Compiling dioxus-document v0.7.10
+   Compiling duet-page v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-page)
+   Compiling dioxus v0.7.10
+   Compiling ui v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/ui)
+   Compiling duet-app v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-app)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 44s
+     Running unittests src/lib.rs (/tmp/coda-target-gcp/debug/deps/duet_app-33e4370db0cb822a)
+
+running 13 tests
+test roots::tests::android_debug_api_reaches_the_emulator_host ... ok
+test roots::tests::notification_controls_name_their_permission ... ok
+test account::tests::recovered_draft_is_empty_after_another_account_signs_in_and_expires ... ok
+test roots::tests::doctor_page_lists_the_saved_question ... ok
+test roots::tests::library_empty_and_sections ... ok
+test records::tests::omitted_interval_end_stays_absent ... ok
+test records::tests::removed_records_are_labelled_with_literal_values_and_zone ... ok
+test records::tests::undated_records_say_date_unknown ... ok
+test records::tests::acquisition_interval_is_person_facing ... ok
+test account::tests::startup_refusal_blocks_recovery_across_restart_until_cleanup_retry_succeeds ... ok
+test account::tests::only_a_parsed_https_return_url_lets_apple_sign_in_start ... ok
+test account::tests::startup_refusal_erases_retained_work_but_temporary_failure_preserves_it ... ok
+test roots::tests::a_saved_doctor_page_uses_the_letter_layout ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.38s
+
