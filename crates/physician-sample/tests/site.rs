@@ -1207,7 +1207,14 @@ async fn the_same_bundle_runs_under_a_stripped_physician_prefix_and_reconnects()
                 }
             },
         ));
-    let server = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    let server = tokio::spawn(async move {
+        axum::serve(
+            listener,
+            app.into_make_service_with_connect_info::<std::net::SocketAddr>(),
+        )
+        .await
+        .unwrap()
+    });
     let mut browser = Tab::open(&format!("http://{address}/physician/"));
     browser.wait_for_text("Nothing needs you right now.", Duration::from_secs(15));
     let assets = browser.step("prefixAssetsLoad", serde_json::json!([]));
@@ -1348,9 +1355,13 @@ async fn mailed_sign_in_link_round_trips_through_the_public_mount() {
     let upstream = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
     wait_until_ready(upstream_address).await;
     let proxy = tokio::spawn(async move {
-        axum::serve(public_listener, public_proxy(upstream_address, address))
-            .await
-            .unwrap()
+        axum::serve(
+            public_listener,
+            public_proxy(upstream_address, address)
+                .into_make_service_with_connect_info::<std::net::SocketAddr>(),
+        )
+        .await
+        .unwrap()
     });
 
     let mut browser = Tab::open(&format!("http://{address}/physician/"));
@@ -1494,7 +1505,14 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let address = listener.local_addr().unwrap();
     let app = public_proxy(upstream_address, address);
-    let proxy = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    let proxy = tokio::spawn(async move {
+        axum::serve(
+            listener,
+            app.into_make_service_with_connect_info::<std::net::SocketAddr>(),
+        )
+        .await
+        .unwrap()
+    });
 
     let mut browser = Tab::open(&format!("http://{address}/physician/"));
 

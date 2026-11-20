@@ -755,6 +755,9 @@ pub struct PatientIdentity {
     /// Medical record numbers the chart supplied.
     pub medical_record_numbers: Vec<MedicalRecordNumber>,
     #[serde(default)]
+    /// Chart email address, when present in demographics (`COD-47`).
+    pub email: Option<String>,
+    #[serde(default)]
     /// The identity state (`available`, `missing`, etc.).
     pub state: Option<String>,
 }
@@ -1678,6 +1681,21 @@ pub struct PatientLinkWire {
     #[serde(default)]
     /// The Unix second consent was revoked, if revoked.
     pub revoked_at: Option<u64>,
+    #[serde(default)]
+    /// Email address of the currently open invitation, when `connection_status == Invited`.
+    pub invited_email: Option<String>,
+    #[serde(default)]
+    /// Wrong birth-date answers recorded against the open invitation.
+    pub wrong_dob_attempts: u8,
+    #[serde(default)]
+    /// Unix second the open invitation locked after 5 wrong birth-date attempts (`COD-48`).
+    pub locked_at: Option<u64>,
+    #[serde(default)]
+    /// Unix second outbound invitation mail last failed, if any (`Rule 8`).
+    pub delivery_failed_at: Option<u64>,
+    #[serde(default)]
+    /// Diagnostic detail for the last invitation mail delivery failure.
+    pub delivery_error: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -1692,7 +1710,25 @@ pub struct InvitePatientRequest {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-/// Response body for `POST /auth/invitations`.
+/// Request body for `POST /auth/invitations/resend` and `POST /auth/invitations/cancel`.
+pub struct PatientInvitationActionRequest {
+    /// Practice patient workspace targeted by the invitation action.
+    pub patient_workspace_id: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// Response body for `POST /auth/invitations/cancel`.
+pub struct CancelInvitationResponse {
+    /// Practice owning the roster patient.
+    pub practice_id: String,
+    /// Roster patient workspace identifier.
+    pub patient_workspace_id: String,
+    /// Resulting standing (`"not_invited"`).
+    pub status: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// Response body for `POST /auth/invitations` and `POST /auth/invitations/resend`.
 pub struct PatientInvitationResponse {
     /// Practice owning the roster patient.
     pub practice_id: String,
@@ -1707,6 +1743,15 @@ pub struct PatientInvitationResponse {
     #[serde(default)]
     /// Proof-mode single-use invitation token, omitted in hosted mail delivery.
     pub token: Option<String>,
+    #[serde(default)]
+    /// Proof-mode human-enterable short code (`XXXX-XXXX`), omitted in hosted mail delivery.
+    pub short_code: Option<String>,
+    #[serde(default)]
+    /// Whether outbound mail delivery failed (`Rule 8`; invitation remains `Invited`).
+    pub delivery_failed: bool,
+    #[serde(default)]
+    /// Reason mail delivery failed, when `delivery_failed` is true.
+    pub detail: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

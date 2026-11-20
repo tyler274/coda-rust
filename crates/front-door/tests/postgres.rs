@@ -5,7 +5,8 @@
 
 use front_door::{
     Account, ConnectionEndReason, ConnectionStanding, ForMyDoctorError, ForMyDoctorSendRequest,
-    FrontDoorStore, InviteError, LinkError, MemoryFrontDoorStore, PostgresFrontDoorStore,
+    FrontDoorStore, InvitationCheckError, InvitationCredential, InvitationOpenStanding,
+    InviteError, InvitePatientParams, LinkError, MemoryFrontDoorStore, PostgresFrontDoorStore,
     RosterConnectionStatus, RosterPatient, SessionError, SignInError,
 };
 use sea_orm::{ConnectionTrait, EntityTrait, PaginatorTrait, QuerySelect, TransactionTrait};
@@ -207,8 +208,8 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
     assert!(versions.contains(&(front_door::migration::INIT_MIGRATION_NAME.to_owned(), 42)));
     assert_eq!(
         versions.len(),
-        9,
-        "legacy init plus all migrations including multi-practice connections"
+        10,
+        "legacy init plus all migrations including invitation lifecycle"
     );
     assert!(
         versions
@@ -234,7 +235,7 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
     assert!(adopted.iter().any(|(name, applied_at)| {
         name == front_door::migration::INIT_MIGRATION_NAME && *applied_at == 43
     }));
-    assert_eq!(adopted.len(), 9);
+    assert_eq!(adopted.len(), 10);
     for legacy in ["seaql_migrations", "front_door_seaql_migrations"] {
         let rows = db
             .query_all_raw(sea_orm::Statement::from_string(
@@ -249,9 +250,9 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
 }
 
 async fn rewind_to_legacy_init(db: &sea_orm::DatabaseConnection) {
-    <front_door::migration::Migrator as sea_orm_migration::MigratorTrait>::down(db, Some(3))
+    <front_door::migration::Migrator as sea_orm_migration::MigratorTrait>::down(db, Some(4))
         .await
-        .expect("restore schema before multi-practice, for-my-doctor shares, and cadence cleanup");
+        .expect("restore schema before invitation lifecycle, multi-practice, for-my-doctor shares, and cadence cleanup");
     db.execute_unprepared("DROP TABLE duet_model_execution_switch; DROP FUNCTION duet_switch_append_only(); DROP INDEX duet_conversation_allowance; ALTER TABLE duet_conversation_inputs DROP COLUMN admitted_at; DELETE FROM front_door_migrations WHERE version='m20261023_duet_admission'").await.unwrap();
     db.execute_unprepared("DROP TABLE duet_attempt_events,duet_conversation_attempts; DELETE FROM front_door_migrations WHERE version='m20261022_duet_execution'").await.unwrap();
     db.execute_unprepared("DROP TRIGGER duet_permission_interrupt ON front_door_permissions; DROP FUNCTION duet_permission_interrupt(); DROP FUNCTION duet_interrupt_accepted(uuid); DROP TABLE duet_conversation_messages,duet_conversation_inputs,duet_conversation_state; DELETE FROM front_door_migrations WHERE version='m20261021_duet_conversation'").await.unwrap();
@@ -340,6 +341,7 @@ async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
         "front_door_connections",
         "front_door_for_my_doctor_shares",
         "front_door_identities",
+        "front_door_invitation_credentials",
         "front_door_invitations",
         "front_door_luna_restrictions",
         "front_door_migrations",
@@ -792,4 +794,170 @@ async fn postgres_leave_discharge_and_account_delete_preserve_ended_and_fail_clo
         store.practice_connections("pg-leave-c").await,
         Err(ForMyDoctorError::Storage(_))
     ));
+}
+
+#[tokio::test]
+async fn cod53_invitation_resend_cancel_atomic_dob_lock_and_share_persist_in_postgres() {
+    let Some(url) = database("cod53_invitations").await else {
+        return;
+    };
+    let store = PostgresFrontDoorStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+    let rp = patient("pg-cod53", "pat-1");
+
+    // 1. Invite + Resend keeps BOTH link tokens & short codes open (`Rule 4`).
+    let issued1 = store
+        .invite_patient(InvitePatientParams {
+            patient: rp.clone(),
+            email: "chart-pat1@pg-cod53.test".to_owned(),
+            display_name: "Tamika Washington".to_owned(),
+            practice_name: "River Bend Clinic".to_owned(),
+            physician_name: "Dr. Roger".to_owned(),
+            expected_birth_date: Some("1987-02-18".to_owned()),
+            now: NOW,
+        })
+        .await
+        .unwrap();
+    let issued2 = store.resend_invitation(&rp, NOW + 5).await.unwrap();
+    assert_ne!(issued1.link_token, issued2.link_token);
+    assert_ne!(issued1.short_code, issued2.short_code);
+
+    // Concurrent wrong DOB checks serialize cleanly via row lock with zero lost strikes (`COD-48`).
+    let db = sea_orm::Database::connect(&url).await.unwrap();
+    let held = db.begin().await.unwrap();
+    front_door::migration::invitation::Entity::find()
+        .lock_exclusive()
+        .one(&held)
+        .await
+        .unwrap()
+        .unwrap();
+    let c1 = InvitationCredential::LinkToken(issued1.link_token.clone());
+    let c2 = InvitationCredential::ShortCode(issued2.short_code.clone());
+    let s1 = {
+        let store = store.clone();
+        tokio::spawn(async move {
+            store
+                .verify_invitation_dob(&c1, "1987-02-19", NOW + 6)
+                .await
+        })
+    };
+    let s2 = {
+        let store = store.clone();
+        tokio::spawn(async move {
+            store
+                .verify_invitation_dob(&c2, "1987-02-19", NOW + 7)
+                .await
+        })
+    };
+    wait_for_two_lock_waiters(&db).await;
+    held.commit().await.unwrap();
+    let res = [s1.await.unwrap(), s2.await.unwrap()];
+    let mut rem: Vec<u8> = res
+        .into_iter()
+        .map(|r| match r.unwrap_err() {
+            InvitationCheckError::WrongBirthDate { attempts_remaining } => attempts_remaining,
+            other => panic!("expected WrongBirthDate, got {other:?}"),
+        })
+        .collect();
+    rem.sort_unstable();
+    assert_eq!(rem, vec![3, 4]);
+
+    // Strikes 3, 4, then 5 lock the invitation (`Rule 7`) and forbid Resend (`COD-49`).
+    let cred2 = InvitationCredential::ShortCode(issued2.short_code.clone());
+    assert_eq!(
+        store
+            .verify_invitation_dob(&cred2, "1987-02-19", NOW + 8)
+            .await
+            .unwrap_err(),
+        InvitationCheckError::WrongBirthDate {
+            attempts_remaining: 2
+        }
+    );
+    assert_eq!(
+        store
+            .verify_invitation_dob(&cred2, "1987-02-19", NOW + 9)
+            .await
+            .unwrap_err(),
+        InvitationCheckError::WrongBirthDate {
+            attempts_remaining: 1
+        }
+    );
+    assert_eq!(
+        store
+            .verify_invitation_dob(&cred2, "1987-02-19", NOW + 10)
+            .await
+            .unwrap_err(),
+        InvitationCheckError::Locked
+    );
+    assert_eq!(
+        store.resend_invitation(&rp, NOW + 11).await.unwrap_err(),
+        InviteError::Locked
+    );
+    assert!(matches!(
+        store.inspect_invitation(&cred2).await.unwrap().standing,
+        InvitationOpenStanding::Locked { locked_at } if locked_at == NOW + 10
+    ));
+
+    // Cancel deletes invitation + cascades ALL credentials (`Rule 5`) so re-invite works.
+    store.cancel_invitation(&rp).await.unwrap();
+    assert_eq!(
+        store.inspect_invitation(&cred2).await.unwrap_err(),
+        InvitationCheckError::NotOpen
+    );
+
+    let fresh = store
+        .invite_patient(InvitePatientParams {
+            patient: rp.clone(),
+            email: "chart-pat1@pg-cod53.test".to_owned(),
+            display_name: "Tamika Washington".to_owned(),
+            practice_name: "River Bend Clinic".to_owned(),
+            physician_name: "Dr. Roger".to_owned(),
+            expected_birth_date: Some("1987-02-18".to_owned()),
+            now: NOW + 12,
+        })
+        .await
+        .unwrap();
+    store
+        .mark_invitation_delivery_failed(&rp, "smtp relay 550", NOW + 13)
+        .await
+        .unwrap();
+    assert!(matches!(
+        store.roster_connection(&rp).await.unwrap(),
+        RosterConnectionStatus::Invited {
+            delivery_failed_at: Some(_),
+            delivery_error: Some(ref e),
+            ..
+        } if e == "smtp relay 550"
+    ));
+
+    // Existing Duet account connects via Share even with different account email (`Rule 9`).
+    let other_practice = patient("pg-other", "pat-other");
+    let tok_other = store
+        .invite(
+            &other_practice,
+            "existing-duet@pg-cod53.test",
+            "Existing",
+            NOW,
+        )
+        .await
+        .unwrap();
+    let (existing_id, _) = store
+        .redeem_invitation("existing-duet@pg-cod53.test", &tok_other, NOW + 1)
+        .await
+        .unwrap();
+
+    let (acc_id, conn) = store
+        .accept_invitation_share(
+            Some(existing_id),
+            Some("existing-duet@pg-cod53.test"),
+            &InvitationCredential::ShortCode(fresh.short_code),
+            "1987-02-18",
+            NOW + 15,
+        )
+        .await
+        .unwrap();
+    assert_eq!(acc_id, existing_id);
+    assert_eq!(conn.patient, rp);
+    assert_eq!(store.connections(existing_id).await.unwrap().len(), 2);
 }

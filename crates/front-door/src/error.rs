@@ -19,12 +19,118 @@ pub enum SignInError {
     Inactive,
 }
 
-/// Why an invitation step failed.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+/// Why an invitation creation, resend, or cancel step failed.
+#[derive(Debug, thiserror::Error)]
 pub enum InviteError {
     /// This roster patient already holds an active Connected connection.
+    #[error("this roster patient already has an active connection")]
     Conflict,
+    /// The open invitation is locked after too many wrong date-of-birth answers.
+    #[error("this invitation is locked; cancel it before inviting again")]
+    Locked,
+    /// No open invitation exists for this roster patient.
+    #[error("no open invitation exists for this roster patient")]
+    NotFound,
+    /// Invitation input failed validation.
+    #[error("invalid invitation input: {0}")]
+    InvalidInput(&'static str),
+    /// Storage failed while persisting or reading invitation state.
+    #[error("front-door invitation storage failed")]
+    Storage(#[from] sea_orm::DbErr),
 }
+
+/// Why inspecting an invitation or checking date of birth failed.
+#[derive(Debug, thiserror::Error)]
+pub enum InvitationCheckError {
+    /// No open invitation matches that link token or short code.
+    #[error("this invitation is no longer open")]
+    NotOpen,
+    /// The invitation locked after too many wrong date-of-birth answers.
+    #[error("this invitation is locked after too many wrong date-of-birth answers")]
+    Locked,
+    /// The entered date of birth did not match the practice chart.
+    #[error("date of birth does not match ({attempts_remaining} attempts remaining)")]
+    WrongBirthDate {
+        /// Wrong-answer budget remaining before lock.
+        attempts_remaining: u8,
+    },
+    /// The patient does not meet the 18+ age requirement for Connected Care.
+    #[error("Duet Connected Care requires being 18 or older")]
+    Underage,
+    /// The supplied date of birth is malformed.
+    #[error("enter a valid date of birth (YYYY-MM-DD)")]
+    InvalidBirthDate,
+    /// Storage failed while checking invitation state.
+    #[error("front-door invitation storage failed")]
+    Storage(#[from] sea_orm::DbErr),
+}
+
+/// Why accepting an invitation via Share failed.
+#[derive(Debug, thiserror::Error)]
+pub enum InvitationAcceptError {
+    /// Checking the open invitation, DOB, lock, or age failed.
+    #[error(transparent)]
+    Check(#[from] InvitationCheckError),
+    /// The signed-in Duet account is deactivated or cannot accept connections.
+    #[error("this account is inactive")]
+    InactiveAccount,
+    /// Another account already holds an active connection for this roster patient.
+    #[error("this roster patient is already connected")]
+    Conflict,
+    /// Storage failed while accepting the invitation.
+    #[error("front-door invitation acceptance failed")]
+    Storage(#[from] sea_orm::DbErr),
+}
+
+impl PartialEq for InviteError {
+    fn eq(&self, other: &Self) -> bool {
+        match (self, other) {
+            (Self::Conflict, Self::Conflict)
+            | (Self::Locked, Self::Locked)
+            | (Self::NotFound, Self::NotFound) => true,
+            (Self::InvalidInput(a), Self::InvalidInput(b)) => a == b,
+            _ => false,
+        }
+    }
+}
+
+impl Eq for InviteError {}
+
+impl PartialEq for InvitationCheckError {
+    fn eq(&self, other: &Self) -> bool {
+        match (self, other) {
+            (Self::NotOpen, Self::NotOpen)
+            | (Self::Locked, Self::Locked)
+            | (Self::Underage, Self::Underage)
+            | (Self::InvalidBirthDate, Self::InvalidBirthDate) => true,
+            (
+                Self::WrongBirthDate {
+                    attempts_remaining: a,
+                },
+                Self::WrongBirthDate {
+                    attempts_remaining: b,
+                },
+            ) => a == b,
+            _ => false,
+        }
+    }
+}
+
+impl Eq for InvitationCheckError {}
+
+impl PartialEq for InvitationAcceptError {
+    fn eq(&self, other: &Self) -> bool {
+        match (self, other) {
+            (Self::Check(a), Self::Check(b)) => a == b,
+            (Self::InactiveAccount, Self::InactiveAccount) | (Self::Conflict, Self::Conflict) => {
+                true
+            }
+            _ => false,
+        }
+    }
+}
+
+impl Eq for InvitationAcceptError {}
 
 /// Why a connection read or ending step failed.
 #[derive(Debug, thiserror::Error)]

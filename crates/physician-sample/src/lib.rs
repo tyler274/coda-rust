@@ -1877,6 +1877,19 @@ async fn workspace(
     else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
+    if let Ok(emails) = connected
+        .patients(request.extensions())
+        .patient_emails(std::slice::from_ref(&id))
+        .await
+        && let Some(email) = emails.get(&id)
+        && let Some(identity) = enriched
+            .get_mut("identity")
+            .and_then(serde_json::Value::as_object_mut)
+    {
+        identity
+            .entry("email")
+            .or_insert_with(|| serde_json::Value::String(email.clone()));
+    }
     if source_setup::enrich_workspace(
         &mut enriched,
         &id,
@@ -2686,6 +2699,68 @@ mod tests {
 
         #[async_trait::async_trait]
         impl front_door::FrontDoorStore for FailingFrontDoorStore {
+            async fn invite_patient(
+                &self,
+                params: front_door::InvitePatientParams,
+            ) -> Result<front_door::IssuedInvitation, front_door::InviteError> {
+                self.inner.invite_patient(params).await
+            }
+            async fn resend_invitation(
+                &self,
+                patient: &front_door::RosterPatient,
+                now: u64,
+            ) -> Result<front_door::IssuedInvitation, front_door::InviteError> {
+                self.inner.resend_invitation(patient, now).await
+            }
+            async fn cancel_invitation(
+                &self,
+                patient: &front_door::RosterPatient,
+            ) -> Result<(), front_door::InviteError> {
+                self.inner.cancel_invitation(patient).await
+            }
+            async fn mark_invitation_delivery_failed(
+                &self,
+                patient: &front_door::RosterPatient,
+                detail: &str,
+                now: u64,
+            ) -> Result<(), front_door::InviteError> {
+                self.inner
+                    .mark_invitation_delivery_failed(patient, detail, now)
+                    .await
+            }
+            async fn inspect_invitation(
+                &self,
+                credential: &front_door::InvitationCredential,
+            ) -> Result<front_door::InvitationGateState, front_door::InvitationCheckError>
+            {
+                self.inner.inspect_invitation(credential).await
+            }
+            async fn verify_invitation_dob(
+                &self,
+                credential: &front_door::InvitationCredential,
+                birth_date: &str,
+                now: u64,
+            ) -> Result<front_door::InvitationSharingPreview, front_door::InvitationCheckError>
+            {
+                self.inner
+                    .verify_invitation_dob(credential, birth_date, now)
+                    .await
+            }
+            async fn accept_invitation_share(
+                &self,
+                account_id: Option<uuid::Uuid>,
+                account_email: Option<&str>,
+                credential: &front_door::InvitationCredential,
+                birth_date: &str,
+                now: u64,
+            ) -> Result<
+                (uuid::Uuid, front_door::AccountConnection),
+                front_door::InvitationAcceptError,
+            > {
+                self.inner
+                    .accept_invitation_share(account_id, account_email, credential, birth_date, now)
+                    .await
+            }
             async fn invite(
                 &self,
                 patient: &front_door::RosterPatient,

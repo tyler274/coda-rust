@@ -211,6 +211,14 @@ pub trait PatientDirectory: Send + Sync {
     ) -> Result<BTreeMap<String, Value>, DirectoryError> {
         Ok(BTreeMap::new())
     }
+
+    /// Chart demographic emails keyed by workspace, when supplied by the EHR/fixture.
+    async fn patient_emails(
+        &self,
+        _workspaces: &[String],
+    ) -> Result<BTreeMap<String, String>, DirectoryError> {
+        Ok(BTreeMap::new())
+    }
 }
 
 #[async_trait]
@@ -359,6 +367,7 @@ pub struct MemoryPatients {
     records: Mutex<BTreeMap<String, Vec<PatientSourceRecord>>>,
     synopses: Mutex<BTreeMap<String, Value>>,
     automation_runs: Mutex<BTreeMap<String, Value>>,
+    emails: Mutex<BTreeMap<String, String>>,
     unavailable: std::sync::atomic::AtomicBool,
 }
 
@@ -400,6 +409,14 @@ impl MemoryPatients {
             .lock()
             .expect("patient automation runs")
             .insert(workspace.to_owned(), run);
+    }
+
+    /// Saves a chart email address for `workspace` to prefill patient invitations.
+    pub fn set_email(&self, workspace: &str, email: impl Into<String>) {
+        self.emails
+            .lock()
+            .expect("patient emails")
+            .insert(workspace.to_owned(), email.into());
     }
 
     /// Simulates directory unavailability so callers verify failure handling.
@@ -554,6 +571,24 @@ impl PatientDirectory for MemoryPatients {
             .filter_map(|workspace| {
                 runs.get(workspace)
                     .map(|run| (workspace.clone(), run.clone()))
+            })
+            .collect())
+    }
+
+    async fn patient_emails(
+        &self,
+        workspaces: &[String],
+    ) -> Result<BTreeMap<String, String>, DirectoryError> {
+        if self.unavailable.load(std::sync::atomic::Ordering::SeqCst) {
+            return Err(DirectoryError::Unavailable(StoreUnavailable));
+        }
+        let emails = self.emails.lock().expect("patient emails");
+        Ok(workspaces
+            .iter()
+            .filter_map(|workspace| {
+                emails
+                    .get(workspace)
+                    .map(|email| (workspace.clone(), email.clone()))
             })
             .collect())
     }
