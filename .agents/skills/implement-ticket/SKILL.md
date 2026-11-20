@@ -25,8 +25,10 @@ this ticket?" Approval assigns it to the developer; without approval, leave it a
 do not start. If the user declines a ticket in a set, ask whether the rest should
 go ahead before changing any of them. Assign an unassigned ticket to the developer,
 and move a Backlog or Todo ticket to In Progress once it is the developer's; an In
-Review ticket keeps its status. If Linear is unavailable or the write fails, report
-the ticket as unclaimed.
+Review ticket keeps its status. These two writes are the only tracker changes this
+skill makes on its own: comments, later status moves and edits to the ticket are
+prepared for the user. If Linear is unavailable or the write fails, report the
+ticket as unclaimed.
 
 Once the work goes ahead, start the session's title with the ticket key, in the
 same form as the [PR title](../write-pr/SKILL.md#write-and-maintain-the-handoff),

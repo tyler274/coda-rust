@@ -6,29 +6,32 @@
 // names each step in an `event` variable, a record with `name` and, for a tab's step, `tab`. TLC
 // takes each path's steps and fails when one can't happen in the model. Prints, as JSON, the start
 // state and each path's steps, each with its event and the model's state after it, flattened to
-// keys such as "tab.A.shows", each value as text. TLC and Java are the ones the pinned statechart skill uses.
+// keys such as "tab.A.shows", each value as text. TLC and Java are PStack statechart's pins, through mise.
 import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
-const here = path.dirname(new URL(import.meta.url).pathname);
+// The pins PStack's statechart skill uses, from pstack/skills/statechart/scripts/run.ts in
+// https://github.com/cursor/plugins.
+const TLC_TOOL =
+  "http:tla2tools[url=https://github.com/tlaplus/tlaplus/releases/download/v1.7.4/tla2tools.jar,checksum=sha256:936a262061c914694dfd669a543be24573c45d5aa0ff20a8b96b23d01e050e88]@1.7.4";
+const JAVA_TOOL = "java@temurin-25";
 
 function tlc() {
   const { TLA2TOOLS, JAVA } = process.env;
   if (TLA2TOOLS) return { jar: TLA2TOOLS, java: JAVA || "java" };
-  const run = fs.readFileSync(path.join(here, "../.agents/skills/statechart/scripts/run.ts"), "utf8");
-  const pin = (name) => run.match(new RegExp(`const ${name} =\\s*"([^"]+)"`))?.[1];
-  const [tool, java] = [pin("TLC_TOOL"), pin("JAVA_TOOL")];
-  if (!tool || !java) throw new Error("the statechart skill's run.ts no longer names TLC_TOOL and JAVA_TOOL");
   const mise = (...args) => spawnSync("mise", args, { encoding: "utf8" });
-  let where = mise("where", tool), which = mise("which", "java", "--tool", java);
+  let where = mise("where", TLC_TOOL), which = mise("which", "java", "--tool", JAVA_TOOL);
   if (where.status !== 0 || which.status !== 0) {
-    mise("install", java, tool);
-    where = mise("where", tool);
-    which = mise("which", "java", "--tool", java);
+    const install = mise("install", JAVA_TOOL, TLC_TOOL);
+    where = mise("where", TLC_TOOL);
+    which = mise("which", "java", "--tool", JAVA_TOOL);
+    if (where.status !== 0 || which.status !== 0) {
+      const failed = [install, where, which].find((r) => r.error || r.status !== 0);
+      throw new Error(`Cannot find TLC through mise: ${failed.error?.message ?? failed.stderr.trim()}\nOr set TLA2TOOLS to tla2tools.jar and JAVA to a java binary.`);
+    }
   }
-  if (where.status !== 0 || which.status !== 0) throw new Error("Cannot find TLC: run the statechart skill once, or set TLA2TOOLS and JAVA");
   return { jar: path.join(where.stdout.trim(), "tla2tools.jar"), java: JAVA || which.stdout.trim() };
 }
 

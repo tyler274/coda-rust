@@ -1,6 +1,6 @@
 ---
 name: coda-verify-message-reply
-description: "Check a change to message reply against its TLA+ model with the pstack /statechart skill: each README rule checked by TLC and seen failing on its own broken copy, then the four charts read in the physician's words. Use when a change touches the message-reply README, MessageReply.tla, its configs or charts, or the code that reviews linked messages, writes or withholds the reply, or keeps drafts."
+description: "Check a change to message reply against its TLA+ model with the pstack /statechart skill: the README's rules checked by TLC, the breaks the change calls for seen failing, and the affected charts read in the physician's words. Use when a change touches the message-reply README, MessageReply.tla, its configs or charts, or the code that reviews linked messages, writes or withholds the reply, or keeps drafts."
 ---
 
 # Verify message reply
@@ -39,7 +39,7 @@ review, reply and card code and its tests exist.
 The sync commit is 0065473e. It is the reference for full qualification, not evidence that a later
 revision passed. No product code carries the model's steps. When code does, each action's comment
 names that code, and the code joins "When a change needs this". Move the sync commit forward only
-after full qualification, as `/maintain-formal-verification-skill` describes.
+after full qualification, as pstack's `/maintain-formal-verification-skill` describes.
 
 ## When it's verified
 
@@ -64,7 +64,8 @@ Run it when a change touches the message-reply README, `MessageReply.tla`, `Mess
    Preserve each exact scratch model and configuration, the command, its
    exit status and the complete TLC output, including the counterexample for the intended failure.
    Summary tables alone do not establish these checks.
-3. Exercise partial answers on a scratch scenario: two patient messages arrive before one practice
+3. When the change touches which messages a practice message answers, or for full qualification,
+   exercise partial answers on a scratch scenario: two patient messages arrive before one practice
    message, then the review reads it and finishes with a reply. Check both singleton answer sets
    (`{1}` and `{2}`): only that message ends answered, and the ready reply covers the other one.
    Preserve a reachable trace for each outcome; passing invariants alone do not establish that

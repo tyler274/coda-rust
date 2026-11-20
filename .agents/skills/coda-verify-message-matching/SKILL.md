@@ -1,6 +1,6 @@
 ---
 name: coda-verify-message-matching
-description: "Check a change to message matching against its TLA+ model with the pstack /statechart skill: each README rule checked by TLC and seen failing on its own broken copy, then the six charts read in the physician's words. Use when a change touches the message-matching README, MessageMatching.tla, its configs or charts, or the code that reads the channel, decides, links or moves patient messages."
+description: "Check a change to message matching against its TLA+ model with the pstack /statechart skill: the README's rules checked by TLC, the breaks the change calls for seen failing, and the affected charts read in the physician's words. Use when a change touches the message-matching README, MessageMatching.tla, its configs or charts, or the code that reads the channel, decides, links or moves patient messages."
 ---
 
 # Verify message matching
@@ -37,7 +37,7 @@ code and its tests exist.
 The sync commit is 0065473e. It is the reference for full qualification, not evidence that a later
 revision passed. No product code carries the model's steps. When code does, each action's comment
 names that code, and the code joins "When a change needs this". Move the sync commit forward only
-after full qualification, as `/maintain-formal-verification-skill` describes.
+after full qualification, as pstack's `/maintain-formal-verification-skill` describes.
 
 ## When it's verified
 

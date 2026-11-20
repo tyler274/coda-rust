@@ -33,9 +33,9 @@ models.
 
 Check the model, and read every result, with the pstack `/statechart` skill on
 `verification/physician/sign-in/SignIn.tla`. It passes when the report lists OnceOut, Expiry,
-KeepsWork, SignedIn, TodayFirst, Lands, ActsAsShown, PromptIsEmpty, ServerRefusesSignedOut, CatchesUp and NoDeadlock under the rules that hold. The run is long, most of it checking CatchesUp, so run it in the
-background.
-Then draw each chart, render it as the skill says, and read it: `chart.cfg` with `chart.mjs` on
+KeepsWork, SignedIn, TodayFirst, Lands, ActsAsShown, PromptIsEmpty, ServerRefusesSignedOut, CatchesUp and NoDeadlock under the rules that hold. The run is long, most of it checking CatchesUp: run it once,
+under the limits in [local model runs](../../../verification/README.md#local-model-runs).
+Then draw the charts the change affects, render each as the skill says, and read it: `chart.cfg` with `chart.mjs` on
 `SignIn.tla` draws one tab with one session, and `chart-sign-in`, `chart-another`, `chart-expiry`
 and `chart-sign-out`, each `.cfg` with its `.mjs` on `Charts.tla`, draw two tabs when you sign in,
 another physician signs in, the session expires, or you sign out. Every rule must hold in each,
@@ -116,8 +116,9 @@ With two tabs and three sessions, each rule fails on its broken copy of the mode
 | ServerRefusesSignedOut | another physician's link signs you out and leaves your session live at Coda |
 | CatchesUp | a tab at the prompt never hears the news |
 
-A path joins `BUG_PATHS` only after it fails on the code it guards. After a change to the model or a rule,
-break it again the same way and confirm TLC reports that rule.
+A path joins `BUG_PATHS` only after it fails on the code it guards. After a change to a rule or to
+an action it depends on, break that rule again the same way and confirm TLC reports it. The other
+rows need no rerun.
 
 ## Sync
 

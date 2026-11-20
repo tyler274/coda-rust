@@ -58,7 +58,9 @@ $P supersede 7 --reason "AC5 since proven on staging"
   need a running stack.
 
 `status` lists failing and stale entries first and exits 1 when any remain. An entry
-is stale when it ran against another revision or with uncommitted changes. Re-run
+is stale when it ran against another revision or with uncommitted changes to tracked
+files. It does not see untracked files: add a new file to Git before recording
+evidence that depends on it, or the entry reads as current when it is not. Re-run
 it and `supersede` the old entry, or `keep` it at this head with the reason the later
 change cannot affect it. Superseding also retires a failure that a correction fixed
 or a gap that later evidence filled; the manifest keeps the history, and the Proof

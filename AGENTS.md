@@ -111,7 +111,10 @@ The engineering skills live in [`.agents/skills`](.agents/skills), and each
 skill's description says when to use it. Use them as the work calls for them;
 the user need not name each one. Skills supply methods and judgment within these
 shared development defaults. `.claude/skills` links to them; resolve skill
-references from their real repository paths.
+references from their real repository paths. The [PStack](verification/README.md#pstack)
+skills, `statechart` among them, come from the installed plugin and are not copied
+here. A skill asks for the checks its change calls for; a whole-feature
+qualification is its own agreed, budgeted task.
 
 Two kinds of agent share this repository. The Antigravity swarm owns ticketed
 work from start to finish: it authors the change, reviews it, merges it and
