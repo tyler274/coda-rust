@@ -1,0 +1,95 @@
+{
+  "branch": "feat-cc2-duet-uploader-origin-duplicates-and-corrections",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "COD-61/COD-62 static gates: fmt, check-sql, cargo deny, host + wasm32 clippy -D warnings, and product boundaries",
+      "label": "gates-fmt-sql-deny-clippy-boundaries",
+      "kind": "run",
+      "revision": "3e5a7248e06fdaf17353ee79989a8ed59a16c9e1",
+      "dirty": false,
+      "recorded": "2026-11-20T03:46:35+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "set -euo pipefail; cargo fmt --all --check; python3 scripts/check-sql.py; cargo deny check --hide-inclusion-graph; cargo clippy --locked -p duet-api -p local-product -p physician-sample -p boundaries --all-targets -- -D warnings; cargo clippy --locked --target wasm32-unknown-unknown -p duet-app --lib --bins -- -D warnings; cargo test --locked -p boundaries"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-gates-fmt-sql-deny-clippy-boundaries.log"
+      ],
+      "seconds": 102.4,
+      "exit": 0,
+      "ok": true,
+      "superseded": "Replaced by fresh clean-HEAD proof at 1c6b18aa5 after Rule 21 duet_front_door_mapping verification, header control-character sanitization, and rebase onto origin/main 97c43809db"
+    },
+    {
+      "id": 2,
+      "claim": "COD-61 live Duet->front-door uploader, Rule 10/11 exclusions, origin attribution, sync-failure telemetry, and COD-62 EHR duplicate labeling, post-join correction fences, and X4.1 panel reassignment (unit + real Postgres)",
+      "label": "cod61-cod62-unit-and-postgres",
+      "kind": "run",
+      "revision": "3e5a7248e06fdaf17353ee79989a8ed59a16c9e1",
+      "dirty": false,
+      "recorded": "2026-11-20T03:48:18+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "set -euo pipefail; cargo test --locked -p duet-api --lib; cargo test --locked -p duet-api --test connected_care_sync; cargo test --locked -p duet-api --test push_harness_and_memory_retention; cargo test --locked -p local-product --lib connected_care; cargo test --locked -p local-product --test connected_care_and_filtered_chat; cargo test --locked -p physician-sample --bin physician-worker connected_care_bootstrap"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-cod61-cod62-unit-and-postgres.log"
+      ],
+      "seconds": 221.1,
+      "exit": 0,
+      "ok": true,
+      "superseded": "Replaced by fresh clean-HEAD proof at 1c6b18aa5 after Rule 21 duet_front_door_mapping verification, header control-character sanitization, and rebase onto origin/main 97c43809db"
+    },
+    {
+      "id": 3,
+      "claim": "COD-61/COD-62 static gates: fmt, check-sql, cargo deny, host + wasm32 clippy -D warnings, and product boundaries",
+      "label": "gates-fmt-sql-deny-clippy-boundaries-v2",
+      "kind": "run",
+      "revision": "1c6b18aa59979785b027cf92ba582d2f479678bc",
+      "dirty": false,
+      "recorded": "2026-11-20T04:14:28+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "set -euo pipefail; cargo fmt --all --check; python3 scripts/check-sql.py; cargo deny check --hide-inclusion-graph; cargo clippy --locked -p duet-api -p local-product -p physician-sample -p boundaries --all-targets -- -D warnings; cargo clippy --locked --target wasm32-unknown-unknown -p duet-app --lib --bins -- -D warnings; cargo test --locked -p boundaries"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-gates-fmt-sql-deny-clippy-boundaries-v2.log"
+      ],
+      "seconds": 244.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "COD-61 live Duet->front-door uploader with Rule 21 cross-account mapping verification, Rule 10/11 exclusions, origin attribution, sync-failure telemetry, and COD-62 EHR duplicate labeling, post-join correction fences, and X4.1 panel reassignment (unit + real Postgres)",
+      "label": "cod61-cod62-unit-and-postgres-v2",
+      "kind": "run",
+      "revision": "1c6b18aa59979785b027cf92ba582d2f479678bc",
+      "dirty": false,
+      "recorded": "2026-11-20T04:18:33+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "set -euo pipefail; cargo test --locked -p duet-api --lib; cargo test --locked -p duet-api --test connected_care_sync; cargo test --locked -p duet-api --test push_harness_and_memory_retention; cargo test --locked -p local-product --lib connected_care; cargo test --locked -p local-product --test connected_care_and_filtered_chat; cargo test --locked -p physician-sample --bin physician-worker connected_care_bootstrap"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-cod61-cod62-unit-and-postgres-v2.log"
+      ],
+      "seconds": 669.7,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}

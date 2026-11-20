@@ -1,0 +1,366 @@
+   Compiling front-door v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/front-door)
+   Compiling duet-api v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-api)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 32s
+     Running unittests src/lib.rs (/tmp/coda-target-gcp/debug/deps/duet_api-b2ec985ba5f061f7)
+
+running 53 tests
+test connected_care_sync::tests::source_origin_formats_exact_via_duet_labels ... ok
+test assistant_harness::tests::assistant_eligibility_enforces_terms_consent_and_operator_switch ... ok
+test hosting::tests::local_runs_start_without_any_profile ... ok
+test background::tests::every_api_error_has_a_class ... ok
+test identity::local_tests::a_short_secret_is_refused ... ok
+test hosting::tests::a_false_cloud_marker_is_still_hosted ... ok
+test assistant_harness::tests::parked_routes_policy_is_quarantined_by_default ... ok
+test hosting::tests::production_and_other_profiles_refuse_even_when_complete ... ok
+test identity::refusal_tests::provider_outage_and_configuration_errors_are_not_session_refusals ... ok
+test assistant_harness::tests::recipe_embeds_standing_disclosure_and_clinical_library_tools_only ... ok
+test evidence_routes::tests::undated_records_have_no_date_and_keep_literal_values ... ok
+test portals::tests::portal_secrets_are_redacted_in_debug_output ... ok
+test privacy::tests::restriction_enum_matches_wire_snake_case ... ok
+test connected_care_sync::tests::header_values_strip_control_newlines ... ok
+test connected_care_sync::tests::private_ai_notes_and_for_my_doctor_drafts_are_excluded_from_live_streaming ... ok
+test hosting::tests::staging_preview_is_the_only_hosted_profile ... ok
+test hosting::tests::local_stand_ins_refuse_hosted_even_with_a_complete_profile ... ok
+test portals::tests::update_failure_day_formats_plain_copy ... ok
+test push::tests::device_id_validation_rejects_blank_or_control_characters ... ok
+test hosting::tests::liveness_says_nothing_about_readiness ... ok
+test privacy_archive::tests::gcs_transport_and_postgres_recovery_reconcile_same_receipt_after_restart ... ok
+test tests::the_schema_readiness_check_names_the_required_migration ... ok
+test push::tests::push_secrets_are_redacted_in_debug_output ... ok
+test portals::tests::fhir_pagination_url_enforces_exact_https_origin ... ok
+test background::tests::failure_event_names_the_class_without_error_text ... ok
+test evidence_routes::tests::projected_role_and_offset_are_literal ... ok
+test evidence_routes::tests::acquisition_interval_keeps_start_and_end_and_sorts_on_the_start ... ok
+test portals::tests::vendor_kill_switch_filters_search_and_preserves_enabled_vendors ... ok
+test identity::local_tests::verifies_a_signed_local_token ... ok
+test push::tests::http_push_transport_enforces_https_except_loopback ... ok
+test assistant_harness::tests::http_clinical_library_reader_requires_https_except_loopback ... ok
+test identity::local_tests::refuses_forged_expired_foreign_and_future_tokens ... ok
+test connected_care_sync::tests::http_transport_requires_https_except_loopback ... ok
+test privacy_archive::tests::production_trust_and_object_namespace_cannot_be_configured_as_urls ... ok
+test site::tests::serves_only_named_assets_with_wasm_mime ... ok
+test privacy_archive::tests::conditional_creation_ambiguous_readback_corruption_and_credentials ... ok
+test privacy::tests::receipt_publication_revoke ... ok
+test privacy::tests::receipt_follow_up_pause ... ok
+test privacy::tests::receipt_proactive_withdraw ... ok
+test privacy::tests::account_delete_propagates_to_front_door_and_rolls_back_when_closer_fails ... ok
+test privacy::tests::receipt_records_withdraw ... ok
+test privacy_archive::tests::transport_timeout_and_cancellation_release_capacity ... ok
+test privacy_archive::tests::metadata_failures_never_forward_credentials_or_follow_redirects ... ok
+test privacy_archive::tests::chunked_readback_cannot_bypass_body_limit ... ok
+test privacy::tests::receipt_doctor_page_delete ... ok
+test privacy::tests::receipt_luna_withdraw ... ok
+test privacy::tests::receipt_device_withdraw ... ok
+test privacy::tests::receipt_evidence_delete ... ok
+test privacy::tests::receipt_doctor_item_delete ... ok
+test privacy::tests::receipt_sessions_revoke ... ok
+test privacy::tests::receipt_doctor_note_delete ... ok
+test privacy::tests::receipt_account_delete ... ok
+test privacy::tests::receipt_follow_up_cancel ... ok
+
+test result: ok. 53 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 16.34s
+
+   Compiling duet-api v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-api)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3m 01s
+     Running tests/connected_care_sync.rs (/tmp/coda-target-gcp/debug/deps/connected_care_sync-5bbab010d0fecc07)
+
+running 1 test
+test cod61_live_uploader_streams_to_front_door_excludes_private_notes_and_surfaces_failures ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.02s
+
+   Compiling duet-api v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-api)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 44.75s
+     Running tests/push_harness_and_memory_retention.rs (/tmp/coda-target-gcp/debug/deps/push_harness_and_memory_retention-b4d4b59d92023de9)
+
+running 3 tests
+test cod67_parked_legacy_routes_are_quarantined_by_default ... ok
+test cod67_harness_clinical_library_consent_and_memory_retention ... ok
+test cod67_multi_device_generic_push_and_sign_out_cleanup ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.62s
+
+   Compiling stable_deref_trait v1.2.1
+   Compiling smallvec v1.16.3
+   Compiling log v0.4.34
+   Compiling tracing-core v0.1.36
+   Compiling futures-util v0.3.34
+   Compiling crypto-common v0.2.2
+   Compiling num-traits v0.2.19
+   Compiling uuid v1.29.2
+   Compiling tokio v1.54.1
+   Compiling memchr v2.8.3
+   Compiling thiserror v2.0.21
+   Compiling rand v0.10.4
+   Compiling zerofrom v0.1.8
+   Compiling either v1.19.0
+   Compiling simd-adler32 v0.3.10
+   Compiling crc32fast v1.5.2
+   Compiling jiff-tzdb v0.1.9
+   Compiling jiff-core v0.1.5
+   Compiling pxfm v0.1.30
+   Compiling zune-core v0.5.3
+   Compiling byteorder-lite v0.1.0
+   Compiling bytemuck v1.25.2
+   Compiling patient-work v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/patient-work)
+   Compiling physician-wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/physician-wire)
+   Compiling jsonwebtoken v11.1.0
+   Compiling yoke v0.8.3
+   Compiling sea-query-derive v1.0.0
+   Compiling miniz_oxide v0.9.1
+   Compiling miniz_oxide v0.8.9
+   Compiling fdeflate v0.3.7
+   Compiling parking_lot_core v0.9.12
+   Compiling itertools v0.14.0
+   Compiling zune-jpeg v0.5.15
+   Compiling aho-corasick v1.1.5
+   Compiling tracing v0.1.44
+   Compiling digest v0.11.3
+   Compiling jiff v0.2.41
+   Compiling zerovec v0.11.8
+   Compiling zerotrie v0.2.5
+   Compiling flate2 v1.1.11
+   Compiling chrono v0.4.45
+   Compiling parking_lot v0.12.5
+   Compiling rust_decimal v1.43.0
+   Compiling atoi v2.0.0
+   Compiling ordered-float v4.6.0
+   Compiling tracing-subscriber v0.3.23
+   Compiling sha2 v0.11.1
+   Compiling hmac v0.13.0
+   Compiling md-5 v0.11.0
+   Compiling axum-core v0.5.6
+   Compiling hkdf v0.13.0
+   Compiling png v0.18.1
+   Compiling tinystr v0.8.4
+   Compiling potential_utf v0.1.6
+   Compiling futures-intrusive v0.5.0
+   Compiling icu_collections v2.3.0
+   Compiling icu_locale_core v2.3.0
+   Compiling regex-automata v0.4.18
+   Compiling agent-skills v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/agent-skills)
+   Compiling icu_provider v2.3.1
+   Compiling moxcms v0.8.1
+   Compiling icu_normalizer v2.3.0
+   Compiling icu_properties v2.3.0
+   Compiling regex v1.13.1
+   Compiling idna_adapter v1.2.2
+   Compiling idna v1.1.0
+   Compiling pluralizer v0.5.0
+   Compiling sea-orm-macros v2.0.4
+   Compiling url v2.5.8
+   Compiling tokio-stream v0.1.19
+   Compiling hyper v1.12.0
+   Compiling tower v0.5.3
+   Compiling tokio-rustls v0.26.6
+   Compiling tokio-util v0.7.20
+   Compiling sqlx-core v0.9.0
+   Compiling tower-http v0.6.11
+   Compiling image v0.25.10
+   Compiling hyper-util v0.1.21
+   Compiling hyper-rustls v0.27.10
+   Compiling axum v0.8.9
+   Compiling reqwest v0.12.28
+   Compiling sqlx-postgres v0.9.0
+   Compiling harness v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/harness)
+   Compiling spruce v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/spruce)
+   Compiling sqlx v0.9.0
+   Compiling sea-query v1.0.2
+   Compiling sea-query-sqlx v0.9.1
+   Compiling sea-schema v0.18.1
+   Compiling sea-orm v2.0.4
+   Compiling sea-orm-migration v2.0.4
+   Compiling physician-auth v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/physician-auth)
+   Compiling front-door v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/front-door)
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 21s
+     Running unittests src/lib.rs (/tmp/coda-target-gcp/debug/deps/local_product-2d5e3c7b00e986b5)
+
+running 3 tests
+test runtime::connected_care::tests::parses_exact_via_duet_origin_and_falls_back_cleanly ... ok
+test runtime::connected_care::tests::sync_health_tracks_consecutive_failures_and_recovers_on_success ... ok
+test runtime::connected_care::tests::duplicate_detection_matches_external_id_or_type_date_and_title ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 221 filtered out; finished in 0.00s
+
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 07s
+     Running tests/connected_care_and_filtered_chat.rs (/tmp/coda-target-gcp/debug/deps/connected_care_and_filtered_chat-be9f163df88254a2)
+
+running 5 tests
+test cross_practice_connected_care_collision_refuses_foreign_chart_writes ... ok
+test cod62_x4_1_departing_physician_panel_reassignment_preserves_connection_and_sync ... ok
+test cod61_cod62_origin_ehr_duplicates_and_post_join_correction_fences ... ok
+test filtered_mail_chat_tools_list_isolate_and_restore_patient_messages ... ok
+test connected_care_consent_join_rejoin_and_for_my_doctor_flow ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.04s
+
+   Compiling slab v0.4.12
+   Compiling subtle v2.6.1
+   Compiling getrandom v0.2.17
+   Compiling anyhow v1.0.104
+   Compiling serde v1.0.229
+   Compiling tracing v0.1.44
+   Compiling thiserror v2.0.21
+   Compiling tokio v1.54.1
+   Compiling zeroize v1.9.1
+   Compiling konst_macro_rules v0.2.19
+   Compiling zerofrom v0.1.8
+   Compiling aws-lc-sys v0.46.0
+   Compiling libloading v0.8.9
+   Compiling futures-util v0.3.34
+   Compiling longest-increasing-subsequence v0.1.0
+   Compiling dioxus-core-types v0.7.10
+   Compiling ring v0.17.14
+   Compiling typenum v1.20.1
+   Compiling num-integer v0.1.47
+   Compiling rustls-pki-types v1.15.1
+   Compiling pin-project v1.1.13
+   Compiling opentelemetry v0.33.1
+   Compiling yoke v0.8.3
+   Compiling konst v0.2.20
+   Compiling generational-box v0.7.10
+   Compiling axum-core v0.5.6
+   Compiling derive_more v2.1.1
+   Compiling sea-query-derive v1.0.0
+   Compiling ouroboros v0.18.5
+   Compiling async-stream v0.3.6
+   Compiling sea-orm-macros v2.0.4
+   Compiling prost-derive v0.14.6
+   Compiling rand_core v0.6.4
+   Compiling minimal-lexical v0.2.1
+   Compiling enumset v1.1.14
+   Compiling euclid v0.22.14
+   Compiling chrono v0.4.45
+   Compiling rust_decimal v1.43.0
+   Compiling subsecond-types v0.7.10
+   Compiling serde_urlencoded v0.7.1
+   Compiling slotmap v1.1.1
+   Compiling tracing-serde v0.2.0
+   Compiling warnings v0.2.1
+   Compiling crc16 v0.4.0
+   Compiling zerovec v0.11.8
+   Compiling zerotrie v0.2.5
+   Compiling const_format v0.2.36
+   Compiling num-bigint v0.4.8
+   Compiling serde_yaml v0.9.34+deprecated
+   Compiling bytes-utils v0.1.4
+   Compiling webpki-roots v1.0.10
+   Compiling keyboard-types v0.7.0
+   Compiling unicase v2.10.0
+   Compiling rand_chacha v0.3.1
+   Compiling openssl-probe v0.2.1
+   Compiling nom v7.1.3
+   Compiling generic-array v0.14.7
+   Compiling tracing-subscriber v0.3.23
+   Compiling quoted_printable v0.5.2
+   Compiling alloc-no-stdlib v3.0.0
+   Compiling subsecond v0.7.10
+   Compiling cookie-factory v0.3.2
+   Compiling tinystr v0.8.4
+   Compiling potential_utf v0.1.6
+   Compiling rustls-native-certs v0.8.5
+   Compiling tower-http v0.7.1
+   Compiling float-cmp v0.10.0
+   Compiling mime_guess v2.0.5
+   Compiling alloc-stdlib v0.3.0
+   Compiling arc-swap v1.9.3
+   Compiling socket2 v0.5.10
+   Compiling rand v0.8.8
+   Compiling email-encoding v0.4.3
+   Compiling nom v8.0.0
+   Compiling fastrand v2.5.0
+   Compiling urlencoding v2.1.3
+   Compiling semver v1.0.28
+   Compiling core_detect v1.0.0
+   Compiling email_address v0.2.9
+   Compiling simdutf8 v0.1.5
+   Compiling icu_locale_core v2.3.0
+   Compiling icu_collections v2.3.0
+   Compiling dioxus-cli-config v0.7.10
+   Compiling brotli-decompressor v6.2.0
+   Compiling patient-work v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/patient-work)
+   Compiling block-buffer v0.10.4
+   Compiling simple_asn1 v0.6.4
+   Compiling crypto-common v0.1.7
+   Compiling physician-wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/physician-wire)
+   Compiling encoding_rs v0.8.42
+   Compiling askama_escape v0.13.0
+   Compiling dioxus-config-macros v0.7.10
+   Compiling data-encoding v2.11.1
+   Compiling agent-skills v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/agent-skills)
+   Compiling dioxus-core v0.7.10
+   Compiling futures-executor v0.3.34
+   Compiling tracing-opentelemetry v0.34.0
+   Compiling redis-protocol v6.0.0
+   Compiling digest v0.10.7
+   Compiling futures v0.3.34
+   Compiling sha2 v0.10.9
+   Compiling icu_provider v2.3.1
+   Compiling brotli v9.1.3
+   Compiling icu_normalizer v2.3.0
+   Compiling icu_properties v2.3.0
+   Compiling dioxus-router-macro v0.7.10
+   Compiling charset v0.1.5
+   Compiling mailparse v0.18.0
+   Compiling hyper v1.12.0
+   Compiling tower v0.5.3
+   Compiling tokio-stream v0.1.19
+   Compiling tokio-util v0.7.20
+   Compiling opentelemetry_sdk v0.33.1
+   Compiling idna_adapter v1.2.2
+   Compiling idna v1.1.0
+   Compiling dioxus-signals v0.7.10
+   Compiling dioxus-history v0.7.10
+   Compiling dioxus-ssr v0.7.10
+   Compiling url v2.5.8
+   Compiling hyper-util v0.1.21
+   Compiling dioxus-hooks v0.7.10
+   Compiling dioxus-stores v0.7.10
+   Compiling tower-http v0.6.11
+   Compiling dioxus-html v0.7.10
+   Compiling axum v0.8.9
+   Compiling reqwest v0.13.5
+   Compiling sea-query v1.0.2
+   Compiling opentelemetry-http v0.33.1
+   Compiling prost v0.14.6
+   Compiling opentelemetry-proto v0.33.1
+   Compiling opentelemetry-otlp v0.33.1
+   Compiling dioxus-router v0.7.10
+   Compiling dioxus v0.7.10
+   Compiling aws-lc-rs v1.18.2
+   Compiling rustls v0.23.46
+   Compiling rustls-webpki v0.103.16
+   Compiling jsonwebtoken v11.1.0
+   Compiling tokio-rustls v0.26.6
+   Compiling sqlx-core v0.9.0
+   Compiling hyper-rustls v0.27.10
+   Compiling lettre v0.11.24
+   Compiling fred v10.1.0
+   Compiling reqwest v0.12.28
+   Compiling spruce v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/spruce)
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/http)
+   Compiling harness v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/harness)
+   Compiling telemetry v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/telemetry)
+   Compiling gmail v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/gmail)
+   Compiling sqlx-postgres v0.9.0
+   Compiling public-site v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/public-site)
+   Compiling sqlx v0.9.0
+   Compiling sea-query-sqlx v0.9.1
+   Compiling sea-schema v0.18.1
+   Compiling sea-orm v2.0.4
+   Compiling physician-bus v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/physician-bus)
+   Compiling sea-orm-migration v2.0.4
+   Compiling front-door v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/front-door)
+   Compiling physician-auth v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/physician-auth)
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/local-product)
+   Compiling physician-sample v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2m 48s
+     Running unittests src/bin/physician-worker.rs (/tmp/coda-target-gcp/debug/deps/physician_worker-acc2eaac85dec4f3)
+
+running 1 test
+test practice_job::tests::connected_care_bootstrap_discovers_practice_without_existing_patient_dispatch ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 32 filtered out; finished in 0.74s
+
