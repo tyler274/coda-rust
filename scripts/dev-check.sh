@@ -227,15 +227,24 @@ run_browser_qualification() {
   (
     set -euo pipefail
     createdb --maintenance-db "$MIGRATION_DATABASE_URL" physician_browser
+    createdb --maintenance-db "$MIGRATION_DATABASE_URL" duet_browser
     unset DUET_TEST_DATABASE_URL PHYSICIAN_TEST_DATABASE_URL \
       FRONT_DOOR_TEST_DATABASE_URL CLINICAL_LIBRARY_TEST_DATABASE_URL \
       FRONT_DOOR_DATABASE_URL DUET_IDENTITY_TEST_DATABASE_URL
     export PHYSICIAN_DATABASE_URL="${pg_base}/physician_browser"
     export PHYSICIAN_RUNTIME_TEST_DATABASE_URL="${pg_base}/physician_browser"
+    export DUET_TEST_DATABASE_URL="${pg_base}/duet_browser"
     export CODA_REQUIRE_POSTGRES_TESTS=1
     cargo test --locked -p physician-sample \
       --test site --test auth_browser --test sign_in_states --test shell_states \
+      --test reply_revision --test sign_in_model \
       -- --ignored --test-threads=1
+    cargo test --locked -p public-site --test site -- --ignored
+    cargo test --locked -p mobile \
+      --test browser --test duet_journey --test mode \
+      -- --ignored --skip backend_process --test-threads=1
+    cargo test --locked -p ui-gallery --test sections -- --ignored
+    cargo test --locked -p extension-popup --test popup -- --ignored
   )
 }
 

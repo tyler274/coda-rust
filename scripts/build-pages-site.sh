@@ -57,7 +57,7 @@ PHYSICIAN_DEMO_DB="./demo.sqlite" \
   cargo build --locked --release --target wasm32-unknown-unknown \
   -p physician-app --no-default-features --features web
 
-wasm-bindgen target/wasm32-unknown-unknown/release/physician-app.wasm \
+wasm-bindgen "${CARGO_TARGET_DIR:-target}/wasm32-unknown-unknown/release/physician-app.wasm" \
   --target web \
   --out-dir "$out_dir/physician" \
   --out-name physician-app
