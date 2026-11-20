@@ -164,7 +164,8 @@
       ],
       "seconds": 2.9,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "Replaced empty filtered lib run with duet-api Postgres integration suites"
     },
     {
       "id": 7,
@@ -216,6 +217,42 @@
         "08-physician-sample-browser-site-qualification-agai.log"
       ],
       "seconds": 278.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 9,
+      "claim": "AC2",
+      "label": "duet-api Postgres integration tests (durable_owners, database_foundation, hosting, sql_layout)",
+      "kind": "run",
+      "revision": "9dd45c064b41c9a59442cd3a8b93b8dd62cdc488",
+      "dirty": false,
+      "recorded": "2026-11-20T03:26:52+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-j",
+        "4",
+        "-p",
+        "duet-api",
+        "--test",
+        "durable_owners",
+        "--test",
+        "database_foundation",
+        "--test",
+        "hosting",
+        "--test",
+        "sql_layout",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "09-duet-api-Postgres-integration-tests-durable_owne.log"
+      ],
+      "seconds": 151.4,
       "exit": 0,
       "ok": true
     }
