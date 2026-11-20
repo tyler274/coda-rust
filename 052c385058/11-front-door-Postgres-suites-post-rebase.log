@@ -1,0 +1,41 @@
+   Compiling front-door v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/front-door)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 17.72s
+     Running tests/identity.rs (/tmp/coda-target-concerns/debug/deps/identity-ec210d7bc6229e44)
+
+running 1 test
+test durable_identity_revocation_permissions_and_account_isolation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+     Running tests/luna_journal.rs (/tmp/coda-target-concerns/debug/deps/luna_journal-508eacc4d2dbfa35)
+
+running 1 test
+test transactional_withdrawal_delivery_restart_replay_and_isolation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+
+     Running tests/migrations.rs (/tmp/coda-target-concerns/debug/deps/migrations-77fe2778e40c6fdc)
+
+running 1 test
+test fresh_legacy_and_co_resident ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+     Running tests/postgres.rs (/tmp/coda-target-concerns/debug/deps/postgres-6af2c52e83ef9436)
+
+running 10 tests
+test a_database_migrated_under_the_shared_table_keeps_its_init ... ok
+test a_sign_in_token_verifies_once_and_mints_non_expiring_session ... ok
+test an_invitation_redeems_once_without_expiry_and_creates_connection ... ok
+test concurrent_invitation_redemption_consumes_once_and_connects_one_account ... ok
+test concurrent_sign_in_consumes_one_token_and_mints_one_session ... ok
+test connected_accounts_lists_the_practice_s_active_rows ... ok
+test multi_practice_connections_reuse_existing_account_and_reinvite_after_ending ... ok
+test postgres_leave_discharge_and_account_delete_preserve_ended_and_fail_closed ... ok
+test runtime_connection_leaves_schema_untouched_and_migration_job_reruns ... front-door migrations applied
+front-door migrations applied
+ok
+test the_memory_store_answers_the_same_contract ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.48s
+

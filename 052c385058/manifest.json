@@ -26,7 +26,8 @@
       ],
       "seconds": 2.4,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "Re-verified at rebased HEAD on origin/main dd5dab3b9c"
     },
     {
       "id": 2,
@@ -62,7 +63,8 @@
       ],
       "seconds": 4.9,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "Re-verified at rebased HEAD on origin/main dd5dab3b9c"
     },
     {
       "id": 3,
@@ -84,7 +86,11 @@
       ],
       "seconds": 6.4,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "kept": {
+        "revision": "052c3850581045f96413c18fca92514818c12037",
+        "reason": "Rebase onto dd5dab3b9c only merged crates/duet-api/src/{main.rs,privacy.rs}; physician-sample unchanged from 9dd45c064b"
+      }
     },
     {
       "id": 4,
@@ -106,7 +112,11 @@
       ],
       "seconds": 6.6,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "kept": {
+        "revision": "052c3850581045f96413c18fca92514818c12037",
+        "reason": "Rebase onto dd5dab3b9c only merged crates/duet-api/src/{main.rs,privacy.rs}; physician-sample unchanged from 9dd45c064b"
+      }
     },
     {
       "id": 5,
@@ -133,7 +143,8 @@
       ],
       "seconds": 30.2,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "Re-verified at rebased HEAD on origin/main dd5dab3b9c"
     },
     {
       "id": 6,
@@ -187,7 +198,8 @@
       ],
       "seconds": 89.5,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "Re-verified at rebased HEAD on origin/main dd5dab3b9c"
     },
     {
       "id": 8,
@@ -218,7 +230,11 @@
       ],
       "seconds": 278.1,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "kept": {
+        "revision": "052c3850581045f96413c18fca92514818c12037",
+        "reason": "Rebase onto dd5dab3b9c only merged crates/duet-api/src/{main.rs,privacy.rs}; physician-sample unchanged from 9dd45c064b"
+      }
     },
     {
       "id": 9,
@@ -253,6 +269,157 @@
         "09-duet-api-Postgres-integration-tests-durable_owne.log"
       ],
       "seconds": 151.4,
+      "exit": 0,
+      "ok": true,
+      "superseded": "Re-verified at rebased HEAD on origin/main dd5dab3b9c"
+    },
+    {
+      "id": 10,
+      "claim": "AC1",
+      "label": "front-door unit tests (post-rebase)",
+      "kind": "run",
+      "revision": "052c3850581045f96413c18fca92514818c12037",
+      "dirty": false,
+      "recorded": "2026-11-20T03:33:08+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-j",
+        "4",
+        "-p",
+        "front-door",
+        "--lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "10-front-door-unit-tests-post-rebase.log"
+      ],
+      "seconds": 55.9,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 11,
+      "claim": "AC1",
+      "label": "front-door Postgres suites (post-rebase)",
+      "kind": "run",
+      "revision": "052c3850581045f96413c18fca92514818c12037",
+      "dirty": false,
+      "recorded": "2026-11-20T03:34:04+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-j",
+        "4",
+        "-p",
+        "front-door",
+        "--test",
+        "migrations",
+        "--test",
+        "postgres",
+        "--test",
+        "identity",
+        "--test",
+        "luna_journal",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "11-front-door-Postgres-suites-post-rebase.log"
+      ],
+      "seconds": 20.2,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 12,
+      "claim": "AC2",
+      "label": "duet-api unit tests (post-rebase)",
+      "kind": "run",
+      "revision": "052c3850581045f96413c18fca92514818c12037",
+      "dirty": false,
+      "recorded": "2026-11-20T03:34:24+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-j",
+        "4",
+        "-p",
+        "duet-api",
+        "--lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "12-duet-api-unit-tests-post-rebase.log"
+      ],
+      "seconds": 130.5,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 13,
+      "claim": "AC2",
+      "label": "duet-api Postgres integration tests (post-rebase)",
+      "kind": "run",
+      "revision": "052c3850581045f96413c18fca92514818c12037",
+      "dirty": false,
+      "recorded": "2026-11-20T03:36:35+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-j",
+        "4",
+        "-p",
+        "duet-api",
+        "--test",
+        "durable_owners",
+        "--test",
+        "database_foundation",
+        "--test",
+        "hosting",
+        "--test",
+        "sql_layout",
+        "--test",
+        "push_harness_and_memory_retention",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "13-duet-api-Postgres-integration-tests-post-rebase.log"
+      ],
+      "seconds": 53.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 14,
+      "claim": "AC3",
+      "label": "fmt, check-sql, boundaries, and host/wasm32 clippy -D warnings (post-rebase)",
+      "kind": "run",
+      "revision": "052c3850581045f96413c18fca92514818c12037",
+      "dirty": false,
+      "recorded": "2026-11-20T03:37:29+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo fmt --all --check && python3 scripts/check-sql.py && cargo test --locked -j 4 -p boundaries && cargo clippy --locked -j 4 --workspace --all-targets -- -D warnings && cargo clippy --locked -j 4 --target wasm32-unknown-unknown -p physician-app --features physician-app/web -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "14-fmt-check-sql-boundaries-and-host-wasm32-clippy-.log"
+      ],
+      "seconds": 292.0,
       "exit": 0,
       "ok": true
     }
