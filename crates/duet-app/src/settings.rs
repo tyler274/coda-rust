@@ -50,9 +50,11 @@ pub(crate) fn SettingsScreen(
     base_url: String,
     active: ActiveSession,
     retention: RetentionOwner,
+    external_message: Option<String>,
+    on_clear_external_message: EventHandler<()>,
     on_close: EventHandler<()>,
     on_profile_updated: EventHandler<(Option<String>, Appearance, Option<String>)>,
-    on_request_sign_out: EventHandler<()>,
+    on_request_sign_out: EventHandler<crate::account::SignOutScope>,
     on_complete_revocation: EventHandler<Option<String>>,
 ) -> Element {
     let initial_name = active
@@ -69,6 +71,9 @@ pub(crate) fn SettingsScreen(
     let mut delete_flow = use_signal(|| DeleteAccountFlow::Idle);
     let mut notice = use_signal(|| OperationNotice::None);
     let mut working_right = use_signal(|| false);
+    let mut exported_summary = use_signal(|| None::<duet_client::identity::AccountExport>);
+    let mut pending_delete =
+        use_signal(|| retention.load_pending_delete(&active.fence).ok().flatten());
 
     let bearer = active.bearer.clone();
     let fence = active.fence.clone();
@@ -352,10 +357,21 @@ pub(crate) fn SettingsScreen(
         if working_right() {
             return;
         }
-        on_request_sign_out.call(());
+        notice.set(OperationNotice::None);
+        on_clear_external_message.call(());
+        on_request_sign_out.call(crate::account::SignOutScope::ThisDevice);
     };
 
-    let sign_out_everywhere = {
+    let sign_out_everywhere = move |_| {
+        if working_right() {
+            return;
+        }
+        notice.set(OperationNotice::None);
+        on_clear_external_message.call(());
+        on_request_sign_out.call(crate::account::SignOutScope::Everywhere);
+    };
+
+    let export_data = {
         let base_url = base_url.clone();
         let bearer = bearer.clone();
         move |_| {
@@ -363,23 +379,26 @@ pub(crate) fn SettingsScreen(
                 return;
             }
             working_right.set(true);
+            notice.set(OperationNotice::None);
+            on_clear_external_message.call(());
             let base_url = base_url.clone();
             let bearer = bearer.clone();
             spawn(async move {
                 let result = async {
                     let api = DuetClient::new(&base_url, &bearer, "0", "0.1.0")
                         .map_err(|_| IdentityError::Unavailable)?;
-                    api.commit_privacy_restriction(
-                        Uuid::new_v4(),
-                        PrivacyRestrictionKind::SessionsRevoke,
-                        None,
-                        0,
-                    )
-                    .await
+                    api.export_account_data().await
                 }
                 .await;
                 match result {
-                    Ok(_) => on_complete_revocation.call(Some("Signed out everywhere.".into())),
+                    Ok(export) => {
+                        let summary = export.summary_text();
+                        if let Ok(json) = export.to_pretty_json() {
+                            let _ = crate::export::present_account_export(json.as_bytes());
+                        }
+                        exported_summary.set(Some(export));
+                        notice.set(OperationNotice::Status(summary));
+                    }
                     Err(error) => notice.set(OperationNotice::Error(error.to_string())),
                 }
                 working_right.set(false);
@@ -390,32 +409,34 @@ pub(crate) fn SettingsScreen(
     let confirm_delete = {
         let base_url = base_url.clone();
         let bearer = bearer.clone();
+        let retention = retention.clone();
+        let fence = fence.clone();
         move |_| {
             if delete_flow() == DeleteAccountFlow::Deleting || working_right() {
                 return;
             }
+            let event_id = pending_delete().unwrap_or_else(Uuid::new_v4);
+            let _ = retention.save_pending_delete(&fence, event_id);
+            pending_delete.set(Some(event_id));
             delete_flow.set(DeleteAccountFlow::Deleting);
             working_right.set(true);
+            notice.set(OperationNotice::None);
+            on_clear_external_message.call(());
             let base_url = base_url.clone();
             let bearer = bearer.clone();
             spawn(async move {
-                let result = async {
-                    let api = DuetClient::new(&base_url, &bearer, "0", "0.1.0")
-                        .map_err(|_| IdentityError::Unavailable)?;
-                    api.commit_privacy_restriction(
-                        Uuid::new_v4(),
-                        PrivacyRestrictionKind::AccountDelete,
-                        None,
-                        0,
-                    )
-                    .await
-                }
-                .await;
-                match result {
-                    Ok(_) => on_complete_revocation.call(Some("Account deleted.".into())),
-                    Err(error) => {
-                        delete_flow.set(DeleteAccountFlow::Confirming);
-                        notice.set(OperationNotice::Error(error.to_string()));
+                match crate::account::execute_account_delete(&base_url, &bearer, event_id).await {
+                    crate::account::AccountDeleteOutcome::Deleted => {
+                        on_complete_revocation.call(Some("Account deleted.".into()))
+                    }
+                    crate::account::AccountDeleteOutcome::SessionEndedBeforeDeletion(msg) => {
+                        on_complete_revocation.call(Some(msg))
+                    }
+                    crate::account::AccountDeleteOutcome::RetryLater(msg) => {
+                        delete_flow.set(DeleteAccountFlow::Idle);
+                        notice.set(OperationNotice::Error(format!(
+                            "{msg} Tap Finish deleting account to retry."
+                        )));
                     }
                 }
                 working_right.set(false);
@@ -435,10 +456,12 @@ pub(crate) fn SettingsScreen(
                 Button { variant: ButtonVariant::Quiet, compact: true, onclick: move |_| on_close.call(()), "Back" }
             }
             PageTitle { text: "Settings".to_owned(), eyebrow: Some("Account and privacy".to_owned()) }
-            match notice() {
-                OperationNotice::None => rsx! {},
-                OperationNotice::Status(text) => rsx! { Notice { tone: Tone::Primary, title: text } },
-                OperationNotice::Error(text) => rsx! { Notice { tone: Tone::Error, title: text } },
+            match (notice(), external_message) {
+                (OperationNotice::Status(text), _) => rsx! { Notice { tone: Tone::Primary, title: text } },
+                (OperationNotice::Error(text), _) | (OperationNotice::None, Some(text)) => {
+                    rsx! { Notice { tone: Tone::Error, title: text } }
+                }
+                (OperationNotice::None, None) => rsx! {},
             }
             section { class: "duet-settings-section",
                 h2 { "Profile" }
@@ -525,6 +548,25 @@ pub(crate) fn SettingsScreen(
                 }
             }
             section { class: "duet-settings-section",
+                h2 { "Your data & export" }
+                p { class: "status-detail", "Download a portable copy of every record, note, portal connection, doctor page item, and conversation Duet holds for you." }
+                ActionRow {
+                    Button { disabled: working_right(), onclick: export_data, "Export my data" }
+                }
+                if let Some(export) = exported_summary() {
+                    Notice {
+                        tone: Tone::Neutral,
+                        title: export.summary_text(),
+                        detail: Some(format!(
+                            "Account {} · {} retained snapshot(s) · AI memory: {}",
+                            export.account.email.as_deref().unwrap_or("email pending"),
+                            export.device_snapshots.len(),
+                            if export.private_memory.is_some() { "included" } else { "none" },
+                        )),
+                    }
+                }
+            }
+            section { class: "duet-settings-section",
                 h2 { "Sources & connections" }
                 ActionRow {
                     Button { disabled: working_right(), onclick: run_withdraw(PrivacyRestrictionKind::DeviceWithdraw, "Apple Health disconnected."), "Disconnect Apple Health" }
@@ -539,10 +581,41 @@ pub(crate) fn SettingsScreen(
                     Button { disabled: working_right(), onclick: sign_out_everywhere, "Sign out everywhere" }
                 }
                 match delete_flow() {
-                    DeleteAccountFlow::Idle => rsx! {
-                        ActionRow {
-                            Button { danger: true, disabled: working_right(), onclick: move |_| delete_flow.set(DeleteAccountFlow::Confirming), "Delete account" }
-                        }
+                    DeleteAccountFlow::Idle => match pending_delete() {
+                        Some(_) => rsx! {
+                            Notice {
+                                tone: Tone::Warning,
+                                title: "Account deletion not finished".to_owned(),
+                                detail: Some("Tap Finish deleting account to retry the exact deletion request.".to_owned()),
+                            }
+                            ActionRow {
+                                Button {
+                                    variant: ButtonVariant::Primary,
+                                    danger: true,
+                                    disabled: working_right(),
+                                    onclick: confirm_delete,
+                                    "Finish deleting account"
+                                }
+                                Button {
+                                    variant: ButtonVariant::Quiet,
+                                    disabled: working_right(),
+                                    onclick: {
+                                        let retention = retention.clone();
+                                        let fence = fence.clone();
+                                        move |_| {
+                                            let _ = retention.clear_pending_delete(&fence);
+                                            pending_delete.set(None);
+                                        }
+                                    },
+                                    "Keep account"
+                                }
+                            }
+                        },
+                        None => rsx! {
+                            ActionRow {
+                                Button { danger: true, disabled: working_right(), onclick: move |_| delete_flow.set(DeleteAccountFlow::Confirming), "Delete account" }
+                            }
+                        },
                     },
                     DeleteAccountFlow::Confirming | DeleteAccountFlow::Deleting => rsx! {
                         Notice {

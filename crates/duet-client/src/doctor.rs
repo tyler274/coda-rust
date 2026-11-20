@@ -416,3 +416,94 @@ impl DuetClient {
             .map_err(|_| DoctorError::Uncertain)
     }
 }
+
+/// Outcome of attempting to confirm local pending work with Duet before signing out.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum SignOutSyncOutcome {
+    /// Every pending draft, operation, and health upload reached confirmation.
+    AllConfirmed,
+    /// Some entries remain unconfirmed and would be removed from this phone by signing out.
+    Unconfirmed(crate::retention::AccountLeaving),
+}
+
+fn parse_health_scope(scope: &str) -> Option<(String, duet_health::acquisition::PhoneSource)> {
+    use duet_health::acquisition::PhoneSource;
+
+    let (len_str, rest) = scope.split_once(':')?;
+    let len: usize = len_str.parse().ok()?;
+    if rest.len() <= len || !rest.is_char_boundary(len) || rest.as_bytes()[len] != b':' {
+        return None;
+    }
+    let installation = rest[..len].to_owned();
+    let source = match &rest[len + 1..] {
+        "appleHealth" => PhoneSource::AppleHealth,
+        "healthRecords" => PhoneSource::HealthRecords,
+        "healthConnect" => PhoneSource::HealthConnect,
+        _ => return None,
+    };
+    Some((installation, source))
+}
+
+/// Best-effort sync pass before signing out: flush pending health uploads,
+/// reconcile/save any retained `DoctorDraft`, and reconcile any pending doctor
+/// operation so confirmed work is never lost and remaining unconfirmed entries
+/// can be reported by exact count.
+pub async fn sync_pending_before_sign_out(
+    client: &DuetClient,
+    retention: &crate::retention::RetentionOwner,
+    fence: &crate::session::SessionFence,
+    now_ms: u64,
+) -> Result<SignOutSyncOutcome, String> {
+    if let Ok(scopes) = retention.health_scopes_for_fence(fence) {
+        for scope in scopes {
+            if let Some((installation, source)) = parse_health_scope(&scope) {
+                let outbox = crate::health_upload::open_outbox(
+                    retention,
+                    fence,
+                    &installation,
+                    source,
+                    duet_health::outbox::OutboxLimits::default(),
+                );
+                let _ = crate::health_upload::upload(&outbox, client, now_ms, 20).await;
+            }
+        }
+    }
+
+    if let Ok(crate::retention::DraftRecovery::Draft(draft)) = retention.recover(fence)
+        && let Ok(current) = client.doctor_workspace().await
+    {
+        match draft.reconcile(&current) {
+            crate::retention::SaveReadback::Saved => {
+                let _ = retention.discard(fence);
+            }
+            crate::retention::SaveReadback::RetryOriginal => {
+                if client.save_doctor_workspace(&draft.save).await.is_ok() {
+                    let _ = retention.discard(fence);
+                }
+            }
+            crate::retention::SaveReadback::Conflict => {}
+        }
+    }
+
+    if let Ok(Some(operation)) = retention.pending_operation(fence) {
+        let confirmed = match operation {
+            PendingDoctorOperation::Clear {
+                operation_id,
+                expected_generation,
+            } => client
+                .clear_doctor_workspace(operation_id, expected_generation)
+                .await
+                .is_ok(),
+        };
+        if confirmed {
+            let _ = retention.finish_operation(fence);
+        }
+    }
+
+    let remaining = retention.account_leaving()?;
+    if remaining.is_empty() {
+        Ok(SignOutSyncOutcome::AllConfirmed)
+    } else {
+        Ok(SignOutSyncOutcome::Unconfirmed(remaining))
+    }
+}

@@ -270,3 +270,181 @@ async fn client_email_auth_terms_settings_change_email_and_rights() {
     assert_eq!(s.deleted, 1);
     assert_eq!(s.device_signed_out, 1);
 }
+
+#[tokio::test]
+async fn client_export_and_sync_pending_before_sign_out() {
+    use duet_client::doctor::{
+        PendingDoctorOperation, SignOutSyncOutcome, sync_pending_before_sign_out,
+    };
+    use duet_client::retention::{DoctorDraft, ProtectedStore, RetainedIdentity, RetentionOwner};
+    use duet_wire::models::{DoctorCollection, DoctorPageSave};
+    use std::collections::HashMap;
+
+    #[derive(Default)]
+    struct TestStore(Mutex<HashMap<String, Vec<u8>>>);
+    impl ProtectedStore for TestStore {
+        fn read(&self, key: &str) -> Result<Option<Vec<u8>>, String> {
+            Ok(self.0.lock().unwrap().get(key).cloned())
+        }
+        fn write(&self, key: &str, bytes: &[u8]) -> Result<(), String> {
+            self.0.lock().unwrap().insert(key.into(), bytes.into());
+            Ok(())
+        }
+        fn remove(&self, key: &str) -> Result<(), String> {
+            self.0.lock().unwrap().remove(key);
+            Ok(())
+        }
+    }
+
+    let account_id = Uuid::new_v4();
+    let export_payload = json!({
+        "schema_version": 1,
+        "exported_at": "2026-11-19T12:00:00Z",
+        "account": {
+            "account_id": account_id,
+            "email": "ada@example.test",
+            "display_name": "Ada",
+            "appearance": "system",
+            "sharing_label": "Ada",
+            "terms_version": null,
+            "terms_accepted_at": null,
+            "ai_enabled": false,
+            "ai_consent_version": null,
+            "ai_consent_decision": null,
+            "ai_consent_at": null,
+            "apple_health_generation": 0,
+            "apple_health_disconnected_at": null,
+            "health_records_generation": 0,
+            "health_records_disconnected_at": null,
+            "health_connect_generation": 0,
+            "health_connect_disconnected_at": null,
+            "created_at": "2026-11-19T12:00:00Z"
+        },
+        "health_evidence": [],
+        "clinical_notes": [],
+        "device_snapshots": [],
+        "doctor_page": {
+            "note": "Check blood pressure",
+            "note_generation": 1,
+            "page": {},
+            "page_updated_at": "2026-11-19T12:00:00Z",
+            "items": []
+        },
+        "portal_connections": [],
+        "conversations": [],
+        "private_memory": null,
+        "privacy_receipts": []
+    });
+
+    let cleared = Arc::new(Mutex::new(false));
+    let cleared_flag = cleared.clone();
+    let mut base_collection = DoctorCollection::new(2);
+    base_collection.page = Some(Box::default());
+    base_collection.items = Some(Vec::new());
+    let mut saved_collection = DoctorCollection::new(3);
+    saved_collection.page = Some(Box::default());
+    saved_collection.items = Some(Vec::new());
+    saved_collection.note = Some(Some("Updated note".into()));
+    let get_coll = base_collection.clone();
+    let put_coll = saved_collection.clone();
+
+    let app = Router::new()
+        .route(
+            "/api/auth/account/export",
+            get(move || {
+                let payload = export_payload.clone();
+                async move { Json(payload) }
+            }),
+        )
+        .route(
+            "/api/doctor-collection",
+            get(move || {
+                let c = get_coll.clone();
+                async move { Json(c) }
+            })
+            .delete(move || {
+                *cleared_flag.lock().unwrap() = true;
+                async move { StatusCode::NO_CONTENT }
+            }),
+        )
+        .route(
+            "/api/doctor-collection/page",
+            put(move || {
+                let c = put_coll.clone();
+                async move { Json(c) }
+            }),
+        );
+
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+
+    let client = DuetClient::new(format!("http://{addr}"), "ds1.token", "0", "0.1.0").unwrap();
+    let exported = client.export_account_data().await.unwrap();
+    assert_eq!(exported.account.email.as_deref(), Some("ada@example.test"));
+    assert_eq!(
+        exported.doctor_page.note.as_deref(),
+        Some("Check blood pressure")
+    );
+    assert!(exported.summary_text().contains("Export ready:"));
+
+    let store = Arc::new(TestStore::default());
+    let retention = RetentionOwner::new(store);
+    let fence = retention
+        .activate(RetainedIdentity {
+            owner: format!("{account_id}:inc-1"),
+            subject: "email:ada".into(),
+            session_token: "ds1.token".into(),
+            email: Some("ada@example.test".into()),
+        })
+        .unwrap();
+
+    retention
+        .save(
+            &fence,
+            DoctorDraft {
+                base: base_collection.clone(),
+                save: DoctorPageSave {
+                    expected_generation: 2,
+                    page: Box::default(),
+                    note: Some(Some("Updated note".into())),
+                    item_ids: Vec::new(),
+                    proposal_id: None,
+                    confirmed_medication_ids: None,
+                },
+                uncertain_save: false,
+            },
+        )
+        .unwrap();
+    retention
+        .retain_operation(
+            &fence,
+            &PendingDoctorOperation::Clear {
+                operation_id: Uuid::new_v4(),
+                expected_generation: 3,
+            },
+        )
+        .unwrap();
+
+    // Unreachable client keeps exact count unconfirmed without losing local work.
+    let offline = DuetClient::new("http://127.0.0.1:9", "ds1.token", "0", "0.1.0").unwrap();
+    let offline_outcome = sync_pending_before_sign_out(&offline, &retention, &fence, 1000)
+        .await
+        .unwrap();
+    match offline_outcome {
+        SignOutSyncOutcome::Unconfirmed(leaving) => {
+            assert_eq!(leaving.unconfirmed_count(), 2);
+            assert!(leaving.warning().contains("2 unconfirmed entries"));
+            assert!(leaving.warning().contains("removes them from this phone"));
+        }
+        SignOutSyncOutcome::AllConfirmed => panic!("expected unconfirmed entries when offline"),
+    }
+
+    // Connected client flushes draft & operation cleanly.
+    let synced = sync_pending_before_sign_out(&client, &retention, &fence, 2000)
+        .await
+        .unwrap();
+    assert_eq!(synced, SignOutSyncOutcome::AllConfirmed);
+    assert!(*cleared.lock().unwrap());
+    assert!(retention.account_leaving().unwrap().is_empty());
+}

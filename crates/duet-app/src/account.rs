@@ -43,6 +43,70 @@ pub(crate) struct RefusalSender(
     )>,
 );
 
+/// Which sign-out action was requested when checking local pending work.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub(crate) enum SignOutScope {
+    #[default]
+    ThisDevice,
+    Everywhere,
+}
+
+/// Authoritative classification of an account-deletion request.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub(crate) enum AccountDeleteOutcome {
+    /// Server committed the deletion (or already deleted the account).
+    Deleted,
+    /// Session was revoked before deletion completed (account still exists on server).
+    SessionEndedBeforeDeletion(String),
+    /// Network or server outage; keep pending deletion marker for retry.
+    RetryLater(String),
+}
+
+pub(crate) fn classify_account_delete_result<T>(
+    result: Result<T, IdentityError>,
+) -> AccountDeleteOutcome {
+    match result {
+        Ok(_) | Err(IdentityError::AccountAbsent) => AccountDeleteOutcome::Deleted,
+        Err(IdentityError::Ended) => AccountDeleteOutcome::SessionEndedBeforeDeletion(
+            "This session ended before your account was deleted. Sign in again to finish deleting your account."
+                .to_owned(),
+        ),
+        Err(error) => AccountDeleteOutcome::RetryLater(error.to_string()),
+    }
+}
+
+pub(crate) async fn execute_account_delete(
+    base_url: &str,
+    bearer: &str,
+    event_id: uuid::Uuid,
+) -> AccountDeleteOutcome {
+    let result = async {
+        let api = DuetClient::new(base_url, bearer, "0", "0.1.0")
+            .map_err(|_| IdentityError::Unavailable)?;
+        api.commit_privacy_restriction(
+            event_id,
+            duet_client::identity::PrivacyRestrictionKind::AccountDelete,
+            None,
+            0,
+        )
+        .await
+    }
+    .await;
+    classify_account_delete_result(result)
+}
+
+fn finish_signed_out_cleanup(
+    mut ui: AccountUi,
+    owner: &RetentionOwner,
+    success_note: Option<String>,
+) {
+    let result = ui.erase(owner);
+    ui.message.set(match result {
+        Ok(()) => success_note.unwrap_or_default(),
+        Err(error) => format!("Signed out on this screen. Secure cleanup needs retry: {error}"),
+    });
+}
+
 /// Active signed-in session rendered above Terms and private tabs.
 #[derive(Clone, Debug, PartialEq)]
 pub(crate) struct ActiveSession {
@@ -241,7 +305,9 @@ pub fn DuetRoot(
     let mut cleanup_pending = use_signal(|| false);
     let mut lifecycle = use_signal(|| 0u64);
     let mut confirm_sign_out = use_signal(|| false);
+    let confirm_sign_out_scope = use_signal(|| SignOutScope::ThisDevice);
     let mut settings_open = use_signal(|| false);
+    let mut pending_delete = use_signal(|| None::<uuid::Uuid>);
     let mut agreed_terms = use_signal(|| false);
     let mut terms_submitting = use_signal(|| false);
     let mut terms_error = use_signal(|| None::<String>);
@@ -282,13 +348,27 @@ pub fn DuetRoot(
         cleanup_pending,
         message,
         confirm: confirm_sign_out,
+        confirm_scope: confirm_sign_out_scope,
         settings_open,
+        pending_delete,
         upgrade_required,
         agreed_terms,
         terms_error,
         sign_in_step,
         pending_invite,
     };
+
+    let pending_delete_owner = retention.clone();
+    use_effect(move || {
+        let _ = settings_open();
+        let found = active().and_then(|cur| {
+            pending_delete_owner
+                .load_pending_delete(&cur.fence)
+                .ok()
+                .flatten()
+        });
+        pending_delete.set(found);
+    });
 
     let (refusal_sender, refusal_receiver) = use_hook(|| {
         let (sender, receiver) = futures_channel::mpsc::unbounded();
@@ -425,8 +505,9 @@ pub fn DuetRoot(
                             }
                             message.set(String::new());
                         }
-                        Err(SignInError::Account(IdentityError::Ended))
-                        | Err(SignInError::Context(IdentityError::Ended)) => {
+                        Err(SignInError::Account(err) | SignInError::Context(err))
+                            if err.is_ended() =>
+                        {
                             account_ui.ended(&owner);
                         }
                         Err(
@@ -753,7 +834,8 @@ pub fn DuetRoot(
                                     message.set(String::new());
                                 }, "Stay signed in" }
                                 Button { variant: ButtonVariant::Primary, compact: true, onclick: move |_| {
-                                    start_device_sign_out(
+                                    start_sign_out(
+                                        confirm_sign_out_scope(),
                                         &confirm_sign_out_base,
                                         &confirm_sign_out_owner,
                                         active,
@@ -771,7 +853,15 @@ pub fn DuetRoot(
                         base_url: base_url.clone(),
                         active: current.clone(),
                         retention: retention.clone(),
-                        on_close: move |_| settings_open.set(false),
+                        external_message: {
+                            let msg = message();
+                            (!msg.is_empty()).then_some(msg)
+                        },
+                        on_clear_external_message: move |_| message.set(String::new()),
+                        on_close: move |_| {
+                            settings_open.set(false);
+                            message.set(String::new());
+                        },
                         on_profile_updated: move |(new_name, new_appearance, new_email)| {
                             if let Some(mut cur) = active() {
                                 cur.appearance = new_appearance;
@@ -782,8 +872,9 @@ pub fn DuetRoot(
                                 active.set(Some(cur));
                             }
                         },
-                        on_request_sign_out: move |_| {
-                            start_device_sign_out(
+                        on_request_sign_out: move |scope| {
+                            start_sign_out(
+                                scope,
                                 &settings_sign_out_base,
                                 &settings_sign_out_owner,
                                 active,
@@ -792,14 +883,80 @@ pub fn DuetRoot(
                             );
                         },
                         on_complete_revocation: move |note: Option<String>| {
-                            let result = account_ui.erase(&revoke_owner);
-                            message.set(match result {
-                                Ok(()) => note.unwrap_or_default(),
-                                Err(error) => format!(
-                                    "Signed out on this screen. Secure cleanup needs retry: {error}"
-                                ),
-                            });
+                            finish_signed_out_cleanup(account_ui, &revoke_owner, note);
                         },
+                    }
+                }
+            } else if let Some(pending_event_id) = pending_delete() {
+                main { class: "duet theme-duet", "data-theme": "{current.appearance.as_str()}",
+                    div { class: "duet-page",
+                        PageTitle { text: "Finish deleting account".to_owned(), eyebrow: Some("Account removal".to_owned()) }
+                        Notice {
+                            tone: Tone::Warning,
+                            title: "Account deletion was interrupted".to_owned(),
+                            detail: Some(if message().is_empty() {
+                                "Tap Finish deleting account to retry the exact deletion request.".to_owned()
+                            } else {
+                                message()
+                            }),
+                        }
+                        ActionRow {
+                            Button {
+                                variant: ButtonVariant::Primary,
+                                danger: true,
+                                onclick: {
+                                    let base = base_url.clone();
+                                    let bearer = current.bearer.clone();
+                                    let owner = retention.clone();
+                                    move |_| {
+                                        let base = base.clone();
+                                        let bearer = bearer.clone();
+                                        let owner = owner.clone();
+                                        spawn(async move {
+                                            match execute_account_delete(
+                                                &base,
+                                                &bearer,
+                                                pending_event_id,
+                                            )
+                                            .await
+                                            {
+                                                AccountDeleteOutcome::Deleted => {
+                                                    finish_signed_out_cleanup(
+                                                        account_ui,
+                                                        &owner,
+                                                        Some("Account deleted.".into()),
+                                                    );
+                                                }
+                                                AccountDeleteOutcome::SessionEndedBeforeDeletion(msg) => {
+                                                    finish_signed_out_cleanup(
+                                                        account_ui,
+                                                        &owner,
+                                                        Some(msg),
+                                                    );
+                                                }
+                                                AccountDeleteOutcome::RetryLater(msg) => {
+                                                    message.set(msg);
+                                                }
+                                            }
+                                        });
+                                    }
+                                },
+                                "Finish deleting account"
+                            }
+                            Button {
+                                variant: ButtonVariant::Quiet,
+                                onclick: {
+                                    let owner = retention.clone();
+                                    let fence = current.fence.clone();
+                                    move |_| {
+                                        let _ = owner.clear_pending_delete(&fence);
+                                        pending_delete.set(None);
+                                        message.set(String::new());
+                                    }
+                                },
+                                "Keep account"
+                            }
+                        }
                     }
                 }
             } else if let Some(upgrade_msg) = upgrade_required() {
@@ -810,7 +967,8 @@ pub fn DuetRoot(
                         ActionRow {
                             Button { onclick: move |_| settings_open.set(true), "Settings" }
                             Button { variant: ButtonVariant::Quiet, onclick: move |_| {
-                                start_device_sign_out(
+                                start_sign_out(
+                                    SignOutScope::ThisDevice,
                                     &upgrade_sign_out_base,
                                     &upgrade_sign_out_owner,
                                     active,
@@ -847,7 +1005,8 @@ pub fn DuetRoot(
                             }
                             Button { onclick: move |_| settings_open.set(true), "Settings" }
                             Button { variant: ButtonVariant::Quiet, onclick: move |_| {
-                                start_device_sign_out(
+                                start_sign_out(
+                                    SignOutScope::ThisDevice,
                                     &terms_sign_out_base,
                                     &terms_sign_out_owner,
                                     active,
@@ -1248,7 +1407,9 @@ struct AccountUi {
     cleanup_pending: Signal<bool>,
     message: Signal<String>,
     confirm: Signal<bool>,
+    confirm_scope: Signal<SignOutScope>,
     settings_open: Signal<bool>,
+    pending_delete: Signal<Option<uuid::Uuid>>,
     upgrade_required: Signal<Option<String>>,
     agreed_terms: Signal<bool>,
     terms_error: Signal<Option<String>>,
@@ -1270,10 +1431,9 @@ impl AccountUi {
                 self.message.set(String::new());
             }
             Ok(None) => self.message.set(String::new()),
-            Err(
-                SignInError::Account(IdentityError::Ended)
-                | SignInError::Context(IdentityError::Ended),
-            ) => self.ended(owner),
+            Err(SignInError::Account(err) | SignInError::Context(err)) if err.is_ended() => {
+                self.ended(owner)
+            }
             Err(error) => self.message.set(error.to_string()),
         }
         self.busy.set(false);
@@ -1281,7 +1441,9 @@ impl AccountUi {
 
     fn reset_session_ui(mut self) {
         self.confirm.set(false);
+        self.confirm_scope.set(SignOutScope::ThisDevice);
         self.settings_open.set(false);
+        self.pending_delete.set(None);
         self.upgrade_required.set(None);
         self.agreed_terms.set(false);
         self.terms_error.set(None);
@@ -1318,32 +1480,107 @@ impl AccountUi {
     }
 }
 
-fn start_device_sign_out(
+fn current_epoch_ms() -> u64 {
+    #[cfg(target_arch = "wasm32")]
+    {
+        js_sys::Date::now() as u64
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|d| d.as_millis() as u64)
+            .unwrap_or(0)
+    }
+}
+
+fn start_sign_out(
+    scope: SignOutScope,
     base: &str,
     owner: &RetentionOwner,
     active: Signal<Option<ActiveSession>>,
     mut ui: AccountUi,
     warn: bool,
 ) {
-    if warn
-        && !(ui.confirm)()
-        && let Ok(leaving) = owner.account_leaving()
-        && !leaving.is_empty()
-    {
-        ui.confirm.set(true);
-        ui.message.set(leaving.warning());
-        return;
-    }
     let owner = owner.clone();
     let base = base.to_owned();
-    let bearer = active.peek().as_ref().map(|cur| cur.bearer.clone());
+    let current = active.peek().clone();
     spawn(async move {
-        if let Some(bearer) = bearer
-            && let Ok(api) = DuetClient::new(&base, &bearer, "0", "0.1.0")
+        let api = current
+            .as_ref()
+            .and_then(|cur| DuetClient::new(&base, &cur.bearer, "0", "0.1.0").ok());
+        if warn
+            && !(ui.confirm)()
+            && let Ok(leaving) = owner.account_leaving()
+            && !leaving.is_empty()
         {
-            let _ = api.sign_out_device().await;
+            if let (Some(api), Some(cur)) = (&api, &current) {
+                if let Ok(outcome) = duet_client::doctor::sync_pending_before_sign_out(
+                    api,
+                    &owner,
+                    &cur.fence,
+                    current_epoch_ms(),
+                )
+                .await
+                {
+                    if let duet_client::doctor::SignOutSyncOutcome::Unconfirmed(remaining) = outcome
+                    {
+                        ui.confirm_scope.set(scope);
+                        ui.confirm.set(true);
+                        ui.message.set(remaining.warning());
+                        return;
+                    }
+                } else if let Ok(remaining) = owner.account_leaving()
+                    && !remaining.is_empty()
+                {
+                    ui.confirm_scope.set(scope);
+                    ui.confirm.set(true);
+                    ui.message.set(remaining.warning());
+                    return;
+                }
+            } else {
+                ui.confirm_scope.set(scope);
+                ui.confirm.set(true);
+                ui.message.set(leaving.warning());
+                return;
+            }
         }
-        apply_sign_out(&owner, ui, false);
+
+        match scope {
+            SignOutScope::ThisDevice => {
+                if let Some(api) = api {
+                    let _ = api.sign_out_device().await;
+                }
+                apply_sign_out(&owner, ui, false);
+            }
+            SignOutScope::Everywhere => {
+                let Some(api) = api else {
+                    ui.confirm.set(false);
+                    ui.message.set(IdentityError::Unavailable.to_string());
+                    return;
+                };
+                match api
+                    .commit_privacy_restriction(
+                        uuid::Uuid::new_v4(),
+                        duet_client::identity::PrivacyRestrictionKind::SessionsRevoke,
+                        None,
+                        0,
+                    )
+                    .await
+                {
+                    Ok(_) => {
+                        finish_signed_out_cleanup(ui, &owner, Some("Signed out everywhere.".into()))
+                    }
+                    Err(error) if error.is_ended() => {
+                        finish_signed_out_cleanup(ui, &owner, Some(error.to_string()))
+                    }
+                    Err(error) => {
+                        ui.confirm.set(false);
+                        ui.message.set(error.to_string());
+                    }
+                }
+            }
+        }
     });
 }
 
@@ -1382,7 +1619,9 @@ mod tests {
             cleanup_pending: Signal::new(false),
             message: Signal::new(String::new()),
             confirm: Signal::new(false),
+            confirm_scope: Signal::new(SignOutScope::ThisDevice),
             settings_open: Signal::new(false),
+            pending_delete: Signal::new(None),
             upgrade_required: Signal::new(None),
             agreed_terms: Signal::new(false),
             terms_error: Signal::new(None),
@@ -1579,6 +1818,8 @@ mod tests {
         dom.in_scope(ScopeId::ROOT, || {
             let mut ui = startup_ui();
             ui.settings_open.set(true);
+            ui.pending_delete.set(Some(uuid::Uuid::new_v4()));
+            ui.confirm_scope.set(SignOutScope::Everywhere);
             ui.agreed_terms.set(true);
             ui.terms_error.set(Some("old error".into()));
             ui.upgrade_required.set(Some("old upgrade".into()));
@@ -1595,11 +1836,130 @@ mod tests {
             ui.close();
 
             assert!(!(ui.settings_open)());
+            assert!((ui.pending_delete)().is_none());
+            assert_eq!((ui.confirm_scope)(), SignOutScope::ThisDevice);
             assert!(!(ui.agreed_terms)());
             assert!((ui.terms_error)().is_none());
             assert!((ui.upgrade_required)().is_none());
             assert!((ui.pending_invite)().is_none());
             assert_eq!((ui.sign_in_step)(), EmailSignInStep::fresh());
         });
+    }
+
+    #[test]
+    fn settings_screen_renders_export_action_and_interrupted_delete_recovery() {
+        let store = Arc::new(VolatileSessionStore::default());
+        let owner = RetentionOwner::new(store);
+        let fence = owner
+            .activate(RetainedIdentity {
+                owner: "ada:inc-1".into(),
+                subject: "email:ada".into(),
+                session_token: "ds1.tok".into(),
+                email: Some("ada@example.test".into()),
+            })
+            .unwrap();
+        let active = ActiveSession {
+            bearer: "ds1.tok".into(),
+            fence: fence.clone(),
+            email: Some("ada@example.test".into()),
+            appearance: Appearance::System,
+            account_state: None,
+        };
+
+        #[derive(Props, Clone, PartialEq)]
+        struct Props {
+            active: ActiveSession,
+            retention: RetentionOwner,
+            external_message: Option<String>,
+        }
+        #[component]
+        fn View(props: Props) -> Element {
+            rsx! {
+                SettingsScreen {
+                    base_url: "http://127.0.0.1:9".to_owned(),
+                    active: props.active,
+                    retention: props.retention,
+                    external_message: props.external_message,
+                    on_clear_external_message: move |_| {},
+                    on_close: move |_| {},
+                    on_profile_updated: move |_| {},
+                    on_request_sign_out: move |_| {},
+                    on_complete_revocation: move |_| {},
+                }
+            }
+        }
+
+        let mut dom = VirtualDom::new_with_props(
+            View,
+            Props {
+                active: active.clone(),
+                retention: owner.clone(),
+                external_message: Some("Sign-out everywhere failed offline.".to_owned()),
+            },
+        );
+        dom.rebuild_in_place();
+        let html = dioxus_ssr::render(&dom);
+        assert!(
+            html.contains("Sign-out everywhere failed offline."),
+            "{html}"
+        );
+        assert!(
+            html.contains("Your data &#38; export") || html.contains("Your data &amp; export"),
+            "{html}"
+        );
+        assert!(html.contains("Export my data"), "{html}");
+        assert!(html.contains("Sign out everywhere"), "{html}");
+        assert!(html.contains("Delete account"), "{html}");
+        assert!(!html.contains("Finish deleting account"), "{html}");
+
+        // Interrupted deletion persists `pending-account-delete` -> reopening Settings offers recovery.
+        owner
+            .save_pending_delete(&fence, uuid::Uuid::new_v4())
+            .unwrap();
+        let mut resume_dom = VirtualDom::new_with_props(
+            View,
+            Props {
+                active,
+                retention: owner,
+                external_message: None,
+            },
+        );
+        resume_dom.rebuild_in_place();
+        let resume_html = dioxus_ssr::render(&resume_dom);
+        assert!(
+            resume_html.contains("Account deletion not finished"),
+            "{resume_html}"
+        );
+        assert!(
+            resume_html.contains("Finish deleting account"),
+            "{resume_html}"
+        );
+        assert!(resume_html.contains("Keep account"), "{resume_html}");
+    }
+
+    #[test]
+    fn account_delete_outcome_never_claims_deleted_on_session_revoked() {
+        assert_eq!(
+            classify_account_delete_result::<()>(Ok(())),
+            AccountDeleteOutcome::Deleted
+        );
+        assert_eq!(
+            classify_account_delete_result::<()>(Err(IdentityError::AccountAbsent)),
+            AccountDeleteOutcome::Deleted
+        );
+        match classify_account_delete_result::<()>(Err(IdentityError::Ended)) {
+            AccountDeleteOutcome::SessionEndedBeforeDeletion(msg) => {
+                assert!(
+                    msg.contains("session ended before your account was deleted"),
+                    "{msg}"
+                );
+                assert!(!msg.contains("Account deleted."), "{msg}");
+            }
+            other => panic!("expected SessionEndedBeforeDeletion, got {other:?}"),
+        }
+        assert!(matches!(
+            classify_account_delete_result::<()>(Err(IdentityError::Unavailable)),
+            AccountDeleteOutcome::RetryLater(_)
+        ));
     }
 }

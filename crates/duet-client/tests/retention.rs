@@ -456,3 +456,41 @@ fn tab_appearance_and_offline_caches_restore_and_wipe_cleanly_on_sign_out() {
     restarted.sign_out().unwrap();
     assert!(store.values.lock().unwrap().is_empty());
 }
+
+#[test]
+fn pending_account_delete_marker_is_registered_and_wiped_on_erase() {
+    let store = Arc::new(Store::default());
+    let owner = RetentionOwner::new(store.clone());
+    let fence = owner.activate(identity("acct-del:inc-1")).unwrap();
+    let event_id = uuid::Uuid::new_v4();
+    owner.save_pending_delete(&fence, event_id).unwrap();
+    assert_eq!(owner.load_pending_delete(&fence).unwrap(), Some(event_id));
+    for key in store.values.lock().unwrap().keys() {
+        assert!(registered_storage_key(key), "unregistered key {key}");
+    }
+    owner.clear_pending_delete(&fence).unwrap();
+    assert_eq!(owner.load_pending_delete(&fence).unwrap(), None);
+
+    owner.save_pending_delete(&fence, event_id).unwrap();
+    owner.sign_out().unwrap();
+    assert!(store.values.lock().unwrap().is_empty());
+}
+
+#[test]
+fn synced_anchor_only_health_outbox_reports_zero_unconfirmed_entries() {
+    let store = Arc::new(Store::default());
+    let owner = RetentionOwner::new(store.clone());
+    let fence = owner.activate(identity("acct-sync:inc-1")).unwrap();
+    let outbox = duet_client::health_upload::open_outbox(
+        &owner,
+        &fence,
+        "install-sync",
+        duet_health::acquisition::PhoneSource::AppleHealth,
+        duet_health::outbox::OutboxLimits::default(),
+    );
+    outbox.connect(1).unwrap();
+    let leaving = owner.account_leaving().unwrap();
+    assert_eq!(leaving.health_uploads, 0);
+    assert_eq!(leaving.unconfirmed_count(), 0);
+    assert!(leaving.is_empty());
+}
