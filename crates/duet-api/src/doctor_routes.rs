@@ -21,7 +21,6 @@ pub struct DoctorState {
 pub fn router(state: DoctorState) -> Router {
     Router::new()
         .route("/api/doctor-collection", get(read).delete(clear))
-        .route("/api/doctor-preparation", get(legacy_preparation))
         .route("/api/doctor-collection/record", put(select_record))
         .route("/api/doctor-collection/facts/{id}", put(select_fact))
         .route("/api/doctor-collection/page", put(save))
@@ -51,14 +50,6 @@ async fn save_receipt(
 async fn read(State(s): State<DoctorState>, h: HeaderMap) -> Result<Json<Value>, ApiError> {
     let c = s.durable.authenticate(&h).await?;
     Ok(Json(s.workspace.read(&c).await?))
-}
-async fn legacy_preparation(
-    State(s): State<DoctorState>,
-    h: HeaderMap,
-) -> Result<Json<Value>, ApiError> {
-    let c = s.durable.authenticate(&h).await?;
-    let collection = s.workspace.read(&c).await?;
-    Ok(Json(crate::workspace::legacy_preparation(&collection)))
 }
 async fn select_record(
     State(s): State<DoctorState>,

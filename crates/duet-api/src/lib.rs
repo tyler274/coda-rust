@@ -22,6 +22,8 @@ pub mod doctor_routes;
     reason = "converting raw SQL to the typed database API"
 )]
 pub mod durable;
+pub mod email_auth;
+mod email_auth_entity;
 pub mod evidence;
 mod evidence_entity;
 pub mod evidence_paging;
@@ -58,7 +60,6 @@ pub mod producer_routes;
 pub mod push;
 mod push_entity;
 pub mod session;
-pub mod site;
 #[expect(
     clippy::disallowed_methods,
     reason = "converting raw SQL to the typed database API"
@@ -105,6 +106,8 @@ pub enum ApiError {
     Storage(String),
     /// The presented terms version is not the current one.
     AgreementChanged,
+    /// A sign-in or email-change verification link or short code is invalid, reused, or expired.
+    InvalidChallenge(&'static str),
     /// The request body failed the route's validation.
     Unprocessable(&'static str),
 }
@@ -156,6 +159,13 @@ impl IntoResponse for ApiError {
                 serde_json::json!({
                     "code": "agreement_version_changed",
                     "message": "Update Duet to review the current terms.",
+                }),
+            ),
+            Self::InvalidChallenge(detail) => (
+                StatusCode::UNAUTHORIZED,
+                serde_json::json!({
+                    "code": "challenge_invalid",
+                    "message": detail,
                 }),
             ),
             Self::Unprocessable(detail) => {

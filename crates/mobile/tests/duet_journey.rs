@@ -183,35 +183,17 @@ async fn the_mode_switch_walks_the_tabs_in_the_browser() {
 
     let mut browser = Browser::launch();
 
-    // The chooser offers both modes.
-    let text = browser.text_until(&base, "Coda");
+    // Duet launches straight into the Duet shell with no mode chooser or physician shell.
+    let text = browser.text_until(&base, "Shared");
     assert!(
-        text.contains("Physician") && text.contains("Client"),
-        "the chooser did not offer both modes:\n{text}"
+        text.contains("You") && text.contains("Shared"),
+        "Duet did not open the patient tabs:\n{text}"
     );
-
-    // The physician mode opens the physician shell.
-    browser.click("main.mode-chooser button:first-of-type");
-    let text = browser.wait_for("Today");
     assert!(
-        text.contains("Find patient"),
-        "the physician mode did not open the physician shell:\n{text}"
-    );
-
-    // Switching back clears the mode; the chooser returns.
-    browser.click(".mode-switch");
-    let text = browser.wait_for("Coda");
-    assert!(
-        text.contains("Client"),
-        "switching back did not restore the chooser:\n{text}"
-    );
-
-    // The client mode opens the Duet tabs on the live backend.
-    browser.click("main.mode-chooser button:nth-of-type(2)");
-    let text = browser.wait_for("Shared");
-    assert!(
-        text.contains("You") && !text.contains("Find patient"),
-        "the client mode did not open the Duet shell:\n{text}"
+        !text.contains("Choose a mode")
+            && !text.contains("Switch mode")
+            && !text.contains("Find patient"),
+        "Duet leaked retired mode chooser or physician chrome:\n{text}"
     );
 }
 
@@ -234,7 +216,15 @@ async fn shared_tries_a_failed_workspace_read_again() {
     let api = axum::Router::new()
         .route(
             "/api/auth/account",
-            axum::routing::put(|| async { axum::Json(serde_json::json!({})) }),
+            axum::routing::put(|| async {
+                axum::Json(serde_json::json!({"terms_accepted": true, "terms_version": "2026-09-23"}))
+            }),
+        )
+        .route(
+            "/api/auth/account/profile",
+            axum::routing::get(|| async {
+                axum::Json(serde_json::json!({"appearance": "system", "terms_accepted": true, "terms_version": "2026-09-23"}))
+            }),
         )
         .route(
             "/api/auth/account/context",
@@ -462,8 +452,14 @@ async fn spawn_site_with_patient(linked: bool) -> (std::net::SocketAddr, String)
                     {
                         return Err(axum::http::StatusCode::UNAUTHORIZED);
                     }
-                    Ok(axum::Json(serde_json::json!({})))
+                    Ok(axum::Json(serde_json::json!({"terms_accepted": true, "terms_version": "2026-09-23"})))
                 }
+            }),
+        )
+        .route(
+            "/api/auth/account/profile",
+            axum::routing::get(|| async {
+                axum::Json(serde_json::json!({"appearance": "system", "terms_accepted": true, "terms_version": "2026-09-23"}))
             }),
         )
         .route(

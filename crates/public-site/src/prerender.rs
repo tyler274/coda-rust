@@ -20,6 +20,7 @@ pub struct Page {
 #[derive(Clone, Debug)]
 pub struct PageTable {
     pub pages: HashMap<String, Page>,
+    pub invite: Page,
     pub not_found: Page,
 }
 
@@ -49,6 +50,7 @@ pub fn prerender_with_target(
             )
         })
         .collect();
+    let invite = render_page_with_target(&Route::Invite {}, config, &legal, origin, base_path);
     let not_found = render_page_with_target(
         &Route::NotFound {
             segments: vec!["404".into()],
@@ -58,7 +60,11 @@ pub fn prerender_with_target(
         origin,
         base_path,
     );
-    Ok(PageTable { pages, not_found })
+    Ok(PageTable {
+        pages,
+        invite,
+        not_found,
+    })
 }
 
 /// Render with an explicit per-document memory history, so Router/Outlet select

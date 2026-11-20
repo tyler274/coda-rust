@@ -264,8 +264,6 @@ in
     role = "runtime";
     binary = duet;
     executable = "duet-api";
-    assets = duetWeb;
-    environment = [ "DUET_SITE_DIR=${duetWeb}" ];
   };
   physician-migration-image = image {
     name = "coda-physician-migrate";

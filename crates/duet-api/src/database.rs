@@ -97,6 +97,10 @@ const MIGRATIONS: &[(&str, &str)] = &[
         "0020_push_and_memory_retention",
         include_str!("../migrations/0020_push_and_memory_retention.sql"),
     ),
+    (
+        "0021_email_auth_sessions_preferences",
+        include_str!("../migrations/0021_email_auth_sessions_preferences.sql"),
+    ),
 ];
 
 fn refused(message: &str) -> sqlx::Error {
@@ -181,6 +185,8 @@ pub async fn migrate(migration_url: &str, runtime_role: &str) -> Result<(), sqlx
          grant select,insert on public.duet_legacy_privacy_replays to {role}; \
          grant select,insert,update,delete on public.duet_portal_connections, public.duet_portal_oauth_states to {role}; \
          grant select on public.duet_portal_refresh_queue to {role}; \
+         grant select on public.duet_email_directory to {role}; \
+         grant select,insert,update,delete on public.duet_email_challenges, public.duet_sessions to {role}; \
          grant execute on function public.duet_admit_public_retrieval() to {role}; \
          grant execute on function public.duet_admit_public_retrieval_miss() to {role}; \
          grant execute on function public.acting_account() to {role}; \
@@ -354,6 +360,15 @@ impl AccountDatabase {
             .bind(subject)
             .fetch_optional(&self.pool)
             .await
+    }
+
+    /// Begin an unauthenticated transaction after validating the runtime role cannot bypass RLS.
+    pub(crate) async fn unauthenticated_tx(
+        &self,
+    ) -> Result<Transaction<'_, Postgres>, sqlx::Error> {
+        let mut tx = self.pool.begin().await?;
+        validate_runtime(&mut tx).await?;
+        Ok(tx)
     }
 
     /// Begin a transaction scoped to the verified internal `users.id` (not an

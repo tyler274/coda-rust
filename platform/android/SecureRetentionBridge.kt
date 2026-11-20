@@ -1,10 +1,21 @@
 package coda.duet
 
+import android.app.Activity
+import android.app.Application
 import android.content.Context
+import android.graphics.Color
 import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.AtomicFile
+import android.view.Gravity
+import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.FrameLayout
+import android.widget.TextView
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -41,10 +52,92 @@ object SecureRetentionBridge {
         }
     }
 
+    private const val COVER_TAG = "duet-privacy-cover"
+    @Volatile
+    private var privacyCoverInstalled = false
+
+    private fun installPrivacyCover(context: Context) {
+        val run = {
+            if (context is Activity) {
+                protectActivityWindow(context)
+            }
+            val app = context.applicationContext as? Application
+            if (app != null && !privacyCoverInstalled) {
+                privacyCoverInstalled = true
+                app.registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
+                    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+                        protectActivityWindow(activity)
+                    }
+                    override fun onActivityStarted(activity: Activity) {
+                        protectActivityWindow(activity)
+                    }
+                    override fun onActivityResumed(activity: Activity) {
+                        protectActivityWindow(activity)
+                        hideOverlay(activity)
+                    }
+                    override fun onActivityPaused(activity: Activity) {
+                        protectActivityWindow(activity)
+                        showOverlay(activity)
+                    }
+                    override fun onActivityStopped(activity: Activity) {}
+                    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
+                    override fun onActivityDestroyed(activity: Activity) {}
+                })
+            }
+        }
+        if (Looper.myLooper() == Looper.getMainLooper()) run() else Handler(Looper.getMainLooper()).post(run)
+    }
+
+    private fun protectActivityWindow(activity: Activity) {
+        activity.window?.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE,
+        )
+    }
+
+    private fun showOverlay(activity: Activity) {
+        val decor = activity.window?.decorView as? ViewGroup ?: return
+        if (decor.findViewWithTag<FrameLayout>(COVER_TAG) != null) return
+        val overlay = FrameLayout(activity).apply {
+            tag = COVER_TAG
+            setBackgroundColor(Color.WHITE)
+            contentDescription = "Duet protected screen"
+            addView(
+                TextView(activity).apply {
+                    text = "Duet"
+                    textSize = 22f
+                    setTextColor(Color.DKGRAY)
+                    gravity = Gravity.CENTER
+                },
+                FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                ),
+            )
+        }
+        decor.addView(
+            overlay,
+            ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+            ),
+        )
+    }
+
+    private fun hideOverlay(activity: Activity) {
+        val decor = activity.window?.decorView as? ViewGroup ?: return
+        val overlay = decor.findViewWithTag<FrameLayout>(COVER_TAG) ?: return
+        decor.removeView(overlay)
+    }
+
     @JvmStatic @Synchronized
     fun call(context: Context, input: String): String {
       return try {
         val request = JSONObject(input)
+        if (request.getString("op") == "install_privacy_cover") {
+            installPrivacyCover(context)
+            return JSONObject().put("ok", true).put("value", JSONObject.NULL).toString()
+        }
         if (request.getString("op") == "copy_link") {
             val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
             val value = request.getString("value")

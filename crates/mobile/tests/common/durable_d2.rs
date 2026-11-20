@@ -99,6 +99,11 @@ async fn run(owner_url: &str, runtime_url: &str, journal: &std::path::Path) {
         .execute(&mut owner)
         .await
         .unwrap();
+    sqlx::query("update users set terms_version='2026-09-23' where id=$1")
+        .bind(foreign.account_id)
+        .execute(&mut owner)
+        .await
+        .unwrap();
     let privacy = PrivacyStore::new(
         database.clone(),
         Arc::new(FileJournal::open(journal.to_path_buf()).await.unwrap()),

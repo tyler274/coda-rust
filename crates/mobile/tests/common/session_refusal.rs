@@ -19,7 +19,15 @@ async fn definitive_refusal_unmounts_private_content() {
     let api = axum::Router::new()
         .route(
             "/api/auth/account",
-            axum::routing::put(|| async { axum::Json(serde_json::json!({})) }),
+            axum::routing::put(|| async {
+                axum::Json(serde_json::json!({"terms_accepted": true, "terms_version": "2026-09-23"}))
+            }),
+        )
+        .route(
+            "/api/auth/account/profile",
+            axum::routing::get(|| async {
+                axum::Json(serde_json::json!({"appearance": "system", "terms_accepted": true, "terms_version": "2026-09-23"}))
+            }),
         )
         .route(
             "/api/auth/account/context",
@@ -145,7 +153,8 @@ async fn late_a_refusal_cannot_end_mounted_b_session() {
         })
         .collect();
     let api = axum::Router::new()
-        .route("/api/auth/account", axum::routing::put(|| async { axum::Json(serde_json::json!({})) }))
+        .route("/api/auth/account", axum::routing::put(|| async { axum::Json(serde_json::json!({"terms_accepted": true, "terms_version": "2026-09-23"})) }))
+        .route("/api/auth/account/profile", axum::routing::get(|| async { axum::Json(serde_json::json!({"appearance": "system", "terms_accepted": true, "terms_version": "2026-09-23"})) }))
         .route("/api/auth/account/context", axum::routing::get(move || {
             let id = contexts[usize::from(identity_second.load(Ordering::SeqCst))];
             async move { axum::Json(serde_json::json!({"account_id":id,"incarnation":id,"permission_revision":0,"authenticated_at":"2026-10-20T00:00:00Z"})) }
@@ -186,6 +195,13 @@ async fn late_a_refusal_cannot_end_mounted_b_session() {
     tokio::time::timeout(Duration::from_secs(10), entered.notified())
         .await
         .unwrap();
+    assert_eq!(
+        browser
+            .page()
+            .run("clickButton", serde_json::json!(["Settings"])),
+        true
+    );
+    browser.wait_for("Sessions & account");
     assert_eq!(
         browser
             .page()

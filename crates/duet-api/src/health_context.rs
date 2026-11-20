@@ -13,7 +13,7 @@ use crate::{
     database::{AccountDatabase, orm},
     evidence::{AddressedRecordRevision, EvidenceSnapshot, EvidenceStore},
     health_context_entity as context_row,
-    identity::{AccountContext, check_current},
+    identity::{AccessLevel, AccountContext, check_current},
 };
 use chrono::{DateTime, Datelike, Duration, NaiveDate, Utc};
 use duet_wire::models::{HealthFactInput, HealthFactKind, HealthWindow, InsightCycleKind};
@@ -186,7 +186,7 @@ impl HealthContextProducer {
         upload: &Upload,
     ) -> Result<StoredContext, ApiError> {
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         if let Some(row) = sqlx::query("select request_sha256,snapshot_id,revision from duet_health_context_operations where user_id=$1 and operation_id=$2")
             .bind(context.account_id).bind(upload.snapshot.id).fetch_optional(&mut *tx).await? {
             if row.get::<String,_>("request_sha256") != digest(upload) { return Err(ApiError::Conflict("health context identity reused")); }
@@ -207,7 +207,7 @@ impl HealthContextProducer {
         context: &AccountContext,
     ) -> Result<Option<StoredContext>, ApiError> {
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let row =
             sqlx::query("select revision,producer_input from health_contexts where user_id=$1")
                 .bind(context.account_id)
@@ -236,7 +236,7 @@ impl HealthContextProducer {
     /// Typed field of the canonical health-context contract.
     pub async fn read(&self, context: &AccountContext) -> Result<Option<StoredContext>, ApiError> {
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let stored = load(&mut tx, context.account_id).await?;
         if let Some(ref stored) = stored {
             current(&mut tx, context.account_id, stored).await?;
@@ -258,7 +258,7 @@ impl HealthContextProducer {
             .snapshot(context, 0)
             .await?;
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let (cursor, apple, records): (i64,i32,i32) = sqlx::query_as("select evidence_revision,apple_health_generation,health_records_generation from users where id=$1")
             .bind(context.account_id).fetch_one(&mut *tx).await?;
         if cursor != evidence.cursor || records != evidence.health_records_generation {
@@ -429,7 +429,7 @@ impl HealthContextProducer {
             return Err(ApiError::Unauthorized);
         }
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let (cursor, apple, records): (i64,i32,i32) = sqlx::query_as("select evidence_revision,apple_health_generation,health_records_generation from users where id=$1")
             .bind(context.account_id).fetch_one(&mut *tx).await?;
         if (cursor, apple, records)

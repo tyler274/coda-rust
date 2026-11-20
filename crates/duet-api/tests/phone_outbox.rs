@@ -193,6 +193,11 @@ async fn phone_outbox_drains_into_canonical_evidence_on_postgres() {
     let db = AccountDatabase::connect(&runtime_url).await.unwrap();
     let identities = IdentityStore::new(db.clone(), Arc::new(Verifier));
     let a = identities.authenticate("a", true).await.unwrap();
+    sqlx::query("update public.users set terms_version='2026-09-23' where id=$1")
+        .bind(a.account_id)
+        .execute(&mut owner)
+        .await
+        .unwrap();
     let store = EvidenceStore::new(db.clone());
     let transport = Direct {
         store: store.clone(),

@@ -18,14 +18,11 @@ import org.junit.runner.Description
 import org.junit.runner.RunWith
 
 /**
- * Proves the installed mode shell through UI Automator.
+ * Proves the installed Duet mobile shell through UI Automator.
  *
- * Client mode must show the Duet account sign-in gate, not the physician
- * shell: without an account the Duet tabs stay gated, as in the browser mode
- * test. Physician mode must show Today and, in its navigation drawer, Find
- * patient, and must not keep
- * the client screen. A missing control fails. A loading or error body on a
- * tab does not.
+ * Duet opens directly to its account sign-in gate with no Physician/Duet
+ * mode chooser, keeping the Duet tabs gated and never mounting the physician
+ * shell.
  */
 @RunWith(AndroidJUnit4::class)
 class ModeShellTest {
@@ -60,44 +57,28 @@ class ModeShellTest {
     @Test
     fun clientThenPhysician() {
         assertTrue(
-            "the chooser did not show Coda:\n${hierarchy()}",
-            device.wait(Until.hasObject(By.text("Coda")), WAIT) == true,
-        )
-        click("Client")
-
-        assertTrue(
-            "client mode did not show the Duet sign-in gate:\n${hierarchy()}",
+            "Duet shell did not open directly to its sign-in gate:\n${hierarchy()}",
             device.wait(
                 Until.hasObject(By.textStartsWith("Sign in to your Duet account")),
                 WAIT,
             ) == true,
         )
-        control("Sign in with Apple")
+        control("Continue")
         assertNull(
-            "client mode showed the Duet tabs without an account:\n${hierarchy()}",
+            "Duet shell exposed a mode chooser:\n${hierarchy()}",
+            device.findObject(By.text("Choose a mode")),
+        )
+        assertNull(
+            "Duet shell showed the Duet tabs without an account:\n${hierarchy()}",
             device.findObject(By.text("Sections")),
         )
         assertNull(
-            "client mode showed the physician shell:\n${hierarchy()}",
+            "Duet shell showed the physician shell:\n${hierarchy()}",
             device.findObject(By.text("Find patient")),
         )
-
-        click("Switch mode")
-        click("Physician")
-        assertTrue(
-            "physician mode did not show Today:\n${hierarchy()}",
-            device.wait(Until.hasObject(By.text("Today")), WAIT) == true,
-        )
-        // On a phone the sidebar is a drawer; Find patient is inside it.
-        click("Open navigation")
-        control("Find patient")
         assertNull(
-            "physician mode kept the client screen:\n${hierarchy()}",
-            device.findObject(By.text("Sign in with Apple")),
-        )
-        assertNull(
-            "physician mode kept the client tabs:\n${hierarchy()}",
-            device.findObject(By.text("Sections")),
+            "Duet shell exposed a Switch mode button:\n${hierarchy()}",
+            device.findObject(By.text("Switch mode")),
         )
     }
 

@@ -30,6 +30,8 @@ pub enum Route {
     Terms {},
     #[route("/clinical-transparency")]
     ClinicalTransparency {},
+    #[route("/invite")]
+    Invite {},
     #[route("/:..segments")]
     NotFound { segments: Vec<String> },
 }
@@ -152,6 +154,7 @@ impl Route {
             Self::Privacy {} => ("Privacy Policy".into(), "How Coda Health handles information through its website and related services.".into()),
             Self::Terms {} => ("Terms of Service".into(), "Terms of Service for the Coda Health website and related services.".into()),
             Self::ClinicalTransparency {} => ("Clinical Transparency".into(), "How Chords supports physician-directed care, preserves reviewable evidence, and keeps clinical authority with the physician.".into()),
+            Self::Invite {} => ("Open Duet Invitation".into(), "Open your practice invitation in the Duet app for iPhone or Android.".into()),
             Self::NotFound { .. } => ("Page Not Found".into(), "The requested page could not be found.".into()),
         };
         PageMeta {
@@ -161,25 +164,25 @@ impl Route {
                 format!("{title} | {}", site::SITE_NAME)
             },
             description,
-            canonical_url: if matches!(self, Self::NotFound { .. }) {
+            canonical_url: if matches!(self, Self::NotFound { .. } | Self::Invite {}) {
                 String::new()
             } else {
                 origin.absolute_url(base_path, &self.to_string())
             },
             image_url: match self {
-                Self::Duet {} => {
+                Self::Duet {} | Self::Invite {} => {
                     origin.absolute_url(base_path, "/brand/duet/social-preview-v1.png")
                 }
                 Self::NotFound { .. } => String::new(),
                 _ => origin.absolute_url(base_path, "/brand/coda-health-social-preview-v4.png"),
             },
             image_alt: match self {
-                Self::Duet {} => "Duet by Coda Health. A clearer picture of you.",
+                Self::Duet {} | Self::Invite {} => "Duet by Coda Health. A clearer picture of you.",
                 Self::NotFound { .. } => "",
                 _ => "Coda Health: Coda handles what happens between visits.",
             }
             .into(),
-            noindex: matches!(self, Self::NotFound { .. }),
+            noindex: matches!(self, Self::NotFound { .. } | Self::Invite {}),
         }
     }
 }

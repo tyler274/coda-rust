@@ -1,11 +1,13 @@
 //! Minimal production routes on one durable account context.
 use crate::{
     ApiError,
+    email_auth::{AccountProfile, ChallengeCredential, ChallengeStarted, EmailSignInResult},
+    email_auth_entity::Appearance,
     evidence::{
         AddressedRecordRevision, EvidenceBatch, EvidenceBatchResult, EvidenceMutation,
         EvidenceSnapshot, EvidenceStore, ExactEvidence, MAX_EVIDENCE_BATCH_BYTES,
     },
-    identity::{AccountContext, IdentityStore, check_current},
+    identity::{AccessLevel, AccountContext, IdentityStore, check_current},
     privacy::{PrivacyStore, Receipt, Restriction},
 };
 use axum::{
@@ -47,8 +49,15 @@ impl DurableState {
 /// out of default production serving and live in [`parked_legacy_router`].
 pub fn router(state: DurableState) -> Router {
     Router::new()
+        .route("/api/auth/email/start", post(email_start))
+        .route("/api/auth/email/verify", post(email_verify))
+        .route("/api/auth/session/sign-out", post(sign_out_device))
         .route("/api/auth/account", get(account).put(ensure))
         .route("/api/auth/account/context", get(context))
+        .route("/api/auth/account/profile", get(profile))
+        .route("/api/auth/account/appearance", put(appearance))
+        .route("/api/auth/email-change/start", post(email_change_start))
+        .route("/api/auth/email-change/confirm", post(email_change_confirm))
         .route("/api/apple-health/generation", get(apple_health_generation))
         .route("/api/auth/account/terms", put(terms))
         .route("/api/auth/privacy-restrictions", post(restrict))
@@ -130,8 +139,110 @@ async fn account(
 ) -> Result<Json<AccountState>, ApiError> {
     let c = s.authenticate(&headers).await?;
     let mut tx = s.identity.database.begin(c.account_id).await?;
-    check_current(&mut tx, &c, false).await?;
+    check_current(&mut tx, &c, AccessLevel::RightsOnly).await?;
     Ok(Json(state_in(&mut tx, c.account_id).await?))
+}
+#[derive(Deserialize)]
+struct EmailStartRequest {
+    email: String,
+    #[serde(default)]
+    invite: Option<String>,
+}
+async fn email_start(
+    State(s): State<DurableState>,
+    Json(body): Json<EmailStartRequest>,
+) -> Result<(axum::http::StatusCode, Json<ChallengeStarted>), ApiError> {
+    let started = s
+        .identity
+        .email_auth()
+        .begin_sign_in(&body.email, body.invite.as_deref())
+        .await?;
+    Ok((axum::http::StatusCode::ACCEPTED, Json(started)))
+}
+#[derive(Deserialize)]
+struct EmailVerifyRequest {
+    #[serde(default)]
+    email: Option<String>,
+    credential: ChallengeCredential,
+}
+async fn email_verify(
+    State(s): State<DurableState>,
+    Json(body): Json<EmailVerifyRequest>,
+) -> Result<Json<EmailSignInResult>, ApiError> {
+    let result = s
+        .identity
+        .email_auth()
+        .complete_sign_in(body.email.as_deref(), &body.credential)
+        .await?;
+    Ok(Json(result))
+}
+async fn sign_out_device(
+    State(s): State<DurableState>,
+    headers: HeaderMap,
+) -> Result<Json<serde_json::Value>, ApiError> {
+    let bearer = crate::bearer(&headers).ok_or(ApiError::Unauthorized)?;
+    s.identity.email_auth().sign_out_device(&bearer).await?;
+    Ok(Json(serde_json::json!({ "signed_out": true })))
+}
+async fn profile(
+    State(s): State<DurableState>,
+    headers: HeaderMap,
+) -> Result<Json<AccountProfile>, ApiError> {
+    let c = s.authenticate(&headers).await?;
+    Ok(Json(s.identity.email_auth().read_profile(&c).await?))
+}
+#[derive(Deserialize)]
+struct AppearanceRequest {
+    appearance: Appearance,
+}
+async fn appearance(
+    State(s): State<DurableState>,
+    headers: HeaderMap,
+    Json(body): Json<AppearanceRequest>,
+) -> Result<Json<AccountProfile>, ApiError> {
+    let c = s.authenticate(&headers).await?;
+    Ok(Json(
+        s.identity
+            .email_auth()
+            .set_appearance(&c, body.appearance)
+            .await?,
+    ))
+}
+#[derive(Deserialize)]
+struct EmailChangeStartRequest {
+    new_email: String,
+}
+async fn email_change_start(
+    State(s): State<DurableState>,
+    headers: HeaderMap,
+    Json(body): Json<EmailChangeStartRequest>,
+) -> Result<(axum::http::StatusCode, Json<ChallengeStarted>), ApiError> {
+    let c = s.authenticate(&headers).await?;
+    let started = s
+        .identity
+        .email_auth()
+        .begin_email_change(&c, &body.new_email)
+        .await?;
+    Ok((axum::http::StatusCode::ACCEPTED, Json(started)))
+}
+#[derive(Deserialize)]
+struct EmailChangeConfirmRequest {
+    #[serde(default)]
+    new_email: Option<String>,
+    credential: ChallengeCredential,
+}
+async fn email_change_confirm(
+    State(s): State<DurableState>,
+    headers: HeaderMap,
+    Json(body): Json<EmailChangeConfirmRequest>,
+) -> Result<Json<AccountProfile>, ApiError> {
+    let c = s.authenticate(&headers).await?;
+    Ok(Json(
+        s.identity
+            .email_auth()
+            .confirm_email_change(&c, body.new_email.as_deref(), &body.credential)
+            .await?,
+    ))
 }
 async fn ensure(
     State(s): State<DurableState>,
@@ -147,8 +258,8 @@ async fn ensure(
         .await?;
     let name = crate::session::explicit_display_name(&body)?;
     let mut tx = s.identity.database.begin(c.account_id).await?;
-    check_current(&mut tx, &c, false).await?;
-    if let Some(name) = name {
+    check_current(&mut tx, &c, AccessLevel::RightsOnly).await?;
+    if body.display_name.is_some() {
         sqlx::query("update public.users set display_name=$2 where id=$1")
             .bind(c.account_id)
             .bind(name)
@@ -169,7 +280,7 @@ async fn terms(
     }
     let c = s.authenticate(&headers).await?;
     let mut tx = s.identity.database.begin(c.account_id).await?;
-    check_current(&mut tx, &c, false).await?;
+    check_current(&mut tx, &c, AccessLevel::RightsOnly).await?;
     sqlx::query("update public.users set terms_accepted_at=case when terms_version=$2 then terms_accepted_at else now() end,terms_version=$2 where id=$1").bind(c.account_id).bind(body.version).execute(&mut *tx).await?;
     let result = state_in(&mut tx, c.account_id).await?;
     tx.commit().await?;
@@ -183,7 +294,7 @@ async fn stats(
     let ids = crate::session::validate_stat_ids(&body.stat_ids)?;
     let c = s.authenticate(&headers).await?;
     let mut tx = s.identity.database.begin(c.account_id).await?;
-    check_current(&mut tx, &c, false).await?;
+    check_current(&mut tx, &c, AccessLevel::AcceptedTerms).await?;
     let updated =
         sqlx::query("update public.users set today_stat_ids=$2 where id=$1 and terms_version=$3")
             .bind(c.account_id)
@@ -213,7 +324,7 @@ async fn luna(
     }
     let c = s.authenticate(&headers).await?;
     let mut tx = s.identity.database.begin(c.account_id).await?;
-    check_current(&mut tx, &c, false).await?;
+    check_current(&mut tx, &c, AccessLevel::AcceptedTerms).await?;
     let updated=sqlx::query("update public.users set luna_consent_decision='accepted',luna_consent_version=$2,luna_consent_at=now(),intelligence_enabled=true,intelligence_control_revision=intelligence_control_revision+1 where id=$1 and intelligence_control_revision=$3 and terms_version=$4")
         .bind(c.account_id).bind(body.version).bind(body.expected_revision).bind(crate::session::CURRENT_TERMS_VERSION).execute(&mut *tx).await?;
     if updated.rows_affected() != 1 {

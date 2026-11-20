@@ -2,12 +2,14 @@
 mod brand;
 mod duet;
 mod home;
+mod invite;
 mod legal;
 mod not_found;
 mod phones;
 
 pub use duet::Duet;
 pub use home::Home;
+pub use invite::Invite;
 pub use legal::{
     ClinicalTransparency, ConsumerHealthData, DuetPrivacy, DuetPrivacyArchive, DuetTerms,
     DuetTermsArchive, Privacy, Terms,

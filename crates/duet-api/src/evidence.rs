@@ -22,7 +22,7 @@ use crate::{
     ApiError,
     database::{AccountDatabase, orm},
     evidence_entity::{account, clinical_note, health_evidence, ingestion, membership, revision},
-    identity::{AccountContext, check_current},
+    identity::{AccessLevel, AccountContext, check_current},
 };
 use chrono::{DateTime, Utc};
 use duet_wire::models::addressed_record_revision::Entity;
@@ -367,7 +367,7 @@ impl EvidenceStore {
     /// connection keeps its captured generation until the patient reconnects.
     pub async fn apple_health_generation(&self, context: &AccountContext) -> Result<i32, ApiError> {
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let account = account_fences(&mut tx, context.account_id).await?;
         tx.commit().await?;
         Ok(account.apple_health_generation)
@@ -410,7 +410,7 @@ impl EvidenceStore {
         mutation: &EvidenceMutation,
     ) -> Result<AddressedRecordRevision, ApiError> {
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let address = apply(&mut tx, context.account_id, authority, mutation).await?;
         tx.commit().await?;
         if is_phone_measurement_delete(mutation) {
@@ -442,7 +442,7 @@ impl EvidenceStore {
             ));
         }
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let mut results = Vec::with_capacity(batch.items.len());
         let mut phone_deletion_committed = false;
         for (index, item) in batch.items.iter().enumerate() {
@@ -483,7 +483,7 @@ impl EvidenceStore {
         require_current: bool,
     ) -> Result<ExactEvidence, ApiError> {
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         exact_in_transaction(&mut tx, context.account_id, address, require_current).await
     }
     /// Account-consistent library/snapshot/delta; no relevance filtering and no mutable hash shortcut.
@@ -511,7 +511,7 @@ impl EvidenceStore {
     ) -> Result<(EvidenceSnapshot, Vec<ExactEvidence>), ApiError> {
         let mut removed = Vec::new();
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let fences = account_fences(&mut tx, context.account_id).await?;
         if after < 0 || after > fences.evidence_revision {
             return Err(ApiError::Conflict("evidence cursor is not current"));
@@ -592,7 +592,7 @@ impl EvidenceStore {
         address: &AddressedRecordRevision,
     ) -> Result<Value, ApiError> {
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         revision_view_in_transaction(&mut tx, context.account_id, address).await
     }
 }

@@ -57,6 +57,9 @@ async fn switching_accounts_shows_only_the_current_patients_imported_measurement
         for (bearer, title, value) in [(TOKEN, "First patient steps", 7654), (OTHER, "Second patient steps", 2301)] {
             http.put(format!("{base}/api/auth/account")).bearer_auth(bearer)
                 .json(&serde_json::json!({})).send().await.unwrap().error_for_status().unwrap();
+            http.put(format!("{base}/api/auth/account/terms")).bearer_auth(bearer)
+                .json(&serde_json::json!({"accepted": true, "version": "2026-09-23"}))
+                .send().await.unwrap().error_for_status().unwrap();
             let id = Uuid::new_v4();
             http.post(format!("{base}/api/canonical-evidence")).bearer_auth(bearer)
                 .json(&serde_json::json!({"operation_id":Uuid::new_v4(), "canonical_record_id":id,
@@ -71,6 +74,8 @@ async fn switching_accounts_shows_only_the_current_patients_imported_measurement
         patient.text_until(&format!("{base}/?mode=client"), "Shared");
         patient.click("nav.tabs button:nth-of-type(1)");
         patient.wait_for("First patient steps");
+        click_text(&mut patient, "Settings");
+        patient.wait_for("Sessions & account");
         click_text(&mut patient, "Sign out");
         patient.wait_for("Sign in to your Duet account.");
         assert!(!patient.body_text().unwrap().contains("First patient steps"));
@@ -119,6 +124,18 @@ async fn with_durable_browser(
     let database = AccountDatabase::connect(&runtime_url).await.unwrap();
     let identity = IdentityStore::new(database.clone(), Arc::new(SyntheticIdentity));
     let account = identity.authenticate(TOKEN, true).await.unwrap();
+    #[expect(
+        clippy::disallowed_methods,
+        reason = "stages initial Terms acceptance as the database owner for the browser doctor harness"
+    )]
+    {
+        let mut init_owner = sqlx::PgConnection::connect(&owner_url).await.unwrap();
+        sqlx::query("update users set terms_version='2026-09-23' where id=$1")
+            .bind(account.account_id)
+            .execute(&mut init_owner)
+            .await
+            .unwrap();
+    }
     let journal_path = std::env::temp_dir().join(format!("duet-browser-journal-{suffix}"));
     let workspace = WorkspaceStore::new(database.clone());
     let listener = std::net::TcpListener::bind("127.0.0.1:0").unwrap();

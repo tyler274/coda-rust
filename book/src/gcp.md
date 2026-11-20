@@ -59,7 +59,7 @@ configuration, checks, and the
 | `physician-sample-image` | `coda-physician-sample` | runtime | `physician-sample` serving `PHYSICIAN_SITE_DIR` (Dioxus WASM bundle) |
 | `physician-worker-image` | `coda-physician-worker` | runtime | `physician-worker`, which claims chat turns and reply revisions from Postgres |
 | `observability-relay-image` | `coda-observability-relay` | runtime | `observability-relay`, which forwards public-site's `/grafana/` requests to Grafana's internal load balancer. It reads no secrets and starts without Doppler |
-| `duet-api-image` | `coda-duet-api` | runtime | `duet-api` serving `DUET_SITE_DIR` (Dioxus WASM bundle) |
+| `duet-api-image` | `coda-duet-api` | runtime | `duet-api`, the mobile Duet API and auth service |
 | `physician-migration-image` | `coda-physician-migrate` | migration | `physician-migrate`: physician-auth, front-door, then runtime chains; packaged synthetic charts for explicit `load-charts` |
 | `duet-migration-image` | `coda-duet-migrate` | migration | `duet-migrate`: Duet-owned chain and runtime grants, then optional front-door chain |
 | `duet-privacy-delivery-image` | `coda-duet-privacy-delivery` | job | `duet-privacy-delivery`, a bounded Luna receipt job |

@@ -5,12 +5,6 @@ fn main() {
     bridge::link(
         "duet_secure",
         "SecureRetentionBridge",
-        &[
-            "Foundation",
-            "Security",
-            "AuthenticationServices",
-            "CryptoKit",
-            "UIKit",
-        ],
+        &["Foundation", "Security", "UIKit"],
     );
 }

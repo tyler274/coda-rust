@@ -114,12 +114,10 @@ def check(path):
             )
         elif "PHYSICIAN_SYNTHETIC_CHARTS" in env:
             raise AssertionError("only the physician site and migration images carry the chart bank")
-        for key in ("PHYSICIAN_SITE_DIR", "DUET_SITE_DIR"):
-            if key in env:
-                directory = env[key].lstrip("/")
-                product = "physician-app" if key.startswith("PHYSICIAN") else "duet-app"
-                for asset in ("index.html", f"{product}.js", f"{product}_bg.wasm"):
-                    assert f"{directory}/{asset}" in paths, asset
+        if "PHYSICIAN_SITE_DIR" in env:
+            directory = env["PHYSICIAN_SITE_DIR"].lstrip("/")
+            for asset in ("index.html", "physician-app.js", "physician-app_bg.wasm"):
+                assert f"{directory}/{asset}" in paths, asset
         print(f"{image['RepoTags'][0]} ({role}): non-root closure, Doppler entrypoint, "
               f"CA/tz/passwd, assets, labels and secret-free configuration OK")
 

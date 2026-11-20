@@ -405,3 +405,79 @@ async fn staging_denies_pages_and_assets_without_access() {
         );
     }
 }
+
+#[tokio::test]
+async fn invite_route_redirects_mobile_platforms_and_renders_fallback_deep_link() {
+    let runtime = RuntimeConfig {
+        app_store_url: "https://apps.apple.com/app/test-duet".into(),
+        play_store_url: "https://play.google.com/store/apps/details?id=test.duet".into(),
+        ..RuntimeConfig::default()
+    };
+    let app = router_with_options(
+        prerender(&Config::default()).unwrap(),
+        runtime,
+        [],
+        Readiness::ready(),
+    );
+
+    let ios = app
+        .clone()
+        .oneshot(
+            Request::builder()
+                .uri("/invite?token=inv-123")
+                .header(
+                    "user-agent",
+                    "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X)",
+                )
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(ios.status(), StatusCode::FOUND);
+    assert_eq!(
+        ios.headers()["location"],
+        "https://apps.apple.com/app/test-duet"
+    );
+
+    let android = app
+        .clone()
+        .oneshot(
+            Request::builder()
+                .uri("/invite?code=ABC123")
+                .header("user-agent", "Mozilla/5.0 (Linux; Android 15; Pixel 9)")
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(android.status(), StatusCode::FOUND);
+    assert_eq!(
+        android.headers()["location"],
+        "https://play.google.com/store/apps/details?id=test.duet"
+    );
+
+    let desktop = app
+        .clone()
+        .oneshot(
+            Request::builder()
+                .uri("/invite?token=inv_99-ok")
+                .header("user-agent", "Mozilla/5.0 (X11; Linux x86_64)")
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(desktop.status(), StatusCode::OK);
+    assert_eq!(desktop.headers()["x-robots-tag"], "noindex, nofollow");
+    let body = String::from_utf8(
+        to_bytes(desktop.into_body(), usize::MAX)
+            .await
+            .unwrap()
+            .to_vec(),
+    )
+    .unwrap();
+    assert!(body.contains("duet://invite?token=inv_99-ok"), "{body}");
+    assert!(body.contains("App Store"), "{body}");
+    assert!(body.contains("Google Play"), "{body}");
+}
