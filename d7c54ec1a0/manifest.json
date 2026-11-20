@@ -1,0 +1,264 @@
+{
+  "branch": "feat-duet-magic-link-terms-and-web-retirement",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "COD-55-56-57-gates",
+      "label": "gates-and-book-links",
+      "kind": "run",
+      "revision": "45505f486d1a4a6e7b5370106e994bc5f6f607c1",
+      "dirty": false,
+      "recorded": "2026-11-20T01:56:17+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo fmt --all --check\npython3 scripts/check-sql.py\nscripts/check-book-links.sh\ncargo clippy --locked --workspace --all-targets -- -D warnings\ncargo clippy --locked -p physician-app -p duet-app -p mobile -p ui-gallery -p extension-popup --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web,extension-popup/web -- -D warnings\ncargo test --locked -p boundaries\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-gates-and-book-links.log"
+      ],
+      "seconds": 92.3,
+      "exit": 0,
+      "ok": true,
+      "superseded": "Addressed #961 review findings (iOS run_withdraw clone, ds1 receipt retry tombstones, sign-in/sign-out flows) and rebased onto origin/main 29747c4c5 with migration 0020_email_auth_sessions_preferences"
+    },
+    {
+      "id": 2,
+      "claim": "COD-55-56-57-crates",
+      "label": "duet-api-client-app-public-site-android",
+      "kind": "run",
+      "revision": "45505f486d1a4a6e7b5370106e994bc5f6f607c1",
+      "dirty": false,
+      "recorded": "2026-11-20T01:57:49+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo test --locked -p duet-client\ncargo test --locked -p duet-app\ncargo test --locked -p public-site\ncargo test --locked -p android\ncargo test --locked -p duet-api\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-duet-api-client-app-public-site-android.log"
+      ],
+      "seconds": 124.8,
+      "exit": 0,
+      "ok": true,
+      "superseded": "Addressed #961 review findings (iOS run_withdraw clone, ds1 receipt retry tombstones, sign-in/sign-out flows) and rebased onto origin/main 29747c4c5 with migration 0020_email_auth_sessions_preferences"
+    },
+    {
+      "id": 3,
+      "claim": "COD-55-56-57-browser",
+      "label": "chromium-wasm-mobile-journeys",
+      "kind": "run",
+      "revision": "45505f486d1a4a6e7b5370106e994bc5f6f607c1",
+      "dirty": false,
+      "recorded": "2026-11-20T01:59:54+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo test --locked -p mobile --lib\ncargo test --locked -p mobile --test mode -- --ignored\ncargo test --locked -p mobile --test duet_journey\ncargo test --locked -p mobile --test duet_journey -- --ignored --skip durable_doctor::backend_process --test-threads=1\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-chromium-wasm-mobile-journeys.log"
+      ],
+      "seconds": 189.2,
+      "exit": 0,
+      "ok": true,
+      "superseded": "Addressed #961 review findings (iOS run_withdraw clone, ds1 receipt retry tombstones, sign-in/sign-out flows) and rebased onto origin/main 29747c4c5 with migration 0020_email_auth_sessions_preferences"
+    },
+    {
+      "id": 4,
+      "claim": "COD-56-57-ios-native",
+      "label": "",
+      "kind": "gap",
+      "revision": "45505f486d1a4a6e7b5370106e994bc5f6f607c1",
+      "dirty": false,
+      "recorded": "2026-11-20T02:03:04+00:00",
+      "reason": "Linux host lacks Xcode/iOS Simulator toolchain; SecureRetentionBridge.swift and Duet.entitlements verified by inspection only.",
+      "ok": false,
+      "files": [],
+      "kept": {
+        "revision": "d7c54ec1a039d74a82adadddbede57de6bf6f3d9",
+        "reason": "Updated HEAD with mobile/index.html Apple Sign-In removal; Linux host iOS/Android toolchain gaps unchanged"
+      }
+    },
+    {
+      "id": 5,
+      "claim": "COD-56-57-android-emulator",
+      "label": "",
+      "kind": "gap",
+      "revision": "45505f486d1a4a6e7b5370106e994bc5f6f607c1",
+      "dirty": false,
+      "recorded": "2026-11-20T02:03:04+00:00",
+      "reason": "Linux host lacks Android emulator run; SecureRetentionBridge.kt and ModeShellTest.kt verified by inspection and cargo test -p android (CI android-emulator job builds APK).",
+      "ok": false,
+      "files": [],
+      "kept": {
+        "revision": "d7c54ec1a039d74a82adadddbede57de6bf6f3d9",
+        "reason": "Updated HEAD with mobile/index.html Apple Sign-In removal; Linux host iOS/Android toolchain gaps unchanged"
+      }
+    },
+    {
+      "id": 6,
+      "claim": "COD-55-56-57-gates",
+      "label": "gates-and-book-links",
+      "kind": "run",
+      "revision": "37ff091982159e9547b69800871224c8aac2acd7",
+      "dirty": false,
+      "recorded": "2026-11-20T02:34:57+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo fmt --all --check\npython3 scripts/check-sql.py\nscripts/check-book-links.sh\ncargo clippy --locked --workspace --all-targets -- -D warnings\ncargo clippy --locked -p physician-app -p duet-app -p mobile -p ui-gallery -p extension-popup --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web,extension-popup/web -- -D warnings\ncargo test --locked -p boundaries\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-gates-and-book-links.log"
+      ],
+      "seconds": 50.6,
+      "exit": 101,
+      "ok": false,
+      "superseded": "Reconciled main.rs merge block and updated portals/health_connect AccessLevel + RetainedIdentity after rebase onto 29747c4c5"
+    },
+    {
+      "id": 7,
+      "claim": "COD-55-56-57-gates",
+      "label": "gates-and-book-links",
+      "kind": "run",
+      "revision": "2136dbdc38e00b002d15fbd9cb70ad10700aa1a8",
+      "dirty": false,
+      "recorded": "2026-11-20T02:51:53+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo fmt --all --check\npython3 scripts/check-sql.py\nscripts/check-book-links.sh\ncargo clippy --locked --workspace --all-targets -- -D warnings\ncargo clippy --locked -p physician-app -p duet-app -p mobile -p ui-gallery -p extension-popup --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web,extension-popup/web -- -D warnings\ncargo test --locked -p boundaries\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "07-gates-and-book-links.log"
+      ],
+      "seconds": 109.5,
+      "exit": 0,
+      "ok": true,
+      "superseded": "Removed leftover appleid.auth.js script tag from crates/mobile/index.html"
+    },
+    {
+      "id": 8,
+      "claim": "COD-55-56-57-crates",
+      "label": "duet-api-client-app-public-site-android",
+      "kind": "run",
+      "revision": "2136dbdc38e00b002d15fbd9cb70ad10700aa1a8",
+      "dirty": false,
+      "recorded": "2026-11-20T02:53:43+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo test --locked -p duet-client\ncargo test --locked -p duet-app\ncargo test --locked -p public-site\ncargo test --locked -p android\ncargo test --locked -p duet-api\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "08-duet-api-client-app-public-site-android.log"
+      ],
+      "seconds": 145.6,
+      "exit": 0,
+      "ok": true,
+      "superseded": "Removed leftover appleid.auth.js script tag from crates/mobile/index.html"
+    },
+    {
+      "id": 9,
+      "claim": "COD-55-56-57-browser",
+      "label": "chromium-wasm-mobile-journeys",
+      "kind": "run",
+      "revision": "2136dbdc38e00b002d15fbd9cb70ad10700aa1a8",
+      "dirty": false,
+      "recorded": "2026-11-20T02:56:09+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo test --locked -p mobile --lib\ncargo test --locked -p mobile --test mode -- --ignored\ncargo test --locked -p mobile --test duet_journey\ncargo test --locked -p mobile --test duet_journey -- --ignored --skip durable_doctor::backend_process --test-threads=1\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "09-chromium-wasm-mobile-journeys.log"
+      ],
+      "seconds": 110.3,
+      "exit": 101,
+      "ok": false,
+      "superseded": "Removed leftover appleid.auth.js script tag from crates/mobile/index.html"
+    },
+    {
+      "id": 10,
+      "claim": "COD-55-56-57-gates",
+      "label": "gates-and-book-links",
+      "kind": "run",
+      "revision": "d7c54ec1a039d74a82adadddbede57de6bf6f3d9",
+      "dirty": false,
+      "recorded": "2026-11-20T03:01:36+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo fmt --all --check\npython3 scripts/check-sql.py\nscripts/check-book-links.sh\ncargo clippy --locked --workspace --all-targets -- -D warnings\ncargo clippy --locked -p physician-app -p duet-app -p mobile -p ui-gallery -p extension-popup --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web,extension-popup/web -- -D warnings\ncargo test --locked -p boundaries\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "10-gates-and-book-links.log"
+      ],
+      "seconds": 88.3,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 11,
+      "claim": "COD-55-56-57-crates",
+      "label": "duet-api-client-app-public-site-android",
+      "kind": "run",
+      "revision": "d7c54ec1a039d74a82adadddbede57de6bf6f3d9",
+      "dirty": false,
+      "recorded": "2026-11-20T03:03:05+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo test --locked -p duet-client\ncargo test --locked -p duet-app\ncargo test --locked -p public-site\ncargo test --locked -p android\ncargo test --locked -p duet-api\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "11-duet-api-client-app-public-site-android.log"
+      ],
+      "seconds": 34.0,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 12,
+      "claim": "COD-55-56-57-browser",
+      "label": "chromium-wasm-mobile-journeys",
+      "kind": "run",
+      "revision": "d7c54ec1a039d74a82adadddbede57de6bf6f3d9",
+      "dirty": false,
+      "recorded": "2026-11-20T03:03:39+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo test --locked -p mobile --lib\ncargo test --locked -p mobile --test mode -- --ignored\ncargo test --locked -p mobile --test duet_journey\ncargo test --locked -p mobile --test duet_journey -- --ignored --skip durable_doctor::backend_process --test-threads=1\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "12-chromium-wasm-mobile-journeys.log"
+      ],
+      "seconds": 140.6,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
