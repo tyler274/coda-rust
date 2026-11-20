@@ -1,0 +1,144 @@
+   Compiling tokio v1.54.1
+   Compiling duet-notify v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-notify)
+   Compiling agent-skills v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/agent-skills)
+   Compiling roxmltree v0.21.2
+   Compiling hyper v1.12.0
+   Compiling tower v0.5.3
+   Compiling tokio-stream v0.1.19
+   Compiling tokio-rustls v0.26.6
+   Compiling tokio-util v0.7.20
+   Compiling sqlx-core v0.9.0
+   Compiling tower-http v0.6.11
+   Compiling hyper-util v0.1.21
+   Compiling hyper-rustls v0.27.10
+   Compiling axum v0.8.9
+   Compiling reqwest v0.13.5
+   Compiling reqwest v0.12.28
+   Compiling sqlx-postgres v0.9.0
+   Compiling opentelemetry-http v0.33.1
+   Compiling opentelemetry-otlp v0.33.1
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/http)
+   Compiling duet_wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-wire)
+   Compiling harness v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/harness)
+   Compiling telemetry v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/telemetry)
+   Compiling sqlx v0.9.0
+   Compiling sea-query-sqlx v0.9.1
+   Compiling sea-schema v0.18.1
+   Compiling duet-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-client)
+   Compiling sea-orm v2.0.4
+   Compiling sea-orm-migration v2.0.4
+   Compiling front-door v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/front-door)
+   Compiling clinical-library v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/clinical-library)
+   Compiling duet-api v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-api)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 42.16s
+     Running unittests src/lib.rs (/tmp/coda-target-gcp/debug/deps/duet_api-b2ec985ba5f061f7)
+
+running 51 tests
+test assistant_harness::tests::assistant_eligibility_enforces_terms_consent_and_operator_switch ... ok
+test identity::local_tests::a_short_secret_is_refused ... ok
+test hosting::tests::local_runs_start_without_any_profile ... ok
+test connected_care_sync::tests::source_origin_formats_exact_via_duet_labels ... ok
+test hosting::tests::a_false_cloud_marker_is_still_hosted ... ok
+test background::tests::every_api_error_has_a_class ... ok
+test hosting::tests::production_and_other_profiles_refuse_even_when_complete ... ok
+test assistant_harness::tests::parked_routes_policy_is_quarantined_by_default ... ok
+test hosting::tests::local_stand_ins_refuse_hosted_even_with_a_complete_profile ... ok
+test identity::refusal_tests::provider_outage_and_configuration_errors_are_not_session_refusals ... ok
+test evidence_routes::tests::undated_records_have_no_date_and_keep_literal_values ... ok
+test assistant_harness::tests::recipe_embeds_standing_disclosure_and_clinical_library_tools_only ... ok
+test portals::tests::update_failure_day_formats_plain_copy ... ok
+test hosting::tests::staging_preview_is_the_only_hosted_profile ... ok
+test portals::tests::portal_secrets_are_redacted_in_debug_output ... ok
+test evidence_routes::tests::projected_role_and_offset_are_literal ... ok
+test privacy::tests::restriction_enum_matches_wire_snake_case ... ok
+test portals::tests::fhir_pagination_url_enforces_exact_https_origin ... ok
+test connected_care_sync::tests::private_ai_notes_and_for_my_doctor_drafts_are_excluded_from_live_streaming ... ok
+test push::tests::device_id_validation_rejects_blank_or_control_characters ... ok
+test tests::the_schema_readiness_check_names_the_required_migration ... ok
+test evidence_routes::tests::acquisition_interval_keeps_start_and_end_and_sorts_on_the_start ... ok
+test push::tests::push_secrets_are_redacted_in_debug_output ... ok
+test portals::tests::vendor_kill_switch_filters_search_and_preserves_enabled_vendors ... ok
+test background::tests::failure_event_names_the_class_without_error_text ... ok
+test privacy_archive::tests::production_trust_and_object_namespace_cannot_be_configured_as_urls ... ok
+test push::tests::http_push_transport_enforces_https_except_loopback ... ok
+test connected_care_sync::tests::http_transport_requires_https_except_loopback ... ok
+test assistant_harness::tests::http_clinical_library_reader_requires_https_except_loopback ... ok
+test hosting::tests::liveness_says_nothing_about_readiness ... ok
+test identity::local_tests::verifies_a_signed_local_token ... ok
+test identity::local_tests::refuses_forged_expired_foreign_and_future_tokens ... ok
+test site::tests::serves_only_named_assets_with_wasm_mime ... ok
+test privacy_archive::tests::conditional_creation_ambiguous_readback_corruption_and_credentials ... ok
+test privacy_archive::tests::chunked_readback_cannot_bypass_body_limit ... ok
+test privacy::tests::receipt_device_withdraw ... ok
+test privacy::tests::receipt_account_delete ... ok
+test privacy::tests::receipt_evidence_delete ... ok
+test privacy::tests::receipt_luna_withdraw ... ok
+test privacy::tests::receipt_doctor_note_delete ... ok
+test privacy::tests::receipt_follow_up_cancel ... ok
+test privacy::tests::receipt_follow_up_pause ... ok
+test privacy::tests::receipt_proactive_withdraw ... ok
+test privacy::tests::receipt_doctor_item_delete ... ok
+test privacy::tests::receipt_doctor_page_delete ... ok
+test privacy::tests::receipt_publication_revoke ... ok
+test privacy::tests::receipt_sessions_revoke ... ok
+test privacy::tests::receipt_records_withdraw ... ok
+test privacy_archive::tests::transport_timeout_and_cancellation_release_capacity ... ok
+test privacy_archive::tests::gcs_transport_and_postgres_recovery_reconcile_same_receipt_after_restart ... ok
+test privacy_archive::tests::metadata_failures_never_forward_credentials_or_follow_redirects ... ok
+
+test result: ok. 51 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.09s
+
+   Compiling duet-api v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-api)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 37.59s
+     Running tests/connected_care_sync.rs (/tmp/coda-target-gcp/debug/deps/connected_care_sync-5bbab010d0fecc07)
+
+running 1 test
+test cod61_live_uploader_streams_to_front_door_excludes_private_notes_and_surfaces_failures ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+
+   Compiling duet-api v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/duet-api)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 17.77s
+     Running tests/push_harness_and_memory_retention.rs (/tmp/coda-target-gcp/debug/deps/push_harness_and_memory_retention-b4d4b59d92023de9)
+
+running 3 tests
+test cod67_parked_legacy_routes_are_quarantined_by_default ... ok
+test cod67_harness_clinical_library_consent_and_memory_retention ... ok
+test cod67_multi_device_generic_push_and_sign_out_cleanup ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
+
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 28.64s
+     Running unittests src/lib.rs (/tmp/coda-target-gcp/debug/deps/local_product-2d5e3c7b00e986b5)
+
+running 3 tests
+test runtime::connected_care::tests::parses_exact_via_duet_origin_and_falls_back_cleanly ... ok
+test runtime::connected_care::tests::sync_health_tracks_consecutive_failures_and_recovers_on_success ... ok
+test runtime::connected_care::tests::duplicate_detection_matches_external_id_or_type_date_and_title ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 221 filtered out; finished in 0.01s
+
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/local-product)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 28.93s
+     Running tests/connected_care_and_filtered_chat.rs (/tmp/coda-target-gcp/debug/deps/connected_care_and_filtered_chat-be9f163df88254a2)
+
+running 5 tests
+test cross_practice_connected_care_collision_refuses_foreign_chart_writes ... ok
+test cod62_x4_1_departing_physician_panel_reassignment_preserves_connection_and_sync ... ok
+test cod61_cod62_origin_ehr_duplicates_and_post_join_correction_fences ... ok
+test filtered_mail_chat_tools_list_isolate_and_restore_patient_messages ... ok
+test connected_care_consent_join_rejoin_and_for_my_doctor_flow ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.09s
+
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/local-product)
+   Compiling physician-sample v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-gcp-schedule-789fda7b/crates/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 50.51s
+     Running unittests src/bin/physician-worker.rs (/tmp/coda-target-gcp/debug/deps/physician_worker-acc2eaac85dec4f3)
+
+running 1 test
+test practice_job::tests::connected_care_bootstrap_discovers_practice_without_existing_patient_dispatch ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 32 filtered out; finished in 0.78s
+
