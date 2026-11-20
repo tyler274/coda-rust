@@ -340,6 +340,9 @@ pub struct AccountExport {
     pub device_snapshots: Vec<ExportedDeviceSnapshot>,
     /// Current saved `For my doctor` page and selected items.
     pub doctor_page: ExportedDoctorPage,
+    /// `For my doctor` marked items, free-text notes, and committed sends.
+    #[serde(default)]
+    pub for_my_doctor: serde_json::Value,
     /// Connected or disconnected portal accounts (metadata only, zero OAuth secrets).
     pub portal_connections: Vec<ExportedPortalConnection>,
     /// Assistant conversations and turn records.

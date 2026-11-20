@@ -175,6 +175,10 @@ async fn backend_process() {
     let listener = tokio::net::TcpListener::bind(base.strip_prefix("http://").unwrap())
         .await
         .unwrap();
+    let fmd_state = duet_api::for_my_doctor::ForMyDoctorState {
+        durable: state.clone(),
+        store: duet_api::for_my_doctor::ForMyDoctorStore::new(database.clone(), None),
+    };
     let routes = duet_api::durable::router(state.clone())
         .merge(duet_api::evidence_routes::router(state.clone()))
         .merge(duet_api::doctor_routes::router(
@@ -182,7 +186,8 @@ async fn backend_process() {
                 durable: state,
                 workspace: workspace.clone(),
             },
-        ));
+        ))
+        .merge(duet_api::for_my_doctor::router(fmd_state));
     let app =
         axum::Router::new().fallback(move |request: axum::http::Request<axum::body::Body>| {
             let mut routes = routes.clone();
@@ -262,8 +267,8 @@ impl Drop for BackendProcess {
 
 async fn run_browser_checks(
     base: &str,
-    workspace: &WorkspaceStore,
-    account: &duet_api::identity::AccountContext,
+    _workspace: &WorkspaceStore,
+    _account: &duet_api::identity::AccountContext,
     _owner_url: &str,
     server: &mut BackendProcess,
 ) {
@@ -271,42 +276,30 @@ async fn run_browser_checks(
     patient.resize(PHONE);
     patient.text_until(&format!("{base}/?mode=client"), "Shared");
     patient.click("nav.tabs button:nth-of-type(2)");
-    patient.wait_for("Open For my doctor");
-    click_text(&mut patient, "Open For my doctor");
-    patient.click("button[aria-label='Edit page']");
+    patient.wait_for("TO SEND");
     let editor_text = patient.body_text().unwrap();
-    for retired in ["Name", "Date of birth", "Cover note"] {
-        assert!(
-            !editor_text.contains(retired),
-            "retired field {retired} shown:\n{editor_text}"
-        );
-    }
-    patient.click("button[aria-label='Add a question']");
-    wait_for_selector(&mut patient, "input[aria-label='Question']");
-    patient.type_into("input[aria-label='Question']", "What changed this week?");
-    patient.click("button[aria-label='Save page']");
-    patient.wait_for("What changed this week?");
-    let saved = workspace.read(account).await.unwrap();
-    assert_eq!(saved["page"]["questions"][0], "What changed this week?");
-    let shown_text = patient.body_text().unwrap();
     for retired in [
+        "Name",
+        "Date of birth",
+        "Cover note",
         "Saved page preview",
         "Check and share PDF",
-        "Publish reviewed page…",
-        "Review proposed doctor page",
     ] {
         assert!(
-            !shown_text.contains(retired),
-            "retired control {retired} shown:\n{shown_text}"
+            !editor_text.contains(retired),
+            "retired field or control {retired} shown:\n{editor_text}"
         );
     }
+    patient.click("button[aria-label='Add note']");
+    wait_for_selector(&mut patient, "textarea");
+    patient.type_into("textarea", "What changed this week?");
+    patient.click("button[aria-label='Save note']");
+    patient.wait_for("What changed this week?");
 
     // Kill the actual Axum process, then rebind the same origin and verify durable state + retired routes.
     server.restart().await;
     patient.text_until(&format!("{base}/?mode=client"), "Shared");
     patient.click("nav.tabs button:nth-of-type(2)");
-    patient.wait_for("Open For my doctor");
-    click_text(&mut patient, "Open For my doctor");
     patient.wait_for("What changed this week?");
 
     let http = reqwest::Client::builder()
@@ -332,26 +325,39 @@ async fn run_browser_checks(
         );
     }
 
-    // Two editors: a stale browser save cannot overwrite a newer patient-approved generation.
-    patient.click("button[aria-label='Edit page']");
-    wait_for_selector(&mut patient, "input[aria-label='Question']");
-    patient.type_into("input[aria-label='Question']", "Stale browser question");
-    let current = workspace.read(account).await.unwrap();
-    let response = http.put(format!("{base}/api/doctor-collection/page")).bearer_auth(TOKEN)
-        .json(&serde_json::json!({"expected_generation":current["note_generation"], "item_ids":[], "page":{"questions":["Newer approved question"]}}))
-        .send().await.unwrap();
+    // Two editors: a stale browser save hits 409 version_conflict, displays the newer saved version,
+    // and keeps the browser's unsaved words intact.
+    click_text(&mut patient, "Edit");
+    wait_for_selector(&mut patient, "textarea");
+    patient.type_into("textarea", "Stale browser note words");
+    let state: serde_json::Value = http
+        .get(format!("{base}/api/for-my-doctor"))
+        .bearer_auth(TOKEN)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    let note_id = state["notes"][0]["id"].as_str().unwrap();
+    let response = http
+        .put(format!("{base}/api/for-my-doctor/notes/{note_id}"))
+        .bearer_auth(TOKEN)
+        .json(&serde_json::json!({"body": "Newer saved note", "expected_version": 1}))
+        .send()
+        .await
+        .unwrap();
     assert!(response.status().is_success());
-    patient.click("button[aria-label='Save page']");
-    patient.wait_for("The last save may have succeeded.");
-    assert_eq!(
-        workspace.read(account).await.unwrap()["page"]["questions"][0],
-        "Newer approved question"
-    );
+    patient.click("button[aria-label='Save note']");
+    patient.wait_for("Newer saved note");
+    let conflict_text = patient.body_text().unwrap();
     assert!(
-        patient
-            .body_text()
-            .unwrap()
-            .contains("Your exact draft is retained")
+        conflict_text.contains("Not saved yet") && conflict_text.contains("Newer saved note"),
+        "expected conflict UI:\n{conflict_text}"
     );
+    let kept_value = patient
+        .page()
+        .evaluate("document.querySelector('textarea')?.value ?? ''");
+    assert_eq!(kept_value, serde_json::json!("Stale browser note words"));
     drop(patient);
 }

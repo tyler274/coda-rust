@@ -153,6 +153,18 @@ async fn start_stub_server(state: Arc<Mutex<StubBackendState>>) -> String {
         .route(
             "/api/doctor-collection",
             get(|| async { Json(json!({ "note_generation": 1, "items": [] })) }),
+        )
+        .route(
+            "/api/for-my-doctor",
+            get(|| async {
+                Json(json!({
+                    "marks": [],
+                    "notes": [],
+                    "sends": [],
+                    "notices": [],
+                    "practices": []
+                }))
+            }),
         );
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();

@@ -5,13 +5,16 @@
 //! systolic and diastolic readings together, and lab printed reference bands/flags never appear.
 use std::collections::BTreeMap;
 
+use chrono::{DateTime, NaiveDate};
 use dioxus::prelude::*;
+use duet_client::for_my_doctor::{MarkForDoctorRequest, MarkTargetKind};
 use duet_wire::models::{EvidenceBrowseRecord, EvidenceLibraryEntry};
 use ui::{
-    Button, ButtonVariant, Card, ChartHeader, Choice, Segmented, SeriesChart, SeriesPoint,
-    SeriesShape,
+    ActionRow, Button, ButtonVariant, Card, ChartHeader, Choice, Segmented, SeriesChart,
+    SeriesPoint, SeriesShape,
 };
 
+use crate::for_my_doctor::MarkToggleButton;
 use crate::roots::LibraryRecord;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -383,12 +386,59 @@ fn short_axis_date(raw: &str) -> String {
     }
 }
 
+const RANGE_LABELS: [&str; 3] = ["All", "Last 30 days", "Last 7 days"];
+
+fn parse_bucket_day(raw: &str) -> Option<NaiveDate> {
+    let trimmed = raw.trim();
+    if trimmed.is_empty() || trimmed == "~" {
+        return None;
+    }
+    if let Ok(dt) = DateTime::parse_from_rfc3339(trimmed) {
+        return Some(dt.date_naive());
+    }
+    trimmed
+        .get(..10)
+        .and_then(|d| NaiveDate::parse_from_str(d, "%Y-%m-%d").ok())
+}
+
+/// Filters sorted trend points according to the patient's currently viewed range
+/// (`0 = All`, `1 = Last 30 days`, `2 = Last 7 days`), relative to the newest point's date.
+pub fn filter_points_by_range(points: &[TrendBucket], range_index: usize) -> Vec<TrendBucket> {
+    let days = match range_index {
+        1 => 30,
+        2 => 7,
+        _ => return points.to_vec(),
+    };
+    let Some(latest) = points
+        .iter()
+        .filter_map(|p| parse_bucket_day(&p.sort_key))
+        .max()
+    else {
+        return points.to_vec();
+    };
+    let cutoff = latest - chrono::Duration::days(days);
+    points
+        .iter()
+        .filter(|p| parse_bucket_day(&p.sort_key).is_none_or(|d| d >= cutoff))
+        .cloned()
+        .collect()
+}
+
 #[component]
-pub fn TrendPanel(trend: TrendView, on_close: EventHandler<()>) -> Element {
+pub fn TrendPanel(
+    trend: TrendView,
+    base_url: String,
+    bearer: String,
+    on_close: EventHandler<()>,
+) -> Element {
     let mut selected_source = use_signal(|| 0usize);
     let mut selected_point = use_signal(|| None::<usize>);
+    let mut range_index = use_signal(|| 0usize);
     let source_index = selected_source().min(trend.sources.len().saturating_sub(1));
     let series = &trend.sources[source_index];
+    let visible_points = filter_points_by_range(&series.points, range_index());
+    let range_label = RANGE_LABELS[range_index().min(RANGE_LABELS.len() - 1)];
+    let range_choices: Vec<Choice> = RANGE_LABELS.iter().map(|r| Choice::from(*r)).collect();
     let source_options: Vec<Choice> = trend
         .sources
         .iter()
@@ -398,8 +448,8 @@ pub fn TrendPanel(trend: TrendView, on_close: EventHandler<()>) -> Element {
         })
         .collect();
     let active_bucket = selected_point()
-        .and_then(|idx| series.points.get(idx))
-        .or_else(|| series.points.last());
+        .and_then(|idx| visible_points.get(idx))
+        .or_else(|| visible_points.last());
     let figure = active_bucket
         .map(|b| b.words.as_str())
         .unwrap_or("")
@@ -412,8 +462,7 @@ pub fn TrendPanel(trend: TrendView, on_close: EventHandler<()>) -> Element {
         (Some(unit), _) => format!("{} ({unit})", series.source_label),
         (None, _) => series.source_label.clone(),
     };
-    let points: Vec<SeriesPoint> = series
-        .points
+    let points: Vec<SeriesPoint> = visible_points
         .iter()
         .map(|b| SeriesPoint {
             value: Some(b.value),
@@ -430,6 +479,52 @@ pub fn TrendPanel(trend: TrendView, on_close: EventHandler<()>) -> Element {
         series.source_label,
         points.len()
     );
+    let trend_key = format!(
+        "trend:{}:{}:{}",
+        trend.title, series.source_label, range_label
+    );
+    let trend_summary = match (visible_points.first(), visible_points.last()) {
+        (Some(first), Some(last)) if visible_points.len() > 1 => format!(
+            "{} readings ({} to {})",
+            visible_points.len(),
+            first.words,
+            last.words
+        ),
+        (Some(only), _) => format!("1 reading ({})", only.words),
+        _ => "No readings in range".to_owned(),
+    };
+    let trend_req = MarkForDoctorRequest {
+        target_kind: MarkTargetKind::Trend,
+        target_key: trend_key.clone(),
+        record_id: None,
+        entity: None,
+        title: format!("{} trend", trend.title),
+        summary_text: trend_summary,
+        range_label: Some(range_label.to_owned()),
+        source_label: Some(series.source_label.clone()),
+        payload: serde_json::json!({
+            "range": range_label,
+            "readings": visible_points.iter().map(|b| &b.words).collect::<Vec<_>>(),
+        }),
+    };
+    let active_mark = active_bucket.map(|b| {
+        let reading_key = format!(
+            "reading:{}:{}:{}",
+            trend.title, series.source_label, b.sort_key
+        );
+        let req = MarkForDoctorRequest {
+            target_kind: MarkTargetKind::Reading,
+            target_key: reading_key.clone(),
+            record_id: None,
+            entity: None,
+            title: trend.title.clone(),
+            summary_text: b.words.clone(),
+            range_label: None,
+            source_label: Some(series.source_label.clone()),
+            payload: serde_json::json!({ "reading": b.words }),
+        };
+        (reading_key, req)
+    });
     rsx! {
         div { role: "region", aria_label: "{trend.title} trend",
             Card {
@@ -450,6 +545,15 @@ pub fn TrendPanel(trend: TrendView, on_close: EventHandler<()>) -> Element {
                         },
                     }
                 }
+                Segmented {
+                    label: format!("{} range", trend.title),
+                    options: range_choices,
+                    selected: range_index(),
+                    on_select: move |next| {
+                        range_index.set(next);
+                        selected_point.set(None);
+                    },
+                }
                 // Lab printed reference bands and flag tags are never rendered on charts.
                 SeriesChart {
                     shape: trend.kind.chart_shape(),
@@ -458,11 +562,27 @@ pub fn TrendPanel(trend: TrendView, on_close: EventHandler<()>) -> Element {
                     selected: selected_point(),
                     on_select: move |idx| selected_point.set(idx),
                 }
-                Button {
-                    variant: ButtonVariant::Quiet,
-                    aria_label: "Close trend",
-                    onclick: move |_| on_close.call(()),
-                    "Close trend"
+                ActionRow {
+                    MarkToggleButton {
+                        target_key: trend_key,
+                        request: trend_req,
+                        base_url: base_url.clone(),
+                        bearer: bearer.clone(),
+                    }
+                    if let Some((reading_key, reading_req)) = active_mark {
+                        MarkToggleButton {
+                            target_key: reading_key,
+                            request: reading_req,
+                            base_url: base_url.clone(),
+                            bearer: bearer.clone(),
+                        }
+                    }
+                    Button {
+                        variant: ButtonVariant::Quiet,
+                        aria_label: "Close trend",
+                        onclick: move |_| on_close.call(()),
+                        "Close trend"
+                    }
                 }
             }
         }
@@ -602,5 +722,41 @@ mod tests {
         )];
         let sleep_view = build_trend_view(&sleep_anchor, &[], &sleep_browse).expect("sleep trend");
         assert_eq!(sleep_view.kind.chart_shape(), SeriesShape::Bars);
+    }
+
+    #[test]
+    fn range_filter_keeps_points_in_selected_window() {
+        let anchor = lab_anchor("Quest");
+        let browse = vec![
+            browse_point(
+                "1",
+                "LDL cholesterol",
+                "130",
+                "mg/dL",
+                "2026-06-01T00:00:00Z",
+                "Quest",
+            ),
+            browse_point(
+                "2",
+                "LDL cholesterol",
+                "112",
+                "mg/dL",
+                "2026-09-25T00:00:00Z",
+                "Quest",
+            ),
+            browse_point(
+                "3",
+                "LDL cholesterol",
+                "98",
+                "mg/dL",
+                "2026-10-10T00:00:00Z",
+                "Quest",
+            ),
+        ];
+        let view = build_trend_view(&anchor, &[], &browse).expect("trend");
+        let pts = &view.sources[0].points;
+        assert_eq!(filter_points_by_range(pts, 0).len(), 3);
+        assert_eq!(filter_points_by_range(pts, 1).len(), 2);
+        assert_eq!(filter_points_by_range(pts, 2).len(), 1);
     }
 }

@@ -67,20 +67,20 @@ const TABLE: &[Entry] = &[
     Entry {
         file: "crates/duet-app/src/lib.rs",
         kind: Input,
-        count: 5,
-        reason: "The corrected value, note, question and medication fields, and the medication checkboxes, carry Duet's own labels and sit outside `TextField` and `Checkbox` until the Duet forms move.",
+        count: 3,
+        reason: "The corrected value, note and medication fields carry Duet's own labels and sit outside `TextField` until the remaining You forms move.",
     },
     Entry {
         file: "crates/duet-app/src/lib.rs",
         kind: Textarea,
-        count: 2,
-        reason: "The note and question bodies, which become a multiline `TextField` when the Duet forms move.",
+        count: 1,
+        reason: "The You note body, which becomes a multiline `TextField` when the remaining You forms move.",
     },
     Entry {
         file: "crates/duet-app/src/lib.rs",
         kind: CardMarkup,
-        count: 4,
-        reason: "You and For my doctor cards put `card`, `card-title` and `card-text` on plain elements, with voice and number layouts that `Card` would have to hold before they move.",
+        count: 3,
+        reason: "You cards put `card`, `card-title` and `card-text` on plain elements, with voice and number layouts that `Card` would have to hold before they move.",
     },
     Entry {
         file: "crates/duet-app/src/records.rs",

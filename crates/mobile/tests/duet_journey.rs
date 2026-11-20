@@ -69,43 +69,55 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
             .evaluate("Object.keys(localStorage).filter(k => k !== 'coda-mode')"),
         serde_json::json!([])
     );
-    // For my doctor, in Shared, edits discussion notes and questions without PDF/demographics.
+    // For my doctor (`Shared`): mark a record in You, add a free-text note in Shared, review disclosure, and send.
+    browser.click(r#"button[aria-label="Mark Lisinopril"]"#);
+    browser.wait_for("Unmark");
     browser.click(r#"nav.tabs button:nth-of-type(2)"#);
-    browser.wait_for("Open For my doctor");
-    assert_eq!(
-        browser
-            .page()
-            .run("clickButton", serde_json::json!(["Open For my doctor"])),
-        true
-    );
-    browser.wait_for("Ask about sleep");
-    browser.click(r#"button[aria-label="Edit page"]"#);
-    browser.wait_for("Add a question");
+    browser.wait_for("TO SEND");
     let editor_text = browser.body_text().unwrap();
-    for retired in ["Name", "Date of birth", "Cover note"] {
+    for retired in [
+        "Name",
+        "Date of birth",
+        "Cover note",
+        "Saved page preview",
+        "Check and share PDF",
+    ] {
         assert!(
             !editor_text.contains(retired),
-            "retired field {retired} shown:\n{editor_text}"
+            "retired field or control {retired} shown:\n{editor_text}"
         );
     }
-    browser.click(r#"button[aria-label="Add a question"]"#);
-    wait_for_selector(&mut browser, r#"input[aria-label="Question"]"#);
-    browser.type_into(r#"input[aria-label="Question"]"#, "What changed this week?");
-    browser.click(r#"button[aria-label="Save page"]"#);
+    browser.wait_for("Lisinopril");
+    browser.click(r#"button[aria-label="Add note"]"#);
+    wait_for_selector(&mut browser, "textarea");
+    browser.type_into("textarea", "What changed this week?");
+    browser.click(r#"button[aria-label="Save note"]"#);
     let text = browser.wait_for("What changed this week?");
     assert!(
         !text.contains("Saved page preview") && !text.contains("Check and share PDF"),
         "retired PDF/preview controls shown:\n{text}"
     );
-    let saved: serde_json::Value = reqwest::get(format!("{base}/api/doctor-collection"))
+    browser.click(r#"button[aria-label="Send to Northside Primary Care"]"#);
+    browser.wait_for("A send can't be taken back.");
+    // Toggle disclosure checkbox (last checkbox on screen) and send.
+    browser.page().evaluate(
+        "(() => { const boxes = [...document.querySelectorAll('input[type=\"checkbox\"]')]; const d = boxes[boxes.length - 1]; if (d && !d.checked) d.click(); return true; })()",
+    );
+    browser.click(r#"button[aria-label="Send now"]"#);
+    let after_send = browser.wait_for("Sent to Northside Primary Care.");
+    assert!(
+        after_send.contains("Sent") && after_send.contains("What changed this week?"),
+        "expected Sent entry:\n{after_send}"
+    );
+    let saved: serde_json::Value = reqwest::get(format!("{base}/api/for-my-doctor"))
         .await
         .unwrap()
         .json()
         .await
         .unwrap();
-    assert_eq!(saved["page"]["questions"][0], "What changed this week?");
-    browser.click(r#"button[aria-label="Close page"]"#);
-    browser.wait_for("Open For my doctor");
+    assert_eq!(saved["marks"].as_array().unwrap().len(), 0);
+    assert_eq!(saved["notes"].as_array().unwrap().len(), 0);
+    assert_eq!(saved["sends"].as_array().unwrap().len(), 1);
 
     // D2.6 + You features: external records stay read-only, Search You filters,
     // trends open without lab range bands, and patient-entered medications can be corrected/deleted.
@@ -288,7 +300,7 @@ async fn shared_tries_a_failed_workspace_read_again() {
             let stub = stub.clone();
             let failing = route_fail.load(Ordering::SeqCst)
                 && request.method() == "GET"
-                && request.uri().path() == "/api/doctor-collection";
+                && request.uri().path() == "/api/for-my-doctor";
             async move {
                 if failing {
                     axum::http::StatusCode::SERVICE_UNAVAILABLE.into_response()
@@ -306,46 +318,37 @@ async fn shared_tries_a_failed_workspace_read_again() {
     browser.resize(PHONE);
     browser.text_until(&format!("{base}/?mode=client&api={base}"), "Shared");
 
-    // The first workspace read fails; Shared says so and offers to try again.
+    // The first For my doctor read fails; Shared says so and offers to try again.
     browser.click(r#"nav.tabs button:nth-of-type(2)"#);
-    let text = browser.wait_for("For my doctor: ");
-    assert!(!text.contains("Open For my doctor"), "{text}");
+    let text = browser.wait_for("For my doctor couldn't load");
+    assert!(!text.contains("To send"), "{text}");
     fail.store(false, Ordering::SeqCst);
     assert_eq!(
         browser
             .page()
             .run("clickButton", serde_json::json!(["Try again"])),
         true,
-        "Shared offered no way to load the workspace again:\n{}",
+        "Shared offered no way to load For my doctor again:\n{}",
         browser.body_text().unwrap_or_default()
     );
 
-    // The workspace loads; the person opens it, edits and saves.
-    browser.wait_for("Open For my doctor");
-    assert!(!browser.body_text().unwrap().contains("For my doctor: "));
-    assert_eq!(
-        browser
-            .page()
-            .run("clickButton", serde_json::json!(["Open For my doctor"])),
-        true
-    );
-    browser.wait_for("Ask about sleep");
-    browser.click(r#"button[aria-label="Edit page"]"#);
-    browser.wait_for("Add a question");
-    browser.type_into(
-        r#"textarea[aria-label="What I want to discuss"]"#,
-        "Discuss sleep and morning readings.",
-    );
-    browser.click(r#"button[aria-label="Save page"]"#);
+    // For my doctor loads; the person writes a free-text note and saves.
+    browser.wait_for("TO SEND");
+    browser.click(r#"button[aria-label="Add note"]"#);
+    wait_for_selector(&mut browser, "textarea");
+    browser.type_into("textarea", "Discuss sleep and morning readings.");
+    browser.click(r#"button[aria-label="Save note"]"#);
     browser.wait_for("Discuss sleep and morning readings.");
-    let saved: serde_json::Value = reqwest::get(format!("{base}/api/doctor-collection"))
+    let saved: serde_json::Value = reqwest::get(format!("{base}/api/for-my-doctor"))
         .await
         .unwrap()
         .json()
         .await
         .unwrap();
-    assert_eq!(saved["note"], "Discuss sleep and morning readings.");
-    assert!(saved["page"]["name"].is_null());
+    assert_eq!(
+        saved["notes"][0]["body"],
+        "Discuss sleep and morning readings."
+    );
     server.abort();
 }
 
@@ -585,6 +588,18 @@ async fn you_search_trends_duplicates_and_conditions_in_browser() {
         .route(
             "/api/doctor-collection",
             get(|| async { Json(serde_json::json!({"note_generation": 0, "items": []})) }),
+        )
+        .route(
+            "/api/for-my-doctor",
+            get(|| async {
+                Json(serde_json::json!({
+                    "marks": [],
+                    "notes": [],
+                    "sends": [],
+                    "notices": [],
+                    "practices": []
+                }))
+            }),
         );
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let address = listener.local_addr().unwrap();
@@ -674,6 +689,173 @@ fn wait_until(browser: &mut Browser, ready: impl Fn(&str) -> bool) -> String {
 /// stay independent.
 async fn spawn_site() -> std::net::SocketAddr {
     spawn_site_with_patient(false).await.0
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn for_my_doctor_uncertain_retry_cod50_and_cod51_in_browser() {
+    use axum::{Json, Router, http::StatusCode, response::IntoResponse, routing::post};
+    use std::sync::atomic::{AtomicU8, Ordering};
+    use tower::ServiceExt;
+
+    let stub_store = Arc::new(Mutex::new(
+        duet_stub::Store::open(
+            std::env::temp_dir().join(format!("fmd-browser-{}.json", uuid::Uuid::new_v4())),
+        )
+        .unwrap(),
+    ));
+    let stub = duet_stub::router(stub_store.clone());
+    // 0 => normal, 1 => fail next POST /api/for-my-doctor/send with 503 (uncertain),
+    // 2 => fail next POST /api/for-my-doctor/send with 409 connection_ended (COD-51).
+    let send_mode = Arc::new(AtomicU8::new(1));
+    let captured_keys = Arc::new(Mutex::new(Vec::<String>::new()));
+
+    let context = serde_json::json!({
+        "account_id": uuid::Uuid::new_v4(),
+        "incarnation": uuid::Uuid::new_v4(),
+        "permission_revision": 0,
+        "authenticated_at": "2026-11-20T00:00:00Z"
+    });
+    let api = Router::new()
+        .route(
+            "/api/auth/account",
+            axum::routing::put(|| async {
+                Json(serde_json::json!({"terms_accepted": true, "terms_version": "2026-09-23"}))
+            }),
+        )
+        .route(
+            "/api/auth/account/profile",
+            axum::routing::get(|| async {
+                Json(serde_json::json!({"appearance": "system", "terms_accepted": true, "terms_version": "2026-09-23"}))
+            }),
+        )
+        .route(
+            "/api/auth/account/context",
+            axum::routing::get(move || {
+                let context = context.clone();
+                async move { Json(context) }
+            }),
+        )
+        .route(
+            "/api/for-my-doctor/send",
+            post({
+                let stub = stub.clone();
+                let mode = send_mode.clone();
+                let keys = captured_keys.clone();
+                move |req: axum::http::Request<axum::body::Body>| {
+                    let stub = stub.clone();
+                    let mode = mode.clone();
+                    let keys = keys.clone();
+                    async move {
+                        let (parts, body) = req.into_parts();
+                        let bytes = axum::body::to_bytes(body, 2_000_000).await.unwrap();
+                        let parsed: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
+                        if let Some(key) = parsed["share_key"].as_str() {
+                            keys.lock().unwrap().push(key.to_owned());
+                        }
+                        match mode.swap(0, Ordering::SeqCst) {
+                            1 => (
+                                StatusCode::SERVICE_UNAVAILABLE,
+                                Json(serde_json::json!({"code": "uncertain", "detail": "Temporary timeout"})),
+                            )
+                                .into_response(),
+                            2 => (
+                                StatusCode::CONFLICT,
+                                Json(serde_json::json!({"code": "connection_ended", "detail": "Patient left practice."})),
+                            )
+                                .into_response(),
+                            _ => stub
+                                .oneshot(axum::http::Request::from_parts(
+                                    parts,
+                                    axum::body::Body::from(bytes),
+                                ))
+                                .await
+                                .unwrap(),
+                        }
+                    }
+                }
+            }),
+        )
+        .fallback(move |request: axum::http::Request<axum::body::Body>| {
+            let stub = stub.clone();
+            async move { stub.oneshot(request).await.unwrap() }
+        });
+
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    let site = site_router(shared_site(), api);
+    let server = tokio::spawn(async move { axum::serve(listener, site).await.unwrap() });
+    let base = format!("http://{address}");
+
+    let mut browser = Browser::launch();
+    browser.resize(PHONE);
+    browser.text_until(&format!("{base}/?mode=client&api={base}"), "Lisinopril");
+
+    // Single open record -> Send -> Choosing pre-selects that record alone, then 503 -> Couldn't confirm + Try again.
+    browser.click(r#"button[aria-label="Open Lisinopril"]"#);
+    browser.wait_for("Add note");
+    assert_eq!(
+        browser
+            .page()
+            .run("clickButton", serde_json::json!(["Send"])),
+        true
+    );
+    browser.wait_for("Choose what to send");
+    browser.page().evaluate(
+        "(() => { const boxes = [...document.querySelectorAll('input[type=\"checkbox\"]')]; const d = boxes[boxes.length - 1]; if (d && !d.checked) d.click(); return true; })()",
+    );
+    browser.click(r#"button[aria-label="Send now"]"#);
+    browser.wait_for("Couldn't confirm the send");
+
+    // Retrying with Try again sends exact same share_key and transitions cleanly to Sent.
+    assert_eq!(
+        browser
+            .page()
+            .run("clickButton", serde_json::json!(["Try again"])),
+        true
+    );
+    let after_retry = browser.wait_for("Sent to Northside Primary Care.");
+    assert!(after_retry.contains("Lisinopril"), "{after_retry}");
+    let keys = captured_keys.lock().unwrap().clone();
+    assert_eq!(keys.len(), 2);
+    assert_eq!(
+        keys[0], keys[1],
+        "Try again must reuse the exact same share_key"
+    );
+
+    // Now test COD-51: connection ends while "Couldn't confirm the send" -> Try again disappears,
+    // "Couldn't confirm before connection ended" shown, To send kept.
+    browser.click(r#"button[aria-label="Add note"]"#);
+    wait_for_selector(&mut browser, "textarea");
+    browser.type_into("textarea", "Keep my note if ended.");
+    browser.click(r#"button[aria-label="Save note"]"#);
+    browser.wait_for("Keep my note if ended.");
+    send_mode.store(1, Ordering::SeqCst);
+    browser.click(r#"button[aria-label="Send to Northside Primary Care"]"#);
+    browser.wait_for("Before you send");
+    browser.page().evaluate(
+        "(() => { const boxes = [...document.querySelectorAll('input[type=\"checkbox\"]')]; const d = boxes[boxes.length - 1]; if (d && !d.checked) d.click(); return true; })()",
+    );
+    browser.click(r#"button[aria-label="Send now"]"#);
+    browser.wait_for("Couldn't confirm the send");
+    send_mode.store(2, Ordering::SeqCst);
+    assert_eq!(
+        browser
+            .page()
+            .run("clickButton", serde_json::json!(["Try again"])),
+        true
+    );
+    let cod51_text = browser.wait_for("Couldn't confirm before connection ended");
+    assert!(
+        !cod51_text.contains("Try again"),
+        "Try again must disappear on COD-51:\n{cod51_text}"
+    );
+    assert!(
+        cod51_text.contains("Keep my note if ended."),
+        "To send note must remain:\n{cod51_text}"
+    );
+
+    server.abort();
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]

@@ -451,6 +451,21 @@ fn is_reference_range_key(key: &str) -> bool {
     )
 }
 
+/// Deeply removes any printed lab reference-range keys from a JSON payload so
+/// `"For my doctor"` never displays reference ranges (`intent/duet.md` safety rule).
+pub fn strip_reference_ranges(value: &Value) -> Value {
+    match value {
+        Value::Object(map) => Value::Object(
+            map.iter()
+                .filter(|(k, _)| !is_reference_range_key(k))
+                .map(|(k, v)| (k.clone(), strip_reference_ranges(v)))
+                .collect(),
+        ),
+        Value::Array(items) => Value::Array(items.iter().map(strip_reference_ranges).collect()),
+        other => other.clone(),
+    }
+}
+
 /// Literal record projection, excluding printed lab reference ranges per safety rules.
 pub fn literal_entry(payload: &Value, device: bool) -> Value {
     fn flatten(prefix: &str, value: &Value, out: &mut Vec<String>) {
