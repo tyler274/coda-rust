@@ -49,29 +49,41 @@ does. Features without a folder follow the intent specs alone.
 
 Each feature's browser test lives in its own file named for the feature, such as
 `sign_in_model.rs`, and runs locally and in manually requested CI browser qualification.
-The replay runner uses the TLC jar in `TLA2TOOLS` and the Java in `JAVA` when set; otherwise
-the dev shell's `mise` fetches PStack statechart's pinned TLC and Java. The `statechart` skill
-gives its own command and setup; the feature's verify skill names the model, its charts and its
-browser test.
+The dev shell supplies `mise`; the replay runner installs the statechart skill's pinned TLC
+and Java when they are absent. The `statechart` skill gives its own command and setup; the
+feature's verify skill names the model, its charts and its browser test.
 
 [`model_text.rs`](model_text.rs) holds the test-only guard for skill text against the tools a
 job offers. Chords includes it only in its test builds.
 
 ## Local model runs
 
-Use PStack's `/statechart` skill, including for a model too large to draw. Keep the skill's own
-settings; a separate batch of direct Java invocations can multiply both the work and the memory
-used.
+Use the existing [statechart runner](../.agents/skills/statechart/SKILL.md), including for a
+model too large to draw. Keep the runner's own settings; a separate batch of direct Java
+invocations can multiply both the work and the memory used.
 
-Run one model at a time, for example `/statechart` on
-`verification/physician/message-reply/MessageReply.tla` with its output under
-`target/verification/message-reply`. Give the run
-`JAVA_TOOL_OPTIONS='-Xmx4g -XX:ActiveProcessorCount=2 -XX:+UseParallelGC -XX:ParallelGCThreads=2'`,
-which caps the Java heap at 4 GiB and limits the JVM's processor and garbage-collector threads,
-and stop it after 20 minutes. Use the skill's Java and TLC setup; `JAVA` and `TLA2TOOLS` can
-select an existing installation.
+Run one model at a time. This invocation caps the Java heap at 4 GiB, limits the JVM's
+processor and garbage-collector thread counts, and stops after 20 minutes. The output
+directory must be new or empty. Use the skill's Java and TLC setup; `JAVA` and `TLA2TOOLS`
+can select an existing installation.
 
-The heap limit is not a limit on all process memory. A timeout or resource failure is an
+```sh
+JAVA_TOOL_OPTIONS='-Xmx4g -XX:ActiveProcessorCount=2 -XX:+UseParallelGC -XX:ParallelGCThreads=2' \
+python3 -c '
+import subprocess, sys
+try:
+    result = subprocess.run(sys.argv[1:], timeout=1200)
+except subprocess.TimeoutExpired:
+    print("Model check timed out; incomplete.", file=sys.stderr)
+    sys.exit(124)
+sys.exit(result.returncode)
+' \
+  .agents/skills/statechart/scripts/statechart \
+  verification/physician/message-reply/MessageReply.tla \
+  --out target/verification/message-reply
+```
+
+The heap limit is not a limit on all process memory. A timeout exits with status 124. A timeout or resource failure is an
 incomplete check, never a pass. Preserve the command and available output, then stop; do not
 automatically retry, increase the heap, or launch other cases. Investigate the model and
 execution cost before agreeing a larger budget. Do not reduce model bounds or remove rules
@@ -129,9 +141,14 @@ and still writes the receipt. `--require-complete` exits 3 while anything is mis
 ## PStack
 
 `statechart`, `create-formal-verification-skill`, `maintain-formal-verification-skill`,
-`create-verification-skill` and `maintain-verification-skill` come from the installed
-[PStack plugin](https://github.com/cursor/plugins/tree/main/pstack); the repository vendors
-none of them.
+`create-verification-skill` and `maintain-verification-skill` in `.agents/skills` are
+[PStack at 0b46ec3](https://github.com/cursor/plugins/tree/0b46ec399d55f2829e88822998f53b84944837d3/pstack/skills),
+copied unchanged except that `statechart/scripts/test`, the tool's own test corpus, is left out.
+Their [MIT license](PSTACK-LICENSE) comes with them. The
+[daily check](../.github/workflows/pstack-watch.yml) pushes `codex/update-pstack-skills` and
+opens or refreshes one review PR (or a tracking issue with a compare link when repository
+settings disable Actions PR creation) when these five imported skills change.
+[CI setup](../book/src/release.md#continuous-integration) covers publication.
 
 A verify skill the create skills write goes where [Verify skills](#verify-skills) says, not in
 `.cursor/skills/`. It refers to `statechart` by name and copies none of its commands, options or
