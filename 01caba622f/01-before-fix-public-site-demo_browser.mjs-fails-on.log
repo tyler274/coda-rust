@@ -1,0 +1,114 @@
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.46
+   Compiling rustls-webpki v0.103.16
+   Compiling tokio-rustls v0.26.6
+   Compiling hyper-rustls v0.27.10
+   Compiling reqwest v0.12.28
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/http)
+   Compiling public-site v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/public-site)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 14.23s
+     Running tests/site.rs (/tmp/coda-target-physician-ui/debug/deps/site-10487fcb76880159)
+
+running 3 tests
+ INFO Book building has started
+ INFO Running the html backend
+   Compiling ring v0.17.14
+ INFO HTML book written to `/tmp/nix-shell.bCv3fh/coda-public-site-browser-export-244604/coda-rust/book`
+   Compiling rustls v0.23.46
+   Compiling rustls-webpki v0.103.16
+   Compiling tokio-rustls v0.26.6
+   Compiling hyper-rustls v0.27.10
+   Compiling reqwest v0.12.28
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/http)
+   Compiling public-site v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/public-site)
+Screenshot: /tmp/nix-shell.bCv3fh/public-site-screenshots/desktop.png
+Screenshot: /tmp/nix-shell.bCv3fh/public-site-screenshots/coda-rust-desktop.png
+desktop: content, assets, overflow, navigation and motion passed
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 14.20s
+     Running `/tmp/coda-target-physician-ui/debug/public-site --export-dir /tmp/nix-shell.bCv3fh/coda-public-site-demo-export-244604/coda-rust --base-path /coda-rust --origin 'https://tyler274.github.io/coda-rust' --physician-demo`
+desktop: content, assets, overflow, navigation and motion passed
+ INFO Book building has started
+ INFO Running the html backend
+ INFO HTML book written to `/tmp/nix-shell.bCv3fh/coda-public-site-demo-export-244604/coda-rust/book`
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.26s
+     Running `/tmp/coda-target-physician-ui/debug/seed_demo_db --units /home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/patients/units --out /tmp/nix-shell.bCv3fh/coda-public-site-demo-export-244604/coda-rust/physician/demo.sqlite --limit 60`
+Screenshot: /tmp/nix-shell.bCv3fh/public-site-screenshots/mobile.png
+Seeded 39 patients into /tmp/nix-shell.bCv3fh/coda-public-site-demo-export-244604/coda-rust/physician/demo.sqlite
+Screenshot: /tmp/nix-shell.bCv3fh/public-site-screenshots/coda-rust-mobile.png
+    Finished `release` profile [optimized] target(s) in 1.94s
+mobile: content, assets, overflow, navigation and motion passed
+mobile: content, assets, overflow, navigation and motion passed
+Screenshot: /tmp/nix-shell.bCv3fh/public-site-screenshots/reduced.png
+reduced: content, assets, overflow, navigation and motion passed
+Screenshot: /tmp/nix-shell.bCv3fh/public-site-screenshots/no-script.png
+no-script: content, assets, overflow, navigation and motion passed
+test desktop_mobile_motion_reduced_motion_and_static_fallback ... ok
+Screenshot: /tmp/nix-shell.bCv3fh/public-site-screenshots/coda-rust-reduced.png
+reduced: content, assets, overflow, navigation and motion passed
+Screenshot: /tmp/nix-shell.bCv3fh/public-site-screenshots/coda-rust-no-script.png
+no-script: content, assets, overflow, navigation and motion passed
+test exported_subpath_site_serves_zero_404s_and_renders_in_chromium ... ok
+file:///home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/public-site/tests/demo_browser.mjs:53
+    throw new Error(`Timed out waiting for: ${desc}\nBody:\n${await evaluate('document.body?.innerText.slice(0, 600) || ""')}`);
+          ^
+
+Error: Timed out waiting for: citation reader open
+Body:
+Today
+Updates
+Messages to match
+Find patient
+⌘ K
+Gary Kowalczyk
+New conversation
+Conversations
+Pre-visit chart brief
+Dr. Hannah Alvarez
+SQLite demo
+Reset demo
+Keyboard shortcuts
+Now
+Lyle Haskins
+Patient messaged about exertional shortness of breath
+Open
+Gary Kowalczyk
+Remove from panel
+Age 65 years
+DOB May 11, 1961
+Gender Unspecified
+MRN MRN00001101
+Records as of Today, 3:00 PM
+Primary EHR · As of Today, 3:00 PM
+Needs you
+Gary Kowalczyk
+Needs you now
+LDL 130 on atorvastatin 20 mg with PAD & diabetes
+1 h
+Spruce messages
+
+Coda couldn’t load messages for this patient.
+
+Try again
+Patient replies
+R
+    at until (file:///home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/public-site/tests/demo_browser.mjs:53:11)
+    at async file:///home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/public-site/tests/demo_browser.mjs:92:3
+
+Node.js v22.23.3
+test exported_subpath_browser_sql_demo_e2e ... FAILED
+
+failures:
+
+---- exported_subpath_browser_sql_demo_e2e stdout ----
+
+thread 'exported_subpath_browser_sql_demo_e2e' (244606) panicked at crates/public-site/tests/site.rs:183:5:
+Chromium exported /coda-rust/ browser SQLite demo E2E failed
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    exported_subpath_browser_sql_demo_e2e
+
+test result: FAILED. 2 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 46.97s
+
+error: test failed, to rerun pass `-p public-site --test site`

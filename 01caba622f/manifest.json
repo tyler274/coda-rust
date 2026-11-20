@@ -1,0 +1,82 @@
+{
+  "branch": "fix-cod-4-browser-qualification",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "before fix: public-site demo_browser.mjs fails on stale .reader.citation-inspection selector",
+      "kind": "run",
+      "revision": "287b547ae590b9ca2d011035c204a94044511ac0",
+      "dirty": true,
+      "recorded": "2026-11-20T07:06:53+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "public-site",
+        "--test",
+        "site",
+        "--",
+        "--ignored"
+      ],
+      "expect": "Timed out waiting for: citation reader open",
+      "expect_fail": true,
+      "files": [
+        "01-before-fix-public-site-demo_browser.mjs-fails-on.log"
+      ],
+      "seconds": 61.4,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "01caba622ff0ef70e8c1e430b36881a1beac27dc",
+        "reason": "deliberately before the fix: public-site demo_browser.mjs timed out on stale .reader.citation-inspection selector"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Workspace gates: fmt, shell syntax, book links, boundaries, host+wasm clippy",
+      "kind": "run",
+      "revision": "01caba622ff0ef70e8c1e430b36881a1beac27dc",
+      "dirty": false,
+      "recorded": "2026-11-20T07:18:27+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo fmt --all --check\nbash -n scripts/build-pages-site.sh scripts/dev-check.sh\nbash scripts/check-book-links.sh\ncargo clippy --locked --workspace --all-targets -- -D warnings\ncargo clippy --locked -p physician-app -p duet-app -p mobile -p ui-gallery -p extension-popup --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web,extension-popup/web -- -D warnings\ncargo test --locked -p boundaries\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-Workspace-gates-fmt-shell-syntax-book-links-boun.log"
+      ],
+      "seconds": 91.3,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC1",
+      "label": "Full Chromium qualification via scripts/dev-check.sh --browser (physician-sample, public-site, mobile, ui-gallery, extension-popup)",
+      "kind": "run",
+      "revision": "01caba622ff0ef70e8c1e430b36881a1beac27dc",
+      "dirty": false,
+      "recorded": "2026-11-20T07:19:59+00:00",
+      "command": [
+        "bash",
+        "scripts/dev-check.sh",
+        "--browser"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-Full-Chromium-qualification-via-scripts-dev-chec.log"
+      ],
+      "seconds": 1030.1,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}

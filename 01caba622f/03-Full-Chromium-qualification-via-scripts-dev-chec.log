@@ -1,0 +1,959 @@
+
+==> [dev-check] fmt
+
+==> [dev-check] postgres-cluster
+dev-check: disposable Postgres ready on 127.0.0.1:36589 (/tmp/nix-shell.sJxI4O/coda-pg.MIv8oX)
+
+==> [dev-check] browser
+   Compiling physician-sample v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 41.72s
+     Running tests/auth_browser.rs (/tmp/coda-target-physician-ui/debug/deps/auth_browser-446f7918dafe3112)
+
+running 4 tests
+test a_sign_out_answered_after_you_signed_in_again_elsewhere_keeps_the_new_session ...     Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.14s
+ok
+test an_ended_session_replaces_the_page_and_signing_in_again_opens_today ... ok
+test sign_in_and_sign_out_walk_the_browser ... ok
+test the_sign_in_screen_holds_the_phone_and_reduced_motion_viewports ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 23.15s
+
+     Running tests/reply_revision.rs (/tmp/coda-target-physician-ui/debug/deps/reply_revision-cab55be9a5e8523d)
+
+running 1 test
+test the_synthetic_reply_revises_in_the_browser_across_two_sites ...     Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.02s
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 9 filtered out; finished in 28.98s
+
+     Running tests/shell_states.rs (/tmp/coda-target-physician-ui/debug/deps/shell_states-923421121dea959e)
+
+running 1 test
+test every_shell_screen_keeps_its_controls_and_states ...     Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.92s
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 41.30s
+
+     Running tests/sign_in_model.rs (/tmp/coda-target-physician-ui/debug/deps/sign_in_model-bff17bff4a3eaba3)
+
+running 1 test
+test the_sign_in_model_s_bug_paths_hold_in_two_tabs ...     Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.98s
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 26.15s
+
+     Running tests/sign_in_states.rs (/tmp/coda-target-physician-ui/debug/deps/sign_in_states-41cbd3f240a7fd4d)
+
+running 1 test
+test every_sign_in_stage_keeps_its_words_and_its_way_on ...     Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.95s
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 23.47s
+
+     Running tests/site.rs (/tmp/coda-target-physician-ui/debug/deps/site-2a5d4935d7a9804d)
+
+running 25 tests
+test a_draft_keeps_a_threshold_that_markdown_would_read_as_a_quote ...     Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.91s
+ok
+test a_new_conversation_is_listed_after_a_reload_without_its_address ... ok
+test a_quiet_page_keeps_its_change_stream_and_a_silent_one_is_dropped_and_read_again ... ok
+test a_read_asked_a_new_question_shows_loading_until_that_answer_lands ... ok
+test a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it ... ok
+test a_reply_draft_reads_as_written_and_copies_its_own_words ... ok
+test a_reply_draws_code_and_a_table_that_scroll_by_key ... ok
+test a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat ... ok
+test authenticated_practice_isolation_clinic_demographics_and_panel_assignment ... ok
+test collapsed_orb_and_persistent_now_banner_across_pages_and_motion_modes ... ok
+test drafts_survive_site_restart_in_independent_browser_sessions ... ok
+test feedback_stays_on_its_response_across_site_restart ... ok
+test find_patient_and_patient_page_enforce_practice_panel_and_source_states ... ok
+test first_source_path_renders_saved_patient_summary_and_evidence_without_private_operating_index ... ok
+test held_limits_and_provider_blocks_render_without_a_partial_answer ... ok
+test keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_command ... ok
+test mailed_sign_in_link_round_trips_through_the_public_mount ... ok
+test p1_citations_panel_archive_discuss_dictation_and_finder ... ok
+test p1_composer_queue_stop_steps_retry_and_provenance ... ok
+test past_conversations_and_work_reopen_across_restart_mark_newer_records_and_enforce_access ... ok
+test sign_out_stays_on_screen_and_a_long_recent_list_scrolls ... ok
+test the_first_event_connection_reads_changes_after_the_initial_snapshot ... ok
+test the_practice_and_its_patients_are_visible ... ok
+test the_same_bundle_runs_under_a_stripped_physician_prefix_and_reconnects ... ok
+test the_sidebar_is_a_closed_drawer_on_a_phone_and_a_rail_beside_the_page_otherwise ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 229.29s
+
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.46
+   Compiling rustls-webpki v0.103.16
+   Compiling tokio-rustls v0.26.6
+   Compiling hyper-rustls v0.27.10
+   Compiling reqwest v0.12.28
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/http)
+   Compiling public-site v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/public-site)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.73s
+     Running tests/site.rs (/tmp/coda-target-physician-ui/debug/deps/site-10487fcb76880159)
+
+running 3 tests
+ INFO Book building has started
+ INFO Running the html backend
+   Compiling ring v0.17.14
+ INFO HTML book written to `/tmp/nix-shell.sJxI4O/coda-public-site-browser-export-461978/coda-rust/book`
+   Compiling rustls v0.23.46
+   Compiling rustls-webpki v0.103.16
+   Compiling tokio-rustls v0.26.6
+   Compiling hyper-rustls v0.27.10
+   Compiling reqwest v0.12.28
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/http)
+   Compiling public-site v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/public-site)
+Screenshot: /tmp/nix-shell.sJxI4O/public-site-screenshots/desktop.png
+Screenshot: /tmp/nix-shell.sJxI4O/public-site-screenshots/coda-rust-desktop.png
+desktop: content, assets, overflow, navigation and motion passed
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 14.28s
+desktop: content, assets, overflow, navigation and motion passed
+     Running `/tmp/coda-target-physician-ui/debug/public-site --export-dir /tmp/nix-shell.sJxI4O/coda-public-site-demo-export-461978/coda-rust --base-path /coda-rust --origin 'https://tyler274.github.io/coda-rust' --physician-demo`
+ INFO Book building has started
+ INFO Running the html backend
+ INFO HTML book written to `/tmp/nix-shell.sJxI4O/coda-public-site-demo-export-461978/coda-rust/book`
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.31s
+     Running `/tmp/coda-target-physician-ui/debug/seed_demo_db --units /home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/patients/units --out /tmp/nix-shell.sJxI4O/coda-public-site-demo-export-461978/coda-rust/physician/demo.sqlite --limit 60`
+Screenshot: /tmp/nix-shell.sJxI4O/public-site-screenshots/mobile.png
+Seeded 39 patients into /tmp/nix-shell.sJxI4O/coda-public-site-demo-export-461978/coda-rust/physician/demo.sqlite
+Screenshot: /tmp/nix-shell.sJxI4O/public-site-screenshots/coda-rust-mobile.png
+    Finished `release` profile [optimized] target(s) in 2.07s
+mobile: content, assets, overflow, navigation and motion passed
+mobile: content, assets, overflow, navigation and motion passed
+Screenshot: /tmp/nix-shell.sJxI4O/public-site-screenshots/reduced.png
+reduced: content, assets, overflow, navigation and motion passed
+Screenshot: /tmp/nix-shell.sJxI4O/public-site-screenshots/no-script.png
+no-script: content, assets, overflow, navigation and motion passed
+test desktop_mobile_motion_reduced_motion_and_static_fallback ... ok
+Browser SQLite Chords demo E2E passed with 0 errors and 0 HTTP failures.
+test exported_subpath_browser_sql_demo_e2e ... ok
+Screenshot: /tmp/nix-shell.sJxI4O/public-site-screenshots/coda-rust-reduced.png
+reduced: content, assets, overflow, navigation and motion passed
+Screenshot: /tmp/nix-shell.sJxI4O/public-site-screenshots/coda-rust-no-script.png
+no-script: content, assets, overflow, navigation and motion passed
+test exported_subpath_site_serves_zero_404s_and_renders_in_chromium ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 29.53s
+
+   Compiling subtle v2.6.1
+   Compiling num-traits v0.2.19
+   Compiling futures-util v0.3.34
+   Compiling tokio v1.54.1
+   Compiling serde v1.0.229
+   Compiling uuid v1.29.2
+   Compiling digest v0.11.3
+   Compiling crypto-common v0.1.7
+   Compiling ring v0.17.14
+   Compiling rustls-pki-types v1.15.1
+   Compiling form_urlencoded v1.2.2
+   Compiling tracing-core v0.1.36
+   Compiling slab v0.4.12
+   Compiling serde_json v1.0.154
+   Compiling time v0.3.55
+   Compiling futures-channel v0.3.34
+   Compiling rand v0.10.4
+   Compiling digest v0.10.7
+   Compiling aho-corasick v1.1.5
+   Compiling hmac v0.13.0
+   Compiling sha2 v0.11.1
+   Compiling md-5 v0.11.0
+   Compiling sea-query-derive v1.0.0
+   Compiling webpki-roots v1.0.10
+   Compiling serde_with v3.24.0
+   Compiling opentelemetry v0.33.1
+   Compiling either v1.19.0
+   Compiling smallvec v1.16.3
+   Compiling url v2.5.8
+   Compiling sha2 v0.10.9
+   Compiling tracing v0.1.44
+   Compiling hkdf v0.13.0
+   Compiling duet-health v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-health)
+   Compiling duet-notify v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-notify)
+   Compiling duet-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-client)
+   Compiling tower-http v0.7.1
+   Compiling roxmltree v0.21.2
+   Compiling icu_normalizer v2.3.0
+   Compiling parking_lot_core v0.9.12
+   Compiling chrono v0.4.45
+   Compiling rust_decimal v1.43.0
+   Compiling atoi v2.0.0
+   Compiling itertools v0.14.0
+   Compiling regex-automata v0.4.18
+   Compiling euclid v0.22.14
+   Compiling ordered-float v4.6.0
+   Compiling parking_lot v0.12.5
+   Compiling idna_adapter v1.2.2
+   Compiling num-integer v0.1.47
+   Compiling tracing-opentelemetry v0.34.0
+   Compiling idna v1.1.0
+   Compiling futures-intrusive v0.5.0
+   Compiling num-bigint v0.4.8
+   Compiling dioxus-core v0.7.10
+   Compiling futures-executor v0.3.34
+   Compiling prost-derive v0.14.6
+   Compiling opentelemetry_sdk v0.33.1
+   Compiling simple_asn1 v0.6.4
+   Compiling regex v1.13.1
+   Compiling jsonwebtoken v11.1.0
+   Compiling pluralizer v0.5.0
+   Compiling sea-orm-macros v2.0.4
+   Compiling dioxus-signals v0.7.10
+   Compiling dioxus-history v0.7.10
+   Compiling tokio-stream v0.1.19
+   Compiling hyper v1.12.0
+   Compiling tower v0.5.3
+   Compiling tokio-util v0.7.20
+   Compiling dioxus-hooks v0.7.10
+   Compiling dioxus-stores v0.7.10
+   Compiling tower-http v0.6.11
+   Compiling dioxus-html v0.7.10
+   Compiling rustls v0.23.46
+   Compiling hyper-util v0.1.21
+   Compiling dioxus-document v0.7.10
+   Compiling axum v0.8.9
+   Compiling reqwest v0.13.5
+   Compiling rustls-webpki v0.103.16
+   Compiling dioxus v0.7.10
+   Compiling ui v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/ui)
+   Compiling sea-query v1.0.2
+   Compiling opentelemetry-http v0.33.1
+   Compiling prost v0.14.6
+   Compiling opentelemetry-proto v0.33.1
+   Compiling tokio-rustls v0.26.6
+   Compiling sqlx-core v0.9.0
+   Compiling hyper-rustls v0.27.10
+   Compiling lettre v0.11.24
+   Compiling reqwest v0.12.28
+   Compiling opentelemetry-otlp v0.33.1
+   Compiling duet_wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-wire)
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/http)
+   Compiling harness v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/harness)
+   Compiling telemetry v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/telemetry)
+   Compiling gmail v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/gmail)
+   Compiling physician-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/physician-client)
+   Compiling sqlx-postgres v0.9.0
+   Compiling physician-app v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/physician-app)
+   Compiling sqlx-macros-core v0.9.0
+   Compiling sqlx-macros v0.9.0
+   Compiling duet-stub v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-stub)
+   Compiling duet-app v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-app)
+   Compiling sqlx v0.9.0
+   Compiling sea-query-sqlx v0.9.1
+   Compiling sea-schema v0.18.1
+   Compiling sea-orm v2.0.4
+   Compiling sea-orm-migration v2.0.4
+   Compiling front-door v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/front-door)
+   Compiling clinical-library v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/clinical-library)
+   Compiling mobile v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/mobile)
+   Compiling duet-api v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-api)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 54.53s
+     Running tests/browser.rs (/tmp/coda-target-physician-ui/debug/deps/browser-317cdb29a22eb98e)
+
+running 4 tests
+test a_browser_boots_and_reads_a_page ... ok
+test click_and_type_reach_the_page ... ok
+test two_browsers_take_two_ports ... ok
+test viewports_resize_and_motion_emulates ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.30s
+
+     Running tests/duet_journey.rs (/tmp/coda-target-physician-ui/debug/deps/duet_journey-76e02fc93e027296)
+
+running 9 tests
+test durable_doctor::saved_page_publishes_and_revokes_through_real_durable_routes ...     Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.58s
+
+running 1 test
+
+running 1 test
+ok
+test durable_doctor::switching_accounts_shows_only_the_current_patients_imported_measurements ...     Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.26s
+
+running 1 test
+ok
+test patient_tabs_do_not_offer_or_request_physician_sharing ...    Compiling duet-app v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-app)
+   Compiling mobile v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/mobile)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.71s
+ok
+test session_refusal::definitive_refusal_unmounts_private_content ... ok
+test session_refusal::late_a_refusal_cannot_end_mounted_b_session ... ok
+test shared_tries_a_failed_workspace_read_again ... ok
+test the_duet_journey_runs_on_a_live_stub_backend ... ok
+test the_mode_switch_walks_the_tabs_in_the_browser ... ok
+test you_search_trends_duplicates_and_conditions_in_browser ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 39.33s
+
+     Running tests/mode.rs (/tmp/coda-target-physician-ui/debug/deps/mode-5b150743b5de7634)
+
+running 1 test
+test duet_shell_renders_only_duet_without_mode_chooser ...    Compiling duet-app v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-app)
+   Compiling mobile v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/mobile)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 5.23s
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.06s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.47s
+     Running tests/sections.rs (/tmp/coda-target-physician-ui/debug/deps/sections-d8be412cc0b9c2d9)
+
+running 30 tests
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.94s
+UI gallery: http://127.0.0.1:41685/
+127.0.0.1 - - [20/Nov/2026 00:30:48] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:30:48] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:30:48] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:30:48] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:30:48] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:30:48] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:30:48] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:30:48] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:30:48] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test a_dialog_opens_modally_and_escape_closes_it ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.86s
+UI gallery: http://127.0.0.1:42427/
+127.0.0.1 - - [20/Nov/2026 00:30:57] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:30:57] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:30:57] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:30:57] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:30:57] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:30:57] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:30:57] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:30:57] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:30:57] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test a_busy_button_keeps_its_size_and_shows_its_wait ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.86s
+UI gallery: http://127.0.0.1:33681/
+127.0.0.1 - - [20/Nov/2026 00:31:07] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:07] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:07] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:07] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:07] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:07] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:07] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:07] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:07] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test a_menu_moves_by_its_keys_and_closes_on_a_choice ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.85s
+UI gallery: http://127.0.0.1:34735/
+127.0.0.1 - - [20/Nov/2026 00:31:16] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:16] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:16] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:16] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:16] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:16] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:16] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:16] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:16] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test a_press_while_the_stacks_own_step_travels_is_kept ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.85s
+UI gallery: http://127.0.0.1:42337/
+127.0.0.1 - - [20/Nov/2026 00:31:29] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:29] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:29] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:29] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:29] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:29] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:29] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:29] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:29] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test a_message_that_gains_its_status_and_actions_keeps_its_opened_steps ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.85s
+UI gallery: http://127.0.0.1:39593/
+127.0.0.1 - - [20/Nov/2026 00:31:37] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:37] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:37] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:37] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:37] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:37] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:37] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:37] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:37] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test a_moving_selection_fill_goes_on_from_where_it_is ... ok
+test a_passage_in_a_labelled_part_and_a_field_are_both_marked has been running for over 60 seconds
+test a_place_that_cant_be_found_gives_its_notice_and_marks_nothing has been running for over 60 seconds
+test a_preview_hears_the_page_until_it_goes has been running for over 60 seconds
+test a_refused_copy_stays_uncopied_and_says_why has been running for over 60 seconds
+test a_ring_fills_only_once_it_is_chosen has been running for over 60 seconds
+test a_sheet_springs_back_from_a_short_drag_and_goes_from_a_long_one has been running for over 60 seconds
+test a_whole_record_citation_marks_nothing_and_gives_no_notice has been running for over 60 seconds
+test an_unknown_address_opens_the_first_section has been running for over 60 seconds
+test copy_puts_the_words_on_the_clipboard has been running for over 60 seconds
+test every_section_opens_at_desktop_and_phone_sizes has been running for over 60 seconds
+test keys_scroll_a_code_block has been running for over 60 seconds
+test keys_scroll_a_prose_table has been running for over 60 seconds
+test links_and_going_back_change_the_section has been running for over 60 seconds
+test replay_entries_remounts_the_section has been running for over 60 seconds
+test slow_motion_changes_the_pace_of_running_animations has been running for over 60 seconds
+test the_native_scripts_run_every_kind_of_behaviour_and_say_why_they_cant has been running for over 60 seconds
+test the_screen_stack_goes_back_by_history_and_keeps_each_screen_as_it_was has been running for over 60 seconds
+test the_transcript_and_the_composer_share_their_edges has been running for over 60 seconds
+test tiles_spinners_and_retries_show_their_states has been running for over 60 seconds
+test two_cited_fields_are_both_marked has been running for over 60 seconds
+test two_cited_passages_are_both_marked_and_the_first_is_in_view has been running for over 60 seconds
+test under_reduced_motion_a_closed_screen_fades_out_on_android has been running for over 60 seconds
+test under_reduced_motion_a_closing_popover_fades_without_scaling has been running for over 60 seconds
+test under_reduced_motion_a_pending_line_still_waits_before_it_shows has been running for over 60 seconds
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.84s
+UI gallery: http://127.0.0.1:33721/
+127.0.0.1 - - [20/Nov/2026 00:31:48] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:48] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:48] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:48] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:48] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:48] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:48] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:48] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:48] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test a_passage_in_a_labelled_part_and_a_field_are_both_marked ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.86s
+UI gallery: http://127.0.0.1:34893/
+127.0.0.1 - - [20/Nov/2026 00:31:58] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:58] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:58] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:58] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:58] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:58] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:58] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:58] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:31:58] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test a_place_that_cant_be_found_gives_its_notice_and_marks_nothing ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.88s
+UI gallery: http://127.0.0.1:39487/
+127.0.0.1 - - [20/Nov/2026 00:32:09] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:09] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:09] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:09] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:09] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:09] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:09] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:09] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:09] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test a_ring_fills_only_once_it_is_chosen ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.86s
+UI gallery: http://127.0.0.1:46467/
+127.0.0.1 - - [20/Nov/2026 00:32:19] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:19] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:19] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:19] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:19] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:19] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:19] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:19] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:19] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test a_preview_hears_the_page_until_it_goes ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.86s
+UI gallery: http://127.0.0.1:45685/
+127.0.0.1 - - [20/Nov/2026 00:32:28] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:28] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:28] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:28] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:28] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:28] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:28] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:28] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:28] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test a_refused_copy_stays_uncopied_and_says_why ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.89s
+UI gallery: http://127.0.0.1:40067/
+127.0.0.1 - - [20/Nov/2026 00:32:36] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:36] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:36] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:36] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:36] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:36] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:36] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:36] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:36] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test a_sheet_springs_back_from_a_short_drag_and_goes_from_a_long_one ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.85s
+UI gallery: http://127.0.0.1:45627/
+127.0.0.1 - - [20/Nov/2026 00:32:47] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:47] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:47] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:47] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:47] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:47] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:47] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:47] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:47] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:47] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:32:47] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:32:47] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:32:47] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:32:47] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:32:47] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:32:47] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:32:47] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:32:47] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test an_unknown_address_opens_the_first_section ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.88s
+UI gallery: http://127.0.0.1:34633/
+127.0.0.1 - - [20/Nov/2026 00:32:55] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:55] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:55] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:55] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:55] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:55] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:55] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:55] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:32:55] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test keys_scroll_a_prose_table ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.86s
+UI gallery: http://127.0.0.1:39331/
+127.0.0.1 - - [20/Nov/2026 00:33:08] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:08] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:08] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:08] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:08] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:08] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:08] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:08] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:08] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test keys_scroll_a_code_block ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.85s
+UI gallery: http://127.0.0.1:33445/
+127.0.0.1 - - [20/Nov/2026 00:33:20] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:20] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:20] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:20] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:20] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:20] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:20] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:20] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:20] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test a_whole_record_citation_marks_nothing_and_gives_no_notice ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.88s
+UI gallery: http://127.0.0.1:42487/
+127.0.0.1 - - [20/Nov/2026 00:33:31] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:31] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:31] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:31] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:31] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:31] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:31] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:31] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:31] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test copy_puts_the_words_on_the_clipboard ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.86s
+UI gallery: http://127.0.0.1:34743/
+127.0.0.1 - - [20/Nov/2026 00:33:39] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:39] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:39] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:39] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:39] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:39] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:39] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:39] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:39] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:40] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:40] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:40] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:40] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:40] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:40] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:40] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:40] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:40] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:42] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:42] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:42] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:42] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:42] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:42] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:42] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:42] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:42] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:44] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:44] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:44] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:44] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:44] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:44] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:44] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:44] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:44] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:46] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:46] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:46] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:46] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:46] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:46] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:46] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:46] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:46] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:48] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:48] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:48] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:48] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:48] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:48] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:48] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:48] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:48] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:50] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:50] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:50] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:50] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:50] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:50] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:50] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:50] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:50] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:52] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:52] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:52] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:52] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:52] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:52] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:52] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:52] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:52] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:54] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:54] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:54] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:54] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:54] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:54] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:54] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:54] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:54] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:57] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:57] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:57] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:57] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:57] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:57] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:57] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:57] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:57] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:33:59] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:59] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:59] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:59] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:59] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:59] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:59] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:59] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:33:59] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:01] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:01] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:01] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:01] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:01] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:01] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:01] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:01] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:01] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:03] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:03] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:03] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:03] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:03] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:03] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:03] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:03] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:03] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:05] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:05] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:05] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:05] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:05] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:05] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:05] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:05] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:05] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:07] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:07] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:07] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:07] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:07] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:07] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:07] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:07] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:07] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:09] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:09] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:09] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:09] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:09] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:09] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:09] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:09] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:09] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:12] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:12] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:12] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:12] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:12] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:12] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:12] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:12] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:12] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:14] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:16] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:16] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:16] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:16] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:16] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:16] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:16] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:16] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:16] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:18] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:20] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:20] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:20] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:20] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:20] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:20] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:20] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:20] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:20] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:22] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:24] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:24] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:24] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:24] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:24] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:24] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:24] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:24] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:24] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:26] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:29] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:29] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:29] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:29] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:29] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:29] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:29] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:29] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:29] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:31] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:33] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:35] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:35] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:35] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:35] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:35] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:35] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:35] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:35] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:35] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:37] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:39] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:41] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:41] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:41] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:41] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:41] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:41] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:41] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:41] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:41] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:44] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:46] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:48] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:48] "GET /ui-gallery.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:48] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:48] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:48] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:48] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:48] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:48] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 304 -
+127.0.0.1 - - [20/Nov/2026 00:34:48] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:34:50] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test every_section_opens_at_desktop_and_phone_sizes ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.89s
+UI gallery: http://127.0.0.1:34731/
+127.0.0.1 - - [20/Nov/2026 00:35:00] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:00] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:00] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:00] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:00] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:00] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:00] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:00] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:00] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test slow_motion_changes_the_pace_of_running_animations ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.88s
+UI gallery: http://127.0.0.1:37099/
+127.0.0.1 - - [20/Nov/2026 00:35:09] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:09] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:09] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:09] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:09] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:09] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:09] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:09] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:09] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test links_and_going_back_change_the_section ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.85s
+UI gallery: http://127.0.0.1:44101/
+127.0.0.1 - - [20/Nov/2026 00:35:17] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:17] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:17] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:17] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:17] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:17] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:17] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:17] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:17] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:20] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:20] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:20] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:20] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:20] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:20] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:20] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:20] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:20] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:22] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:22] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:22] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:22] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:22] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:22] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:22] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:22] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:22] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:24] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:24] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:24] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:24] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:24] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:24] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:24] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:24] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:24] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test the_transcript_and_the_composer_share_their_edges ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.89s
+UI gallery: http://127.0.0.1:42629/
+127.0.0.1 - - [20/Nov/2026 00:35:35] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:35] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:35] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:35] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:35] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:35] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:35] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:35] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:35] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test the_native_scripts_run_every_kind_of_behaviour_and_say_why_they_cant ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.85s
+UI gallery: http://127.0.0.1:45013/
+127.0.0.1 - - [20/Nov/2026 00:35:43] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:43] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:43] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:43] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:43] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:43] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:43] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:43] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:43] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test replay_entries_remounts_the_section ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.85s
+UI gallery: http://127.0.0.1:42039/
+127.0.0.1 - - [20/Nov/2026 00:35:56] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:56] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:56] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:56] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:56] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:56] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:56] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:56] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:35:56] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test two_cited_fields_are_both_marked ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.86s
+UI gallery: http://127.0.0.1:42313/
+127.0.0.1 - - [20/Nov/2026 00:36:06] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:06] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:06] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:06] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:06] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:06] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:06] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:06] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:06] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test tiles_spinners_and_retries_show_their_states ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.83s
+UI gallery: http://127.0.0.1:41789/
+127.0.0.1 - - [20/Nov/2026 00:36:16] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:16] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:16] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:16] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:16] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:16] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:16] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:16] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:16] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test the_screen_stack_goes_back_by_history_and_keeps_each_screen_as_it_was ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.85s
+UI gallery: http://127.0.0.1:42667/
+127.0.0.1 - - [20/Nov/2026 00:36:31] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:31] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:31] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:31] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:31] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:31] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:31] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:31] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:31] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test two_cited_passages_are_both_marked_and_the_first_is_in_view ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.88s
+UI gallery: http://127.0.0.1:36597/
+127.0.0.1 - - [20/Nov/2026 00:36:42] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:42] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:42] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:42] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:42] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:42] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:42] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:42] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:42] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test under_reduced_motion_a_closed_screen_fades_out_on_android ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.87s
+UI gallery: http://127.0.0.1:33223/
+127.0.0.1 - - [20/Nov/2026 00:36:51] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:51] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:51] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:51] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:51] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:51] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:51] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:51] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:36:51] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test under_reduced_motion_a_closing_popover_fades_without_scaling ... ok
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.83s
+UI gallery: http://127.0.0.1:46809/
+127.0.0.1 - - [20/Nov/2026 00:37:00] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:37:00] "GET /ui-gallery.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:37:00] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:37:00] "GET /snippets/dioxus-interpreter-js-20451f6aefec841d/src/js/set_attribute.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:37:00] "GET /snippets/dioxus-cli-config-74c4aa43f52789a0/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:37:00] "GET /snippets/dioxus-web-eae67878b22d6805/inline0.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:37:00] "GET /snippets/dioxus-web-eae67878b22d6805/src/js/eval.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:37:00] "GET /snippets/ui-61ce48900b6d97a6/assets/behaviour.js HTTP/1.1" 200 -
+127.0.0.1 - - [20/Nov/2026 00:37:00] "GET /ui-gallery_bg.wasm HTTP/1.1" 200 -
+test under_reduced_motion_a_pending_line_still_waits_before_it_shows ... ok
+
+test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 381.90s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.46s
+     Running tests/popup.rs (/tmp/coda-target-physician-ui/debug/deps/popup-15dce00f1531492f)
+
+running 1 test
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.85s
+test the_popup_runs_under_its_own_page_policy ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.04s
+
+
+Stage                    Result   Duration
+------------------------ ------   --------
+fmt                      PASS     1m14s
+postgres-cluster         PASS     1s
+browser                  PASS     15m55s
+------------------------ ------   --------
+TOTAL                    PASS     17m10s
