@@ -38,6 +38,7 @@ pub async fn serve_isolated(configure: impl FnOnce()) -> IsolatedServer {
     ));
     let _ = std::fs::remove_dir_all(&state);
     std::fs::create_dir_all(&state).expect("temporary physician state");
+    let prev_physician_database_url = std::env::var_os("PHYSICIAN_DATABASE_URL");
     // SAFETY: every server start in this binary holds `START` while it
     // mutates the environment and until the server has read it.
     unsafe {
@@ -73,6 +74,16 @@ pub async fn serve_isolated(configure: impl FnOnce()) -> IsolatedServer {
     let patients = physician_sample::patients::MemoryPatients::fixture();
     tokio::spawn(async move { physician_sample::serve_holding(listener, patients).await });
     wait_until_serving(address).await;
+    // Restore the caller's process database gate after the spawned server has
+    // captured its env snapshot, so isolated fixture tests do not strip
+    // PHYSICIAN_DATABASE_URL from subsequent Postgres browser tests.
+    // SAFETY: `_start` is still held here until this function returns.
+    unsafe {
+        match prev_physician_database_url {
+            Some(url) => std::env::set_var("PHYSICIAN_DATABASE_URL", url),
+            None => std::env::remove_var("PHYSICIAN_DATABASE_URL"),
+        }
+    }
     IsolatedServer { address, state }
 }
 

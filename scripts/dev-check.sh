@@ -1,25 +1,32 @@
 #!/usr/bin/env bash
 # Fast crate-scoped formatting, Clippy, and unit test runner for local iteration.
-# Defaults to modified crates (working tree, or HEAD~1..HEAD when clean); pass
-# --base <ref>, --all, or --pre-commit (staged index only, skipping cargo test).
+# Defaults to modified crates (working tree, or HEAD~1..HEAD when clean).
+# Pass --base <ref>, --all, --pre-commit (staged index only, skipping cargo test),
+# --ci (full local CI pass against an isolated disposable Postgres cluster), or
+# --browser (Chromium qualification, or combined with --ci on the same cluster).
 set -euo pipefail
 
 root=$(git rev-parse --show-toplevel)
 cd "$root"
 
+orig_args=("$@")
 mode="local"
 base_ref=""
+run_ci=0
+run_browser=0
 while [ "$#" -gt 0 ]; do
   case "$1" in
     --pre-commit) mode="pre-commit" ;;
     --all) mode="all" ;;
+    --ci) run_ci=1 ;;
+    --browser) run_browser=1 ;;
     --base)
       shift
       base_ref="${1:?--base requires a git ref}"
       mode="base"
       ;;
     -h|--help)
-      sed -n '2,5p' "$0"
+      sed -n '2,6p' "$0"
       exit 0
       ;;
     *)
@@ -30,15 +37,234 @@ while [ "$#" -gt 0 ]; do
   shift
 done
 
-cargo fmt --all --check
+if [ "$run_ci" = 1 ] || [ "$run_browser" = 1 ]; then
+  if [ "$mode" != "local" ]; then
+    echo "dev-check.sh: --ci and --browser cannot be combined with --$mode" >&2
+    exit 2
+  fi
+  mode="ci"
+fi
 
-if [ "$mode" = "all" ]; then
-  cargo clippy --workspace --all-targets --quiet -- -D warnings
+if [ "${CODA_DEV_SHELL:-}" != 1 ]; then
+  if [ -z "${CODA_DEV_CHECK_REEXEC:-}" ] && command -v nix >/dev/null 2>&1; then
+    export CODA_DEV_CHECK_REEXEC=1
+    exec nix develop "${root}#agent" --command bash "$0" ${orig_args[@]+"${orig_args[@]}"}
+  fi
+  if [ "$mode" = "ci" ]; then
+    echo "dev-check.sh: run --ci/--browser inside 'nix develop .#agent' (CODA_DEV_SHELL unset)" >&2
+    exit 1
+  fi
+fi
+
+wasm_clippy() {
   cargo clippy -p physician-app -p duet-app -p mobile -p ui-gallery -p extension-popup \
     --target wasm32-unknown-unknown \
     --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web,extension-popup/web \
     --quiet -- -D warnings
-  cargo test --locked --workspace
+}
+
+stage_names=()
+stage_statuses=()
+stage_durations=()
+overall_rc=0
+total_start_secs="$SECONDS"
+pg_dir=""
+pg_base=""
+
+format_duration() {
+  local secs="$1"
+  if [ "$secs" -ge 60 ]; then
+    printf '%dm%02ds' $((secs / 60)) $((secs % 60))
+  else
+    printf '%ds' "$secs"
+  fi
+}
+
+cleanup_ci() {
+  local exit_rc=$?
+  if [ -n "$pg_dir" ] && [ -f "$pg_dir/data/postmaster.pid" ]; then
+    pg_ctl -D "$pg_dir/data" -m fast -w stop >/dev/null 2>&1 || \
+      pg_ctl -D "$pg_dir/data" -m immediate -w stop >/dev/null 2>&1 || true
+  fi
+  if [ -n "$pg_dir" ]; then
+    rm -rf "$pg_dir"
+  fi
+  if [ "${#stage_names[@]}" -gt 0 ]; then
+    local total_elapsed=$((SECONDS - total_start_secs))
+    printf '\n%-24s %-8s %s\n' 'Stage' 'Result' 'Duration'
+    printf '%-24s %-8s %s\n' '------------------------' '------' '--------'
+    local i
+    for ((i = 0; i < ${#stage_names[@]}; i++)); do
+      printf '%-24s %-8s %s\n' \
+        "${stage_names[$i]}" \
+        "${stage_statuses[$i]}" \
+        "$(format_duration "${stage_durations[$i]}")"
+    done
+    printf '%-24s %-8s %s\n' '------------------------' '------' '--------'
+    local overall_label="PASS"
+    if [ "$overall_rc" -ne 0 ] || [ "$exit_rc" -ne 0 ]; then
+      overall_label="FAIL"
+    fi
+    printf '%-24s %-8s %s\n' 'TOTAL' "$overall_label" "$(format_duration "$total_elapsed")"
+  fi
+}
+
+run_stage() {
+  local name="$1"
+  shift
+  printf '\n==> [dev-check] %s\n' "$name"
+  local start_secs="$SECONDS"
+  local rc=0
+  set +e
+  "$@"
+  rc=$?
+  set -e
+  local elapsed=$((SECONDS - start_secs))
+  stage_names+=("$name")
+  stage_durations+=("$elapsed")
+  if [ "$rc" -eq 0 ]; then
+    stage_statuses+=("PASS")
+    return 0
+  fi
+  stage_statuses+=("FAIL($rc)")
+  overall_rc="$rc"
+  return "$rc"
+}
+
+ensure_ci_python() {
+  if python3 -c "import yaml" >/dev/null 2>&1; then
+    printf '%s\n' "python3"
+    return 0
+  fi
+  local venv="${CODA_CI_VENV:-/tmp/coda-ci-venv-$(id -un)}"
+  if [ ! -x "$venv/bin/python" ] || ! "$venv/bin/python" -c "import yaml" >/dev/null 2>&1; then
+    rm -rf "$venv"
+    python3 -m venv "$venv"
+    "$venv/bin/pip" install --quiet -r "$root/scripts/ci-requirements.txt"
+  fi
+  printf '%s\n' "$venv/bin/python"
+}
+
+pick_free_port() {
+  python3 -c '
+import socket
+while True:
+    with socket.socket() as s:
+        s.bind(("127.0.0.1", 0))
+        port = s.getsockname()[1]
+    if port != 55489:
+        print(port)
+        break
+'
+}
+
+start_disposable_postgres() {
+  pg_dir=$(mktemp -d "${TMPDIR:-/tmp}/coda-pg.XXXXXX")
+  pg_port=$(pick_free_port)
+  initdb -U postgres -A trust -D "$pg_dir/data" >/dev/null &&
+    pg_ctl -D "$pg_dir/data" -l "$pg_dir/postgres.log" \
+      -o "-p ${pg_port} -h 127.0.0.1 -k ${pg_dir} -N 200" -w start >/dev/null || return $?
+  pg_base="postgresql://postgres@127.0.0.1:${pg_port}"
+  export MIGRATION_DATABASE_URL="${pg_base}/postgres"
+  printf 'dev-check: disposable Postgres ready on 127.0.0.1:%s (%s)\n' "$pg_port" "$pg_dir"
+}
+
+run_postgres_suites() {
+  (
+    set -euo pipefail
+    createdb --maintenance-db "$MIGRATION_DATABASE_URL" front_door_ci
+    createdb --maintenance-db "$MIGRATION_DATABASE_URL" physician_ci
+    unset DUET_TEST_DATABASE_URL PHYSICIAN_TEST_DATABASE_URL \
+      FRONT_DOOR_TEST_DATABASE_URL CLINICAL_LIBRARY_TEST_DATABASE_URL
+    export PHYSICIAN_DATABASE_URL="${pg_base}/physician_ci"
+    export PHYSICIAN_RUNTIME_TEST_DATABASE_URL="${pg_base}/physician_ci"
+    export FRONT_DOOR_DATABASE_URL="${pg_base}/front_door_ci"
+    export DUET_IDENTITY_TEST_DATABASE_URL="${pg_base}/front_door_ci"
+    export CODA_REQUIRE_POSTGRES_TESTS=1
+    bash scripts/check-postgres.sh
+    cargo test --locked -p physician-sample --test queue_trace -- --test-threads=1
+  )
+}
+
+run_lightweight_checks() {
+  (
+    set -euo pipefail
+    local ci_python
+    ci_python=$(ensure_ci_python)
+    "$ci_python" -m unittest discover -s scripts -p 'test_ci_*.py' -v
+    "$ci_python" -m unittest discover -s scripts/nix-cache -p 'test_*.py' -v
+    "$ci_python" scripts/check_engineering_skills.py
+    python3 -m unittest discover -s .agents/skills/review-pr/scripts -p 'test_*.py' -v
+    python3 -m unittest discover -s .agents/skills/capture-proof/scripts -p 'test_*.py' -v
+    lychee --offline --no-progress --include-fragments --root-dir "$root" '.agents/skills/**/*.md'
+    bash scripts/check-book-links.sh
+    python3 scripts/check-sql.py
+    node extension/sandbox/test_connector.mjs
+  )
+}
+
+run_workspace_tests() {
+  (
+    set -euo pipefail
+    if [ -n "$pg_base" ]; then
+      export DUET_TEST_DATABASE_URL="${pg_base}/postgres"
+      export PHYSICIAN_TEST_DATABASE_URL="${pg_base}/postgres"
+      export FRONT_DOOR_TEST_DATABASE_URL="${pg_base}/postgres"
+      export CLINICAL_LIBRARY_TEST_DATABASE_URL="${pg_base}/postgres"
+      unset PHYSICIAN_DATABASE_URL PHYSICIAN_RUNTIME_TEST_DATABASE_URL \
+        FRONT_DOOR_DATABASE_URL DUET_IDENTITY_TEST_DATABASE_URL \
+        CODA_REQUIRE_POSTGRES_TESTS
+    fi
+    if [ ! -f "$root/submodules/coda-app/backend/app/services/health_text_encoder_worker.py" ] ||
+       [ ! -f "$root/submodules/coda-agents/src/adapters/patientDiscovery/patient_text_encoder.py" ]; then
+      unset DUET_DISCOVERY_ENCODER_MODEL CODA_PATIENT_ENCODER_MODEL
+    fi
+    cargo test --locked --workspace
+  )
+}
+
+run_browser_qualification() {
+  (
+    set -euo pipefail
+    createdb --maintenance-db "$MIGRATION_DATABASE_URL" physician_browser
+    unset DUET_TEST_DATABASE_URL PHYSICIAN_TEST_DATABASE_URL \
+      FRONT_DOOR_TEST_DATABASE_URL CLINICAL_LIBRARY_TEST_DATABASE_URL \
+      FRONT_DOOR_DATABASE_URL DUET_IDENTITY_TEST_DATABASE_URL
+    export PHYSICIAN_DATABASE_URL="${pg_base}/physician_browser"
+    export PHYSICIAN_RUNTIME_TEST_DATABASE_URL="${pg_base}/physician_browser"
+    export CODA_REQUIRE_POSTGRES_TESTS=1
+    cargo test --locked -p physician-sample \
+      --test site --test auth_browser --test sign_in_states --test shell_states \
+      -- --ignored --test-threads=1
+  )
+}
+
+if [ "$mode" = "ci" ]; then
+  trap cleanup_ci EXIT
+  run_stage "fmt" cargo fmt --all --check
+  if [ "$run_ci" = 1 ]; then
+    run_stage "clippy-host" cargo clippy --workspace --all-targets --quiet -- -D warnings
+    run_stage "clippy-wasm" wasm_clippy
+    run_stage "boundaries" cargo test --locked -p boundaries
+    run_stage "lightweight" run_lightweight_checks
+  fi
+  run_stage "postgres-cluster" start_disposable_postgres
+  if [ "$run_ci" = 1 ]; then
+    run_stage "workspace-tests" run_workspace_tests
+    run_stage "postgres-suites" run_postgres_suites
+  fi
+  if [ "$run_browser" = 1 ]; then
+    run_stage "browser" run_browser_qualification
+  fi
+  exit "$overall_rc"
+fi
+
+cargo fmt --all --check
+
+if [ "$mode" = "all" ]; then
+  cargo clippy --workspace --all-targets --quiet -- -D warnings
+  wasm_clippy
+  run_workspace_tests
   exit 0
 fi
 
@@ -102,12 +328,9 @@ done <<<"$changed_files"
 pkg_count=$(wc -w <<<"$pkg_list")
 if [ "$needs_workspace" = 1 ] || [ "$pkg_count" -gt 8 ]; then
   cargo clippy --workspace --all-targets --quiet -- -D warnings
-  cargo clippy -p physician-app -p duet-app -p mobile -p ui-gallery -p extension-popup \
-    --target wasm32-unknown-unknown \
-    --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web,extension-popup/web \
-    --quiet -- -D warnings
+  wasm_clippy
   if [ "$mode" != "pre-commit" ]; then
-    cargo test --locked --workspace
+    run_workspace_tests
   fi
   exit 0
 fi
@@ -125,10 +348,7 @@ done
 echo "dev-check: checking crates:${pkg_list}"
 cargo clippy "${pkg_args[@]}" --all-targets --quiet -- -D warnings
 if [ "$needs_wasm" = 1 ]; then
-  cargo clippy -p physician-app -p duet-app -p mobile -p ui-gallery -p extension-popup \
-    --target wasm32-unknown-unknown \
-    --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web,extension-popup/web \
-    --quiet -- -D warnings
+  wasm_clippy
 fi
 if [ "$mode" != "pre-commit" ]; then
   cargo test --locked "${pkg_args[@]}"

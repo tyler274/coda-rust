@@ -1318,6 +1318,19 @@ async fn mailed_sign_in_link_round_trips_through_the_public_mount() {
         ("PHYSICIAN_GMAIL_SEND_URL", endpoints.send),
         ("PHYSICIAN_GMAIL_TOKEN_URL", endpoints.token),
     ];
+    struct DbUrlGuard(Option<std::ffi::OsString>);
+    impl Drop for DbUrlGuard {
+        fn drop(&mut self) {
+            // SAFETY: restored while `_guard` is still held until the end of this test.
+            unsafe {
+                match self.0.take() {
+                    Some(url) => env::set_var("PHYSICIAN_DATABASE_URL", url),
+                    None => env::remove_var("PHYSICIAN_DATABASE_URL"),
+                }
+            }
+        }
+    }
+    let _db_url_guard = DbUrlGuard(env::var_os("PHYSICIAN_DATABASE_URL"));
     unsafe {
         env::set_var("PHYSICIAN_SITE_DIR", &site);
         env::set_var("PHYSICIAN_AUTH", "required");
@@ -5458,7 +5471,6 @@ async fn first_source_path_renders_saved_patient_summary_and_evidence_without_pr
     drop(browser);
     let _ = fs::remove_dir_all(&bank_dir);
     unsafe {
-        env::remove_var("PHYSICIAN_DATABASE_URL");
         env::remove_var("PHYSICIAN_AUTH");
         env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
     }
