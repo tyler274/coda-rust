@@ -9,7 +9,7 @@ pub mod connection {
     use sea_orm::entity::prelude::*;
 
     /// One `public.duet_portal_connections` row.
-    #[derive(Clone, Debug, PartialEq, DeriveEntityModel)]
+    #[derive(Clone, PartialEq, DeriveEntityModel)]
     #[sea_orm(schema_name = "public", table_name = "duet_portal_connections")]
     pub struct Model {
         /// Stable connection UUID reused across disconnect/reconnect of the same org.
@@ -61,6 +61,30 @@ pub mod connection {
         pub updated_at: DateTimeUtc,
     }
 
+    impl std::fmt::Debug for Model {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            f.debug_struct("PortalConnectionModel")
+                .field("id", &self.id)
+                .field("user_id", &self.user_id)
+                .field("organization_id", &self.organization_id)
+                .field("vendor", &self.vendor)
+                .field("state", &self.state)
+                .field(
+                    "access_token",
+                    &self.access_token.as_ref().map(|_| "<redacted>"),
+                )
+                .field(
+                    "refresh_token",
+                    &self.refresh_token.as_ref().map(|_| "<redacted>"),
+                )
+                .field("last_synced_at", &self.last_synced_at)
+                .field("failing_since", &self.failing_since)
+                .field("next_refresh_at", &self.next_refresh_at)
+                .field("disconnected_at", &self.disconnected_at)
+                .finish()
+        }
+    }
+
     /// No relations are navigated.
     #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
     pub enum Relation {}
@@ -73,7 +97,7 @@ pub mod oauth_state {
     use sea_orm::entity::prelude::*;
 
     /// One `public.duet_portal_oauth_states` row.
-    #[derive(Clone, Debug, PartialEq, DeriveEntityModel)]
+    #[derive(Clone, PartialEq, DeriveEntityModel)]
     #[sea_orm(schema_name = "public", table_name = "duet_portal_oauth_states")]
     pub struct Model {
         /// Cryptographically random OAuth `state` parameter.
@@ -95,6 +119,21 @@ pub mod oauth_state {
         pub expires_at: DateTimeUtc,
         /// Consumption timestamp (`None` until redeemed once).
         pub consumed_at: Option<DateTimeUtc>,
+    }
+
+    impl std::fmt::Debug for Model {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            f.debug_struct("PortalOAuthStateModel")
+                .field("state", &"<redacted>")
+                .field("user_id", &self.user_id)
+                .field("organization_id", &self.organization_id)
+                .field("vendor", &self.vendor)
+                .field("code_verifier", &"<redacted>")
+                .field("redirect_uri", &self.redirect_uri)
+                .field("expires_at", &self.expires_at)
+                .field("consumed_at", &self.consumed_at)
+                .finish()
+        }
     }
 
     /// No relations are navigated.

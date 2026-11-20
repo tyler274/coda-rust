@@ -653,7 +653,7 @@ pub struct PortalSyncResponse {
 }
 
 /// OAuth token set returned by a portal vendor token endpoint.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq)]
 pub struct PortalTokenSet {
     /// Bearer access token for FHIR R4 requests.
     pub access_token: String,
@@ -663,6 +663,20 @@ pub struct PortalTokenSet {
     pub expires_in_seconds: Option<i64>,
     /// Granted SMART scopes.
     pub granted_scopes: Vec<String>,
+}
+
+impl std::fmt::Debug for PortalTokenSet {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("PortalTokenSet")
+            .field("access_token", &"<redacted>")
+            .field(
+                "refresh_token",
+                &self.refresh_token.as_ref().map(|_| "<redacted>"),
+            )
+            .field("expires_in_seconds", &self.expires_in_seconds)
+            .field("granted_scopes", &self.granted_scopes)
+            .finish()
+    }
 }
 
 /// One record yielded by a portal FHIR fetch page.
@@ -765,11 +779,66 @@ pub struct HttpPortalFhirClient {
     oracle_client_id: String,
 }
 
+/// Request timeout for outbound SMART on FHIR OAuth and FHIR R4 HTTP calls.
+const PORTAL_HTTP_TIMEOUT: std::time::Duration = std::time::Duration::from_secs(30);
+
+/// Validate that an initial FHIR query or pagination `next` link stays strictly
+/// on HTTPS and on the exact origin `(scheme, host, port)` of `fhir_base_url`
+/// with no embedded credentials, preventing SSRF and bearer token exfiltration.
+pub(crate) fn validated_fhir_page_url(
+    fhir_base_url: &str,
+    cursor: Option<&str>,
+) -> Result<reqwest::Url, PortalFetchError> {
+    let base =
+        reqwest::Url::parse(fhir_base_url).map_err(|_| PortalFetchError::InvalidResponse {
+            reason: "invalid organization FHIR base URL".to_owned(),
+        })?;
+    if base.scheme() != "https" || base.host_str().is_none() {
+        return Err(PortalFetchError::InvalidResponse {
+            reason: "organization FHIR base URL must use HTTPS".to_owned(),
+        });
+    }
+    match cursor {
+        None => {
+            let trimmed = fhir_base_url.trim_end_matches('/');
+            reqwest::Url::parse(&format!("{trimmed}/Observation?_count=50")).map_err(|_| {
+                PortalFetchError::InvalidResponse {
+                    reason: "invalid initial FHIR Observation URL".to_owned(),
+                }
+            })
+        }
+        Some(next) => {
+            let parsed =
+                reqwest::Url::parse(next).map_err(|_| PortalFetchError::InvalidResponse {
+                    reason: "portal pagination link was not a valid URL".to_owned(),
+                })?;
+            let same_origin = parsed.scheme() == "https"
+                && parsed.scheme() == base.scheme()
+                && parsed.host_str() == base.host_str()
+                && parsed.port_or_known_default() == base.port_or_known_default()
+                && parsed.username().is_empty()
+                && parsed.password().is_none();
+            if !same_origin {
+                return Err(PortalFetchError::InvalidResponse {
+                    reason: "portal pagination link origin mismatch".to_owned(),
+                });
+            }
+            Ok(parsed)
+        }
+    }
+}
+
 impl HttpPortalFhirClient {
-    /// Construct an HTTP portal client with vendor SMART client ids.
+    /// Construct an HTTP portal client with vendor SMART client ids, disabled
+    /// redirects (preventing cross-origin bearer forwarding), and a 30s timeout.
     pub fn new(epic_client_id: impl Into<String>, oracle_client_id: impl Into<String>) -> Self {
+        let http = reqwest::Client::builder()
+            .redirect(reqwest::redirect::Policy::none())
+            .timeout(PORTAL_HTTP_TIMEOUT)
+            .build()
+            .expect("static reqwest client builder configuration is valid");
         Self {
-            http: reqwest::Client::new(),
+            http,
             epic_client_id: epic_client_id.into(),
             oracle_client_id: oracle_client_id.into(),
         }
@@ -861,13 +930,10 @@ impl PortalFhirClient for HttpPortalFhirClient {
         access_token: &str,
         cursor: Option<&str>,
     ) -> Result<PortalFetchPage, PortalFetchError> {
-        let url = match cursor {
-            Some(next) if next.starts_with("https://") => next.to_owned(),
-            _ => format!("{}/Observation?_count=50", organization.fhir_base_url),
-        };
+        let url = validated_fhir_page_url(&organization.fhir_base_url, cursor)?;
         let response = self
             .http
-            .get(&url)
+            .get(url)
             .bearer_auth(access_token)
             .header("Accept", "application/fhir+json")
             .send()
@@ -1664,6 +1730,8 @@ impl PortalService {
             }
 
             for chunk in readable_mutations.chunks(MAX_EVIDENCE_BATCH_ITEMS) {
+                self.ensure_connection_active(context, connection_id)
+                    .await?;
                 let batch = EvidenceBatch {
                     items: chunk.to_vec(),
                 };
@@ -1734,7 +1802,7 @@ impl PortalService {
                 )
             };
 
-        orm::execute(
+        let affected = orm::execute(
             &mut tx,
             &connection::Entity::update_many()
                 .col_expr(connection::Column::State, Expr::val(state_str))
@@ -1774,9 +1842,13 @@ impl PortalService {
                 .col_expr(connection::Column::UpdatedAt, Expr::val(now))
                 .filter(connection::Column::Id.eq(connection_id))
                 .filter(connection::Column::UserId.eq(context.account_id))
+                .filter(connection::Column::State.ne("disconnected"))
                 .into_query(),
         )
         .await?;
+        if affected != 1 {
+            return Err(ApiError::Conflict("portal_connection_disconnected"));
+        }
 
         let updated = orm::model::<connection::Model>(
             &mut tx,
@@ -1792,6 +1864,28 @@ impl PortalService {
             connection: PortalConnectionView::from_model(updated)?,
             import: import_outcome,
         })
+    }
+
+    async fn ensure_connection_active(
+        &self,
+        context: &AccountContext,
+        connection_id: Uuid,
+    ) -> Result<(), ApiError> {
+        let mut tx = self.database.begin(context.account_id).await?;
+        check_current(&mut tx, context, false).await?;
+        let current = orm::model::<connection::Model>(
+            &mut tx,
+            &connection::Entity::find_by_id(connection_id)
+                .filter(connection::Column::UserId.eq(context.account_id))
+                .into_query(),
+        )
+        .await?
+        .ok_or(ApiError::NotFound)?;
+        tx.commit().await?;
+        if current.state == "disconnected" {
+            return Err(ApiError::Conflict("portal_connection_disconnected"));
+        }
+        Ok(())
     }
 
     async fn record_refresh_failure(
@@ -1812,7 +1906,7 @@ impl PortalService {
 
         let mut tx = self.database.begin(context.account_id).await?;
         check_current(&mut tx, context, false).await?;
-        orm::execute(
+        let affected = orm::execute(
             &mut tx,
             &connection::Entity::update_many()
                 .col_expr(connection::Column::State, Expr::val("broken"))
@@ -1836,9 +1930,13 @@ impl PortalService {
                 .col_expr(connection::Column::UpdatedAt, Expr::val(now))
                 .filter(connection::Column::Id.eq(prior.id))
                 .filter(connection::Column::UserId.eq(context.account_id))
+                .filter(connection::Column::State.ne("disconnected"))
                 .into_query(),
         )
         .await?;
+        if affected != 1 {
+            return Err(ApiError::Conflict("portal_connection_disconnected"));
+        }
         let updated = orm::model::<connection::Model>(
             &mut tx,
             &connection::Entity::find_by_id(prior.id)
@@ -2343,5 +2441,98 @@ mod tests {
             format_update_failure_day(at),
             "Couldn't update since Nov 19"
         );
+    }
+
+    #[test]
+    fn fhir_pagination_url_enforces_exact_https_origin() {
+        let base = "https://unified-api.ucsf.edu/clinical/apex/api/FHIR/R4";
+        let initial = validated_fhir_page_url(base, None).expect("initial page url");
+        assert_eq!(
+            initial.as_str(),
+            "https://unified-api.ucsf.edu/clinical/apex/api/FHIR/R4/Observation?_count=50"
+        );
+        let same_origin = validated_fhir_page_url(
+            base,
+            Some("https://unified-api.ucsf.edu/clinical/apex/api/FHIR/R4/Observation?page=2"),
+        )
+        .expect("same-origin HTTPS cursor allowed");
+        assert_eq!(same_origin.host_str(), Some("unified-api.ucsf.edu"));
+
+        for bad in [
+            "https://attacker.example/steal-token",
+            "http://unified-api.ucsf.edu/clinical/apex/api/FHIR/R4/Observation?page=2",
+            "https://unified-api.ucsf.edu:8443/clinical/apex/api/FHIR/R4/Observation?page=2",
+            "https://user:pass@unified-api.ucsf.edu/clinical/apex/api/FHIR/R4/Observation?page=2",
+            "not a url",
+        ] {
+            assert!(
+                matches!(
+                    validated_fhir_page_url(base, Some(bad)),
+                    Err(PortalFetchError::InvalidResponse { .. })
+                ),
+                "pagination cursor {bad:?} must be refused"
+            );
+        }
+    }
+
+    #[test]
+    fn portal_secrets_are_redacted_in_debug_output() {
+        let tokens = PortalTokenSet {
+            access_token: "SECRET-ACCESS-TOKEN".into(),
+            refresh_token: Some("SECRET-REFRESH-TOKEN".into()),
+            expires_in_seconds: Some(3600),
+            granted_scopes: vec!["patient/Observation.read".into()],
+        };
+        let rendered = format!("{tokens:?}");
+        assert!(rendered.contains("<redacted>"));
+        assert!(!rendered.contains("SECRET-ACCESS-TOKEN"));
+        assert!(!rendered.contains("SECRET-REFRESH-TOKEN"));
+
+        let now = Utc::now();
+        let conn_row = connection::Model {
+            id: Uuid::new_v4(),
+            user_id: Uuid::new_v4(),
+            organization_id: "epic-ucsf-health".into(),
+            organization_name: "UCSF Health".into(),
+            vendor: "epic".into(),
+            brand: "Epic / MyChart".into(),
+            fhir_base_url: "https://unified-api.ucsf.edu/clinical/apex/api/FHIR/R4".into(),
+            state: "connected".into(),
+            granted_scopes: vec![],
+            access_token: Some("SECRET-CONN-ACCESS".into()),
+            refresh_token: Some("SECRET-CONN-REFRESH".into()),
+            token_expires_at: None,
+            last_synced_at: None,
+            failing_since: None,
+            failure_reason: None,
+            requires_reconnect: false,
+            partial_failed_count: 0,
+            next_refresh_at: None,
+            last_attempt_at: None,
+            disconnected_at: None,
+            evidence_revision: 0,
+            created_at: now,
+            updated_at: now,
+        };
+        let conn_debug = format!("{conn_row:?}");
+        assert!(conn_debug.contains("<redacted>"));
+        assert!(!conn_debug.contains("SECRET-CONN-ACCESS"));
+        assert!(!conn_debug.contains("SECRET-CONN-REFRESH"));
+
+        let state_row = oauth_state::Model {
+            state: "SECRET-OAUTH-STATE".into(),
+            user_id: Uuid::new_v4(),
+            organization_id: "epic-ucsf-health".into(),
+            vendor: "epic".into(),
+            code_verifier: "SECRET-PKCE-VERIFIER".into(),
+            redirect_uri: "duet://oauth/callback".into(),
+            created_at: now,
+            expires_at: now + OAUTH_STATE_TTL,
+            consumed_at: None,
+        };
+        let state_debug = format!("{state_row:?}");
+        assert!(state_debug.contains("<redacted>"));
+        assert!(!state_debug.contains("SECRET-OAUTH-STATE"));
+        assert!(!state_debug.contains("SECRET-PKCE-VERIFIER"));
     }
 }

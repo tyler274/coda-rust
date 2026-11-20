@@ -1016,3 +1016,198 @@ async fn cod64_health_connect_outbox_phone_disconnect_and_apple_health_deletion_
     assert!(apple_status.disconnected_at.is_some());
     assert_eq!(apple_status.generation, 0);
 }
+
+struct BlockingFhirClient {
+    entered: Arc<tokio::sync::Notify>,
+    proceed: Arc<tokio::sync::Notify>,
+    block_next: Arc<std::sync::atomic::AtomicBool>,
+    return_error: Arc<std::sync::atomic::AtomicBool>,
+}
+
+#[async_trait]
+impl PortalFhirClient for BlockingFhirClient {
+    async fn exchange_code(
+        &self,
+        organization: &PortalOrganization,
+        code: &str,
+        _code_verifier: &str,
+        _redirect_uri: &str,
+    ) -> Result<PortalTokenSet, PortalFetchError> {
+        Ok(PortalTokenSet {
+            access_token: format!("access-{}-{code}", organization.id),
+            refresh_token: Some(format!("refresh-{}-{code}", organization.id)),
+            expires_in_seconds: Some(3600),
+            granted_scopes: vec!["patient/Observation.read".into()],
+        })
+    }
+
+    async fn refresh_token(
+        &self,
+        organization: &PortalOrganization,
+        _refresh_token: &str,
+    ) -> Result<PortalTokenSet, PortalFetchError> {
+        Ok(PortalTokenSet {
+            access_token: format!("access-refreshed-{}", organization.id),
+            refresh_token: Some(format!("refresh-next-{}", organization.id)),
+            expires_in_seconds: Some(3600),
+            granted_scopes: vec!["patient/Observation.read".into()],
+        })
+    }
+
+    async fn fetch_records(
+        &self,
+        organization: &PortalOrganization,
+        connection_id: Uuid,
+        _access_token: &str,
+        _cursor: Option<&str>,
+    ) -> Result<PortalFetchPage, PortalFetchError> {
+        if self
+            .block_next
+            .swap(false, std::sync::atomic::Ordering::SeqCst)
+        {
+            self.entered.notify_one();
+            self.proceed.notified().await;
+            if self.return_error.load(std::sync::atomic::Ordering::SeqCst) {
+                return Err(PortalFetchError::UpstreamUnavailable {
+                    reason: "upstream failed after disconnect".into(),
+                });
+            }
+            return Ok(PortalFetchPage {
+                items: vec![PortalFetchedItem::Readable(portal_mutation(
+                    organization.vendor,
+                    connection_id,
+                    "Observation/after-disconnect-should-not-publish",
+                    &organization.name,
+                    "7.1",
+                ))],
+                next_cursor: None,
+                has_more: false,
+            });
+        }
+        Ok(PortalFetchPage::default())
+    }
+}
+
+#[tokio::test]
+async fn cod63_disconnect_during_inflight_refresh_never_resurrects_tokens_or_publishes() {
+    let env = provision_test_db("cod63_race").await;
+    let identities = IdentityStore::new(env.db.clone(), Arc::new(StaticVerifier));
+    let evidence = EvidenceStore::new(env.db.clone());
+    let patient = identities.authenticate("race-alice", true).await.unwrap();
+
+    for simulate_error in [false, true] {
+        let entered = Arc::new(tokio::sync::Notify::new());
+        let proceed = Arc::new(tokio::sync::Notify::new());
+        let block_next = Arc::new(std::sync::atomic::AtomicBool::new(false));
+        let return_error = Arc::new(std::sync::atomic::AtomicBool::new(simulate_error));
+        let fhir = Arc::new(BlockingFhirClient {
+            entered: entered.clone(),
+            proceed: proceed.clone(),
+            block_next: block_next.clone(),
+            return_error,
+        });
+        let service = PortalService::new(
+            env.db.clone(),
+            evidence.clone(),
+            VendorSwitches::default(),
+            "epic-test",
+            "oracle-test",
+        )
+        .with_client(fhir);
+
+        let org_id = if simulate_error {
+            "epic-stanford-health-care"
+        } else {
+            "epic-ucsf-health"
+        };
+        let start = service
+            .start_oauth(
+                &patient,
+                &duet_api::portals::OAuthStartRequest {
+                    organization_id: org_id.into(),
+                    redirect_uri: "duet://oauth/callback".into(),
+                },
+            )
+            .await
+            .unwrap();
+        let connected = service
+            .complete_oauth(
+                &patient,
+                &duet_api::portals::OAuthCompleteRequest {
+                    state: start.state,
+                    code: "code-1".into(),
+                    redirect_uri: "duet://oauth/callback".into(),
+                },
+            )
+            .await
+            .unwrap();
+        let conn_id = connected.connection.id;
+
+        // Arm the blocking fetch, start refresh in background, and disconnect mid-flight!
+        block_next.store(true, std::sync::atomic::Ordering::SeqCst);
+        let svc_bg = service.clone();
+        let ctx_bg = patient.clone();
+        let refresh_task =
+            tokio::spawn(async move { svc_bg.refresh_connection(&ctx_bg, conn_id).await });
+
+        entered.notified().await;
+        let disconnected = service
+            .disconnect_connection(&patient, conn_id)
+            .await
+            .unwrap();
+        assert!(matches!(
+            disconnected.status,
+            duet_api::portals::PortalConnectionState::Disconnected { .. }
+        ));
+        proceed.notify_one();
+
+        let raced_result = refresh_task.await.unwrap();
+        assert!(
+            matches!(
+                raced_result,
+                Err(duet_api::ApiError::Conflict(
+                    "portal_connection_disconnected"
+                ))
+            ),
+            "mid-flight disconnect must refuse completion (simulate_error={simulate_error}): {raced_result:?}"
+        );
+
+        // Verify directly in Postgres that state stayed disconnected, tokens stayed NULL,
+        // next_refresh_at stayed NULL, and no post-disconnect record was published!
+        let mut owner = PgConnection::connect(&env.owner_url).await.unwrap();
+        let (state, access, refresh, next_refresh): (
+            String,
+            Option<String>,
+            Option<String>,
+            Option<DateTime<Utc>>,
+        ) = sqlx::query_as(
+            "select state, access_token, refresh_token, next_refresh_at from public.duet_portal_connections where id = $1",
+        )
+        .bind(conn_id)
+        .fetch_one(&mut owner)
+        .await
+        .unwrap();
+        assert_eq!(state, "disconnected");
+        assert!(
+            access.is_none(),
+            "access_token must stay wiped after disconnect"
+        );
+        assert!(
+            refresh.is_none(),
+            "refresh_token must stay wiped after disconnect"
+        );
+        assert!(
+            next_refresh.is_none(),
+            "next_refresh_at must stay NULL after disconnect"
+        );
+        assert!(
+            evidence
+                .snapshot(&patient, 0)
+                .await
+                .unwrap()
+                .records
+                .is_empty(),
+            "no records may publish after mid-flight disconnect"
+        );
+    }
+}
