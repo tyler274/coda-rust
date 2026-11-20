@@ -68,7 +68,7 @@ run "reject_a_production_relay" {
   command = plan
   variables {
     environment             = "production"
-    domains                 = ["codahealth.ai"]
+    domains                 = ["coda.dabney.moe"]
     physician_app_url       = null
     observability_relay_url = "https://observability-relay.example.test"
   }
@@ -167,7 +167,7 @@ run "production_respects_origin_cache_headers" {
   }
   variables {
     environment       = "production"
-    domains           = ["codahealth.ai", "www.codahealth.ai"]
+    domains           = ["coda.dabney.moe", "www.coda.dabney.moe"]
     physician_app_url = null
   }
   assert {
@@ -191,7 +191,7 @@ run "production_respects_origin_cache_headers" {
     error_message = "Production must retain its reserved IP and HTTPS/TLS frontend."
   }
   assert {
-    condition     = google_certificate_manager_certificate.site[0].managed[0].domains == tolist(["codahealth.ai", "www.codahealth.ai"]) && length(google_certificate_manager_certificate.site[0].managed[0].dns_authorizations) == 2 && google_certificate_manager_dns_authorization.site["www.codahealth.ai"].domain == "www.codahealth.ai" && google_certificate_manager_certificate_map_entry.site["codahealth.ai"].hostname == "codahealth.ai" && google_certificate_manager_certificate_map_entry.site["www.codahealth.ai"].hostname == "www.codahealth.ai"
+    condition     = google_certificate_manager_certificate.site[0].managed[0].domains == tolist(["coda.dabney.moe", "www.coda.dabney.moe"]) && length(google_certificate_manager_certificate.site[0].managed[0].dns_authorizations) == 2 && google_certificate_manager_dns_authorization.site["www.coda.dabney.moe"].domain == "www.coda.dabney.moe" && google_certificate_manager_certificate_map_entry.site["coda.dabney.moe"].hostname == "coda.dabney.moe" && google_certificate_manager_certificate_map_entry.site["www.coda.dabney.moe"].hostname == "www.coda.dabney.moe"
     error_message = "Apex and www must share one DNS-authorized managed certificate, each with its own map entry."
   }
   assert {
@@ -232,7 +232,7 @@ run "reject_domain_with_scheme_or_wildcard" {
   command = plan
   variables {
     environment = "production"
-    domains     = ["https://codahealth.ai", "*.codahealth.ai"]
+    domains     = ["https://coda.dabney.moe", "*.coda.dabney.moe"]
   }
   expect_failures = [var.domains]
 }

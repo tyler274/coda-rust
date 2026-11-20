@@ -13,7 +13,7 @@ operator from reviewed saved plans:
 | Root | Owns | State |
 | --- | --- | --- |
 | [`rust-environments`](/infra/gcp/rust-environments) | Behind `observability_cluster_enabled`: the private observability Autopilot cluster on `rust-private`, its subnet and secondary ranges, and the reserved internal gateway address. Behind `observability_relay_image`: the IAP-protected `observability-relay` Cloud Run service, its `rust-relay` Direct VPC egress subnet and the reserved address of the Grafana internal load balancer. Behind `observability_enabled`: the collector sidecars on the Cloud Run services and their telemetry environment, including `CODA_TELEMETRY_BACKEND` from its `telemetry_backend`, which must match the `observability` root's. | `rust-environments/stg` |
-| <a href="/infra/gcp/observability/README%2Emd"><code>observability</code></a> | Inside that cluster: the OpenTelemetry gateway collector and its internal load balancer, one operations backend chosen by `telemetry_backend` (the Datadog Agent and monitors with, off by default, the project-scoped Datadog GCP integration; or self-hosted Tempo, Loki, Prometheus and Grafana with, off by default, a Cloud Monitoring datasource), the `otlphttp/langfuse` exporter to the Langfuse HIPAA cloud project at `langfuse_host`, Grafana's internal load balancer, which admits only the relay subnet so people reach Grafana only at `staging.codahealth.ai/grafana/` through public-site, and the Doppler operator. It reads the cluster and network through variables fed from `rust-environments` outputs and manages neither. Staging only. | `observability/stg` in the same state bucket |
+| <a href="/infra/gcp/observability/README%2Emd"><code>observability</code></a> | Inside that cluster: the OpenTelemetry gateway collector and its internal load balancer, one operations backend chosen by `telemetry_backend` (the Datadog Agent and monitors with, off by default, the project-scoped Datadog GCP integration; or self-hosted Tempo, Loki, Prometheus and Grafana with, off by default, a Cloud Monitoring datasource), the `otlphttp/langfuse` exporter to the Langfuse HIPAA cloud project at `langfuse_host`, Grafana's internal load balancer, which admits only the relay subnet so people reach Grafana only at `staging.coda.dabney.moe/grafana/` through public-site, and the Doppler operator. It reads the cluster and network through variables fed from `rust-environments` outputs and manages neither. Staging only. | `observability/stg` in the same state bucket |
 
 [Observability](observability.md) describes the per-signal paths and the
 content policy.
@@ -192,7 +192,7 @@ transport. The Workspace relay option uses these values in
 ```text
 PHYSICIAN_MAIL_TRANSPORT=smtp-relay
 PHYSICIAN_MAIL_FROM=signin@dabney.moe
-PHYSICIAN_PUBLIC_ORIGIN=https://staging.codahealth.ai/physician
+PHYSICIAN_PUBLIC_ORIGIN=https://staging.coda.dabney.moe/physician
 ```
 
 The sender is `Coda Health <signin@dabney.moe>`. It requires no mailbox, Gmail

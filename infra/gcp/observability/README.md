@@ -230,7 +230,7 @@ Service in this root:
 
 ## Staging proxy
 
-People open Grafana at `https://staging.codahealth.ai/grafana/`. It has no
+People open Grafana at `https://staging.coda.dabney.moe/grafana/`. It has no
 listener of its own on the internet:
 
 ```text
@@ -273,7 +273,7 @@ Each apply is from a reviewed saved plan with the operator's authorization.
 1. Apply `rust-environments` with `observability_relay_image`, then release
    the relay image. Its `observability_relay` output feeds `observability_web`
    here and `observability_relay_url` in `infra/gcp/public-site`.
-2. Set `staging_proxy = { origin = "https://staging.codahealth.ai",
+2. Set `staging_proxy = { origin = "https://staging.coda.dabney.moe",
    iap_audience = <public-site iap_audience> }` in `env/staging.tfvars`. Plan
    and apply this root with the `observability_web` var-file.
 3. Apply `infra/gcp/public-site` with `observability_relay_url`, then release
