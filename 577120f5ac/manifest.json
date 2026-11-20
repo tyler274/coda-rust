@@ -1,0 +1,84 @@
+{
+  "branch": "ci-pstack-watch-and-skill-sync",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "actionlint all workflows including pstack-watch.yml",
+      "kind": "run",
+      "revision": "577120f5ac5deddc2e5b44d33f42791cfa4e392d",
+      "dirty": false,
+      "recorded": "2026-11-20T16:14:34+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail; actionlint .github/workflows/pstack-watch.yml .github/workflows/*.yml"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-actionlint-all-workflows-including-pstack-watch..log"
+      ],
+      "seconds": 0.2,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "doppler-watch and pstack-watch workflow unit tests",
+      "kind": "run",
+      "revision": "577120f5ac5deddc2e5b44d33f42791cfa4e392d",
+      "dirty": false,
+      "recorded": "2026-11-20T16:14:34+00:00",
+      "command": [
+        "node",
+        "--test",
+        "crates/workspace-tools/tests/doppler-watch.test.cjs",
+        "crates/workspace-tools/tests/pstack-watch.test.cjs"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-doppler-watch-and-pstack-watch-workflow-unit-tes.log"
+      ],
+      "seconds": 0.3,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "engineering skills, CI Python tests, lychee skills, book links, and statechart TS checks",
+      "kind": "run",
+      "revision": "577120f5ac5deddc2e5b44d33f42791cfa4e392d",
+      "dirty": false,
+      "recorded": "2026-11-20T16:14:34+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail; uv run --with-requirements scripts/ci-requirements.txt python3 scripts/check_engineering_skills.py; uv run --with-requirements scripts/ci-requirements.txt python3 -m unittest discover -s scripts -p \"test_ci_*.py\" -v; lychee --offline --no-progress --include-fragments --root-dir \"$PWD\" \".agents/skills/**/*.md\"; bash scripts/check-book-links.sh; node --check .agents/skills/statechart/scripts/statechart.ts .agents/skills/statechart/scripts/janitor.ts .agents/skills/statechart/scripts/kill.ts .agents/skills/statechart/scripts/run.ts .agents/skills/statechart/scripts/backends/mermaid.ts .agents/skills/statechart/scripts/frontends/dot.ts; set +e; node .agents/skills/statechart/scripts/statechart.ts; code=$?; set -e; test $code -eq 0 -o $code -eq 2"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-engineering-skills-CI-Python-tests-lychee-skills.log"
+      ],
+      "seconds": 13.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC4",
+      "label": "",
+      "kind": "gap",
+      "revision": "577120f5ac5deddc2e5b44d33f42791cfa4e392d",
+      "dirty": false,
+      "recorded": "2026-11-20T16:14:48+00:00",
+      "reason": "Hosted GitHub Actions execution of pstack-watch.yml (schedule/workflow_dispatch 403 fallback issue lifecycle and remote branch cleanup) runs on GitHub Actions",
+      "ok": false,
+      "files": []
+    }
+  ]
+}

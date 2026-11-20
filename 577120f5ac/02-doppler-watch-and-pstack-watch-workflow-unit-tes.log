@@ -1,0 +1,94 @@
+TAP version 13
+# Subtest: current release and no advisories creates no noise
+ok 1 - current release and no advisories creates no noise
+  ---
+  duration_ms: 5.475746
+  type: 'test'
+  ...
+# Subtest: new release creates a review, not an automatic upgrade
+ok 2 - new release creates a review, not an automatic upgrade
+  ---
+  duration_ms: 2.03019
+  type: 'test'
+  ...
+# Subtest: existing closed release issue is not duplicated
+ok 3 - existing closed release issue is not duplicated
+  ---
+  duration_ms: 0.876461
+  type: 'test'
+  ...
+# Subtest: advisory is reported even when the pinned release is current
+ok 4 - advisory is reported even when the pinned release is current
+  ---
+  duration_ms: 1.140269
+  type: 'test'
+  ...
+# Subtest: changed advisory reopens its review; unchanged advisory is quiet
+ok 5 - changed advisory reopens its review; unchanged advisory is quiet
+  ---
+  duration_ms: 1.390787
+  type: 'test'
+  ...
+# Subtest: integrity mismatch alerts and fails without accepting a new checksum
+ok 6 - integrity mismatch alerts and fails without accepting a new checksum
+  ---
+  duration_ms: 0.9676
+  type: 'test'
+  ...
+# Subtest: API errors are not interpreted as no security advisories
+ok 7 - API errors are not interpreted as no security advisories
+  ---
+  duration_ms: 1.504376
+  type: 'test'
+  ...
+# Subtest: malformed stable version is rejected
+ok 8 - malformed stable version is rejected
+  ---
+  duration_ms: 2.617895
+  type: 'test'
+  ...
+# Subtest: workflow grants issues: write beside contents: write and pull-requests: write
+ok 9 - workflow grants issues: write beside contents: write and pull-requests: write
+  ---
+  duration_ms: 1.788923
+  type: 'test'
+  ...
+# Subtest: creates a review PR when Actions PR creation is permitted
+ok 10 - creates a review PR when Actions PR creation is permitted
+  ---
+  duration_ms: 2.611425
+  type: 'test'
+  ...
+# Subtest: updates an open PR in place and closes stale tracking issue
+ok 11 - updates an open PR in place and closes stale tracking issue
+  ---
+  duration_ms: 1.831372
+  type: 'test'
+  ...
+# Subtest: falls back to a tracking issue on 403 PR-creation refusal and avoids duplicates
+ok 12 - falls back to a tracking issue on 403 PR-creation refusal and avoids duplicates
+  ---
+  duration_ms: 2.477546
+  type: 'test'
+  ...
+# Subtest: closes open tracking issue when main matches upstream
+ok 13 - closes open tracking issue when main matches upstream
+  ---
+  duration_ms: 0.758583
+  type: 'test'
+  ...
+# Subtest: re-throws non-permission pull request API failures
+ok 14 - re-throws non-permission pull request API failures
+  ---
+  duration_ms: 1.155309
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 145.341592
