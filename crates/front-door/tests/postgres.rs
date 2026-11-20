@@ -4,9 +4,9 @@
 //! contract is covered by the memory-store unit tests, and these stay quiet.
 
 use front_door::{
-    Account, Consent, FrontDoorStore, INVITATION_TTL_SECONDS, InviteError, LinkError,
-    MemoryFrontDoorStore, PostgresFrontDoorStore, Premium, RosterPatient, SESSION_TTL_SECONDS,
-    SessionError, SignInError,
+    Account, ConnectionEndReason, ConnectionStanding, ForMyDoctorError, ForMyDoctorSendRequest,
+    FrontDoorStore, InviteError, LinkError, MemoryFrontDoorStore, PostgresFrontDoorStore,
+    RosterConnectionStatus, RosterPatient, SessionError, SignInError,
 };
 use sea_orm::{ConnectionTrait, EntityTrait, PaginatorTrait, QuerySelect, TransactionTrait};
 
@@ -40,18 +40,7 @@ async fn concurrent_sign_in_consumes_one_token_and_mints_one_session() {
     };
     let first = redeem();
     let second = redeem();
-    // Postgres-specific catalog read synchronizes two real store calls, with
-    // no query-text matching, probabilistic retries, or production test hooks.
-    tokio::time::timeout(std::time::Duration::from_secs(10), async {
-        loop {
-            let row = db.query_one_raw(sea_orm::Statement::from_string(
-                sea_orm::DbBackend::Postgres,
-                "SELECT count(*) AS waiting FROM pg_stat_activity WHERE datname = current_database() AND wait_event_type = 'Lock'",
-            )).await.unwrap().unwrap();
-            if row.try_get::<i64>("", "waiting").unwrap() == 2 { break; }
-            tokio::time::sleep(std::time::Duration::from_millis(10)).await;
-        }
-    }).await.expect("both redemptions must contend for the held row");
+    wait_for_two_lock_waiters(&db).await;
     held.commit().await.unwrap();
     let outcomes = [first.await.unwrap(), second.await.unwrap()];
     assert_eq!(
@@ -78,11 +67,73 @@ async fn concurrent_sign_in_consumes_one_token_and_mints_one_session() {
     );
 }
 
-/// Connects when the gate is set; `None` skips the suite quietly.
-///
-/// Each test gets its own database — named after the gate URL's database plus
-/// the test's unique suffix — so parallel tests and repeated runs never share
-/// migration state. The next run removes the previous test database.
+#[tokio::test]
+async fn concurrent_invitation_redemption_consumes_once_and_connects_one_account() {
+    let Some(url) = database("concurrent_invite_redeem").await else {
+        return;
+    };
+    let store = PostgresFrontDoorStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+    let patient = patient("pg-proof", "patient-race");
+    let email = format!("{}@pg-proof.test", uuid::Uuid::new_v4().simple());
+    let token = store
+        .invite(&patient, &email, "PG Race", NOW)
+        .await
+        .unwrap();
+    let db = sea_orm::Database::connect(&url).await.unwrap();
+    let held = db.begin().await.unwrap();
+    front_door::migration::invitation::Entity::find()
+        .lock_exclusive()
+        .one(&held)
+        .await
+        .unwrap()
+        .unwrap();
+    let redeem = || {
+        let (store, email, token) = (store.clone(), email.clone(), token.clone());
+        tokio::spawn(async move { store.redeem_invitation(&email, &token, NOW).await })
+    };
+    let first = redeem();
+    let second = redeem();
+    wait_for_two_lock_waiters(&db).await;
+    held.commit().await.unwrap();
+    let outcomes = [first.await.unwrap(), second.await.unwrap()];
+    assert_eq!(
+        outcomes.iter().filter(|result| result.is_ok()).count(),
+        1,
+        "{outcomes:?}"
+    );
+    assert_eq!(
+        outcomes
+            .iter()
+            .filter(|result| **result == Err(SignInError::Invalid))
+            .count(),
+        1
+    );
+    let (winner_id, _) = outcomes.into_iter().find_map(Result::ok).unwrap();
+    assert!(matches!(
+        store.roster_connection(&patient).await,
+        RosterConnectionStatus::Connected { account_id, .. } if account_id == winner_id
+    ));
+}
+
+async fn wait_for_two_lock_waiters(db: &sea_orm::DatabaseConnection) {
+    tokio::time::timeout(std::time::Duration::from_secs(10), async {
+        loop {
+            let row = db.query_one_raw(sea_orm::Statement::from_string(
+                sea_orm::DbBackend::Postgres,
+                "SELECT count(*) AS waiting FROM pg_stat_activity WHERE datname = current_database() AND wait_event_type = 'Lock'",
+            )).await.unwrap().unwrap();
+            if row.try_get::<i64>("", "waiting").unwrap() == 2 {
+                break;
+            }
+            tokio::time::sleep(std::time::Duration::from_millis(10)).await;
+        }
+    })
+    .await
+    .expect("both callers must contend for the held row");
+}
+
 async fn store(name: &str) -> Option<PostgresFrontDoorStore> {
     let url = database(name).await?;
     let store = PostgresFrontDoorStore::connect_with_migrations(&url)
@@ -91,7 +142,6 @@ async fn store(name: &str) -> Option<PostgresFrontDoorStore> {
     Some(store)
 }
 
-/// Creates the per-test database and returns its URL; `None` skips quietly.
 async fn database(name: &str) -> Option<String> {
     let url = std::env::var("FRONT_DOOR_DATABASE_URL").unwrap_or_default();
     let url = url.trim();
@@ -112,9 +162,6 @@ async fn database(name: &str) -> Option<String> {
     disposable::replace_database(&admin, &test_db).await;
     admin.close().await.expect("close admin connection");
     Some(format!("{base}/{test_db}"))
-    // The per-test database is intentionally left in place after the test;
-    // the next run's `DROP DATABASE IF EXISTS` clears any stale leftover,
-    // so a crashed or failed test never wedges the suite.
 }
 
 #[tokio::test]
@@ -125,9 +172,7 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
     let store = PostgresFrontDoorStore::connect_with_migrations(&url)
         .await
         .expect("first migrate");
-    let (patient, id, _) = invited_account(&store, "pg-proof").await;
-    // Rewind the records to what the chain wrote before it had its own
-    // table: the init as `mod` in SeaORM's default `seaql_migrations`.
+    let (_, id, session) = invited_account(&store, "pg-proof").await;
     let db = sea_orm::Database::connect(&url).await.expect("connection");
     rewind_to_legacy_init(&db).await;
     db.execute_unprepared(&format!(
@@ -144,7 +189,7 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
     let runtime = PostgresFrontDoorStore::connect_without_migrations(&read_only_url)
         .await
         .expect("runtime on legacy schema");
-    assert_eq!(runtime.link(id).await.unwrap(), patient);
+    assert_eq!(runtime.session(&session, NOW).await.unwrap(), id);
     assert!(
         !schema_tables(&url)
             .await
@@ -157,41 +202,21 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
     let store = PostgresFrontDoorStore::connect_with_migrations(&url)
         .await
         .expect("migrate over the legacy records");
-    assert_eq!(store.link(id).await.unwrap(), patient);
-    let versions = db
-        .query_all_raw(sea_orm::Statement::from_string(
-            sea_orm::DbBackend::Postgres,
-            format!(
-                "SELECT version, applied_at FROM {}",
-                front_door::migration::MIGRATION_TABLE
-            ),
-        ))
-        .await
-        .expect("front-door records")
-        .into_iter()
-        .map(|row| {
-            (
-                row.try_get::<String>("", "version").unwrap(),
-                row.try_get::<i64>("", "applied_at").unwrap(),
-            )
-        })
-        .collect::<Vec<_>>();
+    assert_eq!(store.session(&session, NOW).await.unwrap(), id);
+    let versions = recorded(&db).await;
     assert!(versions.contains(&(front_door::migration::INIT_MIGRATION_NAME.to_owned(), 42)));
     assert_eq!(
         versions.len(),
-        8,
-        "legacy init plus identity, journal, conversation, admission, premium cadence cleanup and for-my-doctor shares"
+        9,
+        "legacy init plus all migrations including multi-practice connections"
     );
     assert!(
         versions
             .iter()
-            .any(|(name, _)| name == "m20261020_identity")
+            .any(|(name, _)| name == "m20261120_multi_practice_connections")
     );
     store.migrate().await.expect("a second migrate is a no-op");
 
-    // The interim front-door ledger also recorded the init as `mod`. When it
-    // exists beside the shared table, its own receipt is the one adopted, and
-    // neither legacy ledger is renamed or deleted.
     rewind_to_legacy_init(&db).await;
     db.execute_unprepared(&format!(
         "DROP TABLE {table}; \
@@ -204,12 +229,12 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
     let store = PostgresFrontDoorStore::connect_with_migrations(&url)
         .await
         .expect("migrate over the interim records");
-    assert_eq!(store.link(id).await.unwrap(), patient);
+    assert_eq!(store.session(&session, NOW).await.unwrap(), id);
     let adopted = recorded(&db).await;
     assert!(adopted.iter().any(|(name, applied_at)| {
         name == front_door::migration::INIT_MIGRATION_NAME && *applied_at == 43
     }));
-    assert_eq!(adopted.len(), 8);
+    assert_eq!(adopted.len(), 9);
     for legacy in ["seaql_migrations", "front_door_seaql_migrations"] {
         let rows = db
             .query_all_raw(sea_orm::Statement::from_string(
@@ -223,13 +248,10 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
     store.migrate().await.expect("a second migrate is a no-op");
 }
 
-/// Remove every post-init extension so the schema matches what legacy ledgers
-/// recorded. Fixture-only: production rollback of these extensions is refused
-/// because they hold durable history and privacy receipts.
 async fn rewind_to_legacy_init(db: &sea_orm::DatabaseConnection) {
-    <front_door::migration::Migrator as sea_orm_migration::MigratorTrait>::down(db, Some(2))
+    <front_door::migration::Migrator as sea_orm_migration::MigratorTrait>::down(db, Some(3))
         .await
-        .expect("restore schema before for-my-doctor shares and legacy premium cadence cleanup");
+        .expect("restore schema before multi-practice, for-my-doctor shares, and cadence cleanup");
     db.execute_unprepared("DROP TABLE duet_model_execution_switch; DROP FUNCTION duet_switch_append_only(); DROP INDEX duet_conversation_allowance; ALTER TABLE duet_conversation_inputs DROP COLUMN admitted_at; DELETE FROM front_door_migrations WHERE version='m20261023_duet_admission'").await.unwrap();
     db.execute_unprepared("DROP TABLE duet_attempt_events,duet_conversation_attempts; DELETE FROM front_door_migrations WHERE version='m20261022_duet_execution'").await.unwrap();
     db.execute_unprepared("DROP TRIGGER duet_permission_interrupt ON front_door_permissions; DROP FUNCTION duet_permission_interrupt(); DROP FUNCTION duet_interrupt_accepted(uuid); DROP TABLE duet_conversation_messages,duet_conversation_inputs,duet_conversation_state; DELETE FROM front_door_migrations WHERE version='m20261021_duet_conversation'").await.unwrap();
@@ -259,7 +281,6 @@ async fn recorded(db: &sea_orm::DatabaseConnection) -> Vec<(String, i64)> {
     .collect()
 }
 
-/// Catalog read only: unlike Migrator status helpers, never installs a ledger.
 async fn schema_tables(url: &str) -> Vec<String> {
     let db = sea_orm::Database::connect(url)
         .await
@@ -316,15 +337,13 @@ async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
         "duet_conversation_state",
         "duet_model_execution_switch",
         "front_door_accounts",
-        "front_door_consents",
+        "front_door_connections",
         "front_door_for_my_doctor_shares",
         "front_door_identities",
         "front_door_invitations",
-        "front_door_links",
         "front_door_luna_restrictions",
         "front_door_migrations",
         "front_door_permissions",
-        "front_door_premium",
         "front_door_sessions",
         "front_door_shared_records",
         "front_door_sign_in_tokens",
@@ -357,8 +376,6 @@ fn patient(practice: &str, id: &str) -> RosterPatient {
     }
 }
 
-/// One account per test: a unique email, invited and redeemed, plus the
-/// returned session. The unique email keeps concurrent runs independent.
 async fn invited_account(
     store: &PostgresFrontDoorStore,
     practice: &str,
@@ -377,78 +394,184 @@ async fn invited_account(
 }
 
 #[tokio::test]
-async fn an_invitation_redeems_once_and_writes_the_link() {
+async fn an_invitation_redeems_once_without_expiry_and_creates_connection() {
     let Some(store) = store("invitation").await else {
         return;
     };
     let patient = patient("pg-proof", "patient-1");
     let email = format!("{}@pg-proof.test", uuid::Uuid::new_v4().simple());
+    assert!(matches!(
+        store.roster_connection(&patient).await,
+        RosterConnectionStatus::NotInvited
+    ));
     let token = store
         .invite(&patient, &email, "PG Proof", NOW)
         .await
         .expect("invitation");
-    let pending = store.invitation(&email).await.expect("pending invitation");
-    assert_eq!(pending.patient, patient);
-    assert_eq!(
-        pending.expires_at,
-        NOW + INVITATION_TTL_SECONDS,
-        "an invitation is redeemable for fourteen days"
-    );
-    let (id, session) = store
-        .redeem_invitation(&email, &token, NOW)
+    let pending = store
+        .invitation_for(&patient)
         .await
-        .expect("first redeem");
-    assert_eq!(store.session(&session, NOW).await.unwrap(), id);
-    let account = store.account_by_email(&email).await.expect("account");
-    assert_eq!(account.link, Some(patient.clone()));
+        .expect("pending invitation");
+    assert_eq!(pending.patient, patient);
+    assert_eq!(pending.invited_at, NOW);
+    assert!(matches!(
+        store.roster_connection(&patient).await,
+        RosterConnectionStatus::Invited { invited_at, .. } if invited_at == NOW
+    ));
+
+    let later = NOW + 365 * 86_400;
+    let (id, session) = store
+        .redeem_invitation(&email, &token, later)
+        .await
+        .expect("old invitation still redeems without expiry");
     assert_eq!(
         store
-            .redeem_invitation(&email, &token, NOW)
+            .session(&session, later + 1000 * 86_400)
+            .await
+            .unwrap(),
+        id
+    );
+    let account = store.account_by_email(&email).await.expect("account");
+    assert_eq!(account.active_connection_at(&patient), Some(later));
+    assert_eq!(
+        store
+            .redeem_invitation(&email, &token, later)
             .await
             .unwrap_err(),
         SignInError::Invalid,
         "an invitation redeems once"
     );
     assert_eq!(
-        store.invitation(&email).await,
+        store.invitation_for(&patient).await,
         None,
         "the redeemed invitation is gone"
     );
 }
 
 #[tokio::test]
-async fn an_account_email_cannot_be_invited_again() {
-    let Some(store) = store("invite_conflict").await else {
+async fn multi_practice_connections_reuse_existing_account_and_reinvite_after_ending() {
+    let Some(store) = store("multi_practice").await else {
         return;
     };
-    let (patient, _, _) = invited_account(&store, "pg-proof").await;
-    let email = format!("{}@pg-proof.test", uuid::Uuid::new_v4().simple());
-    store
-        .invite(&patient, &email, "New Patient", NOW)
-        .await
-        .expect("first invitation");
-    // A different email still invites, and the same email after redemption
-    // answers conflict.
-    let token = store
-        .invite(&patient, &email, "New Patient", NOW)
-        .await
-        .expect("re-invite replaces the pending invitation");
-    store
-        .redeem_invitation(&email, &token, NOW)
-        .await
-        .expect("redeem");
+    let (practice_a, id, _) = invited_account(&store, "pg-practice-a").await;
+    let email = store.account(id).await.unwrap().email;
+
+    // Inviting the same already-Connected roster patient returns Conflict.
     assert_eq!(
         store
-            .invite(&patient, &email, "New Patient", NOW)
+            .invite(&practice_a, &email, "PG Proof", NOW + 1)
             .await
             .unwrap_err(),
         InviteError::Conflict,
-        "the practice cannot re-invite a linked account"
+    );
+
+    // Inviting the same existing Duet account from two more practices works without conflict.
+    let practice_b = patient("pg-practice-b", "patient-b");
+    let practice_c = patient("pg-practice-c", "patient-c");
+    let token_b = store
+        .invite(&practice_b, &email, "PG Proof B", NOW + 2)
+        .await
+        .expect("existing account can be invited to practice B");
+    let token_c = store
+        .invite(&practice_c, &email, "PG Proof C", NOW + 3)
+        .await
+        .expect("practice C open invite coexists with practice B open invite on same email");
+
+    let (id_b, _) = store
+        .redeem_invitation(&email, &token_b, NOW + 4)
+        .await
+        .expect("redeem B");
+    assert_eq!(id_b, id);
+    assert!(
+        store.invitation_for(&practice_c).await.is_some(),
+        "redeeming B leaves C's open invite intact"
+    );
+    let (id_c, _) = store
+        .redeem_invitation(&email, &token_c, NOW + 5)
+        .await
+        .expect("redeem C");
+    assert_eq!(id_c, id);
+
+    // Multi-practice For my doctor requires explicit target when >1 active connection exists.
+    let ambiguous = store
+        .send_for_my_doctor(
+            id,
+            ForMyDoctorSendRequest {
+                share_key: "ambig".into(),
+                title: "Summary".into(),
+                summary_text: "Details".into(),
+                origin_label: None,
+                target: None,
+            },
+            NOW + 6,
+        )
+        .await
+        .unwrap_err();
+    assert!(matches!(ambiguous, ForMyDoctorError::InvalidInput(_)));
+    let targeted = store
+        .send_for_my_doctor(
+            id,
+            ForMyDoctorSendRequest {
+                share_key: "share-b".into(),
+                title: "For B".into(),
+                summary_text: "Details for B".into(),
+                origin_label: None,
+                target: Some(practice_b.clone()),
+            },
+            NOW + 6,
+        )
+        .await
+        .unwrap();
+    assert_eq!(targeted.patient, practice_b);
+
+    // Ending practice A leaves B and C connected, blocks sends to A, and allows re-invite to A.
+    store
+        .end_connection(id, &practice_a, ConnectionEndReason::PatientLeft, NOW + 10)
+        .await
+        .unwrap();
+    assert!(matches!(
+        store.roster_connection(&practice_a).await,
+        RosterConnectionStatus::Ended { account_id, ended_at, .. } if account_id == id && ended_at == NOW + 10
+    ));
+    assert!(store.roster_connection(&practice_b).await.is_connected());
+    assert!(matches!(
+        store
+            .send_for_my_doctor(
+                id,
+                ForMyDoctorSendRequest {
+                    share_key: "after-end".into(),
+                    title: "Ended".into(),
+                    summary_text: "Blocked".into(),
+                    origin_label: None,
+                    target: Some(practice_a.clone()),
+                },
+                NOW + 11,
+            )
+            .await
+            .unwrap_err(),
+        ForMyDoctorError::Unlinked
+    ));
+
+    let reinvite_a = store
+        .invite(&practice_a, &email, "PG Proof A", NOW + 20)
+        .await
+        .expect("Ended patient can be re-invited");
+    let (rejoined_id, _) = store
+        .redeem_invitation(&email, &reinvite_a, NOW + 30)
+        .await
+        .expect("rejoin A");
+    assert_eq!(rejoined_id, id);
+    let conns = store.connections(id).await.unwrap();
+    assert_eq!(conns.len(), 3);
+    assert!(
+        conns
+            .iter()
+            .all(|c| matches!(c.standing, ConnectionStanding::Connected { .. }))
     );
 }
 
 #[tokio::test]
-async fn a_sign_in_token_verifies_once_and_mints_one_session() {
+async fn a_sign_in_token_verifies_once_and_mints_non_expiring_session() {
     let Some(store) = store("sign_in_token").await else {
         return;
     };
@@ -472,93 +595,30 @@ async fn a_sign_in_token_verifies_once_and_mints_one_session() {
         SignInError::Invalid,
         "a verified token never verifies again"
     );
-    assert!(
-        store
-            .session(&session, NOW + SESSION_TTL_SECONDS)
-            .await
-            .is_err(),
-        "an expired session stops resolving"
-    );
-    assert_eq!(store.session(&session, NOW).await.unwrap(), id);
-}
-
-#[tokio::test]
-async fn consent_grants_withdraws_and_restores() {
-    let Some(store) = store("consent").await else {
-        return;
-    };
-    let (_, id, _) = invited_account(&store, "pg-proof").await;
     assert_eq!(
-        store.consent(id).await.unwrap(),
-        Consent::None,
-        "consent is granted, never assumed"
-    );
-    store.grant_consent(id, NOW + 1).await.unwrap();
-    assert_eq!(
-        store.consent(id).await.unwrap(),
-        Consent::Granted { at: NOW + 1 }
-    );
-    store.withdraw_consent(id, NOW + 2).await.unwrap();
-    assert_eq!(
-        store.consent(id).await.unwrap(),
-        Consent::Withdrawn {
-            at: NOW + 1,
-            withdrawn_at: NOW + 2,
-        },
-        "what was already shared stays dated evidence"
-    );
-    store.grant_consent(id, NOW + 3).await.unwrap();
-    assert_eq!(
-        store.consent(id).await.unwrap(),
-        Consent::Granted { at: NOW + 3 },
-        "re-consenting restores sharing"
+        store.session(&session, NOW + 3650 * 86_400).await.unwrap(),
+        id,
+        "sessions never expire with time"
     );
     assert_eq!(
-        store.consent(uuid::Uuid::nil()).await.unwrap_err(),
-        LinkError::Unlinked,
-        "an unknown account carries no consent"
+        store.connections(uuid::Uuid::nil()).await.unwrap_err(),
+        LinkError::Unlinked
     );
 }
 
 #[tokio::test]
-async fn premium_defaults_free_and_follows_the_status_per_patient() {
-    let Some(store) = store("premium").await else {
-        return;
-    };
-    let (luna, _, _) = invited_account(&store, "pg-proof").await;
-    assert_eq!(
-        store.premium(&luna).await,
-        Premium { premium: false },
-        "a patient without a status row reads free"
-    );
-    store.set_premium(&luna, true, NOW).await.unwrap();
-    assert_eq!(
-        store.premium(&luna).await,
-        Premium { premium: true },
-        "premium status updates per linked patient"
-    );
-    store.set_premium(&luna, false, NOW).await.unwrap();
-    assert_eq!(store.premium(&luna).await, Premium { premium: false });
-    assert_eq!(
-        store
-            .set_premium(&patient("pg-proof", "nobody"), true, NOW)
-            .await
-            .unwrap_err(),
-        LinkError::Unlinked,
-        "premium status is written only for a linked patient"
-    );
-}
-
-#[tokio::test]
-async fn linked_accounts_lists_the_practice_s_rows() {
-    let Some(store) = store("linked_accounts").await else {
+async fn connected_accounts_lists_the_practice_s_active_rows() {
+    let Some(store) = store("connected_accounts").await else {
         return;
     };
     let (_, first, _) = invited_account(&store, "pg-proof").await;
-    let (_, second, _) = invited_account(&store, "pg-proof").await;
+    let patient2 = patient("pg-proof", "patient-2");
+    let email2 = format!("{}@pg-proof.test", uuid::Uuid::new_v4().simple());
+    let tok2 = store.invite(&patient2, &email2, "Two", NOW).await.unwrap();
+    let (second, _) = store.redeem_invitation(&email2, &tok2, NOW).await.unwrap();
     let (_, _, _) = invited_account(&store, "other-clinic").await;
     let mut listed = store
-        .linked_accounts("pg-proof")
+        .connected_accounts("pg-proof")
         .await
         .into_iter()
         .map(|(account, _)| account.id)
@@ -567,29 +627,35 @@ async fn linked_accounts_lists_the_practice_s_rows() {
     expected.sort();
     listed.sort();
     assert_eq!(listed, expected);
+
+    let map = store.practice_connections("pg-proof").await.unwrap();
+    assert_eq!(map.len(), 2);
+    assert!(map["patient-1"].is_connected());
+    assert!(map["patient-2"].is_connected());
 }
 
-/// A memory store against the same contract, so a regression in one store
-/// cannot pass while the other keeps the truth.
 #[tokio::test]
 async fn the_memory_store_answers_the_same_contract() {
     let memory = MemoryFrontDoorStore::new();
-    let patient = patient("pg-proof", "patient-1");
+    let patient_a = patient("pg-proof", "patient-1");
     let token = memory
-        .invite(&patient, "luna@pg-proof.test", "Luna Park", NOW)
+        .invite(&patient_a, "luna@pg-proof.test", "Luna Park", NOW)
         .await
         .expect("invitation");
     let (id, session) = memory
         .redeem_invitation("luna@pg-proof.test", &token, NOW)
         .await
         .expect("redeem");
-    assert_eq!(memory.session(&session, NOW).await.unwrap(), id);
-    let Account { link, .. } = memory.account(id).await.expect("account");
-    assert_eq!(link, Some(patient));
-    memory.grant_consent(id, NOW).await.unwrap();
+    assert_eq!(
+        memory.session(&session, NOW + 365 * 86_400).await.unwrap(),
+        id
+    );
+    let Account { connections, .. } = memory.account(id).await.expect("account");
+    assert_eq!(connections.len(), 1);
+    assert_eq!(connections[0].patient, patient_a);
     assert!(matches!(
-        memory.consent(id).await.unwrap(),
-        Consent::Granted { .. }
+        connections[0].standing,
+        ConnectionStanding::Connected { connected_at } if connected_at == NOW
     ));
     let _ = SessionError::Invalid;
 }

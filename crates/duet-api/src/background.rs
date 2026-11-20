@@ -74,7 +74,7 @@ pub fn api_error_class(e: &ApiError) -> &'static str {
         | ApiError::TermsRequired
         | ApiError::AgreementChanged => "identity",
         ApiError::Conflict(_) => "conflict",
-        ApiError::NotFound | ApiError::JoinInvalid | ApiError::ConsentUnlinked => "not_found",
+        ApiError::NotFound => "not_found",
         ApiError::Unavailable(_) | ApiError::IdentityResponse(_) => "unavailable",
         ApiError::Storage(_) => DATABASE,
         ApiError::Unprocessable(_) => "invalid",
@@ -109,8 +109,6 @@ mod tests {
             (ApiError::AgreementChanged, "identity"),
             (ApiError::Conflict("claim"), "conflict"),
             (ApiError::NotFound, "not_found"),
-            (ApiError::JoinInvalid, "not_found"),
-            (ApiError::ConsentUnlinked, "not_found"),
             (ApiError::Unavailable("provider"), "unavailable"),
             (ApiError::Storage("SECRET patient text".into()), "database"),
             (ApiError::Unprocessable("body"), "invalid"),

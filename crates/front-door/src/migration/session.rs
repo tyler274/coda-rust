@@ -1,4 +1,7 @@
-//! One browser session a sign-in minted, at rest.
+//! One patient session a sign-in or invitation redemption minted, at rest.
+//!
+//! Sessions do not expire with time; they end only on sign-out, sign-out-everywhere,
+//! or account deactivation/deletion.
 
 use sea_orm::entity::prelude::*;
 
@@ -14,8 +17,6 @@ pub struct Model {
     pub token_hash: Vec<u8>,
     /// The Unix second the session was minted, against the account's fence.
     pub created_at: i64,
-    /// The Unix second the session stops being valid.
-    pub expires_at: i64,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

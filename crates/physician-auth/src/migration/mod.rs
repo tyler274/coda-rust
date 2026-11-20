@@ -24,7 +24,6 @@ pub mod membership;
 
 #[allow(missing_docs)]
 pub mod patient;
-pub mod patient_link;
 
 #[allow(missing_docs)]
 pub mod practice;
@@ -45,8 +44,6 @@ pub use invitation::{ActiveModel as InvitationActiveModel, Entity as Invitations
 pub use membership::{ActiveModel as MembershipActiveModel, Entity as Memberships};
 pub use patient::Model as PatientRow;
 pub use patient::{ActiveModel as PatientActiveModel, Entity as Patients};
-pub use patient_link::Model as PatientLinkRow;
-pub use patient_link::{ActiveModel as PatientLinkActiveModel, Entity as PatientLinks};
 pub use practice::{ActiveModel as PracticeActiveModel, Entity as Practices};
 pub use practice_source_setup::Model as PracticeSourceSetupRow;
 pub use practice_source_setup::{
@@ -77,6 +74,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261112_000008_drop_cadence_columns),
             Box::new(m20261113_000009_practice_time_zone),
             Box::new(m20261113_000010_practice_source_setup),
+            Box::new(m20261120_000011_retire_patient_links),
         ]
     }
 }
@@ -358,62 +356,62 @@ impl MigrationTrait for m20260101_000001_init {
         manager
             .create_table(
                 Table::create()
-                    .table(PatientLinks)
+                    .table(Alias::new("physician_patient_links"))
                     .col(
-                        ColumnDef::new(patient_link::Column::Id)
+                        ColumnDef::new(Alias::new("id"))
                             .big_integer()
                             .auto_increment()
                             .primary_key(),
                     )
                     .col(
-                        ColumnDef::new(patient_link::Column::PracticeId)
+                        ColumnDef::new(Alias::new("practice_id"))
                             .string()
                             .not_null(),
                     )
                     .col(
-                        ColumnDef::new(patient_link::Column::PatientWorkspaceId)
+                        ColumnDef::new(Alias::new("patient_workspace_id"))
                             .string()
                             .not_null(),
                     )
                     .col(
-                        ColumnDef::new(patient_link::Column::PendingTokenHash)
+                        ColumnDef::new(Alias::new("pending_token_hash"))
                             .binary_len(32)
                             .null(),
                     )
                     .col(
-                        ColumnDef::new(patient_link::Column::PendingExpiresAt)
+                        ColumnDef::new(Alias::new("pending_expires_at"))
                             .big_integer()
                             .null(),
                     )
                     .col(
-                        ColumnDef::new(patient_link::Column::DuetAccountId)
+                        ColumnDef::new(Alias::new("duet_account_id"))
                             .string()
                             .null(),
                     )
                     .col(
-                        ColumnDef::new(patient_link::Column::Linked)
+                        ColumnDef::new(Alias::new("linked"))
                             .boolean()
                             .not_null()
                             .default(false),
                     )
                     .col(
-                        ColumnDef::new(patient_link::Column::SharingConsented)
+                        ColumnDef::new(Alias::new("sharing_consented"))
                             .boolean()
                             .not_null()
                             .default(false),
                     )
                     .col(
-                        ColumnDef::new(patient_link::Column::ConsentVersion)
+                        ColumnDef::new(Alias::new("consent_version"))
                             .string()
                             .null(),
                     )
                     .col(
-                        ColumnDef::new(patient_link::Column::ConsentedAt)
+                        ColumnDef::new(Alias::new("consented_at"))
                             .big_integer()
                             .null(),
                     )
                     .col(
-                        ColumnDef::new(patient_link::Column::RevokedAt)
+                        ColumnDef::new(Alias::new("revoked_at"))
                             .big_integer()
                             .null(),
                     )
@@ -424,7 +422,7 @@ impl MigrationTrait for m20260101_000001_init {
                             .default("weekly"),
                     )
                     .col(
-                        ColumnDef::new(patient_link::Column::CreatedAt)
+                        ColumnDef::new(Alias::new("created_at"))
                             .big_integer()
                             .not_null(),
                     )
@@ -435,9 +433,9 @@ impl MigrationTrait for m20260101_000001_init {
             .create_index(
                 Index::create()
                     .name("physician_patient_links_workspace_idx")
-                    .table(PatientLinks)
-                    .col(patient_link::Column::PracticeId)
-                    .col(patient_link::Column::PatientWorkspaceId)
+                    .table(Alias::new("physician_patient_links"))
+                    .col(Alias::new("practice_id"))
+                    .col(Alias::new("patient_workspace_id"))
                     .unique()
                     .take(),
             )
@@ -446,7 +444,11 @@ impl MigrationTrait for m20260101_000001_init {
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-            .drop_table(Table::drop().table(PatientLinks).take())
+            .drop_table(
+                Table::drop()
+                    .table(Alias::new("physician_patient_links"))
+                    .take(),
+            )
             .await?;
         manager
             .drop_table(Table::drop().table(Memberships).take())
@@ -739,7 +741,7 @@ impl MigrationTrait for m20261112_000008_drop_cadence_columns {
         manager
             .alter_table(
                 Table::alter()
-                    .table(PatientLinks)
+                    .table(Alias::new("physician_patient_links"))
                     .drop_column(Alias::new("cadence"))
                     .to_owned(),
             )
@@ -763,7 +765,7 @@ impl MigrationTrait for m20261112_000008_drop_cadence_columns {
         manager
             .alter_table(
                 Table::alter()
-                    .table(PatientLinks)
+                    .table(Alias::new("physician_patient_links"))
                     .add_column(
                         ColumnDef::new(Alias::new("cadence"))
                             .string()
@@ -936,6 +938,117 @@ impl MigrationTrait for m20261024_000004_authority_notify {
             )
             .await
             .map(|_| ())
+    }
+}
+
+/// Retires the duplicate `physician_patient_links` table; `front-door` is the
+/// sole canonical owner of Connected Care invitations and connections.
+#[expect(
+    non_camel_case_types,
+    reason = "SeaORM migration version naming convention"
+)]
+pub struct m20261120_000011_retire_patient_links;
+impl MigrationName for m20261120_000011_retire_patient_links {
+    fn name(&self) -> &str {
+        "physician_auth_20261120_000011_retire_patient_links"
+    }
+}
+
+#[async_trait::async_trait]
+impl MigrationTrait for m20261120_000011_retire_patient_links {
+    async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .drop_table(
+                Table::drop()
+                    .table(Alias::new("physician_patient_links"))
+                    .if_exists()
+                    .take(),
+            )
+            .await
+    }
+
+    async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .create_table(
+                Table::create()
+                    .table(Alias::new("physician_patient_links"))
+                    .col(
+                        ColumnDef::new(Alias::new("id"))
+                            .big_integer()
+                            .auto_increment()
+                            .primary_key(),
+                    )
+                    .col(
+                        ColumnDef::new(Alias::new("practice_id"))
+                            .string()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(Alias::new("patient_workspace_id"))
+                            .string()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(Alias::new("pending_token_hash"))
+                            .binary_len(32)
+                            .null(),
+                    )
+                    .col(
+                        ColumnDef::new(Alias::new("pending_expires_at"))
+                            .big_integer()
+                            .null(),
+                    )
+                    .col(
+                        ColumnDef::new(Alias::new("duet_account_id"))
+                            .string()
+                            .null(),
+                    )
+                    .col(
+                        ColumnDef::new(Alias::new("linked"))
+                            .boolean()
+                            .not_null()
+                            .default(false),
+                    )
+                    .col(
+                        ColumnDef::new(Alias::new("sharing_consented"))
+                            .boolean()
+                            .not_null()
+                            .default(false),
+                    )
+                    .col(
+                        ColumnDef::new(Alias::new("consent_version"))
+                            .string()
+                            .null(),
+                    )
+                    .col(
+                        ColumnDef::new(Alias::new("consented_at"))
+                            .big_integer()
+                            .null(),
+                    )
+                    .col(
+                        ColumnDef::new(Alias::new("revoked_at"))
+                            .big_integer()
+                            .null(),
+                    )
+                    .col(
+                        ColumnDef::new(Alias::new("created_at"))
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .take(),
+            )
+            .await?;
+        manager
+            .create_index(
+                Index::create()
+                    .name("physician_patient_links_workspace_idx")
+                    .table(Alias::new("physician_patient_links"))
+                    .col(Alias::new("practice_id"))
+                    .col(Alias::new("patient_workspace_id"))
+                    .unique()
+                    .take(),
+            )
+            .await
     }
 }
 

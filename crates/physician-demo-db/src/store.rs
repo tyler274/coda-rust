@@ -317,6 +317,7 @@ impl DemoStore {
                     mrn: Some(r.get_str("mrn")?),
                     duet_linked: true,
                     sharing_consented: true,
+                    connection_status: physician_wire::ConnectionStatusWire::Connected,
                     cadence: Some("daily_when_changed".into()),
                 })
             })

@@ -109,9 +109,8 @@ impl Outbound {
     /// Mails the single-use front-door redeem link. The token is only in the message.
     pub(crate) async fn send_invite(&self, to: &str, token: &str) -> Result<(), String> {
         let link = self.link("/invite", "token", token)?;
-        let days = front_door::INVITATION_TTL_SECONDS / 86_400;
         let body = format!(
-            "Your practice invited you to Coda. This single-use link expires in {days} days.\r\n\r\n{link}\r\n"
+            "Your practice invited you to Coda. Open this link to connect:\r\n\r\n{link}\r\n"
         );
         self.sender
             .send(to, "Your Coda invitation", &body)

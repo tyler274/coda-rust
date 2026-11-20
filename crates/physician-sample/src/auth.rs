@@ -360,6 +360,9 @@ pub(crate) async fn guard(
 ) -> Response {
     request.extensions_mut().insert(AuthRequiredMarker);
     request.extensions_mut().insert(Arc::clone(&auth.store));
+    request
+        .extensions_mut()
+        .insert(Arc::clone(&auth.front_door));
     request.extensions_mut().insert(Arc::clone(&auth.patients));
     request
         .extensions_mut()
@@ -535,32 +538,6 @@ async fn clinic_demographics(
         Ok(None) => not_found(),
         Err(_) => StatusCode::SERVICE_UNAVAILABLE.into_response(),
     }
-}
-
-/// How many store reads one list response keeps in flight: enough to overlap
-/// round trips, few enough to leave the connection pool to other requests.
-const STORE_READS_IN_FLIGHT: usize = 4;
-
-/// Runs `read` on each item's `patient_workspace_id`, at most
-/// [`STORE_READS_IN_FLIGHT`] at a time, and returns the results in item order.
-/// An item without a workspace id reads nothing and yields `None`.
-pub(crate) async fn per_workspace<T, F: std::future::Future<Output = T>>(
-    items: &[Value],
-    read: impl Fn(String) -> F,
-) -> Vec<Option<T>> {
-    let workspaces: Vec<Option<String>> = items
-        .iter()
-        .map(|item| {
-            item.get("patient_workspace_id")
-                .and_then(Value::as_str)
-                .map(str::to_owned)
-        })
-        .collect();
-    stream::iter(workspaces)
-        .map(|ws_id| futures_util::future::OptionFuture::from(ws_id.map(&read)))
-        .buffered(STORE_READS_IN_FLIGHT)
-        .collect()
-        .await
 }
 
 async fn guard_event_stream(
@@ -1207,7 +1184,7 @@ async fn invite(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Respon
         Err(front_door::InviteError::Conflict) => (
             StatusCode::CONFLICT,
             Json(json!({
-                "detail": "That email is already invited or has an account.",
+                "detail": "That patient is already connected to this practice.",
             })),
         )
             .into_response(),
@@ -1483,6 +1460,9 @@ async fn inject_auth_store(
     next: Next,
 ) -> Response {
     request.extensions_mut().insert(Arc::clone(&auth.store));
+    request
+        .extensions_mut()
+        .insert(Arc::clone(&auth.front_door));
     request.extensions_mut().insert(Arc::clone(&auth.patients));
     request
         .extensions_mut()
@@ -2757,15 +2737,23 @@ mod tests {
         );
         // The patient redeems once: the account links to the roster patient.
         assert!(redeem(&front_door, "luna@example.test", &token).await);
-        let (account_id, _) = {
+        let (account_id, connections) = {
             let account = front_door
                 .account_by_email("luna@example.test")
                 .await
                 .expect("account");
-            (account.id, account.link)
+            (account.id, account.connections)
         };
+        assert_eq!(connections.len(), 1);
         assert_eq!(
-            front_door.link(account_id).await.unwrap(),
+            connections[0].patient,
+            RosterPatient {
+                practice_id: STAGING_PRACTICE_ID.to_owned(),
+                patient_id: workspace.to_owned(),
+            }
+        );
+        assert_eq!(
+            front_door.connections(account_id).await.unwrap()[0].patient,
             RosterPatient {
                 practice_id: STAGING_PRACTICE_ID.to_owned(),
                 patient_id: workspace.to_owned(),
@@ -2831,8 +2819,8 @@ mod tests {
         );
         assert!(front_door.invitation("luna@example.test").await.is_some());
 
-        // An invite that collides with an existing front-door account
-        // answers conflict, and the roster patient stays unlinked.
+        // An existing Duet account can be invited for another roster patient without conflict,
+        // whereas inviting an already-Connected roster patient answers 409 Conflict.
         let session = session_for(&app, STAGING_EMAIL).await;
         front_door.seed_linked_account(
             &RosterPatient {
@@ -2842,15 +2830,33 @@ mod tests {
             "linked@example.test",
             "Already Linked",
         );
-        let (status, body) = invite_patient(
+        let second_workspace = RosterPatient {
+            practice_id: STAGING_PRACTICE_ID.to_owned(),
+            patient_id: crate::WORKSPACE_IDS[0].to_owned(),
+        };
+        let (ok_status, ok_body) = invite_patient(
             &app,
             Some(&session),
             "linked@example.test",
             crate::WORKSPACE_IDS[0],
         )
         .await;
+        assert_eq!(
+            ok_status,
+            StatusCode::OK,
+            "existing Duet account may connect to another practice/patient: {ok_body}"
+        );
+        assert!(front_door.invitation_for(&second_workspace).await.is_some());
+
+        let (status, body) = invite_patient(
+            &app,
+            Some(&session),
+            "linked@example.test",
+            crate::WORKSPACE_IDS[1],
+        )
+        .await;
         assert_eq!(status, StatusCode::CONFLICT, "{body}");
-        assert!(body.contains("already invited"), "{body}");
+        assert!(body.contains("already connected"), "{body}");
     }
 
     fn decode_gmail_raw(sent: &Value) -> String {
@@ -3026,7 +3032,7 @@ mod tests {
         assert!(value.get("token").is_none(), "{body}");
         let message = decode_gmail_raw(&fake.sent.lock().expect("sent")[0]);
         assert!(message.contains("To: luna@example.test"), "{message}");
-        assert!(message.contains("expires in 14 days"), "{message}");
+        assert!(!message.contains("expires"), "{message}");
         let token = query_value(&message, "token");
         assert!(
             message.contains(&format!("https://physician.example/invite?token={token}")),
@@ -3498,63 +3504,6 @@ mod tests {
         }
         async fn remove_account(&self, email: &str) -> bool {
             self.inner.remove_account(email).await
-        }
-        async fn invite_patient(
-            &self,
-            practice_id: &str,
-            patient_workspace_id: &str,
-            now: u64,
-        ) -> Result<String, physician_auth::SignInError> {
-            self.inner
-                .invite_patient(practice_id, patient_workspace_id, now)
-                .await
-        }
-        async fn accept_patient_invitation(
-            &self,
-            token: &str,
-            duet_account_id: &str,
-            now: u64,
-        ) -> Result<physician_auth::PatientLink, physician_auth::SignInError> {
-            self.inner
-                .accept_patient_invitation(token, duet_account_id, now)
-                .await
-        }
-        async fn grant_patient_consent(
-            &self,
-            practice_id: &str,
-            patient_workspace_id: &str,
-            duet_account_id: &str,
-            consent_version: &str,
-            now: u64,
-        ) -> Result<physician_auth::PatientLink, physician_auth::SignInError> {
-            self.inner
-                .grant_patient_consent(
-                    practice_id,
-                    patient_workspace_id,
-                    duet_account_id,
-                    consent_version,
-                    now,
-                )
-                .await
-        }
-        async fn revoke_patient_consent(
-            &self,
-            practice_id: &str,
-            patient_workspace_id: &str,
-            now: u64,
-        ) -> Result<physician_auth::PatientLink, physician_auth::SignInError> {
-            self.inner
-                .revoke_patient_consent(practice_id, patient_workspace_id, now)
-                .await
-        }
-        async fn patient_link(
-            &self,
-            practice_id: &str,
-            patient_workspace_id: &str,
-        ) -> Option<physician_auth::PatientLink> {
-            self.inner
-                .patient_link(practice_id, patient_workspace_id)
-                .await
         }
     }
 

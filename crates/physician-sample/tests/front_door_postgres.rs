@@ -205,9 +205,18 @@ async fn the_practice_invite_redeems_once_on_postgres() {
         "an invitation redeems once"
     );
     assert_eq!(
-        front_door.link(account_id).await.unwrap().patient_id,
+        front_door.connections(account_id).await.unwrap()[0]
+            .patient
+            .patient_id,
         workspace
     );
+    assert!(matches!(
+        front_door.roster_connection(&pending.patient).await,
+        front_door::RosterConnectionStatus::Connected {
+            account_id: linked_id,
+            ..
+        } if linked_id == account_id
+    ));
 }
 
 #[tokio::test]
@@ -240,12 +249,12 @@ async fn an_existing_account_signs_in_again_without_redeeming() {
         .expect("verify");
     assert_eq!(who, account_id);
     assert_eq!(front_door.session(&session, NOW).await.unwrap(), account_id);
-    // The practice reads the returning patient's link through the same
+    // The practice reads the returning patient's connection through the same
     // front-door store the server holds.
     let linked = front_door
-        .linked_accounts(STAGING_PRACTICE_ID)
+        .connected_accounts(STAGING_PRACTICE_ID)
         .await
         .into_iter()
         .any(|(account, linked)| account.id == account_id && linked == patient);
-    assert!(linked, "the returning account stays linked");
+    assert!(linked, "the returning account stays connected");
 }

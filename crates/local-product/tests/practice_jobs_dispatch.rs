@@ -1534,7 +1534,7 @@ async fn single_cadence_owner_unaffected_by_billing_and_duet_connection_changes(
         .await
         .unwrap();
 
-    // Link pw_with_duet to Duet, grant consent, toggle premium ON and OFF, then withdraw consent.
+    // Connect pw_with_duet to Duet in `front-door`.
     let now_u64 = t0 as u64;
     let roster_patient = RosterPatient {
         practice_id: practice.clone(),
@@ -1549,35 +1549,6 @@ async fn single_cadence_owner_unaffected_by_billing_and_duet_connection_changes(
         .redeem_invitation(&email, &fd_invite, now_u64 + 1)
         .await
         .unwrap();
-    front_door
-        .grant_consent(duet_account_id, now_u64 + 2)
-        .await
-        .unwrap();
-
-    let auth_invite = auth
-        .invite_patient(&practice, &pw_with_duet, now_u64 + 3)
-        .await
-        .unwrap();
-    let duet_id_str = duet_account_id.to_string();
-    auth.accept_patient_invitation(&auth_invite, &duet_id_str, now_u64 + 4)
-        .await
-        .unwrap();
-    auth.grant_patient_consent(&practice, &pw_with_duet, &duet_id_str, "v1", now_u64 + 5)
-        .await
-        .unwrap();
-
-    // Toggle billing/premium ON, verify operator readback for both Duet and non-Duet patients.
-    front_door
-        .set_premium(&roster_patient, true, now_u64 + 6)
-        .await
-        .unwrap();
-    let premium_on = front_door.premium(&roster_patient).await;
-    assert!(premium_on.premium);
-    let premium_json: Value = serde_json::to_value(&premium_on).unwrap();
-    assert!(
-        premium_json.get("cadence").is_none(),
-        "Premium wire state must not carry cadence: {premium_json}"
-    );
 
     for (pw, expected) in [
         (&pw_with_duet, custom_cadence),
@@ -1624,23 +1595,19 @@ async fn single_cadence_owner_unaffected_by_billing_and_duet_connection_changes(
             .unwrap();
     assert_eq!(wake1.checked_patients.len(), 2);
 
-    // Toggle premium OFF and disconnect sharing on both front-door and physician-auth.
+    // Ending the Connected Care connection leaves cadence and due schedule untouched.
     front_door
-        .set_premium(&roster_patient, false, now_u64 + 30)
-        .await
-        .unwrap();
-    let premium_off = front_door.premium(&roster_patient).await;
-    assert!(!premium_off.premium);
-    front_door
-        .withdraw_consent(duet_account_id, now_u64 + 31)
-        .await
-        .unwrap();
-    auth.revoke_patient_consent(&practice, &pw_with_duet, now_u64 + 32)
+        .end_connection(
+            duet_account_id,
+            &roster_patient,
+            front_door::ConnectionEndReason::PatientLeft,
+            now_u64 + 31,
+        )
         .await
         .unwrap();
 
     // Operator readback and scheduled wake-up at t0 + 20 + 7_200 confirm neither patient's
-    // cadence nor due schedule changed after billing and connection transitions!
+    // cadence nor due schedule changed after connection transitions!
     let duet_after = store
         .patient_dispatch_status(auth.as_ref(), &practice, &pw_with_duet, t0 + 40)
         .await

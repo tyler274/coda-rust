@@ -3,18 +3,23 @@
 //! Same contract as the memory store; durable truth lives in the
 //! `front_door_*` tables the crate's migration chain owns.
 
+use std::collections::{BTreeMap, BTreeSet};
 use std::time::Duration;
 
-use crate::migration::{Accounts, Consents, Invitations, Links, Premiums, Sessions, SignInTokens};
+use crate::migration::{
+    Accounts, Connections, ForMyDoctorShares, Invitations, Sessions, SharedRecords, SignInTokens,
+};
 use crate::{
-    Account, Consent, FrontDoorStore, Invitation, InviteError, LinkError, Premium, RosterPatient,
-    SESSION_TTL_SECONDS, SIGN_IN_TOKEN_TTL_SECONDS, SessionError, SignInError, mint_token,
-    token_hash,
+    Account, AccountConnection, ConnectionEndReason, ConnectionStanding, ConsentedPatientLink,
+    ForMyDoctorError, ForMyDoctorSendRequest, ForMyDoctorShare, ForMyDoctorShareStatus,
+    FrontDoorStore, Invitation, InviteError, LinkError, RosterConnectionStatus, RosterPatient,
+    SIGN_IN_TOKEN_TTL_SECONDS, SessionError, SharedPatientRecord, SharedPatientRecordInput,
+    SignInError, mint_token, resolve_for_my_doctor_target, resolve_roster_status, token_hash,
 };
 use async_trait::async_trait;
 use sea_orm::{
-    ActiveModelTrait, ColumnTrait, ConnectOptions, Database, DatabaseConnection, DbErr,
-    EntityTrait, QueryFilter, QueryOrder, Set, TransactionTrait,
+    ActiveModelTrait, ColumnTrait, ConnectOptions, ConnectionTrait, Database, DatabaseConnection,
+    DbErr, EntityTrait, QueryFilter, QueryOrder, QuerySelect, Set, TransactionTrait,
 };
 
 /// The SQL-backed store.
@@ -53,10 +58,8 @@ impl PostgresFrontDoorStore {
     /// Checks every owned table without creating a migration ledger or writing data.
     pub async fn check_schema(&self) -> Result<(), DbErr> {
         Accounts::find().one(&self.db).await?;
-        Consents::find().one(&self.db).await?;
+        Connections::find().one(&self.db).await?;
         Invitations::find().one(&self.db).await?;
-        Links::find().one(&self.db).await?;
-        Premiums::find().one(&self.db).await?;
         Sessions::find().one(&self.db).await?;
         SignInTokens::find().one(&self.db).await?;
         crate::migration::identity::Entity::find()
@@ -68,12 +71,8 @@ impl PostgresFrontDoorStore {
         crate::migration::restriction::Entity::find()
             .one(&self.db)
             .await?;
-        crate::migration::ForMyDoctorShares::find()
-            .one(&self.db)
-            .await?;
-        crate::migration::SharedRecords::find()
-            .one(&self.db)
-            .await?;
+        ForMyDoctorShares::find().one(&self.db).await?;
+        SharedRecords::find().one(&self.db).await?;
         Ok(())
     }
 
@@ -89,32 +88,68 @@ impl PostgresFrontDoorStore {
         crate::migration::upgrade::migrate(&self.db).await
     }
 
-    fn account_row(row: crate::migration::AccountRow) -> Account {
-        Account {
+    fn connection_standing(row: &crate::migration::ConnectionRow) -> Option<ConnectionStanding> {
+        let connected_at = row.connected_at.max(0) as u64;
+        match row.status.as_str() {
+            "connected" => Some(ConnectionStanding::Connected { connected_at }),
+            "ended" => {
+                let ended_at = row.ended_at?.max(0) as u64;
+                let reason = ConnectionEndReason::parse(row.end_reason.as_deref()?)?;
+                Some(ConnectionStanding::Ended {
+                    connected_at,
+                    ended_at,
+                    reason,
+                })
+            }
+            _ => None,
+        }
+    }
+
+    fn account_connection(row: crate::migration::ConnectionRow) -> Option<AccountConnection> {
+        let standing = Self::connection_standing(&row)?;
+        Some(AccountConnection {
+            patient: RosterPatient {
+                practice_id: row.practice_id,
+                patient_id: row.patient_id,
+            },
+            standing,
+        })
+    }
+
+    async fn load_account_with_connections(
+        db: &impl ConnectionTrait,
+        row: crate::migration::AccountRow,
+    ) -> Result<Account, DbErr> {
+        use crate::migration::connection::Column;
+        let conn_rows = Connections::find()
+            .filter(Column::AccountId.eq(row.id))
+            .order_by_asc(Column::PracticeId)
+            .order_by_asc(Column::PatientId)
+            .all(db)
+            .await?;
+        let connections = conn_rows
+            .into_iter()
+            .filter_map(Self::account_connection)
+            .collect();
+        Ok(Account {
             id: row.id,
             email: row.email,
             display_name: row.display_name,
             active: row.active,
-            link: match (row.linked_practice_id, row.linked_patient_id) {
-                (Some(practice_id), Some(patient_id)) => Some(RosterPatient {
-                    practice_id,
-                    patient_id,
-                }),
-                _ => None,
-            },
+            connections,
             sessions_ended_before: row.sessions_ended_before.max(0) as u64,
-        }
+        })
     }
 
-    fn consent_row(row: crate::migration::ConsentRow) -> Consent {
-        match row.withdrawn_at {
-            Some(withdrawn_at) if withdrawn_at > 0 => Consent::Withdrawn {
-                at: row.consented_at.max(0) as u64,
-                withdrawn_at: withdrawn_at.max(0) as u64,
+    fn invitation_row(row: crate::migration::InvitationRow) -> Invitation {
+        Invitation {
+            patient: RosterPatient {
+                practice_id: row.practice_id,
+                patient_id: row.patient_id,
             },
-            _ => Consent::Granted {
-                at: row.consented_at.max(0) as u64,
-            },
+            email: row.email,
+            display_name: row.display_name,
+            invited_at: row.created_at.max(0) as u64,
         }
     }
 }
@@ -128,17 +163,19 @@ impl FrontDoorStore for PostgresFrontDoorStore {
         display_name: &str,
         now: u64,
     ) -> Result<String, InviteError> {
+        use crate::migration::{connection, invitation};
         let key = email.to_lowercase();
-        if Accounts::find()
-            .filter(crate::migration::account::Column::Email.eq(&key))
+        let active_existing = Connections::find()
+            .filter(connection::Column::PracticeId.eq(&patient.practice_id))
+            .filter(connection::Column::PatientId.eq(&patient.patient_id))
+            .filter(connection::Column::Status.eq("connected"))
             .one(&self.db)
             .await
-            .map_err(|_| InviteError::Conflict)?
-            .is_some()
-        {
-            // The email already holds a front-door account.
+            .map_err(|_| InviteError::Conflict)?;
+        if active_existing.is_some() {
             return Err(InviteError::Conflict);
         }
+
         let token = mint_token();
         let active = crate::migration::InvitationActiveModel {
             id: Default::default(),
@@ -148,20 +185,20 @@ impl FrontDoorStore for PostgresFrontDoorStore {
             display_name: Set(display_name.to_owned()),
             token_hash: Set(token_hash(&token).to_vec()),
             created_at: Set(now as i64),
-            expires_at: Set((now + crate::INVITATION_TTL_SECONDS) as i64),
         };
         Invitations::insert(active)
             .on_conflict(
-                sea_orm::sea_query::OnConflict::column(crate::migration::invitation::Column::Email)
-                    .update_columns([
-                        crate::migration::invitation::Column::PracticeId,
-                        crate::migration::invitation::Column::PatientId,
-                        crate::migration::invitation::Column::DisplayName,
-                        crate::migration::invitation::Column::TokenHash,
-                        crate::migration::invitation::Column::CreatedAt,
-                        crate::migration::invitation::Column::ExpiresAt,
-                    ])
-                    .to_owned(),
+                sea_orm::sea_query::OnConflict::columns([
+                    invitation::Column::PracticeId,
+                    invitation::Column::PatientId,
+                ])
+                .update_columns([
+                    invitation::Column::Email,
+                    invitation::Column::DisplayName,
+                    invitation::Column::TokenHash,
+                    invitation::Column::CreatedAt,
+                ])
+                .to_owned(),
             )
             .exec(&self.db)
             .await
@@ -172,19 +209,25 @@ impl FrontDoorStore for PostgresFrontDoorStore {
     async fn invitation(&self, email: &str) -> Option<Invitation> {
         let row = Invitations::find()
             .filter(crate::migration::invitation::Column::Email.eq(email.to_lowercase()))
+            .order_by_desc(crate::migration::invitation::Column::CreatedAt)
+            .order_by_desc(crate::migration::invitation::Column::Id)
             .one(&self.db)
             .await
             .ok()
             .flatten()?;
-        Some(Invitation {
-            patient: RosterPatient {
-                practice_id: row.practice_id,
-                patient_id: row.patient_id,
-            },
-            email: row.email,
-            display_name: row.display_name,
-            expires_at: row.expires_at.max(0) as u64,
-        })
+        Some(Self::invitation_row(row))
+    }
+
+    async fn invitation_for(&self, patient: &RosterPatient) -> Option<Invitation> {
+        use crate::migration::invitation::Column;
+        let row = Invitations::find()
+            .filter(Column::PracticeId.eq(&patient.practice_id))
+            .filter(Column::PatientId.eq(&patient.patient_id))
+            .one(&self.db)
+            .await
+            .ok()
+            .flatten()?;
+        Some(Self::invitation_row(row))
     }
 
     async fn redeem_invitation(
@@ -193,70 +236,121 @@ impl FrontDoorStore for PostgresFrontDoorStore {
         token: &str,
         now: u64,
     ) -> Result<(uuid::Uuid, String), SignInError> {
+        use crate::migration::{account, connection, invitation};
         let key = email.to_lowercase();
+        let hash = token_hash(token).to_vec();
         let txn = self.db.begin().await.map_err(|_| SignInError::Invalid)?;
-        if Accounts::find()
-            .filter(crate::migration::account::Column::Email.eq(&key))
-            .one(&txn)
-            .await
-            .map_err(|_| SignInError::Invalid)?
-            .is_some()
-        {
-            // The account exists; it signs in rather than redeeming again.
-            return Err(SignInError::Invalid);
-        }
+
         let invitation = Invitations::find()
-            .filter(crate::migration::invitation::Column::Email.eq(&key))
+            .filter(invitation::Column::Email.eq(&key))
+            .filter(invitation::Column::TokenHash.eq(hash))
+            .lock_exclusive()
             .one(&txn)
             .await
             .map_err(|_| SignInError::Invalid)?
             .ok_or(SignInError::Invalid)?;
-        if invitation.expires_at <= now as i64
-            || invitation.token_hash != token_hash(token).to_vec()
+
+        let account_id = if let Some(existing) = Accounts::find()
+            .filter(account::Column::Email.eq(&key))
+            .lock_exclusive()
+            .one(&txn)
+            .await
+            .map_err(|_| SignInError::Invalid)?
         {
-            return Err(SignInError::Invalid);
-        }
-        // The invitation row is deleted inside the transaction: a raced
-        // second redeem finds nothing, so an invitation redeems once.
-        Invitations::delete_by_id(invitation.id)
+            if !existing.active {
+                return Err(SignInError::Inactive);
+            }
+            existing.id
+        } else {
+            let new_account = crate::migration::AccountActiveModel {
+                id: Set(uuid::Uuid::new_v4()),
+                email: Set(key),
+                display_name: Set(invitation.display_name.clone()),
+                active: Set(true),
+                sessions_ended_before: Set(0),
+                created_at: Set(now as i64),
+            };
+            new_account
+                .insert(&txn)
+                .await
+                .map_err(|_| SignInError::Invalid)?
+                .id
+        };
+
+        // Delete the invitation row inside the transaction: a raced second
+        // redeem finds nothing, so each invitation redeems once.
+        let deleted = Invitations::delete_by_id(invitation.id)
             .exec(&txn)
             .await
             .map_err(|_| SignInError::Invalid)?;
-        let account = crate::migration::AccountActiveModel {
-            id: Set(uuid::Uuid::new_v4()),
-            email: Set(key),
-            display_name: Set(invitation.display_name.clone()),
-            active: Set(true),
-            linked_practice_id: Set(Some(invitation.practice_id.clone())),
-            linked_patient_id: Set(Some(invitation.patient_id.clone())),
-            sessions_ended_before: Set(0),
-            created_at: Set(now as i64),
-        };
-        let account = account
-            .insert(&txn)
+        if deleted.rows_affected != 1 {
+            return Err(SignInError::Invalid);
+        }
+
+        let conflict_other = Connections::find()
+            .filter(connection::Column::PracticeId.eq(&invitation.practice_id))
+            .filter(connection::Column::PatientId.eq(&invitation.patient_id))
+            .filter(connection::Column::Status.eq("connected"))
+            .filter(connection::Column::AccountId.ne(account_id))
+            .one(&txn)
             .await
-            .map_err(|_| SignInError::Invalid)?;
-        let link = crate::migration::LinkActiveModel {
-            account_id: Set(account.id),
-            practice_id: Set(invitation.practice_id.clone()),
-            patient_id: Set(invitation.patient_id.clone()),
-            created_at: Set(now as i64),
-        };
-        link.insert(&txn).await.map_err(|_| SignInError::Invalid)?;
+            .map_err(|_| SignInError::Invalid)?
+            .is_some();
+        if conflict_other {
+            return Err(SignInError::Invalid);
+        }
+
+        let existing_conn = Connections::find_by_id((
+            account_id,
+            invitation.practice_id.clone(),
+            invitation.patient_id.clone(),
+        ))
+        .one(&txn)
+        .await
+        .map_err(|_| SignInError::Invalid)?;
+        match existing_conn {
+            Some(row) => {
+                let mut active: crate::migration::ConnectionActiveModel = row.into();
+                active.status = Set("connected".to_owned());
+                active.connected_at = Set(now as i64);
+                active.ended_at = Set(None);
+                active.end_reason = Set(None);
+                active.updated_at = Set(now as i64);
+                active
+                    .update(&txn)
+                    .await
+                    .map_err(|_| SignInError::Invalid)?;
+            }
+            None => {
+                crate::migration::ConnectionActiveModel {
+                    account_id: Set(account_id),
+                    practice_id: Set(invitation.practice_id),
+                    patient_id: Set(invitation.patient_id),
+                    status: Set("connected".to_owned()),
+                    connected_at: Set(now as i64),
+                    ended_at: Set(None),
+                    end_reason: Set(None),
+                    created_at: Set(now as i64),
+                    updated_at: Set(now as i64),
+                }
+                .insert(&txn)
+                .await
+                .map_err(|_| SignInError::Invalid)?;
+            }
+        }
+
         let session_token = mint_token();
-        let session = crate::migration::SessionActiveModel {
+        crate::migration::SessionActiveModel {
             id: Default::default(),
-            account_id: Set(account.id),
+            account_id: Set(account_id),
             token_hash: Set(token_hash(&session_token).to_vec()),
             created_at: Set(now as i64),
-            expires_at: Set((now + SESSION_TTL_SECONDS) as i64),
-        };
-        session
-            .insert(&txn)
-            .await
-            .map_err(|_| SignInError::Invalid)?;
+        }
+        .insert(&txn)
+        .await
+        .map_err(|_| SignInError::Invalid)?;
         txn.commit().await.map_err(|_| SignInError::Invalid)?;
-        Ok((account.id, session_token))
+        Ok((account_id, session_token))
     }
 
     async fn begin_sign_in(&self, email: &str, now: u64) -> Result<String, SignInError> {
@@ -270,8 +364,6 @@ impl FrontDoorStore for PostgresFrontDoorStore {
         if !account.active {
             return Err(SignInError::Inactive);
         }
-        // Identity Platform accounts cannot fall back to the legacy email proof
-        // endpoint (which is not their credential authority).
         if crate::migration::identity::Entity::find()
             .filter(crate::migration::identity::Column::AccountId.eq(account.id))
             .one(&self.db)
@@ -281,7 +373,6 @@ impl FrontDoorStore for PostgresFrontDoorStore {
         {
             return Err(SignInError::Invalid);
         }
-        // One pending token per account: re-requesting replaces the last one.
         let token = mint_token();
         let active = crate::migration::SignInTokenActiveModel {
             id: Default::default(),
@@ -340,8 +431,6 @@ impl FrontDoorStore for PostgresFrontDoorStore {
         {
             return Err(SignInError::Invalid);
         }
-        // Only the transaction that consumes the token may mint a session.
-        // A concurrent verifier can have read the same pending row already.
         let consumed = SignInTokens::delete_by_id(pending.id)
             .exec(&txn)
             .await
@@ -350,22 +439,20 @@ impl FrontDoorStore for PostgresFrontDoorStore {
             return Err(SignInError::Invalid);
         }
         let session_token = mint_token();
-        let session = crate::migration::SessionActiveModel {
+        crate::migration::SessionActiveModel {
             id: Default::default(),
             account_id: Set(account.id),
             token_hash: Set(token_hash(&session_token).to_vec()),
             created_at: Set(now as i64),
-            expires_at: Set((now + SESSION_TTL_SECONDS) as i64),
-        };
-        session
-            .insert(&txn)
-            .await
-            .map_err(|_| SignInError::Invalid)?;
+        }
+        .insert(&txn)
+        .await
+        .map_err(|_| SignInError::Invalid)?;
         txn.commit().await.map_err(|_| SignInError::Invalid)?;
         Ok((account.id, session_token))
     }
 
-    async fn session(&self, token: &str, now: u64) -> Result<uuid::Uuid, SessionError> {
+    async fn session(&self, token: &str, _now: u64) -> Result<uuid::Uuid, SessionError> {
         let hash = token_hash(token);
         let session = Sessions::find()
             .filter(crate::migration::session::Column::TokenHash.eq(hash.to_vec()))
@@ -373,9 +460,6 @@ impl FrontDoorStore for PostgresFrontDoorStore {
             .await
             .map_err(|_| SessionError::Invalid)?
             .ok_or(SessionError::Invalid)?;
-        if session.expires_at <= now as i64 {
-            return Err(SessionError::Invalid);
-        }
         let account = Accounts::find_by_id(session.account_id)
             .one(&self.db)
             .await
@@ -385,8 +469,6 @@ impl FrontDoorStore for PostgresFrontDoorStore {
             return Err(SessionError::Inactive);
         }
         if session.created_at < account.sessions_ended_before {
-            // Ended by deactivation: the account is active again, this
-            // session still is not.
             return Err(SessionError::Inactive);
         }
         Ok(account.id)
@@ -400,209 +482,176 @@ impl FrontDoorStore for PostgresFrontDoorStore {
     }
 
     async fn account_by_email(&self, email: &str) -> Option<Account> {
-        Accounts::find()
+        let row = Accounts::find()
             .filter(crate::migration::account::Column::Email.eq(email.to_lowercase()))
             .one(&self.db)
             .await
             .ok()
-            .flatten()
-            .map(Self::account_row)
+            .flatten()?;
+        Self::load_account_with_connections(&self.db, row)
+            .await
+            .ok()
     }
 
     async fn account(&self, account_id: uuid::Uuid) -> Option<Account> {
-        Accounts::find_by_id(account_id)
+        let row = Accounts::find_by_id(account_id)
             .one(&self.db)
             .await
             .ok()
-            .flatten()
-            .map(Self::account_row)
+            .flatten()?;
+        Self::load_account_with_connections(&self.db, row)
+            .await
+            .ok()
     }
 
-    async fn link(&self, account_id: uuid::Uuid) -> Result<RosterPatient, LinkError> {
+    async fn connections(
+        &self,
+        account_id: uuid::Uuid,
+    ) -> Result<Vec<AccountConnection>, LinkError> {
         let account = Accounts::find_by_id(account_id)
             .one(&self.db)
             .await
             .map_err(|_| LinkError::Unlinked)?
             .ok_or(LinkError::Unlinked)?;
-        Self::account_row(account).link.ok_or(LinkError::Unlinked)
+        let hydrated = Self::load_account_with_connections(&self.db, account)
+            .await
+            .map_err(|_| LinkError::Unlinked)?;
+        Ok(hydrated.connections)
     }
 
-    async fn linked_accounts(&self, practice_id: &str) -> Vec<(Account, RosterPatient)> {
-        let mut rows: Vec<(Account, RosterPatient)> = Links::find()
-            .filter(crate::migration::link::Column::PracticeId.eq(practice_id))
-            .find_with_related(Accounts)
+    async fn connected_accounts(&self, practice_id: &str) -> Vec<(Account, RosterPatient)> {
+        use crate::migration::connection::Column;
+        let conn_rows = Connections::find()
+            .filter(Column::PracticeId.eq(practice_id))
+            .filter(Column::Status.eq("connected"))
+            .order_by_asc(Column::AccountId)
+            .order_by_asc(Column::PatientId)
             .all(&self.db)
             .await
-            .unwrap_or_default()
-            .into_iter()
-            .filter_map(|(link, accounts)| {
-                let account = accounts.into_iter().next()?;
-                Some((
-                    Self::account_row(account),
+            .unwrap_or_default();
+        let mut out = Vec::with_capacity(conn_rows.len());
+        for row in conn_rows {
+            if let Some(account) = self.account(row.account_id).await {
+                out.push((
+                    account,
                     RosterPatient {
-                        practice_id: link.practice_id,
-                        patient_id: link.patient_id,
+                        practice_id: row.practice_id,
+                        patient_id: row.patient_id,
                     },
-                ))
-            })
-            .collect();
-        rows.sort_by_key(|(left, _)| left.id);
-        rows
-    }
-
-    async fn grant_consent(&self, account_id: uuid::Uuid, now: u64) -> Result<(), LinkError> {
-        let account = Accounts::find_by_id(account_id)
-            .one(&self.db)
-            .await
-            .map_err(|_| LinkError::Unlinked)?
-            .ok_or(LinkError::Unlinked)?;
-        if account.linked_practice_id.is_none() {
-            return Err(LinkError::Unlinked);
-        }
-        // Re-consenting after a withdrawal restores sharing: the row's
-        // `withdrawn_at` clears and the consent second moves forward.
-        let existing = Consents::find_by_id(account_id)
-            .one(&self.db)
-            .await
-            .map_err(|_| LinkError::Unlinked)?;
-        let active = match existing {
-            Some(row) => {
-                let mut update: crate::migration::ConsentActiveModel = row.into();
-                update.consented_at = Set(now as i64);
-                update.withdrawn_at = Set(None);
-                update
+                ));
             }
-            None => crate::migration::ConsentActiveModel {
-                account_id: Set(account_id),
-                consented_at: Set(now as i64),
-                withdrawn_at: Set(None),
-            },
-        };
-        // Explicit upsert: a natural primary key must not make a new row an UPDATE.
-        Consents::insert(active)
-            .on_conflict(
-                sea_orm::sea_query::OnConflict::column(
-                    crate::migration::consent::Column::AccountId,
-                )
-                .update_columns([
-                    crate::migration::consent::Column::ConsentedAt,
-                    crate::migration::consent::Column::WithdrawnAt,
-                ])
-                .to_owned(),
-            )
-            .exec(&self.db)
-            .await
-            .map_err(|_| LinkError::Unlinked)?;
-        Ok(())
+        }
+        out
     }
 
-    async fn withdraw_consent(&self, account_id: uuid::Uuid, now: u64) -> Result<(), LinkError> {
-        let account = Accounts::find_by_id(account_id)
-            .one(&self.db)
-            .await
-            .map_err(|_| LinkError::Unlinked)?
-            .ok_or(LinkError::Unlinked)?;
-        if account.linked_practice_id.is_none() {
-            return Err(LinkError::Unlinked);
-        }
-        if let Some(row) = Consents::find_by_id(account_id)
-            .one(&self.db)
-            .await
-            .map_err(|_| LinkError::Unlinked)?
-        {
-            let mut update: crate::migration::ConsentActiveModel = row.into();
-            update.withdrawn_at = Set(Some(now as i64));
-            update
-                .update(&self.db)
-                .await
-                .map_err(|_| LinkError::Unlinked)?;
-        }
-        Ok(())
-    }
-
-    async fn consent(&self, account_id: uuid::Uuid) -> Result<Consent, LinkError> {
-        let account = Accounts::find_by_id(account_id)
-            .one(&self.db)
-            .await
-            .map_err(|_| LinkError::Unlinked)?
-            .ok_or(LinkError::Unlinked)?;
-        if account.linked_practice_id.is_none() {
-            return Err(LinkError::Unlinked);
-        }
-        Ok(Consents::find_by_id(account_id)
-            .one(&self.db)
-            .await
-            .map_err(|_| LinkError::Unlinked)?
-            .map(Self::consent_row)
-            .unwrap_or(Consent::None))
-    }
-
-    async fn set_premium(
+    async fn end_connection(
         &self,
+        account_id: uuid::Uuid,
         patient: &RosterPatient,
-        premium: bool,
+        reason: ConnectionEndReason,
         now: u64,
     ) -> Result<(), LinkError> {
-        let linked = Links::find()
-            .filter(crate::migration::link::Column::PracticeId.eq(&patient.practice_id))
-            .filter(crate::migration::link::Column::PatientId.eq(&patient.patient_id))
-            .one(&self.db)
-            .await
-            .map_err(|_| LinkError::Unlinked)?
-            .is_some();
-        if !linked {
+        let txn = self.db.begin().await.map_err(|_| LinkError::Unlinked)?;
+        let existing = Connections::find_by_id((
+            account_id,
+            patient.practice_id.clone(),
+            patient.patient_id.clone(),
+        ))
+        .lock_exclusive()
+        .one(&txn)
+        .await
+        .map_err(|_| LinkError::Unlinked)?
+        .ok_or(LinkError::Unlinked)?;
+        if existing.status != "connected" {
             return Err(LinkError::Unlinked);
         }
-        let existing = Premiums::find_by_id(patient_key(patient))
-            .one(&self.db)
-            .await
-            .map_err(|_| LinkError::Unlinked)?;
-        let active = match existing {
-            Some(row) => {
-                let mut update: crate::migration::PremiumActiveModel = row.into();
-                update.premium = Set(premium);
-                update
-            }
-            None => crate::migration::PremiumActiveModel {
-                patient_key: Set(patient_key(patient)),
-                premium: Set(premium),
-                created_at: Set(now as i64),
-            },
-        };
-        Premiums::insert(active)
-            .on_conflict(
-                sea_orm::sea_query::OnConflict::column(
-                    crate::migration::premium::Column::PatientKey,
-                )
-                .update_columns([crate::migration::premium::Column::Premium])
-                .to_owned(),
-            )
-            .exec(&self.db)
-            .await
-            .map_err(|_| LinkError::Unlinked)?;
+        let mut active: crate::migration::ConnectionActiveModel = existing.into();
+        active.status = Set("ended".to_owned());
+        active.ended_at = Set(Some(now as i64));
+        active.end_reason = Set(Some(reason.as_str().to_owned()));
+        active.updated_at = Set(now as i64);
+        active.update(&txn).await.map_err(|_| LinkError::Unlinked)?;
+        txn.commit().await.map_err(|_| LinkError::Unlinked)?;
         Ok(())
     }
 
-    async fn premium(&self, patient: &RosterPatient) -> Premium {
-        Premiums::find_by_id(patient_key(patient))
+    async fn roster_connection(&self, patient: &RosterPatient) -> RosterConnectionStatus {
+        use crate::migration::{connection, invitation};
+        let conn_rows = Connections::find()
+            .filter(connection::Column::PracticeId.eq(&patient.practice_id))
+            .filter(connection::Column::PatientId.eq(&patient.patient_id))
+            .all(&self.db)
+            .await
+            .unwrap_or_default();
+        let standings: Vec<(uuid::Uuid, ConnectionStanding)> = conn_rows
+            .iter()
+            .filter_map(|row| Some((row.account_id, Self::connection_standing(row)?)))
+            .collect();
+        let inv = Invitations::find()
+            .filter(invitation::Column::PracticeId.eq(&patient.practice_id))
+            .filter(invitation::Column::PatientId.eq(&patient.patient_id))
             .one(&self.db)
             .await
             .ok()
             .flatten()
-            .map(|row| Premium {
-                premium: row.premium,
-            })
-            .unwrap_or(Premium { premium: false })
+            .map(Self::invitation_row);
+        resolve_roster_status(standings.iter().map(|(aid, st)| (*aid, st)), inv.as_ref())
+    }
+
+    async fn practice_connections(
+        &self,
+        practice_id: &str,
+    ) -> Result<BTreeMap<String, RosterConnectionStatus>, ForMyDoctorError> {
+        use crate::migration::{connection, invitation};
+        let conn_rows = Connections::find()
+            .filter(connection::Column::PracticeId.eq(practice_id))
+            .all(&self.db)
+            .await?;
+        let inv_rows = Invitations::find()
+            .filter(invitation::Column::PracticeId.eq(practice_id))
+            .all(&self.db)
+            .await?;
+
+        let mut by_patient_conns: BTreeMap<String, Vec<(uuid::Uuid, ConnectionStanding)>> =
+            BTreeMap::new();
+        let mut patient_ids = BTreeSet::new();
+        for row in conn_rows {
+            if let Some(standing) = Self::connection_standing(&row) {
+                patient_ids.insert(row.patient_id.clone());
+                by_patient_conns
+                    .entry(row.patient_id)
+                    .or_default()
+                    .push((row.account_id, standing));
+            }
+        }
+        let mut by_patient_inv: BTreeMap<String, Invitation> = BTreeMap::new();
+        for row in inv_rows {
+            patient_ids.insert(row.patient_id.clone());
+            by_patient_inv.insert(row.patient_id.clone(), Self::invitation_row(row));
+        }
+
+        let mut out = BTreeMap::new();
+        for patient_id in patient_ids {
+            let conns = by_patient_conns
+                .get(&patient_id)
+                .map(Vec::as_slice)
+                .unwrap_or(&[]);
+            let inv = by_patient_inv.get(&patient_id);
+            let status = resolve_roster_status(conns.iter().map(|(aid, st)| (*aid, st)), inv);
+            if !matches!(status, RosterConnectionStatus::NotInvited) {
+                out.insert(patient_id, status);
+            }
+        }
+        Ok(out)
     }
 
     async fn send_for_my_doctor(
         &self,
         account_id: uuid::Uuid,
-        request: crate::ForMyDoctorSendRequest,
+        request: ForMyDoctorSendRequest,
         now: u64,
-    ) -> Result<crate::ForMyDoctorShare, crate::ForMyDoctorError> {
-        use crate::ForMyDoctorError;
-        use crate::migration::for_my_doctor_share;
+    ) -> Result<ForMyDoctorShare, ForMyDoctorError> {
+        use crate::migration::{connection, for_my_doctor_share};
         let share_key = request.share_key.trim();
         let title = request.title.trim();
         let summary_text = request.summary_text.trim();
@@ -628,17 +677,34 @@ impl FrontDoorStore for PostgresFrontDoorStore {
             .to_owned();
 
         let txn = self.db.begin().await?;
-        let account = Accounts::find_by_id(account_id)
-            .one(&txn)
-            .await?
-            .ok_or(ForMyDoctorError::Unlinked)?;
-        let (Some(practice_id), Some(patient_id)) =
-            (account.linked_practice_id, account.linked_patient_id)
-        else {
-            return Err(ForMyDoctorError::Unlinked);
-        };
-        if let Some(existing) = crate::migration::ForMyDoctorShares::find()
+        let active_rows = Connections::find()
+            .filter(connection::Column::AccountId.eq(account_id))
+            .filter(connection::Column::Status.eq("connected"))
+            .order_by_asc(connection::Column::PracticeId)
+            .order_by_asc(connection::Column::PatientId)
+            .all(&txn)
+            .await?;
+        let active_pairs: Vec<(RosterPatient, u64)> = active_rows
+            .into_iter()
+            .map(|r| {
+                (
+                    RosterPatient {
+                        practice_id: r.practice_id,
+                        patient_id: r.patient_id,
+                    },
+                    r.connected_at.max(0) as u64,
+                )
+            })
+            .collect();
+        let active_refs: Vec<(&RosterPatient, u64)> =
+            active_pairs.iter().map(|(p, ts)| (p, *ts)).collect();
+        let (patient, consent_at) =
+            resolve_for_my_doctor_target(&active_refs, request.target.as_ref())?;
+
+        if let Some(existing) = ForMyDoctorShares::find()
             .filter(for_my_doctor_share::Column::AccountId.eq(account_id))
+            .filter(for_my_doctor_share::Column::PracticeId.eq(&patient.practice_id))
+            .filter(for_my_doctor_share::Column::PatientId.eq(&patient.patient_id))
             .filter(for_my_doctor_share::Column::ShareKey.eq(share_key))
             .one(&txn)
             .await?
@@ -652,20 +718,13 @@ impl FrontDoorStore for PostgresFrontDoorStore {
             }
             return Err(ForMyDoctorError::Conflict);
         }
-        let consent = Consents::find_by_id(account_id)
-            .one(&txn)
-            .await?
-            .map(Self::consent_row)
-            .unwrap_or(Consent::None);
-        let Consent::Granted { at: consent_at } = consent else {
-            return Err(ForMyDoctorError::ConsentRequired);
-        };
+
         let share_id = format!("fmd-{}", uuid::Uuid::new_v4().simple());
-        let active = crate::migration::ForMyDoctorShareActiveModel {
+        crate::migration::ForMyDoctorShareActiveModel {
             share_id: Set(share_id.clone()),
             account_id: Set(account_id),
-            practice_id: Set(practice_id.clone()),
-            patient_id: Set(patient_id.clone()),
+            practice_id: Set(patient.practice_id.clone()),
+            patient_id: Set(patient.patient_id.clone()),
             share_key: Set(share_key.to_owned()),
             title: Set(title.to_owned()),
             summary_text: Set(summary_text.to_owned()),
@@ -673,42 +732,41 @@ impl FrontDoorStore for PostgresFrontDoorStore {
             sent_at: Set(now as i64),
             consent_at: Set(consent_at as i64),
             received_at: Set(None),
-        };
-        active.insert(&txn).await?;
+        }
+        .insert(&txn)
+        .await?;
         txn.commit().await?;
-        Ok(crate::ForMyDoctorShare {
+        Ok(ForMyDoctorShare {
             share_id,
             account_id,
-            patient: RosterPatient {
-                practice_id,
-                patient_id,
-            },
+            patient,
             share_key: share_key.to_owned(),
             title: title.to_owned(),
             summary_text: summary_text.to_owned(),
             origin_label,
             sent_at: now,
             consent_at,
-            standing: crate::ForMyDoctorShareStatus::Sent,
+            standing: ForMyDoctorShareStatus::Sent,
         })
     }
 
     async fn for_my_doctor_shares_for_account(
         &self,
         account_id: uuid::Uuid,
-    ) -> Result<Vec<crate::ForMyDoctorShare>, crate::ForMyDoctorError> {
-        use crate::migration::for_my_doctor_share::Column;
-        let account = Accounts::find_by_id(account_id)
+    ) -> Result<Vec<ForMyDoctorShare>, ForMyDoctorError> {
+        use crate::migration::{connection, for_my_doctor_share};
+        let has_connection = Connections::find()
+            .filter(connection::Column::AccountId.eq(account_id))
             .one(&self.db)
             .await?
-            .ok_or(crate::ForMyDoctorError::Unlinked)?;
-        if account.linked_practice_id.is_none() || account.linked_patient_id.is_none() {
-            return Err(crate::ForMyDoctorError::Unlinked);
+            .is_some();
+        if !has_connection {
+            return Err(ForMyDoctorError::Unlinked);
         }
-        let rows = crate::migration::ForMyDoctorShares::find()
-            .filter(Column::AccountId.eq(account_id))
-            .order_by_asc(Column::SentAt)
-            .order_by_asc(Column::ShareId)
+        let rows = ForMyDoctorShares::find()
+            .filter(for_my_doctor_share::Column::AccountId.eq(account_id))
+            .order_by_asc(for_my_doctor_share::Column::SentAt)
+            .order_by_asc(for_my_doctor_share::Column::ShareId)
             .all(&self.db)
             .await?;
         Ok(rows.into_iter().map(share_row).collect())
@@ -717,9 +775,9 @@ impl FrontDoorStore for PostgresFrontDoorStore {
     async fn pending_for_my_doctor_shares_for_practice(
         &self,
         practice_id: &str,
-    ) -> Result<Vec<crate::ForMyDoctorShare>, crate::ForMyDoctorError> {
+    ) -> Result<Vec<ForMyDoctorShare>, ForMyDoctorError> {
         use crate::migration::for_my_doctor_share::Column;
-        let rows = crate::migration::ForMyDoctorShares::find()
+        let rows = ForMyDoctorShares::find()
             .filter(Column::PracticeId.eq(practice_id))
             .filter(Column::ReceivedAt.is_null())
             .order_by_asc(Column::SentAt)
@@ -728,11 +786,15 @@ impl FrontDoorStore for PostgresFrontDoorStore {
             .await?;
         let mut out = Vec::new();
         for row in rows {
-            let consented = Consents::find_by_id(row.account_id)
-                .one(&self.db)
-                .await?
-                .is_some_and(|c| c.withdrawn_at.is_none());
-            if consented {
+            let connected = Connections::find_by_id((
+                row.account_id,
+                row.practice_id.clone(),
+                row.patient_id.clone(),
+            ))
+            .one(&self.db)
+            .await?
+            .is_some_and(|c| c.status == "connected");
+            if connected {
                 out.push(share_row(row));
             }
         }
@@ -744,13 +806,13 @@ impl FrontDoorStore for PostgresFrontDoorStore {
         practice_id: &str,
         share_id: &str,
         received_at: u64,
-    ) -> Result<crate::ForMyDoctorShare, crate::ForMyDoctorError> {
+    ) -> Result<ForMyDoctorShare, ForMyDoctorError> {
         let txn = self.db.begin().await?;
-        let existing = crate::migration::ForMyDoctorShares::find_by_id(share_id.to_owned())
+        let existing = ForMyDoctorShares::find_by_id(share_id.to_owned())
             .one(&txn)
             .await?
             .filter(|row| row.practice_id == practice_id)
-            .ok_or(crate::ForMyDoctorError::NotFound)?;
+            .ok_or(ForMyDoctorError::NotFound)?;
         let model = if existing.received_at.is_none() {
             let mut active: crate::migration::ForMyDoctorShareActiveModel = existing.into();
             active.received_at = Set(Some(received_at as i64));
@@ -765,10 +827,9 @@ impl FrontDoorStore for PostgresFrontDoorStore {
     async fn upsert_shared_records(
         &self,
         account_id: uuid::Uuid,
-        records: &[crate::SharedPatientRecordInput],
+        records: &[SharedPatientRecordInput],
         now: u64,
-    ) -> Result<(), crate::ForMyDoctorError> {
-        use crate::ForMyDoctorError;
+    ) -> Result<(), ForMyDoctorError> {
         use crate::migration::shared_record::Column;
         for rec in records {
             if rec.record_id.trim().is_empty()
@@ -788,7 +849,7 @@ impl FrontDoorStore for PostgresFrontDoorStore {
             return Err(ForMyDoctorError::Unlinked);
         }
         for rec in records {
-            crate::migration::SharedRecords::insert(crate::migration::SharedRecordActiveModel {
+            SharedRecords::insert(crate::migration::SharedRecordActiveModel {
                 account_id: Set(account_id),
                 record_id: Set(rec.record_id.trim().to_owned()),
                 revision: Set(rec.revision.trim().to_owned()),
@@ -820,31 +881,29 @@ impl FrontDoorStore for PostgresFrontDoorStore {
     async fn consented_links_for_practice(
         &self,
         practice_id: &str,
-    ) -> Result<Vec<crate::ConsentedPatientLink>, crate::ForMyDoctorError> {
-        let rows = Accounts::find()
-            .filter(crate::migration::account::Column::LinkedPracticeId.eq(practice_id))
-            .filter(crate::migration::account::Column::LinkedPatientId.is_not_null())
-            .order_by_asc(crate::migration::account::Column::Id)
+    ) -> Result<Vec<ConsentedPatientLink>, ForMyDoctorError> {
+        use crate::migration::connection::Column;
+        let rows = Connections::find()
+            .filter(Column::PracticeId.eq(practice_id))
+            .filter(Column::Status.eq("connected"))
+            .order_by_asc(Column::AccountId)
+            .order_by_asc(Column::PatientId)
             .all(&self.db)
             .await?;
-        let mut out = Vec::new();
+        let mut out = Vec::with_capacity(rows.len());
         for row in rows {
-            let consent = Consents::find_by_id(row.id)
-                .one(&self.db)
-                .await?
-                .map(Self::consent_row)
-                .unwrap_or(Consent::None);
-            let Consent::Granted { at } = consent else {
+            let Some(acct_row) = Accounts::find_by_id(row.account_id).one(&self.db).await? else {
                 continue;
             };
-            let account = Self::account_row(row);
-            if let Some(patient) = account.link.clone() {
-                out.push(crate::ConsentedPatientLink {
-                    account,
-                    patient,
-                    consented_at: at,
-                });
-            }
+            let account = Self::load_account_with_connections(&self.db, acct_row).await?;
+            out.push(ConsentedPatientLink {
+                account,
+                patient: RosterPatient {
+                    practice_id: row.practice_id,
+                    patient_id: row.patient_id,
+                },
+                consented_at: row.connected_at.max(0) as u64,
+            });
         }
         Ok(out)
     }
@@ -853,32 +912,26 @@ impl FrontDoorStore for PostgresFrontDoorStore {
         &self,
         practice_id: &str,
         patient_id: &str,
-    ) -> Result<Vec<crate::SharedPatientRecord>, crate::ForMyDoctorError> {
-        use crate::migration::account;
+    ) -> Result<Vec<SharedPatientRecord>, ForMyDoctorError> {
+        use crate::migration::connection;
         use crate::migration::shared_record::Column;
-        let accounts = Accounts::find()
-            .filter(account::Column::LinkedPracticeId.eq(practice_id))
-            .filter(account::Column::LinkedPatientId.eq(patient_id))
-            .order_by_asc(account::Column::Id)
+        let conn_rows = Connections::find()
+            .filter(connection::Column::PracticeId.eq(practice_id))
+            .filter(connection::Column::PatientId.eq(patient_id))
+            .filter(connection::Column::Status.eq("connected"))
+            .order_by_asc(connection::Column::AccountId)
             .all(&self.db)
             .await?;
         let mut out = Vec::new();
-        for acct in accounts {
-            let consented = Consents::find_by_id(acct.id)
-                .one(&self.db)
-                .await?
-                .is_some_and(|c| c.withdrawn_at.is_none());
-            if !consented {
-                continue;
-            }
-            let recs = crate::migration::SharedRecords::find()
-                .filter(Column::AccountId.eq(acct.id))
+        for conn in conn_rows {
+            let recs = SharedRecords::find()
+                .filter(Column::AccountId.eq(conn.account_id))
                 .order_by_asc(Column::RecordId)
                 .all(&self.db)
                 .await?;
             for rec in recs {
-                out.push(crate::SharedPatientRecord {
-                    account_id: acct.id,
+                out.push(SharedPatientRecord {
+                    account_id: conn.account_id,
                     patient: RosterPatient {
                         practice_id: practice_id.to_owned(),
                         patient_id: patient_id.to_owned(),
@@ -896,45 +949,24 @@ impl FrontDoorStore for PostgresFrontDoorStore {
         Ok(out)
     }
 
-    async fn connected_care_practices(&self) -> Result<Vec<String>, crate::ForMyDoctorError> {
-        use crate::migration::{account, consent, for_my_doctor_share};
-        use std::collections::BTreeSet;
-        let consented_ids: Vec<uuid::Uuid> = Consents::find()
-            .filter(consent::Column::WithdrawnAt.is_null())
+    async fn connected_care_practices(&self) -> Result<Vec<String>, ForMyDoctorError> {
+        use crate::migration::connection::Column;
+        let rows = Connections::find()
+            .filter(Column::Status.eq("connected"))
+            .select_only()
+            .column(Column::PracticeId)
+            .distinct()
+            .into_tuple::<String>()
             .all(&self.db)
-            .await?
-            .into_iter()
-            .map(|c| c.account_id)
-            .collect();
-        if consented_ids.is_empty() {
-            return Ok(Vec::new());
-        }
+            .await?;
         let mut practices = BTreeSet::new();
-        let linked_accounts = Accounts::find()
-            .filter(account::Column::Id.is_in(consented_ids.clone()))
-            .filter(account::Column::LinkedPracticeId.is_not_null())
-            .filter(account::Column::LinkedPatientId.is_not_null())
-            .all(&self.db)
-            .await?;
-        for acct in linked_accounts {
-            if let Some(practice_id) = acct.linked_practice_id {
-                practices.insert(practice_id);
-            }
-        }
-        let pending_shares = crate::migration::ForMyDoctorShares::find()
-            .filter(for_my_doctor_share::Column::AccountId.is_in(consented_ids))
-            .filter(for_my_doctor_share::Column::ReceivedAt.is_null())
-            .all(&self.db)
-            .await?;
-        for share in pending_shares {
-            practices.insert(share.practice_id);
-        }
+        practices.extend(rows);
         Ok(practices.into_iter().collect())
     }
 }
 
-fn share_row(row: crate::migration::ForMyDoctorShareRow) -> crate::ForMyDoctorShare {
-    crate::ForMyDoctorShare {
+fn share_row(row: crate::migration::ForMyDoctorShareRow) -> ForMyDoctorShare {
+    ForMyDoctorShare {
         share_id: row.share_id,
         account_id: row.account_id,
         patient: RosterPatient {
@@ -948,15 +980,10 @@ fn share_row(row: crate::migration::ForMyDoctorShareRow) -> crate::ForMyDoctorSh
         sent_at: row.sent_at.max(0) as u64,
         consent_at: row.consent_at.max(0) as u64,
         standing: match row.received_at {
-            Some(ts) => crate::ForMyDoctorShareStatus::Received {
+            Some(ts) => ForMyDoctorShareStatus::Received {
                 received_at: ts.max(0) as u64,
             },
-            None => crate::ForMyDoctorShareStatus::Sent,
+            None => ForMyDoctorShareStatus::Sent,
         },
     }
-}
-
-/// The premium row's key: one practice-scoped roster patient.
-fn patient_key(patient: &RosterPatient) -> String {
-    format!("{}:{}", patient.practice_id, patient.patient_id)
 }

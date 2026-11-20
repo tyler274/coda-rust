@@ -1,12 +1,9 @@
 //! The SeaORM entities and the front-door migration chain.
 //!
-//! Modeled on the `physician-auth` table families: accounts, one session per
-//! sign-in, one-time sign-in tokens, practice invitations to roster patients,
-//! the durable Duet-account-to-roster-patient link, per-patient consent, and
-//! per-patient premium status. Deliberate divergence from `physician-auth`:
-//! the link and premium rows outlive a link's unbinding (`consents` keeps its
-//! history through `withdrawn_at`), because what was already shared stays
-//! dated evidence and re-linking must not resurrect withdrawn consent.
+//! Modeled on the `physician-auth` table families: accounts, non-expiring
+//! sessions per sign-in, one-time sign-in tokens, practice invitations to
+//! roster patients, and canonical multi-practice connections keyed by
+//! `(account_id, practice_id, patient_id)`.
 
 use sea_orm_migration::prelude::*;
 
@@ -16,6 +13,8 @@ use sea_orm_migration::prelude::*;
 #[allow(missing_docs)]
 pub mod account;
 
+#[allow(missing_docs)]
+pub mod connection;
 #[allow(missing_docs)]
 pub mod for_my_doctor_share;
 #[allow(missing_docs)]
@@ -27,6 +26,7 @@ mod m20261022_duet_execution;
 mod m20261023_duet_admission;
 mod m20261112_drop_premium_cadence;
 mod m20261119_for_my_doctor_shares;
+mod m20261120_multi_practice_connections;
 #[allow(missing_docs)]
 pub mod permission;
 #[allow(missing_docs)]
@@ -35,16 +35,7 @@ pub mod restriction;
 pub mod shared_record;
 
 #[allow(missing_docs)]
-pub mod consent;
-
-#[allow(missing_docs)]
 pub mod invitation;
-
-#[allow(missing_docs)]
-pub mod link;
-
-#[allow(missing_docs)]
-pub mod premium;
 
 #[allow(missing_docs)]
 pub mod session;
@@ -54,18 +45,14 @@ pub mod sign_in_token;
 
 pub use account::Model as AccountRow;
 pub use account::{ActiveModel as AccountActiveModel, Entity as Accounts};
-pub use consent::Model as ConsentRow;
-pub use consent::{ActiveModel as ConsentActiveModel, Entity as Consents};
+pub use connection::Model as ConnectionRow;
+pub use connection::{ActiveModel as ConnectionActiveModel, Entity as Connections};
 pub use for_my_doctor_share::Model as ForMyDoctorShareRow;
 pub use for_my_doctor_share::{
     ActiveModel as ForMyDoctorShareActiveModel, Entity as ForMyDoctorShares,
 };
 pub use invitation::Model as InvitationRow;
 pub use invitation::{ActiveModel as InvitationActiveModel, Entity as Invitations};
-pub use link::Model as LinkRow;
-pub use link::{ActiveModel as LinkActiveModel, Entity as Links};
-pub use premium::Model as PremiumRow;
-pub use premium::{ActiveModel as PremiumActiveModel, Entity as Premiums};
 pub use session::Model as SessionRow;
 pub use session::{ActiveModel as SessionActiveModel, Entity as Sessions};
 pub use shared_record::Model as SharedRecordRow;
@@ -101,6 +88,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261023_duet_admission::Migration),
             Box::new(m20261112_drop_premium_cadence::Migration),
             Box::new(m20261119_for_my_doctor_shares::Migration),
+            Box::new(m20261120_multi_practice_connections::Migration),
         ]
     }
 }
@@ -146,8 +134,8 @@ impl MigrationTrait for m20260101_000001_init {
                             .not_null()
                             .default(true),
                     )
-                    .col(ColumnDef::new(account::Column::LinkedPracticeId).string())
-                    .col(ColumnDef::new(account::Column::LinkedPatientId).string())
+                    .col(ColumnDef::new(Alias::new("linked_practice_id")).string())
+                    .col(ColumnDef::new(Alias::new("linked_patient_id")).string())
                     .col(
                         ColumnDef::new(account::Column::SessionsEndedBefore)
                             .big_integer()
@@ -167,8 +155,8 @@ impl MigrationTrait for m20260101_000001_init {
                 Index::create()
                     .name("front_door_accounts_link_idx")
                     .table(Accounts)
-                    .col(account::Column::LinkedPracticeId)
-                    .col(account::Column::LinkedPatientId)
+                    .col(Alias::new("linked_practice_id"))
+                    .col(Alias::new("linked_patient_id"))
                     .take(),
             )
             .await?;
@@ -195,7 +183,7 @@ impl MigrationTrait for m20260101_000001_init {
                             .not_null(),
                     )
                     .col(
-                        ColumnDef::new(session::Column::ExpiresAt)
+                        ColumnDef::new(Alias::new("expires_at"))
                             .big_integer()
                             .not_null(),
                     )
@@ -310,7 +298,7 @@ impl MigrationTrait for m20260101_000001_init {
                             .not_null(),
                     )
                     .col(
-                        ColumnDef::new(invitation::Column::ExpiresAt)
+                        ColumnDef::new(Alias::new("expires_at"))
                             .big_integer()
                             .not_null(),
                     )
@@ -330,24 +318,28 @@ impl MigrationTrait for m20260101_000001_init {
         manager
             .create_table(
                 Table::create()
-                    .table(Links)
+                    .table(Alias::new("front_door_links"))
                     .col(
-                        ColumnDef::new(link::Column::AccountId)
+                        ColumnDef::new(Alias::new("account_id"))
                             .uuid()
                             .not_null()
                             .primary_key(),
                     )
-                    .col(ColumnDef::new(link::Column::PracticeId).string().not_null())
-                    .col(ColumnDef::new(link::Column::PatientId).string().not_null())
                     .col(
-                        ColumnDef::new(link::Column::CreatedAt)
+                        ColumnDef::new(Alias::new("practice_id"))
+                            .string()
+                            .not_null(),
+                    )
+                    .col(ColumnDef::new(Alias::new("patient_id")).string().not_null())
+                    .col(
+                        ColumnDef::new(Alias::new("created_at"))
                             .big_integer()
                             .not_null(),
                     )
                     .foreign_key(
                         ForeignKey::create()
                             .name("front_door_links_account_fk")
-                            .from(Links, link::Column::AccountId)
+                            .from(Alias::new("front_door_links"), Alias::new("account_id"))
                             .to(Accounts, account::Column::Id)
                             .on_delete(ForeignKeyAction::Cascade),
                     )
@@ -358,32 +350,32 @@ impl MigrationTrait for m20260101_000001_init {
             .create_index(
                 Index::create()
                     .name("front_door_links_roster_idx")
-                    .table(Links)
-                    .col(link::Column::PracticeId)
-                    .col(link::Column::PatientId)
+                    .table(Alias::new("front_door_links"))
+                    .col(Alias::new("practice_id"))
+                    .col(Alias::new("patient_id"))
                     .take(),
             )
             .await?;
         manager
             .create_table(
                 Table::create()
-                    .table(Consents)
+                    .table(Alias::new("front_door_consents"))
                     .col(
-                        ColumnDef::new(consent::Column::AccountId)
+                        ColumnDef::new(Alias::new("account_id"))
                             .uuid()
                             .not_null()
                             .primary_key(),
                     )
                     .col(
-                        ColumnDef::new(consent::Column::ConsentedAt)
+                        ColumnDef::new(Alias::new("consented_at"))
                             .big_integer()
                             .not_null(),
                     )
-                    .col(ColumnDef::new(consent::Column::WithdrawnAt).big_integer())
+                    .col(ColumnDef::new(Alias::new("withdrawn_at")).big_integer())
                     .foreign_key(
                         ForeignKey::create()
                             .name("front_door_consents_account_fk")
-                            .from(Consents, consent::Column::AccountId)
+                            .from(Alias::new("front_door_consents"), Alias::new("account_id"))
                             .to(Accounts, account::Column::Id)
                             .on_delete(ForeignKeyAction::Cascade),
                     )
@@ -393,22 +385,22 @@ impl MigrationTrait for m20260101_000001_init {
         manager
             .create_table(
                 Table::create()
-                    .table(Premiums)
+                    .table(Alias::new("front_door_premium"))
                     .col(
-                        ColumnDef::new(premium::Column::PatientKey)
+                        ColumnDef::new(Alias::new("patient_key"))
                             .string()
                             .not_null()
                             .primary_key(),
                     )
                     .col(
-                        ColumnDef::new(premium::Column::Premium)
+                        ColumnDef::new(Alias::new("premium"))
                             .boolean()
                             .not_null()
                             .default(false),
                     )
                     .col(ColumnDef::new(Alias::new("cadence")).string().not_null())
                     .col(
-                        ColumnDef::new(premium::Column::CreatedAt)
+                        ColumnDef::new(Alias::new("created_at"))
                             .big_integer()
                             .not_null(),
                     )
@@ -419,13 +411,17 @@ impl MigrationTrait for m20260101_000001_init {
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-            .drop_table(Table::drop().table(Premiums).take())
+            .drop_table(Table::drop().table(Alias::new("front_door_premium")).take())
             .await?;
         manager
-            .drop_table(Table::drop().table(Consents).take())
+            .drop_table(
+                Table::drop()
+                    .table(Alias::new("front_door_consents"))
+                    .take(),
+            )
             .await?;
         manager
-            .drop_table(Table::drop().table(Links).take())
+            .drop_table(Table::drop().table(Alias::new("front_door_links")).take())
             .await?;
         manager
             .drop_table(Table::drop().table(Invitations).take())
@@ -480,6 +476,7 @@ mod tests {
                 "m20261023_duet_admission",
                 "m20261112_drop_premium_cadence",
                 "m20261119_for_my_doctor_shares",
+                "m20261120_multi_practice_connections",
             ]
         );
     }

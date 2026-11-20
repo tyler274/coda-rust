@@ -3883,7 +3883,6 @@ mod runtime_tables {
 
     #[derive(Clone, Copy)]
     pub(super) enum AuthPracticeTable {
-        PatientLinks,
         Memberships,
         Patients,
     }
@@ -3891,7 +3890,6 @@ mod runtime_tables {
     impl Iden for AuthPracticeTable {
         fn unquoted(&self) -> &'static str {
             match self {
-                Self::PatientLinks => "physician_patient_links",
                 Self::Memberships => "physician_memberships",
                 Self::Patients => "physician_patients",
             }
@@ -4004,11 +4002,8 @@ mod runtime_tables {
         WorkspaceTable::SourceVersions,
     ];
 
-    pub(super) const ALL_AUTH_PRACTICE_TABLES: &[AuthPracticeTable] = &[
-        AuthPracticeTable::PatientLinks,
-        AuthPracticeTable::Memberships,
-        AuthPracticeTable::Patients,
-    ];
+    pub(super) const ALL_AUTH_PRACTICE_TABLES: &[AuthPracticeTable] =
+        &[AuthPracticeTable::Memberships, AuthPracticeTable::Patients];
 }
 
 /// Returns every `physician_runtime_*` table name cleared by

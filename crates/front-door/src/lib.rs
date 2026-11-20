@@ -1,12 +1,13 @@
-//! The earlier patient account, practice invitation, roster-link, consent and
-//! premium store, still consumed by physician authentication routes, the Duet
-//! binary's readiness check and separate Duet library routers. Invitations explicitly establish the roster link;
-//! SHA-256 token hashes and single-use redemption protect that store's contract.
+//! Canonical Connected Care invitation, multi-practice connection, and
+//! patient-to-practice sharing owner.
 //!
-//! This crate also contains Duet identity and privacy-journal
-//! modules. They are separate from the durable owners composed by `duet-api`'s
-//! current binary; their presence does not make them mounted patient routes.
-//! Book: `book/src/front-door.md` records consumers and migration boundaries.
+//! One owner holds invitations (`(practice_id, patient_id)`), multi-practice
+//! connections (`(account_id, practice_id, patient_id)` with `Connected` or
+//! `Ended` standing), non-expiring patient sessions, Duet shared health records,
+//! and `"For my doctor"` sends. Connected means sharing is live; there is no
+//! paused consent state and no separate `physician-auth` patient-link store.
+//!
+//! This crate also contains Duet identity and privacy-journal modules.
 
 #![deny(missing_docs)]
 #![allow(
@@ -14,7 +15,7 @@
     reason = "converting to errors that keep their cause"
 )]
 
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
 use std::sync::Mutex;
 
 use async_trait::async_trait;
@@ -36,15 +37,11 @@ pub mod journal;
 /// The SeaORM entities and the migration chain.
 pub mod migration;
 
-/// A sign-in token is verifiable for one day.
+/// A sign-in verification token is verifiable for one day.
 pub const SIGN_IN_TOKEN_TTL_SECONDS: u64 = 86_400;
-/// A sign-in session is valid for thirty days.
-pub const SESSION_TTL_SECONDS: u64 = 30 * 86_400;
-/// An invitation is redeemable for fourteen days.
-pub const INVITATION_TTL_SECONDS: u64 = 14 * 86_400;
 
-/// Which roster patient an invitation or link names.
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+/// Which roster patient an invitation or connection names.
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 pub struct RosterPatient {
     /// The practice whose roster the patient belongs to.
     pub practice_id: String,
@@ -52,10 +49,137 @@ pub struct RosterPatient {
     pub patient_id: String,
 }
 
+/// Why an active Connected Care connection ended.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ConnectionEndReason {
+    /// The patient left the practice in Duet.
+    PatientLeft,
+    /// The practice asked Coda to discharge the patient.
+    PracticeDischarged,
+    /// The patient deleted their Duet account.
+    AccountDeleted,
+}
+
+impl ConnectionEndReason {
+    /// Stable database representation.
+    pub const fn as_str(self) -> &'static str {
+        match self {
+            Self::PatientLeft => "patient_left",
+            Self::PracticeDischarged => "practice_discharged",
+            Self::AccountDeleted => "account_deleted",
+        }
+    }
+
+    /// Parses the database representation.
+    pub fn parse(raw: &str) -> Option<Self> {
+        match raw {
+            "patient_left" => Some(Self::PatientLeft),
+            "practice_discharged" => Some(Self::PracticeDischarged),
+            "account_deleted" => Some(Self::AccountDeleted),
+            _ => None,
+        }
+    }
+}
+
+/// Standing of one `(account_id, practice_id, patient_id)` connection.
+///
+/// Connected means sharing is live; there is no paused state.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(tag = "status", rename_all = "snake_case")]
+pub enum ConnectionStanding {
+    /// Patient accepted an invitation and granted fixed consent on `connected_at`.
+    Connected {
+        /// Unix second the connection (and sharing consent) began.
+        connected_at: u64,
+    },
+    /// Connection ended; sharing stopped at `ended_at` while historical copies stay dated.
+    Ended {
+        /// Unix second the most recent connection began.
+        connected_at: u64,
+        /// Unix second the connection ended.
+        ended_at: u64,
+        /// Why the connection ended.
+        reason: ConnectionEndReason,
+    },
+}
+
+/// One practice connection attached to a patient account.
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+pub struct AccountConnection {
+    /// The connected practice and roster patient.
+    pub patient: RosterPatient,
+    /// Whether this connection is currently active (`Connected`) or `Ended`.
+    #[serde(flatten)]
+    pub standing: ConnectionStanding,
+}
+
+/// Canonical Connected Care status for one `(practice_id, patient_id)` on a roster.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "status", rename_all = "snake_case")]
+pub enum RosterConnectionStatus {
+    /// Never invited, or open invitation cancelled with no prior connection.
+    NotInvited,
+    /// Practice sent an open invitation; waiting for the patient to join and share.
+    Invited {
+        /// Email address the invitation was sent to.
+        email: String,
+        /// Invitee display name.
+        display_name: String,
+        /// Unix second the invitation was sent.
+        invited_at: u64,
+    },
+    /// Patient joined and is actively sharing with the practice.
+    Connected {
+        /// Linked Duet account id.
+        account_id: Uuid,
+        /// Unix second the connection began.
+        connected_at: u64,
+    },
+    /// Previous connection ended; a practice member may invite again at any time.
+    Ended {
+        /// Previously linked Duet account id.
+        account_id: Uuid,
+        /// Unix second the ended connection began.
+        connected_at: u64,
+        /// Unix second the connection ended.
+        ended_at: u64,
+        /// Why the connection ended.
+        reason: ConnectionEndReason,
+    },
+}
+
+impl RosterConnectionStatus {
+    /// Short snake-case status label matching the spec (`not_invited`, `invited`, `connected`, `ended`).
+    pub const fn as_str(&self) -> &'static str {
+        match self {
+            Self::NotInvited => "not_invited",
+            Self::Invited { .. } => "invited",
+            Self::Connected { .. } => "connected",
+            Self::Ended { .. } => "ended",
+        }
+    }
+
+    /// Active or most recently connected Duet account id, if any.
+    pub fn account_id(&self) -> Option<Uuid> {
+        match self {
+            Self::Connected { account_id, .. } | Self::Ended { account_id, .. } => {
+                Some(*account_id)
+            }
+            Self::NotInvited | Self::Invited { .. } => None,
+        }
+    }
+
+    /// Whether this roster patient is actively connected (which implies sharing).
+    pub const fn is_connected(&self) -> bool {
+        matches!(self, Self::Connected { .. })
+    }
+}
+
 /// One patient account at the front door.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Account {
-    /// The account's id, stable across a re-link.
+    /// The account's id, stable across multiple practices and re-connections.
     pub id: Uuid,
     /// The email sign-in address.
     pub email: String,
@@ -63,15 +187,44 @@ pub struct Account {
     pub display_name: String,
     /// Whether the account may sign in and hold sessions.
     pub active: bool,
-    /// The roster patient the account is linked to, once an invitation the
-    /// practice issued has been redeemed. `None` until then.
-    pub link: Option<RosterPatient>,
+    /// All practice connections (`Connected` or `Ended`) owned by this account.
+    pub connections: Vec<AccountConnection>,
     /// Sessions minted before this Unix second never resolve; deactivation
     /// moves it forward and reactivation leaves it there.
     pub sessions_ended_before: u64,
 }
 
-/// One pending invitation a practice issued to a roster patient.
+impl Account {
+    /// Returns the `Connected` timestamp for `patient` if this account is actively connected to it.
+    pub fn active_connection_at(&self, patient: &RosterPatient) -> Option<u64> {
+        self.connections.iter().find_map(|conn| {
+            if &conn.patient == patient
+                && let ConnectionStanding::Connected { connected_at } = conn.standing
+            {
+                Some(connected_at)
+            } else {
+                None
+            }
+        })
+    }
+
+    /// Lists all active `(RosterPatient, connected_at)` connections for this account.
+    pub fn active_connections(&self) -> Vec<(&RosterPatient, u64)> {
+        self.connections
+            .iter()
+            .filter_map(|conn| match conn.standing {
+                ConnectionStanding::Connected { connected_at } => {
+                    Some((&conn.patient, connected_at))
+                }
+                ConnectionStanding::Ended { .. } => None,
+            })
+            .collect()
+    }
+}
+
+/// One open invitation a practice issued to a roster patient.
+///
+/// Open invitations never expire with time; they remain open until accepted or cancelled.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Invitation {
     /// Which roster patient the practice invited.
@@ -80,35 +233,8 @@ pub struct Invitation {
     pub email: String,
     /// The invitee's display name, as the practice wrote it.
     pub display_name: String,
-    /// The Unix second the invitation stops redeeming.
-    pub expires_at: u64,
-}
-
-/// One account's consent to share with their physician.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum Consent {
-    /// The patient consented; sharing is on.
-    Granted {
-        /// The Unix second consent was given.
-        at: u64,
-    },
-    /// The patient consented and later withdrew it. Stopping sharing is one
-    /// step, and what was already shared stays dated evidence.
-    Withdrawn {
-        /// The Unix second consent was given.
-        at: u64,
-        /// The Unix second consent was withdrawn.
-        withdrawn_at: u64,
-    },
-    /// The patient was never asked, or never answered.
-    None,
-}
-
-/// One linked patient's premium status, as the front door owns it.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
-pub struct Premium {
-    /// Whether the patient pays for premium.
-    pub premium: bool,
+    /// The Unix second the invitation was issued.
+    pub invited_at: u64,
 }
 
 /// Patient-facing delivery standing of a `"For my doctor"` share.
@@ -130,7 +256,7 @@ pub enum ForMyDoctorShareStatus {
 /// Request payload to send one patient-prepared `"For my doctor"` share from Duet.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ForMyDoctorSendRequest {
-    /// Caller-supplied idempotency key unique per patient account.
+    /// Caller-supplied idempotency key unique per patient connection.
     pub share_key: String,
     /// Concise share headline.
     pub title: String,
@@ -138,6 +264,10 @@ pub struct ForMyDoctorSendRequest {
     pub summary_text: String,
     /// Optional explicit origin description; defaults to `"Duet — For my doctor"`.
     pub origin_label: Option<String>,
+    /// Target connected practice when the patient holds more than one connection.
+    /// Optional when the patient has exactly one active connection.
+    #[serde(default)]
+    pub target: Option<RosterPatient>,
 }
 
 /// Durable `"For my doctor"` share held at the front door.
@@ -159,7 +289,7 @@ pub struct ForMyDoctorShare {
     pub origin_label: String,
     /// Unix second the patient sent the share.
     pub sent_at: u64,
-    /// Consent timestamp verified when sent.
+    /// Connection consent timestamp verified when sent.
     pub consent_at: u64,
     /// Delivery status visible to Duet (`Sent` or `Received`, never `"physician looked"`).
     pub standing: ForMyDoctorShareStatus,
@@ -182,12 +312,12 @@ pub struct SharedPatientRecordInput {
     pub recorded_at: u64,
 }
 
-/// Shared patient record visible to the linked practice when sharing consent is on.
+/// Shared patient record visible to a connected practice while connection is active.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct SharedPatientRecord {
     /// Owning Duet account.
     pub account_id: Uuid,
-    /// Linked practice and roster patient.
+    /// Connected practice and roster patient.
     pub patient: RosterPatient,
     /// Stable record identifier.
     pub record_id: String,
@@ -205,15 +335,81 @@ pub struct SharedPatientRecord {
     pub updated_at: u64,
 }
 
-/// Active linked patient with current sharing consent for a practice.
+/// Active connected patient link for a practice.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ConsentedPatientLink {
-    /// Linked Duet account.
+    /// Connected Duet account.
     pub account: Account,
-    /// Linked roster patient.
+    /// Connected roster patient.
     pub patient: RosterPatient,
-    /// Latest active consent timestamp (`Consent::Granted { at }`).
+    /// Timestamp (`connected_at`) when this connection was established/re-established.
     pub consented_at: u64,
+}
+
+/// Resolves one `(practice_id, patient_id)` roster status from its connection rows
+/// and optional open invitation. Single shared rule for memory and SQL stores.
+pub(crate) fn resolve_roster_status<'a>(
+    connections: impl IntoIterator<Item = (Uuid, &'a ConnectionStanding)>,
+    invitation: Option<&Invitation>,
+) -> RosterConnectionStatus {
+    let mut best_ended: Option<(Uuid, u64, u64, ConnectionEndReason)> = None;
+    for (account_id, standing) in connections {
+        match *standing {
+            ConnectionStanding::Connected { connected_at } => {
+                return RosterConnectionStatus::Connected {
+                    account_id,
+                    connected_at,
+                };
+            }
+            ConnectionStanding::Ended {
+                connected_at,
+                ended_at,
+                reason,
+            } => {
+                let replace = best_ended.is_none_or(|(_, _, prev_ended, _)| ended_at >= prev_ended);
+                if replace {
+                    best_ended = Some((account_id, connected_at, ended_at, reason));
+                }
+            }
+        }
+    }
+    if let Some(inv) = invitation {
+        return RosterConnectionStatus::Invited {
+            email: inv.email.clone(),
+            display_name: inv.display_name.clone(),
+            invited_at: inv.invited_at,
+        };
+    }
+    if let Some((account_id, connected_at, ended_at, reason)) = best_ended {
+        return RosterConnectionStatus::Ended {
+            account_id,
+            connected_at,
+            ended_at,
+            reason,
+        };
+    }
+    RosterConnectionStatus::NotInvited
+}
+
+/// Resolves which active `Connected` connection a `"For my doctor"` send targets.
+pub(crate) fn resolve_for_my_doctor_target(
+    active: &[(&RosterPatient, u64)],
+    requested: Option<&RosterPatient>,
+) -> Result<(RosterPatient, u64), ForMyDoctorError> {
+    if let Some(target) = requested {
+        return active
+            .iter()
+            .find(|(patient, _)| *patient == target)
+            .map(|(patient, ts)| ((*patient).clone(), *ts))
+            .ok_or(ForMyDoctorError::Unlinked);
+    }
+    match active {
+        [] => Err(ForMyDoctorError::Unlinked),
+        [(only_patient, ts)] => Ok(((*only_patient).clone(), *ts)),
+        _ => Err(ForMyDoctorError::InvalidInput(
+            "target practice is required when connected to multiple practices",
+        )),
+    }
 }
 
 /// The durable front-door owner.
@@ -223,8 +419,10 @@ pub struct ConsentedPatientLink {
 /// `Arc<dyn FrontDoorStore>` and picks the SQL or memory store at startup.
 #[async_trait]
 pub trait FrontDoorStore: Send + Sync {
-    /// Records one invitation to a roster patient and returns its redeem
-    /// token. Re-inviting the same email replaces the pending invitation.
+    /// Records or replaces the open invitation for `(patient.practice_id, patient.patient_id)`.
+    ///
+    /// Existing Duet account emails may be invited (for another practice or after an
+    /// `Ended` connection); only an already-`Connected` roster patient returns `Conflict`.
     async fn invite(
         &self,
         patient: &RosterPatient,
@@ -232,10 +430,13 @@ pub trait FrontDoorStore: Send + Sync {
         display_name: &str,
         now: u64,
     ) -> Result<String, InviteError>;
-    /// Reads one pending invitation by email.
+    /// Reads an open invitation by email.
     async fn invitation(&self, email: &str) -> Option<Invitation>;
-    /// Redeems an invitation: creates the account, writes the link, and
-    /// mints one bearer session. An invitation redeems exactly once.
+    /// Reads the open invitation for `(patient.practice_id, patient.patient_id)`, if any.
+    async fn invitation_for(&self, patient: &RosterPatient) -> Option<Invitation>;
+    /// Redeems an open invitation by `email` + `token`: attaches `(account_id, practice_id, patient_id)`
+    /// as `Connected` (reusing the existing account if `email` already holds one, otherwise creating
+    /// a new account) and mints one non-expiring bearer session.
     async fn redeem_invitation(
         &self,
         email: &str,
@@ -244,14 +445,14 @@ pub trait FrontDoorStore: Send + Sync {
     ) -> Result<(Uuid, String), SignInError>;
     /// Issues a sign-in token for an existing active account's email.
     async fn begin_sign_in(&self, email: &str, now: u64) -> Result<String, SignInError>;
-    /// Verifies a sign-in token and mints one bearer session from it.
+    /// Verifies a sign-in token and mints one non-expiring bearer session from it.
     async fn complete_sign_in(
         &self,
         email: &str,
         token: &str,
         now: u64,
     ) -> Result<(Uuid, String), SignInError>;
-    /// Resolves a bearer token to its account id.
+    /// Resolves a bearer token to its account id (sessions never expire with time).
     async fn session(&self, token: &str, now: u64) -> Result<Uuid, SessionError>;
     /// Ends one session so its token stops resolving.
     async fn end_session(&self, token: &str);
@@ -259,30 +460,28 @@ pub trait FrontDoorStore: Send + Sync {
     async fn account_by_email(&self, email: &str) -> Option<Account>;
     /// Reads one account by id.
     async fn account(&self, account_id: Uuid) -> Option<Account>;
-    /// Resolves one Duet account's link to its roster patient.
-    async fn link(&self, account_id: Uuid) -> Result<RosterPatient, LinkError>;
-    /// Lists the front-door accounts linked to one practice's roster
-    /// patients, sorted by account id.
-    async fn linked_accounts(&self, practice_id: &str) -> Vec<(Account, RosterPatient)>;
-    /// Records the patient's consent to share with their physician.
-    /// Re-consenting after a withdrawal restores sharing.
-    async fn grant_consent(&self, account_id: Uuid, now: u64) -> Result<(), LinkError>;
-    /// Withdraws the patient's consent; one step, and what was already
-    /// shared stays dated evidence. Consent that was never granted stays so.
-    async fn withdraw_consent(&self, account_id: Uuid, now: u64) -> Result<(), LinkError>;
-    /// Reads one account's consent state.
-    async fn consent(&self, account_id: Uuid) -> Result<Consent, LinkError>;
-    /// Sets one linked patient's premium status.
-    async fn set_premium(
+    /// Lists all practice connections (`Connected` and `Ended`) for `account_id`.
+    async fn connections(&self, account_id: Uuid) -> Result<Vec<AccountConnection>, LinkError>;
+    /// Lists the front-door accounts actively `Connected` to `practice_id`, sorted by account id.
+    async fn connected_accounts(&self, practice_id: &str) -> Vec<(Account, RosterPatient)>;
+    /// Ends one active `Connected` connection between `account_id` and `patient`, preserving
+    /// other practice connections and historical records.
+    async fn end_connection(
         &self,
+        account_id: Uuid,
         patient: &RosterPatient,
-        premium: bool,
+        reason: ConnectionEndReason,
         now: u64,
     ) -> Result<(), LinkError>;
-    /// Reads one linked patient's premium status. Patients without a status
-    /// row read free.
-    async fn premium(&self, patient: &RosterPatient) -> Premium;
-    /// Sends one patient-prepared `"For my doctor"` share when linked and consented.
+    /// Reads the canonical connection status (`NotInvited` / `Invited` / `Connected` / `Ended`)
+    /// for one roster patient.
+    async fn roster_connection(&self, patient: &RosterPatient) -> RosterConnectionStatus;
+    /// Reads canonical non-`NotInvited` connection statuses keyed by `patient_id` for `practice_id`.
+    async fn practice_connections(
+        &self,
+        practice_id: &str,
+    ) -> Result<BTreeMap<String, RosterConnectionStatus>, ForMyDoctorError>;
+    /// Sends one patient-prepared `"For my doctor"` share to an actively `Connected` practice.
     async fn send_for_my_doctor(
         &self,
         account_id: Uuid,
@@ -306,25 +505,25 @@ pub trait FrontDoorStore: Send + Sync {
         share_id: &str,
         received_at: u64,
     ) -> Result<ForMyDoctorShare, ForMyDoctorError>;
-    /// Stages or updates existing Duet shared records on `account_id` (readable by practice only with consent).
+    /// Stages or updates existing Duet shared records on `account_id` (readable by connected practices).
     async fn upsert_shared_records(
         &self,
         account_id: Uuid,
         records: &[SharedPatientRecordInput],
         now: u64,
     ) -> Result<(), ForMyDoctorError>;
-    /// Lists linked patients in `practice_id` whose sharing consent is currently granted.
+    /// Lists actively `Connected` patients in `practice_id`.
     async fn consented_links_for_practice(
         &self,
         practice_id: &str,
     ) -> Result<Vec<ConsentedPatientLink>, ForMyDoctorError>;
-    /// Lists existing Duet shared records for `patient_id` in `practice_id` when actively linked and consented.
+    /// Lists existing Duet shared records for `patient_id` in `practice_id` when actively `Connected`.
     async fn shared_records_for_practice_patient(
         &self,
         practice_id: &str,
         patient_id: &str,
     ) -> Result<Vec<SharedPatientRecord>, ForMyDoctorError>;
-    /// Lists distinct `practice_id`s that have actively consented linked patients or pending `"For my doctor"` shares.
+    /// Lists distinct `practice_id`s with active `Connected` patients or pending `"For my doctor"` shares.
     async fn connected_care_practices(&self) -> Result<Vec<String>, ForMyDoctorError>;
 }
 
@@ -340,15 +539,23 @@ pub(crate) fn mint_token() -> String {
 
 #[derive(Debug, Default)]
 struct MemoryState {
-    accounts: HashMap<Uuid, Account>,
+    accounts: HashMap<Uuid, StoredAccount>,
     emails: HashMap<String, Uuid>,
-    invitations: HashMap<String, InvitationPending>,
+    invitations: HashMap<(String, String), InvitationPending>,
+    connections: HashMap<(Uuid, String, String), ConnectionStanding>,
     pending_sign_ins: HashMap<String, PendingSignIn>,
-    sessions: HashMap<[u8; 32], (Uuid, u64, u64)>,
-    consents: HashMap<Uuid, Consent>,
-    premium: HashMap<(String, String), Premium>,
+    sessions: HashMap<[u8; 32], (Uuid, u64)>,
     for_my_doctor_shares: HashMap<String, ForMyDoctorShare>,
     shared_records: HashMap<(Uuid, String), StoredSharedRecord>,
+}
+
+#[derive(Debug, Clone)]
+struct StoredAccount {
+    id: Uuid,
+    email: String,
+    display_name: String,
+    active: bool,
+    sessions_ended_before: u64,
 }
 
 #[derive(Debug, Clone)]
@@ -365,9 +572,10 @@ struct StoredSharedRecord {
 #[derive(Debug, Clone)]
 struct InvitationPending {
     patient: RosterPatient,
+    email: String,
     display_name: String,
     token_hash: [u8; 32],
-    expires_at: u64,
+    invited_at: u64,
 }
 
 #[derive(Debug, Clone)]
@@ -388,7 +596,7 @@ impl MemoryFrontDoorStore {
         Self::default()
     }
 
-    /// Seeds one linked account directly, for fixtures and staging setups.
+    /// Seeds one actively `Connected` account directly, for fixtures and staging setups.
     /// The account signs in through [`FrontDoorStore::begin_sign_in`].
     pub fn seed_linked_account(
         &self,
@@ -397,29 +605,82 @@ impl MemoryFrontDoorStore {
         display_name: &str,
     ) -> Uuid {
         let mut state = self.state.lock().expect("front-door state");
-        let id = Uuid::new_v4();
-        state.emails.insert(email.to_lowercase(), id);
-        state.accounts.insert(
-            id,
-            Account {
+        let key = email.to_lowercase();
+        let id = if let Some(&existing) = state.emails.get(&key) {
+            existing
+        } else {
+            let id = Uuid::new_v4();
+            state.emails.insert(key.clone(), id);
+            state.accounts.insert(
                 id,
-                email: email.to_owned(),
-                display_name: display_name.to_owned(),
-                active: true,
-                link: Some(patient.clone()),
-                sessions_ended_before: 0,
-            },
+                StoredAccount {
+                    id,
+                    email: key,
+                    display_name: display_name.to_owned(),
+                    active: true,
+                    sessions_ended_before: 0,
+                },
+            );
+            id
+        };
+        state.connections.insert(
+            (id, patient.practice_id.clone(), patient.patient_id.clone()),
+            ConnectionStanding::Connected { connected_at: 1 },
         );
         id
+    }
+
+    fn hydrate_account(state: &MemoryState, acct: &StoredAccount) -> Account {
+        let mut connections: Vec<AccountConnection> = state
+            .connections
+            .iter()
+            .filter(|((aid, _, _), _)| *aid == acct.id)
+            .map(
+                |((_, practice_id, patient_id), standing)| AccountConnection {
+                    patient: RosterPatient {
+                        practice_id: practice_id.clone(),
+                        patient_id: patient_id.clone(),
+                    },
+                    standing: *standing,
+                },
+            )
+            .collect();
+        connections.sort_by(|a, b| a.patient.cmp(&b.patient));
+        Account {
+            id: acct.id,
+            email: acct.email.clone(),
+            display_name: acct.display_name.clone(),
+            active: acct.active,
+            connections,
+            sessions_ended_before: acct.sessions_ended_before,
+        }
     }
 
     fn mint_session(&self, state: &mut MemoryState, id: Uuid, now: u64) -> String {
         let token = mint_token();
         let hash = token_hash(&token);
-        state
-            .sessions
-            .insert(hash, (id, now, now + SESSION_TTL_SECONDS));
+        state.sessions.insert(hash, (id, now));
         token
+    }
+
+    fn roster_status_in(state: &MemoryState, patient: &RosterPatient) -> RosterConnectionStatus {
+        let conns = state
+            .connections
+            .iter()
+            .filter(|((_, prac, pat), _)| {
+                prac == &patient.practice_id && pat == &patient.patient_id
+            })
+            .map(|((aid, _, _), standing)| (*aid, standing));
+        let inv = state
+            .invitations
+            .get(&(patient.practice_id.clone(), patient.patient_id.clone()))
+            .map(|p| Invitation {
+                patient: p.patient.clone(),
+                email: p.email.clone(),
+                display_name: p.display_name.clone(),
+                invited_at: p.invited_at,
+            });
+        resolve_roster_status(conns, inv.as_ref())
     }
 }
 
@@ -434,18 +695,23 @@ impl FrontDoorStore for MemoryFrontDoorStore {
     ) -> Result<String, InviteError> {
         let key = email.to_lowercase();
         let mut state = self.state.lock().expect("front-door state");
-        if state.emails.contains_key(&key) {
-            // The email already holds a front-door account.
+        let already_connected = state.connections.iter().any(|((_, prac, pat), standing)| {
+            prac == &patient.practice_id
+                && pat == &patient.patient_id
+                && matches!(standing, ConnectionStanding::Connected { .. })
+        });
+        if already_connected {
             return Err(InviteError::Conflict);
         }
         let token = mint_token();
         state.invitations.insert(
-            key,
+            (patient.practice_id.clone(), patient.patient_id.clone()),
             InvitationPending {
                 patient: patient.clone(),
+                email: key,
                 display_name: display_name.to_owned(),
                 token_hash: token_hash(&token),
-                expires_at: now + INVITATION_TTL_SECONDS,
+                invited_at: now,
             },
         );
         Ok(token)
@@ -454,12 +720,30 @@ impl FrontDoorStore for MemoryFrontDoorStore {
     async fn invitation(&self, email: &str) -> Option<Invitation> {
         let key = email.to_lowercase();
         let state = self.state.lock().expect("front-door state");
-        state.invitations.get(&key).map(|pending| Invitation {
-            patient: pending.patient.clone(),
-            email: key,
-            display_name: pending.display_name.clone(),
-            expires_at: pending.expires_at,
-        })
+        state
+            .invitations
+            .values()
+            .filter(|pending| pending.email == key)
+            .max_by_key(|pending| pending.invited_at)
+            .map(|pending| Invitation {
+                patient: pending.patient.clone(),
+                email: pending.email.clone(),
+                display_name: pending.display_name.clone(),
+                invited_at: pending.invited_at,
+            })
+    }
+
+    async fn invitation_for(&self, patient: &RosterPatient) -> Option<Invitation> {
+        let state = self.state.lock().expect("front-door state");
+        state
+            .invitations
+            .get(&(patient.practice_id.clone(), patient.patient_id.clone()))
+            .map(|pending| Invitation {
+                patient: pending.patient.clone(),
+                email: pending.email.clone(),
+                display_name: pending.display_name.clone(),
+                invited_at: pending.invited_at,
+            })
     }
 
     async fn redeem_invitation(
@@ -469,31 +753,70 @@ impl FrontDoorStore for MemoryFrontDoorStore {
         now: u64,
     ) -> Result<(Uuid, String), SignInError> {
         let key = email.to_lowercase();
+        let presented_hash = token_hash(token);
         let mut state = self.state.lock().expect("front-door state");
-        if state.emails.contains_key(&key) {
-            // The account exists; it signs in rather than redeeming again.
-            return Err(SignInError::Invalid);
-        }
-        // Remove-then-commit: the invitation is consumed once, even if a
-        // later step fails, so a raced second redeem finds nothing.
-        let Some(pending) = state.invitations.remove(&key) else {
+        let Some(roster_key) = state
+            .invitations
+            .iter()
+            .find(|(_, pending)| pending.email == key && pending.token_hash == presented_hash)
+            .map(|(k, _)| k.clone())
+        else {
             return Err(SignInError::Invalid);
         };
-        if pending.expires_at <= now || pending.token_hash != token_hash(token) {
+
+        if let Some(&existing_id) = state.emails.get(&key)
+            && !state
+                .accounts
+                .get(&existing_id)
+                .ok_or(SignInError::Invalid)?
+                .active
+        {
+            return Err(SignInError::Inactive);
+        }
+
+        let pending = state
+            .invitations
+            .remove(&roster_key)
+            .ok_or(SignInError::Invalid)?;
+
+        let id = if let Some(&existing_id) = state.emails.get(&key) {
+            existing_id
+        } else {
+            let new_id = Uuid::new_v4();
+            state.emails.insert(key.clone(), new_id);
+            state.accounts.insert(
+                new_id,
+                StoredAccount {
+                    id: new_id,
+                    email: key,
+                    display_name: pending.display_name.clone(),
+                    active: true,
+                    sessions_ended_before: 0,
+                },
+            );
+            new_id
+        };
+
+        let other_active = state
+            .connections
+            .iter()
+            .any(|((aid, prac, pat), standing)| {
+                *aid != id
+                    && prac == &pending.patient.practice_id
+                    && pat == &pending.patient.patient_id
+                    && matches!(standing, ConnectionStanding::Connected { .. })
+            });
+        if other_active {
             return Err(SignInError::Invalid);
         }
-        let id = Uuid::new_v4();
-        state.emails.insert(key.clone(), id);
-        state.accounts.insert(
-            id,
-            Account {
+
+        state.connections.insert(
+            (
                 id,
-                email: key,
-                display_name: pending.display_name.clone(),
-                active: true,
-                link: Some(pending.patient.clone()),
-                sessions_ended_before: 0,
-            },
+                pending.patient.practice_id.clone(),
+                pending.patient.patient_id.clone(),
+            ),
+            ConnectionStanding::Connected { connected_at: now },
         );
         let session = self.mint_session(&mut state, id, now);
         Ok((id, session))
@@ -530,8 +853,6 @@ impl FrontDoorStore for MemoryFrontDoorStore {
     ) -> Result<(Uuid, String), SignInError> {
         let key = email.to_lowercase();
         let mut state = self.state.lock().expect("front-door state");
-        // Remove-then-commit: the pending token is consumed once, even if a
-        // later step fails, so a raced second verify cannot mint two.
         let Some(pending) = state.pending_sign_ins.remove(&key) else {
             return Err(SignInError::Invalid);
         };
@@ -550,24 +871,19 @@ impl FrontDoorStore for MemoryFrontDoorStore {
         Ok((id, session))
     }
 
-    async fn session(&self, token: &str, now: u64) -> Result<Uuid, SessionError> {
+    async fn session(&self, token: &str, _now: u64) -> Result<Uuid, SessionError> {
         let hash = token_hash(token);
         let state = self.state.lock().expect("front-door state");
-        let (id, created_at, expires_at) = state
+        let (id, created_at) = state
             .sessions
             .get(&hash)
             .copied()
             .ok_or(SessionError::Invalid)?;
-        if expires_at <= now {
-            return Err(SessionError::Invalid);
-        }
         let account = state.accounts.get(&id).ok_or(SessionError::Inactive)?;
         if !account.active {
             return Err(SessionError::Inactive);
         }
         if created_at < account.sessions_ended_before {
-            // Ended by deactivation: the account is active again, this
-            // session still is not.
             return Err(SessionError::Inactive);
         }
         Ok(id)
@@ -584,127 +900,110 @@ impl FrontDoorStore for MemoryFrontDoorStore {
     async fn account_by_email(&self, email: &str) -> Option<Account> {
         let state = self.state.lock().expect("front-door state");
         let id = state.emails.get(&email.to_lowercase()).copied()?;
-        state.accounts.get(&id).cloned()
+        let acct = state.accounts.get(&id)?;
+        Some(Self::hydrate_account(&state, acct))
     }
 
     async fn account(&self, account_id: Uuid) -> Option<Account> {
-        self.state
-            .lock()
-            .expect("front-door state")
-            .accounts
-            .get(&account_id)
-            .cloned()
-    }
-
-    async fn link(&self, account_id: Uuid) -> Result<RosterPatient, LinkError> {
         let state = self.state.lock().expect("front-door state");
-        state
-            .accounts
-            .get(&account_id)
-            .and_then(|account| account.link.clone())
-            .ok_or(LinkError::Unlinked)
+        let acct = state.accounts.get(&account_id)?;
+        Some(Self::hydrate_account(&state, acct))
     }
 
-    async fn linked_accounts(&self, practice_id: &str) -> Vec<(Account, RosterPatient)> {
+    async fn connections(&self, account_id: Uuid) -> Result<Vec<AccountConnection>, LinkError> {
+        let state = self.state.lock().expect("front-door state");
+        let acct = state.accounts.get(&account_id).ok_or(LinkError::Unlinked)?;
+        Ok(Self::hydrate_account(&state, acct).connections)
+    }
+
+    async fn connected_accounts(&self, practice_id: &str) -> Vec<(Account, RosterPatient)> {
         let state = self.state.lock().expect("front-door state");
         let mut rows: Vec<(Account, RosterPatient)> = state
-            .accounts
-            .values()
-            .filter_map(|account| {
-                let patient = account.link.clone()?;
-                (patient.practice_id == practice_id).then(|| (account.clone(), patient))
+            .connections
+            .iter()
+            .filter_map(|((aid, prac, pat), standing)| {
+                if prac != practice_id {
+                    return None;
+                }
+                if !matches!(standing, ConnectionStanding::Connected { .. }) {
+                    return None;
+                }
+                let acct = state.accounts.get(aid)?;
+                Some((
+                    Self::hydrate_account(&state, acct),
+                    RosterPatient {
+                        practice_id: prac.clone(),
+                        patient_id: pat.clone(),
+                    },
+                ))
             })
             .collect();
-        rows.sort_by_key(|(left, _)| left.id);
+        rows.sort_by(|(la, lp), (ra, rp)| la.id.cmp(&ra.id).then(lp.cmp(rp)));
         rows
     }
 
-    async fn grant_consent(&self, account_id: Uuid, now: u64) -> Result<(), LinkError> {
-        let mut state = self.state.lock().expect("front-door state");
-        if state
-            .accounts
-            .get(&account_id)
-            .ok_or(LinkError::Unlinked)?
-            .link
-            .is_none()
-        {
-            return Err(LinkError::Unlinked);
-        }
-        state
-            .consents
-            .insert(account_id, Consent::Granted { at: now });
-        Ok(())
-    }
-
-    async fn withdraw_consent(&self, account_id: Uuid, now: u64) -> Result<(), LinkError> {
-        let mut state = self.state.lock().expect("front-door state");
-        if state
-            .accounts
-            .get(&account_id)
-            .ok_or(LinkError::Unlinked)?
-            .link
-            .is_none()
-        {
-            return Err(LinkError::Unlinked);
-        }
-        if let Some(Consent::Granted { at }) = state.consents.get(&account_id).copied() {
-            state.consents.insert(
-                account_id,
-                Consent::Withdrawn {
-                    at,
-                    withdrawn_at: now,
-                },
-            );
-        }
-        Ok(())
-    }
-
-    async fn consent(&self, account_id: Uuid) -> Result<Consent, LinkError> {
-        let state = self.state.lock().expect("front-door state");
-        if state
-            .accounts
-            .get(&account_id)
-            .ok_or(LinkError::Unlinked)?
-            .link
-            .is_none()
-        {
-            return Err(LinkError::Unlinked);
-        }
-        Ok(state
-            .consents
-            .get(&account_id)
-            .copied()
-            .unwrap_or(Consent::None))
-    }
-
-    async fn set_premium(
+    async fn end_connection(
         &self,
+        account_id: Uuid,
         patient: &RosterPatient,
-        premium: bool,
-        _now: u64,
+        reason: ConnectionEndReason,
+        now: u64,
     ) -> Result<(), LinkError> {
         let mut state = self.state.lock().expect("front-door state");
-        if !state
-            .accounts
-            .values()
-            .any(|account| account.link.as_ref() == Some(patient))
-        {
-            return Err(LinkError::Unlinked);
-        }
-        state.premium.insert(
-            (patient.practice_id.clone(), patient.patient_id.clone()),
-            Premium { premium },
+        let key = (
+            account_id,
+            patient.practice_id.clone(),
+            patient.patient_id.clone(),
         );
+        let entry = state.connections.get_mut(&key).ok_or(LinkError::Unlinked)?;
+        let ConnectionStanding::Connected { connected_at } = *entry else {
+            return Err(LinkError::Unlinked);
+        };
+        *entry = ConnectionStanding::Ended {
+            connected_at,
+            ended_at: now,
+            reason,
+        };
         Ok(())
     }
 
-    async fn premium(&self, patient: &RosterPatient) -> Premium {
+    async fn roster_connection(&self, patient: &RosterPatient) -> RosterConnectionStatus {
         let state = self.state.lock().expect("front-door state");
-        state
-            .premium
-            .get(&(patient.practice_id.clone(), patient.patient_id.clone()))
-            .cloned()
-            .unwrap_or(Premium { premium: false })
+        Self::roster_status_in(&state, patient)
+    }
+
+    async fn practice_connections(
+        &self,
+        practice_id: &str,
+    ) -> Result<BTreeMap<String, RosterConnectionStatus>, ForMyDoctorError> {
+        let state = self.state.lock().expect("front-door state");
+        let mut patient_ids: std::collections::BTreeSet<String> = state
+            .connections
+            .keys()
+            .filter(|(_, prac, _)| prac == practice_id)
+            .map(|(_, _, pat)| pat.clone())
+            .collect();
+        patient_ids.extend(
+            state
+                .invitations
+                .keys()
+                .filter(|(prac, _)| prac == practice_id)
+                .map(|(_, pat)| pat.clone()),
+        );
+        let mut out = BTreeMap::new();
+        for patient_id in patient_ids {
+            let status = Self::roster_status_in(
+                &state,
+                &RosterPatient {
+                    practice_id: practice_id.to_owned(),
+                    patient_id: patient_id.clone(),
+                },
+            );
+            if !matches!(status, RosterConnectionStatus::NotInvited) {
+                out.insert(patient_id, status);
+            }
+        }
+        Ok(out)
     }
 
     async fn send_for_my_doctor(
@@ -738,17 +1037,18 @@ impl FrontDoorStore for MemoryFrontDoorStore {
             .to_owned();
 
         let mut state = self.state.lock().expect("front-door state");
-        let account = state
+        let acct = state
             .accounts
             .get(&account_id)
-            .cloned()
             .ok_or(ForMyDoctorError::Unlinked)?;
-        let patient = account.link.ok_or(ForMyDoctorError::Unlinked)?;
-        if let Some(existing) = state
-            .for_my_doctor_shares
-            .values()
-            .find(|s| s.account_id == account_id && s.share_key == share_key)
-        {
+        let hydrated = Self::hydrate_account(&state, acct);
+        let active = hydrated.active_connections();
+        let (patient, connected_at) =
+            resolve_for_my_doctor_target(&active, request.target.as_ref())?;
+
+        if let Some(existing) = state.for_my_doctor_shares.values().find(|s| {
+            s.account_id == account_id && s.patient == patient && s.share_key == share_key
+        }) {
             if existing.title == title
                 && existing.summary_text == summary_text
                 && existing.origin_label == origin_label
@@ -757,10 +1057,7 @@ impl FrontDoorStore for MemoryFrontDoorStore {
             }
             return Err(ForMyDoctorError::Conflict);
         }
-        let consent_at = match state.consents.get(&account_id).copied() {
-            Some(Consent::Granted { at }) => at,
-            _ => return Err(ForMyDoctorError::ConsentRequired),
-        };
+
         let share = ForMyDoctorShare {
             share_id: format!("fmd-{}", Uuid::new_v4().simple()),
             account_id,
@@ -770,7 +1067,7 @@ impl FrontDoorStore for MemoryFrontDoorStore {
             summary_text: summary_text.to_owned(),
             origin_label,
             sent_at: now,
-            consent_at,
+            consent_at: connected_at,
             standing: ForMyDoctorShareStatus::Sent,
         };
         state
@@ -784,12 +1081,11 @@ impl FrontDoorStore for MemoryFrontDoorStore {
         account_id: Uuid,
     ) -> Result<Vec<ForMyDoctorShare>, ForMyDoctorError> {
         let state = self.state.lock().expect("front-door state");
-        if state
-            .accounts
-            .get(&account_id)
-            .and_then(|acc| acc.link.as_ref())
-            .is_none()
-        {
+        let has_connection = state
+            .connections
+            .keys()
+            .any(|(aid, _, _)| *aid == account_id);
+        if !has_connection {
             return Err(ForMyDoctorError::Unlinked);
         }
         let mut out: Vec<_> = state
@@ -814,8 +1110,12 @@ impl FrontDoorStore for MemoryFrontDoorStore {
                 s.patient.practice_id == practice_id
                     && matches!(s.standing, ForMyDoctorShareStatus::Sent)
                     && matches!(
-                        state.consents.get(&s.account_id).copied(),
-                        Some(Consent::Granted { .. })
+                        state.connections.get(&(
+                            s.account_id,
+                            s.patient.practice_id.clone(),
+                            s.patient.patient_id.clone()
+                        )),
+                        Some(ConnectionStanding::Connected { .. })
                     )
             })
             .cloned()
@@ -888,22 +1188,31 @@ impl FrontDoorStore for MemoryFrontDoorStore {
     ) -> Result<Vec<ConsentedPatientLink>, ForMyDoctorError> {
         let state = self.state.lock().expect("front-door state");
         let mut out = Vec::new();
-        for account in state.accounts.values() {
-            let Some(patient) = account.link.as_ref() else {
+        for ((aid, prac, pat), standing) in &state.connections {
+            if prac != practice_id {
+                continue;
+            }
+            let ConnectionStanding::Connected { connected_at } = *standing else {
                 continue;
             };
-            if patient.practice_id != practice_id {
+            let Some(acct) = state.accounts.get(aid) else {
                 continue;
-            }
-            if let Some(Consent::Granted { at }) = state.consents.get(&account.id).copied() {
-                out.push(ConsentedPatientLink {
-                    account: account.clone(),
-                    patient: patient.clone(),
-                    consented_at: at,
-                });
-            }
+            };
+            out.push(ConsentedPatientLink {
+                account: Self::hydrate_account(&state, acct),
+                patient: RosterPatient {
+                    practice_id: prac.clone(),
+                    patient_id: pat.clone(),
+                },
+                consented_at: connected_at,
+            });
         }
-        out.sort_by_key(|a| a.account.id);
+        out.sort_by(|a, b| {
+            a.account
+                .id
+                .cmp(&b.account.id)
+                .then(a.patient.cmp(&b.patient))
+        });
         Ok(out)
     }
 
@@ -914,23 +1223,21 @@ impl FrontDoorStore for MemoryFrontDoorStore {
     ) -> Result<Vec<SharedPatientRecord>, ForMyDoctorError> {
         let state = self.state.lock().expect("front-door state");
         let mut out = Vec::new();
-        for account in state.accounts.values() {
-            let Some(patient) = account.link.as_ref() else {
+        for ((aid, prac, pat), standing) in &state.connections {
+            if prac != practice_id || pat != patient_id {
                 continue;
+            }
+            if !matches!(standing, ConnectionStanding::Connected { .. }) {
+                continue;
+            }
+            let patient = RosterPatient {
+                practice_id: prac.clone(),
+                patient_id: pat.clone(),
             };
-            if patient.practice_id != practice_id || patient.patient_id != patient_id {
-                continue;
-            }
-            if !matches!(
-                state.consents.get(&account.id).copied(),
-                Some(Consent::Granted { .. })
-            ) {
-                continue;
-            }
-            for ((acct_id, _), rec) in &state.shared_records {
-                if *acct_id == account.id {
+            for ((rec_aid, _), rec) in &state.shared_records {
+                if rec_aid == aid {
                     out.push(SharedPatientRecord {
-                        account_id: account.id,
+                        account_id: *aid,
                         patient: patient.clone(),
                         record_id: rec.record_id.clone(),
                         revision: rec.revision.clone(),
@@ -950,22 +1257,20 @@ impl FrontDoorStore for MemoryFrontDoorStore {
     async fn connected_care_practices(&self) -> Result<Vec<String>, ForMyDoctorError> {
         let state = self.state.lock().expect("front-door state");
         let mut practices = std::collections::BTreeSet::new();
-        for account in state.accounts.values() {
-            let Some(patient) = account.link.as_ref() else {
-                continue;
-            };
-            if matches!(
-                state.consents.get(&account.id).copied(),
-                Some(Consent::Granted { .. })
-            ) {
-                practices.insert(patient.practice_id.clone());
+        for ((_, prac, _), standing) in &state.connections {
+            if matches!(standing, ConnectionStanding::Connected { .. }) {
+                practices.insert(prac.clone());
             }
         }
         for share in state.for_my_doctor_shares.values() {
             if matches!(share.standing, ForMyDoctorShareStatus::Sent)
                 && matches!(
-                    state.consents.get(&share.account_id).copied(),
-                    Some(Consent::Granted { .. })
+                    state.connections.get(&(
+                        share.account_id,
+                        share.patient.practice_id.clone(),
+                        share.patient.patient_id.clone()
+                    )),
+                    Some(ConnectionStanding::Connected { .. })
                 )
             {
                 practices.insert(share.patient.practice_id.clone());
@@ -1000,7 +1305,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn an_invitation_redeems_once_and_mints_one_session() {
+    async fn an_invitation_redeems_once_and_mints_one_non_expiring_session() {
         let store = MemoryFrontDoorStore::new();
         let patient = patient("practice", "patient-9");
         let token = store
@@ -1008,13 +1313,20 @@ mod tests {
             .await
             .unwrap();
         let (id, session) = store
-            .redeem_invitation("luna@example.test", &token, NOW)
+            .redeem_invitation("luna@example.test", &token, NOW + 365 * 86_400)
             .await
-            .unwrap();
-        assert_eq!(store.session(&session, NOW).await.unwrap(), id);
+            .expect("invitations never expire with time");
+        assert_eq!(
+            store.session(&session, NOW + 3650 * 86_400).await.unwrap(),
+            id,
+            "sessions never expire with time"
+        );
         let account = store.account_by_email("luna@example.test").await.unwrap();
-        assert_eq!(account.link, Some(patient));
         assert!(account.active);
+        assert_eq!(
+            account.active_connection_at(&patient),
+            Some(NOW + 365 * 86_400)
+        );
         assert_eq!(
             store
                 .redeem_invitation("luna@example.test", &token, NOW)
@@ -1026,22 +1338,10 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn an_expired_or_wrong_invitation_token_is_invalid() {
+    async fn a_wrong_invitation_token_is_invalid() {
         let store = MemoryFrontDoorStore::new();
         let patient = patient("practice", "patient-9");
-        let token = store
-            .invite(&patient, "luna@example.test", "Luna Park", NOW)
-            .await
-            .unwrap();
-        assert_eq!(
-            store
-                .redeem_invitation("luna@example.test", &token, NOW + INVITATION_TTL_SECONDS)
-                .await
-                .unwrap_err(),
-            SignInError::Invalid,
-            "an invitation stops redeeming after fourteen days"
-        );
-        let token = store
+        let _token = store
             .invite(&patient, "luna@example.test", "Luna Park", NOW)
             .await
             .unwrap();
@@ -1052,11 +1352,10 @@ mod tests {
                 .unwrap_err(),
             SignInError::Invalid
         );
-        let _ = token;
     }
 
     #[tokio::test]
-    async fn reinviting_replaces_the_pending_invitation() {
+    async fn reinviting_same_roster_patient_replaces_the_open_invitation() {
         let store = MemoryFrontDoorStore::new();
         let patient = patient("practice", "patient-9");
         store
@@ -1077,32 +1376,132 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn an_email_with_an_account_cannot_be_invited_or_redeem() {
+    async fn already_connected_patient_conflicts_while_existing_account_joins_second_practice() {
         let store = MemoryFrontDoorStore::new();
-        let (patient, id, _) = invited(&store, "luna@example.test").await;
+        let (patient_a, id, _) = invited(&store, "luna@example.test").await;
         assert_eq!(
             store
-                .invite(&patient, "luna@example.test", "Luna Park", NOW)
+                .invite(&patient_a, "luna@example.test", "Luna Park", NOW)
                 .await
                 .unwrap_err(),
             InviteError::Conflict,
-            "the practice cannot re-invite a linked account"
+            "cannot invite a roster patient that already holds an active Connected connection"
         );
-        // A second invitation for another email that collides on redemption
-        // burns neither store state nor the first account.
-        let token = store
-            .invite(&patient, "other@example.test", "Other", NOW)
+
+        let patient_b = patient("second-practice", "patient-2");
+        let token_b = store
+            .invite(&patient_b, "LUNA@example.test", "Luna Park", NOW + 1)
+            .await
+            .expect("existing Duet account can be invited to another practice");
+        let (second_id, _) = store
+            .redeem_invitation("luna@example.test", &token_b, NOW + 2)
             .await
             .unwrap();
-        store
-            .redeem_invitation("luna@example.test", &token, NOW)
-            .await
-            .unwrap_err();
-        assert_eq!(store.account(id).await.unwrap().link, Some(patient));
+        assert_eq!(
+            second_id, id,
+            "joining another practice attaches to the existing Duet account"
+        );
+        let account = store.account(id).await.unwrap();
+        assert_eq!(account.connections.len(), 2);
+        assert_eq!(account.active_connection_at(&patient_a), Some(NOW));
+        assert_eq!(account.active_connection_at(&patient_b), Some(NOW + 2));
     }
 
     #[tokio::test]
-    async fn a_sign_in_token_verifies_once_and_mints_one_session() {
+    async fn existing_account_can_be_invited_to_a_second_practice_without_expiry() {
+        let store = MemoryFrontDoorStore::new();
+        let practice_a = patient("practice-a", "patient-1");
+        let practice_b = patient("practice-b", "patient-2");
+        let token_a = store
+            .invite(&practice_a, "luna@example.test", "Luna Park", NOW)
+            .await
+            .unwrap();
+        let (account_id, session) = store
+            .redeem_invitation("luna@example.test", &token_a, NOW)
+            .await
+            .unwrap();
+        assert_eq!(
+            store
+                .session(&session, NOW + 365 * 86_400)
+                .await
+                .expect("session does not expire after 30 days"),
+            account_id
+        );
+        let token_b = store
+            .invite(&practice_b, "luna@example.test", "Luna Park", NOW + 1)
+            .await
+            .expect("existing Duet account can be invited to a second practice");
+        let (second_id, _) = store
+            .redeem_invitation("luna@example.test", &token_b, NOW + 365 * 86_400)
+            .await
+            .expect("invitation does not expire after 14 days and connects existing account");
+        assert_eq!(second_id, account_id);
+        let account = store.account(account_id).await.unwrap();
+        assert_eq!(account.active_connections().len(), 2);
+    }
+
+    #[tokio::test]
+    async fn ending_one_connection_preserves_others_and_allows_reinvite() {
+        let store = MemoryFrontDoorStore::new();
+        let practice_a = patient("practice-a", "patient-1");
+        let practice_b = patient("practice-b", "patient-2");
+        let token_a = store
+            .invite(&practice_a, "luna@example.test", "Luna Park", NOW)
+            .await
+            .unwrap();
+        let (id, _) = store
+            .redeem_invitation("luna@example.test", &token_a, NOW)
+            .await
+            .unwrap();
+        let token_b = store
+            .invite(&practice_b, "luna@example.test", "Luna Park", NOW)
+            .await
+            .unwrap();
+        store
+            .redeem_invitation("luna@example.test", &token_b, NOW + 1)
+            .await
+            .unwrap();
+
+        store
+            .end_connection(id, &practice_a, ConnectionEndReason::PatientLeft, NOW + 10)
+            .await
+            .unwrap();
+        assert!(matches!(
+            store.roster_connection(&practice_a).await,
+            RosterConnectionStatus::Ended {
+                account_id,
+                ended_at,
+                reason: ConnectionEndReason::PatientLeft,
+                ..
+            } if account_id == id && ended_at == NOW + 10
+        ));
+        assert!(store.roster_connection(&practice_b).await.is_connected());
+
+        // Ended allows re-inviting and re-connecting with advancing connected_at.
+        let reinvite = store
+            .invite(&practice_a, "luna@example.test", "Luna Park", NOW + 20)
+            .await
+            .unwrap();
+        assert!(matches!(
+            store.roster_connection(&practice_a).await,
+            RosterConnectionStatus::Invited { .. }
+        ));
+        let (rejoined_id, _) = store
+            .redeem_invitation("luna@example.test", &reinvite, NOW + 30)
+            .await
+            .unwrap();
+        assert_eq!(rejoined_id, id);
+        assert!(matches!(
+            store.roster_connection(&practice_a).await,
+            RosterConnectionStatus::Connected {
+                account_id,
+                connected_at,
+            } if account_id == id && connected_at == NOW + 30
+        ));
+    }
+
+    #[tokio::test]
+    async fn a_sign_in_token_verifies_once_and_mints_non_expiring_session() {
         let store = MemoryFrontDoorStore::new();
         let (_, id, _) = invited(&store, "luna@example.test").await;
         let token = store.begin_sign_in("luna@example.test", NOW).await.unwrap();
@@ -1111,7 +1510,10 @@ mod tests {
             .await
             .unwrap();
         assert_eq!(who, id);
-        assert_eq!(store.session(&session, NOW).await.unwrap(), id);
+        assert_eq!(
+            store.session(&session, NOW + 365 * 86_400).await.unwrap(),
+            id
+        );
         assert_eq!(
             store
                 .complete_sign_in("luna@example.test", &token, NOW)
@@ -1123,7 +1525,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn an_expired_sign_in_token_and_session_stop_resolving() {
+    async fn an_expired_sign_in_token_stops_verifying() {
         let store = MemoryFrontDoorStore::new();
         let (_, _, _) = invited(&store, "luna@example.test").await;
         let token = store.begin_sign_in("luna@example.test", NOW).await.unwrap();
@@ -1135,26 +1537,12 @@ mod tests {
             SignInError::Invalid,
             "a sign-in token is verifiable for one day"
         );
-        // The consumed pending token cannot verify again, even within its TTL.
         assert_eq!(
             store
                 .complete_sign_in("luna@example.test", &token, NOW)
                 .await
                 .unwrap_err(),
             SignInError::Invalid
-        );
-        let token = store.begin_sign_in("luna@example.test", NOW).await.unwrap();
-        let (_, session) = store
-            .complete_sign_in("luna@example.test", &token, NOW)
-            .await
-            .unwrap();
-        assert_eq!(
-            store
-                .session(&session, NOW + SESSION_TTL_SECONDS)
-                .await
-                .unwrap_err(),
-            SessionError::Invalid,
-            "a session is valid for thirty days"
         );
     }
 
@@ -1170,96 +1558,31 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn the_link_resolves_the_roster_patient_and_lists_per_practice() {
+    async fn connections_list_per_account_and_practice() {
         let store = MemoryFrontDoorStore::new();
         let (luna, id, _) = invited(&store, "luna@example.test").await;
-        assert_eq!(store.link(id).await.unwrap(), luna);
+        assert_eq!(store.connections(id).await.unwrap().len(), 1);
         let other = store.seed_linked_account(
             &patient("roger-synthetic-practice", "patient-2"),
             "sofia@example.test",
             "Sofia Reyes",
         );
-        let mut linked = store
-            .linked_accounts("roger-synthetic-practice")
+        let mut connected = store
+            .connected_accounts("roger-synthetic-practice")
             .await
             .into_iter()
             .map(|(account, _)| account.id)
             .collect::<Vec<_>>();
-        linked.sort();
+        connected.sort();
         let mut expected = vec![id, other];
         expected.sort();
-        assert_eq!(linked, expected);
-        assert!(store.linked_accounts("other-practice").await.is_empty());
+        assert_eq!(connected, expected);
+        assert!(store.connected_accounts("other-practice").await.is_empty());
         assert_eq!(
-            store.link(Uuid::nil()).await.unwrap_err(),
+            store.connections(Uuid::nil()).await.unwrap_err(),
             LinkError::Unlinked,
-            "an unknown account carries no link"
+            "an unknown account carries no connections"
         );
-    }
-
-    #[tokio::test]
-    async fn consent_reads_none_grants_and_withdraws_in_one_step() {
-        let store = MemoryFrontDoorStore::new();
-        let (_, id, _) = invited(&store, "luna@example.test").await;
-        assert_eq!(
-            store.consent(id).await.unwrap(),
-            Consent::None,
-            "consent is granted, never assumed"
-        );
-        store.grant_consent(id, NOW + 1).await.unwrap();
-        assert_eq!(
-            store.consent(id).await.unwrap(),
-            Consent::Granted { at: NOW + 1 }
-        );
-        store.withdraw_consent(id, NOW + 2).await.unwrap();
-        assert_eq!(
-            store.consent(id).await.unwrap(),
-            Consent::Withdrawn {
-                at: NOW + 1,
-                withdrawn_at: NOW + 2,
-            },
-            "what was already shared stays dated evidence"
-        );
-        store.grant_consent(id, NOW + 3).await.unwrap();
-        assert_eq!(
-            store.consent(id).await.unwrap(),
-            Consent::Granted { at: NOW + 3 },
-            "re-consenting restores sharing"
-        );
-        assert_eq!(
-            store
-                .withdraw_consent(Uuid::nil(), NOW + 4)
-                .await
-                .unwrap_err(),
-            LinkError::Unlinked,
-            "an unknown account cannot hold consent"
-        );
-    }
-
-    #[tokio::test]
-    async fn premium_defaults_free_and_follows_the_status() {
-        let store = MemoryFrontDoorStore::new();
-        let (luna, _, _) = invited(&store, "luna@example.test").await;
-        assert_eq!(
-            store.premium(&luna).await,
-            Premium { premium: false },
-            "a patient without a status row reads free"
-        );
-        store.set_premium(&luna, true, NOW).await.unwrap();
-        assert_eq!(
-            store.premium(&luna).await,
-            Premium { premium: true },
-            "premium status updates per linked patient"
-        );
-        store.set_premium(&luna, false, NOW).await.unwrap();
-        assert_eq!(store.premium(&luna).await, Premium { premium: false });
-        assert_eq!(
-            store
-                .set_premium(&patient("practice", "nobody"), true, NOW)
-                .await
-                .unwrap_err(),
-            LinkError::Unlinked,
-            "premium status is written only for a linked patient"
-        );
+        assert!(store.roster_connection(&luna).await.is_connected());
     }
 }

@@ -619,6 +619,21 @@ pub struct PatientSearchResponse {
     pub match_mode: SearchMatchMode,
 }
 
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]
+#[serde(rename_all = "snake_case")]
+/// The practice-patient connection standing between Duet and this practice.
+pub enum ConnectionStatusWire {
+    /// No active connection or open invitation exists yet.
+    #[default]
+    NotInvited,
+    /// An invitation has been sent and awaits redemption by the patient in Duet.
+    Invited,
+    /// The patient's Duet account is connected with this practice.
+    Connected,
+    /// A prior connection ended and can be re-invited by the practice.
+    Ended,
+}
+
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 /// The `PatientSearchRow` value exchanged by this crate.
 pub struct PatientSearchRow {
@@ -638,6 +653,9 @@ pub struct PatientSearchRow {
     #[serde(default)]
     /// Whether this roster patient has active `"share with my physician"` consent.
     pub sharing_consented: bool,
+    #[serde(default)]
+    /// Canonical connection standing (`not_invited`, `invited`, `connected`, or `ended`).
+    pub connection_status: ConnectionStatusWire,
     #[serde(default)]
     /// The per-patient review cadence exposed to Agents (`"weekly"` or `"daily_when_changed"`).
     pub cadence: Option<String>,
@@ -703,6 +721,9 @@ pub struct PatientWorkspaceResponse {
     #[serde(default)]
     /// Undecided medication recommendations held out of the active plan.
     pub undecided_recommendations: Vec<WorkspaceMedicationRecommendation>,
+    #[serde(default)]
+    /// Canonical connection standing (`not_invited`, `invited`, `connected`, or `ended`).
+    pub connection_status: ConnectionStatusWire,
     #[serde(default)]
     /// The patient front-door link and versioned consent state.
     pub patient_link: Option<PatientLinkWire>,
@@ -1645,6 +1666,9 @@ pub struct PatientLinkWire {
     #[serde(default)]
     /// Whether `"share with my physician"` consent is currently active.
     pub sharing_consented: bool,
+    #[serde(default)]
+    /// Canonical connection standing (`not_invited`, `invited`, `connected`, or `ended`).
+    pub connection_status: ConnectionStatusWire,
     #[serde(default)]
     /// The accepted consent version (such as `"v1"`).
     pub consent_version: Option<String>,

@@ -4,10 +4,10 @@ use crate::driver::DbError;
 use crate::schema::{Chats, Patients, PracticeVisits, SourceRecords, TodayItems, UpdatesFeed};
 use crate::store::{DEMO_NOW, DEMO_ZONE, DemoStore, build_exchange};
 use physician_wire::{
-    AutomationRun, ChatSnapshot, CitationDestination, ClinicalSegment, ConnectedSource, FollowUp,
-    MedicalRecordNumber, PatientIdentity, PatientLinkWire, PatientSynopsis,
-    PatientWorkspaceResponse, RecordGroup, SexOrGender, SnapshotFeedback, SourceConnectionState,
-    SourcePresentation, SourcePreviewContent, SourceSnapshot, WorkPurpose,
+    AutomationRun, ChatSnapshot, CitationDestination, ClinicalSegment, ConnectedSource,
+    ConnectionStatusWire, FollowUp, MedicalRecordNumber, PatientIdentity, PatientLinkWire,
+    PatientSynopsis, PatientWorkspaceResponse, RecordGroup, SexOrGender, SnapshotFeedback,
+    SourceConnectionState, SourcePresentation, SourcePreviewContent, SourceSnapshot, WorkPurpose,
     WorkspaceMedicationRecommendation, WorkspaceMembership, WorkspacePlanItem, WorkspaceReply,
 };
 use serde_json::{Value, json};
@@ -182,12 +182,22 @@ fn insert_patient_unit(
         superseded_replies: Vec::new(),
         active_plan_items: build_initial_plan(ws_id, idx),
         undecided_recommendations: build_recommendations(ws_id, idx),
+        connection_status: if idx < 12 {
+            ConnectionStatusWire::Connected
+        } else {
+            ConnectionStatusWire::NotInvited
+        },
         patient_link: Some(PatientLinkWire {
             practice_id: "prac-coda-demo".into(),
             patient_workspace_id: ws_id.into(),
             duet_account_id: Some(format!("duet-{ws_id}")),
             linked: idx < 12,
             sharing_consented: idx < 10,
+            connection_status: if idx < 12 {
+                ConnectionStatusWire::Connected
+            } else {
+                ConnectionStatusWire::NotInvited
+            },
             consent_version: Some("v1".into()),
             consented_at: Some(1_785_000_000),
             revoked_at: None,

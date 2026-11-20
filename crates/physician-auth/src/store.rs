@@ -6,17 +6,17 @@
 use std::time::Duration;
 
 use crate::migration::{
-    Accounts, Invitations, Memberships, PatientLinks, Patients, PracticeSourceSetups, Practices,
-    Sessions, SignInTokens,
+    Accounts, Invitations, Memberships, Patients, PracticeSourceSetups, Practices, Sessions,
+    SignInTokens,
 };
 use crate::{
     Account, AccountCreateOutcome, AccountSetupError, AuthStore, ClockUpdateError,
-    INVITATION_TTL_SECONDS, Membership, PanelError, PatientLink, PhysicianIdentity, PracticeClock,
+    INVITATION_TTL_SECONDS, Membership, PanelError, PhysicianIdentity, PracticeClock,
     PracticeRecord, PracticeSetupError, PracticeSetupOutcome, PracticeTimeZone,
     SIGN_IN_TOKEN_TTL_SECONDS, Session, SessionActivity, SessionError, SessionLifetime,
     SessionRenewal, SignInError, StoreUnavailable, SyntheticClockUpdate,
-    check_existing_account_match, mint_patient_token, mint_token, post_fence_mint_second,
-    token_hash, validate_account_fields, validate_practice_id,
+    check_existing_account_match, mint_token, post_fence_mint_second, token_hash,
+    validate_account_fields, validate_practice_id,
 };
 use async_trait::async_trait;
 use sea_orm::{
@@ -101,7 +101,6 @@ impl PostgresAuthStore {
         Accounts::find().one(&self.db).await?;
         Invitations::find().one(&self.db).await?;
         Memberships::find().one(&self.db).await?;
-        PatientLinks::find().one(&self.db).await?;
         Patients::find().one(&self.db).await?;
         PracticeSourceSetups::find().one(&self.db).await?;
         Practices::find().one(&self.db).await?;
@@ -1222,194 +1221,6 @@ impl AuthStore for PostgresAuthStore {
             .await
             .map(|result| result.rows_affected > 0)
             .unwrap_or(false)
-    }
-
-    async fn invite_patient(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        now: u64,
-    ) -> Result<String, SignInError> {
-        let practice_id = practice_id.trim();
-        let patient_workspace_id = patient_workspace_id.trim();
-        if practice_id.is_empty() || patient_workspace_id.is_empty() {
-            return Err(SignInError::Invalid);
-        }
-        let token = mint_patient_token();
-        let hash = token_hash(&token).to_vec();
-        let expires_at = (now + INVITATION_TTL_SECONDS) as i64;
-        let existing = PatientLinks::find()
-            .filter(crate::migration::patient_link::Column::PracticeId.eq(practice_id))
-            .filter(
-                crate::migration::patient_link::Column::PatientWorkspaceId.eq(patient_workspace_id),
-            )
-            .one(&self.db)
-            .await
-            .map_err(stale)?;
-        match existing {
-            Some(row) => {
-                let mut update: crate::migration::PatientLinkActiveModel = row.into();
-                update.pending_token_hash = Set(Some(hash));
-                update.pending_expires_at = Set(Some(expires_at));
-                update.update(&self.db).await.map_err(stale)?;
-            }
-            None => {
-                crate::migration::PatientLinkActiveModel {
-                    id: Default::default(),
-                    practice_id: Set(practice_id.to_owned()),
-                    patient_workspace_id: Set(patient_workspace_id.to_owned()),
-                    pending_token_hash: Set(Some(hash)),
-                    pending_expires_at: Set(Some(expires_at)),
-                    duet_account_id: Set(None),
-                    linked: Set(false),
-                    sharing_consented: Set(false),
-                    consent_version: Set(None),
-                    consented_at: Set(None),
-                    revoked_at: Set(None),
-                    created_at: Set(now as i64),
-                }
-                .insert(&self.db)
-                .await
-                .map_err(stale)?;
-            }
-        }
-        Ok(token)
-    }
-
-    async fn accept_patient_invitation(
-        &self,
-        token: &str,
-        duet_account_id: &str,
-        now: u64,
-    ) -> Result<PatientLink, SignInError> {
-        let duet_account_id = duet_account_id.trim();
-        if duet_account_id.is_empty() {
-            return Err(SignInError::Invalid);
-        }
-        let hash = token_hash(token).to_vec();
-        let txn = self.db.begin().await.map_err(stale)?;
-        let row = PatientLinks::find()
-            .filter(crate::migration::patient_link::Column::PendingTokenHash.eq(hash))
-            .lock_exclusive()
-            .one(&txn)
-            .await
-            .map_err(stale)?
-            .ok_or(SignInError::Invalid)?;
-        let expires_at = row.pending_expires_at.unwrap_or(0);
-        let changed_account = row.duet_account_id.as_deref() != Some(duet_account_id);
-        let mut update: crate::migration::PatientLinkActiveModel = row.into();
-        update.pending_token_hash = Set(None);
-        update.pending_expires_at = Set(None);
-        if expires_at <= now as i64 {
-            update.update(&txn).await.map_err(stale)?;
-            txn.commit().await.map_err(stale)?;
-            return Err(SignInError::Invalid);
-        }
-        if changed_account {
-            update.sharing_consented = Set(false);
-            update.consent_version = Set(None);
-            update.consented_at = Set(None);
-            update.revoked_at = Set(None);
-        }
-        update.duet_account_id = Set(Some(duet_account_id.to_owned()));
-        update.linked = Set(true);
-        let updated = update.update(&txn).await.map_err(stale)?;
-        txn.commit().await.map_err(stale)?;
-        Ok(patient_link_from_row(updated))
-    }
-
-    async fn grant_patient_consent(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        duet_account_id: &str,
-        consent_version: &str,
-        now: u64,
-    ) -> Result<PatientLink, SignInError> {
-        let consent_version = consent_version.trim();
-        let duet_account_id = duet_account_id.trim();
-        if consent_version.is_empty() || duet_account_id.is_empty() {
-            return Err(SignInError::Invalid);
-        }
-        let txn = self.db.begin().await.map_err(stale)?;
-        let row = PatientLinks::find()
-            .filter(crate::migration::patient_link::Column::PracticeId.eq(practice_id))
-            .filter(
-                crate::migration::patient_link::Column::PatientWorkspaceId.eq(patient_workspace_id),
-            )
-            .lock_exclusive()
-            .one(&txn)
-            .await
-            .map_err(stale)?
-            .ok_or(SignInError::Invalid)?;
-        if !row.linked || row.duet_account_id.as_deref() != Some(duet_account_id) {
-            return Err(SignInError::Invalid);
-        }
-        if row.revoked_at.is_some() {
-            return Err(SignInError::Invalid);
-        }
-        let mut update: crate::migration::PatientLinkActiveModel = row.into();
-        update.sharing_consented = Set(true);
-        update.consent_version = Set(Some(consent_version.to_owned()));
-        update.consented_at = Set(Some(now as i64));
-        let updated = update.update(&txn).await.map_err(stale)?;
-        txn.commit().await.map_err(stale)?;
-        Ok(patient_link_from_row(updated))
-    }
-
-    async fn revoke_patient_consent(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        now: u64,
-    ) -> Result<PatientLink, SignInError> {
-        let row = PatientLinks::find()
-            .filter(crate::migration::patient_link::Column::PracticeId.eq(practice_id))
-            .filter(
-                crate::migration::patient_link::Column::PatientWorkspaceId.eq(patient_workspace_id),
-            )
-            .one(&self.db)
-            .await
-            .map_err(stale)?
-            .ok_or(SignInError::Invalid)?;
-        if !row.linked {
-            return Err(SignInError::Invalid);
-        }
-        let mut update: crate::migration::PatientLinkActiveModel = row.into();
-        update.sharing_consented = Set(false);
-        update.revoked_at = Set(Some(now as i64));
-        let updated = update.update(&self.db).await.map_err(stale)?;
-        Ok(patient_link_from_row(updated))
-    }
-
-    async fn patient_link(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-    ) -> Option<PatientLink> {
-        PatientLinks::find()
-            .filter(crate::migration::patient_link::Column::PracticeId.eq(practice_id))
-            .filter(
-                crate::migration::patient_link::Column::PatientWorkspaceId.eq(patient_workspace_id),
-            )
-            .one(&self.db)
-            .await
-            .ok()
-            .flatten()
-            .map(patient_link_from_row)
-    }
-}
-
-fn patient_link_from_row(row: crate::migration::PatientLinkRow) -> PatientLink {
-    PatientLink {
-        practice_id: row.practice_id,
-        patient_workspace_id: row.patient_workspace_id,
-        duet_account_id: row.duet_account_id,
-        linked: row.linked,
-        sharing_consented: row.sharing_consented,
-        consent_version: row.consent_version,
-        consented_at: row.consented_at.map(|ts| ts.max(0) as u64),
-        revoked_at: row.revoked_at.map(|ts| ts.max(0) as u64),
     }
 }
 

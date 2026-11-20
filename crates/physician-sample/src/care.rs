@@ -7,11 +7,12 @@ use std::time::{Duration, UNIX_EPOCH};
 use serde_json::Value;
 
 use crate::timestamp::format_rfc3339;
+use front_door::{FrontDoorStore, MemoryFrontDoorStore, RosterConnectionStatus, RosterPatient};
 use physician_auth::{
-    AuthStore, Membership, MemoryAuthStore, PatientLink, PhysicianIdentity, PracticeClock,
-    PracticeTimeZone, StoreUnavailable,
+    AuthStore, Membership, MemoryAuthStore, PhysicianIdentity, PracticeClock, PracticeTimeZone,
+    StoreUnavailable,
 };
-use physician_wire::PatientLinkWire;
+use physician_wire::{ConnectionStatusWire, PatientLinkWire};
 
 use crate::auth::{AuthContext, STAGING_PRACTICE_ID, SYNTHETIC_PRACTICE_CLOCK, now};
 use crate::patients::{self, DirectoryError, MemoryPatients, Patient, PatientDirectory};
@@ -41,6 +42,7 @@ pub(crate) struct PracticeMoment {
 #[derive(Clone)]
 pub(crate) struct ConnectedCare {
     fallback_auth: Arc<dyn AuthStore>,
+    fallback_front_door: Arc<dyn FrontDoorStore>,
     fallback_patients: Arc<dyn PatientDirectory>,
 }
 
@@ -50,6 +52,7 @@ impl ConnectedCare {
     pub(crate) fn new() -> Self {
         Self::on(
             Arc::new(Self::memory_store()),
+            Arc::new(MemoryFrontDoorStore::new()),
             Arc::new(MemoryPatients::default()),
         )
     }
@@ -64,7 +67,11 @@ impl ConnectedCare {
             store.seed_patient(STAGING_PRACTICE_ID, workspace);
             store.seed_membership(&preview, workspace, Membership::Allowed);
         }
-        Self::on(Arc::new(store), patients)
+        Self::on(
+            Arc::new(store),
+            Arc::new(MemoryFrontDoorStore::new()),
+            patients,
+        )
     }
 
     fn memory_store() -> MemoryAuthStore {
@@ -80,9 +87,14 @@ impl ConnectedCare {
         store
     }
 
-    fn on(fallback_auth: Arc<dyn AuthStore>, fallback_patients: Arc<dyn PatientDirectory>) -> Self {
+    fn on(
+        fallback_auth: Arc<dyn AuthStore>,
+        fallback_front_door: Arc<dyn FrontDoorStore>,
+        fallback_patients: Arc<dyn PatientDirectory>,
+    ) -> Self {
         Self {
             fallback_auth,
+            fallback_front_door,
             fallback_patients,
         }
     }
@@ -92,6 +104,16 @@ impl ConnectedCare {
             .get::<Arc<dyn AuthStore>>()
             .cloned()
             .unwrap_or_else(|| Arc::clone(&self.fallback_auth))
+    }
+
+    pub(crate) fn front_door(
+        &self,
+        extensions: &axum::http::Extensions,
+    ) -> Arc<dyn FrontDoorStore> {
+        extensions
+            .get::<Arc<dyn FrontDoorStore>>()
+            .cloned()
+            .unwrap_or_else(|| Arc::clone(&self.fallback_front_door))
     }
 
     pub(crate) fn patients(
@@ -166,22 +188,72 @@ impl ConnectedCare {
 
     pub(crate) async fn link_wire(
         &self,
-        store: &dyn AuthStore,
+        front_door: &dyn FrontDoorStore,
         practice_id: &str,
         workspace_id: &str,
     ) -> PatientLinkWire {
-        match store.patient_link(practice_id, workspace_id).await {
-            Some(link) => to_link_wire(link),
-            None => PatientLinkWire {
+        let status = front_door
+            .roster_connection(&RosterPatient {
+                practice_id: practice_id.to_owned(),
+                patient_id: workspace_id.to_owned(),
+            })
+            .await;
+        status_to_link_wire(practice_id, workspace_id, &status)
+    }
+}
+
+/// Maps front-door `RosterConnectionStatus` into wire `ConnectionStatusWire`.
+pub(crate) fn to_wire_status(status: &RosterConnectionStatus) -> ConnectionStatusWire {
+    match status {
+        RosterConnectionStatus::NotInvited => ConnectionStatusWire::NotInvited,
+        RosterConnectionStatus::Invited { .. } => ConnectionStatusWire::Invited,
+        RosterConnectionStatus::Connected { .. } => ConnectionStatusWire::Connected,
+        RosterConnectionStatus::Ended { .. } => ConnectionStatusWire::Ended,
+    }
+}
+
+/// Projects `RosterConnectionStatus` onto `PatientLinkWire`.
+pub(crate) fn status_to_link_wire(
+    practice_id: &str,
+    workspace_id: &str,
+    status: &RosterConnectionStatus,
+) -> PatientLinkWire {
+    let connection_status = to_wire_status(status);
+    match status {
+        RosterConnectionStatus::Connected { account_id, .. } => PatientLinkWire {
+            practice_id: practice_id.to_owned(),
+            patient_workspace_id: workspace_id.to_owned(),
+            duet_account_id: Some(account_id.to_string()),
+            linked: true,
+            sharing_consented: true,
+            connection_status,
+            consent_version: None,
+            consented_at: None,
+            revoked_at: None,
+        },
+        RosterConnectionStatus::Ended { account_id, .. } => PatientLinkWire {
+            practice_id: practice_id.to_owned(),
+            patient_workspace_id: workspace_id.to_owned(),
+            duet_account_id: Some(account_id.to_string()),
+            linked: false,
+            sharing_consented: false,
+            connection_status,
+            consent_version: None,
+            consented_at: None,
+            revoked_at: None,
+        },
+        RosterConnectionStatus::NotInvited | RosterConnectionStatus::Invited { .. } => {
+            PatientLinkWire {
                 practice_id: practice_id.to_owned(),
                 patient_workspace_id: workspace_id.to_owned(),
                 duet_account_id: None,
                 linked: false,
                 sharing_consented: false,
+                connection_status,
                 consent_version: None,
                 consented_at: None,
                 revoked_at: None,
-            },
+            }
         }
     }
 }
@@ -207,7 +279,7 @@ pub(crate) async fn on_roster(extensions: &axum::http::Extensions, id: &str) -> 
     try_on_roster(extensions, id).await.unwrap_or(false)
 }
 
-/// Adds `patient_link` to a patient page.
+/// Adds `connection_status` and `patient_link` to a patient page.
 pub(crate) async fn enrich_workspace(
     mut value: Value,
     workspace_id: &str,
@@ -215,9 +287,10 @@ pub(crate) async fn enrich_workspace(
 ) -> Value {
     if let Some(care) = extensions.get::<ConnectedCare>() {
         let store = care.auth_store(extensions);
+        let front_door = care.front_door(extensions);
         let identity = ConnectedCare::identity(extensions);
         let link = care
-            .link_wire(&*store, &identity.practice_id, workspace_id)
+            .link_wire(&*front_door, &identity.practice_id, workspace_id)
             .await;
         let practice_tz = store
             .practice(&identity.practice_id)
@@ -226,6 +299,10 @@ pub(crate) async fn enrich_workspace(
             .flatten()
             .map(|rec| rec.time_zone);
         if let Some(obj) = value.as_object_mut() {
+            obj.insert(
+                "connection_status".to_owned(),
+                serde_json::to_value(link.connection_status).unwrap_or(Value::Null),
+            );
             obj.insert(
                 "patient_link".to_owned(),
                 serde_json::to_value(&link).unwrap_or(Value::Null),
@@ -239,17 +316,4 @@ pub(crate) async fn enrich_workspace(
         }
     }
     value
-}
-
-fn to_link_wire(link: PatientLink) -> PatientLinkWire {
-    PatientLinkWire {
-        practice_id: link.practice_id,
-        patient_workspace_id: link.patient_workspace_id,
-        duet_account_id: link.duet_account_id,
-        linked: link.linked,
-        sharing_consented: link.sharing_consented,
-        consent_version: link.consent_version,
-        consented_at: link.consented_at,
-        revoked_at: link.revoked_at,
-    }
 }
