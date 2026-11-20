@@ -70,6 +70,10 @@ use no prefix. Explain the intended outcome, approach, consequences, proof, and
 meaningful uncertainty without mandatory empty sections or a chronology of tools
 and patches.
 
+The title and body describe the pushed head, because the title is what a person
+merging sees. Planned work goes under its own heading in the body. When the head
+is known to be broken or incomplete, the title says so and the PR is a draft.
+
 Carry forward [local-review](../local-review/SKILL.md) findings and dispositions.
 Recommend whether the PR needs human or agent review and briefly explain why;
 include that recommendation in the handoff. Identify the decision or judgment

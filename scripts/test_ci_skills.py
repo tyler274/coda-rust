@@ -55,6 +55,19 @@ class SkillChecks(unittest.TestCase):
         (self.discovery / "obsolete").symlink_to("../../.agents/skills/missing")
         self.check(False, "noncanonical")
 
+    def test_relative_imports_must_name_existing_files(self):
+        script = self.skill / "scripts/run.ts"
+        script.parent.mkdir()
+        script.write_text('import fs from "node:fs";\nimport { stop } from "./stop.ts";\n'
+                          'export { draw } from "../draw.mjs";\n')
+        self.check(False, "imports ./stop.ts")
+        (script.parent / "stop.ts").write_text("export const stop = () => {};\n")
+        self.check(False, "imports ../draw.mjs")
+        (self.skill / "draw.mjs").write_text("export const draw = () => {};\n")
+        self.check(True)
+        (self.skill / "draw.mjs").write_text('export const draw = () => import("./late.mjs");\n')
+        self.check(False, "imports ./late.mjs")
+
     def test_invalid_script_and_configuration_fail(self):
         for name, text in [("script.py", "def broken(\n"),
                            ("reviewer-app.json", "{broken"),
