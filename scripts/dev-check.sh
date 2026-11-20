@@ -233,7 +233,7 @@ run_lightweight_checks() {
     "$ci_python" scripts/check_engineering_skills.py
     python3 -m unittest discover -s .agents/skills/review-pr/scripts -p 'test_*.py' -v
     python3 -m unittest discover -s .agents/skills/capture-proof/scripts -p 'test_*.py' -v
-    node --test crates/workspace-tools/tests/doppler-watch.test.cjs
+    node --test crates/workspace-tools/tests/doppler-watch.test.cjs crates/workspace-tools/tests/pstack-watch.test.cjs
     actionlint .github/workflows/*.yml
     lychee --offline --no-progress --include-fragments --root-dir "$root" '.agents/skills/**/*.md'
     bash scripts/check-book-links.sh
