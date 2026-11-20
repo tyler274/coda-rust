@@ -165,6 +165,17 @@ enum EmailSignInStep {
     },
 }
 
+impl EmailSignInStep {
+    fn fresh() -> Self {
+        Self::EnterEmail {
+            email: String::new(),
+            invite: String::new(),
+            submitting: false,
+            error: None,
+        }
+    }
+}
+
 /// Why startup verification produced no online update.
 #[derive(Debug)]
 enum SignInError {
@@ -271,6 +282,12 @@ pub fn DuetRoot(
         cleanup_pending,
         message,
         confirm: confirm_sign_out,
+        settings_open,
+        upgrade_required,
+        agreed_terms,
+        terms_error,
+        sign_in_step,
+        pending_invite,
     };
 
     let (refusal_sender, refusal_receiver) = use_hook(|| {
@@ -345,39 +362,6 @@ pub fn DuetRoot(
                 let _ = owner.set_pending_invite(Some(handoff.value()));
                 pending_invite.set(Some(handoff.value().to_owned()));
             }
-            // Handle incoming email sign-in magic link immediately on startup if present.
-            if let Some(AppDeepLink::EmailSignIn {
-                ref token,
-                ref invite,
-            }) = startup_link
-            {
-                if let Some(inv) = invite {
-                    let _ = owner.set_pending_invite(Some(inv));
-                    pending_invite.set(Some(inv.clone()));
-                }
-                match complete_link_sign_in(&base, token, &owner, || lifecycle() == epoch).await {
-                    Ok(session) => {
-                        if lifecycle() != epoch {
-                            return;
-                        }
-                        connection.set(ConnectionStatus::Online);
-                        offline_draft.set(None);
-                        active.set(Some(session));
-                        message.set(String::new());
-                        busy.set(false);
-                        return;
-                    }
-                    Err(err) => {
-                        if lifecycle() != epoch {
-                            return;
-                        }
-                        message.set(err.to_string());
-                        busy.set(false);
-                        return;
-                    }
-                }
-            }
-
             if !supplied.is_empty() {
                 let result =
                     restore_supplied(&base, supplied, &owner, || lifecycle() == epoch).await;
@@ -389,7 +373,8 @@ pub fn DuetRoot(
                 return;
             }
 
-            // Non-expiring offline-first restore from protected storage.
+            // Non-expiring offline-first restore runs BEFORE email sign-in links so opening
+            // a sign-in link while already signed in opens Duet as it was.
             match owner.restore_offline_session() {
                 Ok(Some((retained, fence))) => {
                     let cached_state = owner.load_account_state(&fence).ok().flatten();
@@ -465,6 +450,40 @@ pub fn DuetRoot(
                     }
                 }
                 Ok(None) => {
+                    if let Some(AppDeepLink::EmailSignIn {
+                        ref token,
+                        ref invite,
+                    }) = startup_link
+                    {
+                        if let Some(inv) = invite {
+                            let _ = owner.set_pending_invite(Some(inv));
+                            pending_invite.set(Some(inv.clone()));
+                        }
+                        match complete_link_sign_in(&base, token, &owner, || lifecycle() == epoch)
+                            .await
+                        {
+                            Ok(session) => {
+                                if lifecycle() != epoch {
+                                    return;
+                                }
+                                connection.set(ConnectionStatus::Online);
+                                offline_draft.set(None);
+                                account_ui.reset_session_ui();
+                                active.set(Some(session));
+                                message.set(String::new());
+                                busy.set(false);
+                                return;
+                            }
+                            Err(err) => {
+                                if lifecycle() != epoch {
+                                    return;
+                                }
+                                message.set(err.to_string());
+                                busy.set(false);
+                                return;
+                            }
+                        }
+                    }
                     message.set(String::new());
                     busy.set(false);
                 }
@@ -592,7 +611,7 @@ pub fn DuetRoot(
                     Ok(session) => {
                         connection.set(ConnectionStatus::Online);
                         signed_out.set(false);
-                        upgrade_required.set(None);
+                        account_ui.reset_session_ui();
                         let owner_id = session.fence.owner().to_owned();
                         offline_draft.set(step_offline_draft(
                             offline_draft(),
@@ -700,8 +719,15 @@ pub fn DuetRoot(
     };
 
     let logout_owner = retention.clone();
-    let prompt_owner = retention.clone();
-    let anyway_owner = retention.clone();
+    let revoke_owner = retention.clone();
+    let settings_sign_out_owner = retention.clone();
+    let settings_sign_out_base = base_url.clone();
+    let upgrade_sign_out_owner = retention.clone();
+    let upgrade_sign_out_base = base_url.clone();
+    let terms_sign_out_owner = retention.clone();
+    let terms_sign_out_base = base_url.clone();
+    let confirm_sign_out_owner = retention.clone();
+    let confirm_sign_out_base = base_url.clone();
     let retry_cleanup = move |_| {
         apply_sign_out(&logout_owner, account_ui, false);
     };
@@ -715,7 +741,31 @@ pub fn DuetRoot(
     rsx! {
         ui::Stylesheet {}
         if let Some(current) = active() {
-            if settings_open() {
+            if confirm_sign_out() {
+                main { class: "duet theme-duet", "data-theme": "{current.appearance.as_str()}",
+                    div { class: "duet-page",
+                        Notice {
+                            tone: Tone::Warning,
+                            title: message(),
+                            ActionRow {
+                                Button { variant: ButtonVariant::Quiet, compact: true, onclick: move |_| {
+                                    confirm_sign_out.set(false);
+                                    message.set(String::new());
+                                }, "Stay signed in" }
+                                Button { variant: ButtonVariant::Primary, compact: true, onclick: move |_| {
+                                    start_device_sign_out(
+                                        &confirm_sign_out_base,
+                                        &confirm_sign_out_owner,
+                                        active,
+                                        account_ui,
+                                        false,
+                                    );
+                                }, "Sign out anyway" }
+                            }
+                        }
+                    }
+                }
+            } else if settings_open() {
                 main { class: "duet theme-duet", "data-theme": "{current.appearance.as_str()}",
                     SettingsScreen {
                         base_url: base_url.clone(),
@@ -732,12 +782,23 @@ pub fn DuetRoot(
                                 active.set(Some(cur));
                             }
                         },
-                        on_signed_out: move |note| {
-                            settings_open.set(false);
-                            account_ui.close();
-                            if let Some(msg) = note {
-                                message.set(msg);
-                            }
+                        on_request_sign_out: move |_| {
+                            start_device_sign_out(
+                                &settings_sign_out_base,
+                                &settings_sign_out_owner,
+                                active,
+                                account_ui,
+                                true,
+                            );
+                        },
+                        on_complete_revocation: move |note: Option<String>| {
+                            let result = account_ui.erase(&revoke_owner);
+                            message.set(match result {
+                                Ok(()) => note.unwrap_or_default(),
+                                Err(error) => format!(
+                                    "Signed out on this screen. Secure cleanup needs retry: {error}"
+                                ),
+                            });
                         },
                     }
                 }
@@ -748,7 +809,15 @@ pub fn DuetRoot(
                         Notice { tone: Tone::Warning, title: upgrade_msg }
                         ActionRow {
                             Button { onclick: move |_| settings_open.set(true), "Settings" }
-                            Button { variant: ButtonVariant::Quiet, onclick: move |_| apply_sign_out(&prompt_owner, account_ui, true), "Sign out" }
+                            Button { variant: ButtonVariant::Quiet, onclick: move |_| {
+                                start_device_sign_out(
+                                    &upgrade_sign_out_base,
+                                    &upgrade_sign_out_owner,
+                                    active,
+                                    account_ui,
+                                    true,
+                                );
+                            }, "Sign out" }
                         }
                     }
                 }
@@ -777,7 +846,15 @@ pub fn DuetRoot(
                                 "I agree and continue"
                             }
                             Button { onclick: move |_| settings_open.set(true), "Settings" }
-                            Button { variant: ButtonVariant::Quiet, onclick: move |_| apply_sign_out(&prompt_owner, account_ui, true), "Sign out" }
+                            Button { variant: ButtonVariant::Quiet, onclick: move |_| {
+                                start_device_sign_out(
+                                    &terms_sign_out_base,
+                                    &terms_sign_out_owner,
+                                    active,
+                                    account_ui,
+                                    true,
+                                );
+                            }, "Sign out" }
                         }
                     }
                 }
@@ -795,16 +872,6 @@ pub fn DuetRoot(
                         let _ = retention.set_pending_invite(None);
                         pending_invite.set(None);
                     },
-                }
-                if confirm_sign_out() {
-                    p { role: "alert", "{message}" }
-                    Button { variant: ButtonVariant::Quiet, compact: true, onclick: move |_| {
-                        confirm_sign_out.set(false);
-                        message.set(String::new());
-                    }, "Stay signed in" }
-                    Button { variant: ButtonVariant::Primary, compact: true, onclick: move |_| {
-                        apply_sign_out(&anyway_owner, account_ui, true);
-                    }, "Sign out anyway" }
                 }
             }
         } else {
@@ -1181,6 +1248,12 @@ struct AccountUi {
     cleanup_pending: Signal<bool>,
     message: Signal<String>,
     confirm: Signal<bool>,
+    settings_open: Signal<bool>,
+    upgrade_required: Signal<Option<String>>,
+    agreed_terms: Signal<bool>,
+    terms_error: Signal<Option<String>>,
+    sign_in_step: Signal<EmailSignInStep>,
+    pending_invite: Signal<Option<String>>,
 }
 
 impl AccountUi {
@@ -1192,6 +1265,7 @@ impl AccountUi {
         match result {
             Ok(Some(value)) => {
                 self.offline_draft.set(None);
+                self.reset_session_ui();
                 self.active.set(Some(value));
                 self.message.set(String::new());
             }
@@ -1205,8 +1279,18 @@ impl AccountUi {
         self.busy.set(false);
     }
 
-    fn close(mut self) {
+    fn reset_session_ui(mut self) {
         self.confirm.set(false);
+        self.settings_open.set(false);
+        self.upgrade_required.set(None);
+        self.agreed_terms.set(false);
+        self.terms_error.set(None);
+        self.sign_in_step.set(EmailSignInStep::fresh());
+    }
+
+    fn close(mut self) {
+        self.reset_session_ui();
+        self.pending_invite.set(None);
         self.lifecycle.set((self.lifecycle)() + 1);
         self.signed_out.set(true);
         self.active.set(None);
@@ -1234,13 +1318,33 @@ impl AccountUi {
     }
 }
 
-pub(crate) fn sign_out_local(owner: &RetentionOwner) -> Option<String> {
-    match owner.sign_out() {
-        Ok(()) => None,
-        Err(error) => Some(format!(
-            "Signed out on this screen. Secure cleanup needs retry: {error}"
-        )),
+fn start_device_sign_out(
+    base: &str,
+    owner: &RetentionOwner,
+    active: Signal<Option<ActiveSession>>,
+    mut ui: AccountUi,
+    warn: bool,
+) {
+    if warn
+        && !(ui.confirm)()
+        && let Ok(leaving) = owner.account_leaving()
+        && !leaving.is_empty()
+    {
+        ui.confirm.set(true);
+        ui.message.set(leaving.warning());
+        return;
     }
+    let owner = owner.clone();
+    let base = base.to_owned();
+    let bearer = active.peek().as_ref().map(|cur| cur.bearer.clone());
+    spawn(async move {
+        if let Some(bearer) = bearer
+            && let Ok(api) = DuetClient::new(&base, &bearer, "0", "0.1.0")
+        {
+            let _ = api.sign_out_device().await;
+        }
+        apply_sign_out(&owner, ui, false);
+    });
 }
 
 fn apply_sign_out(logout_owner: &RetentionOwner, mut ui: AccountUi, warn: bool) {
@@ -1278,6 +1382,12 @@ mod tests {
             cleanup_pending: Signal::new(false),
             message: Signal::new(String::new()),
             confirm: Signal::new(false),
+            settings_open: Signal::new(false),
+            upgrade_required: Signal::new(None),
+            agreed_terms: Signal::new(false),
+            terms_error: Signal::new(None),
+            sign_in_step: Signal::new(EmailSignInStep::fresh()),
+            pending_invite: Signal::new(None),
         }
     }
 
@@ -1461,5 +1571,35 @@ mod tests {
         );
         assert!(draft.is_none());
         assert!(shown_offline_draft(draft, true, Some("bob")).is_none());
+    }
+
+    #[test]
+    fn close_resets_session_ui_state_between_accounts() {
+        let dom = VirtualDom::new(|| rsx! {});
+        dom.in_scope(ScopeId::ROOT, || {
+            let mut ui = startup_ui();
+            ui.settings_open.set(true);
+            ui.agreed_terms.set(true);
+            ui.terms_error.set(Some("old error".into()));
+            ui.upgrade_required.set(Some("old upgrade".into()));
+            ui.pending_invite.set(Some("inv-alice".into()));
+            ui.sign_in_step.set(EmailSignInStep::CheckEmail {
+                email: "alice@example.test".into(),
+                code: "123456".into(),
+                invite: "inv-alice".into(),
+                submitting: true,
+                status: "Check your email".into(),
+                error: Some("bad code".into()),
+            });
+
+            ui.close();
+
+            assert!(!(ui.settings_open)());
+            assert!(!(ui.agreed_terms)());
+            assert!((ui.terms_error)().is_none());
+            assert!((ui.upgrade_required)().is_none());
+            assert!((ui.pending_invite)().is_none());
+            assert_eq!((ui.sign_in_step)(), EmailSignInStep::fresh());
+        });
     }
 }

@@ -1,6 +1,6 @@
 //! Rights-never-wait Duet settings: profile, appearance, verified email change, source disconnect, leave practice, sign-out, and account deletion.
 
-use crate::account::{ActiveSession, sign_out_local};
+use crate::account::ActiveSession;
 use dioxus::prelude::*;
 use duet_client::{
     DuetClient,
@@ -52,7 +52,8 @@ pub(crate) fn SettingsScreen(
     retention: RetentionOwner,
     on_close: EventHandler<()>,
     on_profile_updated: EventHandler<(Option<String>, Appearance, Option<String>)>,
-    on_signed_out: EventHandler<Option<String>>,
+    on_request_sign_out: EventHandler<()>,
+    on_complete_revocation: EventHandler<Option<String>>,
 ) -> Element {
     let initial_name = active
         .account_state
@@ -276,6 +277,8 @@ pub(crate) fn SettingsScreen(
     let run_withdraw = |kind: PrivacyRestrictionKind, label: &'static str| {
         let base_url = base_url.clone();
         let bearer = bearer.clone();
+        let retention = retention.clone();
+        let fence = fence.clone();
         move |_| {
             if working_right() {
                 return;
@@ -284,18 +287,20 @@ pub(crate) fn SettingsScreen(
             notice.set(OperationNotice::None);
             let base_url = base_url.clone();
             let bearer = bearer.clone();
+            let retention = retention.clone();
+            let fence = fence.clone();
             spawn(async move {
                 let result = async {
                     #[cfg(target_os = "ios")]
-                    if kind == PrivacyRestrictionKind::DeviceWithdraw {
-                        if let Ok(source) =
+                    if kind == PrivacyRestrictionKind::DeviceWithdraw
+                        && let Ok(source) =
                             duet_client::apple_health::IosAppleHealth::open_on_device(
                                 &retention, &fence,
                             )
-                        {
-                            let _ = source.disconnect();
-                        }
+                    {
+                        let _ = source.disconnect();
                     }
+                    let _ = (&retention, &fence);
                     let api = DuetClient::new(&base_url, &bearer, "0", "0.1.0")
                         .map_err(|_| IdentityError::Unavailable)?;
                     api.commit_privacy_restriction(Uuid::new_v4(), kind, None, 0)
@@ -343,33 +348,16 @@ pub(crate) fn SettingsScreen(
         }
     };
 
-    let sign_out_device = {
-        let base_url = base_url.clone();
-        let bearer = bearer.clone();
-        let retention = retention.clone();
-        move |_| {
-            if working_right() {
-                return;
-            }
-            working_right.set(true);
-            let base_url = base_url.clone();
-            let bearer = bearer.clone();
-            let retention = retention.clone();
-            spawn(async move {
-                if let Ok(api) = DuetClient::new(&base_url, &bearer, "0", "0.1.0") {
-                    let _ = api.sign_out_device().await;
-                }
-                let err = sign_out_local(&retention);
-                on_signed_out.call(err);
-                working_right.set(false);
-            });
+    let sign_out_device = move |_| {
+        if working_right() {
+            return;
         }
+        on_request_sign_out.call(());
     };
 
     let sign_out_everywhere = {
         let base_url = base_url.clone();
         let bearer = bearer.clone();
-        let retention = retention.clone();
         move |_| {
             if working_right() {
                 return;
@@ -377,7 +365,6 @@ pub(crate) fn SettingsScreen(
             working_right.set(true);
             let base_url = base_url.clone();
             let bearer = bearer.clone();
-            let retention = retention.clone();
             spawn(async move {
                 let result = async {
                     let api = DuetClient::new(&base_url, &bearer, "0", "0.1.0")
@@ -392,10 +379,7 @@ pub(crate) fn SettingsScreen(
                 }
                 .await;
                 match result {
-                    Ok(_) => {
-                        let err = sign_out_local(&retention);
-                        on_signed_out.call(err.or(Some("Signed out everywhere.".into())));
-                    }
+                    Ok(_) => on_complete_revocation.call(Some("Signed out everywhere.".into())),
                     Err(error) => notice.set(OperationNotice::Error(error.to_string())),
                 }
                 working_right.set(false);
@@ -406,7 +390,6 @@ pub(crate) fn SettingsScreen(
     let confirm_delete = {
         let base_url = base_url.clone();
         let bearer = bearer.clone();
-        let retention = retention.clone();
         move |_| {
             if delete_flow() == DeleteAccountFlow::Deleting || working_right() {
                 return;
@@ -415,7 +398,6 @@ pub(crate) fn SettingsScreen(
             working_right.set(true);
             let base_url = base_url.clone();
             let bearer = bearer.clone();
-            let retention = retention.clone();
             spawn(async move {
                 let result = async {
                     let api = DuetClient::new(&base_url, &bearer, "0", "0.1.0")
@@ -430,10 +412,7 @@ pub(crate) fn SettingsScreen(
                 }
                 .await;
                 match result {
-                    Ok(_) => {
-                        let err = sign_out_local(&retention);
-                        on_signed_out.call(err.or(Some("Account deleted.".into())));
-                    }
+                    Ok(_) => on_complete_revocation.call(Some("Account deleted.".into())),
                     Err(error) => {
                         delete_flow.set(DeleteAccountFlow::Confirming);
                         notice.set(OperationNotice::Error(error.to_string()));

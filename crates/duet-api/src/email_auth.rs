@@ -325,6 +325,17 @@ impl EmailAuthStore {
         let email = EmailAddress::parse(&challenge.email)?;
         let (account_id, appearance) = self.find_or_provision_email_account(&email).await?;
 
+        let mut account_tx = self.database.begin(account_id).await?;
+        let user = orm::model::<user_profile::Model>(
+            &mut account_tx,
+            &user_profile::Entity::find()
+                .filter(user_profile::Column::Id.eq(account_id))
+                .into_query(),
+        )
+        .await?
+        .ok_or(ApiError::AbsentAccount)?;
+        account_tx.commit().await?;
+
         let mut raw_session = [0u8; 32];
         rand::rng().fill(&mut raw_session);
         let bearer = format!(
@@ -340,29 +351,20 @@ impl EmailAuthStore {
             .columns([
                 duet_session::Column::Id,
                 duet_session::Column::UserId,
+                duet_session::Column::AccountIncarnation,
                 duet_session::Column::TokenHash,
                 duet_session::Column::CreatedAt,
             ])
             .values_panic([
                 session_id.into(),
                 account_id.into(),
+                user.duet_incarnation.into(),
                 token_hash.into(),
                 now.into(),
             ])
             .to_owned();
         orm::execute(&mut tx, &insert_session).await?;
         tx.commit().await?;
-
-        let mut account_tx = self.database.begin(account_id).await?;
-        let user = orm::model::<user_profile::Model>(
-            &mut account_tx,
-            &user_profile::Entity::find()
-                .filter(user_profile::Column::Id.eq(account_id))
-                .into_query(),
-        )
-        .await?
-        .ok_or(ApiError::AbsentAccount)?;
-        account_tx.commit().await?;
 
         Ok(EmailSignInResult {
             bearer,
@@ -373,8 +375,7 @@ impl EmailAuthStore {
         })
     }
 
-    /// Resolve a `ds1.` session bearer to an [`AccountContext`]; sessions never time-expire.
-    pub(crate) async fn verify_session(&self, bearer: &str) -> Result<AccountContext, ApiError> {
+    async fn load_session_row(&self, bearer: &str) -> Result<duet_session::Model, ApiError> {
         if !bearer.starts_with(SESSION_TOKEN_PREFIX) || bearer.len() <= SESSION_TOKEN_PREFIX.len() {
             return Err(ApiError::Unauthorized);
         }
@@ -393,6 +394,12 @@ impl EmailAuthStore {
         if session.revoked_at.is_some() {
             return Err(ApiError::SessionRevoked);
         }
+        Ok(session)
+    }
+
+    /// Resolve a `ds1.` session bearer to an [`AccountContext`]; sessions never time-expire.
+    pub(crate) async fn verify_session(&self, bearer: &str) -> Result<AccountContext, ApiError> {
+        let session = self.load_session_row(bearer).await?;
 
         let mut account_tx = self.database.begin(session.user_id).await?;
         let user = orm::model::<user_profile::Model>(
@@ -418,6 +425,41 @@ impl EmailAuthStore {
             permission_revision: user.intelligence_control_revision,
             authenticated_at: session.created_at,
         })
+    }
+
+    /// Resolve a `ds1.` bearer strictly for idempotent privacy receipt readback after
+    /// `SessionsRevoke` or `AccountDelete`. `PrivacyStore::restrict` enforces `check_current`
+    /// whenever the requested `event_id` has not already been committed.
+    pub(crate) async fn verify_session_for_receipt_retry(
+        &self,
+        bearer: &str,
+    ) -> Result<AccountContext, ApiError> {
+        let session = self.load_session_row(bearer).await?;
+
+        let mut account_tx = self.database.begin(session.user_id).await?;
+        let user = orm::model::<user_profile::Model>(
+            &mut account_tx,
+            &user_profile::Entity::find()
+                .filter(user_profile::Column::Id.eq(session.user_id))
+                .into_query(),
+        )
+        .await?;
+        account_tx.commit().await?;
+
+        match user {
+            Some(user) => Ok(AccountContext {
+                account_id: session.user_id,
+                incarnation: user.duet_incarnation,
+                permission_revision: user.intelligence_control_revision,
+                authenticated_at: session.created_at,
+            }),
+            None => Ok(AccountContext {
+                account_id: session.user_id,
+                incarnation: session.account_incarnation,
+                permission_revision: 0,
+                authenticated_at: session.created_at,
+            }),
+        }
     }
 
     /// Revoke only the caller's current `ds1.` device session (other devices stay signed in).
