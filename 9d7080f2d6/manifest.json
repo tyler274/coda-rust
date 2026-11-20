@@ -1,0 +1,206 @@
+{
+  "branch": "feat-duet-full-export-and-account-exit",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "D5.1-export-and-D5.2-delete-and-D5.3-resignup",
+      "label": "duet-api account_export_and_exit + email_auth_and_terms + durable_owners (Postgres)",
+      "kind": "run",
+      "revision": "f0c3c4aead08886c155b9d4116c4a9bac05ea273",
+      "dirty": false,
+      "recorded": "2026-11-20T03:47:29+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "duet-api",
+        "--test",
+        "account_export_and_exit",
+        "--test",
+        "email_auth_and_terms",
+        "--test",
+        "durable_owners"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-duet-api-account_export_and_exit-email_auth_and_.log"
+      ],
+      "seconds": 5.0,
+      "exit": 0,
+      "ok": true,
+      "superseded": "addressed review #1006, rebased onto 7056682da5 / 7ffafe26c8, and re-verified clean HEAD 9d7080f2d6"
+    },
+    {
+      "id": 2,
+      "claim": "D5.4-sync-before-signout-and-retention",
+      "label": "duet-client unit + retention + email_auth_client",
+      "kind": "run",
+      "revision": "f0c3c4aead08886c155b9d4116c4a9bac05ea273",
+      "dirty": false,
+      "recorded": "2026-11-20T03:47:34+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "duet-client"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-duet-client-unit-retention-email_auth_client.log"
+      ],
+      "seconds": 10.1,
+      "exit": 0,
+      "ok": true,
+      "superseded": "addressed review #1006, rebased onto 7056682da5 / 7ffafe26c8, and re-verified clean HEAD 9d7080f2d6"
+    },
+    {
+      "id": 3,
+      "claim": "D5-duet-app-settings-and-recovery-ui",
+      "label": "duet-app Settings export, sign-out and delete recovery UI",
+      "kind": "run",
+      "revision": "f0c3c4aead08886c155b9d4116c4a9bac05ea273",
+      "dirty": false,
+      "recorded": "2026-11-20T03:47:45+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "duet-app"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-duet-app-Settings-export-sign-out-and-delete-rec.log"
+      ],
+      "seconds": 21.4,
+      "exit": 0,
+      "ok": true,
+      "superseded": "addressed review #1006, rebased onto 7056682da5 / 7ffafe26c8, and re-verified clean HEAD 9d7080f2d6"
+    },
+    {
+      "id": 4,
+      "claim": "workspace-fmt-sql-boundaries-and-clippy",
+      "label": "fmt, check-sql, boundaries, host and wasm32 clippy -D warnings",
+      "kind": "run",
+      "revision": "f0c3c4aead08886c155b9d4116c4a9bac05ea273",
+      "dirty": false,
+      "recorded": "2026-11-20T03:48:06+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo fmt --all --check && python3 scripts/check-sql.py && cargo test -p boundaries && cargo clippy --workspace --all-targets --locked -- -D warnings && cargo clippy --target wasm32-unknown-unknown -p duet-app -p physician-app -p ui -p duet-client -p duet-health --locked -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-fmt-check-sql-boundaries-host-and-wasm32-clippy-.log"
+      ],
+      "seconds": 92.8,
+      "exit": 0,
+      "ok": true,
+      "superseded": "addressed review #1006, rebased onto 7056682da5 / 7ffafe26c8, and re-verified clean HEAD 9d7080f2d6"
+    },
+    {
+      "id": 5,
+      "claim": "D5.1-export-and-D5.2-delete-and-D5.3-resignup",
+      "label": "duet-api account_export_and_exit + email_auth_and_terms + durable_owners + connected_care_sync (Postgres)",
+      "kind": "run",
+      "revision": "9d7080f2d6e8e660eb1f3879993791b712884148",
+      "dirty": false,
+      "recorded": "2026-11-20T05:22:11+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "duet-api",
+        "--test",
+        "account_export_and_exit",
+        "--test",
+        "email_auth_and_terms",
+        "--test",
+        "durable_owners",
+        "--test",
+        "connected_care_sync"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-duet-api-account_export_and_exit-email_auth_and_.log"
+      ],
+      "seconds": 40.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 6,
+      "claim": "D5.4-sync-before-signout-and-retention",
+      "label": "duet-client unit + retention + email_auth_client",
+      "kind": "run",
+      "revision": "9d7080f2d6e8e660eb1f3879993791b712884148",
+      "dirty": false,
+      "recorded": "2026-11-20T05:22:51+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "duet-client"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-duet-client-unit-retention-email_auth_client.log"
+      ],
+      "seconds": 12.3,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 7,
+      "claim": "D5-duet-app-settings-and-recovery-ui",
+      "label": "duet-app Settings export, sign-out and delete recovery UI",
+      "kind": "run",
+      "revision": "9d7080f2d6e8e660eb1f3879993791b712884148",
+      "dirty": false,
+      "recorded": "2026-11-20T05:23:03+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "duet-app"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "07-duet-app-Settings-export-sign-out-and-delete-rec.log"
+      ],
+      "seconds": 17.7,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 8,
+      "claim": "workspace-fmt-sql-boundaries-and-clippy",
+      "label": "fmt, check-sql, check-book-links, boundaries, host and wasm32 clippy -D warnings",
+      "kind": "run",
+      "revision": "9d7080f2d6e8e660eb1f3879993791b712884148",
+      "dirty": false,
+      "recorded": "2026-11-20T05:23:21+00:00",
+      "command": [
+        "bash",
+        "-e",
+        "-c",
+        "cargo fmt --all --check && python3 scripts/check-sql.py && bash scripts/check-book-links.sh && cargo test -p boundaries && cargo clippy --workspace --all-targets --locked -- -D warnings && cargo clippy --target wasm32-unknown-unknown -p duet-app -p physician-app -p ui -p duet-client -p duet-health --locked -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "08-fmt-check-sql-check-book-links-boundaries-host-a.log"
+      ],
+      "seconds": 103.1,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}

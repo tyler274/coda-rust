@@ -1,0 +1,46 @@
+   Compiling duet-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/duet-client)
+   Compiling duet-app v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/duet-app)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 17.19s
+     Running unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/duet_app-fa81265cd9eb1453)
+
+running 16 tests
+test roots::tests::notification_controls_name_their_permission ... ok
+test roots::tests::android_debug_api_reaches_the_emulator_host ... ok
+test account::tests::recovered_draft_is_empty_after_another_account_signs_in ... ok
+test account::tests::account_delete_outcome_never_claims_deleted_on_session_revoked ... ok
+test records::tests::undated_records_say_date_unknown ... ok
+test records::tests::removed_records_are_labelled_with_literal_values_and_zone ... ok
+test records::tests::omitted_interval_end_stays_absent ... ok
+test account::tests::parse_app_link_accepts_invite_sign_in_and_email_change_links ... ok
+test roots::tests::doctor_page_lists_the_saved_question ... ok
+test roots::tests::a_saved_doctor_page_excludes_cover_note_and_pdf_copy ... ok
+test records::tests::acquisition_interval_is_person_facing ... ok
+test roots::tests::library_empty_and_sections ... ok
+test account::tests::close_resets_session_ui_state_between_accounts ... ok
+test account::tests::startup_refusal_blocks_recovery_across_restart_until_cleanup_retry_succeeds ... ok
+test account::tests::startup_refusal_erases_retained_work_but_temporary_failure_preserves_it ... ok
+test account::tests::settings_screen_renders_export_action_and_interrupted_delete_recovery ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running unittests src/main.rs (/tmp/coda-target-jobs/debug/deps/duet_app-885d9294a1a85c49)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/post_signup.rs (/tmp/coda-target-jobs/debug/deps/post_signup-c7adb7e26f130843)
+
+running 3 tests
+test app_link_parser_accepts_invite_and_auth_links ... ok
+test signed_out_mount_renders_email_flow_without_apple_sign_in ... ok
+test d1_post_signup_mounts_terms_gate_and_then_you_and_shared_tabs ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+   Doc-tests duet_app
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
