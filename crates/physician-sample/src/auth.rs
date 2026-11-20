@@ -3065,6 +3065,22 @@ mod tests {
             "active non-admin practice member must be allowed to invite: {body}"
         );
         assert!(front_door.invitation("luna@example.test").await.is_some());
+        // Calling POST /auth/invitations again while Invited conflicts (use Resend or Cancel first).
+        let (dup_status, _) = invite_patient(
+            &app,
+            Some(&colleague),
+            "luna@example.test",
+            crate::WORKSPACE_IDS[0],
+        )
+        .await;
+        assert_eq!(dup_status, StatusCode::CONFLICT);
+        front_door
+            .cancel_invitation(&RosterPatient {
+                practice_id: STAGING_PRACTICE_ID.to_owned(),
+                patient_id: crate::WORKSPACE_IDS[0].to_owned(),
+            })
+            .await
+            .unwrap();
 
         // An existing Duet account can be invited for another roster patient without conflict,
         // whereas inviting an already-Connected roster patient answers 409 Conflict.

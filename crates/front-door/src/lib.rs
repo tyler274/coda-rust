@@ -1090,10 +1090,7 @@ impl FrontDoorStore for MemoryFrontDoorStore {
             if existing.locked_at.is_some() || existing.wrong_dob_attempts >= MAX_DOB_ATTEMPTS {
                 return Err(InviteError::Locked);
             }
-            let old_id = existing.id;
-            state
-                .invitation_credentials
-                .retain(|_, (inv_id, _, _)| *inv_id != old_id);
+            return Err(InviteError::Conflict);
         }
 
         state.next_invitation_id += 1;
@@ -2195,23 +2192,40 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn reinviting_same_roster_patient_replaces_the_open_invitation() {
+    async fn reinviting_already_invited_roster_patient_conflicts_until_cancelled() {
         let store = MemoryFrontDoorStore::new();
         let patient = patient("practice", "patient-9");
-        store
+        let first_token = store
             .invite(&patient, "luna@example.test", "Luna Park", NOW)
             .await
             .unwrap();
-        let token = store
-            .invite(&patient, "luna@example.test", "Luna Park", NOW)
+        assert_eq!(
+            store
+                .invite(&patient, "luna@example.test", "Luna Park", NOW + 1)
+                .await
+                .unwrap_err(),
+            InviteError::Conflict,
+            "second Invite(p) while open must fail with Conflict without clobbering first token"
+        );
+        // After cancelling, a fresh invitation may be issued while the prior token stays invalid.
+        store.cancel_invitation(&patient).await.unwrap();
+        let second_token = store
+            .invite(&patient, "luna@example.test", "Luna Park", NOW + 2)
             .await
             .unwrap();
         assert!(
             store
-                .redeem_invitation("luna@example.test", &token, NOW)
+                .redeem_invitation("luna@example.test", &first_token, NOW + 3)
+                .await
+                .is_err(),
+            "cancelled invitation token must not redeem"
+        );
+        assert!(
+            store
+                .redeem_invitation("luna@example.test", &second_token, NOW + 4)
                 .await
                 .is_ok(),
-            "the newest invitation redeems"
+            "post-cancel invitation redeems"
         );
     }
 

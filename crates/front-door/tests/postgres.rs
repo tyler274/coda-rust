@@ -822,6 +822,22 @@ async fn cod53_invitation_resend_cancel_atomic_dob_lock_and_share_persist_in_pos
     let issued2 = store.resend_invitation(&rp, NOW + 5).await.unwrap();
     assert_ne!(issued1.link_token, issued2.link_token);
     assert_ne!(issued1.short_code, issued2.short_code);
+    // Calling invite_patient again while open must conflict without clobbering issued1/issued2.
+    assert_eq!(
+        store
+            .invite_patient(InvitePatientParams {
+                patient: rp.clone(),
+                email: "chart-pat1@pg-cod53.test".to_owned(),
+                display_name: "Tamika Washington".to_owned(),
+                practice_name: "River Bend Clinic".to_owned(),
+                physician_name: "Dr. Roger".to_owned(),
+                expected_birth_date: Some("1987-02-18".to_owned()),
+                now: NOW + 5,
+            })
+            .await
+            .unwrap_err(),
+        front_door::InviteError::Conflict
+    );
 
     // Concurrent wrong DOB checks serialize cleanly via row lock with zero lost strikes (`COD-48`).
     let db = sea_orm::Database::connect(&url).await.unwrap();

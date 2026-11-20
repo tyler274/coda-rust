@@ -365,7 +365,7 @@ impl FrontDoorStore for PostgresFrontDoorStore {
         &self,
         params: InvitePatientParams,
     ) -> Result<IssuedInvitation, InviteError> {
-        use crate::migration::{connection, invitation, invitation_credential};
+        use crate::migration::{connection, invitation};
         let key = params.email.trim().to_lowercase();
         if !key.contains('@') {
             return Err(InviteError::InvalidInput("email must be valid"));
@@ -398,56 +398,36 @@ impl FrontDoorStore for PostgresFrontDoorStore {
             .one(&txn)
             .await?;
 
+        if let Some(existing) = existing_inv {
+            if existing.locked_at.is_some()
+                || existing.wrong_dob_attempts >= i32::from(MAX_DOB_ATTEMPTS)
+            {
+                return Err(InviteError::Locked);
+            }
+            return Err(InviteError::Conflict);
+        }
+
         let link_token = mint_token();
         let short_code = mint_short_code();
-        let row = match existing_inv {
-            Some(existing) => {
-                if existing.locked_at.is_some()
-                    || existing.wrong_dob_attempts >= i32::from(MAX_DOB_ATTEMPTS)
-                {
-                    return Err(InviteError::Locked);
-                }
-                InvitationCredentials::delete_many()
-                    .filter(invitation_credential::Column::InvitationId.eq(existing.id))
-                    .exec(&txn)
-                    .await?;
-                let mut active: crate::migration::InvitationActiveModel = existing.into();
-                active.email = Set(key);
-                active.display_name = Set(params.display_name.trim().to_owned());
-                active.token_hash = Set(token_hash(&link_token).to_vec());
-                active.created_at = Set(params.now as i64);
-                active.practice_name = Set(params.practice_name.trim().to_owned());
-                active.physician_name = Set(params.physician_name.trim().to_owned());
-                active.expected_birth_date = Set(normalized_dob);
-                active.wrong_dob_attempts = Set(0);
-                active.locked_at = Set(None);
-                active.last_delivery_failed_at = Set(None);
-                active.last_delivery_error = Set(None);
-                active.updated_at = Set(params.now as i64);
-                active.update(&txn).await?
-            }
-            None => {
-                crate::migration::InvitationActiveModel {
-                    id: Default::default(),
-                    practice_id: Set(params.patient.practice_id.clone()),
-                    patient_id: Set(params.patient.patient_id.clone()),
-                    email: Set(key),
-                    display_name: Set(params.display_name.trim().to_owned()),
-                    token_hash: Set(token_hash(&link_token).to_vec()),
-                    created_at: Set(params.now as i64),
-                    practice_name: Set(params.practice_name.trim().to_owned()),
-                    physician_name: Set(params.physician_name.trim().to_owned()),
-                    expected_birth_date: Set(normalized_dob),
-                    wrong_dob_attempts: Set(0),
-                    locked_at: Set(None),
-                    last_delivery_failed_at: Set(None),
-                    last_delivery_error: Set(None),
-                    updated_at: Set(params.now as i64),
-                }
-                .insert(&txn)
-                .await?
-            }
-        };
+        let row = crate::migration::InvitationActiveModel {
+            id: Default::default(),
+            practice_id: Set(params.patient.practice_id.clone()),
+            patient_id: Set(params.patient.patient_id.clone()),
+            email: Set(key),
+            display_name: Set(params.display_name.trim().to_owned()),
+            token_hash: Set(token_hash(&link_token).to_vec()),
+            created_at: Set(params.now as i64),
+            practice_name: Set(params.practice_name.trim().to_owned()),
+            physician_name: Set(params.physician_name.trim().to_owned()),
+            expected_birth_date: Set(normalized_dob),
+            wrong_dob_attempts: Set(0),
+            locked_at: Set(None),
+            last_delivery_failed_at: Set(None),
+            last_delivery_error: Set(None),
+            updated_at: Set(params.now as i64),
+        }
+        .insert(&txn)
+        .await?;
         Self::insert_invitation_credentials(&txn, row.id, &link_token, &short_code, params.now)
             .await?;
         txn.commit().await?;

@@ -544,9 +544,11 @@ fn require_operator(
 
 /// Records one invitation to a roster patient and returns the link token and short code.
 async fn invite(
-    State((state, _)): State<(FrontDoorState, bool)>,
+    State((state, require_auth)): State<(FrontDoorState, bool)>,
+    headers: HeaderMap,
     Json(body): Json<InviteBody>,
 ) -> Result<Json<InvitationView>, ApiError> {
+    require_operator(&state, require_auth, &headers)?;
     let practice_name = if body.practice_name.trim().is_empty() {
         body.practice_id.clone()
     } else {
@@ -571,9 +573,11 @@ async fn invite(
 }
 
 async fn resend_invite(
-    State((state, _)): State<(FrontDoorState, bool)>,
+    State((state, require_auth)): State<(FrontDoorState, bool)>,
+    headers: HeaderMap,
     Json(body): Json<RosterBody>,
 ) -> Result<Json<InvitationView>, ApiError> {
+    require_operator(&state, require_auth, &headers)?;
     let issued = state
         .store
         .resend_invitation(
@@ -588,9 +592,11 @@ async fn resend_invite(
 }
 
 async fn cancel_invite(
-    State((state, _)): State<(FrontDoorState, bool)>,
+    State((state, require_auth)): State<(FrontDoorState, bool)>,
+    headers: HeaderMap,
     Json(body): Json<RosterBody>,
 ) -> Result<StatusCode, ApiError> {
+    require_operator(&state, require_auth, &headers)?;
     state
         .store
         .cancel_invitation(&RosterPatient {
@@ -602,9 +608,11 @@ async fn cancel_invite(
 }
 
 async fn mark_delivery_failed(
-    State((state, _)): State<(FrontDoorState, bool)>,
+    State((state, require_auth)): State<(FrontDoorState, bool)>,
+    headers: HeaderMap,
     Json(body): Json<DeliveryFailedBody>,
 ) -> Result<StatusCode, ApiError> {
+    require_operator(&state, require_auth, &headers)?;
     state
         .store
         .mark_invitation_delivery_failed(
@@ -663,9 +671,11 @@ async fn accept_invite_share(
 }
 
 async fn roster_connection(
-    State((state, _)): State<(FrontDoorState, bool)>,
+    State((state, require_auth)): State<(FrontDoorState, bool)>,
+    headers: HeaderMap,
     Path((practice_id, patient_id)): Path<(String, String)>,
 ) -> Result<Json<RosterConnectionStatus>, ApiError> {
+    require_operator(&state, require_auth, &headers)?;
     Ok(Json(
         state
             .store
@@ -928,17 +938,27 @@ mod tests {
     }
 
     async fn invited_session(app: &Router) -> String {
-        let response = post(
-            app,
-            "/front-door/invitations",
-            json!({
-                "practice_id": "practice",
-                "patient_id": "patient-1",
-                "email": "luna@example.test",
-                "display_name": "Luna Park",
-            }),
-        )
-        .await;
+        let response = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/front-door/invitations")
+                    .header("content-type", "application/json")
+                    .header("authorization", "Bearer operator-secret-token-for-tests")
+                    .body(Body::from(
+                        json!({
+                            "practice_id": "practice",
+                            "patient_id": "patient-1",
+                            "email": "luna@example.test",
+                            "display_name": "Luna Park",
+                        })
+                        .to_string(),
+                    ))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
         assert_eq!(response.status(), StatusCode::OK);
         let body: serde_json::Value = serde_json::from_slice(
             &axum::body::to_bytes(response.into_body(), usize::MAX)
@@ -1098,6 +1118,9 @@ mod tests {
     #[tokio::test]
     async fn the_account_and_connections_reads_resolve_the_session_bearer() {
         let (state, _store) = state(MemoryFrontDoorStore::new());
+        let state = state.with_operator_auth(
+            OperatorAuth::from_secret("operator-secret-token-for-tests").unwrap(),
+        );
         let app = router_with(state, true);
         let session = invited_session(&app).await;
         let response = get(&app, "/front-door/account", &session).await;
@@ -1140,6 +1163,9 @@ mod tests {
     #[tokio::test]
     async fn sign_in_issues_and_verifies_one_token() {
         let (state, _store) = state(MemoryFrontDoorStore::new());
+        let state = state.with_operator_auth(
+            OperatorAuth::from_secret("operator-secret-token-for-tests").unwrap(),
+        );
         let app = router_with(state, true);
         let _session = invited_session(&app).await;
         let issued = post(
@@ -1187,6 +1213,9 @@ mod tests {
     #[tokio::test]
     async fn for_my_doctor_route_requires_active_connection_and_tracks_sent_status() {
         let (state, store) = state(MemoryFrontDoorStore::new());
+        let state = state.with_operator_auth(
+            OperatorAuth::from_secret("operator-secret-token-for-tests").unwrap(),
+        );
         let app = router_with(state, true);
         let session = invited_session(&app).await;
         let payload = json!({
@@ -1309,6 +1338,7 @@ mod tests {
                     .method("POST")
                     .uri("/front-door/invitations")
                     .header("content-type", "application/json")
+                    .header("authorization", "Bearer operator-secret-token-for-tests")
                     .body(Body::from(
                         json!({
                             "practice_id": "practice-a",
@@ -1650,5 +1680,92 @@ mod tests {
         )
         .await;
         assert_eq!(cancelled_inspect.status(), StatusCode::NOT_FOUND);
+    }
+
+    #[tokio::test]
+    async fn practice_operator_invitation_and_roster_routes_require_operator_bearer() {
+        let (state, _store) = state(MemoryFrontDoorStore::new());
+        let state = state.with_operator_auth(
+            OperatorAuth::from_secret("operator-secret-token-for-tests").unwrap(),
+        );
+        let app = router_with(state, true);
+
+        let unauth_routes = [
+            (
+                "POST",
+                "/front-door/invitations",
+                Some(json!({
+                    "practice_id": "practice-1",
+                    "patient_id": "pat-unauth",
+                    "email": "u@example.test",
+                    "display_name": "Unauth"
+                })),
+            ),
+            (
+                "POST",
+                "/front-door/invitations/resend",
+                Some(json!({"practice_id": "practice-1", "patient_id": "pat-unauth"})),
+            ),
+            (
+                "POST",
+                "/front-door/invitations/cancel",
+                Some(json!({"practice_id": "practice-1", "patient_id": "pat-unauth"})),
+            ),
+            (
+                "POST",
+                "/front-door/invitations/delivery-failed",
+                Some(
+                    json!({"practice_id": "practice-1", "patient_id": "pat-unauth", "detail": "smtp"}),
+                ),
+            ),
+            (
+                "POST",
+                "/front-door/invitations/accept",
+                Some(json!({
+                    "account_email": "u@example.test",
+                    "credential": {"kind": "short_code", "value": "ABCD-EFGH"},
+                    "birth_date": "1980-01-01"
+                })),
+            ),
+            ("GET", "/front-door/roster/practice-1/pat-unauth", None),
+        ];
+
+        for (method, uri, body) in unauth_routes {
+            for auth_header in [None, Some("Bearer wrong-operator-secret")] {
+                let mut builder = Request::builder().method(method).uri(uri);
+                if let Some(h) = auth_header {
+                    builder = builder.header("authorization", h);
+                }
+                let req = if let Some(json_body) = &body {
+                    builder
+                        .header("content-type", "application/json")
+                        .body(Body::from(json_body.to_string()))
+                        .unwrap()
+                } else {
+                    builder.body(Body::empty()).unwrap()
+                };
+                let resp = app.clone().oneshot(req).await.unwrap();
+                assert_eq!(
+                    resp.status(),
+                    StatusCode::UNAUTHORIZED,
+                    "expected 401 for {method} {uri} with auth={auth_header:?}"
+                );
+            }
+        }
+
+        // Valid operator bearer succeeds on invite + roster + delivery-failed + cancel.
+        let roster_ok = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("GET")
+                    .uri("/front-door/roster/practice-1/pat-unauth")
+                    .header("authorization", "Bearer operator-secret-token-for-tests")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(roster_ok.status(), StatusCode::OK);
     }
 }

@@ -18,6 +18,10 @@ fn invite_error_message(error: &HttpError, fallback: &str) -> String {
                 trimmed.to_owned()
             }
         }
+        HttpError::Status { status: 423, .. } => {
+            "This invitation is locked after repeated wrong birth-date answers. Cancel it first."
+                .to_owned()
+        }
         HttpError::Status { status: 422, .. } => "Enter a valid email address and name.".to_owned(),
         HttpError::Status { status: 403, .. } => {
             "This account is not permitted to send invitations.".to_owned()
