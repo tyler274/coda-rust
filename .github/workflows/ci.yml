@@ -258,15 +258,13 @@ jobs:
         run: node --test crates/workspace-tools/tests/doppler-watch.test.cjs
       - name: Test staging image handoff
         run: python3 -m unittest discover -s scripts -p 'test_staging_images.py' -v
-      # Preinstalled SDKs are unused here and leave no room to archive target
-      # beside itself (run 39309157954, ENOSPC during cache save). The build,
-      # proofs, and archive peaked at 16 GB plus a 9.6 GB archive reserve
-      # (run 39452707783), so 40 GiB free skips the two-minute delete.
+      # Preinstalled SDKs are unused here and can starve build/cache/Nix steps
+      # (especially workflow_dispatch browser qualification with Nix and wasm).
       - name: Free runner disk
         run: |
           df -h /
           avail_gib=$(( $(df -B1 --output=avail / | awk 'NR==2 { print $1 }') / 1073741824 ))
-          if [ "$avail_gib" -ge 40 ]; then
+          if [ "${GITHUB_EVENT_NAME:-}" != workflow_dispatch ] && [ "$avail_gib" -ge 40 ]; then
             echo "${avail_gib} GiB free; skipping SDK removal"
             exit 0
           fi
@@ -274,11 +272,14 @@ jobs:
             /usr/share/dotnet \
             /usr/local/lib/android \
             /opt/ghc \
-            /opt/hostedtoolcache \
             /usr/local/share/boost \
             /usr/share/swift \
             /usr/local/share/powershell \
             /usr/local/.ghcup
+          if [ -d /opt/hostedtoolcache ]; then
+            sudo find /opt/hostedtoolcache -mindepth 1 -maxdepth 1 \
+              ! -name node ! -name chromium ! -name chrome -exec rm -rf {} +
+          fi
           if [ "${GITHUB_EVENT_NAME:-}" != workflow_dispatch ]; then
             sudo rm -rf /usr/local/share/chromium
           fi
@@ -361,6 +362,15 @@ jobs:
         run: cargo test --workspace
       - name: Test the extension's worker against simulated Chrome
         run: node extension/sandbox/test_connector.mjs
+      - name: Prune spent build artifacts before Nix and requested browser tests
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          df -h /
+          rm -rf target/wasm32-unknown-unknown target/debug/incremental
+          if [ -d target/debug/deps ]; then
+            find target/debug/deps -maxdepth 1 -type f -perm -u+x ! -name '*.*' -delete
+          fi
+          df -h /
       - name: Install Nix for requested browser dependencies
         if: github.event_name == 'workflow_dispatch'
         uses: cachix/install-nix-action@v31
@@ -377,11 +387,30 @@ jobs:
           export PHYSICIAN_DATABASE_URL="$PHYSICIAN_TEST_DATABASE_URL"
           export PHYSICIAN_RUNTIME_TEST_DATABASE_URL="$PHYSICIAN_TEST_DATABASE_URL"
           nix develop .#agent --command bash -euo pipefail -c '
+            prune_browser_stage() {
+              rm -rf \
+                target/coda-*-wasm \
+                target/wasm32-unknown-unknown \
+                target/public-site-pages \
+                target/physician-web* \
+                target/mobile-web \
+                target/mobile-durable-web
+              if [ -d target/debug/deps ]; then
+                find target/debug/deps -maxdepth 1 -type f -perm -u+x ! -name "*.*" -delete
+              fi
+              df -h /
+            }
+            df -h /
             cargo test -p physician-sample --test site --test auth_browser --test sign_in_states --test shell_states --test reply_revision --test sign_in_model -- --ignored --test-threads=1
+            prune_browser_stage
             cargo test -p public-site --test site -- --ignored
-            cargo test -p mobile --test browser --test duet_journey --test mode -- --ignored --skip backend_process
+            prune_browser_stage
+            cargo test -p mobile --test browser --test duet_journey --test mode -- --ignored --skip backend_process --test-threads=1
+            prune_browser_stage
             cargo test -p ui-gallery --test sections -- --ignored
+            prune_browser_stage
             cargo test -p extension-popup --test popup -- --ignored
+            prune_browser_stage
           '
       - name: Upload public-site browser screenshots
         if: always() && github.event_name == 'workflow_dispatch'
