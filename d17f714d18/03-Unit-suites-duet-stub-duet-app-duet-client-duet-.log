@@ -1,0 +1,285 @@
+   Compiling duet-stub v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-stub)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.42s
+     Running unittests src/lib.rs (/tmp/coda-target-physician-ui/debug/deps/duet_stub-aef6096ffbd7fb88)
+
+running 4 tests
+test tests::fixtures_match_the_wire ... ok
+test tests::an_edited_doctor_page_stays_and_start_fresh_clears_it ... ok
+test tests::a_medication_and_a_note_stay_in_the_library ... ok
+test tests::external_records_cannot_be_corrected_or_deleted_while_patient_entries_can ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests src/main.rs (/tmp/coda-target-physician-ui/debug/deps/duet_stub-8a8cdd119bd1ace3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests duet_stub
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling duet-notify v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-notify)
+   Compiling duet-health v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-health)
+   Compiling duet-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-client)
+   Compiling duet-app v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-app)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 11.84s
+     Running unittests src/lib.rs (/tmp/coda-target-physician-ui/debug/deps/duet_app-a5878aac32cfc971)
+
+running 19 tests
+test account::tests::recovered_draft_is_empty_after_another_account_signs_in_and_expires ... ok
+test roots::tests::android_debug_api_reaches_the_emulator_host ... ok
+test roots::tests::notification_controls_name_their_permission ... ok
+test records::tests::undated_records_say_date_unknown ... ok
+test records::tests::removed_records_are_labelled_with_literal_values_and_zone ... ok
+test records::tests::omitted_interval_end_stays_absent ... ok
+test account::tests::only_a_parsed_https_return_url_lets_apple_sign_in_start ... ok
+test trends::tests::blood_pressure_keeps_both_numbers_and_sleep_uses_bars ... ok
+test trends::tests::multi_source_lab_trend_never_splices_across_labs ... ok
+test roots::tests::doctor_page_lists_the_saved_question ... ok
+test roots::tests::a_saved_doctor_page_excludes_cover_note_and_pdf_copy ... ok
+test duplicates::tests::finds_likely_duplicates_across_distinct_sources ... ok
+test records::tests::acquisition_interval_is_person_facing ... ok
+test roots::tests::external_and_patient_editability_distinguish_sources ... ok
+test roots::tests::filter_library_root_searches_across_fields_and_hides_resolved_duplicates ... ok
+test roots::tests::library_empty_and_sections ... ok
+test roots::tests::past_condition_is_hidden_when_covered_by_current_condition ... ok
+test account::tests::startup_refusal_blocks_recovery_across_restart_until_cleanup_retry_succeeds ... ok
+test account::tests::startup_refusal_erases_retained_work_but_temporary_failure_preserves_it ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests src/main.rs (/tmp/coda-target-physician-ui/debug/deps/duet_app-6d65f95226648897)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests duet_app
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling duet-health v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-health)
+   Compiling duet-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-client)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 10.85s
+     Running unittests src/lib.rs (/tmp/coda-target-physician-ui/debug/deps/duet_client-f723e8b8dabaa037)
+
+running 6 tests
+test session::tests::switch_and_signout_fence_delayed_responses_and_clear_drafts ... ok
+test refusal::tests::only_product_refusal_ends_the_current_session ... ok
+test tests::reads_the_library ... ok
+test refusal::tests::refreshed_credential_survives_refusal_of_original_credential ... ok
+test refusal::tests::health_generation_and_upload_refusals_invalidate_bound_session ... ok
+test tests::join_consent_and_premium_follow_the_front_door ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/background_acquire.rs (/tmp/coda-target-physician-ui/debug/deps/background_acquire-80248fe436007f56)
+
+running 3 tests
+test background_on_locked_storage_completes_as_a_typed_pause ... ok
+test the_registered_handler_is_what_the_native_observer_waits_for ... ok
+test background_completes_after_the_durable_write_without_uploading ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/doctor_controls.rs (/tmp/coda-target-physician-ui/debug/deps/doctor_controls-d6166c40822a819b)
+
+running 1 test
+test authenticated_contracts_exact_retry_and_redacted_errors ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/health_upload.rs (/tmp/coda-target-physician-ui/debug/deps/health_upload-e996d3a1ec5fb6c6)
+
+running 11 tests
+test http_outcomes_are_classified_without_guessing ... ok
+test pending_secure_cleanup_refuses_queue_access ... ok
+test apple_health::a_refused_session_never_opens_the_sheet ... ok
+test apple_health::a_late_permission_answer_cannot_connect_the_next_patient ... ok
+test locked_protected_storage_pauses_then_resumes ... ok
+test apple_health::a_withdrawal_during_the_sheet_cannot_authorize_a_later_generation ... ok
+test apple_health::refresh_imports_through_the_connected_queue ... ok
+test duet_client_transport_posts_the_canonical_batch ... ok
+test sign_out_and_account_switch_pause_and_isolate_the_queue ... ok
+test same_account_resumes_after_restart_with_the_same_operation_ids ... ok
+test a_retained_rejection_reports_only_after_the_queue_drains ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/portals_and_health_connect.rs (/tmp/coda-target-physician-ui/debug/deps/portals_and_health_connect-17e7b05d787b680c)
+
+running 1 test
+test client_handles_portals_vendor_disabled_not_now_and_phone_disconnect_sync ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/retention.rs (/tmp/coda-target-physician-ui/debug/deps/retention-0707252a4a6f8123)
+
+running 15 tests
+test readback_requires_exact_content_order_and_generation ... ok
+test missing_native_host_never_falls_back_to_plaintext ... ok
+test refusal_invalidates_views_without_deleting_protected_patient_work ... ok
+test locked_cleanup_invalidates_ui_but_preserves_marker_for_retry ... ok
+test switch_erases_previous_owner_and_fences_late_response_even_after_switch_back ... ok
+test damaged_draft_survives_read_and_write_until_explicit_discard ... ok
+test offline_recovery_never_discards_or_approves_a_draft ... ok
+test restart_recovers_exact_uncertain_edit_without_network ... ok
+test rotation_preserves_fences_and_uncertain_bytes_cannot_be_replaced ... ok
+test every_key_this_account_writes_is_registered ... ok
+test conflict_release_requires_exact_definitive_refusal_and_preserves_draft ... ok
+test clear_intent_survives_restart_cannot_rebase_and_is_erased_on_switch ... ok
+test sign_out_warning_names_the_draft_the_save_and_the_health_queue ... ok
+test boxed_recovery_preserves_v1_storage_bytes_and_subject_fence ... ok
+test sign_out_switch_and_new_incarnation_remove_queued_health ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests duet_client
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling tokio v1.54.1
+   Compiling unsafe-libyaml v0.2.11
+   Compiling roxmltree v0.21.2
+   Compiling duet-health v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-health)
+   Compiling serde_yaml v0.9.34+deprecated
+   Compiling agent-skills v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/agent-skills)
+   Compiling hyper v1.12.0
+   Compiling tower v0.5.3
+   Compiling tokio-stream v0.1.19
+   Compiling tokio-rustls v0.26.6
+   Compiling tokio-util v0.7.20
+   Compiling sqlx-core v0.9.0
+   Compiling tower-http v0.6.11
+   Compiling hyper-util v0.1.21
+   Compiling hyper-rustls v0.27.10
+   Compiling reqwest v0.13.5
+   Compiling axum v0.8.9
+   Compiling reqwest v0.12.28
+   Compiling sqlx-postgres v0.9.0
+   Compiling opentelemetry-http v0.33.1
+   Compiling opentelemetry-otlp v0.33.1
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/http)
+   Compiling duet_wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-wire)
+   Compiling harness v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/harness)
+   Compiling telemetry v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/telemetry)
+   Compiling sqlx v0.9.0
+   Compiling sea-query-sqlx v0.9.1
+   Compiling sea-schema v0.18.1
+   Compiling sea-orm v2.0.4
+   Compiling duet-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-client)
+   Compiling sea-orm-migration v2.0.4
+   Compiling front-door v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/front-door)
+   Compiling clinical-library v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/clinical-library)
+   Compiling duet-api v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-api)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 37.20s
+     Running unittests src/lib.rs (/tmp/coda-target-physician-ui/debug/deps/duet_api-16199a945f0e50d4)
+
+running 49 tests
+test assistant_harness::tests::assistant_eligibility_enforces_terms_consent_and_operator_switch ... ok
+test hosting::tests::local_runs_start_without_any_profile ... ok
+test identity::local_tests::a_short_secret_is_refused ... ok
+test background::tests::every_api_error_has_a_class ... ok
+test hosting::tests::a_false_cloud_marker_is_still_hosted ... ok
+test hosting::tests::production_and_other_profiles_refuse_even_when_complete ... ok
+test assistant_harness::tests::parked_routes_policy_is_quarantined_by_default ... ok
+test identity::refusal_tests::provider_outage_and_configuration_errors_are_not_session_refusals ... ok
+test hosting::tests::local_stand_ins_refuse_hosted_even_with_a_complete_profile ... ok
+test evidence_routes::tests::undated_records_have_no_date_and_keep_literal_values ... ok
+test assistant_harness::tests::recipe_embeds_standing_disclosure_and_clinical_library_tools_only ... ok
+test portals::tests::update_failure_day_formats_plain_copy ... ok
+test hosting::tests::staging_preview_is_the_only_hosted_profile ... ok
+test evidence_routes::tests::projected_role_and_offset_are_literal ... ok
+test privacy::tests::restriction_enum_matches_wire_snake_case ... ok
+test portals::tests::portal_secrets_are_redacted_in_debug_output ... ok
+test push::tests::device_id_validation_rejects_blank_or_control_characters ... ok
+test portals::tests::fhir_pagination_url_enforces_exact_https_origin ... ok
+test push::tests::push_secrets_are_redacted_in_debug_output ... ok
+test portals::tests::vendor_kill_switch_filters_search_and_preserves_enabled_vendors ... ok
+test tests::the_schema_readiness_check_names_the_required_migration ... ok
+test background::tests::failure_event_names_the_class_without_error_text ... ok
+test evidence_routes::tests::acquisition_interval_keeps_start_and_end_and_sorts_on_the_start ... ok
+test workspace::tests::literal_entry_excludes_lab_printed_reference_ranges_and_keeps_values ... ok
+test privacy_archive::tests::production_trust_and_object_namespace_cannot_be_configured_as_urls ... ok
+test push::tests::http_push_transport_enforces_https_except_loopback ... ok
+test assistant_harness::tests::http_clinical_library_reader_requires_https_except_loopback ... ok
+test privacy::tests::receipt_follow_up_pause ... ok
+test privacy::tests::receipt_follow_up_cancel ... ok
+test privacy::tests::receipt_device_withdraw ... ok
+test privacy::tests::receipt_doctor_note_delete ... ok
+test privacy::tests::receipt_account_delete ... ok
+test privacy::tests::receipt_proactive_withdraw ... ok
+test privacy::tests::receipt_evidence_delete ... ok
+test privacy::tests::receipt_sessions_revoke ... ok
+test privacy::tests::receipt_doctor_item_delete ... ok
+test privacy::tests::receipt_luna_withdraw ... ok
+test privacy::tests::receipt_publication_revoke ... ok
+test privacy::tests::receipt_records_withdraw ... ok
+test hosting::tests::liveness_says_nothing_about_readiness ... ok
+test privacy::tests::receipt_doctor_page_delete ... ok
+test identity::local_tests::verifies_a_signed_local_token ... ok
+test identity::local_tests::refuses_forged_expired_foreign_and_future_tokens ... ok
+test site::tests::serves_only_named_assets_with_wasm_mime ... ok
+test privacy_archive::tests::metadata_failures_never_forward_credentials_or_follow_redirects ... ok
+test privacy_archive::tests::transport_timeout_and_cancellation_release_capacity ... ok
+test privacy_archive::tests::chunked_readback_cannot_bypass_body_limit ... ok
+test privacy_archive::tests::gcs_transport_and_postgres_recovery_reconcile_same_receipt_after_restart ... ok
+test privacy_archive::tests::conditional_creation_ambiguous_readback_corruption_and_credentials ... ok
+
+test result: ok. 49 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.09s
+
+   Compiling tokio v1.54.1
+   Compiling serde_yaml v0.9.34+deprecated
+   Compiling physician-wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/physician-wire)
+   Compiling duet-health v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-health)
+   Compiling agent-skills v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/agent-skills)
+   Compiling hyper v1.12.0
+   Compiling tower v0.5.3
+   Compiling tokio-rustls v0.26.6
+   Compiling tokio-util v0.7.20
+   Compiling tokio-stream v0.1.19
+   Compiling sqlx-core v0.9.0
+   Compiling tower-http v0.6.11
+   Compiling hyper-util v0.1.21
+   Compiling hyper-rustls v0.27.10
+   Compiling axum v0.8.9
+   Compiling reqwest v0.13.5
+   Compiling reqwest v0.12.28
+   Compiling sqlx-postgres v0.9.0
+   Compiling opentelemetry-http v0.33.1
+   Compiling duet_wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-wire)
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/http)
+   Compiling harness v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/harness)
+   Compiling opentelemetry-otlp v0.33.1
+   Compiling physician-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/physician-client)
+   Compiling physician-app v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/physician-app)
+   Compiling telemetry v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/telemetry)
+   Compiling sqlx v0.9.0
+   Compiling sea-query-sqlx v0.9.1
+   Compiling sea-schema v0.18.1
+   Compiling sea-orm v2.0.4
+   Compiling duet-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-client)
+   Compiling duet-stub v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-stub)
+   Compiling duet-app v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-app)
+   Compiling sea-orm-migration v2.0.4
+   Compiling clinical-library v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/clinical-library)
+   Compiling front-door v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/front-door)
+   Compiling duet-api v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-api)
+   Compiling mobile v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/mobile)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 33.14s
+     Running unittests src/lib.rs (/tmp/coda-target-physician-ui/debug/deps/mobile-8ce06d9ab3a31992)
+
+running 2 tests
+test tests::api_query_override_is_the_loopback_url_that_would_be_requested ... ok
+test tests::a_mode_file_round_trips_and_forgets ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

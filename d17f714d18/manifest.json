@@ -1,0 +1,124 @@
+{
+  "branch": "feat-duet-you-search-trends-and-record-integrity",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC3",
+      "label": "before fix: pastCondition shown alongside covering currentCondition",
+      "kind": "run",
+      "revision": "f591cb71881d01f4f52a7da7d6fe5a4dbd0483b7",
+      "dirty": true,
+      "recorded": "2026-11-20T02:18:29+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "duet-app",
+        "--lib",
+        "past_condition_is_hidden_when_covered_by_current_condition"
+      ],
+      "expect": "pastCondition must be suppressed",
+      "expect_fail": true,
+      "files": [
+        "01-before-fix-pastCondition-shown-alongside-coverin.log"
+      ],
+      "seconds": 28.9,
+      "exit": 101,
+      "expect_matched": true,
+      "ok": true,
+      "kept": {
+        "revision": "d17f714d18a1f04747179435b9660151da8303a4",
+        "reason": "deliberately before the fix: pastCondition shown alongside covering currentCondition"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "AC5",
+      "label": "Workspace gates: fmt, sql, book links, ci_scenarios, deny, host+wasm clippy, boundaries",
+      "kind": "run",
+      "revision": "d17f714d18a1f04747179435b9660151da8303a4",
+      "dirty": false,
+      "recorded": "2026-11-20T04:41:28+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo fmt --all --check\npython3 scripts/check-sql.py\nbash scripts/check-book-links.sh\npython3 -m unittest scripts/test_ci_scenarios.py\ncargo deny check\ncargo clippy --locked --workspace --all-targets -- -D warnings\ncargo clippy --locked -p physician-app -p duet-app -p mobile -p ui-gallery -p extension-popup --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web,extension-popup/web -- -D warnings\ncargo test --locked -p boundaries\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-Workspace-gates-fmt-sql-book-links-ci_scenarios-.log"
+      ],
+      "seconds": 176.9,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC1",
+      "label": "Unit suites: duet-stub, duet-app, duet-client, duet-api --lib, mobile --lib",
+      "kind": "run",
+      "revision": "d17f714d18a1f04747179435b9660151da8303a4",
+      "dirty": false,
+      "recorded": "2026-11-20T04:44:25+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo test --locked -p duet-stub\ncargo test --locked -p duet-app\ncargo test --locked -p duet-client\ncargo test --locked -p duet-api --lib\ncargo test --locked -p mobile --lib\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-Unit-suites-duet-stub-duet-app-duet-client-duet-.log"
+      ],
+      "seconds": 115.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC2",
+      "label": "duet-api Postgres suites and mobile durable_d2 (D2.6 external integrity)",
+      "kind": "run",
+      "revision": "d17f714d18a1f04747179435b9660151da8303a4",
+      "dirty": false,
+      "recorded": "2026-11-20T04:46:20+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\nPGDIR=\"$(mktemp -d /tmp/coda-pg-cod65-pg.XXXXXX)\"\ncleanup() {\n  pg_ctl -D \"$PGDIR/data\" -m immediate stop >/dev/null 2>&1 || true\n  rm -rf \"$PGDIR\"\n}\ntrap cleanup EXIT\nPORT=$(python3 -c \"import socket; s=socket.socket(); s.bind((\\\"127.0.0.1\\\", 0)); print(s.getsockname()[1]); s.close()\")\ninitdb -D \"$PGDIR/data\" -U postgres --auth=trust >/dev/null\npg_ctl -D \"$PGDIR/data\" -o \"-p $PORT -k $PGDIR -h 127.0.0.1\" -l \"$PGDIR/pg.log\" start >/dev/null\ncreatedb -h 127.0.0.1 -p \"$PORT\" -U postgres duet_identity\ncreatedb -h 127.0.0.1 -p \"$PORT\" -U postgres front_door_test\nexport DUET_TEST_DATABASE_URL=\"postgres://postgres@127.0.0.1:$PORT/postgres\"\nexport DUET_IDENTITY_TEST_DATABASE_URL=\"postgres://postgres@127.0.0.1:$PORT/duet_identity\"\nexport FRONT_DOOR_TEST_DATABASE_URL=\"postgres://postgres@127.0.0.1:$PORT/front_door_test\"\nexport CODA_REQUIRE_POSTGRES_TESTS=1\ncargo test --locked -p duet-api --lib --test database_foundation --test durable_owners --test evidence_cohort --test fresh_producers --test health_context_producer --test hosting --test phone_outbox --test public_budget --test sql_layout -- --test-threads=1\ncargo test --locked -p mobile --test duet_journey -- --test-threads=1\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-duet-api-Postgres-suites-and-mobile-durable_d2-D.log"
+      ],
+      "seconds": 80.0,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "AC3",
+      "label": "Chromium + disposable Postgres mobile browser, duet_journey, and mode qualification",
+      "kind": "run",
+      "revision": "d17f714d18a1f04747179435b9660151da8303a4",
+      "dirty": false,
+      "recorded": "2026-11-20T04:47:41+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\nPGDIR=\"$(mktemp -d /tmp/coda-pg-cod65-br.XXXXXX)\"\ncleanup() {\n  pg_ctl -D \"$PGDIR/data\" -m immediate stop >/dev/null 2>&1 || true\n  rm -rf \"$PGDIR\"\n}\ntrap cleanup EXIT\nPORT=$(python3 -c \"import socket; s=socket.socket(); s.bind((\\\"127.0.0.1\\\", 0)); print(s.getsockname()[1]); s.close()\")\ninitdb -D \"$PGDIR/data\" -U postgres --auth=trust >/dev/null\npg_ctl -D \"$PGDIR/data\" -o \"-p $PORT -k $PGDIR -h 127.0.0.1\" -l \"$PGDIR/pg.log\" start >/dev/null\nexport DUET_TEST_DATABASE_URL=\"postgres://postgres@127.0.0.1:$PORT/postgres\"\ncargo test --locked -p mobile --test browser --test duet_journey --test mode -- --ignored --skip backend_process --test-threads=1\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-Chromium-disposable-Postgres-mobile-browser-duet.log"
+      ],
+      "seconds": 153.4,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
