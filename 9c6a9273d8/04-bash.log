@@ -1,0 +1,304 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.61s
+     Running unittests src/lib.rs (/tmp/coda-target-concerns/debug/deps/physician_sample-eb706d506fd75f0f)
+
+running 110 tests
+test auth::tests::workspace_resolution_names_only_patient_reads ... ok
+test auth::tests::command_resolution_names_only_bodied_workspaces ... ok
+test auth::tests::a_disallowed_event_split_across_chunks_is_not_forwarded ... ok
+test chart_load::tests::enrollment_error_preserves_sea_orm_source_and_describes_auth_store_failures ... ok
+test dictation::tests::hosted_mode_forbids_fixture_and_custom_endpoint ... ok
+test briefings::tests::generic_part_labels_are_omitted_and_structured_json_renders_key_value_lines ... ok
+test dictation::tests::hosted_mode_uses_openai_when_configured_and_fails_closed_otherwise ... ok
+test auth::tests::event_guard_forwards_resync_frames ... ok
+test follow_ups::tests::civil_date_and_rfc3339_parse_roundtrip ... ok
+test gmail::tests::a_misconfigured_relay_never_falls_back_to_returning_tokens ... ok
+test gmail::tests::absent_sender_is_proof_mode ... ok
+test gmail::tests::a_sender_address_selects_hosted_mode ... ok
+test hosting::tests::a_false_cloud_marker_is_still_hosted ... ok
+test hosting::tests::a_pool_timeout_does_not_suggest_the_migration_job ... ok
+test gmail::tests::relay_needs_no_personal_mailbox_credentials ... ok
+test hosting::tests::clinical_library_config_enforces_https_in_hosted_runs_and_loopback_locally ... ok
+test dictation::tests::local_test_and_unavailable_never_fabricate_clinical_text_for_binary_audio ... ok
+test auth::tests::active_staging_admins_see_the_sample_patients ... ok
+test hosting::tests::hosted_local_stack_refuses_even_with_complete_profile ... ok
+test hosting::tests::local_runs_start_without_any_profile ... ok
+test hosting::tests::only_a_configured_rehearsal_practice_fails_and_no_message_markers_exist ... ok
+test hosting::tests::origin_follows_the_practice_and_scenarios_need_a_rehearsal_practice ... ok
+test hosting::tests::production_and_other_profiles_refuse_even_when_complete ... ok
+test hosting::tests::readiness_fails_closed_without_live_stores ... ok
+test dictation::tests::openai_backend_posts_multipart_audio_and_fails_closed_on_upstream_failure ... ok
+test hosting::tests::rehearsal_failure_policy_parses_and_enforces_staging_only_harness_control ... ok
+test hosting::tests::service_account_email_normalizes_and_rejects_non_service_principals ... ok
+test hosting::tests::simulation_practices_parse_only_under_the_preview_profile ... ok
+test hosting::tests::staging_accounts_parse_under_the_preview_profile ... ok
+test hosting::tests::staging_accounts_refuse_outside_the_preview_profile_and_bad_entries ... ok
+test auth::tests::sse_events_filter_to_panel_and_terminate_when_session_or_panel_access_is_revoked ... ok
+test hosting::tests::staging_physician_ids_are_stable_and_distinct_per_email ... ok
+test hosting::tests::synthetic_charts_load_only_under_the_preview_profile ... ok
+test hosting::tests::staging_preview_is_the_only_hosted_profile ... ok
+test hosting::tests::the_rehearsal_sign_in_needs_both_settings_and_the_preview_profile ... ok
+test live_tests::a_due_beat_goes_out_before_changes_that_are_ready ... ok
+test live_tests::chat_titles_are_one_line_and_cut_at_a_word ... ok
+test live_tests::the_change_stream_keeps_alive_on_a_fixed_beat_while_changes_pass_and_ends_with_them ... ok
+test hosting::tests::clinical_library_down_or_refused_never_masquerades_as_nothing_found ... ok
+test patients::tests::age_turns_on_the_birthday ... ok
+test patients::tests::clinic_demographics_exposes_only_name_dob_and_mrn ... ok
+test patients::tests::directory_error_preserves_source_status_cause ... ok
+test live::tests::snapshot_body_clears_steps_and_syncs_redacted_text_for_withheld_work ... ok
+test hosting::tests::clinical_library_search_and_exact_read_authenticate_and_preserve_passage_metadata ... ok
+test patients::tests::connected_sources_projects_pull_less_linked_standings_and_skips_not_yet_read ... ok
+test patients::tests::search_orders_exact_identifier_before_prefix_before_substring ... ok
+test auth::tests::health_and_the_signed_out_page_stay_open ... ok
+test patients::tests::source_delivery_never_reports_usable_without_saved_pull_and_keeps_last_good_time ... ok
+test rehearsal::tests::rehearsal_workspaces_never_collide_with_the_staging_panel ... ok
+test hosting::tests::clinical_library_enforces_excerpt_rights_unit_id_and_sha256_integrity ... ok
+test auth::tests::whoami_names_the_session_physician ... ok
+test auth::tests::an_unknown_email_never_confirms_an_account ... ok
+test auth::tests::active_practice_member_can_invite_non_admin_colleague_and_sign_in ... ok
+test reviews::tests::project_trigger_and_tool_steps_use_physician_language_and_candidate_ids ... ok
+test auth::tests::an_unknown_or_expired_token_never_serializes ... ok
+test auth::tests::a_held_link_without_access_says_so_and_a_guessed_one_does_not ... ok
+test reviews::tests::review_version_advances_across_every_state_transition_even_at_same_timestamp ... ok
+test patients::tests::empty_roster_query_pages_twenty_five_by_name_and_excludes_other_practices ... ok
+test schedule::tests::from_env_prefers_explicit_calendar_and_ignores_chart_only_banks ... ok
+test auth::tests::reads_without_a_session_never_serialize ... ok
+test auth::tests::a_command_into_a_denied_workspace_returns_404 ... ok
+test auth::tests::an_admin_invitation_redeems_once_at_the_front_door ... ok
+test auth::tests::a_patient_exists_once_registered_to_the_practice ... ok
+test synthetic_chart::tests::every_built_chart_reads_in_full ... ignored, requires `cargo run -p patient-bank -- build`
+test synthetic_chart::tests::reconnect_receipts_and_modes_persist_in_postgres_across_separate_bank_directories ... ignored, requires explicit local Postgres
+test synthetic_reply::tests::the_switch_names_the_patient ... ok
+test schedule::tests::multiple_patient_participants_degrade_to_unmatched_appointment_and_issue ... ok
+test synthetic_reply::tests::the_first_draft_is_fixed_non_empty_wording ... ok
+test tests::chat_mode_follows_the_switch_and_falls_back_to_the_topic ... ok
+test schedule::tests::synthetic_bank_calendar_parses_appointments_and_names_corrupt_lines ... ok
+test auth::tests::hosted_invite_mails_the_redeem_link_and_omits_the_token ... ok
+test auth::tests::any_active_practice_member_can_invite_and_a_conflict_answers_409 ... ok
+test auth::tests::resend_cancel_and_lock_enforce_practice_scope_and_keep_invited_state ... ok
+test auth::tests::a_refused_read_says_whether_the_session_ended_or_access_was_removed ... ok
+test synthetic_chart::tests::an_unread_attachment_keeps_its_parent_and_chart_siblings ... ok
+test auth::tests::a_sign_in_token_verifies_once ... ok
+test synthetic_chart::tests::a_chart_reads_as_coda_records_with_its_exact_bytes ... ok
+test auth::tests::a_cross_practice_or_unknown_patient_never_gets_invited ... ok
+test auth::tests::hosted_colleague_invite_mails_link_and_omits_token ... ok
+test auth::tests::hosted_sign_in_mails_the_link_and_omits_the_token ... ok
+test tests::hosted_site_requires_durable_chat ... ok
+test tests::required_sign_in_serves_only_the_practice ... ok
+test synthetic_chart::tests::controllable_modes_simulate_lapsed_access_partial_outage_and_reconnect ... ok
+test timestamp::tests::rfc3339_formats_the_unix_epoch ... ok
+test tests::synthetic_charts_fail_closed_when_patients_folder_is_missing ... ok
+test live_tests::a_signed_in_reader_hears_the_beat_while_only_changes_it_may_not_see_pass ... ok
+test tests::proxy_preserves_long_queries_under_concurrent_http_parsing ... ok
+test auth::tests::same_clinic_physicians_read_basic_demographics_while_clinical_routes_require_panel_membership ... ok
+test auth::tests::unchecked_patient_marks_cross_patient_lists_incomplete_and_single_patient_503 ... ok
+test auth::tests::the_staging_physician_reads_their_granted_workspaces ... ok
+test auth::tests::clinic_admin_or_secretary_assigns_patient_to_physician_panel_over_http ... ok
+test auth::tests::a_physician_cannot_change_review_cadence ... ok
+test auth::tests::clinical_now_follows_the_clock_each_practice_was_created_with ... ok
+test auth::tests::projection_lists_filter_by_practice_and_panel_without_staging_practice_assumptions ... ok
+test tests::commands_are_rejected_without_a_model ... ok
+test tests::a_registered_patient_no_source_holds_is_not_found ... ok
+test tests::an_unset_upstream_serves_the_site_and_a_set_one_forwards ... ok
+test tests::durable_chat_requires_the_physician_database ... ok
+test tests::fixture_snapshot_and_past_work_refuse_off_panel_clinic_demographic_patients ... ok
+test tests::front_door_outage_returns_503_on_workspace_and_roster ... ok
+test auth::tests::a_failed_or_missing_gmail_send_does_not_return_the_token ... ok
+test tests::connected_care_patient_link ... ok
+test rehearsal::tests::without_the_settings_there_is_no_rehearsal_route ... ok
+test rehearsal::tests::the_rehearsal_email_on_another_account_signs_nobody_in ... ok
+test rehearsal::tests::the_rehearsal_session_ends_on_time_however_much_it_is_used ... ok
+test rehearsal::tests::only_a_valid_assertion_for_this_audience_is_considered ... ok
+test rehearsal::tests::the_rehearsal_session_reaches_only_the_rehearsal_panel ... ok
+test rehearsal::tests::only_the_configured_service_account_may_rehearse ... ok
+test tests::serves_patients_and_no_work_it_does_not_hold ... ok
+test tests::health_route_reports_clinical_library_freshness_standing ... ok
+
+test result: ok. 108 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.66s
+
+     Running tests/front_door_postgres.rs (/tmp/coda-target-concerns/debug/deps/front_door_postgres-fe41d105638772f6)
+
+running 2 tests
+test an_existing_account_signs_in_again_without_redeeming ... ok
+test the_practice_invite_redeems_once_on_postgres ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.85s
+     Running unittests src/lib.rs (/tmp/coda-target-concerns/debug/deps/physician_app-fb6a29366b75d531)
+
+running 112 tests
+test composer::tests::a_validated_conflict_pauses_autosave_until_the_physician_chooses ... ok
+test composer::tests::recovery_never_replaces_typing_after_reload ... ok
+test composer::tests::a_failure_is_not_a_conflict_and_an_edit_makes_the_save_eligible_again ... ok
+test composer::tests::a_lost_answer_reconciles_when_the_server_holds_this_pages_text ... ok
+test composer::tests::a_newer_notice_outlives_the_save_it_replaced ... ok
+test composer::tests::recovery_restores_unsent_text_and_drops_once_saved ... ok
+test composer::tests::an_answer_for_an_attempt_that_is_not_running_changes_nothing ... ok
+test composer::tests::leaving_the_patient_page_clears_the_mark ... ok
+test composer::tests::a_save_that_ends_after_navigation_marks_neither_surface ... ok
+test composer::tests::another_patients_chat_of_the_same_id_is_its_own_draft ... ok
+test composer::tests::a_stale_recovered_baseline_reconciles_or_asks ... ok
+test composer::tests::a_read_older_than_this_pages_own_save_or_during_it_changes_nothing ... ok
+test composer::tests::edits_during_a_save_keep_the_typing_and_need_a_trailing_save ... ok
+test composer::tests::a_never_saved_draft_saves_over_revision_zero ... ok
+test composer::tests::nothing_saves_when_the_text_is_already_the_saved_text ... ok
+test composer::tests::a_send_that_was_never_autosaved_needs_no_durable_clear ... ok
+test citations_panel::tests::flagged_statuses_classify_before_settled_ones ... ok
+test composer::tests::another_tabs_newer_revision_is_never_cleared_automatically ... ok
+test composer::tests::edited_text_that_no_longer_starts_with_the_message_is_kept_whole ... ok
+test composer::tests::a_pending_clear_survives_reload_until_confirmed ... ok
+test composer::tests::before_a_chat_opens_the_draft_is_saved_under_the_draft_chat_id ... ok
+test composer::tests::a_refused_send_keeps_the_text_as_an_ordinary_draft ... ok
+test composer::tests::a_clear_waits_behind_the_revision_zero_save ... ok
+test composer::tests::an_accepted_send_clears_only_the_submitted_text ... ok
+test citations_panel::tests::remove_panel_access_turns_open_citation_unavailable ... ok
+test composer::tests::recovered_send_never_clears_another_writers_newer_draft ... ok
+test composer::tests::acceptance_after_navigation_clears_the_sending_chat_only ... ok
+test composer::tests::a_pending_send_survives_reload_until_answered ... ok
+test citations_panel::tests::locate_cited_at_highlights_matched_passage_and_flags_missing_passage ... ok
+test citations_panel::tests::native_source_and_fallback_summary_provenance_stay_distinct ... ok
+test command_answer_tests::a_command_is_taken_refused_with_its_reason_or_unconfirmed ... ok
+test composer::tests::reload_replays_unanswered_first_save_before_clearing_sent_text ... ok
+test composer::tests::replayed_first_save_preserves_another_writers_text ... ok
+test composer::tests::text_typed_before_the_saved_draft_arrives_is_kept_and_a_newer_draft_conflicts ... ok
+test composer::tests::use_newer_text_discards_the_local_edit_and_takes_the_baseline ... ok
+test draft_notice_tests::routine_draft_saves_are_silent_but_failures_remain_visible ... ok
+test composer::tests::the_saved_draft_is_shown_and_saved_over_its_own_revision ... ok
+test composer::tests::retry_names_exactly_the_conflicting_revision_and_conflicts_again_if_it_moved ... ok
+test local_draft::tests::an_unknown_identity_has_no_scope ... ok
+test panels::tests::panel_keys_are_recognised_and_others_are_not ... ok
+test conversation_line_tests::new_conversation_ids_are_distinct_chat_ids ... ok
+test feedback::tests::the_snapshot_shows_until_the_page_saves ... ok
+test conversation_line_tests::update_answer_command_uses_update_prompt_without_changing_draft_inputs ... ok
+test conversation_line_tests::clinical_dialogs_close_when_workspace_leaves_panel_or_disappears ... ok
+test feedback::tests::unavailable_feedback_disables_thumbs_the_page_saved_nothing_on ... ok
+test feedback::tests::a_failed_save_says_so_shows_the_saved_rating_and_retries ... ok
+test feedback::tests::a_thumb_after_a_failed_details_save_sends_those_details ... ok
+test feedback::tests::details_save_with_the_shown_rating_and_a_landed_save_closes_its_dialog ... ok
+test feedback::tests::one_save_at_a_time_and_the_choice_shows_while_it_saves ... ok
+test feedback::tests::a_read_the_page_saw_still_shows_when_a_later_read_fails ... ok
+test feedback::tests::a_failed_read_never_falls_back_below_a_newer_revision_read ... ok
+test feedback::tests::a_save_outlives_a_chat_switch_and_a_failure_keeps_its_draft ... ok
+test feedback::tests::an_older_revision_never_replaces_a_newer_one ... ok
+test feedback::tests::a_rating_change_keeps_the_saved_details ... ok
+test patient_reviews_panel::tests::each_review_state_maps_to_its_expected_control_and_working_row_style ... ok
+test patient_reviews_panel::tests::done_control_confirmation_retires_once_review_version_advances ... ok
+test patient_reviews_panel::tests::working_review_poll_backoff_stays_active_across_ten_minute_run_window ... ok
+test dictation::tests::transitions_cleanly_through_listening_levels_and_transcribing ... ok
+test conversation_line_tests::a_finished_answer_carries_its_response_id_and_feedback_as_read ... ok
+test conversation_line_tests::try_again_is_one_keyed_resume_of_the_named_run ... ok
+test conversation_line_tests::each_stop_press_is_its_own_command_for_the_named_work ... ok
+test patient_reviews_panel::tests::selection_keeps_requested_review_across_reload_or_falls_back_to_newest ... ok
+test conversation_line_tests::each_answer_state_draws_its_line_and_action ... ok
+test local_draft::tests::ids_containing_the_separator_stay_unambiguous ... ok
+test local_draft::tests::a_full_store_reports_failure_and_keeps_the_older_copy ... ok
+test local_draft::tests::a_record_comes_back_only_for_its_own_backend_practice_physician_and_target ... ok
+test local_draft::tests::a_new_document_claims_the_previous_documents_record ... ok
+test local_draft::tests::removed_access_and_sign_out_forget_records ... ok
+test conversation_line_tests::queue_and_delivery_commands_carry_expected_payloads ... ok
+test schedule_briefing::tests::ended_cancelled_and_moved_briefings_show_historical_standing_notices ... ok
+test shell::tests::an_answer_counts_only_for_the_question_it_answered ... ok
+test local_command::tests::persisted_commands_are_isolated_per_workspace_and_chat ... ok
+test schedule_briefing::tests::browser_zone_clock_formats_across_iana_zones_and_dst ... ok
+test shell::tests::citation_preview_deduplicates_multiline_and_truncated_quotes_against_body ... ok
+test sign_in_followup_tests::a_hosted_response_is_not_token_issued ... ok
+test source_setup::tests::connected_imported_and_up_to_date_map_to_three_distinct_badges ... ok
+test sign_in_followup_tests::another_message_stays_a_failure ... ok
+test sign_in_followup_tests::proof_delivery_provides_the_token_for_redemption ... ok
+test source_setup::tests::format_instant_preserves_calendar_date_across_multi_day_and_practice_zones ... ok
+test sign_in_followup_tests::a_hosted_link_waits_for_email ... ok
+test stream_retry_tests::a_stream_is_silent_30_seconds_after_its_last_bytes ... ok
+test stream_retry_tests::cloud_run_rotations_never_build_up_the_wait ... ok
+test source_setup::tests::today_read_failure_never_asks_to_reconnect_while_access_lost_does ... ok
+test shell::tests::initial_understanding_run_renders_building_and_failed_headings ... ok
+test shell::tests::roster_view_tracks_pagination_and_never_reads_failed_page_as_complete ... ok
+test schedule_briefing::tests::actively_retrying_preparation_with_prior_failed_attempt_stays_preparing ... ok
+test shell::tests::a_usable_day_with_no_visits_still_shows_the_schedule ... ok
+test schedule_briefing::tests::refresh_failed_freshness_formats_as_of_in_browser_zone ... ok
+test schedule_briefing::tests::schedule_rows_drop_ended_visits_keep_cancelled_and_mark_first_active_as_next ... ok
+test shell::tests::active_now_concern_persists_until_opened_once ... ok
+test shell::tests::source_lines_require_saved_successful_read_before_reporting_usable ... ok
+test today_updates::tests::item_open_failure_uses_concise_retryable_copy ... ok
+test stream_retry_tests::the_sixth_and_later_failures_still_retry_at_the_longest_delay ... ok
+test shell::tests::today_covers_loading_empty_error_stale_and_loaded ... ok
+test tabs::tests::malformed_news_reads_as_nothing ... ok
+test stream_retry_tests::immediate_eof_and_failures_back_off_to_the_longest_delay ... ok
+test stream_retry_tests::sustained_stream_starts_the_backoff_over ... ok
+test shell::tests::a_row_says_when_coda_marked_it_now ... ok
+test shell::tests::a_panel_change_is_for_the_physician_chosen_while_the_practice_lists_them ... ok
+test shell::tests::a_panel_change_is_never_for_a_physician_the_practice_no_longer_lists ... ok
+test shell::tests::clinic_demographic_workspace_extracts_card_fields_without_clinical_sections ... ok
+test shell::tests::ready_replies_can_be_reviewed ... ok
+test shell::tests::records_state_preserves_last_good_time_on_failed_refresh_and_omits_unpulled ... ok
+test shell::tests::workspace_chats_and_reader_use_the_open_selection ... ok
+test today_updates::tests::nothing_needs_you_holds_only_when_every_producer_answered_and_no_outages_exist ... ok
+test today_updates::tests::citation_chip_opens_full_formatted_record_body_and_preserves_native_uri ... ok
+test tabs::tests::a_tab_hears_another_tabs_news_and_ignores_its_own ... ok
+test shell::tests::project_steps_uses_physician_words_without_tool_names ... ok
+test today_updates::tests::partial_failure_and_outage_sentences_name_the_affected_sources ... ok
+test conversation_line_tests::reopened_answer_carries_citations_basis_and_newer_records_marker ... ok
+test shell::tests::recorded_past_work_is_the_empty_history_screen ... ok
+test shell::tests::recorded_practice_keeps_synopsis_search_and_an_ended_visit ... ok
+
+test result: ok. 112 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running unittests src/main.rs (/tmp/coda-target-concerns/debug/deps/physician_app-ce069d314503f16c)
+
+running 3 tests
+test tests::explicit_api_overrides_are_not_prefixed ... ok
+test tests::runtime_mount_is_segment_bounded ... ok
+test tests::query_api_override_is_loopback_only ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/coda-target-concerns/debug/deps/physician_client-4a24a85d0cb3bbe5)
+
+running 10 tests
+test tests::ending_an_old_session_keeps_the_one_that_replaced_it ... ok
+test tests::a_pinned_client_keeps_the_session_it_was_pinned_with ... ok
+test tests::reads_today_from_the_server_shape ... ok
+test tests::reads_a_reply_draft_with_its_revision_run ... ok
+test reviews::tests::control_patient_review_sends_id_and_version_and_decodes_409_refusal ... ok
+test tests::saves_a_draft_at_the_revision_node_returns ... ok
+test tests::only_a_validated_conflict_body_is_a_draft_conflict ... ok
+test tests::sign_in_attaches_the_bearer_and_sign_out_ends_it ... ok
+test tests::demo_transport_serves_sqlite_reads_search_and_chat ... ok
+test tests::a_command_with_no_answer_ends_at_its_time_limit ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.01s
+
+     Running unittests src/lib.rs (/tmp/coda-target-concerns/debug/deps/physician_wire-0251b6710d11a9ea)
+
+running 11 tests
+test reviews::tests::control_request_and_response_round_trip_with_review_id_and_version ... ok
+test tests::reads_a_today_list ... ok
+test reviews::tests::available_control_matches_each_review_lifecycle_state ... ok
+test follow_ups::tests::follow_up_wire_roundtrips_all_standings_and_cannot_restart_resolutions ... ok
+test tests::a_search_step_says_which_page_it_got ... ok
+test tests::memory_steps_and_patient_memory_wire_round_trip ... ok
+test tests::reads_a_snapshot_whose_feedback_was_unavailable ... ok
+test matching_reply::tests::unmatched_wire_contains_zero_confidence_fields_and_roundtrips ... ok
+test tests::a_step_names_a_record_by_its_group_and_title ... ok
+test matching_reply::tests::reply_card_wire_roundtrips_withheld_and_coda_revision_states ... ok
+test tests::reads_a_transcript_and_refuses_the_older_shape ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests physician_app
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests physician_client
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests physician_wire
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

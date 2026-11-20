@@ -1,0 +1,115 @@
+{
+  "branch": "feat-cod53-invitations-resend-cancel-dob-share",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC5: cargo fmt --check, check-sql.py, and host + wasm32 Clippy -D warnings",
+      "label": "",
+      "kind": "run",
+      "revision": "9c6a9273d88b79b09504e7582f52c7737b358fed",
+      "dirty": false,
+      "recorded": "2026-11-20T20:30:39+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo fmt --all -- --check && python3 scripts/check-sql.py && cargo clippy --locked --workspace --all-targets -- -D warnings && cargo clippy --locked -p physician-app -p duet-app -p mobile -p ui-gallery -p extension-popup --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web,extension-popup/web -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-bash.log"
+      ],
+      "seconds": 84.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC1: front-door unit/HTTP tests, schema migrations, and real Postgres invitation lifecycle (resend, cancel, DOB lock, share)",
+      "label": "",
+      "kind": "run",
+      "revision": "9c6a9273d88b79b09504e7582f52c7737b358fed",
+      "dirty": false,
+      "recorded": "2026-11-20T20:32:04+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "FRONT_DOOR_DATABASE_URL=postgres://postgres@127.0.0.1:55439/coda_test FRONT_DOOR_TEST_DATABASE_URL=postgres://postgres@127.0.0.1:55439/coda_test DUET_IDENTITY_TEST_DATABASE_URL=postgres://postgres@127.0.0.1:55439/coda_test cargo test --locked -j 4 -p front-door"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-bash.log"
+      ],
+      "seconds": 4.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC2: duet-api connected care invitations unit and real Postgres tests, duet-client, duet-app, and crate boundaries",
+      "label": "",
+      "kind": "run",
+      "revision": "9c6a9273d88b79b09504e7582f52c7737b358fed",
+      "dirty": false,
+      "recorded": "2026-11-20T20:32:08+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "DUET_TEST_DATABASE_URL=postgres://postgres@127.0.0.1:55439/coda_test cargo test --locked -j 4 -p duet-api --lib --test connected_care_invitations && cargo test --locked -j 4 -p duet-client -p duet-app -p boundaries"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-bash.log"
+      ],
+      "seconds": 29.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC3: physician-sample unit and real Postgres front-door integration, physician-wire, physician-client, and physician-app",
+      "label": "",
+      "kind": "run",
+      "revision": "9c6a9273d88b79b09504e7582f52c7737b358fed",
+      "dirty": false,
+      "recorded": "2026-11-20T20:32:38+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "PHYSICIAN_DATABASE_URL=postgres://postgres@127.0.0.1:55439/coda_test cargo test --locked -j 4 -p physician-sample --lib --test front_door_postgres && cargo test --locked -j 4 -p physician-wire -p physician-client -p physician-app"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-bash.log"
+      ],
+      "seconds": 18.3,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "AC4: physician-sample full Chromium browser qualification suite (--test site -- --ignored --test-threads=1)",
+      "label": "",
+      "kind": "run",
+      "revision": "9c6a9273d88b79b09504e7582f52c7737b358fed",
+      "dirty": false,
+      "recorded": "2026-11-20T20:32:56+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "PHYSICIAN_RUNTIME_TEST_DATABASE_URL=postgres://postgres@127.0.0.1:55439/coda_test cargo test --locked -j 4 -p physician-sample --test site -- --ignored --test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-bash.log"
+      ],
+      "seconds": 236.0,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
