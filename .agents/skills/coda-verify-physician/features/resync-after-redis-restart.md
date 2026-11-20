@@ -5,7 +5,7 @@ gets `event: resync`. The page then refetches what it shows instead of trusting 
 that may have missed changes. Fan-out works again once the sites and the worker
 resubscribe. Owners: `crates/physician-bus` (`Event::Resync`), the SSE writer in
 `crates/physician-sample/src/live.rs`, the client's `event_refetch` in
-`crates/physician-app/src/shell.rs`, and `tests/scale` (`ValkeyServer::restart`).
+`crates/physician-app/src/shell.rs`, and `tests/scale` (`Valkey::restart`).
 
 ## Sub-features
 

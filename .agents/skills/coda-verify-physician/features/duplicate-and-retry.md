@@ -7,8 +7,7 @@ and can still succeed. Owners: command idempotency in `crates/local-product/src/
 `crates/physician-sample/src/bin/physician-worker.rs`, and `tests/worker.rs`
 (`hearing_of_settled_work_again_runs_the_fixed_provider_once`,
 `a_failed_attempt_is_retried_and_links_to_the_accepting_request`,
-`failed_attempts_wait_longer_each_time`,
-`one_provider_failure_retries_one_message`).
+`failed_attempts_wait_longer_each_time`).
 
 ## Sub-features
 
