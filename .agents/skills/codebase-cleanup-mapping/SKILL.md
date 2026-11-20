@@ -23,6 +23,13 @@ longer match, trace what changed before deciding whether to repair or retire it.
 Code with no callers today can still be part of work in progress. An active
 ticket can show why it needs to stay before there's a branch to inspect.
 
+### Imported is not ours to trim
+
+Some directories are copies of another project, kept current by a sync, such as
+the [PStack skills](../../../verification/README.md#pstack). Deleting part of
+one breaks it, or the next sync puts the part back. Remove the whole import
+together with its sync, or change it upstream.
+
 ## What uses it?
 
 Use name searches to find leads, then check callers, registration, build

@@ -11,6 +11,17 @@ import sys
 import yaml
 
 
+MODULES = {".ts", ".mts", ".js", ".mjs"}
+RELATIVE_IMPORT = re.compile(r"""\b(?:from|import)\s*\(?\s*(["'])(\.{1,2}/[^"']+)\1""")
+
+
+def check_relative_imports(path):
+    """Node resolves a module's relative imports as written, so each must name a file."""
+    for _quote, target in RELATIVE_IMPORT.findall(path.read_text()):
+        if not (path.parent / target).is_file():
+            raise ValueError(f"{path}: imports {target}, which does not exist")
+
+
 def check(root):
     skills = root / ".agents/skills"
     discovery = root / ".claude/skills"
@@ -37,6 +48,8 @@ def check(root):
     for path in sorted(skills.rglob("*")):
         if not path.is_file():
             continue
+        if path.suffix in MODULES:
+            check_relative_imports(path)
         if path.suffix == ".py":
             ast.parse(path.read_text(), filename=str(path))
         elif path.suffix in {".yaml", ".yml"}:
