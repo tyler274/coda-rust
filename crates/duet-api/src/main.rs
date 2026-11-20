@@ -234,29 +234,34 @@ async fn main() {
     if parked_routes.is_enabled() {
         app = app.merge(duet_api::durable::parked_legacy_router(state));
     }
-    let app = app
-        .route("/health", axum::routing::get(duet_api::hosting::live))
-        .route(
-            "/readyz",
-            axum::routing::get({
-                let front_door = front_door.clone();
-                move || {
+    let app = duet_api::hosting::with_ingress_guard(
+        app.route("/health", axum::routing::get(duet_api::hosting::live))
+            .route(
+                "/readyz",
+                axum::routing::get({
                     let front_door = front_door.clone();
-                    async move { duet_api::hosting::ready(true, front_door.as_deref()).await }
-                }
-            }),
-        )
-        .layer(telemetry::http_layer());
+                    move || {
+                        let front_door = front_door.clone();
+                        async move { duet_api::hosting::ready(true, front_door.as_deref()).await }
+                    }
+                }),
+            )
+            .layer(telemetry::http_layer()),
+        http::ingress::IngressGuard::from_env(duet_api::evidence::MAX_EVIDENCE_BATCH_BYTES),
+    );
     let address = env::var("DUET_LISTEN_ADDR").unwrap_or_else(|_| {
         env::var("PORT")
             .map(|port| format!("0.0.0.0:{port}"))
             .unwrap_or_else(|_| "127.0.0.1:8080".to_owned())
     });
     let listener = tokio::net::TcpListener::bind(address).await.expect("bind");
-    axum::serve(listener, app)
-        .with_graceful_shutdown(shutdown())
-        .await
-        .expect("serve");
+    axum::serve(
+        listener,
+        app.into_make_service_with_connect_info::<std::net::SocketAddr>(),
+    )
+    .with_graceful_shutdown(shutdown())
+    .await
+    .expect("serve");
 }
 
 async fn shutdown() {

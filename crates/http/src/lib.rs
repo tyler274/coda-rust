@@ -4,6 +4,8 @@
 
 #[cfg(feature = "iap")]
 pub mod iap;
+#[cfg(feature = "ingress")]
+pub mod ingress;
 pub mod signjwt;
 
 use serde::Serialize;

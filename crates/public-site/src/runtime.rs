@@ -72,7 +72,7 @@ impl RuntimeConfig {
                 return Ok(origin);
             }
             Ok(if staging {
-                "https://staging.codahealth.ai".to_owned()
+                "https://staging.coda.dabney.moe".to_owned()
             } else if deployed {
                 crate::site::SITE_ORIGIN.to_owned()
             } else {
@@ -278,7 +278,7 @@ mod tests {
         .unwrap();
         assert_eq!(
             config.physician_proxy.unwrap().public_origin,
-            "https://staging.codahealth.ai"
+            "https://staging.coda.dabney.moe"
         );
     }
 
@@ -320,7 +320,7 @@ mod tests {
         let config = load_relay("staging", "https://relay.example.test", signer).unwrap();
         let relay = config.observability_proxy.unwrap();
         assert_eq!(relay.upstream.as_str(), "https://relay.example.test/");
-        assert_eq!(relay.public_origin, "https://staging.codahealth.ai");
+        assert_eq!(relay.public_origin, "https://staging.coda.dabney.moe");
         assert!(config.physician_proxy.is_none());
         assert!(load_relay("staging", "https://relay.example.test", None).is_err());
         assert!(load_relay("staging", "http://127.0.0.1:8790", signer).is_err());

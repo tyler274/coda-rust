@@ -69,6 +69,12 @@ pub async fn live() -> axum::Json<serde_json::Value> {
     axum::Json(serde_json::json!({ "status": "ok" }))
 }
 
+/// Wraps the Duet HTTP router with shared per-IP rate limiting, concurrency bounds,
+/// and request body-size enforcement (`coda_http::ingress`).
+pub fn with_ingress_guard(app: axum::Router, guard: http::ingress::IngressGuard) -> axum::Router {
+    guard.protect(app)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -170,5 +176,88 @@ mod tests {
     #[tokio::test]
     async fn liveness_says_nothing_about_readiness() {
         assert_eq!(live().await.0["status"], "ok");
+    }
+
+    #[tokio::test]
+    async fn ingress_guard_rate_limits_email_auth_and_rejects_oversized_bodies() {
+        use axum::body::Body;
+        use axum::http::{Request, StatusCode, header};
+        use axum::routing::{get, post};
+        use http::ingress::{IngressGuard, IngressGuardConfig, RateLimitQuota};
+        use tower::ServiceExt;
+
+        let guard = IngressGuard::new(IngressGuardConfig::strict(
+            RateLimitQuota::per_minute(10),
+            RateLimitQuota::per_minute(1),
+            128,
+            4,
+        ));
+        let app = with_ingress_guard(
+            axum::Router::new()
+                .route("/health", get(live))
+                .route("/api/auth/email/start", post(|| async { "accepted" }))
+                .route("/api/evidence", post(|body: String| async move { body })),
+            guard,
+        );
+
+        let first = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/auth/email/start")
+                    .header("x-forwarded-for", "198.51.100.77")
+                    .body(Body::from("{}"))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(first.status(), StatusCode::OK);
+
+        let second = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/auth/email/start")
+                    .header("x-forwarded-for", "198.51.100.77")
+                    .body(Body::from("{}"))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(second.status(), StatusCode::TOO_MANY_REQUESTS);
+        assert!(second.headers().contains_key(header::RETRY_AFTER));
+        assert_eq!(second.headers()[header::CACHE_CONTROL], "no-store");
+
+        // Health probe remains available for the same IP while rate-limited.
+        let health = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .uri("/health")
+                    .header("x-forwarded-for", "198.51.100.77")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(health.status(), StatusCode::OK);
+
+        // Oversized payload rejected before hitting the handler.
+        let big = "a".repeat(256);
+        let oversized = app
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/evidence")
+                    .header("x-forwarded-for", "198.51.100.78")
+                    .header(header::CONTENT_LENGTH, big.len().to_string())
+                    .body(Body::from(big))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(oversized.status(), StatusCode::PAYLOAD_TOO_LARGE);
     }
 }

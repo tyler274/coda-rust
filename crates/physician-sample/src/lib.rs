@@ -1062,12 +1062,15 @@ pub async fn serve_holding(
     });
 
     let app = startup_sample_router(phase);
-    let served = axum::serve(listener, app)
-        .with_graceful_shutdown(async move {
-            shutdown().await;
-            stop_tx.send_replace(true);
-        })
-        .await;
+    let served = axum::serve(
+        listener,
+        app.into_make_service_with_connect_info::<std::net::SocketAddr>(),
+    )
+    .with_graceful_shutdown(async move {
+        shutdown().await;
+        stop_tx.send_replace(true);
+    })
+    .await;
     startup_task.abort();
     let _ = (&mut startup_task).await;
     if let Some(compaction) = compaction_slot.lock().await.take() {
@@ -1535,7 +1538,8 @@ fn route_readiness(app: Router, readiness: Option<hosting::Readiness>) -> Router
 
 /// Wraps the whole router in the `http.server` tracing layer.
 pub fn traced(router: Router) -> Router {
-    router.layer(telemetry::http_layer())
+    http::ingress::IngressGuard::from_env(http::ingress::DEFAULT_MAX_BODY_BYTES)
+        .protect(router.layer(telemetry::http_layer()))
 }
 
 /// Serves the fixture site on `listener` with authentication required
@@ -1546,7 +1550,12 @@ pub async fn serve_with_store(
 ) {
     let base = router();
     let app = traced(auth::authed_router_with_store(base, store).await);
-    axum::serve(listener, app).await.expect("sample server");
+    axum::serve(
+        listener,
+        app.into_make_service_with_connect_info::<std::net::SocketAddr>(),
+    )
+    .await
+    .expect("sample server");
 }
 
 #[derive(Debug, Default, serde::Deserialize)]

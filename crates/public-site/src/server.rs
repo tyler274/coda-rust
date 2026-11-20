@@ -53,6 +53,7 @@ struct SiteState {
     runtime: RuntimeConfig,
     gate: AccessGate,
     permits: Arc<Semaphore>,
+    ingress: http::ingress::IngressGuard,
 }
 
 /// Explicit settings and generated asset injection for embedding/tests/motion.
@@ -99,6 +100,13 @@ fn router_with_gate(
     let sitemap = crate::site::sitemap_xml(&origin, &base_path);
     let robots = crate::site::robots_txt(&origin, &base_path, runtime.staging);
     let health = serde_json::to_vec(&serde_json::json!({"ok": true, "app": "coda-health-public", "env": runtime.environment, "release_sha": runtime.release_sha})).unwrap();
+    const PUBLIC_BODY_LIMIT: usize = 64 * 1024;
+    let ingress_body_limit =
+        if runtime.physician_proxy.is_some() || runtime.observability_proxy.is_some() {
+            crate::proxy::REQUEST_LIMIT
+        } else {
+            PUBLIC_BODY_LIMIT
+        };
     let state = Arc::new(SiteState {
         pages: pages
             .pages
@@ -113,6 +121,7 @@ fn router_with_gate(
         health: Representation::new(health, "application/json"),
         gate,
         permits: Arc::new(Semaphore::new(runtime.max_concurrency)),
+        ingress: http::ingress::IngressGuard::from_env(ingress_body_limit),
         runtime,
         ready,
     });
@@ -170,25 +179,42 @@ async fn boundary(State(state): State<Arc<SiteState>>, request: Request, next: N
         state.runtime.request_timeout
     };
     let head = request.method() == Method::HEAD;
-    let mut response = if let Ok(_permit) = state.permits.clone().try_acquire_owned() {
-        match tokio::time::timeout(response_timeout, async {
-            if state.runtime.staging && !state.gate.allows(request.headers()).await {
-                return (StatusCode::FORBIDDEN, "Google IAP assertion required").into_response();
-            }
-            next.run(request).await
-        })
-        .await
-        {
-            Ok(response) => response,
-            Err(_) => (StatusCode::GATEWAY_TIMEOUT, "request timed out").into_response(),
+    let peer = request
+        .extensions()
+        .get::<axum::extract::ConnectInfo<std::net::SocketAddr>>()
+        .map(|axum::extract::ConnectInfo(addr)| *addr);
+    let ingress_decision = state.ingress.check(path, request.headers(), peer);
+    let mut response = match ingress_decision {
+        http::ingress::IngressDecision::RateLimited {
+            tier,
+            retry_after_secs,
+        } => http::ingress::rate_limited_response(tier, retry_after_secs),
+        http::ingress::IngressDecision::PayloadTooLarge { max_bytes } => {
+            http::ingress::payload_too_large_response(max_bytes)
         }
-    } else {
-        (
-            StatusCode::SERVICE_UNAVAILABLE,
-            [(header::RETRY_AFTER, "1")],
-            "server busy",
-        )
-            .into_response()
+        http::ingress::IngressDecision::Allowed => {
+            if let Ok(_permit) = state.permits.clone().try_acquire_owned() {
+                match tokio::time::timeout(response_timeout, async {
+                    if state.runtime.staging && !state.gate.allows(request.headers()).await {
+                        return (StatusCode::FORBIDDEN, "Google IAP assertion required")
+                            .into_response();
+                    }
+                    next.run(request).await
+                })
+                .await
+                {
+                    Ok(response) => response,
+                    Err(_) => (StatusCode::GATEWAY_TIMEOUT, "request timed out").into_response(),
+                }
+            } else {
+                (
+                    StatusCode::SERVICE_UNAVAILABLE,
+                    [(header::RETRY_AFTER, "1")],
+                    "server busy",
+                )
+                    .into_response()
+            }
+        }
     };
     if response.status().is_client_error() || response.status().is_server_error() {
         response
@@ -913,6 +939,7 @@ mod tests {
             ready: Readiness::ready(),
             gate: crate::access::tests::cached_gate(),
             permits: Arc::new(Semaphore::new(1)),
+            ingress: http::ingress::IngressGuard::from_env(crate::proxy::REQUEST_LIMIT),
             runtime,
         });
         let app = Router::new()
@@ -959,5 +986,77 @@ mod tests {
             response.headers()[header::CACHE_CONTROL],
             "private, no-store, max-age=0"
         );
+    }
+
+    #[tokio::test]
+    async fn public_site_boundary_rate_limits_abusive_clients_while_keeping_health_open() {
+        let runtime = RuntimeConfig::default();
+        let state = Arc::new(SiteState {
+            pages: HashMap::new(),
+            invite: Document {
+                representation: Representation::new("invite", "text/plain"),
+                noindex: true,
+            },
+            not_found: Document {
+                representation: Representation::new("missing", "text/plain"),
+                noindex: true,
+            },
+            assets: AssetTable::default(),
+            sitemap: Representation::new("", "text/plain"),
+            robots: Representation::new("", "text/plain"),
+            health: Representation::new("{\"ok\":true}", "application/json"),
+            ready: Readiness::ready(),
+            gate: crate::access::tests::cached_gate(),
+            permits: Arc::new(Semaphore::new(4)),
+            ingress: http::ingress::IngressGuard::new(http::ingress::IngressGuardConfig::strict(
+                http::ingress::RateLimitQuota::per_minute(10),
+                http::ingress::RateLimitQuota::per_minute(1),
+                16 * 1024,
+                4,
+            )),
+            runtime,
+        });
+        let app = Router::new()
+            .fallback(serve)
+            .with_state(state.clone())
+            .layer(middleware::from_fn_with_state(state, boundary));
+
+        let mut req1 = Request::builder()
+            .uri("/physician/auth/sign-in")
+            .header("x-forwarded-for", "203.0.113.55")
+            .body(Body::empty())
+            .unwrap();
+        let resp1 = app.clone().oneshot(req1).await.unwrap();
+        assert_ne!(resp1.status(), StatusCode::TOO_MANY_REQUESTS);
+
+        req1 = Request::builder()
+            .uri("/physician/auth/sign-in")
+            .header("x-forwarded-for", "203.0.113.55")
+            .body(Body::empty())
+            .unwrap();
+        let resp2 = app.clone().oneshot(req1).await.unwrap();
+        assert_eq!(resp2.status(), StatusCode::TOO_MANY_REQUESTS);
+        assert!(resp2.headers().contains_key(header::RETRY_AFTER));
+        assert_eq!(resp2.headers()[header::CACHE_CONTROL], "no-store");
+
+        let health = Request::builder()
+            .uri("/api/health")
+            .header("x-forwarded-for", "203.0.113.55")
+            .body(Body::empty())
+            .unwrap();
+        let resp3 = app.clone().oneshot(health).await.unwrap();
+        assert_eq!(resp3.status(), StatusCode::OK);
+
+        let oversized_len = (16 * 1024 + 1).to_string();
+        let oversized = Request::builder()
+            .method(Method::POST)
+            .uri("/")
+            .header("x-forwarded-for", "203.0.113.56")
+            .header(header::CONTENT_LENGTH, oversized_len)
+            .body(Body::from("x".repeat(16 * 1024 + 1)))
+            .unwrap();
+        let resp4 = app.oneshot(oversized).await.unwrap();
+        assert_eq!(resp4.status(), StatusCode::PAYLOAD_TOO_LARGE);
+        assert_eq!(resp4.headers()[header::CACHE_CONTROL], "no-store");
     }
 }
