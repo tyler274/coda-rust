@@ -4,7 +4,7 @@ When the worker cannot finish a turn within its 5 attempts, the
 physician's message stays saved. The conversation shows the mechanical line
 `Coda couldn’t finish this response. Your message is saved.` with a `Try again` button.
 `Try again` sends `work.resume` for the named work and run; the reply then arrives, and
-pressing it again cannot reopen finished work. Owners: `durable_snapshot_body` and
+pressing it again cannot reopen finished work. Owners: `snapshot_body` and
 `resume_durable` in `crates/physician-sample/src/live.rs`, the conversation renderer in
 `crates/physician-app/src/lib.rs`, `MAX_FAILED_ATTEMPTS` in
 `crates/harness/src/engine.rs`, and `tests/try_again.rs`.
