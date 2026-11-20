@@ -199,7 +199,8 @@ async fn client_handles_portals_vendor_disabled_not_now_and_phone_disconnect_syn
         .activate(RetainedIdentity {
             subject: "subject-patient-1".into(),
             owner: "patient-1".into(),
-            refresh_token: "secret".into(),
+            session_token: "secret".into(),
+            email: None,
         })
         .unwrap();
     let hc = HealthConnect::open(&retention, &fence, StubHealthConnect).unwrap();

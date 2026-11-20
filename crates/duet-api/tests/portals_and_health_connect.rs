@@ -195,6 +195,22 @@ fn portal_mutation(
     }
 }
 
+#[expect(
+    clippy::disallowed_methods,
+    reason = "test fixture marks current Terms acceptance directly as owner"
+)]
+async fn stage_terms(owner_url: &str, account_id: Uuid) {
+    let mut owner = PgConnection::connect(owner_url).await.unwrap();
+    sqlx::query(
+        "update public.users set terms_version = $1, terms_accepted_at = now() where id = $2",
+    )
+    .bind("2026-09-23")
+    .bind(account_id)
+    .execute(&mut owner)
+    .await
+    .unwrap();
+}
+
 struct TestDb {
     owner_url: String,
     runtime_url: String,
@@ -285,7 +301,9 @@ async fn cod63_portals_multi_org_daily_refresh_partial_broken_kill_switch_not_no
         evidence: evidence.clone(),
     };
     let patient_a = identities.authenticate("alice", true).await.unwrap();
-    let _patient_b = identities.authenticate("bob", true).await.unwrap();
+    let patient_b = identities.authenticate("bob", true).await.unwrap();
+    stage_terms(&env.owner_url, patient_a.account_id).await;
+    stage_terms(&env.owner_url, patient_b.account_id).await;
 
     let day1: DateTime<Utc> = "2026-11-19T10:00:00Z".parse().unwrap();
     let clock = ScriptedClock::new(day1);
@@ -772,6 +790,7 @@ async fn cod64_health_connect_outbox_phone_disconnect_and_apple_health_deletion_
         "oracle-test",
     );
     let patient = identities.authenticate("sam", true).await.unwrap();
+    stage_terms(&env.owner_url, patient.account_id).await;
 
     let app = durable_router(durable.clone()).merge(portals_router(PortalState {
         durable,
@@ -816,7 +835,8 @@ async fn cod64_health_connect_outbox_phone_disconnect_and_apple_health_deletion_
         .activate(RetainedIdentity {
             subject: "subject-sam".into(),
             owner: "sam".into(),
-            refresh_token: "secret".into(),
+            session_token: "secret".into(),
+            email: None,
         })
         .unwrap();
     let hc = HealthConnect::open(&retention, &fence, android_device.clone())
@@ -1094,6 +1114,7 @@ async fn cod63_disconnect_during_inflight_refresh_never_resurrects_tokens_or_pub
     let identities = IdentityStore::new(env.db.clone(), Arc::new(StaticVerifier));
     let evidence = EvidenceStore::new(env.db.clone());
     let patient = identities.authenticate("race-alice", true).await.unwrap();
+    stage_terms(&env.owner_url, patient.account_id).await;
 
     for simulate_error in [false, true] {
         let entered = Arc::new(tokio::sync::Notify::new());
