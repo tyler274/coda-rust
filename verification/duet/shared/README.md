@@ -26,6 +26,7 @@ A mark:
 | Not saved yet | you unmark it | Not marked |
 | Marked | you unmark it, in You or in Shared | Not marked |
 | Marked | its source corrects the record | Marked, at the corrected version, and it says so |
+| Marked, or Not saved yet | its source removes the record | Not marked, out of To send, with a plain notice in You; earlier sends stay unchanged |
 | Marked | you send it | Not marked, and in that send |
 | Not marked, sent before | you mark it again | Marked, and in To send |
 
@@ -54,6 +55,7 @@ A send:
 | Sending | Duet can't tell whether it saved | Couldn't confirm the send, with "Try again" |
 | Couldn't confirm the send | you try again and Duet saves it | Sent, one time |
 | Couldn't confirm the send | you try again and Duet still can't tell | Couldn't confirm the send, with "Try again" |
+| Couldn't confirm the send | the connection ends | Couldn't confirm before connection ended, with no "Try again", and its marks and notes stay in To send |
 | Sending | the connection ends | Not sent, with the reason, and its marks and notes stay in To send |
 | Sent | the practice's agents pick it up | Received by the care team |
 | Sent | the connection ends first | Sent, with the date the connection ended. It never becomes Received |
@@ -74,13 +76,15 @@ Send, in Shared:
 2. A send goes to one practice, and only to a practice connected to you at that moment.
 3. A send holds exactly the records and notes you chose, each record at its current version at that moment, and nothing changes it afterwards. A note written from a record takes that record with it.
 4. A send reaches the practice at most once, however many times you try again.
-5. A send clears the marks it carried and takes the notes it carried out of To send, and leaves the rest.
+5. When Duet confirms a send as Sent, it clears the marks it carried and takes the notes it carried out of To send, and leaves the rest; an unconfirmed or failed send keeps its marks and notes in To send.
 6. To send shows a record exactly while it's marked, and a note exactly until you send or delete it.
 7. Duet shows Sent only after it saved the send, and Received by the care team only after the practice's agents picked it up. A send whose connection ended first stays Sent.
 8. Before every send, Duet says that a send can't be taken back and isn't for urgent needs or for questions that need an answer.
 9. A mark or a note never shows as saved unless Duet saved it, and Duet never replaces words you haven't saved.
 10. A source correction never blocks a send and never changes an earlier send.
 11. Joining a practice sends nothing from For my doctor, and leaving one removes no send from your list.
+12. When a source removes a marked record, Duet clears its mark from To send, shows a plain notice in You, and leaves earlier sends that carried the record unchanged.
+13. When the connection ends while a send is in Sending or Couldn't confirm the send, Duet removes "Try again", stops sending, and keeps its marks and notes in To send.
 
 These rules rest on the code and its records, not on the order of steps, so the model doesn't check them:
 
@@ -95,4 +99,4 @@ These rules rest on the code and its records, not on the order of steps, so the 
 
 ## Outside this spec
 
-Records and readings in You follow [duet.md](../../../intent/duet.md#d2-records-come-in-and-stay-faithful). Joining a practice follows [invitation](../../connected-care/invitation/README.md), and leaving, discharge and what the practice does with a send follow [connected-care.md](../../../intent/connected-care.md#c16-sending-for-my-doctor). What happens to a mark when its source removes the record, and what a send shows when Duet can't tell whether it saved and the connection then ends, are not decided yet.
+Records and readings in You follow [duet.md](../../../intent/duet.md#d2-records-come-in-and-stay-faithful). Joining a practice follows [invitation](../../connected-care/invitation/README.md), and leaving, discharge and what the practice does with a send follow [connected-care.md](../../../intent/connected-care.md#c16-sending-for-my-doctor).
