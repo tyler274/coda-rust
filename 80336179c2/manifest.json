@@ -1,0 +1,49 @@
+{
+  "branch": "fix-cod4-android-emulator-ci",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "COD-4 Android CI gates: fmt, actionlint, CI scenarios test, host + wasm32 clippy -D warnings, android unit tests (9/9), and boundaries (25/25)",
+      "label": "gates-fmt-actionlint-clippy-android-boundaries",
+      "kind": "run",
+      "revision": "80336179c2add6ab7cd1c9321777c233b34a852c",
+      "dirty": false,
+      "recorded": "2026-11-20T07:18:12+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "set -euo pipefail; cargo fmt --all --check; actionlint .github/workflows/ci.yml; python3 -m unittest scripts/test_ci_scenarios.py; cargo clippy --locked -p android -p boundaries --all-targets -- -D warnings; cargo clippy --locked --target wasm32-unknown-unknown -p duet-app -p mobile --lib --bins -- -D warnings; cargo test --locked -p android; cargo test --locked -p boundaries"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-gates-fmt-actionlint-clippy-android-boundaries.log"
+      ],
+      "seconds": 80.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "COD-4 real headless Android 15 emulator proof: build Duet APK using platform/android/maven-central-mirror.gradle and pass coda.duet.ModeShellTest with System UI ANR handling",
+      "label": "headless-android-emulator-modeshelltest",
+      "kind": "run",
+      "revision": "80336179c2add6ab7cd1c9321777c233b34a852c",
+      "dirty": false,
+      "recorded": "2026-11-20T07:20:00+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "set -euo pipefail; cargo run --locked -p android -- test --headless coda.duet.ModeShellTest"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-headless-android-emulator-modeshelltest.log"
+      ],
+      "seconds": 183.5,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
