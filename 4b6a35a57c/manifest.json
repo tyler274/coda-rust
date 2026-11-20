@@ -1,0 +1,60 @@
+{
+  "branch": "ci-cod4-workflow-dispatch-disk-hygiene",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "actionlint workflow validation",
+      "kind": "run",
+      "revision": "4b6a35a57cfe3cf6918e7d5468503686b5667254",
+      "dirty": false,
+      "recorded": "2026-11-20T08:47:54+00:00",
+      "command": [
+        "actionlint",
+        ".github/workflows/ci.yml"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-actionlint-workflow-validation.log"
+      ],
+      "seconds": 0.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "CI scope, scenario, timing, and skill checks",
+      "kind": "run",
+      "revision": "4b6a35a57cfe3cf6918e7d5468503686b5667254",
+      "dirty": false,
+      "recorded": "2026-11-20T08:47:54+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail; uv run --with-requirements scripts/ci-requirements.txt python3 -m unittest discover -s scripts -p \"test_ci_*.py\" -v; uv run --with-requirements scripts/ci-requirements.txt python3 scripts/check_engineering_skills.py"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-CI-scope-scenario-timing-and-skill-checks.log"
+      ],
+      "seconds": 11.3,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "",
+      "kind": "gap",
+      "revision": "4b6a35a57cfe3cf6918e7d5468503686b5667254",
+      "dirty": false,
+      "recorded": "2026-11-20T08:48:05+00:00",
+      "reason": "Hosted GitHub Actions runner disk pruning and full 5-suite workflow_dispatch browser run must be exercised on GitHub Actions",
+      "ok": false,
+      "files": []
+    }
+  ]
+}
