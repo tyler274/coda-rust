@@ -35,6 +35,9 @@ if [ "${CODA_FAST_PRECOMMIT:-0}" = 1 ]; then
   exec bash scripts/dev-check.sh --pre-commit
 fi
 cargo fmt --all --check
+python3 scripts/check-sql.py
 cargo clippy --workspace --all-targets --quiet -- -D warnings
-cargo clippy -p physician-app -p duet-app -p mobile -p ui-gallery --target wasm32-unknown-unknown \
-  --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web --quiet -- -D warnings
+cargo clippy -p physician-app -p duet-app -p mobile -p ui-gallery -p extension-popup \
+  --target wasm32-unknown-unknown \
+  --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web,extension-popup/web \
+  --quiet -- -D warnings

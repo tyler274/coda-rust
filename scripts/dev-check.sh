@@ -2,8 +2,9 @@
 # Fast crate-scoped formatting, Clippy, and unit test runner for local iteration.
 # Defaults to modified crates (working tree, or HEAD~1..HEAD when clean).
 # Pass --base <ref>, --all, --pre-commit (staged index only, skipping cargo test),
-# --ci (full local CI pass against an isolated disposable Postgres cluster), or
-# --browser (Chromium qualification, or combined with --ci on the same cluster).
+# --ci (full local CI pass against an isolated disposable Postgres cluster),
+# --postgres (disposable Postgres suites only, combinable with --ci/--browser), or
+# --browser (Chromium qualification, or combined with --ci/--postgres).
 set -euo pipefail
 
 root=$(git rev-parse --show-toplevel)
@@ -13,12 +14,14 @@ orig_args=("$@")
 mode="local"
 base_ref=""
 run_ci=0
+run_postgres=0
 run_browser=0
 while [ "$#" -gt 0 ]; do
   case "$1" in
     --pre-commit) mode="pre-commit" ;;
     --all) mode="all" ;;
     --ci) run_ci=1 ;;
+    --postgres) run_postgres=1 ;;
     --browser) run_browser=1 ;;
     --base)
       shift
@@ -26,7 +29,7 @@ while [ "$#" -gt 0 ]; do
       mode="base"
       ;;
     -h|--help)
-      sed -n '2,6p' "$0"
+      sed -n '2,7p' "$0"
       exit 0
       ;;
     *)
@@ -37,9 +40,9 @@ while [ "$#" -gt 0 ]; do
   shift
 done
 
-if [ "$run_ci" = 1 ] || [ "$run_browser" = 1 ]; then
+if [ "$run_ci" = 1 ] || [ "$run_postgres" = 1 ] || [ "$run_browser" = 1 ]; then
   if [ "$mode" != "local" ]; then
-    echo "dev-check.sh: --ci and --browser cannot be combined with --$mode" >&2
+    echo "dev-check.sh: --ci, --postgres, and --browser cannot be combined with --$mode" >&2
     exit 2
   fi
   mode="ci"
@@ -51,10 +54,35 @@ if [ "${CODA_DEV_SHELL:-}" != 1 ]; then
     exec nix develop "${root}#agent" --command bash "$0" ${orig_args[@]+"${orig_args[@]}"}
   fi
   if [ "$mode" = "ci" ]; then
-    echo "dev-check.sh: run --ci/--browser inside 'nix develop .#agent' (CODA_DEV_SHELL unset)" >&2
+    echo "dev-check.sh: run --ci/--postgres/--browser inside 'nix develop .#agent' (CODA_DEV_SHELL unset)" >&2
     exit 1
   fi
 fi
+
+tofu_fmt_roots=(
+  infra/gcp/nix-cache
+  infra/gcp/shared-mail
+  infra/gcp/public-site
+  infra/gcp/observability
+  infra/gcp/physician-runtime
+  infra/gcp/rust-environments
+)
+
+run_tofu_fmt_checks() {
+  local root_dir
+  for root_dir in "${tofu_fmt_roots[@]}"; do
+    tofu fmt -check -recursive "$root_dir"
+  done
+}
+
+run_formatting_checks() {
+  local include_tofu="${1:-0}"
+  cargo fmt --all --check
+  python3 scripts/check-sql.py
+  if [ "$include_tofu" = 1 ]; then
+    run_tofu_fmt_checks
+  fi
+}
 
 wasm_clippy() {
   cargo clippy -p physician-app -p duet-app -p mobile -p ui-gallery -p extension-popup \
@@ -192,13 +220,17 @@ run_lightweight_checks() {
     local ci_python
     ci_python=$(ensure_ci_python)
     "$ci_python" -m unittest discover -s scripts -p 'test_ci_*.py' -v
+    "$ci_python" -m unittest discover -s scripts -p 'test_check_sql.py' -v
+    "$ci_python" -m unittest discover -s scripts -p 'test_staging_images.py' -v
+    "$ci_python" -m unittest discover -s scripts -p 'test_alert_qualification.py' -v
     "$ci_python" -m unittest discover -s scripts/nix-cache -p 'test_*.py' -v
     "$ci_python" scripts/check_engineering_skills.py
     python3 -m unittest discover -s .agents/skills/review-pr/scripts -p 'test_*.py' -v
     python3 -m unittest discover -s .agents/skills/capture-proof/scripts -p 'test_*.py' -v
+    node --test crates/workspace-tools/tests/doppler-watch.test.cjs
+    actionlint .github/workflows/*.yml
     lychee --offline --no-progress --include-fragments --root-dir "$root" '.agents/skills/**/*.md'
     bash scripts/check-book-links.sh
-    python3 scripts/check-sql.py
     node extension/sandbox/test_connector.mjs
   )
 }
@@ -250,16 +282,20 @@ run_browser_qualification() {
 
 if [ "$mode" = "ci" ]; then
   trap cleanup_ci EXIT
-  run_stage "fmt" cargo fmt --all --check
+  run_stage "fmt" run_formatting_checks 1
   if [ "$run_ci" = 1 ]; then
     run_stage "clippy-host" cargo clippy --workspace --all-targets --quiet -- -D warnings
     run_stage "clippy-wasm" wasm_clippy
     run_stage "boundaries" cargo test --locked -p boundaries
+    run_stage "cargo-deny" cargo deny check
+    run_stage "rustdoc" cargo doc --no-deps --workspace
     run_stage "lightweight" run_lightweight_checks
   fi
   run_stage "postgres-cluster" start_disposable_postgres
   if [ "$run_ci" = 1 ]; then
     run_stage "workspace-tests" run_workspace_tests
+  fi
+  if [ "$run_ci" = 1 ] || [ "$run_postgres" = 1 ]; then
     run_stage "postgres-suites" run_postgres_suites
   fi
   if [ "$run_browser" = 1 ]; then
@@ -268,14 +304,15 @@ if [ "$mode" = "ci" ]; then
   exit "$overall_rc"
 fi
 
-cargo fmt --all --check
-
 if [ "$mode" = "all" ]; then
+  run_formatting_checks 1
   cargo clippy --workspace --all-targets --quiet -- -D warnings
   wasm_clippy
   run_workspace_tests
   exit 0
 fi
+
+run_formatting_checks 0
 
 changed_files=""
 case "$mode" in
@@ -300,6 +337,7 @@ fi
 
 needs_workspace=0
 needs_wasm=0
+needs_tofu_fmt=0
 pkg_list=""
 
 crate_package_name() {
@@ -313,6 +351,9 @@ while IFS= read -r path; do
   case "$path" in
     Cargo.toml|Cargo.lock|clippy.toml|rust-toolchain.toml|.cargo/*|flake.nix|flake.lock|crates/workspace-tools/sandbox/*)
       needs_workspace=1
+      ;;
+    infra/gcp/*)
+      needs_tofu_fmt=1
       ;;
     crates/*)
       seg="${path#crates/}"
@@ -333,6 +374,10 @@ while IFS= read -r path; do
       ;;
   esac
 done <<<"$changed_files"
+
+if [ "$needs_tofu_fmt" = 1 ]; then
+  run_tofu_fmt_checks
+fi
 
 pkg_count=$(wc -w <<<"$pkg_list")
 if [ "$needs_workspace" = 1 ] || [ "$pkg_count" -gt 8 ]; then
