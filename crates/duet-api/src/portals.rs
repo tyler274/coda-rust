@@ -34,7 +34,7 @@ use crate::evidence::{
     EvidenceBatch, EvidenceItemOutcome, EvidenceMutation, EvidenceOperation, EvidenceStore,
     IngestAuthority, MAX_EVIDENCE_BATCH_ITEMS,
 };
-use crate::identity::{AccountContext, check_current};
+use crate::identity::{AccessLevel, AccountContext, check_current};
 use crate::portal_entity::{connection, oauth_state, user_connectors};
 
 /// Default daily refresh cadence for connected portals (`intent/duet.md` D2.7).
@@ -1222,7 +1222,7 @@ impl PortalService {
     /// Unified setup + `Sources & data` snapshot for an authenticated patient.
     pub async fn snapshot(&self, context: &AccountContext) -> Result<PortalsSnapshot, ApiError> {
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::RightsOnly).await?;
         let user = orm::model::<user_connectors::Model>(
             &mut tx,
             &user_connectors::Entity::find_by_id(context.account_id).into_query(),
@@ -1275,7 +1275,7 @@ impl PortalService {
     ) -> Result<SetupStatusResponse, ApiError> {
         let now = (self.now)();
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let user = orm::model::<user_connectors::Model>(
             &mut tx,
             &user_connectors::Entity::find_by_id(context.account_id).into_query(),
@@ -1339,7 +1339,7 @@ impl PortalService {
         let expires_at = now + OAUTH_STATE_TTL;
 
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         orm::execute(
             &mut tx,
             &oauth_state::Entity::insert(oauth_state::ActiveModel {
@@ -1400,7 +1400,7 @@ impl PortalService {
         }
         let now = (self.now)();
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let handshake = orm::model::<oauth_state::Model>(
             &mut tx,
             &oauth_state::Entity::find_by_id(request.state.trim().to_owned())
@@ -1455,7 +1455,7 @@ impl PortalService {
             .map(|seconds| now + Duration::seconds(seconds.max(0)));
 
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let existing = orm::model::<connection::Model>(
             &mut tx,
             &connection::Entity::find()
@@ -1557,7 +1557,7 @@ impl PortalService {
     ) -> Result<PortalConnectionView, ApiError> {
         let now = (self.now)();
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::RightsOnly).await?;
         let updated = orm::execute(
             &mut tx,
             &connection::Entity::update_many()
@@ -1604,7 +1604,7 @@ impl PortalService {
     ) -> Result<PortalSyncResponse, ApiError> {
         let now = (self.now)();
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let row = orm::model::<connection::Model>(
             &mut tx,
             &connection::Entity::find_by_id(connection_id)
@@ -1774,7 +1774,7 @@ impl PortalService {
 
         let next_refresh_at = now + DAILY_REFRESH_INTERVAL;
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let user = orm::model::<user_connectors::Model>(
             &mut tx,
             &user_connectors::Entity::find_by_id(context.account_id).into_query(),
@@ -1872,7 +1872,7 @@ impl PortalService {
         connection_id: Uuid,
     ) -> Result<(), ApiError> {
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let current = orm::model::<connection::Model>(
             &mut tx,
             &connection::Entity::find_by_id(connection_id)
@@ -1905,7 +1905,7 @@ impl PortalService {
         let next_refresh_at = now + DAILY_REFRESH_INTERVAL;
 
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let affected = orm::execute(
             &mut tx,
             &connection::Entity::update_many()
@@ -2022,7 +2022,7 @@ impl PortalService {
     ) -> Result<PhoneSourceStatusView, ApiError> {
         let now = (self.now)();
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let column = match source {
             PhoneSourceKind::AppleHealth => user_connectors::Column::AppleHealthDisconnectedAt,
             PhoneSourceKind::HealthConnect => user_connectors::Column::HealthConnectDisconnectedAt,
@@ -2056,7 +2056,7 @@ impl PortalService {
     ) -> Result<PhoneSourceStatusView, ApiError> {
         let now = (self.now)();
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::RightsOnly).await?;
         let column = match source {
             PhoneSourceKind::AppleHealth => user_connectors::Column::AppleHealthDisconnectedAt,
             PhoneSourceKind::HealthConnect => user_connectors::Column::HealthConnectDisconnectedAt,

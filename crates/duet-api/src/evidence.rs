@@ -378,7 +378,7 @@ impl EvidenceStore {
         context: &AccountContext,
     ) -> Result<i32, ApiError> {
         let mut tx = self.database.begin(context.account_id).await?;
-        check_current(&mut tx, context, false).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let account = account_fences(&mut tx, context.account_id).await?;
         tx.commit().await?;
         Ok(account.health_connect_generation)
