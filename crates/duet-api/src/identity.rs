@@ -333,7 +333,10 @@ impl IdentityStore {
         bearer: &str,
     ) -> Result<AccountContext, ApiError> {
         if bearer.starts_with(crate::email_auth::SESSION_TOKEN_PREFIX) {
-            return self.email_auth.verify_session(bearer).await;
+            return self
+                .email_auth
+                .verify_session_for_receipt_retry(bearer)
+                .await;
         }
         let identity = self.verifier.verify(bearer).await?;
         if let Some((account_id, incarnation)) =

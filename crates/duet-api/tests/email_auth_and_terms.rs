@@ -400,7 +400,36 @@ async fn email_auth_sessions_terms_rights_and_retired_routes() {
     .await;
     assert_eq!(status, StatusCode::OK);
 
-    // Sign out everywhere revokes bearer_2 across restarts.
+    // Sign out everywhere revokes bearer_2 across restarts while allowing idempotent receipt retry.
+    let revoke_event_id = Uuid::new_v4();
+    let (status, revoke_receipt) = http(
+        &restarted,
+        "POST",
+        "/api/auth/privacy-restrictions",
+        Some(&bearer_2),
+        Some(json!({
+            "event_id": revoke_event_id,
+            "operation": Restriction::SessionsRevoke,
+            "scope_version": 0
+        })),
+    )
+    .await;
+    assert_eq!(status, StatusCode::OK);
+    // Interrupted receipt retry with same event_id succeeds; new mutation is rejected.
+    let (status, revoke_retry) = http(
+        &restarted,
+        "POST",
+        "/api/auth/privacy-restrictions",
+        Some(&bearer_2),
+        Some(json!({
+            "event_id": revoke_event_id,
+            "operation": Restriction::SessionsRevoke,
+            "scope_version": 0
+        })),
+    )
+    .await;
+    assert_eq!(status, StatusCode::OK);
+    assert_eq!(revoke_retry["event_id"], revoke_receipt["event_id"]);
     let (status, _) = http(
         &restarted,
         "POST",
@@ -413,7 +442,7 @@ async fn email_auth_sessions_terms_rights_and_retired_routes() {
         })),
     )
     .await;
-    assert_eq!(status, StatusCode::OK);
+    assert_eq!(status, StatusCode::UNAUTHORIZED);
     let (status, _) = http(
         &restarted,
         "GET",
@@ -445,6 +474,35 @@ async fn email_auth_sessions_terms_rights_and_retired_routes() {
     )
     .await;
     let bearer_3 = sign_in_3["bearer"].as_str().unwrap().to_owned();
+    let delete_event_id = Uuid::new_v4();
+    let (status, delete_receipt) = http(
+        &restarted,
+        "POST",
+        "/api/auth/privacy-restrictions",
+        Some(&bearer_3),
+        Some(json!({
+            "event_id": delete_event_id,
+            "operation": Restriction::AccountDelete,
+            "scope_version": 0
+        })),
+    )
+    .await;
+    assert_eq!(status, StatusCode::OK);
+    // Interrupted AccountDelete receipt retry returns the original receipt; new action fails.
+    let (status, delete_retry) = http(
+        &restarted,
+        "POST",
+        "/api/auth/privacy-restrictions",
+        Some(&bearer_3),
+        Some(json!({
+            "event_id": delete_event_id,
+            "operation": Restriction::AccountDelete,
+            "scope_version": 0
+        })),
+    )
+    .await;
+    assert_eq!(status, StatusCode::OK);
+    assert_eq!(delete_retry["event_id"], delete_receipt["event_id"]);
     let (status, _) = http(
         &restarted,
         "POST",
@@ -457,7 +515,7 @@ async fn email_auth_sessions_terms_rights_and_retired_routes() {
         })),
     )
     .await;
-    assert_eq!(status, StatusCode::OK);
+    assert_eq!(status, StatusCode::UNAUTHORIZED);
 
     let (status, _) = http(
         &restarted,

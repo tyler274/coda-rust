@@ -160,8 +160,10 @@ pub mod duet_session {
         /// Session primary key.
         #[sea_orm(primary_key, auto_increment = false)]
         pub id: Uuid,
-        /// Owning account ID (`public.users.id`).
+        /// Owning account ID (`public.users.id`; retained as tombstone across account deletion for receipt retry).
         pub user_id: Uuid,
+        /// Owning account incarnation UUID at session creation.
+        pub account_incarnation: Uuid,
         /// SHA-256 digest of the `ds1.` opaque session token.
         pub token_hash: Vec<u8>,
         /// Session creation timestamp checked against `sessions_revoked_before`.
