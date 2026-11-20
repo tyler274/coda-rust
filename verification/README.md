@@ -142,11 +142,13 @@ and still writes the receipt. `--require-complete` exits 3 while anything is mis
 
 `statechart`, `create-formal-verification-skill`, `maintain-formal-verification-skill`,
 `create-verification-skill` and `maintain-verification-skill` in `.agents/skills` are
-[PStack at 519d36a](https://github.com/cursor/plugins/tree/519d36aa98955bf680db01bcde5fdfba686dc901/pstack/skills),
+[PStack at 0b46ec3](https://github.com/cursor/plugins/tree/0b46ec399d55f2829e88822998f53b84944837d3/pstack/skills),
 copied unchanged except that `statechart/scripts/test`, the tool's own test corpus, is left out.
 Their [MIT license](PSTACK-LICENSE) comes with them. The
-[daily check](../.github/workflows/pstack-watch.yml) opens or refreshes one review PR when these
-five imported skills change. [CI setup](../book/src/release.md#continuous-integration) covers PR publication.
+[daily check](../.github/workflows/pstack-watch.yml) pushes `codex/update-pstack-skills` and
+opens or refreshes one review PR (or a tracking issue with a compare link when repository
+settings disable Actions PR creation) when these five imported skills change.
+[CI setup](../book/src/release.md#continuous-integration) covers publication.
 
 A verify skill the create skills write goes where [Verify skills](#verify-skills) says, not in
 `.cursor/skills/`. It refers to `statechart` by name and copies none of its commands, options or
