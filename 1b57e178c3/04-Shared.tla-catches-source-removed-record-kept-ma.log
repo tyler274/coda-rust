@@ -1,0 +1,168 @@
+Picked up JAVA_TOOL_OPTIONS: -Xmx4g -XX:ActiveProcessorCount=2 -XX:+UseParallelGC -XX:ParallelGCThreads=2
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Running breadth-first search Model-Checking with fp 0 and seed 6494151175077453140 with 1 worker on 2 cores with 3641MB heap and 64MB offheap memory [pid: 1035971] (Linux 7.3.3 amd64, Eclipse Adoptium 25.0.5 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /tmp/tlc-shared-break/Shared.tla
+Parsing file /tmp/Naturals.tla
+Parsing file /tmp/Sequences.tla
+Parsing file /tmp/FiniteSets.tla
+Parsing file /tmp/TLC.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Shared
+Starting... (2026-11-20 12:01:02)
+Warning: The set Notes has been defined to be a symmetry set but contains less than two elements.
+(Use the -nowarning option to disable this warning.)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-11-20 12:01:02.
+Error: Invariant ToSendExact is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ composer = [ phase |-> "Idle",
+  practice |-> Nobody,
+  chosenRecs |-> {},
+  chosenNotes |-> {},
+  disclosed |-> FALSE,
+  pendingSlot |-> 0 ]
+/\ conn = (P1 :> "Disconnected" @@ P2 :> "Disconnected")
+/\ mark = (R1 :> [saved |-> FALSE, local |-> "NotMarked"])
+/\ note = ( N1 :>
+      [ status |-> "NotWritten",
+        savedVer |-> 0,
+        localUnsaved |-> FALSE,
+        linkedRec |-> Nobody ] )
+/\ rec = (R1 :> [version |-> 1, present |-> TRUE, removedNotice |-> FALSE])
+/\ event = "start"
+/\ nextSend = 1
+/\ badStep = [ unconnectedSend |-> FALSE,
+  sendMutated |-> FALSE,
+  linkedMissing |-> FALSE,
+  confirmClearedBad |-> FALSE,
+  endedBecameRecv |-> FALSE,
+  otherPhoneOverwrote |-> FALSE,
+  joinSent |-> FALSE,
+  leaveDeleted |-> FALSE,
+  removeBad |-> FALSE,
+  uncertainCleared |-> FALSE ]
+/\ sends = << [ practice |-> Nobody,
+     disclosed |-> FALSE,
+     duetUi |-> "Empty",
+     serverSaved |-> FALSE,
+     practiceReceived |-> 0,
+     practicePickedUp |-> FALSE,
+     itemsRecs |-> (R1 :> 0),
+     itemsNotes |-> {},
+     endedAfterSent |-> FALSE,
+     confirmed |-> FALSE ],
+   [ practice |-> Nobody,
+     disclosed |-> FALSE,
+     duetUi |-> "Empty",
+     serverSaved |-> FALSE,
+     practiceReceived |-> 0,
+     practicePickedUp |-> FALSE,
+     itemsRecs |-> (R1 :> 0),
+     itemsNotes |-> {},
+     endedAfterSent |-> FALSE,
+     confirmed |-> FALSE ] >>
+
+State 2: <MarkRecord line 200, col 3 to line 204, col 83 of module Shared>
+/\ composer = [ phase |-> "Idle",
+  practice |-> Nobody,
+  chosenRecs |-> {},
+  chosenNotes |-> {},
+  disclosed |-> FALSE,
+  pendingSlot |-> 0 ]
+/\ conn = (P1 :> "Disconnected" @@ P2 :> "Disconnected")
+/\ mark = (R1 :> [saved |-> TRUE, local |-> "Marked"])
+/\ note = ( N1 :>
+      [ status |-> "NotWritten",
+        savedVer |-> 0,
+        localUnsaved |-> FALSE,
+        linkedRec |-> Nobody ] )
+/\ rec = (R1 :> [version |-> 1, present |-> TRUE, removedNotice |-> FALSE])
+/\ event = "you mark a record"
+/\ nextSend = 1
+/\ badStep = [ unconnectedSend |-> FALSE,
+  sendMutated |-> FALSE,
+  linkedMissing |-> FALSE,
+  confirmClearedBad |-> FALSE,
+  endedBecameRecv |-> FALSE,
+  otherPhoneOverwrote |-> FALSE,
+  joinSent |-> FALSE,
+  leaveDeleted |-> FALSE,
+  removeBad |-> FALSE,
+  uncertainCleared |-> FALSE ]
+/\ sends = << [ practice |-> Nobody,
+     disclosed |-> FALSE,
+     duetUi |-> "Empty",
+     serverSaved |-> FALSE,
+     practiceReceived |-> 0,
+     practicePickedUp |-> FALSE,
+     itemsRecs |-> (R1 :> 0),
+     itemsNotes |-> {},
+     endedAfterSent |-> FALSE,
+     confirmed |-> FALSE ],
+   [ practice |-> Nobody,
+     disclosed |-> FALSE,
+     duetUi |-> "Empty",
+     serverSaved |-> FALSE,
+     practiceReceived |-> 0,
+     practicePickedUp |-> FALSE,
+     itemsRecs |-> (R1 :> 0),
+     itemsNotes |-> {},
+     endedAfterSent |-> FALSE,
+     confirmed |-> FALSE ] >>
+
+State 3: <SourceRemovesRecord line 273, col 3 to line 281, col 40 of module Shared>
+/\ composer = [ phase |-> "Idle",
+  practice |-> Nobody,
+  chosenRecs |-> {},
+  chosenNotes |-> {},
+  disclosed |-> FALSE,
+  pendingSlot |-> 0 ]
+/\ conn = (P1 :> "Disconnected" @@ P2 :> "Disconnected")
+/\ mark = (R1 :> [saved |-> TRUE, local |-> "Marked"])
+/\ note = ( N1 :>
+      [ status |-> "NotWritten",
+        savedVer |-> 0,
+        localUnsaved |-> FALSE,
+        linkedRec |-> Nobody ] )
+/\ rec = (R1 :> [version |-> 1, present |-> FALSE, removedNotice |-> TRUE])
+/\ event = "its source removes a record"
+/\ nextSend = 1
+/\ badStep = [ unconnectedSend |-> FALSE,
+  sendMutated |-> FALSE,
+  linkedMissing |-> FALSE,
+  confirmClearedBad |-> FALSE,
+  endedBecameRecv |-> FALSE,
+  otherPhoneOverwrote |-> FALSE,
+  joinSent |-> FALSE,
+  leaveDeleted |-> FALSE,
+  removeBad |-> TRUE,
+  uncertainCleared |-> FALSE ]
+/\ sends = << [ practice |-> Nobody,
+     disclosed |-> FALSE,
+     duetUi |-> "Empty",
+     serverSaved |-> FALSE,
+     practiceReceived |-> 0,
+     practicePickedUp |-> FALSE,
+     itemsRecs |-> (R1 :> 0),
+     itemsNotes |-> {},
+     endedAfterSent |-> FALSE,
+     confirmed |-> FALSE ],
+   [ practice |-> Nobody,
+     disclosed |-> FALSE,
+     duetUi |-> "Empty",
+     serverSaved |-> FALSE,
+     practiceReceived |-> 0,
+     practicePickedUp |-> FALSE,
+     itemsRecs |-> (R1 :> 0),
+     itemsNotes |-> {},
+     endedAfterSent |-> FALSE,
+     confirmed |-> FALSE ] >>
+
+27 states generated, 23 distinct states found, 19 states left on queue.
+The depth of the complete state graph search is 3.
+The average outdegree of the complete state graph is 10 (minimum is 9, the maximum 11 and the 95th percentile is 11).
+Finished in 00s at (2026-11-20 12:01:02)

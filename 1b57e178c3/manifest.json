@@ -1,0 +1,203 @@
+{
+  "branch": "feat-settle-connected-care-duet-specs",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "COD-47-48-49",
+      "label": "Invitation.tla TLC pass (Rules 1-11 + NoDeadlock)",
+      "kind": "run",
+      "revision": "1b57e178c3295c7c0cc257261a9f1220ebc8377c",
+      "dirty": false,
+      "recorded": "2026-11-20T18:59:59+00:00",
+      "command": [
+        "timeout",
+        "1200",
+        "/home/luluco/.local/share/mise/installs/java/temurin-25/bin/java",
+        "-cp",
+        "/home/luluco/.local/share/mise/installs/http-tla2tools/1.7.4/tla2tools.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-fp",
+        "0",
+        "-metadir",
+        "/tmp/tlc-inv-meta",
+        "-config",
+        "verification/connected-care/invitation/Invitation.cfg",
+        "verification/connected-care/invitation/Invitation.tla"
+      ],
+      "expect": "Model checking completed. No error has been found.",
+      "expect_fail": false,
+      "files": [
+        "01-Invitation.tla-TLC-pass-Rules-1-11-NoDeadlock.log"
+      ],
+      "seconds": 13.3,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "COD-48-deliberate-break",
+      "label": "Invitation.tla catches broken 5-strike lock",
+      "kind": "run",
+      "revision": "1b57e178c3295c7c0cc257261a9f1220ebc8377c",
+      "dirty": false,
+      "recorded": "2026-11-20T19:00:13+00:00",
+      "command": [
+        "timeout",
+        "1200",
+        "/home/luluco/.local/share/mise/installs/java/temurin-25/bin/java",
+        "-cp",
+        "/home/luluco/.local/share/mise/installs/http-tla2tools/1.7.4/tla2tools.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-fp",
+        "0",
+        "-metadir",
+        "/tmp/tlc-inv-break/meta",
+        "-config",
+        "/tmp/tlc-inv-break/Invitation.cfg",
+        "/tmp/tlc-inv-break/Invitation.tla"
+      ],
+      "expect": "Invariant LockedAfterFiveWrongDob is violated.",
+      "expect_fail": true,
+      "files": [
+        "02-Invitation.tla-catches-broken-5-strike-lock.log"
+      ],
+      "seconds": 0.8,
+      "exit": 12,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "COD-50-51",
+      "label": "Shared.tla TLC pass (Rules 1-13 + NoDeadlock)",
+      "kind": "run",
+      "revision": "1b57e178c3295c7c0cc257261a9f1220ebc8377c",
+      "dirty": false,
+      "recorded": "2026-11-20T19:00:33+00:00",
+      "command": [
+        "timeout",
+        "1200",
+        "/home/luluco/.local/share/mise/installs/java/temurin-25/bin/java",
+        "-cp",
+        "/home/luluco/.local/share/mise/installs/http-tla2tools/1.7.4/tla2tools.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-fp",
+        "0",
+        "-metadir",
+        "/tmp/tlc-shared-meta",
+        "-config",
+        "verification/duet/shared/Shared.cfg",
+        "verification/duet/shared/Shared.tla"
+      ],
+      "expect": "Model checking completed. No error has been found.",
+      "expect_fail": false,
+      "files": [
+        "03-Shared.tla-TLC-pass-Rules-1-13-NoDeadlock.log"
+      ],
+      "seconds": 27.9,
+      "exit": 0,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "COD-50-deliberate-break",
+      "label": "Shared.tla catches source-removed record kept marked",
+      "kind": "run",
+      "revision": "1b57e178c3295c7c0cc257261a9f1220ebc8377c",
+      "dirty": false,
+      "recorded": "2026-11-20T19:01:02+00:00",
+      "command": [
+        "timeout",
+        "1200",
+        "/home/luluco/.local/share/mise/installs/java/temurin-25/bin/java",
+        "-cp",
+        "/home/luluco/.local/share/mise/installs/http-tla2tools/1.7.4/tla2tools.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-fp",
+        "0",
+        "-metadir",
+        "/tmp/tlc-shared-break/meta",
+        "-config",
+        "/tmp/tlc-shared-break/Shared.cfg",
+        "/tmp/tlc-shared-break/Shared.tla"
+      ],
+      "expect": "Invariant SourceRemovalClearsMark is violated.",
+      "expect_fail": true,
+      "files": [
+        "04-Shared.tla-catches-source-removed-record-kept-ma.log"
+      ],
+      "seconds": 0.8,
+      "exit": 12,
+      "expect_matched": false,
+      "ok": false,
+      "superseded": "ToSendExact fired before SourceRemovalClearsMark (both check removed-record clearing; removeBad=TRUE also recorded)"
+    },
+    {
+      "id": 5,
+      "claim": "COD-50-deliberate-break",
+      "label": "Shared.tla catches source-removed record kept marked",
+      "kind": "run",
+      "revision": "1b57e178c3295c7c0cc257261a9f1220ebc8377c",
+      "dirty": false,
+      "recorded": "2026-11-20T19:01:21+00:00",
+      "command": [
+        "timeout",
+        "1200",
+        "/home/luluco/.local/share/mise/installs/java/temurin-25/bin/java",
+        "-cp",
+        "/home/luluco/.local/share/mise/installs/http-tla2tools/1.7.4/tla2tools.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-fp",
+        "0",
+        "-metadir",
+        "/tmp/tlc-shared-break/meta2",
+        "-config",
+        "/tmp/tlc-shared-break/Shared.cfg",
+        "/tmp/tlc-shared-break/Shared.tla"
+      ],
+      "expect": "Invariant ToSendExact is violated.",
+      "expect_fail": true,
+      "files": [
+        "05-Shared.tla-catches-source-removed-record-kept-ma.log"
+      ],
+      "seconds": 0.7,
+      "exit": 12,
+      "expect_matched": true,
+      "ok": true
+    },
+    {
+      "id": 6,
+      "claim": "docs-skills-links-ci",
+      "label": "skills, lychee, book links, and test_ci_*.py",
+      "kind": "run",
+      "revision": "1b57e178c3295c7c0cc257261a9f1220ebc8377c",
+      "dirty": false,
+      "recorded": "2026-11-20T19:01:22+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail; '/tmp/coda-ci-venv-luluco/bin/python' scripts/check_engineering_skills.py && lychee --offline --no-progress --include-fragments --root-dir '/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e' '.agents/skills/**/*.md' 'intent/**/*.md' 'intent/*.md' 'verification/**/*.md' 'verification/*.md' && bash scripts/check-book-links.sh && '/tmp/coda-ci-venv-luluco/bin/python' -m unittest discover -s scripts -p 'test_ci_*.py' -v"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-skills-lychee-book-links-and-test_ci_-.py.log"
+      ],
+      "seconds": 17.2,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}

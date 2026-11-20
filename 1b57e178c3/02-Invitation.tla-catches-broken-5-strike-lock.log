@@ -1,0 +1,271 @@
+Picked up JAVA_TOOL_OPTIONS: -Xmx4g -XX:ActiveProcessorCount=2 -XX:+UseParallelGC -XX:ParallelGCThreads=2
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Running breadth-first search Model-Checking with fp 0 and seed -529268165501682788 with 1 worker on 2 cores with 3641MB heap and 64MB offheap memory [pid: 1028836] (Linux 7.3.3 amd64, Eclipse Adoptium 25.0.5 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /tmp/tlc-inv-break/Invitation.tla
+Parsing file /tmp/Naturals.tla
+Parsing file /tmp/Sequences.tla
+Parsing file /tmp/TLC.tla
+Parsing file /tmp/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Invitation
+Starting... (2026-11-20 12:00:13)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-11-20 12:00:13.
+Error: Invariant LockedAfterFiveWrongDob is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ inviteCount = 0
+/\ conn = [ Practice1 |->
+      [status |-> "Not invited", account |-> "Nobody", shared |-> FALSE],
+  Practice2 |->
+      [status |-> "Not invited", account |-> "Nobody", shared |-> FALSE] ]
+/\ duet = [ signedIn |-> "Nobody",
+  screen |-> "Idle",
+  activePractice |-> "Nobody",
+  activeGen |-> 0,
+  dobVerified |-> FALSE ]
+/\ event = "start"
+/\ inv = [ Practice1 |->
+      [ status |-> "None",
+        gen |-> 0,
+        locked |-> FALSE,
+        wrongDob |-> 0,
+        mailed |-> 0,
+        mailFailed |-> FALSE,
+        dobPassed |-> FALSE,
+        hasClosedToken |-> FALSE ],
+  Practice2 |->
+      [ status |-> "None",
+        gen |-> 0,
+        locked |-> FALSE,
+        wrongDob |-> 0,
+        mailed |-> 0,
+        mailFailed |-> FALSE,
+        dobPassed |-> FALSE,
+        hasClosedToken |-> FALSE ] ]
+/\ openCount = [Practice1 |-> 0, Practice2 |-> 0]
+
+State 2: <Invite line 97, col 3 to line 114, col 53 of module Invitation>
+/\ inviteCount = 1
+/\ conn = [ Practice1 |-> [status |-> "Invited", account |-> "Nobody", shared |-> FALSE],
+  Practice2 |->
+      [status |-> "Not invited", account |-> "Nobody", shared |-> FALSE] ]
+/\ duet = [ signedIn |-> "Nobody",
+  screen |-> "Idle",
+  activePractice |-> "Nobody",
+  activeGen |-> 0,
+  dobVerified |-> FALSE ]
+/\ event = "a member invites the patient to Practice1"
+/\ inv = [ Practice1 |->
+      [ status |-> "Open",
+        gen |-> 1,
+        locked |-> FALSE,
+        wrongDob |-> 0,
+        mailed |-> 1,
+        mailFailed |-> FALSE,
+        dobPassed |-> FALSE,
+        hasClosedToken |-> FALSE ],
+  Practice2 |->
+      [ status |-> "None",
+        gen |-> 0,
+        locked |-> FALSE,
+        wrongDob |-> 0,
+        mailed |-> 0,
+        mailFailed |-> FALSE,
+        dobPassed |-> FALSE,
+        hasClosedToken |-> FALSE ] ]
+/\ openCount = [Practice1 |-> 1, Practice2 |-> 0]
+
+State 3: <OpenInvite line 159, col 3 to line 171, col 80 of module Invitation>
+/\ inviteCount = 1
+/\ conn = [ Practice1 |-> [status |-> "Invited", account |-> "Nobody", shared |-> FALSE],
+  Practice2 |->
+      [status |-> "Not invited", account |-> "Nobody", shared |-> FALSE] ]
+/\ duet = [ signedIn |-> "Nobody",
+  screen |-> "Sign in or sign up by email",
+  activePractice |-> "Practice1",
+  activeGen |-> 1,
+  dobVerified |-> FALSE ]
+/\ event = "the patient opens link or code 1 for Practice1"
+/\ inv = [ Practice1 |->
+      [ status |-> "Open",
+        gen |-> 1,
+        locked |-> FALSE,
+        wrongDob |-> 0,
+        mailed |-> 1,
+        mailFailed |-> FALSE,
+        dobPassed |-> FALSE,
+        hasClosedToken |-> FALSE ],
+  Practice2 |->
+      [ status |-> "None",
+        gen |-> 0,
+        locked |-> FALSE,
+        wrongDob |-> 0,
+        mailed |-> 0,
+        mailFailed |-> FALSE,
+        dobPassed |-> FALSE,
+        hasClosedToken |-> FALSE ] ]
+/\ openCount = [Practice1 |-> 1, Practice2 |-> 0]
+
+State 4: <SignInAtInvite line 186, col 3 to line 197, col 45 of module Invitation>
+/\ inviteCount = 1
+/\ conn = [ Practice1 |-> [status |-> "Invited", account |-> "Nobody", shared |-> FALSE],
+  Practice2 |->
+      [status |-> "Not invited", account |-> "Nobody", shared |-> FALSE] ]
+/\ duet = [ signedIn |-> "Account1",
+  screen |-> "Date-of-birth check",
+  activePractice |-> "Practice1",
+  activeGen |-> 1,
+  dobVerified |-> FALSE ]
+/\ event = "the patient signs in as Account1"
+/\ inv = [ Practice1 |->
+      [ status |-> "Open",
+        gen |-> 1,
+        locked |-> FALSE,
+        wrongDob |-> 0,
+        mailed |-> 1,
+        mailFailed |-> FALSE,
+        dobPassed |-> FALSE,
+        hasClosedToken |-> FALSE ],
+  Practice2 |->
+      [ status |-> "None",
+        gen |-> 0,
+        locked |-> FALSE,
+        wrongDob |-> 0,
+        mailed |-> 0,
+        mailFailed |-> FALSE,
+        dobPassed |-> FALSE,
+        hasClosedToken |-> FALSE ] ]
+/\ openCount = [Practice1 |-> 1, Practice2 |-> 0]
+
+State 5: <SubmitWrongDob line 223, col 3 to line 240, col 56 of module Invitation>
+/\ inviteCount = 1
+/\ conn = [ Practice1 |-> [status |-> "Invited", account |-> "Nobody", shared |-> FALSE],
+  Practice2 |->
+      [status |-> "Not invited", account |-> "Nobody", shared |-> FALSE] ]
+/\ duet = [ signedIn |-> "Account1",
+  screen |-> "Date-of-birth check",
+  activePractice |-> "Practice1",
+  activeGen |-> 1,
+  dobVerified |-> FALSE ]
+/\ event = "the patient enters a wrong date of birth"
+/\ inv = [ Practice1 |->
+      [ status |-> "Open",
+        gen |-> 1,
+        locked |-> FALSE,
+        wrongDob |-> 1,
+        mailed |-> 1,
+        mailFailed |-> FALSE,
+        dobPassed |-> FALSE,
+        hasClosedToken |-> FALSE ],
+  Practice2 |->
+      [ status |-> "None",
+        gen |-> 0,
+        locked |-> FALSE,
+        wrongDob |-> 0,
+        mailed |-> 0,
+        mailFailed |-> FALSE,
+        dobPassed |-> FALSE,
+        hasClosedToken |-> FALSE ] ]
+/\ openCount = [Practice1 |-> 1, Practice2 |-> 0]
+
+State 6: <SubmitWrongDob line 223, col 3 to line 240, col 56 of module Invitation>
+/\ inviteCount = 1
+/\ conn = [ Practice1 |-> [status |-> "Invited", account |-> "Nobody", shared |-> FALSE],
+  Practice2 |->
+      [status |-> "Not invited", account |-> "Nobody", shared |-> FALSE] ]
+/\ duet = [ signedIn |-> "Account1",
+  screen |-> "Date-of-birth check",
+  activePractice |-> "Practice1",
+  activeGen |-> 1,
+  dobVerified |-> FALSE ]
+/\ event = "the patient enters a wrong date of birth"
+/\ inv = [ Practice1 |->
+      [ status |-> "Open",
+        gen |-> 1,
+        locked |-> FALSE,
+        wrongDob |-> 2,
+        mailed |-> 1,
+        mailFailed |-> FALSE,
+        dobPassed |-> FALSE,
+        hasClosedToken |-> FALSE ],
+  Practice2 |->
+      [ status |-> "None",
+        gen |-> 0,
+        locked |-> FALSE,
+        wrongDob |-> 0,
+        mailed |-> 0,
+        mailFailed |-> FALSE,
+        dobPassed |-> FALSE,
+        hasClosedToken |-> FALSE ] ]
+/\ openCount = [Practice1 |-> 1, Practice2 |-> 0]
+
+State 7: <SubmitWrongDob line 223, col 3 to line 240, col 56 of module Invitation>
+/\ inviteCount = 1
+/\ conn = [ Practice1 |-> [status |-> "Invited", account |-> "Nobody", shared |-> FALSE],
+  Practice2 |->
+      [status |-> "Not invited", account |-> "Nobody", shared |-> FALSE] ]
+/\ duet = [ signedIn |-> "Account1",
+  screen |-> "Date-of-birth check",
+  activePractice |-> "Practice1",
+  activeGen |-> 1,
+  dobVerified |-> FALSE ]
+/\ event = "the patient enters a wrong date of birth"
+/\ inv = [ Practice1 |->
+      [ status |-> "Open",
+        gen |-> 1,
+        locked |-> FALSE,
+        wrongDob |-> 3,
+        mailed |-> 1,
+        mailFailed |-> FALSE,
+        dobPassed |-> FALSE,
+        hasClosedToken |-> FALSE ],
+  Practice2 |->
+      [ status |-> "None",
+        gen |-> 0,
+        locked |-> FALSE,
+        wrongDob |-> 0,
+        mailed |-> 0,
+        mailFailed |-> FALSE,
+        dobPassed |-> FALSE,
+        hasClosedToken |-> FALSE ] ]
+/\ openCount = [Practice1 |-> 1, Practice2 |-> 0]
+
+State 8: <SubmitWrongDob line 223, col 3 to line 240, col 56 of module Invitation>
+/\ inviteCount = 1
+/\ conn = [ Practice1 |-> [status |-> "Invited", account |-> "Nobody", shared |-> FALSE],
+  Practice2 |->
+      [status |-> "Not invited", account |-> "Nobody", shared |-> FALSE] ]
+/\ duet = [ signedIn |-> "Account1",
+  screen |-> "Date-of-birth check",
+  activePractice |-> "Practice1",
+  activeGen |-> 1,
+  dobVerified |-> FALSE ]
+/\ event = "the patient enters a wrong date of birth"
+/\ inv = [ Practice1 |->
+      [ status |-> "Open",
+        gen |-> 1,
+        locked |-> FALSE,
+        wrongDob |-> 4,
+        mailed |-> 1,
+        mailFailed |-> FALSE,
+        dobPassed |-> FALSE,
+        hasClosedToken |-> FALSE ],
+  Practice2 |->
+      [ status |-> "None",
+        gen |-> 0,
+        locked |-> FALSE,
+        wrongDob |-> 0,
+        mailed |-> 0,
+        mailFailed |-> FALSE,
+        dobPassed |-> FALSE,
+        hasClosedToken |-> FALSE ] ]
+/\ openCount = [Practice1 |-> 1, Practice2 |-> 0]
+
+7307 states generated, 2141 distinct states found, 1184 states left on queue.
+The depth of the complete state graph search is 8.
+The average outdegree of the complete state graph is 2 (minimum is 0, the maximum 11 and the 95th percentile is 6).
+Finished in 00s at (2026-11-20 12:00:13)
