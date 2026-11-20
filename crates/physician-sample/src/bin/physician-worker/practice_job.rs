@@ -546,6 +546,7 @@ mod tests {
             })
             .unwrap(),
             skills: None,
+            connected_care_health: Default::default(),
         };
         let (_stop_tx, stop_rx) = watch::channel(false);
 
@@ -843,6 +844,7 @@ mod tests {
             })
             .unwrap(),
             skills: None,
+            connected_care_health: Default::default(),
         });
         let app = router(Arc::clone(&worker));
 
@@ -1365,6 +1367,7 @@ mod tests {
             })
             .unwrap(),
             skills: None,
+            connected_care_health: Default::default(),
         });
         let app = router(Arc::clone(&worker));
 
@@ -1611,6 +1614,7 @@ mod tests {
             })
             .unwrap(),
             skills: Some(skills),
+            connected_care_health: Default::default(),
         };
 
         worker.poll_connected_care().await;

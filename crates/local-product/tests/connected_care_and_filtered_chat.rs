@@ -1521,3 +1521,412 @@ async fn cross_practice_connected_care_collision_refuses_foreign_chart_writes() 
         .unwrap();
     assert_eq!(shares[0].standing, ForMyDoctorShareStatus::Sent);
 }
+
+#[tokio::test]
+async fn cod61_cod62_origin_ehr_duplicates_and_post_join_correction_fences() {
+    let Some(url) = test_database_url() else {
+        return;
+    };
+    let (store, auth, front_door) = setup_stores(&url).await;
+    let suffix = Uuid::new_v4().simple().to_string();
+    let practice = format!("practice-cc2-dup-{suffix}");
+    let workspace = workspace_id(&practice, &format!("patient-cc2-dup-{suffix}"));
+    let now_u64 = 1_763_217_000_u64;
+    let now_ts = now_u64 as i64;
+
+    let (doc, _, _) = invite_and_sign_in(&auth, &practice, "Dr. Origin", now_u64).await;
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.place_on_panel(&doc, &workspace).await.unwrap();
+
+    // Seed an existing EHR lab record in the patient's chart (Elation).
+    let ehr_a1c = local_product::physician_sources::SourceRevision {
+        workspace: workspace.clone(),
+        source_id: "elation".to_owned(),
+        candidate_id: "elation/Observation/epic-a1c-001".to_owned(),
+        revision: "ehr-v1".to_owned(),
+        record_type: "Observation".to_owned(),
+        dates: vec![local_product::physician_sources::RecordDate {
+            name: "recorded".to_owned(),
+            value: "2025-11-15T14:30:00Z".to_owned(),
+        }],
+        content: "Hemoglobin A1c: 6.4 %".to_owned(),
+        sha256: local_product::sha256_hex(b"Hemoglobin A1c: 6.4 %"),
+        readable_parts: Vec::new(),
+        provenance: json!({
+            "title": "Hemoglobin A1c",
+            "source_record_id": "epic-a1c-001",
+        }),
+        envelope: None,
+    };
+    store.record_source(&ehr_a1c).await.unwrap();
+
+    // Patient joins and uploads 2 Duet records: one duplicating the EHR A1c and one new Apple Health BP.
+    let roster = RosterPatient {
+        practice_id: practice.clone(),
+        patient_id: workspace.clone(),
+    };
+    let patient_email = format!("cc2-dup-{suffix}@example.test");
+    let invite = front_door
+        .invite(&roster, &patient_email, "Jordan Ellis", now_u64)
+        .await
+        .unwrap();
+    let (account_id, _) = front_door
+        .redeem_invitation(&patient_email, &invite, now_u64 + 5)
+        .await
+        .unwrap();
+
+    front_door
+        .upsert_shared_records(
+            account_id,
+            &[
+                SharedPatientRecordInput {
+                    record_id: "rec-a1c-dup".into(),
+                    revision: "rev-1".into(),
+                    record_type: "Observation".into(),
+                    title: "Hemoglobin A1c".into(),
+                    content_text: "Source-Origin: Epic\nOrigin: from Epic, via the patient's Duet\nSource-Record-Id: epic-a1c-001\n---\nHemoglobin A1c: 6.4 %".into(),
+                    recorded_at: now_u64,
+                },
+                SharedPatientRecordInput {
+                    record_id: "rec-apple-bp".into(),
+                    revision: "rev-1".into(),
+                    record_type: "Observation".into(),
+                    title: "Blood Pressure".into(),
+                    content_text: "Source-Origin: Apple Health\nOrigin: from Apple Health, via the patient's Duet\nSource-Record-Id: apple-bp-99\n---\nHome blood pressure 154/96 mmHg.".into(),
+                    recorded_at: now_u64 + 1,
+                },
+            ],
+            now_u64 + 10,
+        )
+        .await
+        .unwrap();
+
+    let roles = model_roles();
+    let skills = load_skills();
+    let join_report = store
+        .sync_connected_care_from_front_door(
+            auth.as_ref(),
+            &front_door,
+            &practice,
+            &roles,
+            &skills,
+            auth.as_ref(),
+            now_ts + 12,
+        )
+        .await
+        .unwrap();
+    assert_eq!(join_report.consent_wakes_started, 1);
+    assert_eq!(join_report.duplicates_labeled, 1);
+    assert_eq!(join_report.correction_wakes_started, 0);
+
+    let obs_v1 = store.sources(&workspace).await.unwrap();
+    // EHR original stays intact.
+    assert!(
+        obs_v1
+            .sources
+            .iter()
+            .any(|src| src.candidate_id == "elation/Observation/epic-a1c-001")
+    );
+    // Duet A1c copy carries exact origin AND duplicate label (`Rule 12` & `Rule 14`).
+    let dup_a1c = obs_v1
+        .sources
+        .iter()
+        .find(|src| src.candidate_id == "duet-shared:rec-a1c-dup")
+        .expect("duplicate A1c filed rather than dropped");
+    assert_eq!(
+        dup_a1c.provenance["origin"],
+        "from Epic, via the patient's Duet"
+    );
+    assert_eq!(dup_a1c.provenance["is_duplicate"], true);
+    assert_eq!(
+        dup_a1c.provenance["duplicate_of_chart_record"]["candidate_id"],
+        "elation/Observation/epic-a1c-001"
+    );
+    assert!(
+        dup_a1c
+            .content
+            .contains("Origin: from Epic, via the patient's Duet")
+    );
+    assert!(
+        dup_a1c.content.contains(
+            "Duplicate of chart record: elation/Observation/epic-a1c-001 (source: elation)"
+        )
+    );
+
+    // Non-duplicate Apple Health BP carries exact origin and `is_duplicate == false`.
+    let bp_v1 = obs_v1
+        .sources
+        .iter()
+        .find(|src| src.candidate_id == "duet-shared:rec-apple-bp")
+        .expect("Apple Health BP filed");
+    assert_eq!(
+        bp_v1.provenance["origin"],
+        "from Apple Health, via the patient's Duet"
+    );
+    assert_eq!(bp_v1.provenance["is_duplicate"], false);
+
+    let reviews_v1 = store
+        .patient_reviews(&practice, &workspace, auth.as_ref())
+        .await
+        .unwrap();
+    assert_eq!(reviews_v1.len(), 1);
+    let initial_review_id = reviews_v1[0].review_id.clone();
+    assert_eq!(reviews_v1[0].state.status_str(), "pending");
+
+    // Post-join source correction (`Rule 13`): BP is corrected from rev-1 -> rev-2.
+    front_door
+        .upsert_shared_records(
+            account_id,
+            &[SharedPatientRecordInput {
+                record_id: "rec-apple-bp".into(),
+                revision: "rev-2".into(),
+                record_type: "Observation".into(),
+                title: "Blood Pressure".into(),
+                content_text: "Source-Origin: Apple Health\nOrigin: from Apple Health, via the patient's Duet\nSource-Record-Id: apple-bp-99\nSource-Status: corrected\n---\nCorrected home blood pressure 128/78 mmHg.".into(),
+                recorded_at: now_u64 + 1,
+            }],
+            now_u64 + 40,
+        )
+        .await
+        .unwrap();
+
+    let correction_report = store
+        .sync_connected_care_from_front_door(
+            auth.as_ref(),
+            &front_door,
+            &practice,
+            &roles,
+            &skills,
+            auth.as_ref(),
+            now_ts + 45,
+        )
+        .await
+        .unwrap();
+    assert_eq!(correction_report.consent_wakes_started, 0);
+    assert_eq!(correction_report.correction_wakes_started, 1);
+
+    // Dated prior version is preserved at obs_v1.version while current holds rev-2.
+    let prior_snapshot = store.sources_at(&workspace, obs_v1.version).await.unwrap();
+    let prior_bp = prior_snapshot
+        .sources
+        .iter()
+        .find(|src| src.candidate_id == "duet-shared:rec-apple-bp")
+        .expect("prior dated version preserved");
+    assert_eq!(prior_bp.revision, "rev-1");
+    assert!(prior_bp.content.contains("154/96 mmHg"));
+
+    let current_obs = store.sources(&workspace).await.unwrap();
+    let current_bp = current_obs
+        .sources
+        .iter()
+        .find(|src| src.candidate_id == "duet-shared:rec-apple-bp")
+        .expect("corrected version filed");
+    assert_eq!(current_bp.revision, "rev-2");
+    assert!(current_bp.content.contains("128/78 mmHg"));
+    assert!(
+        current_bp
+            .content
+            .contains("Supersedes prior version: rev-1")
+    );
+    assert_eq!(current_bp.provenance["supersedes_revision"], "rev-1");
+
+    // Unfinished review holding replaced rev-1 was superseded so it can never publish stale data,
+    // and a fresh correction review is pending on the new workspace version.
+    let reviews_v2 = store
+        .patient_reviews(&practice, &workspace, auth.as_ref())
+        .await
+        .unwrap();
+    assert_eq!(reviews_v2.len(), 2);
+    let old_review = reviews_v2
+        .iter()
+        .find(|r| r.review_id == initial_review_id)
+        .expect("prior review retained in history");
+    assert_eq!(old_review.state.status_str(), "superseded");
+    let new_review = reviews_v2
+        .iter()
+        .find(|r| r.review_id != initial_review_id)
+        .expect("fresh correction review admitted");
+    assert_eq!(new_review.state.status_str(), "pending");
+    assert_eq!(new_review.initial_source_version, current_obs.version);
+
+    // Re-running sync with no new revision is idempotent (zero extra wakes).
+    let idempotent = store
+        .sync_connected_care_from_front_door(
+            auth.as_ref(),
+            &front_door,
+            &practice,
+            &roles,
+            &skills,
+            auth.as_ref(),
+            now_ts + 50,
+        )
+        .await
+        .unwrap();
+    assert_eq!(idempotent.correction_wakes_started, 0);
+}
+
+#[tokio::test]
+async fn cod62_x4_1_departing_physician_panel_reassignment_preserves_connection_and_sync() {
+    let Some(url) = test_database_url() else {
+        return;
+    };
+    let (store, auth, front_door) = setup_stores(&url).await;
+    let suffix = Uuid::new_v4().simple().to_string();
+    let practice = format!("practice-x41-{suffix}");
+    let workspace = workspace_id(&practice, &format!("patient-x41-{suffix}"));
+    let now_u64 = 1_763_300_000_u64;
+    let now_ts = now_u64 as i64;
+
+    // Clinic admin, departing physician A, and receiving physician B.
+    let (admin_doc, _, _) = invite_and_sign_in(&auth, &practice, "Clinic Admin", now_u64).await;
+    let doc_a_email = format!("doc-a-{suffix}@codahealth.test");
+    let doc_a_invite = auth
+        .invite(&practice, &doc_a_email, "Dr. Departing", false, now_u64)
+        .await
+        .unwrap();
+    let (doc_a, doc_a_session) = auth
+        .redeem_invitation(&doc_a_email, &doc_a_invite, now_u64)
+        .await
+        .unwrap();
+    let (doc_b, _, _) = invite_and_sign_in(&auth, &practice, "Dr. Receiving", now_u64).await;
+
+    auth.register_patient(&practice, &workspace).await.unwrap();
+    auth.place_on_panel(&doc_a, &workspace).await.unwrap();
+
+    // Patient joins the practice and shares an initial record.
+    let roster = RosterPatient {
+        practice_id: practice.clone(),
+        patient_id: workspace.clone(),
+    };
+    let patient_email = format!("x41-pat-{suffix}@example.test");
+    let invite = front_door
+        .invite(&roster, &patient_email, "Taylor Morgan", now_u64 + 1)
+        .await
+        .unwrap();
+    let (account_id, _) = front_door
+        .redeem_invitation(&patient_email, &invite, now_u64 + 2)
+        .await
+        .unwrap();
+    front_door
+        .upsert_shared_records(
+            account_id,
+            &[SharedPatientRecordInput {
+                record_id: "rec-before-departure".into(),
+                revision: "rev-1".into(),
+                record_type: "Observation".into(),
+                title: "Resting Heart Rate".into(),
+                content_text: "Source-Origin: Apple Health\nOrigin: from Apple Health, via the patient's Duet\n---\nResting HR 64 bpm.".into(),
+                recorded_at: now_u64 + 3,
+            }],
+            now_u64 + 4,
+        )
+        .await
+        .unwrap();
+
+    let roles = model_roles();
+    let skills = load_skills();
+    store
+        .sync_connected_care_from_front_door(
+            auth.as_ref(),
+            &front_door,
+            &practice,
+            &roles,
+            &skills,
+            auth.as_ref(),
+            now_ts + 5,
+        )
+        .await
+        .unwrap();
+
+    // X4.1: Physician A leaves the practice; clinic reassigns the patient's panel to Physician B
+    // and deactivates Physician A.
+    auth.assign_panel(
+        &admin_doc,
+        &doc_b.physician_id,
+        &workspace,
+        Membership::Allowed,
+    )
+    .await
+    .unwrap();
+    auth.assign_panel(
+        &admin_doc,
+        &doc_a.physician_id,
+        &workspace,
+        Membership::Denied,
+    )
+    .await
+    .unwrap();
+    assert!(auth.deactivate(&doc_a_email).await);
+
+    // Departed Physician A's session is revoked; Physician B now holds panel access.
+    assert!(
+        auth.verified_session(&doc_a_session, now_u64 + 10)
+            .await
+            .is_err()
+    );
+    assert!(auth.panel(&doc_b).await.contains(&workspace));
+
+    // Connection stays `Connected` (never ended by physician departure).
+    let status = front_door.roster_connection(&roster).await.unwrap();
+    assert!(
+        matches!(status, front_door::RosterConnectionStatus::Connected { account_id: id, .. } if id == account_id),
+        "physician departure must keep front_door_connections Connected, got {status:?}"
+    );
+
+    // Subsequent live Duet update continues syncing seamlessly under the reassigned panel.
+    front_door
+        .upsert_shared_records(
+            account_id,
+            &[
+                SharedPatientRecordInput {
+                    record_id: "rec-before-departure".into(),
+                    revision: "rev-1".into(),
+                    record_type: "Observation".into(),
+                    title: "Resting Heart Rate".into(),
+                    content_text: "Source-Origin: Apple Health\nOrigin: from Apple Health, via the patient's Duet\n---\nResting HR 64 bpm.".into(),
+                    recorded_at: now_u64 + 3,
+                },
+                SharedPatientRecordInput {
+                    record_id: "rec-after-reassignment".into(),
+                    revision: "rev-1".into(),
+                    record_type: "Observation".into(),
+                    title: "Fasting Glucose".into(),
+                    content_text: "Source-Origin: Epic\nOrigin: from Epic, via the patient's Duet\n---\nFasting glucose 98 mg/dL.".into(),
+                    recorded_at: now_u64 + 20,
+                },
+            ],
+            now_u64 + 21,
+        )
+        .await
+        .unwrap();
+
+    let after_reassign = store
+        .sync_connected_care_from_front_door(
+            auth.as_ref(),
+            &front_door,
+            &practice,
+            &roles,
+            &skills,
+            auth.as_ref(),
+            now_ts + 25,
+        )
+        .await
+        .unwrap();
+    assert_eq!(after_reassign.consented_workspaces_checked, 1);
+
+    let obs = store.sources(&workspace).await.unwrap();
+    assert!(
+        obs.sources
+            .iter()
+            .any(|src| src.candidate_id == "duet-shared:rec-before-departure")
+    );
+    let post = obs
+        .sources
+        .iter()
+        .find(|src| src.candidate_id == "duet-shared:rec-after-reassignment")
+        .expect("live Duet record synced after physician departure and panel reassignment");
+    assert_eq!(
+        post.provenance["origin"],
+        "from Epic, via the patient's Duet"
+    );
+}
