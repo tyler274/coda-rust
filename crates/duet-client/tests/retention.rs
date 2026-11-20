@@ -494,3 +494,63 @@ fn synced_anchor_only_health_outbox_reports_zero_unconfirmed_entries() {
     assert_eq!(leaving.unconfirmed_count(), 0);
     assert!(leaving.is_empty());
 }
+
+#[test]
+fn sign_out_warning_accounts_for_for_my_doctor_drafts_and_pending_sends() {
+    use duet_client::for_my_doctor::{
+        ForMyDoctorState, PendingDoctorSend, RetainedDoctorNoteDraft, SendForMyDoctorPayload,
+    };
+
+    let store = Arc::new(Store::default());
+    let owner = RetentionOwner::new(store.clone());
+    let fence = owner.activate(identity("acct-fmd:inc-1")).unwrap();
+    owner
+        .save_for_my_doctor_cache(&fence, &ForMyDoctorState::default())
+        .unwrap();
+    owner
+        .save_doctor_note_draft(
+            &fence,
+            &RetainedDoctorNoteDraft {
+                note_id: uuid::Uuid::new_v4(),
+                is_new: true,
+                expected_version: None,
+                unsaved_body: "Ask about dizziness".to_owned(),
+                linked_record_id: None,
+                linked_record_title: None,
+                linked_entity: None,
+                conflict_latest: None,
+            },
+        )
+        .unwrap();
+    owner
+        .save_pending_doctor_send(
+            &fence,
+            &PendingDoctorSend {
+                payload: SendForMyDoctorPayload {
+                    share_key: "fmd-k1".to_owned(),
+                    practice_id: "p1".to_owned(),
+                    practice_name: "Northside Clinic".to_owned(),
+                    patient_id: "pt1".to_owned(),
+                    disclosure_accepted: true,
+                    selected_mark_ids: vec![],
+                    selected_note_ids: vec![],
+                    ad_hoc_record: None,
+                },
+                ended_before_confirm: false,
+                ended_reason: None,
+            },
+        )
+        .unwrap();
+
+    for key in store.values.lock().unwrap().keys() {
+        assert!(registered_storage_key(key), "unregistered key {key}");
+    }
+    let leaving = owner.account_leaving().unwrap();
+    assert!(leaving.draft);
+    assert!(leaving.pending_operation);
+    assert_eq!(leaving.unconfirmed_count(), 2);
+
+    owner.sign_out().unwrap();
+    assert!(store.values.lock().unwrap().is_empty());
+    assert!(owner.account_leaving().unwrap().is_empty());
+}

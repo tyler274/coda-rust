@@ -163,6 +163,55 @@ pub fn plain_summary_without_ranges(raw: &str) -> String {
     filtered.join(" · ")
 }
 
+/// How a held `PendingDoctorSend` reconciles against fresh `ForMyDoctorState` from the server.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum PendingReconciliation {
+    /// Confirmed in `loaded.sends` (matches `share_key`): clear the pending retry banner.
+    Confirmed,
+    /// Practice connection ended while `"Couldn't confirm the send"` (`COD-51`): drop `"Try again"`.
+    EndedBeforeConfirm(String),
+    /// No change yet.
+    Unchanged,
+}
+
+/// Reconciles an active local `pending` send against newly loaded `ForMyDoctorState`.
+pub fn reconcile_pending_send_against_state(
+    pending: &PendingDoctorSend,
+    loaded: &ForMyDoctorState,
+) -> PendingReconciliation {
+    if loaded
+        .sends
+        .iter()
+        .any(|s| s.share_key == pending.payload.share_key)
+    {
+        return PendingReconciliation::Confirmed;
+    }
+    if pending.ended_before_confirm {
+        return PendingReconciliation::Unchanged;
+    }
+    let has_active_connection = loaded.practices.iter().any(|p| {
+        p.practice_id == pending.payload.practice_id
+            && p.patient_id == pending.payload.patient_id
+            && matches!(p.standing, PracticeStanding::Connected { .. })
+    });
+    if has_active_connection {
+        return PendingReconciliation::Unchanged;
+    }
+    if let Some(ended_reason) = loaded.practices.iter().find_map(|p| {
+        if p.practice_id == pending.payload.practice_id
+            && p.patient_id == pending.payload.patient_id
+            && let PracticeStanding::Ended { reason, .. } = &p.standing
+        {
+            Some(reason.clone())
+        } else {
+            None
+        }
+    }) {
+        return PendingReconciliation::EndedBeforeConfirm(ended_reason);
+    }
+    PendingReconciliation::Unchanged
+}
+
 /// Initializes [`ForMyDoctorSession`] inside `PrivateRoot`, restoring retained pending sends
 /// and unsaved free-text notes from [`PatientSession`] retention storage.
 pub fn use_for_my_doctor_session(
@@ -220,6 +269,27 @@ pub fn use_for_my_doctor_session(
         match res {
             Some(Ok(loaded)) => {
                 let _ = cache_owner.save_for_my_doctor_cache(&cache_fence, &loaded);
+                // `.peek()` keeps `pending_send` writes from re-running this effect and
+                // overwriting local marks/notes with a prior `resource()` snapshot.
+                let pending_snapshot = session.pending_send.peek().clone();
+                if let Some(pending) = pending_snapshot {
+                    match reconcile_pending_send_against_state(&pending, &loaded) {
+                        PendingReconciliation::Confirmed => {
+                            let _ = cache_owner.clear_pending_doctor_send(&cache_fence);
+                            session.pending_send.set(None);
+                        }
+                        PendingReconciliation::EndedBeforeConfirm(reason) => {
+                            let updated = PendingDoctorSend {
+                                payload: pending.payload,
+                                ended_before_confirm: true,
+                                ended_reason: Some(reason),
+                            };
+                            let _ = cache_owner.save_pending_doctor_send(&cache_fence, &updated);
+                            session.pending_send.set(Some(updated));
+                        }
+                        PendingReconciliation::Unchanged => {}
+                    }
+                }
                 session.state.set(Some(loaded));
                 session.load_failed.set(false);
             }
@@ -1505,5 +1575,58 @@ mod tests {
         let cleaned =
             plain_summary_without_ranges("142 mg/dL\nReference range: <100 mg/dL\nFasting sample");
         assert_eq!(cleaned, "142 mg/dL · Fasting sample");
+    }
+
+    #[test]
+    fn reconcile_pending_send_clears_confirmed_and_transitions_cod51_ended() {
+        let pending = PendingDoctorSend {
+            payload: SendForMyDoctorPayload {
+                share_key: "fmd-retry-1".into(),
+                practice_id: "practice-a".into(),
+                practice_name: "Northside Clinic".into(),
+                patient_id: "pt-1".into(),
+                disclosure_accepted: true,
+                selected_mark_ids: vec![],
+                selected_note_ids: vec![],
+                ad_hoc_record: None,
+            },
+            ended_before_confirm: false,
+            ended_reason: None,
+        };
+
+        let mut loaded = ForMyDoctorState::default();
+        loaded.practices.push(PracticeConnection {
+            practice_id: "practice-a".into(),
+            practice_name: "Northside Clinic".into(),
+            patient_id: "pt-1".into(),
+            standing: PracticeStanding::Ended {
+                connected_at: 100,
+                ended_at: 200,
+                reason: "Patient left".into(),
+            },
+        });
+        assert_eq!(
+            reconcile_pending_send_against_state(&pending, &loaded),
+            PendingReconciliation::EndedBeforeConfirm("Patient left".into())
+        );
+
+        loaded.sends.push(ForMyDoctorSend {
+            id: Uuid::new_v4(),
+            share_key: "fmd-retry-1".into(),
+            practice_id: "practice-a".into(),
+            practice_name: "Northside Clinic".into(),
+            patient_id: "pt-1".into(),
+            title: "Note".into(),
+            summary_text: "Hello".into(),
+            records: vec![],
+            notes: vec![],
+            standing: SendStanding::Sent,
+            sent_at: "2026-11-20T10:00:00Z".into(),
+            connection_ended_at: None,
+        });
+        assert_eq!(
+            reconcile_pending_send_against_state(&pending, &loaded),
+            PendingReconciliation::Confirmed
+        );
     }
 }

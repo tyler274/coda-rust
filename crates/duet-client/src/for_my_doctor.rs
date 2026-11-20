@@ -422,6 +422,7 @@ impl DuetClient {
             return serde_json::from_slice(&bytes)
                 .map_err(|err| ForMyDoctorClientError::Uncertain(err.to_string()));
         }
+        self.observe_refusal(status, &String::from_utf8_lossy(&bytes));
         Err(classify_fmd_error(status, &bytes))
     }
 
@@ -441,6 +442,7 @@ impl DuetClient {
         if status.is_success() {
             return Ok(());
         }
+        self.observe_refusal(status, &String::from_utf8_lossy(&bytes));
         Err(classify_fmd_error(status, &bytes))
     }
 
@@ -602,6 +604,11 @@ fn classify_fmd_error(status: reqwest::StatusCode, bytes: &[u8]) -> ForMyDoctorC
     if status == reqwest::StatusCode::UNAUTHORIZED {
         return ForMyDoctorClientError::Unauthorized;
     }
+    if status == reqwest::StatusCode::FORBIDDEN {
+        return ForMyDoctorClientError::Invalid(
+            "Accept the current Duet Terms of Service to continue.".to_owned(),
+        );
+    }
     let env = serde_json::from_slice::<ErrorEnvelope>(bytes).ok();
     if status == reqwest::StatusCode::CONFLICT {
         if let Some(env) = env {
@@ -683,5 +690,40 @@ mod tests {
             classify_fmd_error(reqwest::StatusCode::SERVICE_UNAVAILABLE, b""),
             ForMyDoctorClientError::Uncertain(_)
         ));
+    }
+
+    #[tokio::test]
+    async fn send_and_state_observe_session_refusal() {
+        use axum::{Json, Router, http::StatusCode, routing::get};
+        use futures_channel::mpsc::unbounded;
+
+        let app = Router::new().route(
+            "/api/for-my-doctor",
+            get(|| async {
+                (
+                    StatusCode::UNAUTHORIZED,
+                    Json(serde_json::json!({
+                        "detail": { "code": "session_revoked", "message": "revoked" }
+                    })),
+                )
+            }),
+        );
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let addr = listener.local_addr().unwrap();
+        let server = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+
+        let session = crate::session::AccountSession::default();
+        let fence = session.switch(Some("acct:1".into())).unwrap();
+        let (tx, mut rx) = unbounded();
+        let client = DuetClient::new(format!("http://{addr}"), "ds1.tok", "0", "0.1.0")
+            .unwrap()
+            .bind_session(session, fence, tx);
+
+        let err = client.for_my_doctor_state(None).await.unwrap_err();
+        assert_eq!(err, ForMyDoctorClientError::Unauthorized);
+        let (_seen_fence, refusal) = rx.try_recv().unwrap();
+        assert_eq!(refusal, crate::refusal::SessionRefusal::Revoked);
+
+        server.abort();
     }
 }
