@@ -28,7 +28,7 @@ use crate::background;
 use crate::database::{AccountDatabase, orm};
 use crate::durable::DurableState;
 use crate::evidence::{EvidenceChange, EvidenceSnapshot, EvidenceStore, ExactEvidence};
-use crate::identity::{AccountContext, check_current};
+use crate::identity::{AccessLevel, AccountContext, check_current};
 
 mod front_door_mapping {
     use sea_orm::entity::prelude::*;
@@ -578,7 +578,7 @@ impl ConnectedCareUploader {
                     Some(Box::new(err)),
                 )
             })?;
-        if let Err(err) = check_current(&mut tx, context, false).await {
+        if let Err(err) = check_current(&mut tx, context, AccessLevel::AcceptedTerms).await {
             let reason = match err {
                 ApiError::Unauthorized | ApiError::SessionRevoked | ApiError::AbsentAccount => {
                     SharingFailureReason::Unauthenticated
