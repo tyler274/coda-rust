@@ -641,15 +641,6 @@ impl RetentionOwner {
     }
 }
 
-/// Copy a capability only on explicit patient action; native hosts bound clipboard retention.
-pub fn copy_native_link(value: &str) -> Result<(), String> {
-    platform_call(serde_json::json!({"op":"copy_link", "value":value})).map(|_| ())
-}
-/// Present an already source-checked PDF through the native share sheet. No publication authority is granted.
-pub fn present_native_pdf(bytes: &[u8]) -> Result<(), String> {
-    platform_call(serde_json::json!({"op":"share_pdf", "bytes":bytes})).map(|_| ())
-}
-
 pub(crate) fn platform_call(request: serde_json::Value) -> Result<serde_json::Value, String> {
     #[cfg(any(target_os = "ios", target_os = "android"))]
     {

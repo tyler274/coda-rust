@@ -207,17 +207,16 @@ fn boxed_recovery_preserves_v1_storage_bytes_and_subject_fence() {
     assert!(!store.values.lock().unwrap().contains_key(&key));
 }
 #[test]
-fn publication_intent_survives_restart_cannot_rebase_and_is_erased_on_switch() {
+fn clear_intent_survives_restart_cannot_rebase_and_is_erased_on_switch() {
     use duet_client::doctor::*;
     let store = Arc::new(Store::default());
     let owner = RetentionOwner::new(store.clone());
     let a = owner.activate(identity("a")).unwrap();
-    let request = PublishRequest {
-        operation_id: uuid::Uuid::new_v4(),
+    let op_id = uuid::Uuid::new_v4();
+    let original = PendingDoctorOperation::Clear {
+        operation_id: op_id,
         expected_generation: 7,
-        expires_in_seconds: 604800,
     };
-    let original = PendingDoctorOperation::Publish(request.clone());
     owner.retain_operation(&a, &original).unwrap();
     let restarted = RetentionOwner::new(store);
     let fence = restarted.activate(identity("a")).unwrap();
@@ -226,11 +225,15 @@ fn publication_intent_survives_restart_cannot_rebase_and_is_erased_on_switch() {
         Some(original.clone())
     );
     restarted.retain_operation(&fence, &original).unwrap();
-    let mut changed = request;
-    changed.expected_generation += 1;
     assert!(
         restarted
-            .retain_operation(&fence, &PendingDoctorOperation::Publish(changed))
+            .retain_operation(
+                &fence,
+                &PendingDoctorOperation::Clear {
+                    operation_id: op_id,
+                    expected_generation: 8,
+                }
+            )
             .is_err()
     );
     restarted.activate(identity("b")).unwrap();

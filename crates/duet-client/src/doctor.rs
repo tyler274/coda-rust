@@ -9,15 +9,15 @@ pub enum DoctorError {
     /// Sign-in expired; never automatically replay mutations after refresh.
     #[error("Sign in again. Pending operations were not replayed.")]
     Unauthorized,
-    /// Server does not advertise/acknowledge atomic UUID preconditions; never retry unconditionally.
+    /// Server does not advertise/acknowledge expected preconditions; never retry unconditionally.
     #[error(
-        "This server has not confirmed conditional revocation support. No unconditional retry will be sent; check the active publication before proceeding."
+        "This server has not confirmed the required precondition support. No unconditional retry will be sent."
     )]
     UnsupportedPrecondition,
     /// Permission or accepted terms required.
     #[error("This operation needs current account permission or terms.")]
     Forbidden,
-    /// Generation, proposal, source or idempotency bytes changed.
+    /// Generation, source or idempotency bytes changed.
     #[error(
         "The page, selected sources, or operation changed. Review the current page; your draft is retained."
     )]
@@ -27,8 +27,8 @@ pub enum DoctorError {
         "No receipt or resource was found. This alone does not prove an uncertain write failed."
     )]
     NotFound,
-    /// Invalid selection, expiry or command headers.
-    #[error("The request is invalid. Review the selection and expiry.")]
+    /// Invalid selection or command headers.
+    #[error("The request is invalid. Review the selection and retry.")]
     Invalid,
     /// Transport, server, receipt confirmation or decode failure: mutation outcome may be uncertain.
     #[error("Duet could not confirm the outcome. Retry the same operation, not a new one.")]
@@ -37,52 +37,15 @@ pub enum DoctorError {
     #[error("Duet could not confirm the outcome. Retry the same operation, not a new one.")]
     Response(#[source] crate::refusal::TransportCause),
 }
-/// Exact command retained across uncertain acknowledgements. Contains no capability or patient prose.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct PublishRequest {
-    /// Generate once per explicit approval; reuse identical bytes on retry.
-    pub operation_id: uuid::Uuid,
-    /// Reviewed approved page generation.
-    pub expected_generation: i64,
-    /// Sixty seconds to thirty days; UI defaults to seven days.
-    pub expires_in_seconds: i64,
-}
-/// Patient-only capability response. Intentionally no Debug implementation.
-#[derive(Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct PublicationView {
-    /// Publication identity.
-    pub id: uuid::Uuid,
-    /// Pinned approved generation.
-    pub generation: i64,
-    /// Server-authoritative RFC3339 expiry.
-    pub expires_at: String,
-    /// Revocation state.
-    pub revoked: bool,
-    /// Account-free web capability; never persist to browser storage/telemetry.
-    pub web_url: String,
-    /// SMART Health Link, key only in fragment; never persist to logs.
-    pub shl_url: String,
-    /// Digest of exact published PDF.
-    pub content_sha256: String,
-}
-/// Persistent intent records only, never link URLs or PDF bytes.
+/// Persistent intent records for non-draft doctor workspace operations.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum PendingDoctorOperation {
-    /// Explicit pinned publication command.
-    Publish(PublishRequest),
     /// Retry the same privacy deletion event and generation.
     Clear {
         /// Stable privacy event UUID.
         operation_id: uuid::Uuid,
         /// Original generation, never rebased on retry.
         expected_generation: i64,
-    },
-    /// Revoke command and original target guard.
-    Revoke {
-        /// Stable privacy event UUID.
-        operation_id: uuid::Uuid,
-        /// Current API revokes active publication; guard readback before retry.
-        publication_id: uuid::Uuid,
     },
 }
 /// Exact canonical address retaining the original arbitrary source identifier.
@@ -376,18 +339,6 @@ impl DuetClient {
         )
         .await
     }
-    /// Reject only the reviewed proposal and base generation.
-    pub async fn reject_doctor_proposal(
-        &self,
-        id: uuid::Uuid,
-        generation: i32,
-    ) -> Result<DoctorCollection, DoctorError> {
-        self.doctor_json(
-            self.doctor_request(reqwest::Method::POST, &format!("/proposals/{id}/reject"))
-                .json(&serde_json::json!({"expected_generation":generation})),
-        )
-        .await
-    }
     /// Select an addressed canonical record using the existing exact revision DTO.
     pub async fn select_doctor_record(
         &self,
@@ -410,33 +361,6 @@ impl DuetClient {
         )
         .await
     }
-    /// Source-validated server PDF. Caller must compare against reviewed generation/content before sharing.
-    pub async fn doctor_pdf(&self) -> Result<Vec<u8>, DoctorError> {
-        let response = self
-            .doctor_checked(self.doctor_request(reqwest::Method::GET, "/pdf"))
-            .await?;
-        if response
-            .headers()
-            .get(reqwest::header::CONTENT_TYPE)
-            .and_then(|v| v.to_str().ok())
-            != Some("application/pdf")
-        {
-            return Err(DoctorError::Uncertain);
-        }
-        response
-            .bytes()
-            .await
-            .map(|b| b.to_vec())
-            .map_err(|_| DoctorError::Uncertain)
-    }
-    /// Server SVG preview; never grants export/publication authority.
-    pub async fn doctor_preview_svg(&self) -> Result<String, DoctorError> {
-        self.doctor_checked(self.doctor_request(reqwest::Method::GET, "/preview"))
-            .await?
-            .text()
-            .await
-            .map_err(|_| DoctorError::Uncertain)
-    }
     /// Confirmed Start fresh with durable privacy-event retry identity.
     pub async fn clear_doctor_workspace(
         &self,
@@ -450,58 +374,6 @@ impl DuetClient {
         )
         .await
         .map(|_| ())
-    }
-    /// Explicit publication. Do not generate an operation ID inside this method.
-    pub async fn create_doctor_share_link(
-        &self,
-        request: &PublishRequest,
-    ) -> Result<PublicationView, DoctorError> {
-        self.doctor_json(
-            self.doctor_request(reqwest::Method::POST, "/share-link")
-                .json(request),
-        )
-        .await
-    }
-    /// Current active/revoked publication readback, or no publication.
-    pub async fn doctor_share_status(&self) -> Result<Option<PublicationView>, DoctorError> {
-        self.doctor_json(self.doctor_request(reqwest::Method::GET, "/share-link"))
-            .await
-    }
-    /// Revoke using the same privacy-event UUID after an uncertain acknowledgement.
-    pub async fn revoke_doctor_share_link(
-        &self,
-        operation_id: uuid::Uuid,
-        publication_id: uuid::Uuid,
-    ) -> Result<(), DoctorError> {
-        // Old servers ignore unknown If-Match headers. Do not dispatch a destructive request
-        // until the server explicitly advertises the atomic UUID protocol.
-        let capability = self
-            .doctor_checked(self.doctor_request(reqwest::Method::GET, "/share-link"))
-            .await?;
-        if capability
-            .headers()
-            .get("Duet-Publication-Precondition")
-            .and_then(|v| v.to_str().ok())
-            != Some("uuid-v1")
-        {
-            return Err(DoctorError::UnsupportedPrecondition);
-        }
-        let response = self
-            .doctor_checked(
-                self.doctor_request(reqwest::Method::DELETE, "/share-link")
-                    .header("Idempotency-Key", operation_id.to_string())
-                    .header("If-Match", publication_id.to_string()),
-            )
-            .await?;
-        if response
-            .headers()
-            .get("Duet-Publication-Precondition")
-            .and_then(|v| v.to_str().ok())
-            != Some("uuid-v1")
-        {
-            return Err(DoctorError::UnsupportedPrecondition);
-        }
-        Ok(())
     }
 }
 impl DuetClient {

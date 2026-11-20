@@ -67,32 +67,20 @@ const TABLE: &[Entry] = &[
     Entry {
         file: "crates/duet-app/src/lib.rs",
         kind: Input,
-        count: 8,
-        reason: "The corrected value, note, visit, question and medication fields, and the medication checkboxes, carry Duet's own labels and sit outside `TextField` and `Checkbox` until the Duet forms move.",
+        count: 5,
+        reason: "The corrected value, note, question and medication fields, and the medication checkboxes, carry Duet's own labels and sit outside `TextField` and `Checkbox` until the Duet forms move.",
     },
     Entry {
         file: "crates/duet-app/src/lib.rs",
         kind: Textarea,
-        count: 3,
-        reason: "The note, visit and cover note bodies, which become a multiline `TextField` when the Duet forms move.",
+        count: 2,
+        reason: "The note and question bodies, which become a multiline `TextField` when the Duet forms move.",
     },
     Entry {
         file: "crates/duet-app/src/lib.rs",
         kind: CardMarkup,
-        count: 5,
-        reason: "You, For my doctor and saved page preview cards put `card`, `card-title` and `card-text` on plain elements, with voice and number layouts that `Card` would have to hold before they move.",
-    },
-    Entry {
-        file: "crates/duet-app/src/publication.rs",
-        kind: Input,
-        count: 1,
-        reason: "The read-only link field, whose `readonly` state `TextField` doesn't offer.",
-    },
-    Entry {
-        file: "crates/duet-app/src/publication.rs",
-        kind: Select,
-        count: 1,
-        reason: "The link lifetime choice, which moves to the shared `Select` with the Duet forms.",
+        count: 4,
+        reason: "You and For my doctor cards put `card`, `card-title` and `card-text` on plain elements, with voice and number layouts that `Card` would have to hold before they move.",
     },
     Entry {
         file: "crates/duet-app/src/records.rs",
@@ -105,12 +93,6 @@ const TABLE: &[Entry] = &[
         kind: CardMarkup,
         count: 1,
         reason: "A record's title uses `card-text` until records are built from `Card`.",
-    },
-    Entry {
-        file: "crates/duet-app/src/resolution.rs",
-        kind: Input,
-        count: 1,
-        reason: "The consent checkbox for ending a conflicting retry, which moves to `Checkbox` with the Duet forms.",
     },
 ];
 

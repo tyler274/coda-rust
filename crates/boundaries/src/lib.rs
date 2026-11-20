@@ -108,7 +108,7 @@ mod tests {
                 "neutral harness imported product-owned crate {dependency}"
             );
         }
-        for duet in ["duet-api", "duet-app", "duet-client", "duet-page"] {
+        for duet in ["duet-api", "duet-app", "duet-client"] {
             for dependency in local_closure(duet) {
                 assert!(!dependency.starts_with("physician-"));
                 assert!(

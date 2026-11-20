@@ -21,7 +21,7 @@ MOBILE_ON_CHANGE = False
 # runs `check-mobile-crates` against `cargo tree`, so a new dependency fails
 # that job until it is listed here.
 MOBILE_CRATES = (
-    "android", "duet-app", "duet-client", "duet-health", "duet-notify", "duet-page",
+    "android", "duet-app", "duet-client", "duet-health", "duet-notify",
     "duet-wire", "http", "mobile", "physician-app", "physician-client", "physician-wire", "ui",
 )
 MOBILE_FILES = {

@@ -282,17 +282,8 @@ async fn run_durable_owners() {
     .await
     .unwrap();
     assert!(!restored.replay(event).await.unwrap());
-    eprintln!("durable proof: publication and SHL");
-    // Durable approved workspace, pinned publication, and independent SHL decoding.
-    use aes_gcm::{
-        Aes256Gcm, KeyInit,
-        aead::{Aead, Payload},
-    };
-    use base64::Engine;
-    use duet_api::{
-        publication::{PublicationStore, PublishRequest},
-        workspace::WorkspaceStore,
-    };
+    eprintln!("durable proof: doctor workspace and safety rules");
+    use duet_api::workspace::{WorkspaceStore, legacy_preparation};
     use duet_wire::models::{
         CanonicalRecordSelection, DoctorPageContent, DoctorPageSave,
         canonical_record_selection::Kind,
@@ -315,36 +306,87 @@ async fn run_durable_owners() {
     );
     let item: Uuid = serde_json::from_value(page["items"][0]["id"].clone()).unwrap();
     let mut content = DoctorPageContent::new();
-    content.name = Some(Some("Alex <script>alert(1)</script>".into()));
     content.questions = Some(vec!["What should we discuss?".into()]);
-    content.cover_note = Some(Some("PRIVATE COVER NOTE".into()));
     let save = DoctorPageSave::new(
         page["note_generation"].as_i64().unwrap() as i32,
         vec![item],
-        content,
+        content.clone(),
     );
     let approved = workspace.save(&a, &save).await.unwrap();
     assert_eq!(workspace.save(&a, &save).await.unwrap(), approved);
-    let publications = PublicationStore::new(
-        db.clone(),
-        "https://duet.example".into(),
-        "https://viewer.example/".into(),
-        [7; 32],
-    )
-    .unwrap();
-    let request = PublishRequest {
-        operation_id: Uuid::new_v4(),
-        expected_generation: approved["note_generation"].as_i64().unwrap(),
-        expires_in_seconds: 3600,
-    };
-    let view = publications.publish(&a, &request).await.unwrap();
-    assert_eq!(
-        publications.publish(&a, &request).await.unwrap().web_url,
-        view.web_url
+    assert!(approved["proposal"].is_null());
+
+    // Lab printed reference ranges never enter For my doctor selection, approved read, or preparation.
+    let lab_id = Uuid::new_v4();
+    let lab_address = evidence
+        .ingest(
+            &b,
+            &EvidenceMutation {
+                operation_id: Uuid::new_v4(),
+                canonical_record_id: lab_id,
+                record_id: "lab/potassium-1".into(),
+                entity: duet_wire::models::addressed_record_revision::Entity::HealthEvidence,
+                expected_revision: None,
+                source_generation: None,
+                operation: Default::default(),
+                payload: serde_json::json!({
+                    "concept_id": "lab-potassium",
+                    "category": "lab",
+                    "display_name": "Potassium",
+                    "value": "5.4",
+                    "unit": "mmol/L",
+                    "recorded_at": "2026-10-01T14:30:00Z",
+                    "source_label": "Regional Lab",
+                    "source": {"kind": "healthRecords", "record_id": "lab-potassium-1", "declared_dates": {"issued": "2026-10-01"}, "projected_date_role": "issued"},
+                    "referenceRange": [{"low": {"value": 3.5}, "high": {"value": 5.0}, "text": "3.5-5.0 mmol/L"}],
+                    "reference_range": "3.5 - 5.0 mmol/L",
+                }),
+            },
+        )
+        .await
+        .unwrap();
+    let with_lab = workspace
+        .select_record(
+            &b,
+            &CanonicalRecordSelection::new(
+                Kind::Record,
+                lab_address.canonical_record_id,
+                lab_address.revision,
+            ),
+        )
+        .await
+        .unwrap();
+    let lab_item = with_lab["items"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|entry| entry["record"]["record_id"] == "lab/potassium-1")
+        .unwrap();
+    let lab_lines = lab_item["page_entry"]["lines"].to_string();
+    assert!(lab_lines.contains("5.4") && lab_lines.contains("mmol/L"));
+    assert!(
+        !lab_lines.contains("3.5")
+            && !lab_lines.contains("referenceRange")
+            && !lab_lines.contains("reference_range"),
+        "printed reference range leaked into For my doctor item: {lab_lines}"
     );
-    let web_token = view.web_url.rsplit('/').next().unwrap();
-    let public = publications.retrieve(web_token, false).await.unwrap();
-    // Real durable route composition: no auth required publicly, private workspace fails closed.
+    let with_lab_save = DoctorPageSave::new(
+        with_lab["note_generation"].as_i64().unwrap() as i32,
+        vec![serde_json::from_value(lab_item["id"].clone()).unwrap()],
+        content.clone(),
+    );
+    let saved_with_lab = workspace.save(&b, &with_lab_save).await.unwrap();
+    let checked_with_lab = workspace.approved_read(&b).await.unwrap();
+    let prep = legacy_preparation(&checked_with_lab).to_string();
+    assert!(prep.contains("5.4") && !prep.contains("3.5") && !prep.contains("reference"));
+
+    // Retired AI proposal save must be refused.
+    let mut rejected = with_lab_save.clone();
+    rejected.expected_generation = saved_with_lab["note_generation"].as_i64().unwrap() as i32;
+    rejected.proposal_id = Some(Some(Uuid::new_v4()));
+    assert!(workspace.save(&b, &rejected).await.is_err());
+
+    // Private doctor routes fail closed without auth, and retired PDF/SHL/proposal endpoints return 404.
     use tower::ServiceExt;
     let routes = duet_api::doctor_routes::router(duet_api::doctor_routes::DoctorState {
         durable: duet_api::durable::DurableState {
@@ -353,22 +395,7 @@ async fn run_durable_owners() {
             evidence: evidence.clone(),
         },
         workspace: workspace.clone(),
-        publications: publications.clone(),
     });
-    let response = routes
-        .clone()
-        .oneshot(
-            axum::http::Request::builder()
-                .uri(format!("/shared/for-my-doctor/{web_token}"))
-                .body(axum::body::Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(response.status(), 200);
-    assert_eq!(response.headers()["cache-control"], "no-store, max-age=0");
-    assert_eq!(response.headers()["referrer-policy"], "no-referrer");
-    assert!(response.headers().contains_key("content-security-policy"));
     let unauthorized = routes
         .clone()
         .oneshot(
@@ -380,366 +407,33 @@ async fn run_durable_owners() {
         .await
         .unwrap();
     assert_eq!(unauthorized.status(), 401);
-    let html = duet_api::publication::html(&public.snapshot);
-    assert!(!html.contains("<script>"));
-    assert!(!html.contains("PRIVATE COVER NOTE"));
-    let encoded = view.shl_url.split("#shlink:/").nth(1).unwrap();
-    let decoder = base64::engine::general_purpose::URL_SAFE_NO_PAD;
-    let shl: serde_json::Value = serde_json::from_slice(&decoder.decode(encoded).unwrap()).unwrap();
-    let token = shl["url"].as_str().unwrap().split('/').nth(4).unwrap();
-    let manifest = publications.manifest(token).await.unwrap();
-    let location = manifest["files"][0]["location"]
-        .as_str()
-        .unwrap()
-        .rsplit('/')
-        .next()
-        .unwrap();
-    let mut tampered = location.as_bytes().to_vec();
-    tampered[30] = if tampered[30] == b'A' { b'B' } else { b'A' };
-    assert!(
-        publications
-            .shl_file(std::str::from_utf8(&tampered).unwrap())
-            .await
-            .is_err()
-    );
-    let jwe = publications.shl_file(location).await.unwrap();
-    let parts: Vec<_> = jwe.split('.').collect();
-    assert_eq!(parts.len(), 5);
-    assert!(parts[1].is_empty());
-    let header: serde_json::Value =
-        serde_json::from_slice(&decoder.decode(parts[0]).unwrap()).unwrap();
-    assert_eq!(header["alg"], "dir");
-    assert_eq!(header["enc"], "A256GCM");
-    let key = decoder.decode(shl["key"].as_str().unwrap()).unwrap();
-    let nonce = decoder.decode(parts[2]).unwrap();
-    let ciphertext = [
-        decoder.decode(parts[3]).unwrap(),
-        decoder.decode(parts[4]).unwrap(),
-    ]
-    .concat();
-    let nonce: [u8; 12] = nonce.as_slice().try_into().unwrap();
-    let plaintext = Aes256Gcm::new_from_slice(&key)
-        .unwrap()
-        .decrypt(
-            (&nonce).into(),
-            Payload {
-                msg: &ciphertext,
-                aad: parts[0].as_bytes(),
-            },
-        )
-        .unwrap();
-    let fhir: serde_json::Value = serde_json::from_slice(&plaintext).unwrap();
-    assert_eq!(fhir["resourceType"], "DocumentReference");
-    assert_eq!(
-        base64::engine::general_purpose::STANDARD
-            .decode(fhir["content"][0]["attachment"]["data"].as_str().unwrap())
-            .unwrap(),
-        public.pdf
-    );
-    let mut changed = save.clone();
-    changed.expected_generation = approved["note_generation"].as_i64().unwrap() as i32;
-    changed.page.name = Some(Some("New wording".into()));
-    workspace.save(&a, &changed).await.unwrap();
-    assert_eq!(
-        publications.retrieve(web_token, false).await.unwrap().pdf,
-        public.pdf
-    );
-    sqlx::query("update duet_publications set expires_at=now()-interval '1 second' where id=$1")
-        .bind(view.id)
-        .execute(&mut owner)
-        .await
-        .unwrap();
-    assert!(publications.retrieve(web_token, false).await.is_err());
-    assert!(publications.shl_file(location).await.is_err());
-    sqlx::query("update duet_publications set expires_at=now()+interval '1 hour' where id=$1")
-        .bind(view.id)
-        .execute(&mut owner)
-        .await
-        .unwrap();
-    privacy
-        .restrict(
-            &a,
-            Uuid::new_v4(),
-            Restriction::PublicationRevoke,
-            view.id,
-            0,
-        )
-        .await
-        .unwrap();
-    assert!(publications.retrieve(web_token, false).await.is_err());
-    assert!(publications.manifest(token).await.is_err());
-    assert!(publications.shl_file(location).await.is_err());
-    // Conditional publication revoke: real HTTP contract and shared account-lock race.
-    let revoke_request = |operation: Uuid, target: Option<Uuid>| {
-        let mut builder = axum::http::Request::builder()
-            .method("DELETE")
-            .uri("/api/doctor-collection/share-link")
-            .header("Authorization", "Bearer a")
-            .header("Idempotency-Key", operation.to_string());
-        if let Some(target) = target {
-            builder = builder.header("If-Match", target.to_string());
-        }
-        builder.body(axum::body::Body::empty()).unwrap()
-    };
-    let status = routes
-        .clone()
-        .oneshot(
-            axum::http::Request::builder()
-                .uri("/api/doctor-collection/share-link")
-                .header("Authorization", "Bearer a")
-                .body(axum::body::Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(status.headers()["duet-publication-precondition"], "uuid-v1");
-    assert_eq!(
-        status.headers()["access-control-expose-headers"],
-        "Duet-Publication-Precondition"
-    );
-    let preflight = routes
-        .clone()
-        .oneshot(
-            axum::http::Request::builder()
-                .method("OPTIONS")
-                .uri("/api/doctor-collection/share-link")
-                .header("Origin", "https://patient.example")
-                .header("Access-Control-Request-Method", "DELETE")
-                .header(
-                    "Access-Control-Request-Headers",
-                    "If-Match,Idempotency-Key,Authorization",
-                )
-                .body(axum::body::Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(preflight.status(), 204);
-    let allowed = preflight.headers()["access-control-allow-headers"]
-        .to_str()
-        .unwrap();
-    assert!(allowed.contains("If-Match") && allowed.contains("Idempotency-Key"));
-    assert_eq!(
-        routes
-            .clone()
-            .oneshot(revoke_request(Uuid::new_v4(), None))
-            .await
-            .unwrap()
-            .status(),
-        428
-    );
-    let generation = workspace.read(&a).await.unwrap()["note_generation"]
-        .as_i64()
-        .unwrap();
-    let publish_request = || PublishRequest {
-        operation_id: Uuid::new_v4(),
-        expected_generation: generation,
-        expires_in_seconds: 3600,
-    };
-    let reviewed = publications.publish(&a, &publish_request()).await.unwrap();
-    for invalid in [
-        "*".to_owned(),
-        format!("\"{}\"", reviewed.id),
-        format!("W/\"{}\"", reviewed.id),
-        "not-a-uuid".to_owned(),
+    for (method, uri) in [
+        ("GET", "/api/doctor-collection/pdf"),
+        ("GET", "/api/doctor-collection/preview"),
+        ("GET", "/api/doctor-collection/share-link"),
+        ("POST", "/api/doctor-collection/share-link"),
+        ("GET", "/shared/for-my-doctor/retired-token"),
+        ("GET", "/shared/for-my-doctor/retired-token/pdf"),
+        ("POST", "/shl/retired-token/manifest"),
+        (
+            "POST",
+            "/api/doctor-collection/proposals/00000000-0000-0000-0000-000000000000/reject",
+        ),
     ] {
-        let mut request = revoke_request(Uuid::new_v4(), None);
-        request
-            .headers_mut()
-            .insert("If-Match", invalid.parse().unwrap());
-        assert_eq!(routes.clone().oneshot(request).await.unwrap().status(), 422);
-    }
-    let mut missing_operation = revoke_request(Uuid::new_v4(), Some(reviewed.id));
-    missing_operation.headers_mut().remove("Idempotency-Key");
-    assert_eq!(
-        routes
+        let res = routes
             .clone()
-            .oneshot(missing_operation)
-            .await
-            .unwrap()
-            .status(),
-        422
-    );
-    let mut other_account = revoke_request(Uuid::new_v4(), Some(reviewed.id));
-    other_account
-        .headers_mut()
-        .insert("Authorization", "Bearer b".parse().unwrap());
-    assert_eq!(
-        routes
-            .clone()
-            .oneshot(other_account)
-            .await
-            .unwrap()
-            .status(),
-        409
-    );
-    let op = Uuid::new_v4();
-    // Independent journal outage leaves restriction + original operation binding
-    // effective. A replacement must survive the later acknowledgement retry.
-    journal.fail.store(true, Ordering::SeqCst);
-    assert_eq!(
-        routes
-            .clone()
-            .oneshot(revoke_request(op, Some(reviewed.id)))
-            .await
-            .unwrap()
-            .status(),
-        503
-    );
-    let replacement = publications.publish(&a, &publish_request()).await.unwrap();
-    journal.fail.store(false, Ordering::SeqCst);
-    let acknowledged = routes
-        .clone()
-        .oneshot(revoke_request(op, Some(reviewed.id)))
-        .await
-        .unwrap();
-    assert_eq!(acknowledged.status(), 204);
-    assert_eq!(
-        acknowledged.headers()["duet-publication-precondition"],
-        "uuid-v1"
-    );
-    assert_eq!(
-        routes
-            .clone()
-            .oneshot(revoke_request(op, Some(replacement.id)))
-            .await
-            .unwrap()
-            .status(),
-        409
-    );
-    let stale_op = Uuid::new_v4();
-    assert_eq!(
-        routes
-            .clone()
-            .oneshot(revoke_request(stale_op, Some(reviewed.id)))
-            .await
-            .unwrap()
-            .status(),
-        409
-    );
-    let retained: i64 =
-        sqlx::query_scalar("select count(*) from privacy_recovery_events where id=$1")
-            .bind(stale_op)
-            .fetch_one(&mut owner)
+            .oneshot(
+                axum::http::Request::builder()
+                    .method(method)
+                    .uri(uri)
+                    .header("Authorization", "Bearer a")
+                    .body(axum::body::Body::empty())
+                    .unwrap(),
+            )
             .await
             .unwrap();
-    assert_eq!(retained, 0);
-    assert!(
-        publications
-            .retrieve(replacement.web_url.rsplit('/').next().unwrap(), false)
-            .await
-            .is_ok()
-    );
-    // Retry same successful operation after replacement still acknowledges it.
-    assert_eq!(
-        routes
-            .clone()
-            .oneshot(revoke_request(op, Some(reviewed.id)))
-            .await
-            .unwrap()
-            .status(),
-        204
-    );
-    // Two runtime pools race replacement against conditional revoke. Whichever
-    // wins the account lock, the newly published target must never be revoked.
-    let second_publications = PublicationStore::new(
-        db2.clone(),
-        "https://duet.example".into(),
-        "https://viewer.example/".into(),
-        [7; 32],
-    )
-    .unwrap();
-    for _ in 0..3 {
-        let reviewed = publications.status(&a).await.unwrap().unwrap();
-        let race_op = Uuid::new_v4();
-        let replace = publish_request();
-        let (revoked, replaced) = tokio::join!(
-            routes
-                .clone()
-                .oneshot(revoke_request(race_op, Some(reviewed.id))),
-            second_publications.publish(&a, &replace)
-        );
-        let result = revoked.unwrap();
-        let replaced = replaced.unwrap();
-        assert!([204, 409].contains(&result.status().as_u16()));
-        let active: bool =
-            sqlx::query_scalar("select revoked_at is null from duet_publications where id=$1")
-                .bind(replaced.id)
-                .fetch_one(&mut owner)
-                .await
-                .unwrap();
-        assert!(active);
-        let retry = routes
-            .clone()
-            .oneshot(revoke_request(race_op, Some(reviewed.id)))
-            .await
-            .unwrap();
-        assert_eq!(retry.status(), result.status());
-        if result.status() == 204 {
-            assert_eq!(
-                routes
-                    .clone()
-                    .oneshot(revoke_request(race_op, Some(replaced.id)))
-                    .await
-                    .unwrap()
-                    .status(),
-                409
-            );
-        }
+        assert_eq!(res.status(), 404, "{method} {uri} must be retired");
     }
-    // Concurrent duplicate submissions bind just one receipt and both acknowledge.
-    let duplicate_target = publications.status(&a).await.unwrap().unwrap();
-    let duplicate_op = Uuid::new_v4();
-    let (one, two) = tokio::join!(
-        routes
-            .clone()
-            .oneshot(revoke_request(duplicate_op, Some(duplicate_target.id))),
-        routes
-            .clone()
-            .oneshot(revoke_request(duplicate_op, Some(duplicate_target.id)))
-    );
-    assert_eq!(one.unwrap().status(), 204);
-    assert_eq!(two.unwrap().status(), 204);
-    let count: i64 = sqlx::query_scalar(
-        "select count(*) from privacy_recovery_events where id=$1 and scope_id=$2",
-    )
-    .bind(duplicate_op)
-    .bind(duplicate_target.id)
-    .fetch_one(&mut owner)
-    .await
-    .unwrap();
-    assert_eq!(count, 1);
-    // Proposals are durable across retry; rejection and newer saves cannot resurrect them.
-    sqlx::query("update users set intelligence_enabled=true,luna_consent_decision='accepted',luna_consent_version='2026-09-24',terms_version=$2 where id=$1").bind(a.account_id).bind("2026-09-23").execute(&mut owner).await.unwrap();
-    let proposal_context = identities.authenticate("a", false).await.unwrap();
-    let base = workspace.read(&proposal_context).await.unwrap();
-    let proposal = serde_json::json!({"id":Uuid::new_v4(),"run_id":Uuid::new_v4(),"message_id":Uuid::new_v4(),"base_generation":base["note_generation"],"items":base["items"],"page":{"name":"Proposed name"},"note":"Proposed concern"});
-    workspace
-        .stage_proposal(&proposal_context, &proposal)
-        .await
-        .unwrap();
-    assert_eq!(
-        workspace.read(&proposal_context).await.unwrap()["page"],
-        base["page"]
-    );
-    let proposal_id: Uuid = serde_json::from_value(proposal["id"].clone()).unwrap();
-    workspace
-        .reject_proposal(
-            &proposal_context,
-            proposal_id,
-            base["note_generation"].as_i64().unwrap(),
-        )
-        .await
-        .unwrap();
-    workspace
-        .stage_proposal(&proposal_context, &proposal)
-        .await
-        .unwrap();
-    assert!(workspace.read(&proposal_context).await.unwrap()["proposal"].is_null());
-    let mut rejected = changed.clone();
-    rejected.expected_generation = base["note_generation"].as_i64().unwrap() as i32;
-    rejected.proposal_id = Some(Some(proposal_id));
-    assert!(workspace.save(&proposal_context, &rejected).await.is_err());
     // New device uploads leave the selected dated snapshot unchanged.
     let device_id = Uuid::new_v4();
     let device = serde_json::json!({"snapshot_id":device_id,"generated_at":"2026-10-20T12:00:00Z","facts":[{"id":"watch/steps","title":"Steps","value":1234,"unit":"count","range_start":"2026-10-19T00:00:00Z","range_end":"2026-10-20T00:00:00Z"}]});

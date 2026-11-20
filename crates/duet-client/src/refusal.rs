@@ -138,7 +138,7 @@ mod tests {
         let router = Router::new().fallback(get(|headers: axum::http::HeaderMap| async move {
             let json = [(axum::http::header::CONTENT_TYPE, "application/json")];
             if headers.get("authorization").and_then(|v| v.to_str().ok()) == Some("Bearer fresh") {
-                (reqwest::StatusCode::OK, json, "[]")
+                (reqwest::StatusCode::OK, json, r#"{"note_generation":1}"#)
             } else {
                 (
                     reqwest::StatusCode::UNAUTHORIZED,
@@ -160,9 +160,9 @@ mod tests {
         let fresh = DuetClient::new(&url, "fresh", "0", "0")
             .unwrap()
             .bind_session(session.clone(), fence.clone(), sender);
-        assert!(old.doctor_preview_svg().await.is_err());
+        assert!(old.doctor_workspace().await.is_err());
         assert!(session.is_current(&fence));
-        assert!(fresh.doctor_preview_svg().await.is_ok());
+        assert!(fresh.doctor_workspace().await.is_ok());
         assert!(session.is_current(&fence));
         server.abort();
     }

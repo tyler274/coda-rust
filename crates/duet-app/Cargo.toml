@@ -10,12 +10,10 @@ workspace = true
 
 [dependencies]
 serde_json = "1"
-qrcode = { version = "0.14", default-features = false, features = ["svg"] }
 chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
 dioxus = { version = "0.7.10", default-features = false, features = ["macro", "html", "signals", "hooks"] }
 duet-client = { path = "../duet-client" }
 duet-notify = { path = "../duet-notify" }
-duet-page = { path = "../duet-page" }
 duet_wire = { path = "../duet-wire" }
 futures-util = { version = "0.3", default-features = false }
 futures-channel = "0.3"
