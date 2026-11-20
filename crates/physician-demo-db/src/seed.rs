@@ -139,6 +139,7 @@ fn insert_patient_unit(
             medical_record_numbers: vec![MedicalRecordNumber {
                 value: Some(mrn.into()),
             }],
+            email: None,
             state: Some("available".into()),
         }),
         patient_synopsis: Some(PatientSynopsis {
@@ -201,6 +202,11 @@ fn insert_patient_unit(
             consent_version: Some("v1".into()),
             consented_at: Some(1_785_000_000),
             revoked_at: None,
+            invited_email: None,
+            wrong_dob_attempts: 0,
+            locked_at: None,
+            delivery_failed_at: None,
+            delivery_error: None,
         }),
     };
     let json = serde_json::to_string(&workspace)?;

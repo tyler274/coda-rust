@@ -12,6 +12,7 @@ mod apple_health;
 mod duplicates;
 mod export;
 pub mod for_my_doctor;
+mod invitation;
 mod records;
 mod roots;
 mod settings;
@@ -30,7 +31,7 @@ use roots::{
     LibraryRecord, LibraryRoot, OPEN_NOTIFICATION_SETTINGS, RecordEditability, TRY_AGAIN,
     filter_library_root, library_root,
 };
-use ui::{ActionRow, Button, ButtonVariant, IconName, Notice, SearchField, TabBar, Tone, TryAgain};
+use ui::{ActionRow, Button, ButtonVariant, IconName, SearchField, TabBar, TryAgain};
 
 const TABS: [&str; 2] = ["You", "Shared"];
 
@@ -68,15 +69,11 @@ fn PrivateRoot(
                 ActionRow {
                     Button { variant: ButtonVariant::Quiet, compact: true, onclick: move |_| on_open_settings.call(()), "Settings" }
                 }
-                if let Some(invite) = pending_invite {
-                    Notice {
-                        tone: Tone::Primary,
-                        title: "Practice invitation".to_owned(),
-                        detail: Some(format!("Invitation {invite} is open in your Duet account.")),
-                        ActionRow {
-                            Button { compact: true, onclick: move |_| on_clear_invite.call(()), "Done" }
-                        }
-                    }
+                invitation::InvitePanel {
+                    base_url: base_url.clone(),
+                    bearer: bearer.clone(),
+                    pending_invite,
+                    on_clear_invite,
                 }
                 div { hidden: tab() != 0,
                     YouTab {

@@ -17,6 +17,7 @@ pub use duet_health::{
     APPLE_HEALTH_WEARABLE_INSTRUCTION, HEALTH_CONNECT_BACKGROUND_LIMIT_NOTICE,
     unsupported_health_connect_notice,
 };
+pub mod connected_care;
 pub mod doctor;
 pub mod for_my_doctor;
 pub mod health_upload;

@@ -244,12 +244,34 @@ async fn main() {
                 for_my_doctor_transport,
             ),
         });
+    let invitations_port = if let Some(fd) = front_door.clone() {
+        Some(duet_api::connected_care_invitations::FrontDoorInvitationPort::Direct(fd))
+    } else if let Ok(fd_url) = env::var("FRONT_DOOR_URL") {
+        let op_token = env::var("FRONT_DOOR_OPERATOR_TOKEN")
+            .expect("FRONT_DOOR_OPERATOR_TOKEN is required when FRONT_DOOR_URL is set");
+        Some(
+            duet_api::connected_care_invitations::FrontDoorInvitationPort::Http(
+                duet_api::connected_care_invitations::HttpFrontDoorInvitations::new(
+                    fd_url, op_token,
+                )
+                .expect("valid FRONT_DOOR_URL"),
+            ),
+        )
+    } else {
+        None
+    };
     let mut app = router(state.clone())
         .merge(duet_api::evidence_routes::router(state.clone()))
         .merge(duet_api::push::router(push_state))
         .merge(duet_api::assistant_harness::router(assistant_state))
         .merge(duet_api::doctor_routes::router(doctor))
         .merge(for_my_doctor_router)
+        .merge(duet_api::connected_care_invitations::router(
+            duet_api::connected_care_invitations::ConnectedCareInvitationState {
+                durable: state.clone(),
+                front_door: invitations_port,
+            },
+        ))
         .merge(producer_router)
         .merge(portal_router);
     if let Some(connected_care_router) = connected_care_router {

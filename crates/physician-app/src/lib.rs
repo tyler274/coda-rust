@@ -3977,6 +3977,17 @@ fn PhysicianShell(
                                     shown,
                                     workspace_id: selected().unwrap_or_default(),
                                     default_display_name: open_name.clone().unwrap_or_default(),
+                                    default_email: open_workspace
+                                        .as_ref()
+                                        .and_then(|open| open.identity.as_ref())
+                                        .and_then(|id| id.email.clone())
+                                        .unwrap_or_default(),
+                                    patient_link: open_workspace
+                                        .as_ref()
+                                        .and_then(|open| open.patient_link.clone()),
+                                    on_updated: move |_| {
+                                        *workspace_attempt.write() += 1;
+                                    },
                                 }
                             },
                         }

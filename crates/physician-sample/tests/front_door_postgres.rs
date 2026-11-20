@@ -187,22 +187,32 @@ async fn the_practice_invite_redeems_once_on_postgres() {
         }
     );
 
-    // The patient redeems once; the account, link, and session are minted.
-    let (account_id, redeem_session) = front_door
-        .redeem_invitation(&email, &token, NOW)
-        .await
-        .expect("first redeem");
-    assert_eq!(
-        front_door.session(&redeem_session, NOW).await.unwrap(),
-        account_id
-    );
+    // Direct legacy redeem is refused when a chart DOB check is attached.
     assert_eq!(
         front_door
             .redeem_invitation(&email, &token, NOW)
             .await
             .unwrap_err(),
         front_door::SignInError::Invalid,
-        "an invitation redeems once"
+    );
+
+    // The patient checks chart DOB and taps Share once; re-accepting is refused.
+    let cred = front_door::InvitationCredential::LinkToken(token.clone());
+    let preview = front_door
+        .verify_invitation_dob(&cred, "1989-11-08", NOW)
+        .await
+        .expect("DOB check succeeds");
+    assert_eq!(preview.practice_id, STAGING_PRACTICE_ID);
+    let (account_id, _conn) = front_door
+        .accept_invitation_share(None, Some(&email), &cred, "1989-11-08", NOW)
+        .await
+        .expect("first Share accept");
+    assert!(
+        front_door
+            .accept_invitation_share(None, Some(&email), &cred, "1989-11-08", NOW)
+            .await
+            .is_err(),
+        "an invitation accepts once"
     );
     assert_eq!(
         front_door.connections(account_id).await.unwrap()[0]

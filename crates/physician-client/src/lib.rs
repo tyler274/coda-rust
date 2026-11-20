@@ -11,9 +11,10 @@ pub mod today_updates;
 
 pub use http::HttpError;
 use physician_wire::{
-    ChatSnapshotResponse, CitedSourceResponse, ColleagueInvitationResponse, DictationRequest,
-    DictationResponse, HealthResponse, InviteColleagueRequest, InvitePatientRequest,
-    PanelAssignmentResponse, PastWorkResponse, PatientInvitationResponse, PatientMemoryResponse,
+    CancelInvitationResponse, ChatSnapshotResponse, CitedSourceResponse,
+    ColleagueInvitationResponse, DictationRequest, DictationResponse, HealthResponse,
+    InviteColleagueRequest, InvitePatientRequest, PanelAssignmentResponse, PastWorkResponse,
+    PatientInvitationActionRequest, PatientInvitationResponse, PatientMemoryResponse,
     PatientSearchResponse, PatientWorkspaceResponse, PatientWorkspacesResponse, PhysicianDraft,
     PracticeDayResponse, RecentConversationsResponse, ReplyDraftWire, ResponseFeedback, ResponseId,
     SaveFeedback, SavePhysicianMemoryEditRequest, SavePhysicianMemoryEditResponse, SignInResponse,
@@ -422,6 +423,34 @@ impl PhysicianClient {
         request: &InvitePatientRequest,
     ) -> Result<PatientInvitationResponse, http::HttpError> {
         self.post("/auth/invitations", request).await
+    }
+
+    /// Re-sends an open patient Duet invitation (`COD-49`).
+    pub async fn resend_patient_invitation(
+        &self,
+        patient_workspace_id: &str,
+    ) -> Result<PatientInvitationResponse, http::HttpError> {
+        self.post(
+            "/auth/invitations/resend",
+            &PatientInvitationActionRequest {
+                patient_workspace_id: patient_workspace_id.to_owned(),
+            },
+        )
+        .await
+    }
+
+    /// Cancels an open patient Duet invitation (`Rule 5`).
+    pub async fn cancel_patient_invitation(
+        &self,
+        patient_workspace_id: &str,
+    ) -> Result<CancelInvitationResponse, http::HttpError> {
+        self.post(
+            "/auth/invitations/cancel",
+            &PatientInvitationActionRequest {
+                patient_workspace_id: patient_workspace_id.to_owned(),
+            },
+        )
+        .await
     }
 
     /// Invites a colleague physician to join the signed-in member's practice.

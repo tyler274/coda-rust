@@ -1137,57 +1137,175 @@ struct InviteBody {
     display_name: String,
 }
 
+#[derive(Deserialize)]
+struct PatientActionBody {
+    /// Practice patient workspace targeted by resend or cancel.
+    patient_workspace_id: String,
+}
+
+fn practice_display_name(practice_id: &str) -> String {
+    if practice_id == STAGING_PRACTICE_ID {
+        "Roger Synthetic Practice".to_owned()
+    } else {
+        practice_id.to_owned()
+    }
+}
+
+fn invite_error_response(error: front_door::InviteError) -> Response {
+    let (status, detail) = match error {
+        front_door::InviteError::Conflict => (
+            StatusCode::CONFLICT,
+            "That patient is already connected to this practice.".to_owned(),
+        ),
+        front_door::InviteError::Locked => (
+            StatusCode::LOCKED,
+            "This invitation is locked after 5 wrong birth dates. Cancel it before inviting again."
+                .to_owned(),
+        ),
+        front_door::InviteError::NotFound => (
+            StatusCode::NOT_FOUND,
+            "No open invitation exists for this patient.".to_owned(),
+        ),
+        front_door::InviteError::InvalidInput(reason) => (
+            StatusCode::UNPROCESSABLE_ENTITY,
+            format!("Invalid invitation details: {reason}."),
+        ),
+        front_door::InviteError::Storage(_) => (
+            StatusCode::SERVICE_UNAVAILABLE,
+            "Invitation storage is unavailable.".to_owned(),
+        ),
+    };
+    (status, Json(json!({ "detail": detail }))).into_response()
+}
+
+async fn authorize_practice_patient<T: serde::de::DeserializeOwned>(
+    auth: &Auth,
+    request: Request<Body>,
+    workspace_of: impl FnOnce(&T) -> &str,
+) -> Result<(PhysicianIdentity, String, T), Box<Response>> {
+    let token = bearer(&request);
+    let Ok(caller) = resolve(auth, token).await else {
+        return Err(Box::new(StatusCode::UNAUTHORIZED.into_response()));
+    };
+    let Ok(bytes) = axum::body::to_bytes(request.into_body(), 64 * 1024).await else {
+        return Err(Box::new(StatusCode::BAD_REQUEST.into_response()));
+    };
+    let Ok(body) = serde_json::from_slice::<T>(&bytes) else {
+        return Err(Box::new(StatusCode::BAD_REQUEST.into_response()));
+    };
+    let Some(account) = auth.store.account_by_identity(&caller).await else {
+        return Err(Box::new(StatusCode::FORBIDDEN.into_response()));
+    };
+    if !account.active {
+        return Err(Box::new(StatusCode::FORBIDDEN.into_response()));
+    }
+    let workspace_id = workspace_of(&body);
+    let Ok(owner) = auth.store.patient_practice(workspace_id).await else {
+        return Err(Box::new(StatusCode::SERVICE_UNAVAILABLE.into_response()));
+    };
+    if owner.as_deref() != Some(caller.practice_id.as_str()) {
+        return Err(Box::new(not_found()));
+    }
+    Ok((caller, account.display_name, body))
+}
+
 /// Invites one roster patient to Duet on the front door. Any active practice
 /// member may invite a patient from that patient's page. The patient must be on
 /// the caller's practice's roster: a cross-practice or unknown patient answers
 /// 404, so the roster's existence stays unknown outside the practice. Proof
-/// mode returns the redeem token. Hosted mode mails it and drops it from JSON.
+/// mode returns the link token and short code. Hosted mode mails them and
+/// drops them from JSON.
 async fn invite(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Response {
-    let token = bearer(&request);
-    let Ok(caller) = resolve(&auth, token).await else {
-        return StatusCode::UNAUTHORIZED.into_response();
-    };
-    let Ok(bytes) = axum::body::to_bytes(request.into_body(), 64 * 1024).await else {
-        return StatusCode::BAD_REQUEST.into_response();
-    };
-    let Ok(body) = serde_json::from_slice::<InviteBody>(&bytes) else {
-        return StatusCode::BAD_REQUEST.into_response();
-    };
-    let caller_active = auth
-        .store
-        .account_by_identity(&caller)
+    let (caller, physician_name, body) =
+        match authorize_practice_patient::<InviteBody>(&auth, request, |body| {
+            &body.patient_workspace_id
+        })
         .await
-        .is_some_and(|account| account.active);
-    if !caller_active {
-        return StatusCode::FORBIDDEN.into_response();
-    }
-    let Ok(owner) = auth
-        .store
-        .patient_practice(&body.patient_workspace_id)
+        {
+            Ok(ok) => ok,
+            Err(response) => return *response,
+        };
+    let Ok(pulls) = auth
+        .patients
+        .pulls(std::slice::from_ref(&body.patient_workspace_id))
         .await
     else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
-    if owner.as_deref() != Some(caller.practice_id.as_str()) {
-        return not_found();
-    }
+    let expected_birth_date = pulls
+        .get(&body.patient_workspace_id)
+        .and_then(|list| list.iter().find_map(|pull| pull.patient.birth_date.clone()));
     let patient = RosterPatient {
         practice_id: caller.practice_id.clone(),
         patient_id: body.patient_workspace_id.clone(),
     };
     match auth
         .front_door
-        .invite(&patient, &body.email, &body.display_name, now())
+        .invite_patient(front_door::InvitePatientParams {
+            patient,
+            email: body.email.clone(),
+            display_name: body.display_name.clone(),
+            practice_name: practice_display_name(&caller.practice_id),
+            physician_name,
+            expected_birth_date,
+            now: now(),
+        })
         .await
     {
-        Ok(token) => deliver_invite(&auth, &caller, &body, token).await,
-        Err(front_door::InviteError::Conflict) => (
-            StatusCode::CONFLICT,
+        Ok(issued) => deliver_invite(&auth, &caller, &body.patient_workspace_id, issued).await,
+        Err(error) => invite_error_response(error),
+    }
+}
+
+/// Re-sends the open invitation for one roster patient unless it is locked after
+/// repeated wrong birth-date entries (`COD-49`). Keeps all prior credentials open.
+async fn resend_invite(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Response {
+    let (caller, _, body) =
+        match authorize_practice_patient::<PatientActionBody>(&auth, request, |body| {
+            &body.patient_workspace_id
+        })
+        .await
+        {
+            Ok(ok) => ok,
+            Err(response) => return *response,
+        };
+    let patient = RosterPatient {
+        practice_id: caller.practice_id.clone(),
+        patient_id: body.patient_workspace_id.clone(),
+    };
+    match auth.front_door.resend_invitation(&patient, now()).await {
+        Ok(issued) => deliver_invite(&auth, &caller, &body.patient_workspace_id, issued).await,
+        Err(error) => invite_error_response(error),
+    }
+}
+
+/// Cancels the open invitation for one roster patient (`Rule 5`), invalidating
+/// all prior invitation links and short codes and returning the roster to `not_invited`.
+async fn cancel_invite(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Response {
+    let (caller, _, body) =
+        match authorize_practice_patient::<PatientActionBody>(&auth, request, |body| {
+            &body.patient_workspace_id
+        })
+        .await
+        {
+            Ok(ok) => ok,
+            Err(response) => return *response,
+        };
+    let patient = RosterPatient {
+        practice_id: caller.practice_id.clone(),
+        patient_id: body.patient_workspace_id.clone(),
+    };
+    match auth.front_door.cancel_invitation(&patient).await {
+        Ok(()) => (
+            StatusCode::OK,
             Json(json!({
-                "detail": "That patient is already connected to this practice.",
+                "practice_id": caller.practice_id,
+                "patient_workspace_id": body.patient_workspace_id,
+                "status": "not_invited",
             })),
         )
             .into_response(),
+        Err(error) => invite_error_response(error),
     }
 }
 
@@ -1333,28 +1451,54 @@ async fn invite_colleague(State(auth): State<Arc<Auth>>, request: Request<Body>)
 async fn deliver_invite(
     auth: &Auth,
     caller: &PhysicianIdentity,
-    body: &InviteBody,
-    token: String,
+    patient_workspace_id: &str,
+    issued: front_door::IssuedInvitation,
 ) -> Response {
     let invited = json!({
         "practice_id": caller.practice_id,
-        "patient_workspace_id": body.patient_workspace_id,
-        "email": body.email,
-        "display_name": body.display_name,
+        "patient_workspace_id": patient_workspace_id,
+        "email": issued.invitation.email,
+        "display_name": issued.invitation.display_name,
         "status": "invited",
+        "delivery_failed": false,
     });
     match &auth.mail {
         crate::gmail::Delivery::Proof => {
             let mut invited = invited;
-            invited["token"] = json!(token);
+            invited["token"] = json!(issued.link_token);
+            invited["short_code"] = json!(issued.short_code);
             (StatusCode::OK, Json(invited)).into_response()
         }
         crate::gmail::Delivery::Hosted(sender) => {
-            if let Err(error) = sender.send_invite(&body.email, &token).await {
+            if let Err(error) = sender
+                .send_invite(
+                    &issued.invitation.email,
+                    &issued.link_token,
+                    &issued.short_code,
+                )
+                .await
+            {
                 tracing::warn!(%error, "invitation mail was not sent");
+                if let Err(mark_err) = auth
+                    .front_door
+                    .mark_invitation_delivery_failed(
+                        &issued.invitation.patient,
+                        "The invitation email could not be sent.",
+                        now(),
+                    )
+                    .await
+                {
+                    tracing::warn!(%mark_err, "could not record invitation mail delivery failure");
+                }
                 return (
                     StatusCode::BAD_GATEWAY,
                     Json(json!({
+                        "practice_id": caller.practice_id,
+                        "patient_workspace_id": patient_workspace_id,
+                        "email": issued.invitation.email,
+                        "display_name": issued.invitation.display_name,
+                        "status": "invited",
+                        "delivery_failed": true,
                         "detail": "The invitation email could not be sent.",
                     })),
                 )
@@ -1433,6 +1577,8 @@ pub(crate) fn auth_routes(auth: Arc<Auth>) -> axum::Router {
             put(put_panel).delete(delete_panel),
         )
         .route("/auth/invitations", post(invite))
+        .route("/auth/invitations/resend", post(resend_invite))
+        .route("/auth/invitations/cancel", post(cancel_invite))
         .route("/auth/colleagues/invitations", post(invite_colleague))
         .with_state(auth)
 }
@@ -2704,10 +2850,22 @@ mod tests {
         .await
     }
 
-    /// Redeems one token at the front door behind the practice server.
-    async fn redeem(front_door: &MemoryFrontDoorStore, email: &str, token: &str) -> bool {
+    /// Verifies DOB and accepts via Share at the front door behind the practice server.
+    async fn accept_with_dob(
+        front_door: &MemoryFrontDoorStore,
+        email: &str,
+        credential: &front_door::InvitationCredential,
+        birth_date: &str,
+    ) -> bool {
+        if front_door
+            .verify_invitation_dob(credential, birth_date, 1_760_000_000)
+            .await
+            .is_err()
+        {
+            return false;
+        }
         front_door
-            .redeem_invitation(email, token, 1_760_000_000)
+            .accept_invitation_share(None, Some(email), credential, birth_date, 1_760_000_000)
             .await
             .is_ok()
     }
@@ -2720,9 +2878,11 @@ mod tests {
         let (status, body) =
             invite_patient(&app, Some(&session), "luna@example.test", workspace).await;
         assert_eq!(status, StatusCode::OK, "{body}");
-        let token = serde_json::from_str::<Value>(&body).expect("invitation body")["token"]
+        let parsed: Value = serde_json::from_str(&body).expect("invitation body");
+        let token = parsed["token"].as_str().expect("invite token").to_owned();
+        let short_code = parsed["short_code"]
             .as_str()
-            .expect("invite token")
+            .expect("invite short_code")
             .to_owned();
         let patient = front_door
             .invitation("luna@example.test")
@@ -2735,8 +2895,9 @@ mod tests {
                 patient_id: workspace.to_owned(),
             }
         );
-        // The patient redeems once: the account links to the roster patient.
-        assert!(redeem(&front_door, "luna@example.test", &token).await);
+        // The patient verifies chart DOB (1989-11-08) and accepts once via Share.
+        let cred = front_door::InvitationCredential::LinkToken(token.clone());
+        assert!(accept_with_dob(&front_door, "luna@example.test", &cred, "1989-11-08").await);
         let (account_id, connections) = {
             let account = front_door
                 .account_by_email("luna@example.test")
@@ -2759,11 +2920,97 @@ mod tests {
                 patient_id: workspace.to_owned(),
             }
         );
-        // The same token never redeems again.
+        // Neither the same token nor the paired short code accepts again.
         assert!(
-            !redeem(&front_door, "luna@example.test", &token).await,
+            !accept_with_dob(&front_door, "luna@example.test", &cred, "1989-11-08").await,
             "an invitation redeems once"
         );
+        let code_cred = front_door::InvitationCredential::ShortCode(short_code);
+        assert!(
+            !accept_with_dob(&front_door, "luna@example.test", &code_cred, "1989-11-08").await,
+            "paired short code also closes on accept"
+        );
+    }
+
+    #[tokio::test]
+    async fn resend_cancel_and_lock_enforce_practice_scope_and_keep_invited_state() {
+        let (app, _, front_door) = authed_practice().await;
+        let session = session_for(&app, STAGING_EMAIL).await;
+        let workspace = crate::WORKSPACE_IDS[0];
+        let (status, body) =
+            invite_patient(&app, Some(&session), "luna@example.test", workspace).await;
+        assert_eq!(status, StatusCode::OK, "{body}");
+        let v1: Value = serde_json::from_str(&body).unwrap();
+        let tok1 = v1["token"].as_str().unwrap().to_owned();
+
+        // Resend mints new credentials while keeping old token open (Rule 4).
+        let (status, resend_body) = send(
+            &app,
+            Method::POST.as_str(),
+            "/auth/invitations/resend",
+            Some(&session),
+            Some(json!({ "patient_workspace_id": workspace }).to_string()),
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK, "{resend_body}");
+        let v2: Value = serde_json::from_str(&resend_body).unwrap();
+        assert_ne!(v2["token"], v1["token"]);
+        assert_ne!(v2["short_code"], v1["short_code"]);
+        assert!(
+            front_door
+                .inspect_invitation(&front_door::InvitationCredential::LinkToken(tok1.clone()))
+                .await
+                .is_ok()
+        );
+
+        // Cross-practice / unknown workspace answers 404.
+        let (unknown_status, _) = send(
+            &app,
+            Method::POST.as_str(),
+            "/auth/invitations/cancel",
+            Some(&session),
+            Some(json!({ "patient_workspace_id": "pw-unknown" }).to_string()),
+        )
+        .await;
+        assert_eq!(unknown_status, StatusCode::NOT_FOUND);
+
+        // 5 wrong DOBs lock the invitation, refusing Resend with 423 LOCKED (COD-49).
+        let tok2_cred =
+            front_door::InvitationCredential::LinkToken(v2["token"].as_str().unwrap().to_owned());
+        for _ in 0..5 {
+            let _ = front_door
+                .verify_invitation_dob(&tok2_cred, "1901-01-01", now())
+                .await;
+        }
+        let (locked_status, _) = send(
+            &app,
+            Method::POST.as_str(),
+            "/auth/invitations/resend",
+            Some(&session),
+            Some(json!({ "patient_workspace_id": workspace }).to_string()),
+        )
+        .await;
+        assert_eq!(locked_status, StatusCode::LOCKED);
+
+        // Cancel invalidates all credentials and clears lock so re-invite succeeds.
+        let (cancel_status, cancel_body) = send(
+            &app,
+            Method::POST.as_str(),
+            "/auth/invitations/cancel",
+            Some(&session),
+            Some(json!({ "patient_workspace_id": workspace }).to_string()),
+        )
+        .await;
+        assert_eq!(cancel_status, StatusCode::OK, "{cancel_body}");
+        assert!(
+            front_door
+                .inspect_invitation(&front_door::InvitationCredential::LinkToken(tok1))
+                .await
+                .is_err()
+        );
+        let (reinvite_status, _) =
+            invite_patient(&app, Some(&session), "luna@example.test", workspace).await;
+        assert_eq!(reinvite_status, StatusCode::OK);
     }
 
     #[tokio::test]
@@ -3039,15 +3286,33 @@ mod tests {
             "{message}"
         );
         assert!(
+            message.contains("Or enter this code in Duet:"),
+            "hosted mail must carry the short code too: {message}"
+        );
+        assert!(
             !body.contains(token),
             "the response included the mailed token: {body}"
         );
+        let cred = front_door::InvitationCredential::LinkToken(token.to_owned());
         assert!(
             front_door
-                .redeem_invitation("luna@example.test", token, now())
+                .verify_invitation_dob(&cred, "1989-11-08", now())
                 .await
                 .is_ok(),
-            "the mailed redeem token should work once"
+            "the mailed token should unlock with the chart DOB"
+        );
+        assert!(
+            front_door
+                .accept_invitation_share(
+                    None,
+                    Some("luna@example.test"),
+                    &cred,
+                    "1989-11-08",
+                    now()
+                )
+                .await
+                .is_ok(),
+            "the mailed invite token should accept via Share once"
         );
     }
 

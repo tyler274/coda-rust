@@ -7,20 +7,30 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::time::Duration;
 
 use crate::migration::{
-    Accounts, Connections, ForMyDoctorShares, Invitations, Sessions, SharedRecords, SignInTokens,
+    Accounts, Connections, ForMyDoctorShares, InvitationCredentials, Invitations, Sessions,
+    SharedRecords, SignInTokens,
 };
 use crate::{
     Account, AccountConnection, ConnectionEndReason, ConnectionStanding, ConsentedPatientLink,
     ForMyDoctorError, ForMyDoctorSendRequest, ForMyDoctorShare, ForMyDoctorShareStatus,
-    FrontDoorStore, Invitation, InviteError, LinkError, RosterConnectionStatus, RosterPatient,
-    SIGN_IN_TOKEN_TTL_SECONDS, SessionError, SharedPatientRecord, SharedPatientRecordInput,
-    SignInError, mint_token, resolve_for_my_doctor_target, resolve_roster_status, token_hash,
+    FrontDoorStore, Invitation, InvitationAcceptError, InvitationCheckError, InvitationCredential,
+    InvitationGateState, InvitationOpenStanding, InvitationSharingPreview, InviteError,
+    InvitePatientParams, IssuedInvitation, LinkError, MAX_DOB_ATTEMPTS, RosterConnectionStatus,
+    RosterPatient, SHARES_SUMMARY, SIGN_IN_TOKEN_TTL_SECONDS, SessionError, SharedPatientRecord,
+    SharedPatientRecordInput, SignInError, format_birth_date, is_adult_on, mint_short_code,
+    mint_token, normalize_short_code, parse_birth_date, resolve_for_my_doctor_target,
+    resolve_roster_status, short_code_hash, token_hash,
 };
 use async_trait::async_trait;
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectOptions, ConnectionTrait, Database, DatabaseConnection,
     DbErr, EntityTrait, QueryFilter, QueryOrder, QuerySelect, Set, TransactionTrait,
 };
+
+enum DobCheckOutcome {
+    Matched(InvitationSharingPreview),
+    Rejected(InvitationCheckError),
+}
 
 /// The SQL-backed store.
 #[derive(Debug, Clone)]
@@ -60,6 +70,7 @@ impl PostgresFrontDoorStore {
         Accounts::find().one(&self.db).await?;
         Connections::find().one(&self.db).await?;
         Invitations::find().one(&self.db).await?;
+        InvitationCredentials::find().one(&self.db).await?;
         Sessions::find().one(&self.db).await?;
         SignInTokens::find().one(&self.db).await?;
         crate::migration::identity::Entity::find()
@@ -177,7 +188,153 @@ impl PostgresFrontDoorStore {
             email: row.email,
             display_name: row.display_name,
             invited_at: row.created_at.max(0) as u64,
+            practice_name: row.practice_name,
+            physician_name: row.physician_name,
+            expected_birth_date: row.expected_birth_date,
+            wrong_dob_attempts: u8::try_from(row.wrong_dob_attempts.max(0)).unwrap_or(u8::MAX),
+            locked_at: row.locked_at.map(|ts| ts.max(0) as u64),
+            last_delivery_failed_at: row.last_delivery_failed_at.map(|ts| ts.max(0) as u64),
+            last_delivery_error: row.last_delivery_error,
+            updated_at: row.updated_at.max(0) as u64,
         }
+    }
+
+    async fn insert_invitation_credentials(
+        txn: &sea_orm::DatabaseTransaction,
+        invitation_id: i64,
+        link_token: &str,
+        short_code: &str,
+        now: u64,
+    ) -> Result<(), DbErr> {
+        let now_i64 = now as i64;
+        crate::migration::InvitationCredentialActiveModel {
+            id: Default::default(),
+            invitation_id: Set(invitation_id),
+            kind: Set("link".to_owned()),
+            secret_hash: Set(token_hash(link_token).to_vec()),
+            created_at: Set(now_i64),
+        }
+        .insert(txn)
+        .await?;
+        crate::migration::InvitationCredentialActiveModel {
+            id: Default::default(),
+            invitation_id: Set(invitation_id),
+            kind: Set("code".to_owned()),
+            secret_hash: Set(short_code_hash(&normalize_short_code(short_code)).to_vec()),
+            created_at: Set(now_i64),
+        }
+        .insert(txn)
+        .await?;
+        Ok(())
+    }
+
+    async fn find_invitation_by_credential_locked(
+        txn: &sea_orm::DatabaseTransaction,
+        credential: &InvitationCredential,
+    ) -> Result<Option<crate::migration::InvitationRow>, DbErr> {
+        use crate::migration::invitation_credential;
+        let Some(secret_hash) = credential.secret_hash() else {
+            return Ok(None);
+        };
+        let Some(cred) = InvitationCredentials::find()
+            .filter(invitation_credential::Column::SecretHash.eq(secret_hash.to_vec()))
+            .one(txn)
+            .await?
+        else {
+            return Ok(None);
+        };
+        Invitations::find_by_id(cred.invitation_id)
+            .lock_exclusive()
+            .one(txn)
+            .await
+    }
+
+    async fn verify_dob_on_locked_row(
+        txn: &sea_orm::DatabaseTransaction,
+        row: &crate::migration::InvitationRow,
+        birth_date: &str,
+        now: u64,
+    ) -> Result<DobCheckOutcome, InvitationCheckError> {
+        let parsed = parse_birth_date(birth_date).ok_or(InvitationCheckError::InvalidBirthDate)?;
+        let normalized_input = format_birth_date(parsed);
+        let attempts = u8::try_from(row.wrong_dob_attempts.max(0)).unwrap_or(u8::MAX);
+        if row.locked_at.is_some() || attempts >= MAX_DOB_ATTEMPTS {
+            return Err(InvitationCheckError::Locked);
+        }
+        let Some(expected) = row.expected_birth_date.as_deref() else {
+            return Err(InvitationCheckError::NotOpen);
+        };
+        if expected != normalized_input {
+            let next_attempts = attempts.saturating_add(1);
+            let mut active: crate::migration::InvitationActiveModel = row.clone().into();
+            active.wrong_dob_attempts = Set(i32::from(next_attempts));
+            let locked = next_attempts >= MAX_DOB_ATTEMPTS;
+            if locked {
+                active.locked_at = Set(Some(now as i64));
+            }
+            active.update(txn).await?;
+            return Ok(DobCheckOutcome::Rejected(if locked {
+                InvitationCheckError::Locked
+            } else {
+                InvitationCheckError::WrongBirthDate {
+                    attempts_remaining: MAX_DOB_ATTEMPTS.saturating_sub(next_attempts),
+                }
+            }));
+        }
+        if !is_adult_on(parsed, now) {
+            return Err(InvitationCheckError::Underage);
+        }
+        Ok(DobCheckOutcome::Matched(InvitationSharingPreview {
+            practice_id: row.practice_id.clone(),
+            practice_name: if row.practice_name.is_empty() {
+                row.practice_id.clone()
+            } else {
+                row.practice_name.clone()
+            },
+            physician_name: row.physician_name.clone(),
+            display_name: row.display_name.clone(),
+            shares_summary: SHARES_SUMMARY.to_owned(),
+        }))
+    }
+
+    async fn upsert_connected_row(
+        txn: &sea_orm::DatabaseTransaction,
+        account_id: uuid::Uuid,
+        practice_id: &str,
+        patient_id: &str,
+        now: u64,
+    ) -> Result<(), DbErr> {
+        let existing_conn =
+            Connections::find_by_id((account_id, practice_id.to_owned(), patient_id.to_owned()))
+                .one(txn)
+                .await?;
+        match existing_conn {
+            Some(row) => {
+                let mut active: crate::migration::ConnectionActiveModel = row.into();
+                active.status = Set("connected".to_owned());
+                active.connected_at = Set(now as i64);
+                active.ended_at = Set(None);
+                active.end_reason = Set(None);
+                active.updated_at = Set(now as i64);
+                active.update(txn).await?;
+            }
+            None => {
+                crate::migration::ConnectionActiveModel {
+                    account_id: Set(account_id),
+                    practice_id: Set(practice_id.to_owned()),
+                    patient_id: Set(patient_id.to_owned()),
+                    status: Set("connected".to_owned()),
+                    connected_at: Set(now as i64),
+                    ended_at: Set(None),
+                    end_reason: Set(None),
+                    created_at: Set(now as i64),
+                    updated_at: Set(now as i64),
+                }
+                .insert(txn)
+                .await?;
+            }
+        }
+        Ok(())
     }
 }
 
@@ -190,47 +347,372 @@ impl FrontDoorStore for PostgresFrontDoorStore {
         display_name: &str,
         now: u64,
     ) -> Result<String, InviteError> {
-        use crate::migration::{connection, invitation};
-        let key = email.to_lowercase();
+        let issued = self
+            .invite_patient(InvitePatientParams {
+                patient: patient.clone(),
+                email: email.to_owned(),
+                display_name: display_name.to_owned(),
+                practice_name: patient.practice_id.clone(),
+                physician_name: String::new(),
+                expected_birth_date: None,
+                now,
+            })
+            .await?;
+        Ok(issued.link_token)
+    }
+
+    async fn invite_patient(
+        &self,
+        params: InvitePatientParams,
+    ) -> Result<IssuedInvitation, InviteError> {
+        use crate::migration::{connection, invitation, invitation_credential};
+        let key = params.email.trim().to_lowercase();
+        if !key.contains('@') {
+            return Err(InviteError::InvalidInput("email must be valid"));
+        }
+        let normalized_dob = match params.expected_birth_date.as_deref().map(str::trim) {
+            Some("") | None => None,
+            Some(raw) => {
+                let parsed = parse_birth_date(raw).ok_or(InviteError::InvalidInput(
+                    "expected_birth_date must be YYYY-MM-DD",
+                ))?;
+                Some(format_birth_date(parsed))
+            }
+        };
+
+        let txn = self.db.begin().await?;
         let active_existing = Connections::find()
-            .filter(connection::Column::PracticeId.eq(&patient.practice_id))
-            .filter(connection::Column::PatientId.eq(&patient.patient_id))
+            .filter(connection::Column::PracticeId.eq(&params.patient.practice_id))
+            .filter(connection::Column::PatientId.eq(&params.patient.patient_id))
             .filter(connection::Column::Status.eq("connected"))
-            .one(&self.db)
-            .await
-            .map_err(|_| InviteError::Conflict)?;
+            .one(&txn)
+            .await?;
         if active_existing.is_some() {
             return Err(InviteError::Conflict);
         }
 
-        let token = mint_token();
-        let active = crate::migration::InvitationActiveModel {
-            id: Default::default(),
-            practice_id: Set(patient.practice_id.clone()),
-            patient_id: Set(patient.patient_id.clone()),
-            email: Set(key),
-            display_name: Set(display_name.to_owned()),
-            token_hash: Set(token_hash(&token).to_vec()),
-            created_at: Set(now as i64),
+        let existing_inv = Invitations::find()
+            .filter(invitation::Column::PracticeId.eq(&params.patient.practice_id))
+            .filter(invitation::Column::PatientId.eq(&params.patient.patient_id))
+            .lock_exclusive()
+            .one(&txn)
+            .await?;
+
+        let link_token = mint_token();
+        let short_code = mint_short_code();
+        let row = match existing_inv {
+            Some(existing) => {
+                if existing.locked_at.is_some()
+                    || existing.wrong_dob_attempts >= i32::from(MAX_DOB_ATTEMPTS)
+                {
+                    return Err(InviteError::Locked);
+                }
+                InvitationCredentials::delete_many()
+                    .filter(invitation_credential::Column::InvitationId.eq(existing.id))
+                    .exec(&txn)
+                    .await?;
+                let mut active: crate::migration::InvitationActiveModel = existing.into();
+                active.email = Set(key);
+                active.display_name = Set(params.display_name.trim().to_owned());
+                active.token_hash = Set(token_hash(&link_token).to_vec());
+                active.created_at = Set(params.now as i64);
+                active.practice_name = Set(params.practice_name.trim().to_owned());
+                active.physician_name = Set(params.physician_name.trim().to_owned());
+                active.expected_birth_date = Set(normalized_dob);
+                active.wrong_dob_attempts = Set(0);
+                active.locked_at = Set(None);
+                active.last_delivery_failed_at = Set(None);
+                active.last_delivery_error = Set(None);
+                active.updated_at = Set(params.now as i64);
+                active.update(&txn).await?
+            }
+            None => {
+                crate::migration::InvitationActiveModel {
+                    id: Default::default(),
+                    practice_id: Set(params.patient.practice_id.clone()),
+                    patient_id: Set(params.patient.patient_id.clone()),
+                    email: Set(key),
+                    display_name: Set(params.display_name.trim().to_owned()),
+                    token_hash: Set(token_hash(&link_token).to_vec()),
+                    created_at: Set(params.now as i64),
+                    practice_name: Set(params.practice_name.trim().to_owned()),
+                    physician_name: Set(params.physician_name.trim().to_owned()),
+                    expected_birth_date: Set(normalized_dob),
+                    wrong_dob_attempts: Set(0),
+                    locked_at: Set(None),
+                    last_delivery_failed_at: Set(None),
+                    last_delivery_error: Set(None),
+                    updated_at: Set(params.now as i64),
+                }
+                .insert(&txn)
+                .await?
+            }
         };
-        Invitations::insert(active)
-            .on_conflict(
-                sea_orm::sea_query::OnConflict::columns([
-                    invitation::Column::PracticeId,
-                    invitation::Column::PatientId,
-                ])
-                .update_columns([
-                    invitation::Column::Email,
-                    invitation::Column::DisplayName,
-                    invitation::Column::TokenHash,
-                    invitation::Column::CreatedAt,
-                ])
-                .to_owned(),
-            )
+        Self::insert_invitation_credentials(&txn, row.id, &link_token, &short_code, params.now)
+            .await?;
+        txn.commit().await?;
+        Ok(IssuedInvitation {
+            link_token,
+            short_code,
+            invitation: Self::invitation_row(row),
+        })
+    }
+
+    async fn resend_invitation(
+        &self,
+        patient: &RosterPatient,
+        now: u64,
+    ) -> Result<IssuedInvitation, InviteError> {
+        use crate::migration::{connection, invitation};
+        let txn = self.db.begin().await?;
+        let active_existing = Connections::find()
+            .filter(connection::Column::PracticeId.eq(&patient.practice_id))
+            .filter(connection::Column::PatientId.eq(&patient.patient_id))
+            .filter(connection::Column::Status.eq("connected"))
+            .one(&txn)
+            .await?;
+        if active_existing.is_some() {
+            return Err(InviteError::Conflict);
+        }
+        let existing = Invitations::find()
+            .filter(invitation::Column::PracticeId.eq(&patient.practice_id))
+            .filter(invitation::Column::PatientId.eq(&patient.patient_id))
+            .lock_exclusive()
+            .one(&txn)
+            .await?
+            .ok_or(InviteError::NotFound)?;
+        if existing.locked_at.is_some()
+            || existing.wrong_dob_attempts >= i32::from(MAX_DOB_ATTEMPTS)
+        {
+            return Err(InviteError::Locked);
+        }
+        let link_token = mint_token();
+        let short_code = mint_short_code();
+        let mut active: crate::migration::InvitationActiveModel = existing.into();
+        active.token_hash = Set(token_hash(&link_token).to_vec());
+        active.last_delivery_failed_at = Set(None);
+        active.last_delivery_error = Set(None);
+        active.updated_at = Set(now as i64);
+        let updated = active.update(&txn).await?;
+        Self::insert_invitation_credentials(&txn, updated.id, &link_token, &short_code, now)
+            .await?;
+        txn.commit().await?;
+        Ok(IssuedInvitation {
+            link_token,
+            short_code,
+            invitation: Self::invitation_row(updated),
+        })
+    }
+
+    async fn cancel_invitation(&self, patient: &RosterPatient) -> Result<(), InviteError> {
+        use crate::migration::invitation;
+        let res = Invitations::delete_many()
+            .filter(invitation::Column::PracticeId.eq(&patient.practice_id))
+            .filter(invitation::Column::PatientId.eq(&patient.patient_id))
             .exec(&self.db)
+            .await?;
+        if res.rows_affected == 0 {
+            return Err(InviteError::NotFound);
+        }
+        Ok(())
+    }
+
+    async fn mark_invitation_delivery_failed(
+        &self,
+        patient: &RosterPatient,
+        detail: &str,
+        now: u64,
+    ) -> Result<(), InviteError> {
+        use crate::migration::invitation;
+        let txn = self.db.begin().await?;
+        let existing = Invitations::find()
+            .filter(invitation::Column::PracticeId.eq(&patient.practice_id))
+            .filter(invitation::Column::PatientId.eq(&patient.patient_id))
+            .lock_exclusive()
+            .one(&txn)
+            .await?
+            .ok_or(InviteError::NotFound)?;
+        let mut active: crate::migration::InvitationActiveModel = existing.into();
+        active.last_delivery_failed_at = Set(Some(now as i64));
+        active.last_delivery_error = Set(Some(detail.trim().chars().take(200).collect()));
+        active.update(&txn).await?;
+        txn.commit().await?;
+        Ok(())
+    }
+
+    async fn inspect_invitation(
+        &self,
+        credential: &InvitationCredential,
+    ) -> Result<InvitationGateState, InvitationCheckError> {
+        let txn = self.db.begin().await?;
+        let row = Self::find_invitation_by_credential_locked(&txn, credential)
+            .await?
+            .ok_or(InvitationCheckError::NotOpen)?;
+        let attempts = u8::try_from(row.wrong_dob_attempts.max(0)).unwrap_or(u8::MAX);
+        let standing = if let Some(locked_at) = row.locked_at {
+            InvitationOpenStanding::Locked {
+                locked_at: locked_at.max(0) as u64,
+            }
+        } else if attempts >= MAX_DOB_ATTEMPTS {
+            InvitationOpenStanding::Locked {
+                locked_at: row.updated_at.max(0) as u64,
+            }
+        } else {
+            InvitationOpenStanding::Active {
+                wrong_dob_attempts: attempts,
+                attempts_remaining: MAX_DOB_ATTEMPTS.saturating_sub(attempts),
+            }
+        };
+        txn.commit().await?;
+        Ok(InvitationGateState { standing })
+    }
+
+    async fn verify_invitation_dob(
+        &self,
+        credential: &InvitationCredential,
+        birth_date: &str,
+        now: u64,
+    ) -> Result<InvitationSharingPreview, InvitationCheckError> {
+        let txn = self.db.begin().await?;
+        let row = Self::find_invitation_by_credential_locked(&txn, credential)
+            .await?
+            .ok_or(InvitationCheckError::NotOpen)?;
+        let outcome = Self::verify_dob_on_locked_row(&txn, &row, birth_date, now).await?;
+        txn.commit().await?;
+        match outcome {
+            DobCheckOutcome::Matched(preview) => Ok(preview),
+            DobCheckOutcome::Rejected(err) => Err(err),
+        }
+    }
+
+    async fn accept_invitation_share(
+        &self,
+        account_id: Option<uuid::Uuid>,
+        account_email: Option<&str>,
+        credential: &InvitationCredential,
+        birth_date: &str,
+        now: u64,
+    ) -> Result<(uuid::Uuid, AccountConnection), InvitationAcceptError> {
+        use crate::migration::account;
+        let txn = self.db.begin().await?;
+        let row = Self::find_invitation_by_credential_locked(&txn, credential)
             .await
-            .map_err(|_| InviteError::Conflict)?;
-        Ok(token)
+            .map_err(InvitationAcceptError::Storage)?
+            .ok_or(InvitationCheckError::NotOpen)?;
+        match Self::verify_dob_on_locked_row(&txn, &row, birth_date, now).await? {
+            DobCheckOutcome::Matched(_) => {}
+            DobCheckOutcome::Rejected(err) => {
+                txn.commit().await.map_err(InvitationAcceptError::Storage)?;
+                return Err(err.into());
+            }
+        }
+
+        let target_account_id = match account_id {
+            Some(existing_id) => {
+                if let Some(acct) = Accounts::find_by_id(existing_id)
+                    .lock_exclusive()
+                    .one(&txn)
+                    .await
+                    .map_err(InvitationAcceptError::Storage)?
+                {
+                    if !acct.active {
+                        return Err(InvitationAcceptError::InactiveAccount);
+                    }
+                    acct.id
+                } else {
+                    let email_key = account_email
+                        .map(|e| e.trim().to_lowercase())
+                        .filter(|e| !e.is_empty())
+                        .unwrap_or_else(|| row.email.clone());
+                    crate::migration::AccountActiveModel {
+                        id: Set(existing_id),
+                        email: Set(email_key),
+                        display_name: Set(row.display_name.clone()),
+                        active: Set(true),
+                        sessions_ended_before: Set(0),
+                        created_at: Set(now as i64),
+                    }
+                    .insert(&txn)
+                    .await
+                    .map_err(InvitationAcceptError::Storage)?
+                    .id
+                }
+            }
+            None => {
+                let email_key = account_email
+                    .map(|e| e.trim().to_lowercase())
+                    .filter(|e| !e.is_empty())
+                    .ok_or(InvitationAcceptError::InactiveAccount)?;
+                if let Some(existing) = Accounts::find()
+                    .filter(account::Column::Email.eq(&email_key))
+                    .lock_exclusive()
+                    .one(&txn)
+                    .await
+                    .map_err(InvitationAcceptError::Storage)?
+                {
+                    if !existing.active {
+                        return Err(InvitationAcceptError::InactiveAccount);
+                    }
+                    existing.id
+                } else {
+                    crate::migration::AccountActiveModel {
+                        id: Set(uuid::Uuid::new_v4()),
+                        email: Set(email_key),
+                        display_name: Set(row.display_name.clone()),
+                        active: Set(true),
+                        sessions_ended_before: Set(0),
+                        created_at: Set(now as i64),
+                    }
+                    .insert(&txn)
+                    .await
+                    .map_err(InvitationAcceptError::Storage)?
+                    .id
+                }
+            }
+        };
+
+        let conflict_other = Connections::find()
+            .filter(crate::migration::connection::Column::PracticeId.eq(&row.practice_id))
+            .filter(crate::migration::connection::Column::PatientId.eq(&row.patient_id))
+            .filter(crate::migration::connection::Column::Status.eq("connected"))
+            .filter(crate::migration::connection::Column::AccountId.ne(target_account_id))
+            .one(&txn)
+            .await
+            .map_err(InvitationAcceptError::Storage)?
+            .is_some();
+        if conflict_other {
+            return Err(InvitationAcceptError::Conflict);
+        }
+
+        let deleted = Invitations::delete_by_id(row.id)
+            .exec(&txn)
+            .await
+            .map_err(InvitationAcceptError::Storage)?;
+        if deleted.rows_affected != 1 {
+            return Err(InvitationCheckError::NotOpen.into());
+        }
+
+        Self::upsert_connected_row(
+            &txn,
+            target_account_id,
+            &row.practice_id,
+            &row.patient_id,
+            now,
+        )
+        .await
+        .map_err(InvitationAcceptError::Storage)?;
+        txn.commit().await.map_err(InvitationAcceptError::Storage)?;
+
+        Ok((
+            target_account_id,
+            AccountConnection {
+                patient: RosterPatient {
+                    practice_id: row.practice_id,
+                    patient_id: row.patient_id,
+                },
+                standing: ConnectionStanding::Connected { connected_at: now },
+            },
+        ))
     }
 
     async fn invitation(&self, email: &str) -> Option<Invitation> {
@@ -263,19 +745,23 @@ impl FrontDoorStore for PostgresFrontDoorStore {
         token: &str,
         now: u64,
     ) -> Result<(uuid::Uuid, String), SignInError> {
-        use crate::migration::{account, connection, invitation};
+        use crate::migration::{account, connection};
         let key = email.to_lowercase();
-        let hash = token_hash(token).to_vec();
         let txn = self.db.begin().await.map_err(|_| SignInError::Invalid)?;
 
-        let invitation = Invitations::find()
-            .filter(invitation::Column::Email.eq(&key))
-            .filter(invitation::Column::TokenHash.eq(hash))
-            .lock_exclusive()
-            .one(&txn)
-            .await
-            .map_err(|_| SignInError::Invalid)?
-            .ok_or(SignInError::Invalid)?;
+        let invitation = Self::find_invitation_by_credential_locked(
+            &txn,
+            &InvitationCredential::LinkToken(token.to_owned()),
+        )
+        .await
+        .map_err(|_| SignInError::Invalid)?
+        .ok_or(SignInError::Invalid)?;
+        if invitation.email != key
+            || invitation.locked_at.is_some()
+            || invitation.expected_birth_date.is_some()
+        {
+            return Err(SignInError::Invalid);
+        }
 
         let account_id = if let Some(existing) = Accounts::find()
             .filter(account::Column::Email.eq(&key))
@@ -327,44 +813,15 @@ impl FrontDoorStore for PostgresFrontDoorStore {
             return Err(SignInError::Invalid);
         }
 
-        let existing_conn = Connections::find_by_id((
+        Self::upsert_connected_row(
+            &txn,
             account_id,
-            invitation.practice_id.clone(),
-            invitation.patient_id.clone(),
-        ))
-        .one(&txn)
+            &invitation.practice_id,
+            &invitation.patient_id,
+            now,
+        )
         .await
         .map_err(|_| SignInError::Invalid)?;
-        match existing_conn {
-            Some(row) => {
-                let mut active: crate::migration::ConnectionActiveModel = row.into();
-                active.status = Set("connected".to_owned());
-                active.connected_at = Set(now as i64);
-                active.ended_at = Set(None);
-                active.end_reason = Set(None);
-                active.updated_at = Set(now as i64);
-                active
-                    .update(&txn)
-                    .await
-                    .map_err(|_| SignInError::Invalid)?;
-            }
-            None => {
-                crate::migration::ConnectionActiveModel {
-                    account_id: Set(account_id),
-                    practice_id: Set(invitation.practice_id),
-                    patient_id: Set(invitation.patient_id),
-                    status: Set("connected".to_owned()),
-                    connected_at: Set(now as i64),
-                    ended_at: Set(None),
-                    end_reason: Set(None),
-                    created_at: Set(now as i64),
-                    updated_at: Set(now as i64),
-                }
-                .insert(&txn)
-                .await
-                .map_err(|_| SignInError::Invalid)?;
-            }
-        }
 
         let session_token = mint_token();
         crate::migration::SessionActiveModel {

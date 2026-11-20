@@ -107,10 +107,16 @@ impl Outbound {
     }
 
     /// Mails the single-use front-door redeem link. The token is only in the message.
-    pub(crate) async fn send_invite(&self, to: &str, token: &str) -> Result<(), String> {
+    /// Mails a patient Duet invitation carrying both the direct link and short code.
+    pub(crate) async fn send_invite(
+        &self,
+        to: &str,
+        token: &str,
+        short_code: &str,
+    ) -> Result<(), String> {
         let link = self.link("/invite", "token", token)?;
         let body = format!(
-            "Your practice invited you to Coda. Open this link to connect:\r\n\r\n{link}\r\n"
+            "Your practice invited you to Coda. Open this link to connect:\r\n\r\n{link}\r\n\r\nOr enter this code in Duet: {short_code}\r\n"
         );
         self.sender
             .send(to, "Your Coda invitation", &body)

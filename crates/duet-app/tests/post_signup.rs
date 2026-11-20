@@ -165,6 +165,34 @@ async fn start_stub_server(state: Arc<Mutex<StubBackendState>>) -> String {
                     "practices": []
                 }))
             }),
+        )
+        .route(
+            "/api/connected-care/invitations/inspect",
+            post(|Json(body): Json<Value>| async move {
+                if body["credential"]["value"] == "inv-77" {
+                    (
+                        StatusCode::OK,
+                        Json(json!({
+                            "standing": {
+                                "standing": "active",
+                                "wrong_dob_attempts": 0,
+                                "attempts_remaining": 5
+                            }
+                        })),
+                    )
+                        .into_response()
+                } else {
+                    (
+                        StatusCode::NOT_FOUND,
+                        Json(json!({ "detail": { "code": "invitation_not_open", "message": "This invitation is not open." } })),
+                    )
+                        .into_response()
+                }
+            }),
+        )
+        .route(
+            "/api/connected-care/connections",
+            get(|| async { Json(json!({ "connections": [] })) }),
         );
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
@@ -259,7 +287,7 @@ async fn d1_post_signup_mounts_terms_gate_and_then_you_and_shared_tabs() {
             );
 
             // 2. Once Terms are accepted, mounting DuetRoot opens PrivateRoot on You with Shared beside it
-            //    and opens the handed-off practice invitation inside the signed-in account.
+            //    and opens the handed-off practice invitation on its DOB gate (Rule 3: never leaking token/preview).
             state.lock().unwrap().terms_accepted = true;
             let mut post_signup_dom = VirtualDom::new_with_props(
                 Harness,
@@ -270,13 +298,16 @@ async fn d1_post_signup_mounts_terms_gate_and_then_you_and_shared_tabs() {
                 },
             );
             post_signup_dom.rebuild_in_place();
-            let private_html = wait_for_render(&mut post_signup_dom, "Practice invitation").await;
+            let private_html =
+                wait_for_render(&mut post_signup_dom, "Confirm your date of birth").await;
             assert!(private_html.contains(">You<"), "{private_html}");
             assert!(private_html.contains(">Shared<"), "{private_html}");
             assert!(private_html.contains("Settings"), "{private_html}");
             assert!(
-                private_html.contains("Practice invitation") && private_html.contains("inv-77"),
-                "invite deep link must hand off inside signed-in account:\n{private_html}"
+                private_html.contains("Confirm your date of birth")
+                    && private_html.contains("Date of birth")
+                    && !private_html.contains("inv-77"),
+                "invite deep link must open on the pre-DOB gate without leaking the token:\n{private_html}"
             );
         })
         .await;

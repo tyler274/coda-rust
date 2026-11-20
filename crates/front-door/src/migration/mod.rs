@@ -26,6 +26,7 @@ mod m20261022_duet_execution;
 mod m20261023_duet_admission;
 mod m20261112_drop_premium_cadence;
 mod m20261119_for_my_doctor_shares;
+mod m20261120_invitation_lifecycle;
 mod m20261120_multi_practice_connections;
 #[allow(missing_docs)]
 pub mod permission;
@@ -36,6 +37,8 @@ pub mod shared_record;
 
 #[allow(missing_docs)]
 pub mod invitation;
+#[allow(missing_docs)]
+pub mod invitation_credential;
 
 #[allow(missing_docs)]
 pub mod session;
@@ -53,6 +56,10 @@ pub use for_my_doctor_share::{
 };
 pub use invitation::Model as InvitationRow;
 pub use invitation::{ActiveModel as InvitationActiveModel, Entity as Invitations};
+pub use invitation_credential::Model as InvitationCredentialRow;
+pub use invitation_credential::{
+    ActiveModel as InvitationCredentialActiveModel, Entity as InvitationCredentials,
+};
 pub use session::Model as SessionRow;
 pub use session::{ActiveModel as SessionActiveModel, Entity as Sessions};
 pub use shared_record::Model as SharedRecordRow;
@@ -89,6 +96,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261112_drop_premium_cadence::Migration),
             Box::new(m20261119_for_my_doctor_shares::Migration),
             Box::new(m20261120_multi_practice_connections::Migration),
+            Box::new(m20261120_invitation_lifecycle::Migration),
         ]
     }
 }
@@ -477,6 +485,7 @@ mod tests {
                 "m20261112_drop_premium_cadence",
                 "m20261119_for_my_doctor_shares",
                 "m20261120_multi_practice_connections",
+                "m20261120_invitation_lifecycle",
             ]
         );
     }

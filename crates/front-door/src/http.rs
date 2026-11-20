@@ -21,8 +21,10 @@ use uuid::Uuid;
 
 use crate::{
     Account, AccountConnection, ForMyDoctorError, ForMyDoctorSendRequest, ForMyDoctorShare,
-    ForMyDoctorShareStatus, FrontDoorStore, Invitation, InviteError, LinkError, RosterPatient,
-    SessionError, SharedPatientRecordInput, SignInError,
+    ForMyDoctorShareStatus, FrontDoorStore, InvitationAcceptError, InvitationCheckError,
+    InvitationCredential, InvitationGateState, InvitationSharingPreview, InviteError,
+    InvitePatientParams, LinkError, RosterConnectionStatus, RosterPatient, SessionError,
+    SharedPatientRecordInput, SignInError,
 };
 
 /// Why a route answered with an error status.
@@ -34,10 +36,25 @@ pub enum ApiError {
     Invalid,
     /// The roster patient already holds an active Connected connection.
     Conflict,
+    /// The open invitation locked after too many wrong date-of-birth answers.
+    Locked,
+    /// No open invitation matches this roster patient or credential.
+    NotFound,
+    /// Entered date of birth did not match the practice chart.
+    WrongBirthDate {
+        /// Remaining attempts before lock.
+        attempts_remaining: u8,
+    },
+    /// Patient does not meet the 18+ age requirement.
+    Underage,
+    /// Supplied date of birth is malformed.
+    InvalidBirthDate,
+    /// The signed-in account is deactivated.
+    InactiveAccount,
     /// A `"For my doctor"` share key was reused with different content.
     ShareConflict,
     /// Supplied connected-care share/record payload is malformed or ambiguous.
-    InvalidInput,
+    InvalidInput(&'static str),
     /// The account carries no active connection to that practice.
     Unlinked,
     /// The store failed; the caller cannot fix it by retrying differently.
@@ -46,34 +63,77 @@ pub enum ApiError {
 
 impl IntoResponse for ApiError {
     fn into_response(self) -> Response {
-        let (status, detail) = match self {
-            Self::Unauthorized => (StatusCode::UNAUTHORIZED, "Sign in to read the account."),
+        match self {
+            Self::Unauthorized => (
+                StatusCode::UNAUTHORIZED,
+                Json(json!({ "code": "unauthorized", "detail": "Sign in to read the account." })),
+            )
+                .into_response(),
             Self::Invalid => (
                 StatusCode::UNAUTHORIZED,
-                "That invitation or sign-in link is no longer valid.",
-            ),
+                Json(json!({ "code": "invalid", "detail": "That invitation or sign-in link is no longer valid." })),
+            )
+                .into_response(),
             Self::Conflict => (
                 StatusCode::CONFLICT,
-                "That patient already holds an active connection.",
-            ),
+                Json(json!({ "code": "conflict", "detail": "That patient already holds an active connection." })),
+            )
+                .into_response(),
+            Self::Locked => (
+                StatusCode::LOCKED,
+                Json(json!({ "code": "invitation_locked", "detail": "This invitation is locked after too many wrong date-of-birth answers." })),
+            )
+                .into_response(),
+            Self::NotFound => (
+                StatusCode::NOT_FOUND,
+                Json(json!({ "code": "invitation_not_open", "detail": "This invitation is no longer open." })),
+            )
+                .into_response(),
+            Self::WrongBirthDate { attempts_remaining } => (
+                StatusCode::UNPROCESSABLE_ENTITY,
+                Json(json!({
+                    "code": "wrong_birth_date",
+                    "attempts_remaining": attempts_remaining,
+                    "detail": format!("Date of birth does not match ({attempts_remaining} attempts remaining)."),
+                })),
+            )
+                .into_response(),
+            Self::Underage => (
+                StatusCode::FORBIDDEN,
+                Json(json!({ "code": "underage", "detail": "Duet Connected Care requires being 18 or older." })),
+            )
+                .into_response(),
+            Self::InvalidBirthDate => (
+                StatusCode::UNPROCESSABLE_ENTITY,
+                Json(json!({ "code": "invalid_birth_date", "detail": "Enter a valid date of birth (YYYY-MM-DD)." })),
+            )
+                .into_response(),
+            Self::InactiveAccount => (
+                StatusCode::FORBIDDEN,
+                Json(json!({ "code": "inactive_account", "detail": "This account is inactive." })),
+            )
+                .into_response(),
             Self::ShareConflict => (
                 StatusCode::CONFLICT,
-                "That For my doctor share key already exists with different content.",
-            ),
-            Self::InvalidInput => (
+                Json(json!({ "code": "share_conflict", "detail": "That For my doctor share key already exists with different content." })),
+            )
+                .into_response(),
+            Self::InvalidInput(detail) => (
                 StatusCode::UNPROCESSABLE_ENTITY,
-                "Supply non-empty share details.",
-            ),
+                Json(json!({ "code": "invalid_input", "detail": detail })),
+            )
+                .into_response(),
             Self::Unlinked => (
                 StatusCode::NOT_FOUND,
-                "No active connection for this account.",
-            ),
+                Json(json!({ "code": "unlinked", "detail": "No active connection for this account." })),
+            )
+                .into_response(),
             Self::Storage => (
                 StatusCode::SERVICE_UNAVAILABLE,
-                "The front door is unavailable.",
-            ),
-        };
-        (status, Json(json!({ "detail": detail }))).into_response()
+                Json(json!({ "code": "storage_unavailable", "detail": "The front door is unavailable." })),
+            )
+                .into_response(),
+        }
     }
 }
 
@@ -97,6 +157,36 @@ impl From<InviteError> for ApiError {
     fn from(error: InviteError) -> Self {
         match error {
             InviteError::Conflict => Self::Conflict,
+            InviteError::Locked => Self::Locked,
+            InviteError::NotFound => Self::NotFound,
+            InviteError::InvalidInput(msg) => Self::InvalidInput(msg),
+            InviteError::Storage(_) => Self::Storage,
+        }
+    }
+}
+
+impl From<InvitationCheckError> for ApiError {
+    fn from(error: InvitationCheckError) -> Self {
+        match error {
+            InvitationCheckError::NotOpen => Self::NotFound,
+            InvitationCheckError::Locked => Self::Locked,
+            InvitationCheckError::WrongBirthDate { attempts_remaining } => {
+                Self::WrongBirthDate { attempts_remaining }
+            }
+            InvitationCheckError::Underage => Self::Underage,
+            InvitationCheckError::InvalidBirthDate => Self::InvalidBirthDate,
+            InvitationCheckError::Storage(_) => Self::Storage,
+        }
+    }
+}
+
+impl From<InvitationAcceptError> for ApiError {
+    fn from(error: InvitationAcceptError) -> Self {
+        match error {
+            InvitationAcceptError::Check(check) => check.into(),
+            InvitationAcceptError::InactiveAccount => Self::InactiveAccount,
+            InvitationAcceptError::Conflict => Self::Conflict,
+            InvitationAcceptError::Storage(_) => Self::Storage,
         }
     }
 }
@@ -114,7 +204,7 @@ impl From<ForMyDoctorError> for ApiError {
     fn from(error: ForMyDoctorError) -> Self {
         match error {
             ForMyDoctorError::Unlinked | ForMyDoctorError::NotFound => Self::Unlinked,
-            ForMyDoctorError::InvalidInput(_) => Self::InvalidInput,
+            ForMyDoctorError::InvalidInput(msg) => Self::InvalidInput(msg),
             ForMyDoctorError::Conflict => Self::ShareConflict,
             ForMyDoctorError::Storage(_) => Self::Storage,
         }
@@ -159,16 +249,19 @@ pub struct InvitationView {
     /// The redeem token, returned to the caller here; a real deployment
     /// delivers it to the patient instead.
     pub token: String,
+    /// The human-enterable short code (`XXXX-XXXX`).
+    pub short_code: String,
 }
 
 impl InvitationView {
-    fn from_pending(invitation: Invitation, token: String) -> Self {
+    fn from_issued(issued: crate::IssuedInvitation) -> Self {
         Self {
-            patient: invitation.patient,
-            email: invitation.email,
-            display_name: invitation.display_name,
-            invited_at: invitation.invited_at,
-            token,
+            patient: issued.invitation.patient,
+            email: issued.invitation.email,
+            display_name: issued.invitation.display_name,
+            invited_at: issued.invitation.invited_at,
+            token: issued.link_token,
+            short_code: issued.short_code,
         }
     }
 }
@@ -188,6 +281,55 @@ struct InviteBody {
     patient_id: String,
     email: String,
     display_name: String,
+    #[serde(default)]
+    practice_name: String,
+    #[serde(default)]
+    physician_name: String,
+    #[serde(default)]
+    expected_birth_date: Option<String>,
+}
+
+#[derive(Deserialize)]
+struct RosterBody {
+    practice_id: String,
+    patient_id: String,
+}
+
+#[derive(Deserialize)]
+struct DeliveryFailedBody {
+    practice_id: String,
+    patient_id: String,
+    detail: String,
+}
+
+#[derive(Deserialize)]
+struct InspectBody {
+    credential: InvitationCredential,
+}
+
+#[derive(Deserialize)]
+struct VerifyDobBody {
+    credential: InvitationCredential,
+    birth_date: String,
+}
+
+#[derive(Deserialize)]
+struct AcceptShareBody {
+    #[serde(default)]
+    account_id: Option<Uuid>,
+    #[serde(default)]
+    account_email: Option<String>,
+    credential: InvitationCredential,
+    birth_date: String,
+}
+
+/// Result returned when an invitation is accepted via Share.
+#[derive(serde::Serialize, serde::Deserialize)]
+pub struct AcceptShareView {
+    /// Front-door account id that holds the connection.
+    pub account_id: Uuid,
+    /// Newly created or re-connected practice connection.
+    pub connection: AccountConnection,
 }
 
 #[derive(Deserialize)]
@@ -312,7 +454,23 @@ pub fn router(state: FrontDoorState) -> Router {
 pub fn router_with(state: FrontDoorState, require_auth: bool) -> Router {
     Router::new()
         .route("/front-door/invitations", post(invite))
+        .route("/front-door/invitations/resend", post(resend_invite))
+        .route("/front-door/invitations/cancel", post(cancel_invite))
+        .route(
+            "/front-door/invitations/delivery-failed",
+            post(mark_delivery_failed),
+        )
+        .route("/front-door/invitations/inspect", post(inspect_invite))
+        .route(
+            "/front-door/invitations/verify-dob",
+            post(verify_invite_dob),
+        )
+        .route("/front-door/invitations/accept", post(accept_invite_share))
         .route("/front-door/invitations/redeem", post(redeem))
+        .route(
+            "/front-door/roster/{practice_id}/{patient_id}",
+            get(roster_connection),
+        )
         .route("/front-door/sign-in", post(sign_in))
         .route("/front-door/sign-in/verify", post(verify))
         .route("/front-door/account", get(account))
@@ -324,6 +482,10 @@ pub fn router_with(state: FrontDoorState, require_auth: bool) -> Router {
         .route(
             "/front-door/connections/discharge",
             post(discharge_connection),
+        )
+        .route(
+            "/front-door/accounts/{account_id}/connections",
+            get(account_connections_operator),
         )
         .route(
             "/front-door/accounts/{account_id}/end-connections",
@@ -380,25 +542,139 @@ fn require_operator(
     Ok(())
 }
 
-/// Records one invitation to a roster patient and returns the redeem token.
+/// Records one invitation to a roster patient and returns the link token and short code.
 async fn invite(
     State((state, _)): State<(FrontDoorState, bool)>,
     Json(body): Json<InviteBody>,
 ) -> Result<Json<InvitationView>, ApiError> {
-    let patient = RosterPatient {
-        practice_id: body.practice_id,
-        patient_id: body.patient_id,
+    let practice_name = if body.practice_name.trim().is_empty() {
+        body.practice_id.clone()
+    } else {
+        body.practice_name
     };
-    let token = state
+    let issued = state
         .store
-        .invite(&patient, &body.email, &body.display_name, (state.now)())
+        .invite_patient(InvitePatientParams {
+            patient: RosterPatient {
+                practice_id: body.practice_id,
+                patient_id: body.patient_id,
+            },
+            email: body.email,
+            display_name: body.display_name,
+            practice_name,
+            physician_name: body.physician_name,
+            expected_birth_date: body.expected_birth_date,
+            now: (state.now)(),
+        })
         .await?;
-    let invitation = state
+    Ok(Json(InvitationView::from_issued(issued)))
+}
+
+async fn resend_invite(
+    State((state, _)): State<(FrontDoorState, bool)>,
+    Json(body): Json<RosterBody>,
+) -> Result<Json<InvitationView>, ApiError> {
+    let issued = state
         .store
-        .invitation_for(&patient)
-        .await
-        .ok_or(ApiError::Storage)?;
-    Ok(Json(InvitationView::from_pending(invitation, token)))
+        .resend_invitation(
+            &RosterPatient {
+                practice_id: body.practice_id,
+                patient_id: body.patient_id,
+            },
+            (state.now)(),
+        )
+        .await?;
+    Ok(Json(InvitationView::from_issued(issued)))
+}
+
+async fn cancel_invite(
+    State((state, _)): State<(FrontDoorState, bool)>,
+    Json(body): Json<RosterBody>,
+) -> Result<StatusCode, ApiError> {
+    state
+        .store
+        .cancel_invitation(&RosterPatient {
+            practice_id: body.practice_id,
+            patient_id: body.patient_id,
+        })
+        .await?;
+    Ok(StatusCode::NO_CONTENT)
+}
+
+async fn mark_delivery_failed(
+    State((state, _)): State<(FrontDoorState, bool)>,
+    Json(body): Json<DeliveryFailedBody>,
+) -> Result<StatusCode, ApiError> {
+    state
+        .store
+        .mark_invitation_delivery_failed(
+            &RosterPatient {
+                practice_id: body.practice_id,
+                patient_id: body.patient_id,
+            },
+            &body.detail,
+            (state.now)(),
+        )
+        .await?;
+    Ok(StatusCode::NO_CONTENT)
+}
+
+async fn inspect_invite(
+    State((state, _)): State<(FrontDoorState, bool)>,
+    Json(body): Json<InspectBody>,
+) -> Result<Json<InvitationGateState>, ApiError> {
+    Ok(Json(
+        state.store.inspect_invitation(&body.credential).await?,
+    ))
+}
+
+async fn verify_invite_dob(
+    State((state, _)): State<(FrontDoorState, bool)>,
+    Json(body): Json<VerifyDobBody>,
+) -> Result<Json<InvitationSharingPreview>, ApiError> {
+    Ok(Json(
+        state
+            .store
+            .verify_invitation_dob(&body.credential, &body.birth_date, (state.now)())
+            .await?,
+    ))
+}
+
+async fn accept_invite_share(
+    State((state, require_auth)): State<(FrontDoorState, bool)>,
+    headers: HeaderMap,
+    Json(body): Json<AcceptShareBody>,
+) -> Result<Json<AcceptShareView>, ApiError> {
+    require_operator(&state, require_auth, &headers)?;
+    let (account_id, connection) = state
+        .store
+        .accept_invitation_share(
+            body.account_id,
+            body.account_email.as_deref(),
+            &body.credential,
+            &body.birth_date,
+            (state.now)(),
+        )
+        .await?;
+    Ok(Json(AcceptShareView {
+        account_id,
+        connection,
+    }))
+}
+
+async fn roster_connection(
+    State((state, _)): State<(FrontDoorState, bool)>,
+    Path((practice_id, patient_id)): Path<(String, String)>,
+) -> Result<Json<RosterConnectionStatus>, ApiError> {
+    Ok(Json(
+        state
+            .store
+            .roster_connection(&RosterPatient {
+                practice_id,
+                patient_id,
+            })
+            .await?,
+    ))
 }
 
 /// Redeems an invitation, attaching `(account_id, practice_id, patient_id)` and minting one session.
@@ -510,6 +786,19 @@ async fn discharge_connection(
 }
 
 /// Operator/service endpoint for ending all connections when a Duet account is deleted (`X3`).
+async fn account_connections_operator(
+    State((state, require_auth)): State<(FrontDoorState, bool)>,
+    headers: HeaderMap,
+    Path(account_id): Path<Uuid>,
+) -> Result<Json<Vec<AccountConnection>>, ApiError> {
+    require_operator(&state, require_auth, &headers)?;
+    match state.store.connections(account_id).await {
+        Ok(connections) => Ok(Json(connections)),
+        Err(LinkError::Unlinked) => Ok(Json(Vec::new())),
+        Err(other) => Err(other.into()),
+    }
+}
+
 async fn end_account_connections(
     State((state, require_auth)): State<(FrontDoorState, bool)>,
     headers: HeaderMap,
@@ -1183,5 +1472,183 @@ mod tests {
                 .status(),
             StatusCode::UNAUTHORIZED
         );
+    }
+
+    #[tokio::test]
+    async fn invitation_lifecycle_routes_enforce_auth_dob_lock_and_share() {
+        let (state, _store) = state(MemoryFrontDoorStore::new());
+        let state = state.with_operator_auth(
+            OperatorAuth::from_secret("operator-secret-token-for-tests").unwrap(),
+        );
+        let app = router_with(state, true);
+
+        let inv_resp = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/front-door/invitations")
+                    .header("content-type", "application/json")
+                    .header("authorization", "Bearer operator-secret-token-for-tests")
+                    .body(Body::from(
+                        json!({
+                            "practice_id": "practice-1",
+                            "patient_id": "pat-1",
+                            "email": "tamika@example.test",
+                            "display_name": "Tamika",
+                            "practice_name": "River Bend Clinic",
+                            "physician_name": "Dr. Roger",
+                            "expected_birth_date": "1987-02-18"
+                        })
+                        .to_string(),
+                    ))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(inv_resp.status(), StatusCode::OK);
+        let inv_json = serde_json::from_slice::<serde_json::Value>(
+            &axum::body::to_bytes(inv_resp.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        let short_code = inv_json["short_code"].as_str().unwrap().to_owned();
+        let token_1 = inv_json["token"].as_str().unwrap().to_owned();
+
+        // Resend mints new link & short code while old credentials still pass inspect.
+        let resend_resp = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/front-door/invitations/resend")
+                    .header("content-type", "application/json")
+                    .header("authorization", "Bearer operator-secret-token-for-tests")
+                    .body(Body::from(
+                        json!({"practice_id": "practice-1", "patient_id": "pat-1"}).to_string(),
+                    ))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(resend_resp.status(), StatusCode::OK);
+
+        // Inspect returns active standing with no practice leakage.
+        let inspect_resp = post(
+            &app,
+            "/front-door/invitations/inspect",
+            json!({ "credential": { "kind": "link_token", "value": token_1 } }),
+        )
+        .await;
+        assert_eq!(inspect_resp.status(), StatusCode::OK);
+        let inspect_json = serde_json::from_slice::<serde_json::Value>(
+            &axum::body::to_bytes(inspect_resp.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        assert_eq!(inspect_json["standing"]["standing"], "active");
+        assert!(inspect_json.get("practice_name").is_none());
+
+        // Verify DOB unlocks preview, then Accept connects.
+        let verify_resp = post(
+            &app,
+            "/front-door/invitations/verify-dob",
+            json!({
+                "credential": { "kind": "short_code", "value": short_code },
+                "birth_date": "1987-02-18"
+            }),
+        )
+        .await;
+        assert_eq!(verify_resp.status(), StatusCode::OK);
+        let verify_json = serde_json::from_slice::<serde_json::Value>(
+            &axum::body::to_bytes(verify_resp.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        assert_eq!(verify_json["practice_name"], "River Bend Clinic");
+
+        let accept_resp = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/front-door/invitations/accept")
+                    .header("content-type", "application/json")
+                    .header("authorization", "Bearer operator-secret-token-for-tests")
+                    .body(Body::from(
+                        json!({
+                            "account_email": "duet-account@example.test",
+                            "credential": { "kind": "short_code", "value": short_code },
+                            "birth_date": "1987-02-18"
+                        })
+                        .to_string(),
+                    ))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(accept_resp.status(), StatusCode::OK);
+        let accept_json = serde_json::from_slice::<serde_json::Value>(
+            &axum::body::to_bytes(accept_resp.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        assert_eq!(accept_json["connection"]["patient"]["patient_id"], "pat-1");
+
+        // Second invite on a fresh patient tests cancel -> 410 NotOpen.
+        let inv2_resp = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/front-door/invitations")
+                    .header("content-type", "application/json")
+                    .header("authorization", "Bearer operator-secret-token-for-tests")
+                    .body(Body::from(
+                        json!({
+                            "practice_id": "practice-1",
+                            "patient_id": "pat-2",
+                            "email": "p2@example.test",
+                            "display_name": "P2"
+                        })
+                        .to_string(),
+                    ))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        let inv2_json = serde_json::from_slice::<serde_json::Value>(
+            &axum::body::to_bytes(inv2_resp.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        let cancel_resp = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/front-door/invitations/cancel")
+                    .header("content-type", "application/json")
+                    .header("authorization", "Bearer operator-secret-token-for-tests")
+                    .body(Body::from(
+                        json!({"practice_id": "practice-1", "patient_id": "pat-2"}).to_string(),
+                    ))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(cancel_resp.status(), StatusCode::NO_CONTENT);
+        let cancelled_inspect = post(
+            &app,
+            "/front-door/invitations/inspect",
+            json!({ "credential": { "kind": "link_token", "value": inv2_json["token"] } }),
+        )
+        .await;
+        assert_eq!(cancelled_inspect.status(), StatusCode::NOT_FOUND);
     }
 }
