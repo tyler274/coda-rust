@@ -27,10 +27,14 @@ pub enum InviteError {
 }
 
 /// Why a connection read or ending step failed.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, thiserror::Error)]
 pub enum LinkError {
     /// No Duet account holds this id, or no active connection matches.
+    #[error("no active connection matches this account or roster patient")]
     Unlinked,
+    /// Storage failed while persisting or reading connection state.
+    #[error("front-door connection storage failed")]
+    Storage(#[from] sea_orm::DbErr),
 }
 
 /// Why a `"For my doctor"` send, pickup, or connected-record step failed.

@@ -112,7 +112,7 @@ async fn concurrent_invitation_redemption_consumes_once_and_connects_one_account
     );
     let (winner_id, _) = outcomes.into_iter().find_map(Result::ok).unwrap();
     assert!(matches!(
-        store.roster_connection(&patient).await,
+        store.roster_connection(&patient).await.unwrap(),
         RosterConnectionStatus::Connected { account_id, .. } if account_id == winner_id
     ));
 }
@@ -401,7 +401,7 @@ async fn an_invitation_redeems_once_without_expiry_and_creates_connection() {
     let patient = patient("pg-proof", "patient-1");
     let email = format!("{}@pg-proof.test", uuid::Uuid::new_v4().simple());
     assert!(matches!(
-        store.roster_connection(&patient).await,
+        store.roster_connection(&patient).await.unwrap(),
         RosterConnectionStatus::NotInvited
     ));
     let token = store
@@ -415,7 +415,7 @@ async fn an_invitation_redeems_once_without_expiry_and_creates_connection() {
     assert_eq!(pending.patient, patient);
     assert_eq!(pending.invited_at, NOW);
     assert!(matches!(
-        store.roster_connection(&patient).await,
+        store.roster_connection(&patient).await.unwrap(),
         RosterConnectionStatus::Invited { invited_at, .. } if invited_at == NOW
     ));
 
@@ -530,10 +530,16 @@ async fn multi_practice_connections_reuse_existing_account_and_reinvite_after_en
         .await
         .unwrap();
     assert!(matches!(
-        store.roster_connection(&practice_a).await,
+        store.roster_connection(&practice_a).await.unwrap(),
         RosterConnectionStatus::Ended { account_id, ended_at, .. } if account_id == id && ended_at == NOW + 10
     ));
-    assert!(store.roster_connection(&practice_b).await.is_connected());
+    assert!(
+        store
+            .roster_connection(&practice_b)
+            .await
+            .unwrap()
+            .is_connected()
+    );
     assert!(matches!(
         store
             .send_for_my_doctor(
@@ -600,10 +606,10 @@ async fn a_sign_in_token_verifies_once_and_mints_non_expiring_session() {
         id,
         "sessions never expire with time"
     );
-    assert_eq!(
-        store.connections(uuid::Uuid::nil()).await.unwrap_err(),
-        LinkError::Unlinked
-    );
+    assert!(matches!(
+        store.connections(uuid::Uuid::nil()).await,
+        Err(LinkError::Unlinked)
+    ));
 }
 
 #[tokio::test]
@@ -658,4 +664,132 @@ async fn the_memory_store_answers_the_same_contract() {
         ConnectionStanding::Connected { connected_at } if connected_at == NOW
     ));
     let _ = SessionError::Invalid;
+}
+
+#[tokio::test]
+async fn postgres_leave_discharge_and_account_delete_preserve_ended_and_fail_closed() {
+    let Some(url) = database("leave_discharge_delete").await else {
+        return;
+    };
+    let store = PostgresFrontDoorStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+    let p_a = patient("pg-leave-a", "pat-1");
+    let p_b = patient("pg-leave-b", "pat-2");
+    let p_c = patient("pg-leave-c", "pat-3");
+    let email = format!("{}@pg-proof.test", uuid::Uuid::new_v4().simple());
+
+    let tok_a = store.invite(&p_a, &email, "Luna", NOW).await.unwrap();
+    let (id, session) = store.redeem_invitation(&email, &tok_a, NOW).await.unwrap();
+    let tok_b = store.invite(&p_b, &email, "Luna", NOW).await.unwrap();
+    store
+        .redeem_invitation(&email, &tok_b, NOW + 1)
+        .await
+        .unwrap();
+    let tok_c = store.invite(&p_c, &email, "Luna", NOW).await.unwrap();
+    store
+        .redeem_invitation(&email, &tok_c, NOW + 2)
+        .await
+        .unwrap();
+
+    // Shared records & shares exist before leaving/discharging.
+    store
+        .send_for_my_doctor(
+            id,
+            ForMyDoctorSendRequest {
+                share_key: "share-a".into(),
+                title: "Pre-leave share".into(),
+                summary_text: "Kept on practice side".into(),
+                origin_label: None,
+                target: Some(p_a.clone()),
+            },
+            NOW + 3,
+        )
+        .await
+        .unwrap();
+
+    // X1: Patient leaves pg-leave-a.
+    let left = store
+        .leave_connection(id, "pg-leave-a", NOW + 10)
+        .await
+        .unwrap();
+    assert_eq!(left.len(), 1);
+    assert!(matches!(
+        store.roster_connection(&p_a).await.unwrap(),
+        RosterConnectionStatus::Ended {
+            reason: ConnectionEndReason::PatientLeft,
+            ended_at,
+            ..
+        } if ended_at == NOW + 10
+    ));
+    assert!(store.roster_connection(&p_b).await.unwrap().is_connected());
+    assert!(
+        store
+            .pending_for_my_doctor_shares_for_practice("pg-leave-a")
+            .await
+            .unwrap()
+            .is_empty(),
+        "new pickup stops immediately when Ended"
+    );
+
+    // X2: Practice discharges pg-leave-b.
+    let discharged = store.discharge_connection(&p_b, NOW + 20).await.unwrap();
+    assert!(matches!(
+        discharged.standing,
+        ConnectionStanding::Ended {
+            ended_at,
+            reason: ConnectionEndReason::PracticeDischarged,
+            ..
+        } if ended_at == NOW + 20
+    ));
+    assert!(matches!(
+        store.roster_connection(&p_b).await.unwrap(),
+        RosterConnectionStatus::Ended {
+            reason: ConnectionEndReason::PracticeDischarged,
+            ..
+        }
+    ));
+
+    // X3: Account deleted ends remaining pg-leave-c and revokes sessions while keeping Ended roster status.
+    assert_eq!(
+        store
+            .end_all_connections_for_account(id, NOW + 30)
+            .await
+            .unwrap(),
+        1
+    );
+    assert_eq!(
+        store
+            .end_all_connections_for_account(id, NOW + 31)
+            .await
+            .unwrap(),
+        0,
+        "idempotent across retries"
+    );
+    assert!(matches!(
+        store.roster_connection(&p_c).await.unwrap(),
+        RosterConnectionStatus::Ended {
+            reason: ConnectionEndReason::AccountDeleted,
+            ended_at,
+            ..
+        } if ended_at == NOW + 30
+    ));
+    assert_eq!(
+        store.session(&session, NOW + 32).await.unwrap_err(),
+        SessionError::Invalid
+    );
+
+    // Outage never reads as NotInvited.
+    let db = sea_orm::Database::connect(&url).await.unwrap();
+    db.execute_unprepared("DROP TABLE front_door_connections")
+        .await
+        .unwrap();
+    assert!(matches!(
+        store.roster_connection(&p_c).await,
+        Err(ForMyDoctorError::Storage(_))
+    ));
+    assert!(matches!(
+        store.practice_connections("pg-leave-c").await,
+        Err(ForMyDoctorError::Storage(_))
+    ));
 }

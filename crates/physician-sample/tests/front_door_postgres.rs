@@ -211,7 +211,7 @@ async fn the_practice_invite_redeems_once_on_postgres() {
         workspace
     );
     assert!(matches!(
-        front_door.roster_connection(&pending.patient).await,
+        front_door.roster_connection(&pending.patient).await.unwrap(),
         front_door::RosterConnectionStatus::Connected {
             account_id: linked_id,
             ..

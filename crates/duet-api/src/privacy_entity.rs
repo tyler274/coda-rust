@@ -359,3 +359,25 @@ pub mod publication {
 
     impl ActiveModelBehavior for ActiveModel {}
 }
+
+/// Mapped subset of `public.duet_front_door_mapping` linking a Duet account to its front-door account.
+pub mod front_door_mapping {
+    use sea_orm::entity::prelude::*;
+
+    /// One Duet-to-front-door identity link row.
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(schema_name = "public", table_name = "duet_front_door_mapping")]
+    pub struct Model {
+        /// Front-door account identity.
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub front_door_account_id: Uuid,
+        /// Owning Duet account identity.
+        pub user_id: Uuid,
+    }
+
+    /// No relations are navigated.
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}

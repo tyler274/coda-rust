@@ -7,7 +7,9 @@ use std::time::{Duration, UNIX_EPOCH};
 use serde_json::Value;
 
 use crate::timestamp::format_rfc3339;
-use front_door::{FrontDoorStore, MemoryFrontDoorStore, RosterConnectionStatus, RosterPatient};
+use front_door::{
+    ForMyDoctorError, FrontDoorStore, MemoryFrontDoorStore, RosterConnectionStatus, RosterPatient,
+};
 use physician_auth::{
     AuthStore, Membership, MemoryAuthStore, PhysicianIdentity, PracticeClock, PracticeTimeZone,
     StoreUnavailable,
@@ -191,14 +193,14 @@ impl ConnectedCare {
         front_door: &dyn FrontDoorStore,
         practice_id: &str,
         workspace_id: &str,
-    ) -> PatientLinkWire {
+    ) -> Result<PatientLinkWire, ForMyDoctorError> {
         let status = front_door
             .roster_connection(&RosterPatient {
                 practice_id: practice_id.to_owned(),
                 patient_id: workspace_id.to_owned(),
             })
-            .await;
-        status_to_link_wire(practice_id, workspace_id, &status)
+            .await?;
+        Ok(status_to_link_wire(practice_id, workspace_id, &status))
     }
 }
 
@@ -284,14 +286,15 @@ pub(crate) async fn enrich_workspace(
     mut value: Value,
     workspace_id: &str,
     extensions: &axum::http::Extensions,
-) -> Value {
+) -> Result<Value, axum::http::StatusCode> {
     if let Some(care) = extensions.get::<ConnectedCare>() {
         let store = care.auth_store(extensions);
         let front_door = care.front_door(extensions);
         let identity = ConnectedCare::identity(extensions);
         let link = care
             .link_wire(&*front_door, &identity.practice_id, workspace_id)
-            .await;
+            .await
+            .map_err(|_| axum::http::StatusCode::SERVICE_UNAVAILABLE)?;
         let practice_tz = store
             .practice(&identity.practice_id)
             .await
@@ -315,5 +318,5 @@ pub(crate) async fn enrich_workspace(
             }
         }
     }
-    value
+    Ok(value)
 }

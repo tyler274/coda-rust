@@ -31,6 +31,11 @@
 //! `physician-migrate inspect-runs` prints saved run records, projected steps,
 //! and model reasoning summaries as JSON lines for Coda staff (`[practice_id]
 //! [workspace_id] [target_id]`). It refuses to run as a Cloud Run job.
+//!
+//! `physician-migrate discharge <practice_id> <patient_workspace_id>` lets
+//! operators discharge a patient from Connected Care immediately (`X2`), ending
+//! live sharing while preserving dated practice copies. It refuses to run as a
+//! Cloud Run job.
 
 use physician_sample::STAGING_PRACTICE_ID;
 use physician_sample::chart_load::{
@@ -98,6 +103,18 @@ async fn main() {
                     eprintln!("  caused by: {inner}");
                     cause = inner.source();
                 }
+                std::process::exit(1);
+            }
+            return;
+        }
+        Some("discharge") => {
+            let args: Vec<String> = std::env::args().skip(2).collect();
+            let fd_url = std::env::var("FRONT_DOOR_DATABASE_URL")
+                .ok()
+                .filter(|v| !v.trim().is_empty())
+                .unwrap_or(url);
+            if let Err(error) = discharge_patient(&fd_url, &args).await {
+                eprintln!("discharge command failed: {error}");
                 std::process::exit(1);
             }
             return;
@@ -552,5 +569,63 @@ async fn manage_cadence(url: &str, args: &[String]) -> Result<(), String> {
             "usage: physician-migrate cadence <get|set|set-practice> <practice_id> [patient_workspace_id] [check_every_seconds review_every_seconds]"
                 .to_owned(),
         ),
+    }
+}
+
+async fn discharge_patient(url: &str, args: &[String]) -> Result<(), String> {
+    use front_door::{FrontDoorStore, RosterPatient};
+    let (practice_id, patient_id) =
+        parse_discharge_args(args, std::env::var_os("CLOUD_RUN_JOB").is_some())?;
+    let db = migration_connection(url)
+        .await
+        .map_err(|error| format!("front-door database connection: {error}"))?;
+    let store = front_door::PostgresFrontDoorStore::from_connection(db);
+    let now_sec = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|since| since.as_secs())
+        .unwrap_or_default();
+    let ended = store
+        .discharge_connection(
+            &RosterPatient {
+                practice_id: practice_id.to_owned(),
+                patient_id: patient_id.to_owned(),
+            },
+            now_sec,
+        )
+        .await
+        .map_err(|error| error.to_string())?;
+    println!(
+        "{}",
+        serde_json::to_string(&ended).map_err(|error| error.to_string())?
+    );
+    Ok(())
+}
+
+fn parse_discharge_args(args: &[String], in_cloud_run_job: bool) -> Result<(&str, &str), String> {
+    if in_cloud_run_job {
+        return Err("physician-migrate discharge refuses to run inside a Cloud Run job".to_owned());
+    }
+    if args.len() != 2 || args[0].trim().is_empty() || args[1].trim().is_empty() {
+        return Err(
+            "usage: physician-migrate discharge <practice_id> <patient_workspace_id>".to_owned(),
+        );
+    }
+    Ok((args[0].as_str(), args[1].as_str()))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::parse_discharge_args;
+
+    #[test]
+    fn discharge_cli_refuses_cloud_run_job_and_validates_args() {
+        let args = vec!["prac-1".to_owned(), "pw-1".to_owned()];
+        assert!(parse_discharge_args(&args, true).is_err());
+        assert_eq!(
+            parse_discharge_args(&args, false).unwrap(),
+            ("prac-1", "pw-1")
+        );
+        assert!(parse_discharge_args(&[], false).is_err());
+        assert!(parse_discharge_args(&["prac-1".to_owned(), " ".to_owned()], false).is_err());
     }
 }

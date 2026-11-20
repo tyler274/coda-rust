@@ -473,9 +473,35 @@ pub trait FrontDoorStore: Send + Sync {
         reason: ConnectionEndReason,
         now: u64,
     ) -> Result<(), LinkError>;
+    /// Patient leaves a practice in Duet (`X1`): ends every active `Connected` connection
+    /// between `account_id` and `practice_id` with [`ConnectionEndReason::PatientLeft`].
+    async fn leave_connection(
+        &self,
+        account_id: Uuid,
+        practice_id: &str,
+        now: u64,
+    ) -> Result<Vec<AccountConnection>, LinkError>;
+    /// Practice discharges a roster patient (`X2`): ends the active `Connected` connection
+    /// for `patient` with [`ConnectionEndReason::PracticeDischarged`].
+    async fn discharge_connection(
+        &self,
+        patient: &RosterPatient,
+        now: u64,
+    ) -> Result<AccountConnection, LinkError>;
+    /// Ends every active `Connected` connection for `account_id` with
+    /// [`ConnectionEndReason::AccountDeleted`] (`X3`), deactivates the account, and revokes open
+    /// sessions and sign-in tokens while preserving `Ended` roster standing and historical records.
+    async fn end_all_connections_for_account(
+        &self,
+        account_id: Uuid,
+        now: u64,
+    ) -> Result<usize, ForMyDoctorError>;
     /// Reads the canonical connection status (`NotInvited` / `Invited` / `Connected` / `Ended`)
     /// for one roster patient.
-    async fn roster_connection(&self, patient: &RosterPatient) -> RosterConnectionStatus;
+    async fn roster_connection(
+        &self,
+        patient: &RosterPatient,
+    ) -> Result<RosterConnectionStatus, ForMyDoctorError>;
     /// Reads canonical non-`NotInvited` connection statuses keyed by `patient_id` for `practice_id`.
     async fn practice_connections(
         &self,
@@ -967,9 +993,106 @@ impl FrontDoorStore for MemoryFrontDoorStore {
         Ok(())
     }
 
-    async fn roster_connection(&self, patient: &RosterPatient) -> RosterConnectionStatus {
+    async fn leave_connection(
+        &self,
+        account_id: Uuid,
+        practice_id: &str,
+        now: u64,
+    ) -> Result<Vec<AccountConnection>, LinkError> {
+        let mut state = self.state.lock().expect("front-door state");
+        let mut ended = Vec::new();
+        for ((aid, prac, pat), standing) in &mut state.connections {
+            if *aid == account_id
+                && prac == practice_id
+                && let ConnectionStanding::Connected { connected_at } = *standing
+            {
+                let next = ConnectionStanding::Ended {
+                    connected_at,
+                    ended_at: now,
+                    reason: ConnectionEndReason::PatientLeft,
+                };
+                *standing = next;
+                ended.push(AccountConnection {
+                    patient: RosterPatient {
+                        practice_id: prac.clone(),
+                        patient_id: pat.clone(),
+                    },
+                    standing: next,
+                });
+            }
+        }
+        if ended.is_empty() {
+            return Err(LinkError::Unlinked);
+        }
+        ended.sort_by(|a, b| a.patient.cmp(&b.patient));
+        Ok(ended)
+    }
+
+    async fn discharge_connection(
+        &self,
+        patient: &RosterPatient,
+        now: u64,
+    ) -> Result<AccountConnection, LinkError> {
+        let mut state = self.state.lock().expect("front-door state");
+        for ((_, prac, pat), standing) in &mut state.connections {
+            if prac == &patient.practice_id
+                && pat == &patient.patient_id
+                && let ConnectionStanding::Connected { connected_at } = *standing
+            {
+                let next = ConnectionStanding::Ended {
+                    connected_at,
+                    ended_at: now,
+                    reason: ConnectionEndReason::PracticeDischarged,
+                };
+                *standing = next;
+                return Ok(AccountConnection {
+                    patient: patient.clone(),
+                    standing: next,
+                });
+            }
+        }
+        Err(LinkError::Unlinked)
+    }
+
+    async fn end_all_connections_for_account(
+        &self,
+        account_id: Uuid,
+        now: u64,
+    ) -> Result<usize, ForMyDoctorError> {
+        let mut state = self.state.lock().expect("front-door state");
+        let mut count = 0;
+        for ((aid, _, _), standing) in &mut state.connections {
+            if *aid == account_id
+                && let ConnectionStanding::Connected { connected_at } = *standing
+            {
+                *standing = ConnectionStanding::Ended {
+                    connected_at,
+                    ended_at: now,
+                    reason: ConnectionEndReason::AccountDeleted,
+                };
+                count += 1;
+            }
+        }
+        let acct_email = if let Some(acct) = state.accounts.get_mut(&account_id) {
+            acct.active = false;
+            acct.sessions_ended_before = acct.sessions_ended_before.max(now);
+            Some(acct.email.clone())
+        } else {
+            None
+        };
+        state.sessions.retain(|_, (aid, _)| *aid != account_id);
+        if let Some(email) = acct_email {
+            state.pending_sign_ins.remove(&email);
+        }
+        Ok(count)
+    }
+
+    async fn roster_connection(
+        &self,
+        patient: &RosterPatient,
+    ) -> Result<RosterConnectionStatus, ForMyDoctorError> {
         let state = self.state.lock().expect("front-door state");
-        Self::roster_status_in(&state, patient)
+        Ok(Self::roster_status_in(&state, patient))
     }
 
     async fn practice_connections(
@@ -1467,7 +1590,7 @@ mod tests {
             .await
             .unwrap();
         assert!(matches!(
-            store.roster_connection(&practice_a).await,
+            store.roster_connection(&practice_a).await.unwrap(),
             RosterConnectionStatus::Ended {
                 account_id,
                 ended_at,
@@ -1475,7 +1598,13 @@ mod tests {
                 ..
             } if account_id == id && ended_at == NOW + 10
         ));
-        assert!(store.roster_connection(&practice_b).await.is_connected());
+        assert!(
+            store
+                .roster_connection(&practice_b)
+                .await
+                .unwrap()
+                .is_connected()
+        );
 
         // Ended allows re-inviting and re-connecting with advancing connected_at.
         let reinvite = store
@@ -1483,7 +1612,7 @@ mod tests {
             .await
             .unwrap();
         assert!(matches!(
-            store.roster_connection(&practice_a).await,
+            store.roster_connection(&practice_a).await.unwrap(),
             RosterConnectionStatus::Invited { .. }
         ));
         let (rejoined_id, _) = store
@@ -1492,7 +1621,7 @@ mod tests {
             .unwrap();
         assert_eq!(rejoined_id, id);
         assert!(matches!(
-            store.roster_connection(&practice_a).await,
+            store.roster_connection(&practice_a).await.unwrap(),
             RosterConnectionStatus::Connected {
                 account_id,
                 connected_at,
@@ -1578,11 +1707,137 @@ mod tests {
         expected.sort();
         assert_eq!(connected, expected);
         assert!(store.connected_accounts("other-practice").await.is_empty());
-        assert_eq!(
-            store.connections(Uuid::nil()).await.unwrap_err(),
-            LinkError::Unlinked,
-            "an unknown account carries no connections"
+        assert!(matches!(
+            store.connections(Uuid::nil()).await,
+            Err(LinkError::Unlinked)
+        ));
+        assert!(store.roster_connection(&luna).await.unwrap().is_connected());
+    }
+
+    #[tokio::test]
+    async fn leave_discharge_and_account_delete_preserve_ended_status_and_allow_reinvite() {
+        let store = MemoryFrontDoorStore::new();
+        let p_a = patient("practice-a", "pat-1");
+        let p_b = patient("practice-b", "pat-2");
+        let p_c = patient("practice-c", "pat-3");
+
+        let tok_a = store
+            .invite(&p_a, "luna@example.test", "Luna", NOW)
+            .await
+            .unwrap();
+        let (id, sess) = store
+            .redeem_invitation("luna@example.test", &tok_a, NOW)
+            .await
+            .unwrap();
+        let tok_b = store
+            .invite(&p_b, "luna@example.test", "Luna", NOW)
+            .await
+            .unwrap();
+        store
+            .redeem_invitation("luna@example.test", &tok_b, NOW + 1)
+            .await
+            .unwrap();
+        let tok_c = store
+            .invite(&p_c, "luna@example.test", "Luna", NOW)
+            .await
+            .unwrap();
+        store
+            .redeem_invitation("luna@example.test", &tok_c, NOW + 2)
+            .await
+            .unwrap();
+
+        // Patient leaves practice-a: practice-b and practice-c remain connected.
+        let left = store
+            .leave_connection(id, "practice-a", NOW + 10)
+            .await
+            .unwrap();
+        assert_eq!(left.len(), 1);
+        assert!(matches!(
+            left[0].standing,
+            ConnectionStanding::Ended {
+                ended_at,
+                reason: ConnectionEndReason::PatientLeft,
+                ..
+            } if ended_at == NOW + 10
+        ));
+        assert!(matches!(
+            store.roster_connection(&p_a).await.unwrap(),
+            RosterConnectionStatus::Ended {
+                reason: ConnectionEndReason::PatientLeft,
+                ..
+            }
+        ));
+        assert!(store.roster_connection(&p_b).await.unwrap().is_connected());
+
+        // Leaving an already-ended practice fails cleanly with Unlinked.
+        assert!(matches!(
+            store.leave_connection(id, "practice-a", NOW + 11).await,
+            Err(LinkError::Unlinked)
+        ));
+
+        // Practice discharges practice-b by roster key: immediately Ended with PracticeDischarged.
+        let discharged = store.discharge_connection(&p_b, NOW + 20).await.unwrap();
+        assert!(matches!(
+            discharged.standing,
+            ConnectionStanding::Ended {
+                ended_at,
+                reason: ConnectionEndReason::PracticeDischarged,
+                ..
+            } if ended_at == NOW + 20
+        ));
+        assert!(matches!(
+            store.roster_connection(&p_b).await.unwrap(),
+            RosterConnectionStatus::Ended {
+                reason: ConnectionEndReason::PracticeDischarged,
+                ..
+            }
+        ));
+        assert!(matches!(
+            store.discharge_connection(&p_b, NOW + 21).await,
+            Err(LinkError::Unlinked)
+        ));
+
+        // Both Left and Discharged can be re-invited right away.
+        assert!(
+            store
+                .invite(&p_a, "luna@example.test", "Luna", NOW + 25)
+                .await
+                .is_ok()
         );
-        assert!(store.roster_connection(&luna).await.is_connected());
+        assert!(
+            store
+                .invite(&p_b, "luna@example.test", "Luna", NOW + 26)
+                .await
+                .is_ok()
+        );
+
+        // Deleting account ends all remaining active connections (practice-c), revokes sessions,
+        // keeps Ended standing on roster, and is idempotent on replay.
+        assert_eq!(
+            store
+                .end_all_connections_for_account(id, NOW + 30)
+                .await
+                .unwrap(),
+            1
+        );
+        assert_eq!(
+            store
+                .end_all_connections_for_account(id, NOW + 31)
+                .await
+                .unwrap(),
+            0
+        );
+        assert!(matches!(
+            store.roster_connection(&p_c).await.unwrap(),
+            RosterConnectionStatus::Ended {
+                ended_at,
+                reason: ConnectionEndReason::AccountDeleted,
+                ..
+            } if ended_at == NOW + 30
+        ));
+        assert_eq!(
+            store.session(&sess, NOW + 32).await.unwrap_err(),
+            SessionError::Invalid
+        );
     }
 }

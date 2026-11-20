@@ -10,12 +10,13 @@ use std::sync::Arc;
 
 use axum::Json;
 use axum::Router;
-use axum::extract::State;
+use axum::extract::{Path, State};
 use axum::http::{HeaderMap, StatusCode};
 use axum::response::{IntoResponse, Response};
 use axum::routing::{get, post, put};
 use serde::Deserialize;
 use serde_json::json;
+use sha2::{Digest, Sha256};
 use uuid::Uuid;
 
 use crate::{
@@ -104,6 +105,7 @@ impl From<LinkError> for ApiError {
     fn from(error: LinkError) -> Self {
         match error {
             LinkError::Unlinked => Self::Unlinked,
+            LinkError::Storage(_) => Self::Storage,
         }
     }
 }
@@ -205,6 +207,64 @@ struct VerifyBody {
     token: String,
 }
 
+/// Bearer secret verifier for operator-gated front-door lifecycle actions
+/// (`discharge` and `end-connections`), comparing SHA-256 digests in constant time.
+#[derive(Clone, PartialEq, Eq)]
+pub struct OperatorAuth {
+    digest: [u8; 32],
+}
+
+impl std::fmt::Debug for OperatorAuth {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("OperatorAuth")
+            .field("digest", &"<redacted>")
+            .finish()
+    }
+}
+
+impl OperatorAuth {
+    /// Minimum accepted secret length in bytes for `FRONT_DOOR_OPERATOR_TOKEN`.
+    pub const MIN_TOKEN_BYTES: usize = 16;
+
+    /// Parses `FRONT_DOOR_OPERATOR_TOKEN` when present and non-empty.
+    pub fn from_env(get: impl Fn(&str) -> Option<String>) -> Result<Option<Self>, String> {
+        let Some(raw) = get("FRONT_DOOR_OPERATOR_TOKEN") else {
+            return Ok(None);
+        };
+        let trimmed = raw.trim();
+        if trimmed.is_empty() {
+            return Ok(None);
+        }
+        Self::from_secret(trimmed).map(Some)
+    }
+
+    /// Builds an operator verifier from a raw secret token.
+    pub fn from_secret(secret: &str) -> Result<Self, String> {
+        let trimmed = secret.trim();
+        if trimmed.len() < Self::MIN_TOKEN_BYTES {
+            return Err(format!(
+                "FRONT_DOOR_OPERATOR_TOKEN must be at least {} bytes",
+                Self::MIN_TOKEN_BYTES
+            ));
+        }
+        if trimmed.bytes().any(|b| matches!(b, b'\r' | b'\n' | 0)) {
+            return Err("FRONT_DOOR_OPERATOR_TOKEN must not contain control characters".to_owned());
+        }
+        let digest: [u8; 32] = Sha256::digest(trimmed.as_bytes()).into();
+        Ok(Self { digest })
+    }
+
+    /// Constant-time verification of a presented bearer secret.
+    pub fn verify(&self, presented: &str) -> bool {
+        let candidate: [u8; 32] = Sha256::digest(presented.as_bytes()).into();
+        let mut diff = 0u8;
+        for (&a, &b) in self.digest.iter().zip(candidate.iter()) {
+            diff |= std::hint::black_box(a ^ b);
+        }
+        diff == 0
+    }
+}
+
 /// The state the routes share.
 #[derive(Clone)]
 pub struct FrontDoorState {
@@ -212,6 +272,8 @@ pub struct FrontDoorState {
     pub store: Arc<dyn FrontDoorStore>,
     /// Unix seconds now, injected so tests control time.
     pub now: Arc<dyn Fn() -> u64 + Send + Sync>,
+    /// Optional operator bearer verifier for staff/service lifecycle endpoints.
+    pub operator_auth: Option<OperatorAuth>,
 }
 
 impl FrontDoorState {
@@ -220,7 +282,14 @@ impl FrontDoorState {
         Self {
             store,
             now: Arc::new(wall_now),
+            operator_auth: None,
         }
+    }
+
+    /// Attaches an operator bearer verifier for discharge and account-delete lifecycle calls.
+    pub fn with_operator_auth(mut self, operator_auth: OperatorAuth) -> Self {
+        self.operator_auth = Some(operator_auth);
+        self
     }
 }
 
@@ -248,6 +317,18 @@ pub fn router_with(state: FrontDoorState, require_auth: bool) -> Router {
         .route("/front-door/sign-in/verify", post(verify))
         .route("/front-door/account", get(account))
         .route("/front-door/connections", get(connections))
+        .route(
+            "/front-door/connections/{practice_id}/leave",
+            post(leave_connection),
+        )
+        .route(
+            "/front-door/connections/discharge",
+            post(discharge_connection),
+        )
+        .route(
+            "/front-door/accounts/{account_id}/end-connections",
+            post(end_account_connections),
+        )
         .route(
             "/front-door/for-my-doctor",
             post(send_for_my_doctor).get(list_for_my_doctor),
@@ -279,6 +360,24 @@ async fn account_id(
     }
     let token = bearer(headers).ok_or(ApiError::Unauthorized)?;
     Ok(state.store.session(&token, (state.now)()).await?)
+}
+
+fn require_operator(
+    state: &FrontDoorState,
+    require_auth: bool,
+    headers: &HeaderMap,
+) -> Result<(), ApiError> {
+    if let Some(auth) = &state.operator_auth {
+        let token = bearer(headers).ok_or(ApiError::Unauthorized)?;
+        if !auth.verify(&token) {
+            return Err(ApiError::Unauthorized);
+        }
+        return Ok(());
+    }
+    if require_auth {
+        return Err(ApiError::Unauthorized);
+    }
+    Ok(())
 }
 
 /// Records one invitation to a roster patient and returns the redeem token.
@@ -368,6 +467,60 @@ async fn connections(
 ) -> Result<Json<Vec<AccountConnection>>, ApiError> {
     let account_id = account_id(&state, require_auth, &headers).await?;
     Ok(Json(state.store.connections(account_id).await?))
+}
+
+/// Patient leaves a practice (`X1`): ends active connections with `practice_id`.
+async fn leave_connection(
+    State((state, require_auth)): State<(FrontDoorState, bool)>,
+    headers: HeaderMap,
+    Path(practice_id): Path<String>,
+) -> Result<Json<Vec<AccountConnection>>, ApiError> {
+    let account_id = account_id(&state, require_auth, &headers).await?;
+    let ended = state
+        .store
+        .leave_connection(account_id, &practice_id, (state.now)())
+        .await?;
+    Ok(Json(ended))
+}
+
+#[derive(Deserialize)]
+struct DischargeBody {
+    practice_id: String,
+    patient_id: String,
+}
+
+/// Operator/staff endpoint for discharging a roster patient (`X2`).
+async fn discharge_connection(
+    State((state, require_auth)): State<(FrontDoorState, bool)>,
+    headers: HeaderMap,
+    Json(body): Json<DischargeBody>,
+) -> Result<Json<AccountConnection>, ApiError> {
+    require_operator(&state, require_auth, &headers)?;
+    let ended = state
+        .store
+        .discharge_connection(
+            &RosterPatient {
+                practice_id: body.practice_id,
+                patient_id: body.patient_id,
+            },
+            (state.now)(),
+        )
+        .await?;
+    Ok(Json(ended))
+}
+
+/// Operator/service endpoint for ending all connections when a Duet account is deleted (`X3`).
+async fn end_account_connections(
+    State((state, require_auth)): State<(FrontDoorState, bool)>,
+    headers: HeaderMap,
+    Path(account_id): Path<Uuid>,
+) -> Result<Json<serde_json::Value>, ApiError> {
+    require_operator(&state, require_auth, &headers)?;
+    let ended = state
+        .store
+        .end_all_connections_for_account(account_id, (state.now)())
+        .await?;
+    Ok(Json(json!({ "ended": ended })))
 }
 
 #[derive(serde::Serialize)]
@@ -850,5 +1003,185 @@ mod tests {
             .await
             .unwrap();
         assert_eq!(denied.status(), StatusCode::NOT_FOUND);
+    }
+
+    #[tokio::test]
+    async fn leave_discharge_and_account_delete_routes_enforce_auth_and_preserve_history() {
+        let store = MemoryFrontDoorStore::new();
+        let (mut state, store) = state(store);
+        let op = OperatorAuth::from_secret("operator-secret-token-for-tests").unwrap();
+        state = state.with_operator_auth(op);
+        let app = router_with(state, true);
+
+        let inv_a = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/front-door/invitations")
+                    .header("content-type", "application/json")
+                    .body(Body::from(
+                        json!({
+                            "practice_id": "practice-a",
+                            "patient_id": "pat-1",
+                            "email": "luna@example.test",
+                            "display_name": "Luna",
+                        })
+                        .to_string(),
+                    ))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        let tok_a = serde_json::from_slice::<serde_json::Value>(
+            &axum::body::to_bytes(inv_a.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap()["token"]
+            .as_str()
+            .unwrap()
+            .to_owned();
+        let red_a = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/front-door/invitations/redeem")
+                    .header("content-type", "application/json")
+                    .body(Body::from(
+                        json!({"email": "luna@example.test", "token": tok_a}).to_string(),
+                    ))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        let red_a_json = serde_json::from_slice::<serde_json::Value>(
+            &axum::body::to_bytes(red_a.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        let account_id: Uuid = red_a_json["account_id"].as_str().unwrap().parse().unwrap();
+        let session = red_a_json["session"].as_str().unwrap().to_owned();
+
+        let p_b = RosterPatient {
+            practice_id: "practice-b".into(),
+            patient_id: "pat-2".into(),
+        };
+        let tok_b = store
+            .invite(&p_b, "luna@example.test", "Luna", NOW)
+            .await
+            .unwrap();
+        store
+            .redeem_invitation("luna@example.test", &tok_b, NOW + 1)
+            .await
+            .unwrap();
+        let p_c = RosterPatient {
+            practice_id: "practice-c".into(),
+            patient_id: "pat-3".into(),
+        };
+        let tok_c = store
+            .invite(&p_c, "luna@example.test", "Luna", NOW)
+            .await
+            .unwrap();
+        store
+            .redeem_invitation("luna@example.test", &tok_c, NOW + 2)
+            .await
+            .unwrap();
+
+        // Patient leaves practice-a via HTTP bearer route.
+        let leave_resp = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/front-door/connections/practice-a/leave")
+                    .header("authorization", format!("Bearer {session}"))
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(leave_resp.status(), StatusCode::OK);
+        let leave_json = serde_json::from_slice::<serde_json::Value>(
+            &axum::body::to_bytes(leave_resp.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        assert_eq!(leave_json[0]["status"], "ended");
+        assert_eq!(leave_json[0]["reason"], "patient_left");
+        assert!(store.roster_connection(&p_b).await.unwrap().is_connected());
+
+        // Discharge requires valid operator token.
+        let unauthed_discharge = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/front-door/connections/discharge")
+                    .header("content-type", "application/json")
+                    .body(Body::from(
+                        json!({"practice_id": "practice-b", "patient_id": "pat-2"}).to_string(),
+                    ))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(unauthed_discharge.status(), StatusCode::UNAUTHORIZED);
+
+        let discharged = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/front-door/connections/discharge")
+                    .header("content-type", "application/json")
+                    .header("authorization", "Bearer operator-secret-token-for-tests")
+                    .body(Body::from(
+                        json!({"practice_id": "practice-b", "patient_id": "pat-2"}).to_string(),
+                    ))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(discharged.status(), StatusCode::OK);
+        let discharged_json = serde_json::from_slice::<serde_json::Value>(
+            &axum::body::to_bytes(discharged.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        assert_eq!(discharged_json["status"], "ended");
+        assert_eq!(discharged_json["reason"], "practice_discharged");
+
+        // End all connections on account deletion: requires operator auth, revokes sessions.
+        let end_all = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri(format!("/front-door/accounts/{account_id}/end-connections"))
+                    .header("authorization", "Bearer operator-secret-token-for-tests")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(end_all.status(), StatusCode::OK);
+        let end_json = serde_json::from_slice::<serde_json::Value>(
+            &axum::body::to_bytes(end_all.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        assert_eq!(end_json["ended"], 1);
+        assert_eq!(
+            get(&app, "/front-door/connections", &session)
+                .await
+                .status(),
+            StatusCode::UNAUTHORIZED
+        );
     }
 }
