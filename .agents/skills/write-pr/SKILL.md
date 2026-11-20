@@ -52,10 +52,11 @@ existing verification owners. When the work has acceptance criteria, show each
 criterion with its evidence and result, and list unproven ones as gaps. Evidence is
 an artifact the reader can inspect: the command with its exit status and relevant
 output, a response body, a log, or a screenshot, inline or linked. Render this
-from the [capture-proof](../capture-proof/SKILL.md) bundle at the PR head. A statement that
-a check passed is not evidence. Use the [verify skill](../../../verification/README.md#verify-skills) of each affected
-feature, including its model check and bug-path replay where it has one, without
-implying that a formal model proves the running implementation. Distinguish local
+from the [capture-proof](../capture-proof/SKILL.md) bundle at the PR head when the work has
+one. A statement that a check passed is not evidence. Present the evidence that exists:
+writing the PR does not start new verification runs. Where an affected feature's
+[verify skill](../../../verification/README.md#verify-skills) was not run, say so as a gap,
+without implying that a formal model proves the running implementation. Distinguish local
 checks, CI, browser/runtime proof, domain judgment, merge, and deployment. Name
 failures, omissions, and stale results that change the assessment; routine checks
 may share one summary that still shows their commands and results.
@@ -81,7 +82,7 @@ diff. Replace superseded explanations while keeping the history of findings and
 responses in the review discussion. Updating the body does not resolve a finding.
 
 For publication, follow the shared approval defaults, use structured text or
-`--body-file`, and read back the saved title, body, base, and head. Check and
-publish the proof bundle as part of the same publication, and confirm its links
-open. A drafting task
-returns the complete explanation in chat.
+`--body-file`, and read back the saved title, body, base, and head. When the work
+has a proof bundle, check and publish it as part of the same publication, and
+confirm its links open. A drafting task returns the complete explanation in chat
+and publishes nothing.
