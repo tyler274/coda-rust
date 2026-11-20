@@ -70,18 +70,24 @@ tofu_fmt_roots=(
 
 run_tofu_fmt_checks() {
   local root_dir
-  for root_dir in "${tofu_fmt_roots[@]}"; do
-    tofu fmt -check -recursive "$root_dir"
-  done
+  (
+    set -euo pipefail
+    for root_dir in "${tofu_fmt_roots[@]}"; do
+      tofu fmt -check -recursive "$root_dir"
+    done
+  )
 }
 
 run_formatting_checks() {
   local include_tofu="${1:-0}"
-  cargo fmt --all --check
-  python3 scripts/check-sql.py
-  if [ "$include_tofu" = 1 ]; then
-    run_tofu_fmt_checks
-  fi
+  (
+    set -euo pipefail
+    cargo fmt --all --check
+    python3 scripts/check-sql.py
+    if [ "$include_tofu" = 1 ]; then
+      run_tofu_fmt_checks
+    fi
+  )
 }
 
 wasm_clippy() {
