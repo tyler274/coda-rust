@@ -1,0 +1,460 @@
+   Compiling duet-api v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/duet-api)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 27.87s
+     Running unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/duet_api-3a0de25a4fcc1d9b)
+
+running 55 tests
+test assistant_harness::tests::assistant_eligibility_enforces_terms_consent_and_operator_switch ... ok
+test connected_care_sync::tests::source_origin_formats_exact_via_duet_labels ... ok
+test hosting::tests::local_runs_start_without_any_profile ... ok
+test identity::local_tests::a_short_secret_is_refused ... ok
+test hosting::tests::a_false_cloud_marker_is_still_hosted ... ok
+test background::tests::every_api_error_has_a_class ... ok
+test assistant_harness::tests::parked_routes_policy_is_quarantined_by_default ... ok
+test hosting::tests::production_and_other_profiles_refuse_even_when_complete ... ok
+test email_auth::tests::email_validation_normalizes_and_rejects_invalid_inputs ... ok
+test connected_care_sync::tests::header_values_strip_control_newlines ... ok
+test identity::refusal_tests::provider_outage_and_configuration_errors_are_not_session_refusals ... ok
+test portals::tests::fhir_pagination_url_enforces_exact_https_origin ... ok
+test portals::tests::update_failure_day_formats_plain_copy ... ok
+test email_auth::tests::challenge_link_builds_cleanly_with_sanitized_invite ... ok
+test evidence_routes::tests::undated_records_have_no_date_and_keep_literal_values ... ok
+test assistant_harness::tests::recipe_embeds_standing_disclosure_and_clinical_library_tools_only ... ok
+test hosting::tests::local_stand_ins_refuse_hosted_even_with_a_complete_profile ... ok
+test hosting::tests::staging_preview_is_the_only_hosted_profile ... ok
+test evidence_routes::tests::projected_role_and_offset_are_literal ... ok
+test portals::tests::portal_secrets_are_redacted_in_debug_output ... ok
+test privacy::tests::restriction_enum_matches_wire_snake_case ... ok
+test push::tests::device_id_validation_rejects_blank_or_control_characters ... ok
+test connected_care_sync::tests::private_ai_notes_and_for_my_doctor_drafts_are_excluded_from_live_streaming ... ok
+test portals::tests::vendor_kill_switch_filters_search_and_preserves_enabled_vendors ... ok
+test evidence_routes::tests::acquisition_interval_keeps_start_and_end_and_sorts_on_the_start ... ok
+test tests::the_schema_readiness_check_names_the_required_migration ... ok
+test push::tests::push_secrets_are_redacted_in_debug_output ... ok
+test background::tests::failure_event_names_the_class_without_error_text ... ok
+test workspace::tests::literal_entry_excludes_lab_printed_reference_ranges_and_keeps_values ... ok
+test privacy_archive::tests::production_trust_and_object_namespace_cannot_be_configured_as_urls ... ok
+test assistant_harness::tests::http_clinical_library_reader_requires_https_except_loopback ... ok
+test push::tests::http_push_transport_enforces_https_except_loopback ... ok
+test connected_care_sync::tests::http_transport_requires_https_except_loopback ... ok
+test hosting::tests::liveness_says_nothing_about_readiness ... ok
+test identity::local_tests::verifies_a_signed_local_token ... ok
+test identity::local_tests::refuses_forged_expired_foreign_and_future_tokens ... ok
+test privacy::tests::receipt_doctor_item_delete ... ok
+test privacy::tests::receipt_evidence_delete ... ok
+test privacy::tests::receipt_doctor_page_delete ... ok
+test privacy::tests::receipt_follow_up_pause ... ok
+test privacy::tests::receipt_records_withdraw ... ok
+test privacy::tests::receipt_follow_up_cancel ... ok
+test privacy::tests::receipt_sessions_revoke ... ok
+test privacy::tests::receipt_device_withdraw ... ok
+test privacy::tests::receipt_luna_withdraw ... ok
+test privacy::tests::receipt_doctor_note_delete ... ok
+test privacy::tests::receipt_account_delete ... ok
+test privacy::tests::account_delete_propagates_to_front_door_and_rolls_back_when_closer_fails ... ok
+test privacy::tests::receipt_proactive_withdraw ... ok
+test privacy::tests::receipt_publication_revoke ... ok
+test privacy_archive::tests::transport_timeout_and_cancellation_release_capacity ... ok
+test privacy_archive::tests::gcs_transport_and_postgres_recovery_reconcile_same_receipt_after_restart ... ok
+test privacy_archive::tests::conditional_creation_ambiguous_readback_corruption_and_credentials ... ok
+test privacy_archive::tests::metadata_failures_never_forward_credentials_or_follow_redirects ... ok
+test privacy_archive::tests::chunked_readback_cannot_bypass_body_limit ... ok
+
+test result: ok. 55 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.09s
+
+     Running unittests src/main.rs (/tmp/coda-target-jobs/debug/deps/duet_api-055fcd1b2a09f7fd)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/duet-map-front-door.rs (/tmp/coda-target-jobs/debug/deps/duet_map_front_door-bfe008b4c8b2c448)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/duet-migrate.rs (/tmp/coda-target-jobs/debug/deps/duet_migrate-058a69a2b0196006)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/duet-privacy-delivery.rs (/tmp/coda-target-jobs/debug/deps/duet_privacy_delivery-a230d9d2dc153cb7)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/duet-privacy-replay.rs (/tmp/coda-target-jobs/debug/deps/duet_privacy_replay-f0e21d704a3e67a1)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/connected_care_sync.rs (/tmp/coda-target-jobs/debug/deps/connected_care_sync-b9462fde67e64d86)
+
+running 1 test
+test cod61_live_uploader_streams_to_front_door_excludes_private_notes_and_surfaces_failures ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+
+     Running tests/database_foundation.rs (/tmp/coda-target-jobs/debug/deps/database_foundation-a7274e8e737f346d)
+
+running 1 test
+test fresh_and_upgrade_keep_identity_and_enforce_account_scope ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.39s
+
+     Running tests/durable_owners.rs (/tmp/coda-target-jobs/debug/deps/durable_owners-c6e8f4881c8961a1)
+
+running 2 tests
+test canonical_ingestion_authority_removal_and_batch ... ok
+test durable_identity_evidence_privacy_and_restore ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s
+
+     Running tests/email_auth_and_terms.rs (/tmp/coda-target-jobs/debug/deps/email_auth_and_terms-bfc4583d4b9b81ed)
+
+running 1 test
+test email_auth_sessions_terms_rights_and_retired_routes ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.45s
+
+     Running tests/evidence_cohort.rs (/tmp/coda-target-jobs/debug/deps/evidence_cohort-abc2fad8ad5ee2f2)
+
+running 1 test
+test paginated_exact_membership_account_revision_and_restore_fences ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.25s
+
+     Running tests/fresh_producers.rs (/tmp/coda-target-jobs/debug/deps/fresh_producers-51be20d5641232e9)
+
+running 1 test
+test fresh_http_health_context_isolates_accounts_and_restricts ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.94s
+
+     Running tests/health_context_producer.rs (/tmp/coda-target-jobs/debug/deps/health_context_producer-e4504ec43eea6f28)
+
+running 1 test
+test empty_database_producer_restart_fences_and_withdrawal ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.37s
+
+     Running tests/hosting.rs (/tmp/coda-target-jobs/debug/deps/hosting-ce865aee9affe809)
+
+running 3 tests
+test product_migration_requires_explicit_database_authority ... ok
+test production_refuses_to_start_even_with_the_staging_profile ... ok
+test hosted_startup_rejects_unqualified_runtime_before_database_access ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/phone_outbox.rs (/tmp/coda-target-jobs/debug/deps/phone_outbox-a594792658203421)
+
+running 1 test
+test phone_outbox_drains_into_canonical_evidence_on_postgres ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.71s
+
+     Running tests/portals_and_health_connect.rs (/tmp/coda-target-jobs/debug/deps/portals_and_health_connect-2cc8fd9b530b5286)
+
+running 3 tests
+test cod63_disconnect_during_inflight_refresh_never_resurrects_tokens_or_publishes ... ok
+test cod63_portals_multi_org_daily_refresh_partial_broken_kill_switch_not_now_and_overdue ... ok
+test cod64_health_connect_outbox_phone_disconnect_and_apple_health_deletion_recompute ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+
+     Running tests/public_budget.rs (/tmp/coda-target-jobs/debug/deps/public_budget-21002b99e9270a03)
+
+running 1 test
+test public_retrieval_budget_spans_pools ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
+     Running tests/push_harness_and_memory_retention.rs (/tmp/coda-target-jobs/debug/deps/push_harness_and_memory_retention-5cbd4e07ef4d889a)
+
+running 3 tests
+test cod67_parked_legacy_routes_are_quarantined_by_default ... ok
+test cod67_harness_clinical_library_consent_and_memory_retention ... ok
+test cod67_multi_device_generic_push_and_sign_out_cleanup ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+
+     Running tests/sql_layout.rs (/tmp/coda-target-jobs/debug/deps/sql_layout-a9e8e3c1fcf101cc)
+
+running 1 test
+test schema_readiness_query_preserves_the_original_sql ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests duet_api
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Blocking waiting for file lock on package cache
+   Compiling duet-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/duet-client)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 17.34s
+     Running unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/duet_client-f723e8b8dabaa037)
+
+running 7 tests
+test identity::tests::classifies_challenge_terms_upgrade_and_conflict_without_triggering_session_end ... ok
+test session::tests::switch_and_signout_fence_delayed_responses_and_clear_drafts ... ok
+test refusal::tests::only_product_refusal_ends_the_current_session ... ok
+test tests::reads_the_library ... ok
+test refusal::tests::refreshed_credential_survives_refusal_of_original_credential ... ok
+test refusal::tests::health_generation_and_upload_refusals_invalidate_bound_session ... ok
+test tests::join_consent_and_premium_follow_the_front_door ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/background_acquire.rs (/tmp/coda-target-jobs/debug/deps/background_acquire-80248fe436007f56)
+
+running 3 tests
+test background_completes_after_the_durable_write_without_uploading ... ok
+test the_registered_handler_is_what_the_native_observer_waits_for ... ok
+test background_on_locked_storage_completes_as_a_typed_pause ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/doctor_controls.rs (/tmp/coda-target-jobs/debug/deps/doctor_controls-d6166c40822a819b)
+
+running 1 test
+test authenticated_contracts_exact_retry_and_redacted_errors ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/email_auth_client.rs (/tmp/coda-target-jobs/debug/deps/email_auth_client-372992aab645dd3b)
+
+running 1 test
+test client_email_auth_terms_settings_change_email_and_rights ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/health_upload.rs (/tmp/coda-target-jobs/debug/deps/health_upload-e996d3a1ec5fb6c6)
+
+running 11 tests
+test apple_health::a_refused_session_never_opens_the_sheet ... ok
+test http_outcomes_are_classified_without_guessing ... ok
+test pending_secure_cleanup_refuses_queue_access ... ok
+test locked_protected_storage_pauses_then_resumes ... ok
+test apple_health::a_withdrawal_during_the_sheet_cannot_authorize_a_later_generation ... ok
+test apple_health::a_late_permission_answer_cannot_connect_the_next_patient ... ok
+test apple_health::refresh_imports_through_the_connected_queue ... ok
+test duet_client_transport_posts_the_canonical_batch ... ok
+test same_account_resumes_after_restart_with_the_same_operation_ids ... ok
+test sign_out_and_account_switch_pause_and_isolate_the_queue ... ok
+test a_retained_rejection_reports_only_after_the_queue_drains ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+     Running tests/portals_and_health_connect.rs (/tmp/coda-target-jobs/debug/deps/portals_and_health_connect-17e7b05d787b680c)
+
+running 1 test
+test client_handles_portals_vendor_disabled_not_now_and_phone_disconnect_sync ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/retention.rs (/tmp/coda-target-jobs/debug/deps/retention-0707252a4a6f8123)
+
+running 16 tests
+test missing_native_host_never_falls_back_to_plaintext ... ok
+test sign_out_warning_names_the_draft_the_save_and_the_health_queue ... ok
+test sign_out_switch_and_new_incarnation_remove_queued_health ... ok
+test conflict_release_requires_exact_definitive_refusal_and_preserves_draft ... ok
+test restart_recovers_exact_uncertain_edit_without_network ... ok
+test locked_cleanup_invalidates_ui_but_preserves_marker_for_retry ... ok
+test clear_intent_survives_restart_cannot_rebase_and_is_erased_on_switch ... ok
+test refusal_invalidates_views_without_deleting_protected_patient_work ... ok
+test boxed_recovery_preserves_v1_storage_bytes_and_subject_fence ... ok
+test rotation_preserves_fences_and_uncertain_bytes_cannot_be_replaced ... ok
+test switch_erases_previous_owner_and_fences_late_response_even_after_switch_back ... ok
+test every_key_this_account_writes_is_registered ... ok
+test tab_appearance_and_offline_caches_restore_and_wipe_cleanly_on_sign_out ... ok
+test readback_requires_exact_content_order_and_generation ... ok
+test offline_recovery_never_discards_or_approves_a_draft ... ok
+test damaged_draft_survives_read_and_write_until_explicit_discard ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+   Doc-tests duet_client
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling duet-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/duet-client)
+   Compiling duet-app v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/duet-app)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 57.58s
+     Running unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/duet_app-fa81265cd9eb1453)
+
+running 14 tests
+test roots::tests::android_debug_api_reaches_the_emulator_host ... ok
+test roots::tests::notification_controls_name_their_permission ... ok
+test account::tests::recovered_draft_is_empty_after_another_account_signs_in ... ok
+test account::tests::parse_app_link_accepts_invite_sign_in_and_email_change_links ... ok
+test records::tests::removed_records_are_labelled_with_literal_values_and_zone ... ok
+test records::tests::undated_records_say_date_unknown ... ok
+test records::tests::acquisition_interval_is_person_facing ... ok
+test roots::tests::doctor_page_lists_the_saved_question ... ok
+test roots::tests::library_empty_and_sections ... ok
+test roots::tests::a_saved_doctor_page_excludes_cover_note_and_pdf_copy ... ok
+test records::tests::omitted_interval_end_stays_absent ... ok
+test account::tests::close_resets_session_ui_state_between_accounts ... ok
+test account::tests::startup_refusal_blocks_recovery_across_restart_until_cleanup_retry_succeeds ... ok
+test account::tests::startup_refusal_erases_retained_work_but_temporary_failure_preserves_it ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running unittests src/main.rs (/tmp/coda-target-jobs/debug/deps/duet_app-885d9294a1a85c49)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/post_signup.rs (/tmp/coda-target-jobs/debug/deps/post_signup-c7adb7e26f130843)
+
+running 3 tests
+test app_link_parser_accepts_invite_and_auth_links ... ok
+test signed_out_mount_renders_email_flow_without_apple_sign_in ... ok
+test d1_post_signup_mounts_terms_gate_and_then_you_and_shared_tabs ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+   Doc-tests duet_app
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling public-site v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/public-site)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 27.90s
+     Running unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/public_site-427b4a35f6919cd2)
+
+running 39 tests
+test proxy::tests::mounts_own_only_their_path_family ... ok
+test runtime::tests::sign_in_exists_only_with_a_physician_upstream ... ok
+test runtime::tests::local_production_and_probe_contract_remain_explicit ... ok
+test config::tests::cli_defaults_to_serve_and_parses_static_export_flags ... ok
+test proxy::tests::fixed_origins_reject_credentials_and_nonlocal_plaintext ... ok
+test runtime::tests::staging_requires_proxy_signer_and_deployed_upstream_https ... ok
+test proxy::tests::location_policy_never_exposes_an_upstream_origin ... ok
+test runtime::tests::observability_relay_is_staging_only_https_and_signed ... ok
+test proxy::tests::mounted_location_stays_inside_its_prefix_on_known_origins ... ok
+test runtime::tests::bare_container_bind_address_uses_a_loopback_browser_origin ... ok
+test representation::tests::digest_is_lowercase_sha256 ... ok
+test representation::tests::q_values ... ok
+test access::tests::secret_needs_one_exact_value ... ok
+test assets::tests::rewrites_only_complete_root_relative_urls ... ok
+test runtime::tests::staging_requires_well_formed_direct_cloud_run_audience ... ok
+test site::tests::origin_supports_host_only_or_matching_base_path_without_double_prefix ... ok
+test site::tests::base_path_normalizes_and_rejects_invalid_inputs ... ok
+test representation::tests::variants_head_and_weak_conditional ... ok
+test representation::tests::gzip_vector_crc_round_trip ... ok
+test representation::tests::compressed_bytes_round_trip ... ok
+test server::tests::observability_relay_never_mounts_outside_staging - should panic ... ok
+test access::tests::gate_uses_this_services_audience ... ok
+test server::tests::overload_and_timeout_are_bounded_and_private ... ok
+test proxy::tests::observability_mounts_keep_prefix_drop_spoofed_assertion_cookies_and_off_origin_redirects ... ok
+test proxy::tests::credential_responses_are_size_bounded_and_never_follow_redirects ... ok
+test proxy::tests::jwt_claims_cache_serialization_and_refresh_failure_are_closed ... ok
+test pages::tests::home_preserves_motion_targets_and_shared_phones ... ok
+test pages::tests::every_document_renders_its_body ... ok
+test server::tests::observability_mounts_keep_prefixes_and_forward_only_the_verified_assertion ... ok
+test server::tests::trailing_slash_redirect_stays_on_this_origin ... ok
+test server::tests::no_methods_or_conditional_requests_bypass_staging ... ok
+test assets::tests::every_embedded_asset_has_alias_and_content_address ... ok
+test server::tests::head_assets_are_empty ... ok
+test server::tests::health_requires_access_and_optional_health_token ... ok
+test assets::tests::rewrites_page_routes_and_assets_under_subpath_without_touching_text_slashes ... ok
+test export::tests::static_export_under_subpath_resolves_every_page_asset_and_metadata_file ... ok
+test server::tests::physician_proxy_preserves_access_and_waits_for_upstream_responses ... ok
+test server::tests::staging_gates_every_public_resource_and_never_shared_caches ... ok
+test server::tests::rewritten_assets_cache_and_readiness ... ok
+
+test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.38s
+
+     Running unittests src/bin/public-site.rs (/tmp/coda-target-jobs/debug/deps/public_site-b62b70cbee1b5721)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/access.rs (/tmp/coda-target-jobs/debug/deps/access-917539cbde24ccdf)
+
+running 2 tests
+test executable_refuses_missing_or_malformed_staging_configuration ... ok
+test staging_denies_every_page_and_resource_without_signed_iap ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.77s
+
+     Running tests/foundation.rs (/tmp/coda-target-jobs/debug/deps/foundation-b9cd74bc784b0eef)
+
+running 3 tests
+test sign_in_appears_on_every_page_only_when_offered ... ok
+test every_enumerated_route_uses_real_router_ssr_and_shared_chrome ... ok
+test axum_serves_only_startup_bytes_and_preserves_404s ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.50s
+
+     Running tests/proxy.rs (/tmp/coda-target-jobs/debug/deps/proxy-80daeb51a0bca634)
+
+running 3 tests
+test preserves_transport_and_strips_credentials_and_hops ... ok
+test redirect_rewriting_errors_origin_checks_and_limits ... ok
+test sse_delivers_first_chunk_while_upstream_body_is_still_open ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.95s
+
+     Running tests/routes.rs (/tmp/coda-target-jobs/debug/deps/routes-5ed8ea46e520811b)
+
+running 6 tests
+test urls_resolve_redirect_and_set_hsts ... ok
+test invite_route_redirects_mobile_platforms_and_renders_fallback_deep_link ... ok
+test staging_denies_pages_and_assets_without_access ... ok
+test staging_sign_in_reaches_the_physician_service ... ok
+test every_route_metadata_sitemap_and_retired_routes ... ok
+test real_scripts_are_content_addressed_and_immutable ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.00s
+
+     Running tests/site.rs (/tmp/coda-target-jobs/debug/deps/site-10487fcb76880159)
+
+running 3 tests
+test desktop_mobile_motion_reduced_motion_and_static_fallback ... ignored, browser qualification; run explicitly with --ignored
+test exported_subpath_browser_sql_demo_e2e ... ignored, browser qualification; run explicitly with --ignored
+test exported_subpath_site_serves_zero_404s_and_renders_in_chromium ... ignored, browser qualification; run explicitly with --ignored
+
+test result: ok. 0 passed; 0 failed; 3 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/stylesheets.rs (/tmp/coda-target-jobs/debug/deps/stylesheets-8262246552d94089)
+
+running 2 tests
+test layout_stylesheets_declare_no_motion ... ok
+test duet_story_styles_stay_inside_its_stage ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests public_site
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.10s
+     Running unittests src/main.rs (/tmp/coda-target-jobs/debug/deps/android-bb2c7f65a4a6d247)
+
+running 7 tests
+test tests::a_headless_emulator_is_not_a_window ... ok
+test tests::the_test_command_names_one_duet_class ... ok
+test tests::every_emulator_serial_comes_from_adb ... ok
+test build::tests::only_patched_gradle_failures_let_assembly_continue ... ok
+test tests::build_window_and_test_are_the_commands ... ok
+test tests::only_test_runs_headless ... ok
+test build::tests::gradle_and_manifest_patches_land_on_a_fixture_tree ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.68s
+

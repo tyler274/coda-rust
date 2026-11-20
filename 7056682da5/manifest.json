@@ -262,8 +262,8 @@
       "exit": 0,
       "ok": true,
       "kept": {
-        "revision": "d05df6357fc7edfc6c2c49737e7c80e713ed40d9",
-        "reason": "mobile and frontend journeys unchanged during a4c373921 rebase; only retired PDF/SHL modules dropped"
+        "revision": "7056682da56ca863d9f22056873846ea10ed323a",
+        "reason": "mobile and frontend journeys unchanged during 7ffafe26c8 rebase"
       }
     },
     {
@@ -378,7 +378,8 @@
       ],
       "seconds": 92.1,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "rebased onto origin/main 7ffafe26c8 with AccessLevel reconciliation and re-verified at 7056682da5"
     },
     {
       "id": 18,
@@ -399,6 +400,53 @@
         "18-duet-api-client-app-public-site-android.log"
       ],
       "seconds": 168.7,
+      "exit": 0,
+      "ok": true,
+      "superseded": "rebased onto origin/main 7ffafe26c8 with AccessLevel reconciliation and re-verified at 7056682da5"
+    },
+    {
+      "id": 19,
+      "claim": "COD-55-56-57-gates",
+      "label": "gates-and-book-links",
+      "kind": "run",
+      "revision": "7056682da56ca863d9f22056873846ea10ed323a",
+      "dirty": false,
+      "recorded": "2026-11-20T05:15:04+00:00",
+      "command": [
+        "bash",
+        "-e",
+        "-c",
+        "cargo fmt --all --check && python3 scripts/check-sql.py && bash scripts/check-book-links.sh && python3 -m unittest scripts/test_ci_scenarios.py && cargo test -p boundaries && cargo clippy --workspace --all-targets --locked -- -D warnings && cargo clippy --target wasm32-unknown-unknown -p duet-app -p physician-app -p ui -p duet-client -p duet-health --locked -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "19-gates-and-book-links.log"
+      ],
+      "seconds": 91.2,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 20,
+      "claim": "COD-55-56-57-crates",
+      "label": "duet-api-client-app-public-site-android",
+      "kind": "run",
+      "revision": "7056682da56ca863d9f22056873846ea10ed323a",
+      "dirty": false,
+      "recorded": "2026-11-20T05:16:35+00:00",
+      "command": [
+        "bash",
+        "-e",
+        "-c",
+        "cargo test -p duet-api && cargo test -p duet-client && cargo test -p duet-app && cargo test -p public-site && cargo test -p android"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "20-duet-api-client-app-public-site-android.log"
+      ],
+      "seconds": 167.5,
       "exit": 0,
       "ok": true
     }
