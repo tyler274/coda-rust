@@ -1,0 +1,776 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling futures-task v0.3.34
+   Compiling slab v0.4.12
+   Compiling serde v1.0.229
+   Compiling subtle v2.6.1
+   Compiling futures-util v0.3.34
+   Compiling quote v1.0.47
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+   Compiling synstructure v0.14.0
+   Compiling zeroize_derive v1.5.0
+   Compiling tracing-attributes v0.1.31
+   Compiling zerofrom-derive v0.1.8
+   Compiling yoke-derive v0.8.4
+   Compiling zerovec-derive v0.11.6
+   Compiling displaydoc v0.2.7
+   Compiling tokio-macros v2.7.2
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.21
+   Compiling zeroize v1.9.1
+   Compiling rustls-pki-types v1.15.1
+   Compiling aws-lc-rs v1.18.2
+   Compiling tokio v1.54.1
+   Compiling rustls-webpki v0.103.16
+   Compiling webpki-roots v1.0.10
+   Compiling tracing v0.1.44
+   Compiling axum-core v0.5.6
+   Compiling thiserror v2.0.21
+   Compiling zerofrom v0.1.8
+   Compiling rustls v0.23.46
+   Compiling yoke v0.8.3
+   Compiling zerovec v0.11.8
+   Compiling zerotrie v0.2.5
+   Compiling tinystr v0.8.4
+   Compiling potential_utf v0.1.6
+   Compiling icu_collections v2.3.0
+   Compiling icu_locale_core v2.3.0
+   Compiling serde_urlencoded v0.7.1
+   Compiling jsonwebtoken v11.1.0
+   Compiling icu_provider v2.3.1
+   Compiling icu_properties v2.3.0
+   Compiling icu_normalizer v2.3.0
+   Compiling idna_adapter v1.2.2
+   Compiling hyper v1.12.0
+   Compiling tower v0.5.3
+   Compiling tokio-rustls v0.26.6
+   Compiling idna v1.1.0
+   Compiling url v2.5.8
+   Compiling tower-http v0.6.11
+   Compiling hyper-util v0.1.21
+   Compiling hyper-rustls v0.27.10
+   Compiling axum v0.8.9
+   Compiling reqwest v0.12.28
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/http)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 17.44s
+     Running unittests src/lib.rs (/tmp/coda-target-physician-ui/debug/deps/coda_http-e4a1c43fafed5f63)
+
+running 15 tests
+test ingress::tests::route_classification_separates_health_auth_and_public ... ok
+test signjwt::tests::only_a_three_part_jwt_is_an_answer ... ok
+test signjwt::tests::claims_name_the_account_and_every_path_of_the_origin ... ok
+test ingress::tests::forwarded_for_ignores_spoofed_leftmost_ip_and_canonicalizes_v4_mapped_v6 ... ok
+test tests::parses_named_sse_events ... ok
+test ingress::tests::strict_rate_limit_enforces_tier_quotas_recovers_after_window_and_bounds_memory ... ok
+test iap::tests::rejects_wrong_key_type_curve_usage_algorithm_and_ambiguous_kid ... ok
+test ingress::tests::middleware_returns_429_retry_after_and_413_payload_too_large ... ok
+test iap::tests::failed_refresh_never_uses_stale_keys_and_is_throttled ... ok
+test iap::tests::fetch_rejects_redirects_invalid_json_empty_and_oversized_sets ... ok
+test iap::tests::only_one_signed_iap_header_authorizes ... ok
+test iap::tests::identity_needs_a_valid_assertion_naming_subject_and_email ... ok
+test iap::tests::fetch_rotation_throttle_and_singleflight ... ok
+test iap::tests::signature_claim_types_and_exact_time_boundaries ... ok
+test iap::tests::transport_bounds_chunked_body_and_stalled_response ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.01s
+
+   Doc-tests coda_http
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling slab v0.4.12
+   Compiling serde v1.0.229
+   Compiling num-traits v0.2.19
+   Compiling syn v3.0.9
+   Compiling tracing v0.1.44
+   Compiling futures-util v0.3.34
+   Compiling darling_core v0.20.11
+   Compiling rustls-webpki v0.103.16
+   Compiling anyhow v1.0.104
+   Compiling sea-bae v0.2.2
+   Compiling sea-schema-derive v0.3.0
+   Compiling async-stream-impl v0.3.6
+   Compiling aws-lc-rs v1.18.2
+   Compiling proc-macro2-diagnostics v0.10.1
+   Compiling derive_more-impl v2.1.1
+   Compiling axum-core v0.5.6
+   Compiling tower-http v0.7.1
+   Compiling ouroboros_macro v0.18.5
+   Compiling rustls v0.23.46
+   Compiling chrono v0.4.45
+   Compiling rust_decimal v1.43.0
+   Compiling atoi v2.0.0
+   Compiling ordered-float v4.6.0
+   Compiling num-integer v0.1.47
+   Compiling num-bigint v0.4.8
+   Compiling darling_macro v0.20.11
+   Compiling synstructure v0.14.0
+   Compiling darling_core v0.24.1
+   Compiling serde_derive v1.0.229
+   Compiling zerovec-derive v0.11.6
+   Compiling displaydoc v0.2.7
+   Compiling thiserror-impl v2.0.21
+   Compiling tokio-macros v2.7.2
+   Compiling futures-macro v0.3.34
+   Compiling async-trait v0.1.92
+   Compiling derive-where v1.7.0
+   Compiling serde_repr v0.1.21
+   Compiling zerofrom-derive v0.1.8
+   Compiling yoke-derive v0.8.4
+   Compiling darling_macro v0.24.1
+   Compiling async-stream v0.3.6
+   Compiling derive_more v2.1.1
+   Compiling ouroboros v0.18.5
+   Compiling darling v0.20.11
+   Compiling tokio v1.54.1
+   Compiling thiserror v2.0.21
+   Compiling opentelemetry v0.33.1
+   Compiling simple_asn1 v0.6.4
+   Compiling sea-query-derive v1.0.0
+   Compiling zerofrom v0.1.8
+   Compiling yoke v0.8.3
+   Compiling zerovec v0.11.8
+   Compiling zerotrie v0.2.5
+   Compiling tinystr v0.8.4
+   Compiling potential_utf v0.1.6
+   Compiling icu_collections v2.3.0
+   Compiling icu_locale_core v2.3.0
+   Compiling darling v0.24.1
+   Compiling serde_with_macros v3.24.0
+   Compiling futures-executor v0.3.34
+   Compiling serde_urlencoded v0.7.1
+   Compiling tracing-serde v0.2.0
+   Compiling serde_yaml v0.9.34+deprecated
+   Compiling jsonwebtoken v11.1.0
+   Compiling duet-health v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-health)
+   Compiling icu_provider v2.3.1
+   Compiling either v1.19.0
+   Compiling smallvec v1.16.3
+   Compiling opentelemetry_sdk v0.33.1
+   Compiling tracing-subscriber v0.3.23
+   Compiling icu_properties v2.3.0
+   Compiling icu_normalizer v2.3.0
+   Compiling parking_lot_core v0.9.12
+   Compiling itertools v0.14.0
+   Compiling parking_lot v0.12.5
+   Compiling futures-intrusive v0.5.0
+   Compiling agent-skills v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/agent-skills)
+   Compiling idna_adapter v1.2.2
+   Compiling idna v1.1.0
+   Compiling hyper v1.12.0
+   Compiling tower v0.5.3
+   Compiling tokio-rustls v0.26.6
+   Compiling tokio-stream v0.1.19
+   Compiling tokio-util v0.7.20
+   Compiling tracing-opentelemetry v0.34.0
+   Compiling url v2.5.8
+   Compiling sea-orm-macros v2.0.4
+   Compiling prost-derive v0.14.6
+   Compiling tower-http v0.6.11
+   Compiling sqlx-core v0.9.0
+   Compiling lettre v0.11.24
+   Compiling hyper-util v0.1.21
+   Compiling hyper-rustls v0.27.10
+   Compiling axum v0.8.9
+   Compiling reqwest v0.13.5
+   Compiling reqwest v0.12.28
+   Compiling sqlx-postgres v0.9.0
+   Compiling sea-query v1.0.2
+   Compiling opentelemetry-http v0.33.1
+   Compiling harness v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/harness)
+   Compiling serde_with v3.24.0
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/http)
+   Compiling gmail v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/gmail)
+   Compiling duet_wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-wire)
+   Compiling sqlx-macros-core v0.9.0
+   Compiling prost v0.14.6
+   Compiling opentelemetry-proto v0.33.1
+   Compiling sqlx-macros v0.9.0
+   Compiling opentelemetry-otlp v0.33.1
+   Compiling telemetry v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/telemetry)
+   Compiling duet-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-client)
+   Compiling sqlx v0.9.0
+   Compiling sea-query-sqlx v0.9.1
+   Compiling sea-schema v0.18.1
+   Compiling sea-orm v2.0.4
+   Compiling sea-orm-migration v2.0.4
+   Compiling front-door v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/front-door)
+   Compiling clinical-library v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/clinical-library)
+   Compiling duet-api v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-api)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 49.08s
+     Running unittests src/lib.rs (/tmp/coda-target-physician-ui/debug/deps/duet_api-703920b8185f9595)
+
+running 56 tests
+test assistant_harness::tests::assistant_eligibility_enforces_terms_consent_and_operator_switch ... ok
+test connected_care_sync::tests::source_origin_formats_exact_via_duet_labels ... ok
+test background::tests::every_api_error_has_a_class ... ok
+test assistant_harness::tests::parked_routes_policy_is_quarantined_by_default ... ok
+test connected_care_sync::tests::header_values_strip_control_newlines ... ok
+test identity::local_tests::a_short_secret_is_refused ... ok
+test hosting::tests::local_runs_start_without_any_profile ... ok
+test hosting::tests::a_false_cloud_marker_is_still_hosted ... ok
+test hosting::tests::production_and_other_profiles_refuse_even_when_complete ... ok
+test email_auth::tests::email_validation_normalizes_and_rejects_invalid_inputs ... ok
+test assistant_harness::tests::recipe_embeds_standing_disclosure_and_clinical_library_tools_only ... ok
+test identity::refusal_tests::provider_outage_and_configuration_errors_are_not_session_refusals ... ok
+test evidence_routes::tests::undated_records_have_no_date_and_keep_literal_values ... ok
+test hosting::tests::staging_preview_is_the_only_hosted_profile ... ok
+test email_auth::tests::challenge_link_builds_cleanly_with_sanitized_invite ... ok
+test portals::tests::fhir_pagination_url_enforces_exact_https_origin ... ok
+test hosting::tests::local_stand_ins_refuse_hosted_even_with_a_complete_profile ... ok
+test portals::tests::update_failure_day_formats_plain_copy ... ok
+test privacy::tests::restriction_enum_matches_wire_snake_case ... ok
+test evidence_routes::tests::projected_role_and_offset_are_literal ... ok
+test portals::tests::portal_secrets_are_redacted_in_debug_output ... ok
+test push::tests::device_id_validation_rejects_blank_or_control_characters ... ok
+test connected_care_sync::tests::private_ai_notes_and_for_my_doctor_drafts_are_excluded_from_live_streaming ... ok
+test portals::tests::vendor_kill_switch_filters_search_and_preserves_enabled_vendors ... ok
+test tests::the_schema_readiness_check_names_the_required_migration ... ok
+test evidence_routes::tests::acquisition_interval_keeps_start_and_end_and_sorts_on_the_start ... ok
+test hosting::tests::liveness_says_nothing_about_readiness ... ok
+test privacy::tests::receipt_records_withdraw ... ok
+test privacy::tests::receipt_follow_up_cancel ... ok
+test privacy::tests::receipt_proactive_withdraw ... ok
+test privacy::tests::receipt_follow_up_pause ... ok
+test background::tests::failure_event_names_the_class_without_error_text ... ok
+test push::tests::push_secrets_are_redacted_in_debug_output ... ok
+test workspace::tests::literal_entry_excludes_lab_printed_reference_ranges_and_keeps_values ... ok
+test privacy_archive::tests::production_trust_and_object_namespace_cannot_be_configured_as_urls ... ok
+test push::tests::http_push_transport_enforces_https_except_loopback ... ok
+test assistant_harness::tests::http_clinical_library_reader_requires_https_except_loopback ... ok
+test connected_care_sync::tests::http_transport_requires_https_except_loopback ... ok
+test privacy::tests::receipt_luna_withdraw ... ok
+test privacy::tests::receipt_doctor_note_delete ... ok
+test privacy::tests::account_delete_propagates_to_front_door_and_rolls_back_when_closer_fails ... ok
+test privacy::tests::receipt_evidence_delete ... ok
+test privacy::tests::receipt_account_delete ... ok
+test privacy::tests::receipt_sessions_revoke ... ok
+test privacy::tests::receipt_device_withdraw ... ok
+test privacy::tests::receipt_doctor_item_delete ... ok
+test privacy_archive::tests::gcs_transport_and_postgres_recovery_reconcile_same_receipt_after_restart ... ok
+test privacy::tests::receipt_publication_revoke ... ok
+test privacy::tests::receipt_doctor_page_delete ... ok
+test identity::local_tests::verifies_a_signed_local_token ... ok
+test identity::local_tests::refuses_forged_expired_foreign_and_future_tokens ... ok
+test hosting::tests::ingress_guard_rate_limits_email_auth_and_rejects_oversized_bodies ... ok
+test privacy_archive::tests::chunked_readback_cannot_bypass_body_limit ... ok
+test privacy_archive::tests::conditional_creation_ambiguous_readback_corruption_and_credentials ... ok
+test privacy_archive::tests::transport_timeout_and_cancellation_release_capacity ... ok
+test privacy_archive::tests::metadata_failures_never_forward_credentials_or_follow_redirects ... ok
+
+test result: ok. 56 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.09s
+
+   Compiling either v1.19.0
+   Compiling tokio v1.54.1
+   Compiling thiserror v2.0.21
+   Compiling chrono v0.4.45
+   Compiling uuid v1.29.2
+   Compiling memchr v2.8.3
+   Compiling rand v0.10.4
+   Compiling generic-array v0.14.7
+   Compiling itertools v0.14.0
+   Compiling aho-corasick v1.1.5
+   Compiling block-buffer v0.10.4
+   Compiling crypto-common v0.1.7
+   Compiling digest v0.10.7
+   Compiling sha2 v0.10.9
+   Compiling dioxus-router-macro v0.7.10
+   Compiling regex-automata v0.4.18
+   Compiling prost-derive v0.14.6
+   Compiling regex v1.13.1
+   Compiling pluralizer v0.5.0
+   Compiling sea-orm-macros v2.0.4
+   Compiling hyper v1.12.0
+   Compiling tower v0.5.3
+   Compiling tokio-stream v0.1.19
+   Compiling tokio-rustls v0.26.6
+   Compiling tokio-util v0.7.20
+   Compiling opentelemetry_sdk v0.33.1
+   Compiling lettre v0.11.24
+   Compiling sqlx-core v0.9.0
+   Compiling tower-http v0.6.11
+   Compiling fred v10.1.0
+   Compiling hyper-util v0.1.21
+   Compiling hyper-rustls v0.27.10
+   Compiling axum v0.8.9
+   Compiling reqwest v0.13.5
+   Compiling reqwest v0.12.28
+   Compiling sea-query-derive v1.0.0
+   Compiling sqlx-postgres v0.9.0
+   Compiling opentelemetry-http v0.33.1
+   Compiling harness v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/harness)
+   Compiling dioxus-router v0.7.10
+   Compiling prost v0.14.6
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/http)
+   Compiling spruce v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/spruce)
+   Compiling gmail v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/gmail)
+   Compiling opentelemetry-proto v0.33.1
+   Compiling dioxus v0.7.10
+   Compiling public-site v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/public-site)
+   Compiling opentelemetry-otlp v0.33.1
+   Compiling sqlx v0.9.0
+   Compiling telemetry v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/telemetry)
+   Compiling sea-query v1.0.2
+   Compiling physician-bus v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/physician-bus)
+   Compiling sea-query-sqlx v0.9.1
+   Compiling sea-schema v0.18.1
+   Compiling sea-orm v2.0.4
+   Compiling sea-orm-migration v2.0.4
+   Compiling front-door v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/front-door)
+   Compiling physician-auth v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/physician-auth)
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/local-product)
+   Compiling physician-sample v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2m 47s
+     Running unittests src/lib.rs (/tmp/coda-target-physician-ui/debug/deps/physician_sample-eb706d506fd75f0f)
+
+running 109 tests
+test auth::tests::workspace_resolution_names_only_patient_reads ... ok
+test auth::tests::a_disallowed_event_split_across_chunks_is_not_forwarded ... ok
+test auth::tests::command_resolution_names_only_bodied_workspaces ... ok
+test chart_load::tests::enrollment_error_preserves_sea_orm_source_and_describes_auth_store_failures ... ok
+test dictation::tests::hosted_mode_forbids_fixture_and_custom_endpoint ... ok
+test briefings::tests::generic_part_labels_are_omitted_and_structured_json_renders_key_value_lines ... ok
+test follow_ups::tests::civil_date_and_rfc3339_parse_roundtrip ... ok
+test dictation::tests::hosted_mode_uses_openai_when_configured_and_fails_closed_otherwise ... ok
+test gmail::tests::a_misconfigured_relay_never_falls_back_to_returning_tokens ... ok
+test gmail::tests::absent_sender_is_proof_mode ... ok
+test gmail::tests::a_sender_address_selects_hosted_mode ... ok
+test hosting::tests::a_false_cloud_marker_is_still_hosted ... ok
+test auth::tests::event_guard_forwards_resync_frames ... ok
+test gmail::tests::relay_needs_no_personal_mailbox_credentials ... ok
+test hosting::tests::a_pool_timeout_does_not_suggest_the_migration_job ... ok
+test hosting::tests::clinical_library_config_enforces_https_in_hosted_runs_and_loopback_locally ... ok
+test auth::tests::active_staging_admins_see_the_sample_patients ... ok
+test hosting::tests::hosted_local_stack_refuses_even_with_complete_profile ... ok
+test hosting::tests::local_runs_start_without_any_profile ... ok
+test dictation::tests::local_test_and_unavailable_never_fabricate_clinical_text_for_binary_audio ... ok
+test hosting::tests::origin_follows_the_practice_and_scenarios_need_a_rehearsal_practice ... ok
+test hosting::tests::only_a_configured_rehearsal_practice_fails_and_no_message_markers_exist ... ok
+test hosting::tests::readiness_fails_closed_without_live_stores ... ok
+test hosting::tests::production_and_other_profiles_refuse_even_when_complete ... ok
+test auth::tests::sse_events_filter_to_panel_and_terminate_when_session_or_panel_access_is_revoked ... ok
+test hosting::tests::simulation_practices_parse_only_under_the_preview_profile ... ok
+test hosting::tests::rehearsal_failure_policy_parses_and_enforces_staging_only_harness_control ... ok
+test dictation::tests::openai_backend_posts_multipart_audio_and_fails_closed_on_upstream_failure ... ok
+test hosting::tests::staging_accounts_parse_under_the_preview_profile ... ok
+test hosting::tests::staging_physician_ids_are_stable_and_distinct_per_email ... ok
+test hosting::tests::service_account_email_normalizes_and_rejects_non_service_principals ... ok
+test hosting::tests::staging_accounts_refuse_outside_the_preview_profile_and_bad_entries ... ok
+test hosting::tests::synthetic_charts_load_only_under_the_preview_profile ... ok
+test hosting::tests::staging_preview_is_the_only_hosted_profile ... ok
+test hosting::tests::the_rehearsal_sign_in_needs_both_settings_and_the_preview_profile ... ok
+test live_tests::chat_titles_are_one_line_and_cut_at_a_word ... ok
+test live_tests::a_due_beat_goes_out_before_changes_that_are_ready ... ok
+test live_tests::the_change_stream_keeps_alive_on_a_fixed_beat_while_changes_pass_and_ends_with_them ... ok
+test live::tests::snapshot_body_clears_steps_and_syncs_redacted_text_for_withheld_work ... ok
+test patients::tests::age_turns_on_the_birthday ... ok
+test patients::tests::clinic_demographics_exposes_only_name_dob_and_mrn ... ok
+test hosting::tests::clinical_library_enforces_excerpt_rights_unit_id_and_sha256_integrity ... ok
+test patients::tests::directory_error_preserves_source_status_cause ... ok
+test hosting::tests::clinical_library_down_or_refused_never_masquerades_as_nothing_found ... ok
+test patients::tests::source_delivery_never_reports_usable_without_saved_pull_and_keeps_last_good_time ... ok
+test auth::tests::whoami_names_the_session_physician ... ok
+test patients::tests::search_orders_exact_identifier_before_prefix_before_substring ... ok
+test patients::tests::connected_sources_projects_pull_less_linked_standings_and_skips_not_yet_read ... ok
+test rehearsal::tests::rehearsal_workspaces_never_collide_with_the_staging_panel ... ok
+test hosting::tests::clinical_library_search_and_exact_read_authenticate_and_preserve_passage_metadata ... ok
+test auth::tests::a_held_link_without_access_says_so_and_a_guessed_one_does_not ... ok
+test auth::tests::an_admin_invitation_redeems_once_at_the_front_door ... ok
+test auth::tests::an_unknown_email_never_confirms_an_account ... ok
+test reviews::tests::review_version_advances_across_every_state_transition_even_at_same_timestamp ... ok
+test patients::tests::empty_roster_query_pages_twenty_five_by_name_and_excludes_other_practices ... ok
+test auth::tests::a_cross_practice_or_unknown_patient_never_gets_invited ... ok
+test reviews::tests::project_trigger_and_tool_steps_use_physician_language_and_candidate_ids ... ok
+test auth::tests::a_patient_exists_once_registered_to_the_practice ... ok
+test auth::tests::any_active_practice_member_can_invite_and_a_conflict_answers_409 ... ok
+test auth::tests::an_unknown_or_expired_token_never_serializes ... ok
+test schedule::tests::from_env_prefers_explicit_calendar_and_ignores_chart_only_banks ... ok
+test synthetic_chart::tests::every_built_chart_reads_in_full ... ignored, requires `cargo run -p patient-bank -- build`
+test auth::tests::health_and_the_signed_out_page_stay_open ... ok
+test synthetic_chart::tests::reconnect_receipts_and_modes_persist_in_postgres_across_separate_bank_directories ... ignored, requires explicit local Postgres
+test synthetic_reply::tests::the_switch_names_the_patient ... ok
+test schedule::tests::multiple_patient_participants_degrade_to_unmatched_appointment_and_issue ... ok
+test synthetic_reply::tests::the_first_draft_is_fixed_non_empty_wording ... ok
+test auth::tests::a_sign_in_token_verifies_once ... ok
+test schedule::tests::synthetic_bank_calendar_parses_appointments_and_names_corrupt_lines ... ok
+test auth::tests::a_refused_read_says_whether_the_session_ended_or_access_was_removed ... ok
+test tests::chat_mode_follows_the_switch_and_falls_back_to_the_topic ... ok
+test auth::tests::reads_without_a_session_never_serialize ... ok
+test auth::tests::active_practice_member_can_invite_non_admin_colleague_and_sign_in ... ok
+test auth::tests::a_command_into_a_denied_workspace_returns_404 ... ok
+test auth::tests::hosted_colleague_invite_mails_link_and_omits_token ... ok
+test auth::tests::hosted_invite_mails_the_redeem_link_and_omits_the_token ... ok
+test synthetic_chart::tests::an_unread_attachment_keeps_its_parent_and_chart_siblings ... ok
+test synthetic_chart::tests::a_chart_reads_as_coda_records_with_its_exact_bytes ... ok
+test auth::tests::hosted_sign_in_mails_the_link_and_omits_the_token ... ok
+test live_tests::a_signed_in_reader_hears_the_beat_while_only_changes_it_may_not_see_pass ... ok
+test timestamp::tests::rfc3339_formats_the_unix_epoch ... ok
+test tests::hosted_site_requires_durable_chat ... ok
+test synthetic_chart::tests::controllable_modes_simulate_lapsed_access_partial_outage_and_reconnect ... ok
+test tests::required_sign_in_serves_only_the_practice ... ok
+test tests::synthetic_charts_fail_closed_when_patients_folder_is_missing ... ok
+test tests::proxy_preserves_long_queries_under_concurrent_http_parsing ... ok
+test tests::commands_are_rejected_without_a_model ... ok
+test tests::durable_chat_requires_the_physician_database ... ok
+test tests::fixture_snapshot_and_past_work_refuse_off_panel_clinic_demographic_patients ... ok
+test auth::tests::a_failed_or_missing_gmail_send_does_not_return_the_token ... ok
+test rehearsal::tests::without_the_settings_there_is_no_rehearsal_route ... ok
+test rehearsal::tests::the_rehearsal_email_on_another_account_signs_nobody_in ... ok
+test rehearsal::tests::the_rehearsal_session_ends_on_time_however_much_it_is_used ... ok
+test rehearsal::tests::only_a_valid_assertion_for_this_audience_is_considered ... ok
+test rehearsal::tests::the_rehearsal_session_reaches_only_the_rehearsal_panel ... ok
+test rehearsal::tests::only_the_configured_service_account_may_rehearse ... ok
+test tests::a_registered_patient_no_source_holds_is_not_found ... ok
+test tests::an_unset_upstream_serves_the_site_and_a_set_one_forwards ... ok
+test tests::front_door_outage_returns_503_on_workspace_and_roster ... ok
+test auth::tests::same_clinic_physicians_read_basic_demographics_while_clinical_routes_require_panel_membership ... ok
+test auth::tests::clinical_now_follows_the_clock_each_practice_was_created_with ... ok
+test auth::tests::the_staging_physician_reads_their_granted_workspaces ... ok
+test auth::tests::a_physician_cannot_change_review_cadence ... ok
+test auth::tests::unchecked_patient_marks_cross_patient_lists_incomplete_and_single_patient_503 ... ok
+test auth::tests::clinic_admin_or_secretary_assigns_patient_to_physician_panel_over_http ... ok
+test auth::tests::projection_lists_filter_by_practice_and_panel_without_staging_practice_assumptions ... ok
+test tests::connected_care_patient_link ... ok
+test tests::serves_patients_and_no_work_it_does_not_hold ... ok
+test tests::health_route_reports_clinical_library_freshness_standing ... ok
+
+test result: ok. 107 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.64s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.52s
+     Running unittests src/lib.rs (/tmp/coda-target-physician-ui/debug/deps/public_site-8b6f24405365211f)
+
+running 40 tests
+test proxy::tests::mounts_own_only_their_path_family ... ok
+test representation::tests::digest_is_lowercase_sha256 ... ok
+test config::tests::cli_defaults_to_serve_and_parses_static_export_flags ... ok
+test runtime::tests::sign_in_exists_only_with_a_physician_upstream ... ok
+test runtime::tests::staging_requires_proxy_signer_and_deployed_upstream_https ... ok
+test runtime::tests::bare_container_bind_address_uses_a_loopback_browser_origin ... ok
+test runtime::tests::staging_requires_well_formed_direct_cloud_run_audience ... ok
+test runtime::tests::local_production_and_probe_contract_remain_explicit ... ok
+test runtime::tests::observability_relay_is_staging_only_https_and_signed ... ok
+test proxy::tests::fixed_origins_reject_credentials_and_nonlocal_plaintext ... ok
+test proxy::tests::location_policy_never_exposes_an_upstream_origin ... ok
+test proxy::tests::mounted_location_stays_inside_its_prefix_on_known_origins ... ok
+test assets::tests::rewrites_only_complete_root_relative_urls ... ok
+test representation::tests::q_values ... ok
+test site::tests::origin_supports_host_only_or_matching_base_path_without_double_prefix ... ok
+test access::tests::secret_needs_one_exact_value ... ok
+test site::tests::base_path_normalizes_and_rejects_invalid_inputs ... ok
+test representation::tests::gzip_vector_crc_round_trip ... ok
+test representation::tests::variants_head_and_weak_conditional ... ok
+test representation::tests::compressed_bytes_round_trip ... ok
+test server::tests::observability_relay_never_mounts_outside_staging - should panic ... ok
+test server::tests::public_site_boundary_rate_limits_abusive_clients_while_keeping_health_open ... ok
+test proxy::tests::credential_responses_are_size_bounded_and_never_follow_redirects ... ok
+test proxy::tests::observability_mounts_keep_prefix_drop_spoofed_assertion_cookies_and_off_origin_redirects ... ok
+test proxy::tests::jwt_claims_cache_serialization_and_refresh_failure_are_closed ... ok
+test access::tests::gate_uses_this_services_audience ... ok
+test server::tests::overload_and_timeout_are_bounded_and_private ... ok
+test pages::tests::home_preserves_motion_targets_and_shared_phones ... ok
+test pages::tests::every_document_renders_its_body ... ok
+test assets::tests::rewrites_page_routes_and_assets_under_subpath_without_touching_text_slashes ... ok
+test assets::tests::every_embedded_asset_has_alias_and_content_address ... ok
+test server::tests::health_requires_access_and_optional_health_token ... ok
+test server::tests::head_assets_are_empty ... ok
+test server::tests::trailing_slash_redirect_stays_on_this_origin ... ok
+test server::tests::no_methods_or_conditional_requests_bypass_staging ... ok
+test server::tests::observability_mounts_keep_prefixes_and_forward_only_the_verified_assertion ... ok
+test export::tests::static_export_under_subpath_resolves_every_page_asset_and_metadata_file ... ok
+test server::tests::rewritten_assets_cache_and_readiness ... ok
+test server::tests::staging_gates_every_public_resource_and_never_shared_caches ... ok
+test server::tests::physician_proxy_preserves_access_and_waits_for_upstream_responses ... ok
+
+test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.54s
+
+     Running unittests src/bin/public-site.rs (/tmp/coda-target-physician-ui/debug/deps/public_site-64f6364d731d8cbb)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/access.rs (/tmp/coda-target-physician-ui/debug/deps/access-4a6e3a14475e96d4)
+
+running 2 tests
+test executable_refuses_missing_or_malformed_staging_configuration ... ok
+test staging_denies_every_page_and_resource_without_signed_iap ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.51s
+
+     Running tests/foundation.rs (/tmp/coda-target-physician-ui/debug/deps/foundation-a03475d9ac014089)
+
+running 3 tests
+test sign_in_appears_on_every_page_only_when_offered ... ok
+test every_enumerated_route_uses_real_router_ssr_and_shared_chrome ... ok
+test axum_serves_only_startup_bytes_and_preserves_404s ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.74s
+
+     Running tests/proxy.rs (/tmp/coda-target-physician-ui/debug/deps/proxy-e3c48519d30d65b9)
+
+running 3 tests
+test preserves_transport_and_strips_credentials_and_hops ... ok
+test redirect_rewriting_errors_origin_checks_and_limits ... ok
+test sse_delivers_first_chunk_while_upstream_body_is_still_open ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.50s
+
+     Running tests/routes.rs (/tmp/coda-target-physician-ui/debug/deps/routes-c270a00c7294f084)
+
+running 6 tests
+test staging_denies_pages_and_assets_without_access ... ok
+test staging_sign_in_reaches_the_physician_service ... ok
+test real_scripts_are_content_addressed_and_immutable ... ok
+test urls_resolve_redirect_and_set_hsts ... ok
+test invite_route_redirects_mobile_platforms_and_renders_fallback_deep_link ... ok
+test every_route_metadata_sitemap_and_retired_routes ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.51s
+
+     Running tests/site.rs (/tmp/coda-target-physician-ui/debug/deps/site-3e4a02d5470e6739)
+
+running 3 tests
+test desktop_mobile_motion_reduced_motion_and_static_fallback ... ignored, browser qualification; run explicitly with --ignored
+test exported_subpath_browser_sql_demo_e2e ... ignored, browser qualification; run explicitly with --ignored
+test exported_subpath_site_serves_zero_404s_and_renders_in_chromium ... ignored, browser qualification; run explicitly with --ignored
+
+test result: ok. 0 passed; 0 failed; 3 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/stylesheets.rs (/tmp/coda-target-physician-ui/debug/deps/stylesheets-1963793fa300ee27)
+
+running 2 tests
+test layout_stylesheets_declare_no_motion ... ok
+test duet_story_styles_stay_inside_its_stage ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.86s
+     Running tests/site.rs (/tmp/coda-target-physician-ui/debug/deps/site-3e4a02d5470e6739)
+
+running 3 tests
+ INFO Book building has started
+ INFO Running the html backend
+   Compiling ring v0.17.14
+ INFO HTML book written to `/tmp/nix-shell.AG2UuQ/coda-public-site-browser-export-1820522/coda-rust/book`
+   Compiling rustls v0.23.46
+   Compiling rustls-webpki v0.103.16
+   Compiling tokio-rustls v0.26.6
+   Compiling hyper-rustls v0.27.10
+   Compiling reqwest v0.12.28
+Screenshot: /tmp/nix-shell.AG2UuQ/public-site-screenshots/desktop.png
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/http)
+   Compiling public-site v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/public-site)
+Screenshot: /tmp/nix-shell.AG2UuQ/public-site-screenshots/coda-rust-desktop.png
+desktop: content, assets, overflow, navigation and motion passed
+desktop: content, assets, overflow, navigation and motion passed
+Screenshot: /tmp/nix-shell.AG2UuQ/public-site-screenshots/mobile.png
+Screenshot: /tmp/nix-shell.AG2UuQ/public-site-screenshots/coda-rust-mobile.png
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 21.81s
+     Running `/tmp/coda-target-physician-ui/debug/public-site --export-dir /tmp/nix-shell.AG2UuQ/coda-public-site-demo-export-1820522/coda-rust --base-path /coda-rust --origin 'https://tyler274.github.io/coda-rust' --physician-demo`
+ INFO Book building has started
+ INFO Running the html backend
+ INFO HTML book written to `/tmp/nix-shell.AG2UuQ/coda-public-site-demo-export-1820522/coda-rust/book`
+mobile: content, assets, overflow, navigation and motion passed
+   Compiling serde_core v1.0.229
+   Compiling once_cell v1.21.4
+   Compiling serde_json v1.0.154
+   Compiling heck v0.4.1
+   Compiling memchr v2.8.3
+   Compiling fallible-streaming-iterator v0.1.9
+   Compiling smallvec v1.16.3
+   Compiling fallible-iterator v0.3.0
+   Compiling ahash v0.8.12
+   Compiling cc v1.8.0
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+mobile: content, assets, overflow, navigation and motion passed
+   Compiling libsqlite3-sys v0.30.1
+   Compiling thiserror-impl v2.0.21
+   Compiling serde_derive v1.0.229
+   Compiling darling_core v0.20.11
+Screenshot: /tmp/nix-shell.AG2UuQ/public-site-screenshots/reduced.png
+reduced: content, assets, overflow, navigation and motion passed
+Screenshot: /tmp/nix-shell.AG2UuQ/public-site-screenshots/no-script.png
+   Compiling darling_macro v0.20.11
+no-script: content, assets, overflow, navigation and motion passed
+   Compiling hashbrown v0.14.5
+test desktop_mobile_motion_reduced_motion_and_static_fallback ... ok
+   Compiling hashlink v0.9.1
+Screenshot: /tmp/nix-shell.AG2UuQ/public-site-screenshots/coda-rust-reduced.png
+reduced: content, assets, overflow, navigation and motion passed
+Screenshot: /tmp/nix-shell.AG2UuQ/public-site-screenshots/coda-rust-no-script.png
+no-script: content, assets, overflow, navigation and motion passed
+test exported_subpath_site_serves_zero_404s_and_renders_in_chromium ... ok
+   Compiling thiserror v2.0.21
+   Compiling serde v1.0.229
+   Compiling physician-wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/physician-wire)
+   Compiling darling v0.20.11
+   Compiling sea-query-derive v1.0.0
+   Compiling sea-query v1.0.2
+   Compiling rusqlite v0.32.1
+   Compiling physician-demo-db v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/physician-demo-db)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 22.63s
+     Running `/tmp/coda-target-physician-ui/debug/seed_demo_db --units /home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/patients/units --out /tmp/nix-shell.AG2UuQ/coda-public-site-demo-export-1820522/coda-rust/physician/demo.sqlite --limit 60`
+Seeded 39 patients into /tmp/nix-shell.AG2UuQ/coda-public-site-demo-export-1820522/coda-rust/physician/demo.sqlite
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling wasm-bindgen-shared v0.2.129
+   Compiling rustversion v1.0.23
+   Compiling once_cell v1.21.4
+   Compiling cfg-if v1.0.5
+   Compiling bumpalo v3.20.3
+   Compiling pin-project-lite v0.2.17
+   Compiling memchr v2.8.3
+   Compiling futures-core v0.3.34
+   Compiling futures-sink v0.3.34
+   Compiling futures-io v0.3.34
+   Compiling serde_core v1.0.229
+   Compiling slab v0.4.12
+   Compiling futures-task v0.3.34
+   Compiling serde v1.0.229
+   Compiling smallvec v1.16.3
+   Compiling version_check v0.9.5
+   Compiling thiserror v2.0.21
+   Compiling fnv v1.0.7
+   Compiling ident_case v1.0.1
+   Compiling stable_deref_trait v1.2.1
+   Compiling parking_lot_core v0.9.12
+   Compiling scopeguard v1.2.0
+   Compiling konst_macro_rules v0.2.19
+   Compiling unicode-xid v0.2.6
+   Compiling anyhow v1.0.104
+   Compiling itoa v1.0.18
+   Compiling rustc-hash v2.1.3
+   Compiling zmij v1.0.23
+   Compiling longest-increasing-subsequence v0.1.0
+   Compiling serde_json v1.0.154
+   Compiling dioxus-core-types v0.7.10
+   Compiling futures-channel v0.3.34
+   Compiling lazy-js-bundle v0.7.10
+   Compiling unicode-segmentation v1.13.3
+   Compiling tracing-core v0.1.36
+   Compiling writeable v0.6.4
+   Compiling litemap v0.8.3
+   Compiling autocfg v1.5.1
+   Compiling bytes v1.12.1
+   Compiling icu_normalizer_data v2.3.0
+   Compiling utf8_iter v1.0.4
+   Compiling lock_api v0.4.14
+   Compiling icu_properties_data v2.3.0
+   Compiling slotmap v1.1.1
+   Compiling proc-macro2-diagnostics v0.10.1
+   Compiling konst v0.2.20
+   Compiling bitflags v2.13.2
+   Compiling percent-encoding v2.3.2
+   Compiling rustc-hash v1.1.0
+   Compiling send_wrapper v0.6.0
+   Compiling ryu v1.0.23
+   Compiling dioxus-interpreter-js v0.7.10
+   Compiling dioxus-document v0.7.10
+   Compiling dioxus-web v0.7.10
+   Compiling heck v0.4.1
+   Compiling sync_wrapper v1.0.2
+   Compiling convert_case v0.8.0
+   Compiling num-traits v0.2.19
+   Compiling pulldown-cmark v0.13.6
+   Compiling form_urlencoded v1.2.2
+   Compiling keyboard-types v0.7.0
+   Compiling sledgehammer_utils v0.3.1
+   Compiling base64 v0.22.1
+   Compiling dioxus-config-macros v0.7.10
+   Compiling unicase v2.10.0
+   Compiling http v1.5.0
+   Compiling parking_lot v0.12.5
+   Compiling euclid v0.22.14
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+   Compiling const_format_proc_macros v0.2.34
+   Compiling dioxus-config-macro v0.7.10
+   Compiling wasm-bindgen v0.2.129
+   Compiling wasm-bindgen-macro-support v0.2.129
+   Compiling synstructure v0.14.0
+   Compiling darling_core v0.21.3
+   Compiling darling_core v0.20.11
+   Compiling dioxus-rsx v0.7.10
+   Compiling futures-macro v0.3.34
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.21
+   Compiling zerovec-derive v0.11.6
+   Compiling displaydoc v0.2.7
+   Compiling async-trait v0.1.92
+   Compiling zerofrom-derive v0.1.8
+   Compiling yoke-derive v0.8.4
+   Compiling tracing-attributes v0.1.31
+   Compiling pin-project-internal v1.1.13
+   Compiling warnings-macro v0.2.0
+   Compiling sledgehammer_bindgen_macro v0.6.5
+   Compiling dioxus-html-internal-macro v0.7.10
+   Compiling dioxus-stores-macro v0.7.10
+   Compiling dioxus-core-macro v0.7.10
+   Compiling darling_macro v0.20.11
+   Compiling darling_macro v0.21.3
+   Compiling const_format v0.2.36
+   Compiling wasm-bindgen-macro v0.2.129
+   Compiling futures-util v0.3.34
+   Compiling zerofrom v0.1.8
+   Compiling yoke v0.8.3
+   Compiling pin-project v1.1.13
+   Compiling tracing v0.1.44
+   Compiling zerovec v0.11.8
+   Compiling zerotrie v0.2.5
+   Compiling generational-box v0.7.10
+   Compiling warnings v0.2.1
+   Compiling darling v0.20.11
+   Compiling sea-query-derive v1.0.0
+   Compiling tinystr v0.8.4
+   Compiling potential_utf v0.1.6
+   Compiling darling v0.21.3
+   Compiling icu_collections v2.3.0
+   Compiling enumset_derive v0.15.0
+   Compiling icu_locale_core v2.3.0
+test exported_subpath_browser_sql_demo_e2e has been running for over 60 seconds
+   Compiling icu_provider v2.3.1
+   Compiling subsecond-types v0.7.10
+   Compiling serde_urlencoded v0.7.1
+   Compiling physician-wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/physician-wire)
+   Compiling icu_normalizer v2.3.0
+   Compiling icu_properties v2.3.0
+   Compiling idna_adapter v1.2.2
+   Compiling idna v1.1.0
+   Compiling js-sys v0.3.106
+   Compiling sledgehammer_bindgen v0.6.0
+   Compiling dioxus-cli-config v0.7.10
+   Compiling url v2.5.8
+   Compiling sea-query v1.0.2
+   Compiling enumset v1.1.14
+   Compiling wasm-bindgen-futures v0.4.79
+   Compiling web-sys v0.3.106
+   Compiling serde-wasm-bindgen v0.6.5
+   Compiling gloo-timers v0.4.0
+   Compiling physician-demo-db v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/physician-demo-db)
+   Compiling futures-timer v3.0.4
+   Compiling subsecond v0.7.10
+   Compiling reqwest v0.12.28
+   Compiling dioxus-core v0.7.10
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/http)
+   Compiling physician-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/physician-client)
+   Compiling wasm-streams v0.4.2
+   Compiling dioxus-signals v0.7.10
+   Compiling dioxus-devtools-types v0.7.10
+   Compiling dioxus-history v0.7.10
+   Compiling dioxus-hooks v0.7.10
+   Compiling dioxus-devtools v0.7.10
+   Compiling dioxus-stores v0.7.10
+   Compiling dioxus-html v0.7.10
+   Compiling dioxus v0.7.10
+   Compiling ui v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/ui)
+   Compiling physician-app v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/physician-app)
+    Finished `release` profile [optimized] target(s) in 39.36s
+Browser SQLite Chords demo E2E passed with 0 errors and 0 HTTP failures.
+test exported_subpath_browser_sql_demo_e2e ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 94.06s
+
