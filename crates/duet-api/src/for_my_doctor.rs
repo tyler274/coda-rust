@@ -720,8 +720,8 @@ pub struct SendForMyDoctorPayload {
 /// Structured send error returned so the UI distinguishes uncertain vs connection-ended vs conflict.
 #[derive(Debug)]
 pub enum ForMyDoctorSendError {
-    /// Missing/expired account/session authentication.
-    Unauthorized,
+    /// Underlying account/session/terms refusal (`session_revoked`, `account_absent`, `TermsRequired`, etc.).
+    Api(ApiError),
     /// Missing disclosure or empty selection.
     Invalid(&'static str),
     /// Practice connection ended (during initial `Sending` or while `Couldn't confirm the send`).
@@ -740,9 +740,14 @@ pub enum ForMyDoctorSendError {
 impl From<ApiError> for ForMyDoctorSendError {
     fn from(err: ApiError) -> Self {
         match err {
-            ApiError::Unauthorized | ApiError::SessionExpired | ApiError::SessionRevoked => {
-                Self::Unauthorized
-            }
+            ApiError::Unauthorized
+            | ApiError::InvalidToken(_)
+            | ApiError::SessionExpired
+            | ApiError::SessionRevoked
+            | ApiError::AbsentAccount
+            | ApiError::Forbidden
+            | ApiError::TermsRequired
+            | ApiError::AgreementChanged => Self::Api(err),
             ApiError::Conflict(msg) => Self::Conflict(msg.to_owned()),
             ApiError::Unprocessable(msg) => Self::Invalid(msg),
             other => Self::Uncertain(format!("{other:?}")),
@@ -753,7 +758,7 @@ impl From<ApiError> for ForMyDoctorSendError {
 impl axum::response::IntoResponse for ForMyDoctorSendError {
     fn into_response(self) -> axum::response::Response {
         match self {
-            Self::Unauthorized => ApiError::Unauthorized.into_response(),
+            Self::Api(err) => err.into_response(),
             Self::Invalid(msg) => ApiError::Unprocessable(msg).into_response(),
             Self::ConnectionEnded { reason, ended_at } => (
                 StatusCode::CONFLICT,
@@ -842,10 +847,7 @@ impl ForMyDoctorStore {
         front_door_bearer: Option<&str>,
     ) -> Result<ForMyDoctorStateView, ApiError> {
         let now = Utc::now();
-        let overview = self
-            .fetch_overview(context, front_door_bearer)
-            .await
-            .unwrap_or_default();
+        let overview = self.fetch_overview(context, front_door_bearer).await?;
 
         let mut tx = self.database.begin(context.account_id).await?;
         check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
@@ -1232,7 +1234,7 @@ impl ForMyDoctorStore {
         let bearer = front_door_bearer
             .map(str::trim)
             .filter(|s| !s.is_empty())
-            .ok_or(ForMyDoctorSendError::Unauthorized)?;
+            .ok_or(ForMyDoctorSendError::Api(ApiError::Unauthorized))?;
 
         let mapped_account_id = {
             let mut tx = self
@@ -1449,7 +1451,7 @@ impl ForMyDoctorStore {
                 return Err(ForMyDoctorSendError::ConnectionEnded { reason, ended_at });
             }
             Err(FrontDoorCallError::Unauthenticated) => {
-                return Err(ForMyDoctorSendError::Unauthorized);
+                return Err(ForMyDoctorSendError::Api(ApiError::Unauthorized));
             }
             Err(FrontDoorCallError::Conflict(msg)) => {
                 return Err(ForMyDoctorSendError::Conflict(msg));
@@ -1617,28 +1619,24 @@ impl ForMyDoctorStore {
         &self,
         context: &AccountContext,
         front_door_bearer: Option<&str>,
-    ) -> Result<FrontDoorOverview, FrontDoorCallError> {
+    ) -> Result<FrontDoorOverview, ApiError> {
+        let mut tx = self.database.begin(context.account_id).await?;
+        check_current(&mut tx, context, AccessLevel::AcceptedTerms).await?;
         let Some(transport) = &self.front_door else {
             return Ok(FrontDoorOverview::default());
         };
         let Some(token) = front_door_bearer.map(str::trim).filter(|s| !s.is_empty()) else {
             return Ok(FrontDoorOverview::default());
         };
-        let mut tx = self
-            .database
-            .begin(context.account_id)
-            .await
-            .map_err(|e| FrontDoorCallError::Unavailable(format!("{e:?}")))?;
-        let mapped = front_door_account_id(&mut tx, context.account_id)
-            .await
-            .map_err(|e| FrontDoorCallError::Unavailable(format!("{e:?}")))?;
-        tx.commit()
-            .await
-            .map_err(|e| FrontDoorCallError::Unavailable(e.to_string()))?;
+        let mapped = front_door_account_id(&mut tx, context.account_id).await?;
+        tx.commit().await?;
         let Some(fd_id) = mapped else {
             return Ok(FrontDoorOverview::default());
         };
-        transport.account_overview(fd_id, token).await
+        Ok(transport
+            .account_overview(fd_id, token)
+            .await
+            .unwrap_or_default())
     }
 }
 

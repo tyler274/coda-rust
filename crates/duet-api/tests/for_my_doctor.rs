@@ -52,6 +52,7 @@ impl IdentityVerifier for StaticIdentity {
         let subject = match bearer {
             "duet-ada" => "fmd-ada-subject",
             "duet-bob" => "fmd-bob-subject",
+            "duet-absent" => "fmd-absent-subject",
             _ => return Err(ApiError::Unauthorized),
         };
         Ok(VerifiedIdentity {
@@ -274,6 +275,61 @@ async fn for_my_doctor_marks_notes_conflict_source_changes_sends_and_rls() {
     )
     .await;
     assert_eq!(s, 200);
+    // Auth/session/terms refusals on POST /api/for-my-doctor/send must preserve their HTTP
+    // status and refusal code rather than flattening into 503 uncertain.
+    let probe_send = json!({
+        "share_key": format!("share-probe-{}", Uuid::new_v4()),
+        "practice_id": &roster_one.practice_id,
+        "practice_name": "Northside Primary Care",
+        "patient_id": &roster_one.patient_id,
+        "disclosure_accepted": true,
+        "selected_mark_ids": [Uuid::new_v4()],
+        "selected_note_ids": []
+    });
+    let (s, err_terms) = http_as(
+        &app,
+        "duet-bob",
+        "POST",
+        "/api/for-my-doctor/send",
+        None,
+        Some(probe_send.clone()),
+    )
+    .await;
+    assert_eq!(s, 403, "expected terms refusal: {err_terms}");
+    assert_eq!(err_terms["detail"]["code"], "terms_acceptance_required");
+
+    let (s, err_state_terms) =
+        http_as(&app, "duet-bob", "GET", "/api/for-my-doctor", None, None).await;
+    assert_eq!(s, 403, "expected terms refusal on state: {err_state_terms}");
+    assert_eq!(
+        err_state_terms["detail"]["code"],
+        "terms_acceptance_required"
+    );
+
+    let (s, err_unauth) = http_as(
+        &app,
+        "duet-unknown-session",
+        "POST",
+        "/api/for-my-doctor/send",
+        None,
+        Some(probe_send.clone()),
+    )
+    .await;
+    assert_eq!(s, 401, "expected 401 session refusal: {err_unauth}");
+    assert_eq!(err_unauth["detail"]["code"], "session_invalid");
+
+    let (s, err_absent) = http_as(
+        &app,
+        "duet-absent",
+        "POST",
+        "/api/for-my-doctor/send",
+        None,
+        Some(probe_send),
+    )
+    .await;
+    assert_eq!(s, 401, "expected 401 account_absent refusal: {err_absent}");
+    assert_eq!(err_absent["detail"]["code"], "account_absent");
+
     let (s, _) = http_as(
         &app,
         "duet-bob",

@@ -103,6 +103,9 @@ const STORAGE_KINDS: &[&str] = &[
     "account-state",
     "you-cache",
     "shared-cache",
+    "for-my-doctor-cache",
+    "for-my-doctor-pending-send",
+    "for-my-doctor-note-draft",
     "active-tab",
     "appearance",
     "pending-account-delete",
@@ -660,15 +663,28 @@ impl RetentionOwner {
                 health_uploads += 1;
             }
         }
+        let has_fmd_pending_send = self
+            .store
+            .read(&key("for-my-doctor-pending-send", &identity.owner))?
+            .is_some_and(|bytes| {
+                serde_json::from_slice::<crate::for_my_doctor::PendingDoctorSend>(&bytes)
+                    .map(|p| !p.ended_before_confirm)
+                    .unwrap_or(true)
+            });
         Ok(AccountLeaving {
             draft: self
                 .store
                 .read(&key("doctor-draft", &identity.owner))?
-                .is_some(),
+                .is_some()
+                || self
+                    .store
+                    .read(&key("for-my-doctor-note-draft", &identity.owner))?
+                    .is_some(),
             pending_operation: self
                 .store
                 .read(&key("doctor-operation", &identity.owner))?
-                .is_some(),
+                .is_some()
+                || has_fmd_pending_send,
             health_uploads,
         })
     }
