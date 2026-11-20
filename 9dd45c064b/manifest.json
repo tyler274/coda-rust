@@ -1,0 +1,223 @@
+{
+  "branch": "feat-cc1-leave-discharge-and-account-delete-propagation",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "front-door unit tests",
+      "kind": "run",
+      "revision": "9dd45c064b41c9a59442cd3a8b93b8dd62cdc488",
+      "dirty": false,
+      "recorded": "2026-11-20T03:18:16+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-j",
+        "4",
+        "-p",
+        "front-door",
+        "--lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-front-door-unit-tests.log"
+      ],
+      "seconds": 2.4,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC1",
+      "label": "front-door Postgres suites (migrations, postgres, identity, luna_journal)",
+      "kind": "run",
+      "revision": "9dd45c064b41c9a59442cd3a8b93b8dd62cdc488",
+      "dirty": false,
+      "recorded": "2026-11-20T03:18:18+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-j",
+        "4",
+        "-p",
+        "front-door",
+        "--test",
+        "migrations",
+        "--test",
+        "postgres",
+        "--test",
+        "identity",
+        "--test",
+        "luna_journal",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-front-door-Postgres-suites-migrations-postgres-i.log"
+      ],
+      "seconds": 4.9,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC1",
+      "label": "physician-sample unit and physician-migrate CLI tests",
+      "kind": "run",
+      "revision": "9dd45c064b41c9a59442cd3a8b93b8dd62cdc488",
+      "dirty": false,
+      "recorded": "2026-11-20T03:18:24+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test --locked -j 4 -p physician-sample --lib && cargo test --locked -j 4 -p physician-sample --bin physician-migrate"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-physician-sample-unit-and-physician-migrate-CLI-.log"
+      ],
+      "seconds": 6.4,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC1",
+      "label": "physician-sample Postgres suites (front_door_postgres, migrations_postgres)",
+      "kind": "run",
+      "revision": "9dd45c064b41c9a59442cd3a8b93b8dd62cdc488",
+      "dirty": false,
+      "recorded": "2026-11-20T03:18:30+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test --locked -j 4 -p physician-sample --test front_door_postgres -- --test-threads=1 && cargo test --locked -j 4 -p physician-sample --test migrations_postgres -- --ignored --test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-physician-sample-Postgres-suites-front_door_post.log"
+      ],
+      "seconds": 6.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "AC2",
+      "label": "duet-api unit tests (incl. AccountDelete propagation & rollback)",
+      "kind": "run",
+      "revision": "9dd45c064b41c9a59442cd3a8b93b8dd62cdc488",
+      "dirty": false,
+      "recorded": "2026-11-20T03:18:37+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-j",
+        "4",
+        "-p",
+        "duet-api",
+        "--lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-duet-api-unit-tests-incl.-AccountDelete-propagat.log"
+      ],
+      "seconds": 30.2,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 6,
+      "claim": "AC2",
+      "label": "duet-api Postgres privacy tests",
+      "kind": "run",
+      "revision": "9dd45c064b41c9a59442cd3a8b93b8dd62cdc488",
+      "dirty": false,
+      "recorded": "2026-11-20T03:19:07+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-j",
+        "4",
+        "-p",
+        "duet-api",
+        "--lib",
+        "privacy::tests",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-duet-api-Postgres-privacy-tests.log"
+      ],
+      "seconds": 2.9,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 7,
+      "claim": "AC3",
+      "label": "fmt, check-sql, boundaries, and host/wasm32 clippy -D warnings",
+      "kind": "run",
+      "revision": "9dd45c064b41c9a59442cd3a8b93b8dd62cdc488",
+      "dirty": false,
+      "recorded": "2026-11-20T03:19:10+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo fmt --all --check && python3 scripts/check-sql.py && cargo test --locked -j 4 -p boundaries && cargo clippy --locked -j 4 --workspace --all-targets -- -D warnings && cargo clippy --locked -j 4 --target wasm32-unknown-unknown -p physician-app --features physician-app/web -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "07-fmt-check-sql-boundaries-and-host-wasm32-clippy-.log"
+      ],
+      "seconds": 89.5,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 8,
+      "claim": "AC3",
+      "label": "physician-sample browser site qualification against disposable Postgres",
+      "kind": "run",
+      "revision": "9dd45c064b41c9a59442cd3a8b93b8dd62cdc488",
+      "dirty": false,
+      "recorded": "2026-11-20T03:20:40+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-j",
+        "4",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "08-physician-sample-browser-site-qualification-agai.log"
+      ],
+      "seconds": 278.1,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}

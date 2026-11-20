@@ -1,0 +1,50 @@
+   Compiling duet-api v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/duet-api)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 19.73s
+     Running unittests src/lib.rs (/tmp/coda-target-concerns/debug/deps/duet_api-f7cabe06c5aaeebe)
+
+running 42 tests
+test hosting::tests::local_runs_start_without_any_profile ... ok
+test identity::local_tests::a_short_secret_is_refused ... ok
+test background::tests::every_api_error_has_a_class ... ok
+test hosting::tests::a_false_cloud_marker_is_still_hosted ... ok
+test identity::refusal_tests::provider_outage_and_configuration_errors_are_not_session_refusals ... ok
+test hosting::tests::production_and_other_profiles_refuse_even_when_complete ... ok
+test privacy::tests::restriction_enum_matches_wire_snake_case ... ok
+test hosting::tests::local_stand_ins_refuse_hosted_even_with_a_complete_profile ... ok
+test evidence_routes::tests::undated_records_have_no_date_and_keep_literal_values ... ok
+test hosting::tests::staging_preview_is_the_only_hosted_profile ... ok
+test portals::tests::update_failure_day_formats_plain_copy ... ok
+test evidence_routes::tests::projected_role_and_offset_are_literal ... ok
+test portals::tests::portal_secrets_are_redacted_in_debug_output ... ok
+test tests::the_schema_readiness_check_names_the_required_migration ... ok
+test portals::tests::fhir_pagination_url_enforces_exact_https_origin ... ok
+test background::tests::failure_event_names_the_class_without_error_text ... ok
+test portals::tests::vendor_kill_switch_filters_search_and_preserves_enabled_vendors ... ok
+test evidence_routes::tests::acquisition_interval_keeps_start_and_end_and_sorts_on_the_start ... ok
+test privacy_archive::tests::production_trust_and_object_namespace_cannot_be_configured_as_urls ... ok
+test hosting::tests::liveness_says_nothing_about_readiness ... ok
+test identity::local_tests::verifies_a_signed_local_token ... ok
+test identity::local_tests::refuses_forged_expired_foreign_and_future_tokens ... ok
+test site::tests::serves_only_named_assets_with_wasm_mime ... ok
+test privacy_archive::tests::gcs_transport_and_postgres_recovery_reconcile_same_receipt_after_restart ... ok
+test privacy_archive::tests::chunked_readback_cannot_bypass_body_limit ... ok
+test privacy_archive::tests::conditional_creation_ambiguous_readback_corruption_and_credentials ... ok
+test privacy::tests::receipt_doctor_item_delete ... ok
+test privacy::tests::account_delete_propagates_to_front_door_and_rolls_back_when_closer_fails ... ok
+test privacy::tests::receipt_sessions_revoke ... ok
+test privacy::tests::receipt_follow_up_pause ... ok
+test privacy::tests::receipt_doctor_note_delete ... ok
+test privacy::tests::receipt_records_withdraw ... ok
+test privacy::tests::receipt_publication_revoke ... ok
+test privacy::tests::receipt_follow_up_cancel ... ok
+test privacy::tests::receipt_doctor_page_delete ... ok
+test privacy::tests::receipt_account_delete ... ok
+test privacy::tests::receipt_device_withdraw ... ok
+test privacy::tests::receipt_proactive_withdraw ... ok
+test privacy::tests::receipt_luna_withdraw ... ok
+test privacy::tests::receipt_evidence_delete ... ok
+test privacy_archive::tests::transport_timeout_and_cancellation_release_capacity ... ok
+test privacy_archive::tests::metadata_failures_never_forward_credentials_or_follow_redirects ... ok
+
+test result: ok. 42 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.14s
+

@@ -1,0 +1,27 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.18s
+     Running unittests src/lib.rs (/tmp/coda-target-concerns/debug/deps/front_door-e9ee5a3be2068731)
+
+running 20 tests
+test migration::tests::recorded_names_stay_what_databases_hold ... ok
+test migration::tests::the_chain_records_apart_from_physician_auth ... ok
+test migration::tests::every_migration_records_a_distinct_name ... ok
+test tests::tokens_are_stored_hashed ... ok
+test tests::a_wrong_invitation_token_is_invalid ... ok
+test tests::reinviting_same_roster_patient_replaces_the_open_invitation ... ok
+test tests::ending_one_connection_preserves_others_and_allows_reinvite ... ok
+test tests::an_invitation_redeems_once_and_mints_one_non_expiring_session ... ok
+test tests::already_connected_patient_conflicts_while_existing_account_joins_second_practice ... ok
+test tests::existing_account_can_be_invited_to_a_second_practice_without_expiry ... ok
+test tests::a_sign_in_token_verifies_once_and_mints_non_expiring_session ... ok
+test tests::an_expired_sign_in_token_stops_verifying ... ok
+test tests::connections_list_per_account_and_practice ... ok
+test tests::leave_discharge_and_account_delete_preserve_ended_status_and_allow_reinvite ... ok
+test http::tests::a_connected_patient_conflicts_while_second_practice_can_invite_same_email ... ok
+test http::tests::an_invitation_is_invited_redeemed_and_never_redeemed_twice ... ok
+test http::tests::sign_in_issues_and_verifies_one_token ... ok
+test http::tests::the_account_and_connections_reads_resolve_the_session_bearer ... ok
+test http::tests::for_my_doctor_route_requires_active_connection_and_tracks_sent_status ... ok
+test http::tests::leave_discharge_and_account_delete_routes_enforce_auth_and_preserve_history ... ok
+
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
