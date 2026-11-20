@@ -1,0 +1,61 @@
+{
+  "branch": "feat-duet-push-harness-and-memory-foundation",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1-AC3-gates",
+      "label": "fmt, check-sql.py, cargo deny, locked host+wasm32 clippy, boundaries, duet-notify",
+      "kind": "run",
+      "revision": "832e46ad3a3d0d79fd1f1bd2f4df55193b474230",
+      "dirty": false,
+      "recorded": "2026-11-20T02:49:51+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "set -euo pipefail\n    cargo fmt --all --check\n    python3 scripts/check-sql.py\n    cargo deny check\n    cargo clippy --locked -p duet-notify -p duet-api -p boundaries --all-targets -- -D warnings\n    cargo clippy --locked -p duet-app --target wasm32-unknown-unknown --lib --bins -- -D warnings\n    cargo test --locked -p boundaries\n    cargo test --locked -p duet-notify"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-fmt-check-sql.py-cargo-deny-locked-host-wasm32-c.log"
+      ],
+      "seconds": 171.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC1-AC3-postgres",
+      "label": "duet-api lib and all 11 real-Postgres integration suites",
+      "kind": "run",
+      "revision": "832e46ad3a3d0d79fd1f1bd2f4df55193b474230",
+      "dirty": false,
+      "recorded": "2026-11-20T02:52:43+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "set -euo pipefail\n    cargo test --locked -p duet-api --lib\n    cargo test --locked -p duet-api --test push_harness_and_memory_retention\n    cargo test --locked -p duet-api --test portals_and_health_connect\n    cargo test --locked -p duet-api --test database_foundation\n    cargo test --locked -p duet-api --test durable_owners\n    cargo test --locked -p duet-api --test evidence_cohort\n    cargo test --locked -p duet-api --test fresh_producers\n    cargo test --locked -p duet-api --test health_context_producer\n    cargo test --locked -p duet-api --test hosting\n    cargo test --locked -p duet-api --test phone_outbox\n    cargo test --locked -p duet-api --test public_budget\n    cargo test --locked -p duet-api --test sql_layout"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-duet-api-lib-and-all-11-real-Postgres-integratio.log"
+      ],
+      "seconds": 228.3,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC1-mobile-bridges",
+      "label": "iOS/Android native notification bridge runtime",
+      "kind": "gap",
+      "revision": "832e46ad3a3d0d79fd1f1bd2f4df55193b474230",
+      "dirty": false,
+      "recorded": "2026-11-20T02:56:32+00:00",
+      "reason": "iOS Xcode Simulator (NotificationBridge.swift) and Android KVM emulator (NotificationBridge.kt) runtime execution are unavailable on this Linux host; Rust bridge decoders, token redaction, generic zero-PHI lock-screen payloads, and sign-out cleanup transitions are verified by duet-notify unit tests and duet-api Postgres tests.",
+      "ok": false,
+      "files": []
+    }
+  ]
+}
