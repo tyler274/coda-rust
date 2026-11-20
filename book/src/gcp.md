@@ -191,11 +191,11 @@ transport. The Workspace relay option uses these values in
 
 ```text
 PHYSICIAN_MAIL_TRANSPORT=smtp-relay
-PHYSICIAN_MAIL_FROM=signin@codahealth.ai
+PHYSICIAN_MAIL_FROM=signin@dabney.moe
 PHYSICIAN_PUBLIC_ORIGIN=https://staging.codahealth.ai/physician
 ```
 
-The sender is `Coda Health <signin@codahealth.ai>`. It requires no mailbox, Gmail
+The sender is `Coda Health <signin@dabney.moe>`. It requires no mailbox, Gmail
 settings change, OAuth grant, or SMTP password. Delivery connects to
 `smtp-relay.gmail.com:587` with mandatory STARTTLS. A configured but invalid
 transport stays in mailed mode: the sign-in API does not return the token.
@@ -694,7 +694,7 @@ Cloud Run service, a runtime identity with no application-data roles, and a
 service-scoped invoker binding. `enable_physician_smtp_relay` must already be enabled:
 the adapter uses that existing network, subnet and NAT address, preserving the
 Workspace IP allowlist. It needs no Doppler token. Runtime settings are
-`MAIL_FROM=signin@codahealth.ai`, `MAIL_NOTIFICATION_FROM=notifications@codahealth.ai`
+`MAIL_FROM=signin@dabney.moe`, `MAIL_NOTIFICATION_FROM=notifications@dabney.moe`
 (the binary default), and `MAIL_LISTEN_ADDR=0.0.0.0:8080`.
 
 For Gym staging, the named caller is
