@@ -1,0 +1,206 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.26s
+     Running unittests src/lib.rs (/tmp/coda-target-integrator/debug/deps/agent_skills-560f693310b59dc4)
+
+running 8 tests
+test tests::arguments_follow_the_reference_schema ... ok
+test tests::frontmatter_keeps_a_colon_inside_a_yaml_string ... ok
+test tests::unknown_skill_lists_the_skills_of_the_package ... ok
+test tests::the_supplied_package_controls_listing_and_opening ... ok
+test tests::missing_file_on_a_known_skill_lists_its_files ... ok
+test tests::skill_md_by_name_opens_the_body ... ok
+test tests::catalog_matches_the_skill_directory_bytes ... ok
+test tests::view_json_preserves_the_exact_body_and_names_its_outcome ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests src/main.rs (/tmp/coda-target-integrator/debug/deps/android-bb2c7f65a4a6d247)
+
+running 7 tests
+test build::tests::only_patched_gradle_failures_let_assembly_continue ... ok
+test tests::the_test_command_names_one_duet_class ... ok
+test tests::a_headless_emulator_is_not_a_window ... ok
+test tests::build_window_and_test_are_the_commands ... ok
+test tests::every_emulator_serial_comes_from_adb ... ok
+test tests::only_test_runs_headless ... ok
+test build::tests::gradle_and_manifest_patches_land_on_a_fixture_tree ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running unittests src/lib.rs (/tmp/coda-target-integrator/debug/deps/availability_probe-17655902b663714f)
+
+running 6 tests
+test state::tests::gaps_and_interrupted_streaks_do_not_fire_or_recover ... ok
+test state::tests::exact_three_failures_two_successes_and_duplicate_guard ... ok
+test error::tests::source_is_preserved_but_never_formatted ... ok
+test dispatch::tests::scheduler_time_within_a_minute_is_that_minute ... ok
+test dispatch::tests::retry_stable_header_becomes_explicit_job_override ... ok
+test dispatch::tests::scheduler_job_name_matches_id_or_same_location_resource ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (/tmp/coda-target-integrator/debug/deps/availability_probe-f8f8c661f6c6a269)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/delivery.rs (/tmp/coda-target-integrator/debug/deps/delivery-f33b1ad54735f989)
+
+running 4 tests
+test abandoned_claim_is_missing_not_reobserved_and_stale_work_rejected ... ok
+test delayed_duplicate_overlapping_and_out_of_order_slots ... ok
+test failed_publication_retries_original_points_without_reprobe_then_duplicate_noops ... ok
+test lost_response_is_read_back_and_cas_conflict_never_probes_or_publishes ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.15s
+
+     Running tests/probe.rs (/tmp/coda-target-integrator/debug/deps/probe-40944eb37c5cf416)
+
+running 11 tests
+test config_requires_identity_and_https_targets ... ok
+test closed_port_is_refused ... ok
+test rejected_service_metrics_never_publish_a_healthy_heartbeat ... ok
+test sign_in_redirect_is_auth_failure_and_never_followed ... ok
+test ready_is_success ... ok
+test unauthorized_and_forbidden_are_auth_failures ... ok
+test not_ready_is_target_failure ... ok
+test credential_failure_is_auth_failure_without_a_request ... ok
+test publish_failure_fails_the_run ... ok
+test run_authenticates_each_target_and_publishes_points_and_heartbeat ... ok
+test slow_answer_is_timeout ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+
+     Running unittests src/lib.rs (/tmp/coda-target-integrator/debug/deps/boundaries-afcaf86e8088f6fd)
+
+running 25 tests
+test shared_ui::a_matching_count_passes ... ok
+test shared_ui::a_whole_test_file_counts_nothing ... ok
+test shared_ui::a_count_reaching_zero_says_to_remove_the_entry ... ok
+test shared_ui::a_new_file_counts_as_going_up_from_zero ... ok
+test shared_ui::a_count_going_up_says_to_use_the_shared_component_or_add_an_exception ... ok
+test shared_ui::a_count_going_down_says_to_lower_the_number ... ok
+test tests::duet_screens_do_not_read_device_health_directly ... ok
+test shared_ui::counts_css_rules_naming_control_elements ... ok
+test tests::shipping_clients_stay_until_the_rust_journeys_match ... ok
+test tests::apps_do_not_import_each_others_clinical_crates ... ok
+test shared_ui::ignores_comments_strings_and_lookalikes ... ok
+test shared_ui::every_table_entry_has_one_row_and_a_reason ... ok
+test shared_ui::counts_rsx_held_in_other_macros_and_nested_rsx ... ok
+test shared_ui::counts_card_classes_set_apart_by_escaped_whitespace ... ok
+test shared_ui::counts_css_rules_naming_library_classes ... ok
+test shared_ui::counts_card_markup_by_class_family_once_per_element ... ok
+test shared_ui::counts_each_raw_control_inside_rsx ... ok
+test tests::the_clinical_library_is_product_neutral ... ok
+test tests::gmail_and_spruce_are_product_neutral ... ok
+test shared_ui::ignores_test_code_but_not_code_kept_out_of_tests ... ok
+test shared_ui::the_check_reads_the_real_library ... ok
+test tests::every_ui_behaviour_is_run_as_its_kind ... ok
+test tests::shared_harness_is_product_neutral_and_has_no_product_store ... ok
+test tests::the_ui_library_runs_its_browser_behaviour_without_eval ... ok
+test shared_ui::the_apps_match_the_shared_ui_table ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.64s
+
+     Running unittests src/lib.rs (/tmp/coda-target-integrator/debug/deps/clinical_library-a48c9b81eb22cde4)
+
+running 44 tests
+test article::tests::a_stored_retry_must_be_one_a_move_could_make ... ok
+test article::tests::our_own_defect_waits_for_a_change_and_tells_a_person_at_once ... ok
+test alert::tests::a_library_that_stops_updating_alerts ... ok
+test article::tests::the_third_outside_failure_needs_a_person ... ok
+test candidate::tests::a_failed_check_hands_the_version_back ... ok
+test alert::tests::stops_unreadable_owners_and_items_alert ... ok
+test article::tests::invalid_moves_say_what_was_refused ... ok
+test candidate::tests::version_names_are_bounded ... ok
+test night::tests::deferrals_and_failures_are_never_successes ... ok
+test night::tests::only_complete_tallies_succeed ... ok
+test failure::tests::codes_are_short_stable_names ... ok
+test article::tests::every_reachable_move_keeps_the_rules ... ok
+test pubmed::refresh::tests::a_new_article_is_admitted_with_its_record ... ok
+test pubmed::refresh::tests::an_unchanged_record_re_confirms_and_a_changed_one_replaces ... ok
+test pubmed::refresh::tests::an_outside_failure_counts_only_for_an_article_not_yet_admitted ... ok
+test pubmed::refresh::tests::an_unreadable_record_tells_a_person_and_keeps_the_last_good_status ... ok
+test slot::tests::an_unreadable_owner_alerts_on_the_second_night ... ok
+test semantic::tests::bge_embedding_validates_dimension_finiteness_and_normalizes ... ok
+test stop_rule::tests::stopped_nights_leave_the_streak ... ok
+test pubmed::record::tests::pmids_are_positive_digits ... ok
+test stop_rule::tests::a_resolution_or_a_success_starts_the_count_over ... ok
+test runner::tests::failure_detail_keeps_the_head ... ok
+test source::tests::item_keys_are_bounded_and_pubmeds_are_pmids ... ok
+test stop_rule::tests::deferred_nights_that_moved_nothing_count ... ok
+test stop_rule::tests::taken_over_nights_count_as_failures ... ok
+test stop_rule::tests::live_slot_holders_and_partial_nights ... ok
+test pubmed::refresh::tests::every_code_this_source_records_is_a_failure_code ... ok
+test slot::tests::slot_names_are_bounded ... ok
+test stop_rule::tests::three_different_failed_nights_in_a_row_stop ... ok
+test slot::tests::unknown_is_never_treated_as_ended ... ok
+test stop_rule::tests::the_same_failure_twice_stops ... ok
+test pubmed::record::tests::notices_follow_nlms_link_types ... ok
+test stop_rule::tests::stop_reasons_read_back_and_say_why ... ok
+test semantic::tests::rrf_places_dual_match_first_and_retains_semantic_only_candidates ... ok
+test storage::tests::paths_stay_inside_their_folder ... ok
+test pubmed::efetch::tests::a_record_without_publication_types_is_unreadable ... ok
+test pubmed::efetch::tests::deleted_citations_answer_nothing ... ok
+test pubmed::efetch::tests::every_requested_pmid_gets_one_answer_in_order ... ok
+test pubmed::efetch::tests::one_unreadable_record_hides_no_other ... ok
+test pubmed::efetch::tests::the_hash_follows_the_record_bytes ... ok
+test pubmed::efetch::tests::a_response_that_answers_the_wrong_question_answers_nothing ... ok
+test sources::pmc::tests::allowlist_accepts_cc0_and_cc_by_and_rejects_restricted_missing_and_preprints ... ok
+test pubmed::efetch::tests::book_records_answer_their_pmids ... ok
+test semantic::tests::subprocess_encoder_speaks_duet_protocol_lines ... ok
+
+test result: ok. 44 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running unittests src/bin/clinical-library-migrate.rs (/tmp/coda-target-integrator/debug/deps/clinical_library_migrate-afa913ce81a40a1d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/clinical-library-pubmed-status.rs (/tmp/coda-target-integrator/debug/deps/clinical_library_pubmed_status-1081bbf7234e89de)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/clinical-library-server.rs (/tmp/coda-target-integrator/debug/deps/clinical_library_server-3a4ed289142842b6)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/corpus_and_server.rs (/tmp/coda-target-integrator/debug/deps/corpus_and_server-b22edcd3a5ecdd59)
+
+running 3 tests
+test ac3_freshness_report_tracks_unrun_lagging_failed_and_current_states ... FAILED
+test ac4_bge_semantic_vector_search_ranks_semantically_related_unit_without_keyword_overlap ... FAILED
+test ac4_multi_source_ingestors_run_through_run_night_and_serve_http_with_pubmed_status ... FAILED
+
+failures:
+
+---- ac3_freshness_report_tracks_unrun_lagging_failed_and_current_states stdout ----
+
+thread 'ac3_freshness_report_tracks_unrun_lagging_failed_and_current_states' (3485130) panicked at crates/clinical-library/tests/common/mod.rs:38:14:
+CLINICAL_LIBRARY_TEST_DATABASE_URL must name a local Postgres: NotPresent
+
+---- ac4_bge_semantic_vector_search_ranks_semantically_related_unit_without_keyword_overlap stdout ----
+
+thread 'ac4_bge_semantic_vector_search_ranks_semantically_related_unit_without_keyword_overlap' (3485131) panicked at crates/clinical-library/tests/common/mod.rs:38:14:
+CLINICAL_LIBRARY_TEST_DATABASE_URL must name a local Postgres: NotPresent
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- ac4_multi_source_ingestors_run_through_run_night_and_serve_http_with_pubmed_status stdout ----
+
+thread 'ac4_multi_source_ingestors_run_through_run_night_and_serve_http_with_pubmed_status' (3485132) panicked at crates/clinical-library/tests/common/mod.rs:38:14:
+CLINICAL_LIBRARY_TEST_DATABASE_URL must name a local Postgres: NotPresent
+
+
+failures:
+    ac3_freshness_report_tracks_unrun_lagging_failed_and_current_states
+    ac4_bge_semantic_vector_search_ranks_semantically_related_unit_without_keyword_overlap
+    ac4_multi_source_ingestors_run_through_run_night_and_serve_http_with_pubmed_status
+
+test result: FAILED. 0 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p clinical-library --test corpus_and_server`

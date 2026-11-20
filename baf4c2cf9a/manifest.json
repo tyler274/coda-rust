@@ -1,0 +1,100 @@
+{
+  "branch": "feat-usable-local-ci-pass",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "COD-68",
+      "label": "dev-check --ci --browser",
+      "kind": "run",
+      "revision": "a2e17bfe84ec9b8b80f3d7f8ff69029b306d5cbd",
+      "dirty": false,
+      "recorded": "2026-11-20T04:13:27+00:00",
+      "command": [
+        "bash",
+        "scripts/dev-check.sh",
+        "--ci",
+        "--browser"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-dev-check---ci---browser.log"
+      ],
+      "seconds": 3173.9,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "baf4c2cf9abb8548fcc6af0938c09d568e7517b3",
+        "reason": "Only added pg_base=\"\" guard, bash 3.2 empty-array guard, and README wording; CI/browser behavior unchanged from a2e17bfe84"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "COD-68",
+      "label": "dev-check --all (pg_base unset path)",
+      "kind": "run",
+      "revision": "a9d2465a4ee37481bd49cd347d836b2a808f46ca",
+      "dirty": false,
+      "recorded": "2026-11-20T05:11:23+00:00",
+      "command": [
+        "bash",
+        "scripts/dev-check.sh",
+        "--all"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-dev-check---all-pg_base-unset-path.log"
+      ],
+      "seconds": 99.0,
+      "exit": 101,
+      "ok": false,
+      "superseded": "Replaced with isolated fresh-DB --all run"
+    },
+    {
+      "id": 3,
+      "claim": "COD-68",
+      "label": "dev-check --all (non-CI pg_base unset path preserves caller env)",
+      "kind": "run",
+      "revision": "baf4c2cf9abb8548fcc6af0938c09d568e7517b3",
+      "dirty": false,
+      "recorded": "2026-11-20T05:29:20+00:00",
+      "command": [
+        "bash",
+        "scripts/dev-check.sh",
+        "--all"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-dev-check---all-non-CI-pg_base-unset-path-preser.log"
+      ],
+      "seconds": 513.6,
+      "exit": 101,
+      "ok": false,
+      "superseded": "Replaced with isolated fresh-DB --all run (previous reused DB after local run)"
+    },
+    {
+      "id": 4,
+      "claim": "COD-68",
+      "label": "dev-check --all (non-CI pg_base unset path)",
+      "kind": "run",
+      "revision": "baf4c2cf9abb8548fcc6af0938c09d568e7517b3",
+      "dirty": false,
+      "recorded": "2026-11-20T05:38:38+00:00",
+      "command": [
+        "bash",
+        "scripts/dev-check.sh",
+        "--all"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-dev-check---all-non-CI-pg_base-unset-path.log"
+      ],
+      "seconds": 540.9,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
