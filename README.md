@@ -132,6 +132,13 @@ nix develop .#agent --command bash scripts/dev-check.sh
 CODA_FAST_PRECOMMIT=1 git commit -m "..."
 ```
 
+For a full local CI pass — formatting, host + `wasm32` Clippy, `boundaries`, lightweight Python/book/skill/SQL/extension checks, workspace unit tests, and `scripts/check-postgres.sh` against an isolated ephemeral Postgres cluster with a per-stage timing table (adding `--browser` runs physician Chromium qualification against that same cluster):
+
+```sh
+bash scripts/dev-check.sh --ci
+bash scripts/dev-check.sh --ci --browser
+```
+
 The default `.githooks/pre-commit` gate runs full workspace formatting and Clippy (`host` + `wasm32`).
 
 From the repository's agent dev shell, install the small validation dependency

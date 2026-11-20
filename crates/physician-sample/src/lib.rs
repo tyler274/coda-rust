@@ -1022,7 +1022,7 @@ pub async fn serve_holding(
             match site_from_env(&lookup, std::sync::Arc::clone(&memory_patients)).await {
                 Ok((router, compaction)) => {
                     *compaction_bg.lock().await = compaction;
-                    *phase_bg.write().await = SamplePhase::Ready(router);
+                    *phase_bg.write().await = SamplePhase::Ready(traced(router));
                     return;
                 }
                 Err(error) if error.retryable_dependency().is_some() => {
@@ -1061,7 +1061,7 @@ pub async fn serve_holding(
         }
     });
 
-    let app = traced(startup_sample_router(phase));
+    let app = startup_sample_router(phase);
     let served = axum::serve(listener, app)
         .with_graceful_shutdown(async move {
             shutdown().await;
