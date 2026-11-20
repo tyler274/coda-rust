@@ -1,0 +1,53 @@
+   Compiling duet-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-client)
+   Compiling duet-api v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-physician-ui-579a791f/crates/duet-api)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 16.69s
+     Running unittests src/lib.rs (/tmp/coda-target-physician-ui/debug/deps/duet_api-cc411e8d0e9f5f0e)
+
+running 44 tests
+test hosting::tests::local_runs_start_without_any_profile ... ok
+test background::tests::every_api_error_has_a_class ... ok
+test identity::local_tests::a_short_secret_is_refused ... ok
+test hosting::tests::a_false_cloud_marker_is_still_hosted ... ok
+test hosting::tests::production_and_other_profiles_refuse_even_when_complete ... ok
+test hosting::tests::local_stand_ins_refuse_hosted_even_with_a_complete_profile ... ok
+test identity::refusal_tests::provider_outage_and_configuration_errors_are_not_session_refusals ... ok
+test privacy::tests::restriction_enum_matches_wire_snake_case ... ok
+test hosting::tests::staging_preview_is_the_only_hosted_profile ... ok
+test evidence_routes::tests::undated_records_have_no_date_and_keep_literal_values ... ok
+test evidence_routes::tests::projected_role_and_offset_are_literal ... ok
+test tests::the_schema_readiness_check_names_the_required_migration ... ok
+test background::tests::failure_event_names_the_class_without_error_text ... ok
+test evidence_routes::tests::acquisition_interval_keeps_start_and_end_and_sorts_on_the_start ... ok
+test workspace::tests::literal_entry_excludes_lab_printed_reference_ranges_and_keeps_values ... ok
+test privacy_archive::tests::production_trust_and_object_namespace_cannot_be_configured_as_urls ... ok
+test privacy::tests::receipt_sessions_revoke ... ok
+test hosting::tests::liveness_says_nothing_about_readiness ... ok
+test privacy::tests::receipt_publication_revoke ... ok
+test privacy::tests::receipt_evidence_delete ... ok
+test privacy::tests::receipt_proactive_withdraw ... ok
+test privacy::tests::receipt_follow_up_pause ... ok
+test privacy::tests::receipt_follow_up_cancel ... ok
+test privacy::tests::receipt_doctor_note_delete ... ok
+test privacy::tests::receipt_records_withdraw ... ok
+test privacy::tests::receipt_luna_withdraw ... ok
+test privacy::tests::receipt_device_withdraw ... ok
+test privacy::tests::receipt_doctor_page_delete ... ok
+test privacy::tests::receipt_account_delete ... ok
+test privacy::tests::receipt_doctor_item_delete ... ok
+test identity::local_tests::verifies_a_signed_local_token ... ok
+test identity::local_tests::refuses_forged_expired_foreign_and_future_tokens ... ok
+test tests::an_unknown_session_cannot_read_premium_or_grant_consent ... ok
+test site::tests::serves_only_named_assets_with_wasm_mime ... ok
+test tests::a_used_or_wrong_invitation_redeems_never_again ... ok
+test tests::a_joined_patient_holds_a_session_that_reads_the_link ... ok
+test tests::premium_reads_free_until_the_front_door_says_otherwise ... ok
+test tests::consent_follows_the_presented_session_not_a_dev_header ... ok
+test tests::consent_grants_reads_and_withdraws_in_one_step ... ok
+test privacy_archive::tests::metadata_failures_never_forward_credentials_or_follow_redirects ... ok
+test privacy_archive::tests::transport_timeout_and_cancellation_release_capacity ... ok
+test privacy_archive::tests::conditional_creation_ambiguous_readback_corruption_and_credentials ... ok
+test privacy_archive::tests::gcs_transport_and_postgres_recovery_reconcile_same_receipt_after_restart ... ok
+test privacy_archive::tests::chunked_readback_cannot_bypass_body_limit ... ok
+
+test result: ok. 44 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.09s
+
