@@ -131,7 +131,8 @@
       ],
       "seconds": 40.1,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "rebased onto merged origin/main aaf82e9968 after PR #136 merge"
     },
     {
       "id": 6,
@@ -154,7 +155,8 @@
       ],
       "seconds": 12.3,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "rebased onto merged origin/main aaf82e9968 after PR #136 merge"
     },
     {
       "id": 7,
@@ -177,7 +179,8 @@
       ],
       "seconds": 17.7,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "rebased onto merged origin/main aaf82e9968 after PR #136 merge"
     },
     {
       "id": 8,
@@ -199,6 +202,107 @@
         "08-fmt-check-sql-check-book-links-boundaries-host-a.log"
       ],
       "seconds": 103.1,
+      "exit": 0,
+      "ok": true,
+      "superseded": "rebased onto merged origin/main aaf82e9968 after PR #136 merge"
+    },
+    {
+      "id": 9,
+      "claim": "D5.1-export-and-D5.2-delete-and-D5.3-resignup",
+      "label": "duet-api account_export_and_exit + email_auth_and_terms + durable_owners + connected_care_sync (Postgres)",
+      "kind": "run",
+      "revision": "0fbde09ee36a623c054f05afec7131d2282b83a7",
+      "dirty": false,
+      "recorded": "2026-11-20T05:46:37+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "duet-api",
+        "--test",
+        "account_export_and_exit",
+        "--test",
+        "email_auth_and_terms",
+        "--test",
+        "durable_owners",
+        "--test",
+        "connected_care_sync"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "09-duet-api-account_export_and_exit-email_auth_and_.log"
+      ],
+      "seconds": 65.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 10,
+      "claim": "D5.4-sync-before-signout-and-retention",
+      "label": "duet-client unit + retention + email_auth_client",
+      "kind": "run",
+      "revision": "0fbde09ee36a623c054f05afec7131d2282b83a7",
+      "dirty": false,
+      "recorded": "2026-11-20T05:47:42+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "duet-client"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "10-duet-client-unit-retention-email_auth_client.log"
+      ],
+      "seconds": 23.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 11,
+      "claim": "D5-duet-app-settings-and-recovery-ui",
+      "label": "duet-app Settings export, sign-out and delete recovery UI",
+      "kind": "run",
+      "revision": "0fbde09ee36a623c054f05afec7131d2282b83a7",
+      "dirty": false,
+      "recorded": "2026-11-20T05:48:06+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "duet-app"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "11-duet-app-Settings-export-sign-out-and-delete-rec.log"
+      ],
+      "seconds": 24.9,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 12,
+      "claim": "workspace-fmt-sql-boundaries-and-clippy",
+      "label": "fmt, check-sql, check-book-links, boundaries, host and wasm32 clippy -D warnings",
+      "kind": "run",
+      "revision": "0fbde09ee36a623c054f05afec7131d2282b83a7",
+      "dirty": false,
+      "recorded": "2026-11-20T05:48:31+00:00",
+      "command": [
+        "bash",
+        "-e",
+        "-c",
+        "cargo fmt --all --check && python3 scripts/check-sql.py && bash scripts/check-book-links.sh && cargo test -p boundaries && cargo clippy --workspace --all-targets --locked -- -D warnings && cargo clippy --target wasm32-unknown-unknown -p duet-app -p physician-app -p ui -p duet-client -p duet-health --locked -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "12-fmt-check-sql-check-book-links-boundaries-host-a.log"
+      ],
+      "seconds": 175.9,
       "exit": 0,
       "ok": true
     }
