@@ -383,7 +383,7 @@ async fn run_durable_owners() {
     );
     let saved_with_lab = workspace.save(&b, &with_lab_save).await.unwrap();
     let checked_with_lab = workspace.approved_read(&b).await.unwrap();
-    let prep = legacy_preparation(&checked_with_lab).to_string();
+    let prep = legacy_preparation(&checked_with_lab)["draft"].to_string();
     assert!(prep.contains("5.4") && !prep.contains("3.5") && !prep.contains("reference"));
 
     // Retired AI proposal save must be refused.
@@ -1052,6 +1052,128 @@ async fn canonical_ingestion_authority_removal_and_batch() {
             .await
             .unwrap()
             .current
+    );
+
+    // D2.6: Device authority cannot correct or delete external records, while patient-entered manual/note records succeed.
+    let portal_note_live = upsert(
+        Entity::ClinicalNote,
+        "epic/DocumentReference/live-1",
+        serde_json::json!({
+            "source_label": "Epic MyChart",
+            "source": {"kind": "epic", "connection_id": "epic-connection-1"},
+            "title": "Live visit note",
+            "body": "Original portal wording",
+            "recorded_at": "2026-10-20T09:00:00Z",
+        }),
+    );
+    let portal_note_live_at = evidence
+        .ingest_with_authority(&a, &connector, &portal_note_live)
+        .await
+        .unwrap();
+    assert_refused(
+        evidence
+            .ingest(
+                &a,
+                &upsert(
+                    Entity::ClinicalNote,
+                    "duet/correct-portal-note",
+                    serde_json::json!({
+                        "source_label": "Added in Duet",
+                        "title": "Edited summary",
+                        "body": "Patient edit",
+                        "recorded_at": "2026-10-22T01:05:00Z",
+                        "corrects": portal_note_live.canonical_record_id.to_string(),
+                    }),
+                ),
+            )
+            .await,
+    );
+    assert_refused(
+        evidence
+            .ingest(
+                &a,
+                &removal(
+                    &portal_note_live,
+                    portal_note_live_at.revision,
+                    serde_json::json!({"kind": "healthRecords"}),
+                ),
+            )
+            .await,
+    );
+    assert!(matches!(
+        evidence
+            .ingest(
+                &a,
+                &removal(
+                    &patient,
+                    patient_at.revision,
+                    serde_json::json!({"kind": "manual"}),
+                ),
+            )
+            .await,
+        Err(ApiError::Unprocessable(_))
+    ));
+
+    let manual_med = upsert(
+        Entity::HealthEvidence,
+        "duet/manual-med/1",
+        serde_json::json!({
+            "concept_id": "medication:manual",
+            "display_name": "Vitamin D",
+            "source_label": "Added in Duet",
+            "source": {"kind": "manual"},
+        }),
+    );
+    let manual_med_at = evidence.ingest(&a, &manual_med).await.unwrap();
+    let manual_correction = upsert(
+        Entity::HealthEvidence,
+        "duet/manual-med/correction",
+        serde_json::json!({
+            "concept_id": "medication:manual",
+            "display_name": "Vitamin D 2000 IU",
+            "source_label": "Added in Duet",
+            "source": {"kind": "manual"},
+            "corrects": manual_med.canonical_record_id.to_string(),
+        }),
+    );
+    let _corrected_med_at = evidence.ingest(&a, &manual_correction).await.unwrap();
+    let mut external_health_correction = upsert(
+        Entity::HealthEvidence,
+        "duet/correct-external-health",
+        serde_json::json!({
+            "concept_id": "medication:manual",
+            "display_name": "Edited potassium",
+            "source_label": "Added in Duet",
+            "source": {"kind": "manual"},
+            "corrects": manual_med_at.canonical_record_id.to_string(),
+        }),
+    );
+    // Retargeting a manual "corrects" payload at an external portal record is refused.
+    let mut portal_health = upsert(
+        Entity::HealthEvidence,
+        "epic/Observation/refuse-correct",
+        epic("epic-connection-1", "Observation/refuse-correct"),
+    );
+    portal_health.operation_id = Uuid::new_v4();
+    let portal_health_at = evidence
+        .ingest_with_authority(&a, &connector, &portal_health)
+        .await
+        .unwrap();
+    external_health_correction.operation_id = Uuid::new_v4();
+    external_health_correction.payload["corrects"] =
+        serde_json::json!(portal_health_at.canonical_record_id.to_string());
+    assert_refused(evidence.ingest(&a, &external_health_correction).await);
+    assert_refused(
+        evidence
+            .ingest(
+                &a,
+                &removal(
+                    &portal_health,
+                    portal_health_at.revision,
+                    serde_json::json!({"kind": "healthRecords"}),
+                ),
+            )
+            .await,
     );
 
     // Privacy erasure remains authoritative, including over a source-removed record.

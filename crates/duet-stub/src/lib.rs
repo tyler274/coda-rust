@@ -125,7 +125,10 @@ pub(crate) fn fixture<T: DeserializeOwned>(name: &str, raw: &str) -> T {
     serde_json::from_str(raw).unwrap_or_else(|error| panic!("{name} fixture: {error}"))
 }
 
-async fn library(State(store): State<Arc<Mutex<Store>>>) -> Json<EvidenceLibraryPage> {
+async fn library(
+    State(store): State<Arc<Mutex<Store>>>,
+    query: Option<Json<duet_wire::models::EvidenceLibraryQuery>>,
+) -> Json<EvidenceLibraryPage> {
     let mut store = store.lock().unwrap_or_else(|poison| poison.into_inner());
     let mut stamped = false;
     for item in &mut store.records {
@@ -134,7 +137,42 @@ async fn library(State(store): State<Arc<Mutex<Store>>>) -> Json<EvidenceLibrary
     if stamped {
         let _ = store.save_writes();
     }
-    Json(library_page(&store))
+    let mut page = library_page(&store);
+    if let Some(Json(query)) = query
+        && let Some(needle) = query
+            .text
+            .as_deref()
+            .map(str::trim)
+            .filter(|s| !s.is_empty())
+    {
+        let needle = needle.to_ascii_lowercase();
+        page.entries.retain(|entry| {
+            entry.title.to_ascii_lowercase().contains(&needle)
+                || entry
+                    .summary
+                    .as_ref()
+                    .and_then(|s| s.as_deref())
+                    .is_some_and(|s| s.to_ascii_lowercase().contains(&needle))
+                || entry
+                    .source_label
+                    .as_ref()
+                    .and_then(|s| s.as_deref())
+                    .is_some_and(|s| s.to_ascii_lowercase().contains(&needle))
+                || entry.category.to_ascii_lowercase().contains(&needle)
+        });
+        page.counts.clear();
+        for entry in &page.entries {
+            *page.counts.entry(entry.category.clone()).or_insert(0) += 1;
+        }
+        page.total_count = page.entries.len() as i32;
+    }
+    Json(page)
+}
+
+fn is_patient_entered(store: &Store, id: &str) -> bool {
+    store.records.iter().any(|item| {
+        (item.id == id) && payload_text(item, &["source_label"]).as_deref() == Some("Added in Duet")
+    })
 }
 
 async fn ingest(
@@ -161,6 +199,9 @@ async fn ingest(
                 if !evidence_known(&store, &item.id) {
                     return Err(StatusCode::NOT_FOUND);
                 }
+                if !is_patient_entered(&store, &item.id) {
+                    return Err(StatusCode::CONFLICT);
+                }
                 removed.push(item.id);
             }
             _ if payload_text(&item, &["corrects"]).is_some() => {
@@ -170,6 +211,9 @@ async fn ingest(
                 let target = payload_text(&item, &["corrects"]).expect("corrects");
                 if !evidence_known(&store, &target) {
                     return Err(StatusCode::NOT_FOUND);
+                }
+                if !is_patient_entered(&store, &target) {
+                    return Err(StatusCode::CONFLICT);
                 }
                 corrections.push(item);
             }
@@ -495,10 +539,10 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn evidence_can_be_corrected_or_deleted() {
+    async fn external_records_cannot_be_corrected_or_deleted_while_patient_entries_can() {
         let (path, store) = temp_store();
         let app = router(store);
-        let correction = serde_json::json!({
+        let external_correction = serde_json::json!({
             "items": [{
                 "id": "00000000-0000-0000-0000-000000000071",
                 "entity": "health_evidence",
@@ -506,6 +550,58 @@ mod tests {
                 "payload": {
                     "display_name": "Lisinopril 5 mg",
                     "corrects": "med-1",
+                    "source_label": "Added in Duet"
+                }
+            }]
+        });
+        let external_corrected = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/evidence")
+                    .header("content-type", "application/json")
+                    .body(Body::from(external_correction.to_string()))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(external_corrected.status(), StatusCode::CONFLICT);
+
+        let external_deletion = serde_json::json!({
+            "items": [{
+                "id": "lab-1",
+                "entity": "health_evidence",
+                "operation": "delete"
+            }]
+        });
+        let external_deleted = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/evidence")
+                    .header("content-type", "application/json")
+                    .body(Body::from(external_deletion.to_string()))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(external_deleted.status(), StatusCode::CONFLICT);
+
+        let med_a = uuid::Uuid::parse_str("00000000-0000-0000-0000-000000000072").unwrap();
+        let med_b = uuid::Uuid::parse_str("00000000-0000-0000-0000-000000000073").unwrap();
+        post_evidence(&app, med_a, "health_evidence", "Vitamin D", None).await;
+        post_evidence(&app, med_b, "health_evidence", "Magnesium", None).await;
+
+        let correction = serde_json::json!({
+            "items": [{
+                "id": "00000000-0000-0000-0000-000000000074",
+                "entity": "health_evidence",
+                "operation": "upsert",
+                "payload": {
+                    "display_name": "Vitamin D 2000 IU",
+                    "corrects": med_a.to_string(),
                     "source_label": "Added in Duet"
                 }
             }]
@@ -523,9 +619,10 @@ mod tests {
             .await
             .unwrap();
         assert!(corrected.status().is_success(), "{}", body(corrected).await);
+
         let deletion = serde_json::json!({
             "items": [{
-                "id": "lab-1",
+                "id": med_b.to_string(),
                 "entity": "health_evidence",
                 "operation": "delete"
             }]
@@ -543,7 +640,9 @@ mod tests {
             .await
             .unwrap();
         assert!(deleted.status().is_success(), "{}", body(deleted).await);
+
         let library = app
+            .clone()
             .oneshot(
                 Request::builder()
                     .method("POST")
@@ -555,21 +654,34 @@ mod tests {
             .await
             .unwrap();
         let library: EvidenceLibraryPage = serde_json::from_str(&body(library).await).unwrap();
-        assert_eq!(library.entries[0].title, "Lisinopril 5 mg");
+        assert_eq!(library.entries[0].title, "Lisinopril");
         assert!(
             library
                 .entries
                 .iter()
-                .all(|entry| entry.title != "LDL cholesterol")
+                .any(|entry| entry.title == "Vitamin D 2000 IU")
         );
-        assert_eq!(
+        assert!(
             library
                 .entries
                 .iter()
-                .filter(|entry| entry.id == "med-1")
-                .count(),
-            1
+                .all(|entry| entry.title != "Magnesium")
         );
+
+        let filtered = app
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/evidence/library")
+                    .header("content-type", "application/json")
+                    .body(Body::from(r#"{"text":"Vitamin D"}"#))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        let filtered: EvidenceLibraryPage = serde_json::from_str(&body(filtered).await).unwrap();
+        assert_eq!(filtered.entries.len(), 1);
+        assert_eq!(filtered.entries[0].title, "Vitamin D 2000 IU");
         let _ = fs::remove_file(&path);
         let _ = fs::remove_file(writes_beside(&path));
     }

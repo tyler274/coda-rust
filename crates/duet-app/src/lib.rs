@@ -9,10 +9,12 @@
 mod account;
 #[cfg(target_os = "ios")]
 mod apple_health;
+mod duplicates;
 mod export;
 mod records;
 mod roots;
 mod settings;
+mod trends;
 pub use account::{AppDeepLink, DuetRoot, InviteHandoff, PatientSession, parse_app_link};
 
 use std::cell::Cell;
@@ -24,11 +26,12 @@ use duet_client::DuetClient;
 use duet_notify::{AlertSnapshot, AlertState, PlatformAlerts};
 use roots::{
     ALLOW_NOTIFICATIONS, CONNECTING, DoctorPage, LIBRARY_EMPTY, LIBRARY_UNAVAILABLE, LibraryKind,
-    LibraryRecord, LibraryRoot, OPEN_NOTIFICATION_SETTINGS, TRY_AGAIN, doctor_page, library_root,
+    LibraryRecord, LibraryRoot, OPEN_NOTIFICATION_SETTINGS, RecordEditability, TRY_AGAIN,
+    doctor_page, filter_library_root, library_root,
 };
 use ui::{
-    ActionRow, Button, ButtonVariant, Icon, IconName, NavigationControl, Notice, TabBar, Tone,
-    TryAgain,
+    ActionRow, Button, ButtonVariant, Icon, IconName, NavigationControl, Notice, SearchField,
+    TabBar, Tone, TryAgain,
 };
 
 const TABS: [&str; 2] = ["You", "Shared"];
@@ -761,16 +764,22 @@ fn EvidenceRow(
     notice: Signal<Option<String>>,
     attempt: Signal<u32>,
     saving: Signal<bool>,
+    on_open_trend: EventHandler<LibraryRecord>,
 ) -> Element {
     let title = record.title.clone();
     let summary = record.summary.clone();
     let when = record.when.clone();
     let source = record.source.clone();
+    let status_line = record.status_line.clone();
+    let can_modify = record.editability == RecordEditability::PatientEntered;
+    let can_trend = trends::supports_trend(&record);
+    let trend_label = format!("View trend for {title}");
     let correct_label = format!("Correct {title}");
     let delete_label = format!("Delete {title}");
     let kind = record.kind;
     let correct_id = record.id.clone();
     let correct_title = title.clone();
+    let trend_record = record.clone();
     let start_edit = move |_| {
         notice.set(None);
         editing.set(Some(EvidenceEdit {
@@ -819,19 +828,34 @@ fn EvidenceRow(
         if let Some(source) = source {
             p { class: "record-meta", "{source}" }
         }
-        ActionRow {
-            Button {
-                compact: true,
-                aria_label: "{correct_label}",
-                onclick: start_edit,
-                "Correct"
-            }
-            Button {
-                compact: true,
-                danger: true,
-                aria_label: "{delete_label}",
-                onclick: remove,
-                "Delete"
+        if let Some(status) = status_line {
+            p { class: "record-meta", "{status}" }
+        }
+        if can_trend || can_modify {
+            ActionRow {
+                if can_trend {
+                    Button {
+                        compact: true,
+                        aria_label: "{trend_label}",
+                        onclick: move |_| on_open_trend.call(trend_record.clone()),
+                        "View trend"
+                    }
+                }
+                if can_modify {
+                    Button {
+                        compact: true,
+                        aria_label: "{correct_label}",
+                        onclick: start_edit,
+                        "Correct"
+                    }
+                    Button {
+                        compact: true,
+                        danger: true,
+                        aria_label: "{delete_label}",
+                        onclick: remove,
+                        "Delete"
+                    }
+                }
             }
         }
     }
@@ -883,6 +907,11 @@ fn YouTab(
     let mut save_failed = use_signal(|| false);
     let mut editing = use_signal(|| None::<EvidenceEdit>);
     let mut evidence_notice = use_signal(|| None::<String>);
+    let mut search_query = use_signal(String::new);
+    let mut active_trend = use_signal(|| None::<trends::TrendView>);
+    let mut review_duplicates = use_signal(|| false);
+    let hidden_duplicate_ids = use_signal(std::collections::HashSet::<String>::new);
+    let reviewed_duplicate_pairs = use_signal(std::collections::HashSet::<String>::new);
     let save_url = base_url.clone();
     let save_bearer = bearer.clone();
     let evidence_url = base_url.clone();
@@ -913,7 +942,45 @@ fn YouTab(
         Some(Ok(page)) => Some(page),
         _ => cache(),
     };
-    let root = page.as_ref().map(library_root);
+    let page_entries = page.as_ref().map(|p| p.entries.clone()).unwrap_or_default();
+    let likely_duplicates = duplicates::find_likely_duplicates(&page_entries);
+    let pending_duplicate_count = likely_duplicates
+        .iter()
+        .filter(|pair| !reviewed_duplicate_pairs().contains(&pair.pair_key))
+        .count();
+    let root = page
+        .as_ref()
+        .map(library_root)
+        .map(|base| filter_library_root(&base, &search_query(), &hidden_duplicate_ids()));
+    let trend_url = evidence_url.clone();
+    let trend_bearer = evidence_bearer.clone();
+    let trend_entries = page_entries.clone();
+    let open_trend = move |record: LibraryRecord| {
+        let entries = trend_entries.clone();
+        let base_url = trend_url.clone();
+        let bearer = trend_bearer.clone();
+        evidence_notice.set(None);
+        spawn(async move {
+            let browse = match open_client(base_url, bearer) {
+                Ok(api) => api.all_records().await,
+                Err(error) => Err(error),
+            };
+            match browse {
+                Ok(browse) => {
+                    if let Some(view) = trends::build_trend_view(&record, &entries, &browse) {
+                        active_trend.set(Some(view));
+                    } else {
+                        evidence_notice
+                            .set(Some("No numeric trend readings available.".to_owned()));
+                    }
+                }
+                Err(_) => {
+                    evidence_notice
+                        .set(Some("Trend readings couldn’t load. Try again.".to_owned()));
+                }
+            }
+        });
+    };
     let retry = move |_| attempt.set(attempt() + 1);
     // Saving shares the closure shapes with the other save handlers.
     let save_record = move |_| {
@@ -1105,7 +1172,40 @@ fn YouTab(
         if let Some(notice) = evidence_notice() {
             p { class: "record-meta", role: "status", "{notice}" }
         }
+        if page.is_some() {
+            SearchField {
+                label: "Search You".to_owned(),
+                value: search_query(),
+                on_input: move |value| search_query.set(value),
+                placeholder: "Search records, medications, labs, or sources".to_owned(),
+                clear_label: "Clear search".to_owned(),
+            }
+        }
+        if pending_duplicate_count > 0 {
+            Button {
+                aria_label: "Review possible duplicates",
+                onclick: move |_| review_duplicates.set(true),
+                "Review possible duplicates ({pending_duplicate_count})"
+            }
+        }
+        if review_duplicates() {
+            duplicates::DuplicateReviewSheet {
+                duplicates: likely_duplicates.clone(),
+                hidden_ids: hidden_duplicate_ids,
+                reviewed_pairs: reviewed_duplicate_pairs,
+                on_close: move |_| review_duplicates.set(false),
+            }
+        }
+        if let Some(trend) = active_trend() {
+            trends::TrendPanel {
+                trend,
+                on_close: move |_| active_trend.set(None),
+            }
+        }
         match root {
+            Some(LibraryRoot::Empty) if !search_query().trim().is_empty() => rsx! {
+                p { class: "empty", "No matching records." }
+            },
             Some(LibraryRoot::Empty) => rsx! { p { class: "empty", "{LIBRARY_EMPTY}" } },
             Some(LibraryRoot::Sections(sections)) => rsx! {
                 for section in sections {
@@ -1120,6 +1220,7 @@ fn YouTab(
                                 notice: evidence_notice,
                                 attempt,
                                 saving,
+                                on_open_trend: open_trend.clone(),
                             }
                         }
                     }
@@ -1275,6 +1376,7 @@ fn HealthDraft(
                 input {
                     class: "field duet-field",
                     r#type: "text",
+                    aria_label: "Medication name",
                     value: "{medication}",
                     placeholder: "Atorvastatin 20 mg",
                     oninput: move |event| medication.set(event.value()),

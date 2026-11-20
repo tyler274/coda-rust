@@ -107,27 +107,78 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
     browser.click(r#"button[aria-label="Close page"]"#);
     browser.wait_for("Open For my doctor");
 
-    // You can correct one library row and delete another.
+    // D2.6 + You features: external records stay read-only, Search You filters,
+    // trends open without lab range bands, and patient-entered medications can be corrected/deleted.
     browser.click(r#"nav.tabs button:nth-of-type(1)"#);
     browser.wait_for("Lisinopril");
-    browser.click(r#"button[aria-label="Correct Lisinopril"]"#);
-    browser.type_into(r#"input[aria-label="Corrected value"]"#, "Lisinopril 5 mg");
+    assert_eq!(
+        browser.page().run(
+            "has",
+            serde_json::json!([r#"button[aria-label="Correct Lisinopril"]"#])
+        ),
+        false,
+        "external Pharmacy record must not offer Correct"
+    );
+    assert_eq!(
+        browser.page().run(
+            "has",
+            serde_json::json!([r#"button[aria-label="Delete LDL cholesterol"]"#])
+        ),
+        false,
+        "external Quest lab must not offer Delete"
+    );
+
+    // Search filters You records live and clears cleanly.
+    browser.type_into(r#"input[aria-label="Search You"]"#, "Pharmacy");
+    let text = wait_until(&mut browser, |text| {
+        text.contains("Lisinopril") && !text.contains("LDL cholesterol")
+    });
+    assert!(text.contains("Lisinopril"));
+    browser.click(r#"button[aria-label="Clear search"]"#);
+    browser.wait_for("LDL cholesterol");
+
+    // Lab trend opens from a single source series with no printed reference band/flag.
+    browser.click(r#"button[aria-label="View trend for LDL cholesterol"]"#);
+    let text = wait_until(&mut browser, |text| {
+        text.contains("Quest") && text.contains("Close trend")
+    });
+    assert!(!text.contains("reference") && !text.contains("flag"));
+    browser.click(r#"button[aria-label="Close trend"]"#);
+    wait_until(&mut browser, |text| !text.contains("Close trend"));
+
+    // Patient-entered medication offers Correct and Delete.
+    assert_eq!(
+        browser
+            .page()
+            .run("clickButton", serde_json::json!(["Add health information"])),
+        true
+    );
+    assert_eq!(
+        browser
+            .page()
+            .run("clickButton", serde_json::json!(["New medication"])),
+        true
+    );
+    browser.type_into(r#"input[aria-label="Medication name"]"#, "Magnesium 200 mg");
+    assert_eq!(
+        browser
+            .page()
+            .run("clickButton", serde_json::json!(["Add medication"])),
+        true
+    );
+    browser.wait_for("Magnesium 200 mg");
+    browser.click(r#"button[aria-label="Correct Magnesium 200 mg"]"#);
+    browser.type_into(r#"input[aria-label="Corrected value"]"#, "Magnesium 400 mg");
     browser.click(r#"button[aria-label="Save correction"]"#);
     let text = wait_until(&mut browser, |text| {
-        text.contains("Saved the correction.") && text.contains("Lisinopril 5 mg")
+        text.contains("Saved the correction.") && text.contains("Magnesium 400 mg")
     });
-    assert!(
-        text.contains("Lisinopril 5 mg"),
-        "the corrected medication did not replace the library row:\n{text}"
-    );
-    browser.click(r#"button[aria-label="Delete LDL cholesterol"]"#);
+    assert!(text.contains("Lisinopril"));
+    browser.click(r#"button[aria-label="Delete Magnesium 400 mg"]"#);
     let text = wait_until(&mut browser, |text| {
-        text.contains("Removed from your records.") && !text.contains("LDL cholesterol")
+        text.contains("Removed from your records.") && !text.contains("Magnesium 400 mg")
     });
-    assert!(
-        text.contains("Lisinopril 5 mg"),
-        "the corrected medication disappeared with the deleted lab:\n{text}"
-    );
+    assert!(text.contains("Lisinopril"));
 
     // Stub/browser D2 proof: You lists each record as a person would read it.
     browser.click("details.record-browser summary");
@@ -295,6 +346,294 @@ async fn shared_tries_a_failed_workspace_read_again() {
         .unwrap();
     assert_eq!(saved["note"], "Discuss sleep and morning readings.");
     assert!(saved["page"]["name"].is_null());
+    server.abort();
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn you_search_trends_duplicates_and_conditions_in_browser() {
+    use axum::{
+        Json, Router,
+        http::StatusCode,
+        routing::{get, post},
+    };
+
+    let library_payload = serde_json::json!({
+        "catalog_revision": null,
+        "counts": {"currentCondition": 1, "pastCondition": 1, "lab": 2, "vital": 1, "procedure": 1},
+        "entries": [
+            {
+                "category": "currentCondition",
+                "coding_identities": [{"system": "http://snomed.info/sct", "code": "44054006", "version": null}],
+                "condition_status_conflict": false,
+                "date": "2026-10-01T00:00:00Z",
+                "entity": "health_evidence",
+                "group_kind": null,
+                "id": "cond-now",
+                "member_count": 1,
+                "preview": null,
+                "record_id": "00000000-0000-0000-0000-000000000101",
+                "source_label": "Epic",
+                "status_conflict": false,
+                "summary": null,
+                "title": "Type 2 diabetes"
+            },
+            {
+                "category": "pastCondition",
+                "coding_identities": [{"system": "http://snomed.info/sct", "code": "44054006", "version": null}],
+                "condition_status_conflict": false,
+                "date": "2022-05-01T00:00:00Z",
+                "entity": "health_evidence",
+                "group_kind": null,
+                "id": "cond-old",
+                "member_count": 1,
+                "preview": null,
+                "record_id": "00000000-0000-0000-0000-000000000102",
+                "source_label": "Old Clinic",
+                "status_conflict": false,
+                "summary": null,
+                "title": "Type 2 diabetes mellitus"
+            },
+            {
+                "category": "lab",
+                "coding_identities": [],
+                "condition_status_conflict": false,
+                "date": "2026-09-12T15:00:00Z",
+                "entity": "health_evidence",
+                "group_kind": null,
+                "id": "a1c-quest",
+                "member_count": 1,
+                "preview": {"status": "entered-in-error"},
+                "record_id": "00000000-0000-0000-0000-000000000103",
+                "source_label": "Quest",
+                "status_conflict": false,
+                "summary": "6.8 %",
+                "title": "Hemoglobin A1c"
+            },
+            {
+                "category": "lab",
+                "coding_identities": [],
+                "condition_status_conflict": false,
+                "date": "2026-09-12T18:00:00Z",
+                "entity": "health_evidence",
+                "group_kind": null,
+                "id": "a1c-regional",
+                "member_count": 1,
+                "preview": null,
+                "record_id": "00000000-0000-0000-0000-000000000104",
+                "source_label": "Regional Lab",
+                "status_conflict": false,
+                "summary": "6.8 %",
+                "title": "Hemoglobin A1c"
+            },
+            {
+                "category": "vital",
+                "coding_identities": [],
+                "condition_status_conflict": false,
+                "date": "2026-10-10T08:00:00Z",
+                "entity": "health_evidence",
+                "group_kind": null,
+                "id": "bp-1",
+                "member_count": 1,
+                "preview": null,
+                "record_id": "00000000-0000-0000-0000-000000000105",
+                "source_label": "Apple Health",
+                "status_conflict": false,
+                "summary": "122/78 mmHg",
+                "title": "Blood Pressure"
+            },
+            {
+                "category": "procedure",
+                "coding_identities": [],
+                "condition_status_conflict": false,
+                "date": "2026-08-20T09:00:00Z",
+                "entity": "health_evidence",
+                "group_kind": null,
+                "id": "proc-1",
+                "member_count": 1,
+                "preview": {"status": "cancelled"},
+                "record_id": "00000000-0000-0000-0000-000000000106",
+                "source_label": "Surgery Center",
+                "status_conflict": false,
+                "summary": null,
+                "title": "Cancelled visit"
+            }
+        ],
+        "health_records_generation": 0,
+        "next_cursor": null,
+        "revision": 1,
+        "total_count": 6
+    });
+    let browse_payload = serde_json::json!({
+        "revision": 1,
+        "health_records_generation": 0,
+        "total_count": 4,
+        "removed_count": 0,
+        "next_cursor": null,
+        "records": [
+            {
+                "address": {"entity": "health_evidence", "record_id": "q1", "canonical_record_id": "00000000-0000-0000-0000-000000000103", "revision": 1},
+                "status": "current",
+                "title": "Hemoglobin A1c",
+                "date": "2026-06-12T15:00:00Z",
+                "value": "7.1",
+                "unit": "%",
+                "provenance": {"source_kind": "epic", "writer": "connector", "source_label": "Quest"},
+                "payload": null
+            },
+            {
+                "address": {"entity": "health_evidence", "record_id": "q2", "canonical_record_id": "00000000-0000-0000-0000-000000000103", "revision": 2},
+                "status": "current",
+                "title": "Hemoglobin A1c",
+                "date": "2026-09-12T15:00:00Z",
+                "value": "6.8",
+                "unit": "%",
+                "provenance": {"source_kind": "epic", "writer": "connector", "source_label": "Quest"},
+                "payload": null
+            },
+            {
+                "address": {"entity": "health_evidence", "record_id": "r1", "canonical_record_id": "00000000-0000-0000-0000-000000000104", "revision": 1},
+                "status": "current",
+                "title": "Hemoglobin A1c",
+                "date": "2026-09-12T18:00:00Z",
+                "value": "6.8",
+                "unit": "%",
+                "provenance": {"source_kind": "epic", "writer": "connector", "source_label": "Regional Lab"},
+                "payload": null
+            },
+            {
+                "address": {"entity": "health_evidence", "record_id": "bp1", "canonical_record_id": "00000000-0000-0000-0000-000000000105", "revision": 1},
+                "status": "current",
+                "title": "Blood Pressure",
+                "date": "2026-10-10T08:00:00Z",
+                "value": "122/78",
+                "unit": "mmHg",
+                "provenance": {"source_kind": "appleHealth", "writer": "device", "source_label": "Apple Health"},
+                "payload": null
+            }
+        ]
+    });
+    let empty_browse = serde_json::json!({
+        "revision": 1,
+        "health_records_generation": 0,
+        "total_count": 0,
+        "removed_count": 0,
+        "next_cursor": null,
+        "records": []
+    });
+    let account_id = uuid::Uuid::new_v4();
+    let api = Router::new()
+        .route(
+            "/api/auth/account",
+            axum::routing::put(|| async {
+                Json(serde_json::json!({
+                    "terms_accepted": true,
+                    "terms_version": "2026-09-23"
+                }))
+            }),
+        )
+        .route(
+            "/api/auth/account/profile",
+            get(|| async {
+                Json(serde_json::json!({
+                    "appearance": "system",
+                    "terms_accepted": true,
+                    "terms_version": "2026-09-23"
+                }))
+            }),
+        )
+        .route(
+            "/api/auth/account/context",
+            get(move || async move {
+                Json(serde_json::json!({
+                    "account_id": account_id,
+                    "incarnation": account_id,
+                    "permission_revision": 0,
+                    "authenticated_at": "2026-10-20T00:00:00Z"
+                }))
+            }),
+        )
+        .route(
+            "/api/evidence/library",
+            post({
+                let payload = library_payload.clone();
+                move || {
+                    let payload = payload.clone();
+                    async move { Json(payload) }
+                }
+            }),
+        )
+        .route(
+            "/api/evidence/browse",
+            post({
+                let browse_payload = browse_payload.clone();
+                let empty_browse = empty_browse.clone();
+                move |Json(q): Json<serde_json::Value>| {
+                    let browse_payload = browse_payload.clone();
+                    let empty_browse = empty_browse.clone();
+                    async move {
+                        if q.get("cursor").is_some_and(|c| !c.is_null()) {
+                            Json(empty_browse)
+                        } else {
+                            Json(browse_payload)
+                        }
+                    }
+                }
+            }),
+        )
+        .route("/api/evidence", post(|| async { StatusCode::CONFLICT }))
+        .route(
+            "/api/doctor-collection",
+            get(|| async { Json(serde_json::json!({"note_generation": 0, "items": []})) }),
+        );
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    let site = site_router(shared_site(), api);
+    let server = tokio::spawn(async move { axum::serve(listener, site).await.unwrap() });
+    let base = format!("http://{address}");
+    let mut browser = Browser::launch();
+    browser.resize(PHONE);
+    browser.text_until(
+        &format!("{base}/?mode=client&api={base}"),
+        "Type 2 diabetes",
+    );
+    let text = browser.body_text().unwrap();
+    assert!(
+        !text.contains("Type 2 diabetes mellitus"),
+        "covered pastCondition leaked:\n{text}"
+    );
+    assert!(
+        text.contains("recorded by mistake"),
+        "missing entered-in-error explanation:\n{text}"
+    );
+    assert!(
+        text.contains("did not happen"),
+        "missing cancelled explanation:\n{text}"
+    );
+
+    // Likely-duplicate review sheet shows cross-source match and hides chosen duplicate locally.
+    browser.click(r#"button[aria-label="Review possible duplicates"]"#);
+    let text = browser.wait_for("looks like the same result as");
+    assert!(text.contains("Regional Lab") && text.contains("Quest"));
+    browser.click(r#"button[aria-label="Keep Quest"]"#);
+    browser.click(r#"button[aria-label="Done reviewing duplicates"]"#);
+    wait_until(&mut browser, |text| !text.contains("Regional Lab"));
+
+    // Lab trend shows per-source switcher without splicing or reference ranges.
+    browser.click(r#"button[aria-label="View trend for Hemoglobin A1c"]"#);
+    let text = wait_until(&mut browser, |text| {
+        text.contains("Hemoglobin A1c")
+            && text.contains("Regional Lab")
+            && text.contains("Close trend")
+    });
+    assert!(!text.contains("reference") && !text.contains("flag"));
+    browser.click(r#"button[aria-label="Close trend"]"#);
+
+    // Blood pressure trend shows both numbers together.
+    browser.click(r#"button[aria-label="View trend for Blood Pressure"]"#);
+    wait_until(&mut browser, |text| {
+        text.contains("122/78") && text.contains("systolic and diastolic")
+    });
     server.abort();
 }
 

@@ -82,6 +82,16 @@ pub const DEVICE_REMOVABLE_KINDS: [&str; 3] = ["appleHealth", "healthConnect", "
 pub const DEVICE_NOTE_LABELS: [&str; 2] = ["Health Records", "Added in Duet"];
 /// Patient-authored note label; such wording must carry its own date.
 pub const PATIENT_NOTE_LABEL: &str = "Added in Duet";
+
+/// Whether a health evidence `source_kind` is patient-entered in Duet (never imported from a source).
+pub fn is_patient_entered_health(source_kind: &str) -> bool {
+    source_kind == "manual"
+}
+
+/// Whether a clinical note `source_label` is patient-entered in Duet (never imported from a source).
+pub fn is_patient_entered_note(source_label: &str) -> bool {
+    source_label == PATIENT_NOTE_LABEL
+}
 /// Maximum mutations in one batch.
 pub const MAX_EVIDENCE_BATCH_ITEMS: usize = 100;
 /// Maximum serialized bytes of one source object.
@@ -854,6 +864,38 @@ fn owns_note(authority: &IngestAuthority, note: &clinical_note::Model) -> bool {
     }
 }
 
+async fn enforce_patient_correction_target(
+    tx: &mut Transaction<'_, Postgres>,
+    account_id: Uuid,
+    payload: &Value,
+    is_patient_source: bool,
+) -> Result<(), ApiError> {
+    let Some(raw_target) = payload.get("corrects") else {
+        return Ok(());
+    };
+    let target_str = raw_target
+        .as_str()
+        .ok_or(ApiError::Unprocessable("invalid corrected record identity"))?;
+    let target_id = Uuid::parse_str(target_str)
+        .map_err(|_| ApiError::Unprocessable("invalid corrected record identity"))?;
+    if !is_patient_source {
+        return Err(refused());
+    }
+    if let Some(health) = existing_health(tx, account_id, target_id).await? {
+        if !is_patient_entered_health(&health.source_kind) {
+            return Err(refused());
+        }
+        return Ok(());
+    }
+    if let Some(note) = existing_note(tx, account_id, target_id).await? {
+        if !is_patient_entered_note(&note.source_label) {
+            return Err(refused());
+        }
+        return Ok(());
+    }
+    Err(ApiError::NotFound)
+}
+
 async fn prepare(
     tx: &mut Transaction<'_, Postgres>,
     account_id: Uuid,
@@ -876,6 +918,13 @@ async fn prepare(
                     if !DEVICE_SOURCE_KINDS.contains(&kind) {
                         return Err(ApiError::Unprocessable("invalid source kind"));
                     }
+                    enforce_patient_correction_target(
+                        tx,
+                        account_id,
+                        p,
+                        is_patient_entered_health(kind),
+                    )
+                    .await?;
                 }
                 IngestAuthority::Connector {
                     source_kind,
@@ -943,6 +992,14 @@ async fn prepare(
                     {
                         return Err(refused());
                     }
+                    enforce_patient_correction_target(
+                        tx,
+                        account_id,
+                        p,
+                        is_patient_entered_note(label)
+                            && kind.is_none_or(is_patient_entered_health),
+                    )
+                    .await?;
                 }
                 IngestAuthority::Connector {
                     source_kind,
