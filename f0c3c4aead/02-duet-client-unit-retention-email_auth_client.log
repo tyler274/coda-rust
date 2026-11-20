@@ -1,0 +1,93 @@
+   Compiling duet-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/duet-client)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.59s
+     Running unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/duet_client-f723e8b8dabaa037)
+
+running 7 tests
+test identity::tests::classifies_challenge_terms_upgrade_and_conflict_without_triggering_session_end ... ok
+test session::tests::switch_and_signout_fence_delayed_responses_and_clear_drafts ... ok
+test refusal::tests::only_product_refusal_ends_the_current_session ... ok
+test tests::reads_the_library ... ok
+test refusal::tests::refreshed_credential_survives_refusal_of_original_credential ... ok
+test refusal::tests::health_generation_and_upload_refusals_invalidate_bound_session ... ok
+test tests::join_consent_and_premium_follow_the_front_door ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/background_acquire.rs (/tmp/coda-target-jobs/debug/deps/background_acquire-80248fe436007f56)
+
+running 3 tests
+test background_on_locked_storage_completes_as_a_typed_pause ... ok
+test the_registered_handler_is_what_the_native_observer_waits_for ... ok
+test background_completes_after_the_durable_write_without_uploading ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/doctor_controls.rs (/tmp/coda-target-jobs/debug/deps/doctor_controls-d6166c40822a819b)
+
+running 1 test
+test authenticated_contracts_exact_retry_and_redacted_errors ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/email_auth_client.rs (/tmp/coda-target-jobs/debug/deps/email_auth_client-372992aab645dd3b)
+
+running 2 tests
+test client_export_and_sync_pending_before_sign_out ... ok
+test client_email_auth_terms_settings_change_email_and_rights ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/health_upload.rs (/tmp/coda-target-jobs/debug/deps/health_upload-e996d3a1ec5fb6c6)
+
+running 11 tests
+test http_outcomes_are_classified_without_guessing ... ok
+test pending_secure_cleanup_refuses_queue_access ... ok
+test locked_protected_storage_pauses_then_resumes ... ok
+test apple_health::a_late_permission_answer_cannot_connect_the_next_patient ... ok
+test apple_health::a_refused_session_never_opens_the_sheet ... ok
+test apple_health::a_withdrawal_during_the_sheet_cannot_authorize_a_later_generation ... ok
+test apple_health::refresh_imports_through_the_connected_queue ... ok
+test duet_client_transport_posts_the_canonical_batch ... ok
+test same_account_resumes_after_restart_with_the_same_operation_ids ... ok
+test sign_out_and_account_switch_pause_and_isolate_the_queue ... ok
+test a_retained_rejection_reports_only_after_the_queue_drains ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/portals_and_health_connect.rs (/tmp/coda-target-jobs/debug/deps/portals_and_health_connect-17e7b05d787b680c)
+
+running 1 test
+test client_handles_portals_vendor_disabled_not_now_and_phone_disconnect_sync ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/retention.rs (/tmp/coda-target-jobs/debug/deps/retention-0707252a4a6f8123)
+
+running 18 tests
+test readback_requires_exact_content_order_and_generation ... ok
+test missing_native_host_never_falls_back_to_plaintext ... ok
+test locked_cleanup_invalidates_ui_but_preserves_marker_for_retry ... ok
+test pending_account_delete_marker_is_registered_and_wiped_on_erase ... ok
+test damaged_draft_survives_read_and_write_until_explicit_discard ... ok
+test switch_erases_previous_owner_and_fences_late_response_even_after_switch_back ... ok
+test refusal_invalidates_views_without_deleting_protected_patient_work ... ok
+test restart_recovers_exact_uncertain_edit_without_network ... ok
+test offline_recovery_never_discards_or_approves_a_draft ... ok
+test rotation_preserves_fences_and_uncertain_bytes_cannot_be_replaced ... ok
+test publication_intent_survives_restart_cannot_rebase_and_is_erased_on_switch ... ok
+test synced_anchor_only_health_outbox_reports_zero_unconfirmed_entries ... ok
+test tab_appearance_and_offline_caches_restore_and_wipe_cleanly_on_sign_out ... ok
+test sign_out_warning_names_the_draft_the_save_and_the_health_queue ... ok
+test every_key_this_account_writes_is_registered ... ok
+test boxed_recovery_preserves_v1_storage_bytes_and_subject_fence ... ok
+test conflict_release_requires_exact_definitive_refusal_and_preserves_draft ... ok
+test sign_out_switch_and_new_incarnation_remove_queued_health ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests duet_client
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
