@@ -124,7 +124,7 @@ says which tokens to create and what the broker checks.
 
 ### Local CI checks
 
-For fast inner-loop checks scoped to modified workspace crates (formatting, Clippy with warnings denied, and targeted unit tests):
+For fast inner-loop checks scoped to modified workspace crates (Rust and authored SQL formatting via `cargo fmt` and `scripts/check-sql.py`, `tofu fmt` across CI-checked OpenTofu roots when `infra/gcp/*` changes, Clippy with warnings denied, and targeted unit tests):
 
 ```sh
 nix develop .#agent --command bash scripts/dev-check.sh
@@ -132,14 +132,15 @@ nix develop .#agent --command bash scripts/dev-check.sh
 CODA_FAST_PRECOMMIT=1 git commit -m "..."
 ```
 
-For a full local CI pass — formatting, host + `wasm32` Clippy, `boundaries`, lightweight Python/book/skill/SQL/extension checks, workspace unit tests, and `scripts/check-postgres.sh` against an isolated ephemeral Postgres cluster with a per-stage timing table (adding `--browser` runs full Chromium qualification across `physician-sample`, `public-site`, `mobile`, `ui-gallery`, and `extension-popup` against that same cluster):
+For a full local CI pass — formatting (`cargo fmt --all --check`, `scripts/check-sql.py` via `pg_format`, and `tofu fmt -check -recursive` across CI-checked OpenTofu roots), host + `wasm32` Clippy, `boundaries`, `cargo deny check`, `cargo doc --no-deps --workspace` (rustdoc), lightweight Python/book/skill/`actionlint`/Node/extension checks, workspace unit tests, and `scripts/check-postgres.sh` + `queue_trace` against an isolated ephemeral Postgres cluster with a per-stage timing table (use `--postgres` standalone to run formatting + Postgres suites only, and add `--browser` for Chromium qualification across `physician-sample`, `public-site`, `mobile`, `ui-gallery`, and `extension-popup` against that same cluster):
 
 ```sh
 bash scripts/dev-check.sh --ci
+bash scripts/dev-check.sh --postgres
 bash scripts/dev-check.sh --ci --browser
 ```
 
-The default `.githooks/pre-commit` gate runs full workspace formatting and Clippy (`host` + `wasm32`).
+The default `.githooks/pre-commit` gate runs full workspace Rust and SQL formatting (`cargo fmt --all --check`, `scripts/check-sql.py`) and Clippy (`host` + `wasm32`).
 
 From the repository's agent dev shell, install the small validation dependency
 into a virtual environment and run the same lightweight checks as CI:
