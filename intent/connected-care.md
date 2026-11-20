@@ -38,7 +38,7 @@ Some concepts below say only what the thing is. Their rules are not decided yet,
 
 **Practice members.** Anyone signed in to the practice can invite a patient of the practice from that patient's page in Chords. To discharge a patient, the practice asks Coda, and Coda ends the connection at once.
 
-**Invite.** From a practice to one person on its roster. It's sent, then accepted or cancelled. It stays open until the patient joins or the practice cancels it, and practice members can resend it. The patient can accept any invite the practice still holds open, including one being resent, and then both sides show Connected.
+**Invite.** From a practice to one person on its roster. It's sent, then accepted or cancelled. It stays open until the patient joins or the practice cancels it, and practice members can resend an open unlocked invite. The patient can accept any open invite, including one being resent, and then both sides show Connected.
 
 **Consent.** One record per connection, granted for a given wording. In the MVP the wording is fixed and consent is given once, at join, by tapping Share, after a plain preview of what it shares. Only the patient changes it, and in the MVP the way to change it is to leave. Data crosses only while connected and consent is current.
 
@@ -62,11 +62,11 @@ Some concepts below say only what the thing is. Their rules are not decided yet,
 
 The states, steps and rules of an invitation live in [invitation](../verification/connected-care/invitation/README.md).
 
-1. A practice member invites a patient from that patient's page in Chords.
+1. A practice member invites a patient from that patient's page in Chords. Coda prefills the patient's email address from chart demographics when the chart has one, and the member can edit it or type an email address before sending.
 2. Coda sends the invite by email.
 3. The practice sees Invited on the roster, with no notifications.
 4. The invite stays open until the patient joins or the practice cancels it.
-5. Practice members can resend or cancel the invite while it's open.
+5. Practice members can resend an open unlocked invite or cancel any open invite, including a locked one. Resending never unlocks a locked invite; to invite the patient again after five wrong date-of-birth answers lock an invite, a practice member cancels the locked invite and sends a new one.
 6. If the patient taps Share on an invite the practice still holds open, they connect and both sides show Connected, even while a resend is under way or couldn't be delivered.
 7. A patient already connected to another practice can join this one too. Each connection is separate, and the existing one is unaffected.
 
@@ -74,7 +74,7 @@ The states, steps and rules of an invitation live in [invitation](../verificatio
 
 1. The patient taps the invite link. It opens Duet if it's installed; otherwise it goes to the App Store or Play Store and the invite picks up after install. A short code works as a fallback. Duet has no web surface, so every invite opens the app.
 2. The patient signs in, or signs up if they're new to Duet. Invites use email sign-in, and joining from an invite links to the account they already have.
-3. The patient confirms their date of birth. Wrong guesses lock the code.
+3. The patient confirms their date of birth. Five wrong date-of-birth answers lock the invitation.
 4. The patient sees the practice, their physician and a plain preview of what the connection shares.
 5. The patient taps Share. That one act grants consent for the fixed wording and connects.
 6. Joining shares what the patient already has. Their connected records reach the practice with the join, with no further tap.
@@ -147,7 +147,7 @@ The states, steps and rules of an invitation live in [invitation](../verificatio
 | Step | The patient in Duet | The practice |
 |---|---|---|
 | Invite sent | An email with a link or short code | Invited on the roster, no notifications |
-| Open invite | Stays open until they join | The status, with resend or cancel |
+| Open invite | Stays open until they join (or locks after five wrong date-of-birth answers) | The status, with resend while unlocked or cancel |
 | Join | Date of birth check, the practice and physician, a plain preview, Share | Connected; existing records arrive and the agents start |
 | Live sharing | No activity view and no "care team looked" receipt | Items labeled with origin and date in the chart, reviews, preparation and answers, duplicates labeled |
 | For my doctor | Send, records at their current version, a Sent and Received status | Arrives once, like any shared record, marked by the patient. The agents judge whether a physician needs to see it |

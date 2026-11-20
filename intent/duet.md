@@ -132,8 +132,8 @@ In the MVP, For my doctor is in Shared. The states, steps and rules of marks, no
 8. Shared lists each send with its date and status: Sent, then Received by the care team once the practice's agents have picked it up. Sends show as a list, never as a chat thread, so nothing suggests a reply is coming. The person can open a send and see exactly what went. No status claims that a physician looked at it. Nothing else comes back into Duet from a send in the MVP.
 9. The practice's agents review a send like any shared record and judge whether a physician needs to see it.
 10. Joining a practice sends nothing from For my doctor and asks nothing about it. What was marked stays marked, and Send becomes available.
-11. Each record shows and sends its current version and says when its source corrected it. A source correction never blocks sending and never changes an earlier send. A failed or uncertain send says so honestly, and a retry never sends twice.
-12. Ending the connection stops anything new from crossing. What the practice already received keeps where it came from and when. There is no PDF download.
+11. Each record shows and sends its current version and says when its source corrected it. A source correction never blocks sending and never changes an earlier send. When a source removes a marked record, Duet clears its mark from To send, shows a plain notice in You, and leaves earlier sends that carried the record unchanged. A failed or uncertain send says so honestly, and a retry never sends twice.
+12. Ending the connection stops anything new from crossing. When the connection ends while a send is in progress or couldn't be confirmed, Duet stops trying to send it, removes "Try again", shows "Couldn't confirm before connection ended" when confirmation wasn't reached, and keeps its marks and notes in To send. What the practice already received keeps where it came from and when. There is no PDF download.
 
 ### D5. Export, deletion and sign-out
 
