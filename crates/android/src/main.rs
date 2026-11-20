@@ -580,7 +580,7 @@ fn run_instrumentation(class_name: &str, serial: &str) -> Result<(), Failure> {
     // stale or half-generated project would test something else.
     let root = build::workspace_root();
     build::build(&root)?;
-    let Some(gradle) = find_gradlew(&root.join("target/dx/mobile")) else {
+    let Some(gradle) = find_gradlew(&build::dx_generated_dir(&root)) else {
         return Err(Failure::new(
             1,
             "the Android build did not generate an Android project".to_owned(),

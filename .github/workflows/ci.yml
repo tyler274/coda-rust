@@ -664,6 +664,10 @@ jobs:
         run: nix develop .#android --command cargo test --locked -p android
       - name: Create the duet AVD
         run: nix develop .#android --command cargo run --locked -p android -- avd
+      - name: Configure Gradle Maven Central mirror
+        run: |
+          mkdir -p "${HOME}/.gradle/init.d"
+          cp platform/android/maven-central-mirror.gradle "${HOME}/.gradle/init.d/maven-central-mirror.gradle"
       - name: Build the APK and run ModeShellTest headless
         run: nix develop .#android --command cargo run --locked -p android -- test --headless coda.duet.ModeShellTest
       # /tmp/duet-android-emulator holds the emulator log and, after a failed
