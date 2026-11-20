@@ -1,7 +1,6 @@
 //! Duet Connected Care invitation code entry, DOB gate, and explicit one-tap `Share` UI.
 
 use dioxus::prelude::*;
-use duet_client::DuetClient;
 use duet_client::connected_care::{
     ConnectedCareError, InvitationCredential, InvitationOpenStanding, InvitationSharingPreview,
 };
@@ -153,7 +152,7 @@ pub(crate) fn InvitePanel(
             let base_url = base_url.clone();
             let bearer = bearer.clone();
             spawn(async move {
-                let res = match DuetClient::new(&base_url, &bearer, "0", "0.1.0") {
+                let res = match crate::open_client(base_url, bearer) {
                     Ok(client) => client.inspect_connected_care_invitation(&cred).await,
                     Err(_) => Err(ConnectedCareError::Unavailable),
                 };
@@ -295,7 +294,7 @@ pub(crate) fn InvitePanel(
                                 let base = base_for_submit.clone();
                                 let tok = bearer_for_submit.clone();
                                 spawn(async move {
-                                    let res = match DuetClient::new(&base, &tok, "0", "0.1.0") {
+                                    let res = match crate::open_client(base, tok) {
                                         Ok(client) => client.verify_connected_care_dob(&cred, &dob).await,
                                         Err(_) => Err(ConnectedCareError::Unavailable),
                                     };
@@ -355,7 +354,11 @@ pub(crate) fn InvitePanel(
                 div { class: "duet-card duet-invite-card", "data-invite-flow": "preview",
                     Notice {
                         tone: Tone::Primary,
-                        title: format!("{} ({})", preview.practice_name, preview.physician_name),
+                        title: if preview.physician_name.trim().is_empty() {
+                            preview.practice_name.clone()
+                        } else {
+                            format!("{} ({})", preview.practice_name, preview.physician_name)
+                        },
                         detail: Some(preview.shares_summary.clone()),
                     }
                     if let Some(message) = error {
@@ -380,7 +383,7 @@ pub(crate) fn InvitePanel(
                                 let base = base_for_share.clone();
                                 let tok = bearer_for_share.clone();
                                 spawn(async move {
-                                    let res = match DuetClient::new(&base, &tok, "0", "0.1.0") {
+                                    let res = match crate::open_client(base, tok) {
                                         Ok(client) => client.accept_connected_care_share(&cred, &dob).await,
                                         Err(_) => Err(ConnectedCareError::Unavailable),
                                     };

@@ -301,9 +301,7 @@ async fn decode_http_error(resp: reqwest::Response) -> InvitationApiError {
     let payload = resp.json::<FrontDoorErrorPayload>().await.ok();
     let code = payload.as_ref().map(|p| p.code.as_str()).unwrap_or("");
     match (status, code) {
-        (StatusCode::NOT_FOUND, "not_open") | (StatusCode::NOT_FOUND, "") => {
-            InvitationApiError::NotOpen
-        }
+        (StatusCode::NOT_FOUND, _) => InvitationApiError::NotOpen,
         (StatusCode::LOCKED, _) => InvitationApiError::Locked,
         (StatusCode::FORBIDDEN, "underage") => InvitationApiError::Underage,
         (StatusCode::FORBIDDEN, "inactive_account") => InvitationApiError::InactiveAccount,
@@ -658,5 +656,41 @@ mod tests {
             .unwrap();
         assert_eq!(conn.patient.practice_id, "prac-1");
         assert_eq!(port.connections(fd_id).await.unwrap().len(), 1);
+
+        // Unknown and cancelled credentials over HTTP must decode 404 invitation_not_open to NotOpen (never 503).
+        let unknown_err = port
+            .inspect(&InvitationCredential::ShortCode("ZZZZ-ZZZZ".into()))
+            .await
+            .unwrap_err();
+        assert!(
+            matches!(unknown_err, InvitationApiError::NotOpen),
+            "expected NotOpen for unknown credential over HTTP, got {unknown_err:?}"
+        );
+
+        let pat2 = RosterPatient {
+            practice_id: "prac-1".into(),
+            patient_id: "pat-2".into(),
+        };
+        let inv2 = mem
+            .invite_patient(InvitePatientParams {
+                patient: pat2.clone(),
+                email: "p2@example.test".into(),
+                display_name: "P2".into(),
+                practice_name: "River Bend Clinic".into(),
+                physician_name: "Dr. Roger".into(),
+                expected_birth_date: Some("1985-04-12".into()),
+                now: now + 4,
+            })
+            .await
+            .unwrap();
+        mem.cancel_invitation(&pat2).await.unwrap();
+        let cancelled_err = port
+            .inspect(&InvitationCredential::LinkToken(inv2.link_token))
+            .await
+            .unwrap_err();
+        assert!(
+            matches!(cancelled_err, InvitationApiError::NotOpen),
+            "expected NotOpen for cancelled credential over HTTP, got {cancelled_err:?}"
+        );
     }
 }

@@ -96,6 +96,7 @@ async fn fresh_chains_and_shared_database_are_idempotent() {
                     "m20261023_duet_admission",
                     "m20261112_drop_premium_cadence",
                     "m20261119_for_my_doctor_shares",
+                    "m20261120_invitation_lifecycle",
                     "m20261120_multi_practice_connections",
                 ]
             );

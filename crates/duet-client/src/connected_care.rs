@@ -204,7 +204,10 @@ impl DuetClient {
             return Err(ConnectedCareError::NotOpen);
         }
         if let Ok(outer) = serde_json::from_str::<serde_json::Value>(&body)
-            && outer["detail"]["code"].as_str() == Some("terms_acceptance_required")
+            && matches!(
+                outer["detail"]["code"].as_str(),
+                Some("terms_acceptance_required" | "agreement_changed")
+            )
         {
             return Err(ConnectedCareError::TermsRequired);
         }

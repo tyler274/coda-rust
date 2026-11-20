@@ -76,6 +76,8 @@ impl RateLimitTier {
             || normalized == "/api/auth/email-change"
             || normalized.starts_with("/api/auth/email-change/")
             || normalized == "/api/connected-care/sync"
+            || normalized == "/api/connected-care/invitations"
+            || normalized.starts_with("/api/connected-care/invitations/")
             || normalized == "/front-door/sign-in"
             || normalized.starts_with("/front-door/sign-in/")
             || normalized == "/front-door/invitations"
@@ -611,6 +613,18 @@ mod tests {
         );
         assert_eq!(
             RateLimitTier::classify("/api/connected-care/sync"),
+            RateLimitTier::AuthSensitive
+        );
+        assert_eq!(
+            RateLimitTier::classify("/api/connected-care/invitations/inspect"),
+            RateLimitTier::AuthSensitive
+        );
+        assert_eq!(
+            RateLimitTier::classify("/api/connected-care/invitations/verify-dob"),
+            RateLimitTier::AuthSensitive
+        );
+        assert_eq!(
+            RateLimitTier::classify("/api/connected-care/invitations/share"),
             RateLimitTier::AuthSensitive
         );
         assert_eq!(
