@@ -1,0 +1,232 @@
+Checked 10 authored SQL files with pg_format version 5.11
+ INFO Book building has started
+ INFO Running the html backend
+ INFO HTML book written to `/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/book/../target/book`
+notice: submodules/coda-app is not checked out; links into it are not checked
+notice: submodules/coda-agents is not checked out; links into it are not checked
+notice: submodules/Coda-Computer-Use is not checked out; links into it are not checked
+notice: submodules/coda-gym is not checked out; links into it are not checked
+📝 Summary
+---------------------
+🔍 Total.........1468
+🔗 Unique.........504
+✅ Successful....1443
+⏳ Timeouts.........0
+🔀 Redirected.......0
+👻 Excluded........25
+❓ Unknown..........0
+🚫 Errors...........0
+⛔ Unsupported......0
+
+.PASS P1 step: observed
+.PASS P1 step: observed
+FAIL P1 step: observed
+.PASS P1 step: observed
+..usage: scenarios.py [-h] [--only ONLY] [--require-complete]
+                    [--evidence EVIDENCE]
+scenarios.py: error: --only selected no journeys; available: P1, D1, L1
+.PASS L1 measure: rate=16.67
+.FAIL D1 cargo test exit: cargo test --locked -p duet-api --test database_foundation --test public_budget -- --test-threads=1 exited 101
+PASS D1 fresh_and_upgrade_keep_identity_and_enforce_account_scope: ok: fresh and upgraded schema keep identity; one account cannot read another's rows
+PASS D1 public_retrieval_budget_spans_pools: ok: the public retrieval budget holds across pools and counts misses
+..
+----------------------------------------------------------------------
+Ran 9 tests in 0.004s
+
+OK
+    Blocking waiting for file lock on build directory
+   Compiling serde_core v1.0.229
+   Compiling boundaries v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/boundaries)
+   Compiling toml_datetime v1.1.3+spec-1.1.0
+   Compiling serde_spanned v1.1.3
+   Compiling toml v1.2.1+spec-1.1.0
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 33.22s
+     Running unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/boundaries-94cce9dbaff1c954)
+
+running 25 tests
+test tests::shipping_clients_stay_until_the_rust_journeys_match ... ok
+test shared_ui::a_matching_count_passes ... ok
+test tests::duet_screens_do_not_read_device_health_directly ... ok
+test shared_ui::a_new_file_counts_as_going_up_from_zero ... ok
+test shared_ui::a_count_going_down_says_to_lower_the_number ... ok
+test shared_ui::a_count_reaching_zero_says_to_remove_the_entry ... ok
+test shared_ui::counts_css_rules_naming_control_elements ... ok
+test shared_ui::a_count_going_up_says_to_use_the_shared_component_or_add_an_exception ... ok
+test shared_ui::a_whole_test_file_counts_nothing ... ok
+test shared_ui::counts_css_rules_naming_library_classes ... ok
+test shared_ui::counts_card_markup_by_class_family_once_per_element ... ok
+test shared_ui::counts_rsx_held_in_other_macros_and_nested_rsx ... ok
+test shared_ui::ignores_comments_strings_and_lookalikes ... ok
+test shared_ui::every_table_entry_has_one_row_and_a_reason ... ok
+test shared_ui::counts_card_classes_set_apart_by_escaped_whitespace ... ok
+test tests::apps_do_not_import_each_others_clinical_crates ... ok
+test shared_ui::counts_each_raw_control_inside_rsx ... ok
+test tests::the_clinical_library_is_product_neutral ... ok
+test tests::gmail_and_spruce_are_product_neutral ... ok
+test shared_ui::ignores_test_code_but_not_code_kept_out_of_tests ... ok
+test shared_ui::the_check_reads_the_real_library ... ok
+test tests::every_ui_behaviour_is_run_as_its_kind ... ok
+test tests::shared_harness_is_product_neutral_and_has_no_product_store ... ok
+test tests::the_ui_library_runs_its_browser_behaviour_without_eval ... ok
+test shared_ui::the_apps_match_the_shared_ui_table ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.64s
+
+   Doc-tests boundaries
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Checking duet-api v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/duet-api)
+    Checking physician-sample v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/physician-sample)
+    Checking local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/local-product)
+error[E0308]: mismatched types
+   --> crates/duet-api/src/workspace.rs:28:35
+    |
+ 28 |         check_current(&mut tx, c, false).await?;
+    |         -------------             ^^^^^ expected `AccessLevel`, found `bool`
+    |         |
+    |         arguments to this function are incorrect
+    |
+note: function defined here
+   --> crates/duet-api/src/identity.rs:394:14
+    |
+394 | pub async fn check_current(
+    |              ^^^^^^^^^^^^^
+...
+397 |     level: AccessLevel,
+    |     ------------------
+
+error[E0308]: mismatched types
+   --> crates/duet-api/src/workspace.rs:38:35
+    |
+ 38 |         check_current(&mut tx, c, false).await?;
+    |         -------------             ^^^^^ expected `AccessLevel`, found `bool`
+    |         |
+    |         arguments to this function are incorrect
+    |
+note: function defined here
+   --> crates/duet-api/src/identity.rs:394:14
+    |
+394 | pub async fn check_current(
+    |              ^^^^^^^^^^^^^
+...
+397 |     level: AccessLevel,
+    |     ------------------
+
+error[E0308]: mismatched types
+   --> crates/duet-api/src/workspace.rs:97:35
+    |
+ 97 |         check_current(&mut tx, c, false).await?;
+    |         -------------             ^^^^^ expected `AccessLevel`, found `bool`
+    |         |
+    |         arguments to this function are incorrect
+    |
+note: function defined here
+   --> crates/duet-api/src/identity.rs:394:14
+    |
+394 | pub async fn check_current(
+    |              ^^^^^^^^^^^^^
+...
+397 |     level: AccessLevel,
+    |     ------------------
+
+error[E0308]: mismatched types
+   --> crates/duet-api/src/workspace.rs:125:35
+    |
+125 |         check_current(&mut tx, c, false).await?;
+    |         -------------             ^^^^^ expected `AccessLevel`, found `bool`
+    |         |
+    |         arguments to this function are incorrect
+    |
+note: function defined here
+   --> crates/duet-api/src/identity.rs:394:14
+    |
+394 | pub async fn check_current(
+    |              ^^^^^^^^^^^^^
+...
+397 |     level: AccessLevel,
+    |     ------------------
+
+error[E0308]: mismatched types
+   --> crates/duet-api/src/workspace.rs:131:35
+    |
+131 |         check_current(&mut tx, c, false).await?;
+    |         -------------             ^^^^^ expected `AccessLevel`, found `bool`
+    |         |
+    |         arguments to this function are incorrect
+    |
+note: function defined here
+   --> crates/duet-api/src/identity.rs:394:14
+    |
+394 | pub async fn check_current(
+    |              ^^^^^^^^^^^^^
+...
+397 |     level: AccessLevel,
+    |     ------------------
+
+error[E0308]: mismatched types
+   --> crates/duet-api/src/workspace.rs:153:35
+    |
+153 |         check_current(&mut tx, c, false).await?;
+    |         -------------             ^^^^^ expected `AccessLevel`, found `bool`
+    |         |
+    |         arguments to this function are incorrect
+    |
+note: function defined here
+   --> crates/duet-api/src/identity.rs:394:14
+    |
+394 | pub async fn check_current(
+    |              ^^^^^^^^^^^^^
+...
+397 |     level: AccessLevel,
+    |     ------------------
+
+error[E0308]: mismatched types
+   --> crates/duet-api/src/workspace.rs:168:35
+    |
+168 |         check_current(&mut tx, c, false).await?;
+    |         -------------             ^^^^^ expected `AccessLevel`, found `bool`
+    |         |
+    |         arguments to this function are incorrect
+    |
+note: function defined here
+   --> crates/duet-api/src/identity.rs:394:14
+    |
+394 | pub async fn check_current(
+    |              ^^^^^^^^^^^^^
+...
+397 |     level: AccessLevel,
+    |     ------------------
+
+error[E0308]: mismatched types
+   --> crates/duet-api/src/workspace.rs:219:35
+    |
+219 |         check_current(&mut tx, c, false).await?;
+    |         -------------             ^^^^^ expected `AccessLevel`, found `bool`
+    |         |
+    |         arguments to this function are incorrect
+    |
+note: function defined here
+   --> crates/duet-api/src/identity.rs:394:14
+    |
+394 | pub async fn check_current(
+    |              ^^^^^^^^^^^^^
+...
+397 |     level: AccessLevel,
+    |     ------------------
+
+fatal runtime error: failed to initiate panic, error 3, aborting
+fatal runtime error: failed to initiate panic, error 3, aborting
+error: could not compile `duet-api` (lib) due to 8 previous errors
+
+Caused by:
+  process didn't exit successfully: `/nix/store/2b05w5d1w7zczcpv01lpm3fmxp7a80am-rust-default-1.99.1/bin/clippy-driver rustc --crate-name duet_api --edition=2024 crates/duet-api/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata -C embed-bitcode=no -C debuginfo=2 '--warn=clippy::unused_result_ok' '--warn=clippy::struct_excessive_bools' '--warn=clippy::map_err_ignore' '--warn=clippy::fn_params_excessive_bools' '--warn=clippy::disallowed_methods' --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=9ca53ccff6361559 -C extra-filename=-e59d586481ef347b --out-dir /tmp/coda-target-jobs/debug/deps -C incremental=/tmp/coda-target-jobs/debug/incremental -L dependency=/tmp/coda-target-jobs/debug/deps --extern async_trait=/tmp/coda-target-jobs/debug/deps/libasync_trait-ecf5802d10aec0ce.so --extern axum=/tmp/coda-target-jobs/debug/deps/libaxum-54850bd967a5160f.rmeta --extern base64=/tmp/coda-target-jobs/debug/deps/libbase64-8e36600431dacaa2.rmeta --extern chrono=/tmp/coda-target-jobs/debug/deps/libchrono-e7a6d7209a9ad4f9.rmeta --extern clinical_library=/tmp/coda-target-jobs/debug/deps/libclinical_library-8c46ae604d611af9.rmeta --extern duet_notify=/tmp/coda-target-jobs/debug/deps/libduet_notify-df89d85e8dd4b9bb.rmeta --extern duet_wire=/tmp/coda-target-jobs/debug/deps/libduet_wire-ae3e699ea6bfdd3a.rmeta --extern front_door=/tmp/coda-target-jobs/debug/deps/libfront_door-9133214c32711354.rmeta --extern gmail=/tmp/coda-target-jobs/debug/deps/libgmail-edc1f82e9a86a981.rmeta --extern harness=/tmp/coda-target-jobs/debug/deps/libharness-3ad2571c2e65d123.rmeta --extern jsonwebtoken=/tmp/coda-target-jobs/debug/deps/libjsonwebtoken-c18467554b216405.rmeta --extern rand=/tmp/coda-target-jobs/debug/deps/librand-36d3c859de2e6b60.rmeta --extern reqwest=/tmp/coda-target-jobs/debug/deps/libreqwest-12a46bc923307b5f.rmeta --extern sea_orm=/tmp/coda-target-jobs/debug/deps/libsea_orm-4187e564ffdb112a.rmeta --extern sea_query_sqlx=/tmp/coda-target-jobs/debug/deps/libsea_query_sqlx-94b06cc5ca9bad6c.rmeta --extern serde=/tmp/coda-target-jobs/debug/deps/libserde-d39dec36a0a069c8.rmeta --extern serde_json=/tmp/coda-target-jobs/debug/deps/libserde_json-b1944acf3a061601.rmeta --extern sha2=/tmp/coda-target-jobs/debug/deps/libsha2-a68cc32c1d1ffeaf.rmeta --extern sqlx=/tmp/coda-target-jobs/debug/deps/libsqlx-474e8fe562cc217c.rmeta --extern telemetry=/tmp/coda-target-jobs/debug/deps/libtelemetry-2723c6a657f23026.rmeta --extern thiserror=/tmp/coda-target-jobs/debug/deps/libthiserror-f52c7c749e5607dc.rmeta --extern tokio=/tmp/coda-target-jobs/debug/deps/libtokio-ac2a9ef866313365.rmeta --extern tracing=/tmp/coda-target-jobs/debug/deps/libtracing-bb63a0db80728053.rmeta --extern url=/tmp/coda-target-jobs/debug/deps/liburl-778b4e12ed12e3dc.rmeta --extern uuid=/tmp/coda-target-jobs/debug/deps/libuuid-3a9b62f16a436d3d.rmeta -C link-arg=-fuse-ld=lld -C link-arg=-fuse-ld=bfd -L native=/tmp/coda-target-jobs/debug/build/aws-lc-sys-065b81ff0519276c/out -L native=/tmp/coda-target-jobs/debug/build/ring-600937cc29f8d790/out` (signal: 6, SIGABRT: process abort signal)
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `duet-api` (lib test) due to 8 previous errors
+
+Caused by:
+  process didn't exit successfully: `/nix/store/2b05w5d1w7zczcpv01lpm3fmxp7a80am-rust-default-1.99.1/bin/clippy-driver rustc --crate-name duet_api --edition=2024 crates/duet-api/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --emit=dep-info,metadata -C embed-bitcode=no -C debuginfo=2 '--warn=clippy::unused_result_ok' '--warn=clippy::struct_excessive_bools' '--warn=clippy::map_err_ignore' '--warn=clippy::fn_params_excessive_bools' '--warn=clippy::disallowed_methods' --test --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=f283f49ed8027128 -C extra-filename=-bb2698df1e45b272 --out-dir /tmp/coda-target-jobs/debug/deps -C incremental=/tmp/coda-target-jobs/debug/incremental -L dependency=/tmp/coda-target-jobs/debug/deps --extern async_trait=/tmp/coda-target-jobs/debug/deps/libasync_trait-ecf5802d10aec0ce.so --extern axum=/tmp/coda-target-jobs/debug/deps/libaxum-54850bd967a5160f.rmeta --extern base64=/tmp/coda-target-jobs/debug/deps/libbase64-8e36600431dacaa2.rmeta --extern chrono=/tmp/coda-target-jobs/debug/deps/libchrono-e7a6d7209a9ad4f9.rmeta --extern clinical_library=/tmp/coda-target-jobs/debug/deps/libclinical_library-8c46ae604d611af9.rmeta --extern duet_client=/tmp/coda-target-jobs/debug/deps/libduet_client-ceabc283b41c0ce2.rmeta --extern duet_health=/tmp/coda-target-jobs/debug/deps/libduet_health-74026ddd48606108.rmeta --extern duet_notify=/tmp/coda-target-jobs/debug/deps/libduet_notify-df89d85e8dd4b9bb.rmeta --extern duet_wire=/tmp/coda-target-jobs/debug/deps/libduet_wire-ae3e699ea6bfdd3a.rmeta --extern front_door=/tmp/coda-target-jobs/debug/deps/libfront_door-9133214c32711354.rmeta --extern gmail=/tmp/coda-target-jobs/debug/deps/libgmail-edc1f82e9a86a981.rmeta --extern harness=/tmp/coda-target-jobs/debug/deps/libharness-3ad2571c2e65d123.rmeta --extern http_body_util=/tmp/coda-target-jobs/debug/deps/libhttp_body_util-d2b7040ba7e3a4cd.rmeta --extern jsonwebtoken=/tmp/coda-target-jobs/debug/deps/libjsonwebtoken-c18467554b216405.rmeta --extern rand=/tmp/coda-target-jobs/debug/deps/librand-36d3c859de2e6b60.rmeta --extern reqwest=/tmp/coda-target-jobs/debug/deps/libreqwest-12a46bc923307b5f.rmeta --extern sea_orm=/tmp/coda-target-jobs/debug/deps/libsea_orm-4187e564ffdb112a.rmeta --extern sea_query_sqlx=/tmp/coda-target-jobs/debug/deps/libsea_query_sqlx-94b06cc5ca9bad6c.rmeta --extern serde=/tmp/coda-target-jobs/debug/deps/libserde-d39dec36a0a069c8.rmeta --extern serde_json=/tmp/coda-target-jobs/debug/deps/libserde_json-b1944acf3a061601.rmeta --extern sha2=/tmp/coda-target-jobs/debug/deps/libsha2-a68cc32c1d1ffeaf.rmeta --extern sqlx=/tmp/coda-target-jobs/debug/deps/libsqlx-474e8fe562cc217c.rmeta --extern telemetry=/tmp/coda-target-jobs/debug/deps/libtelemetry-2723c6a657f23026.rmeta --extern thiserror=/tmp/coda-target-jobs/debug/deps/libthiserror-f52c7c749e5607dc.rmeta --extern tokio=/tmp/coda-target-jobs/debug/deps/libtokio-ac2a9ef866313365.rmeta --extern tower=/tmp/coda-target-jobs/debug/deps/libtower-45d02935a04a3a55.rmeta --extern tracing=/tmp/coda-target-jobs/debug/deps/libtracing-bb63a0db80728053.rmeta --extern tracing_subscriber=/tmp/coda-target-jobs/debug/deps/libtracing_subscriber-698ea3d25ea9fc54.rmeta --extern url=/tmp/coda-target-jobs/debug/deps/liburl-778b4e12ed12e3dc.rmeta --extern uuid=/tmp/coda-target-jobs/debug/deps/libuuid-3a9b62f16a436d3d.rmeta -C link-arg=-fuse-ld=lld -C link-arg=-fuse-ld=bfd -L native=/tmp/coda-target-jobs/debug/build/aws-lc-sys-065b81ff0519276c/out -L native=/tmp/coda-target-jobs/debug/build/ring-600937cc29f8d790/out` (signal: 6, SIGABRT: process abort signal)
