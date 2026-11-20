@@ -4,13 +4,34 @@
 //! coarse error class. They never carry error text, account or command
 //! identifiers, or conversation content.
 
-use crate::{ApiError, privacy::PrivacyStore};
+use crate::{ApiError, portals::PortalService, privacy::PrivacyStore};
 use tracing::Instrument;
 
 /// Error class for failures reported by the database driver.
 pub const DATABASE: &str = "database";
 
 const PRIVACY_RECOVERY_FAILED: &str = "duet.privacy_recovery.failed";
+const PORTAL_REFRESH_FAILED: &str = "duet.portal_refresh.failed";
+
+/// Periodically runs independent daily refreshes for due non-disconnected portal connections.
+pub async fn refresh_portals(service: PortalService) {
+    let mut interval = tokio::time::interval(std::time::Duration::from_secs(300));
+    loop {
+        interval.tick().await;
+        portal_refresh_sweep(&service)
+            .instrument(tracing::info_span!(
+                "duet.portal_refresh.sweep",
+                otel.status_code = tracing::field::Empty
+            ))
+            .await;
+    }
+}
+
+async fn portal_refresh_sweep(service: &PortalService) {
+    if let Err(error) = service.run_due_refreshes(64).await {
+        failed(PORTAL_REFRESH_FAILED, "sweep", api_error_class(&error));
+    }
+}
 
 /// Retries pending privacy journal receipts every 30 seconds.
 pub async fn recover_privacy(recovery: PrivacyStore) {

@@ -89,6 +89,10 @@ const MIGRATIONS: &[(&str, &str)] = &[
         "0018_source_authority",
         include_str!("../migrations/0018_source_authority.sql"),
     ),
+    (
+        "0019_portals_and_health_connect",
+        include_str!("../migrations/0019_portals_and_health_connect.sql"),
+    ),
 ];
 
 fn refused(message: &str) -> sqlx::Error {
@@ -169,6 +173,8 @@ pub async fn migrate(migration_url: &str, runtime_role: &str) -> Result<(), sqlx
          grant select on public.duet_pending_commands,public.health_contexts,public.follow_ups,public.insight_cycles,public.duet_follow_up_origins,public.duet_follow_up_occurrences,public.duet_follow_up_settings to {role}; \
          grant select on public.duet_legacy_privacy_accounts to {role}; \
          grant select,insert on public.duet_legacy_privacy_replays to {role}; \
+         grant select,insert,update,delete on public.duet_portal_connections, public.duet_portal_oauth_states to {role}; \
+         grant select on public.duet_portal_refresh_queue to {role}; \
          grant execute on function public.duet_admit_public_retrieval() to {role}; \
          grant execute on function public.duet_admit_public_retrieval_miss() to {role}; \
          grant execute on function public.acting_account() to {role}; \
@@ -185,6 +191,31 @@ pub async fn migrate(migration_url: &str, runtime_role: &str) -> Result<(), sqlx
     validate_runtime(&mut tx).await?;
     sqlx::query("reset role").execute(&mut *tx).await?;
     tx.commit().await
+}
+
+/// Content-free operational entry from `public.duet_portal_refresh_queue`.
+#[derive(Clone, Debug, PartialEq, Eq, sqlx::FromRow)]
+pub struct PortalRefreshQueueRow {
+    /// Connection identity.
+    pub id: Uuid,
+    /// Owning account identity.
+    pub user_id: Uuid,
+    /// Portal vendor (`epic` or `oracle`).
+    pub vendor: String,
+    /// Directory organization identity.
+    pub organization_id: String,
+    /// Lifecycle state (`connected`, `partial`, `broken`).
+    pub state: String,
+    /// Scheduled next refresh timestamp.
+    pub next_refresh_at: Option<chrono::DateTime<chrono::Utc>>,
+    /// Latest successful or partial sync timestamp.
+    pub last_synced_at: Option<chrono::DateTime<chrono::Utc>>,
+    /// First failure timestamp when broken.
+    pub failing_since: Option<chrono::DateTime<chrono::Utc>>,
+    /// Plain operational reason for partial/broken state.
+    pub failure_reason: Option<String>,
+    /// Unreadable/rejected item count on latest partial run.
+    pub partial_failed_count: i32,
 }
 
 /// Pool used by durable Duet owners, never by migrations or physician state.
@@ -264,6 +295,42 @@ impl AccountDatabase {
     pub async fn pending_privacy_accounts(&self) -> Result<Vec<Uuid>, sqlx::Error> {
         sqlx::query_scalar("select account_id from public.duet_privacy_pending_accounts order by account_id limit 64")
             .fetch_all(&self.pool).await
+    }
+
+    /// Bounded content-free list of non-disconnected portal connections due for daily refresh.
+    pub async fn due_portal_connections(
+        &self,
+        now: chrono::DateTime<chrono::Utc>,
+        limit: i64,
+    ) -> Result<Vec<PortalRefreshQueueRow>, sqlx::Error> {
+        sqlx::query_as(
+            "select id, user_id, vendor, organization_id, state, next_refresh_at, last_synced_at, failing_since, failure_reason, partial_failed_count \
+             from public.duet_portal_refresh_queue \
+             where next_refresh_at is not null and next_refresh_at <= $1 \
+             order by next_refresh_at asc, id asc limit $2",
+        )
+        .bind(now)
+        .bind(limit.clamp(1, 256))
+        .fetch_all(&self.pool)
+        .await
+    }
+
+    /// Content-free operational directory of overdue, broken, or partial portal connections.
+    pub async fn overdue_portal_connections(
+        &self,
+        overdue_before: chrono::DateTime<chrono::Utc>,
+        limit: i64,
+    ) -> Result<Vec<PortalRefreshQueueRow>, sqlx::Error> {
+        sqlx::query_as(
+            "select id, user_id, vendor, organization_id, state, next_refresh_at, last_synced_at, failing_since, failure_reason, partial_failed_count \
+             from public.duet_portal_refresh_queue \
+             where state in ('broken', 'partial') or (next_refresh_at is not null and next_refresh_at <= $1) \
+             order by coalesce(failing_since, next_refresh_at, last_synced_at) asc nulls first, id asc limit $2",
+        )
+        .bind(overdue_before)
+        .bind(limit.clamp(1, 512))
+        .fetch_all(&self.pool)
+        .await
     }
 
     /// Resolve only the immutable provider subject, before entering account scope.

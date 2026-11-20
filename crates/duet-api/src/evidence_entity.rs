@@ -187,6 +187,8 @@ pub mod account {
         pub evidence_revision: i64,
         /// Apple Health source generation.
         pub apple_health_generation: i32,
+        /// Android Health Connect source generation.
+        pub health_connect_generation: i32,
         /// Health Records source generation.
         pub health_records_generation: i32,
         /// Account incarnation that privacy receipts must name.

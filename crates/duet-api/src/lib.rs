@@ -39,6 +39,8 @@ pub mod hosting;
 )]
 pub mod identity;
 pub mod journal_gcs;
+mod portal_entity;
+pub mod portals;
 #[expect(
     clippy::disallowed_methods,
     reason = "converting raw SQL to the typed database API"

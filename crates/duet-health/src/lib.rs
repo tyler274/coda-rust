@@ -127,6 +127,35 @@ pub fn parse_status(code: &str) -> StoreState {
     }
 }
 
+/// Plain-language instruction shown with Apple Health setup so wearables linked
+/// to Apple Health flow through HealthKit (`intent/duet.md` D2.3).
+pub const APPLE_HEALTH_WEARABLE_INSTRUCTION: &str = "Wearables linked to Apple Health come through HealthKit. Turn on Apple Health sharing in your wearable's app to include its readings.";
+
+/// Plain-language background-read limit stated for Android Health Connect
+/// (`intent/duet.md` D2.14).
+pub const HEALTH_CONNECT_BACKGROUND_LIMIT_NOTICE: &str = "Health Connect refreshes when you open Duet. Android limits background Health Connect reads unless background access is granted.";
+
+/// Plain-language notice listing Health Connect data types that are not
+/// supported on this device or build (`intent/duet.md` D2.14). Returns `None`
+/// when every requested type is supported.
+pub fn unsupported_health_connect_notice(unsupported_types: &[String]) -> Option<String> {
+    let mut names: Vec<&str> = unsupported_types
+        .iter()
+        .map(String::as_str)
+        .map(str::trim)
+        .filter(|name| !name.is_empty())
+        .collect();
+    names.sort_unstable();
+    names.dedup();
+    if names.is_empty() {
+        return None;
+    }
+    Some(format!(
+        "Some Health Connect data types are not supported in this build: {}.",
+        names.join(", ")
+    ))
+}
+
 /// Names the app that wrote a Health Connect record.
 /// An empty package stays empty. Samsung Health and Google Health are named.
 /// Every other package, including Health Connect itself, stays Health Connect.
