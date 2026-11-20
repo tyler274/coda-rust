@@ -15,7 +15,7 @@ pub const OPEN_NOTIFICATION_SETTINGS: &str = "Open iPhone Settings";
 pub enum DoctorPage {
     /// The collection loaded and has nothing to list.
     Empty,
-    /// Items, note, questions, and cover note, in that order.
+    /// Items, note, and questions, in that order.
     Lines(Vec<DoctorLine>),
 }
 
@@ -34,22 +34,16 @@ pub fn doctor_page(collection: &DoctorCollection) -> DoctorPage {
             detail: None,
         });
     }
-    if let Some(page) = collection.page.as_deref() {
-        if let Some(questions) = &page.questions {
-            for question in questions {
-                if let Some(title) = nonempty(question) {
-                    entries.push(DoctorLine {
-                        title,
-                        detail: None,
-                    });
-                }
+    if let Some(page) = collection.page.as_deref()
+        && let Some(questions) = &page.questions
+    {
+        for question in questions {
+            if let Some(title) = nonempty(question) {
+                entries.push(DoctorLine {
+                    title,
+                    detail: None,
+                });
             }
-        }
-        if let Some(cover) = supplied(&page.cover_note) {
-            entries.push(DoctorLine {
-                title: cover,
-                detail: Some("Cover note (not included in PDF)".into()),
-            });
         }
     }
     if entries.is_empty() {
@@ -277,25 +271,20 @@ mod tests {
     }
 
     #[test]
-    fn a_saved_doctor_page_uses_the_letter_layout() {
+    fn a_saved_doctor_page_excludes_cover_note_and_pdf_copy() {
         let collection = json::<DoctorCollection>(
             r#"{"items":[],"note_generation":1,"page":{"name":"Ada Lovelace","date_of_birth":"1815-12-10","questions":["What changed?"],"cover_note":"Please review."}}"#,
         );
-        // The opened saved-page summary is rendered outside DoctorLetter's printable preview.
         let DoctorPage::Lines(entries) = doctor_page(&collection) else {
             panic!("expected the saved-page summary");
         };
-        assert!(entries.iter().any(|entry| entry.title == "Please review."
-            && entry.detail.as_deref() == Some("Cover note (not included in PDF)")));
-        let preview = crate::saved_preview(&collection).unwrap();
-        assert!(preview.layout.text().contains("Ada Lovelace"));
-        assert!(preview.layout.text().contains("What changed?"));
-        assert!(!preview.layout.text().contains("Please review."));
-        let mut without_cover = collection.clone();
-        without_cover.page.as_mut().unwrap().cover_note = None;
-        let plain = crate::saved_preview(&without_cover).unwrap();
-        assert_eq!(preview.layout.preview_svg(), plain.layout.preview_svg());
-        assert_eq!(preview.layout.pdf().unwrap(), plain.layout.pdf().unwrap());
+        assert_eq!(
+            entries,
+            vec![DoctorLine {
+                title: "What changed?".into(),
+                detail: None,
+            }]
+        );
     }
 
     #[test]

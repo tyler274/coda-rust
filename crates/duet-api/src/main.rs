@@ -84,12 +84,6 @@ async fn main() {
         .reconcile_inventory()
         .await
         .expect("privacy restore quarantine: independent journal replay required");
-    use base64::Engine;
-    let key: [u8; 32] = base64::engine::general_purpose::URL_SAFE_NO_PAD
-        .decode(env::var("DUET_PUBLICATION_MASTER_KEY").expect("Doppler publication master key"))
-        .expect("base64url key")
-        .try_into()
-        .expect("256-bit key");
     let parked_routes =
         duet_api::assistant_harness::ParkedRoutesPolicy::from_env(|key| env::var(key).ok());
     let producer_router = if parked_routes.is_enabled() {
@@ -156,13 +150,6 @@ async fn main() {
     let doctor = duet_api::doctor_routes::DoctorState {
         durable: state.clone(),
         workspace: duet_api::workspace::WorkspaceStore::new(database.clone()),
-        publications: duet_api::publication::PublicationStore::new(
-            database.clone(),
-            env::var("DUET_PUBLIC_ORIGIN").expect("public origin"),
-            env::var("DUET_SHL_VIEWER_URL").expect("SHL viewer URL"),
-            key,
-        )
-        .expect("publication configuration"),
     };
     tokio::spawn(duet_api::background::recover_privacy(state.privacy.clone()));
     tokio::spawn(duet_api::background::refresh_portals(portal_service));

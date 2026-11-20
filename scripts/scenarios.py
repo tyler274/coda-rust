@@ -47,8 +47,8 @@ D1_SUITES = ("database_foundation", "public_budget")
 D1_TESTS = {
     "fresh_and_upgrade_keep_identity_and_enforce_account_scope":
         "fresh and upgraded schema keep identity; one account cannot read another's rows",
-    "public_retrieval_budget_spans_pools_and_publication":
-        "the public retrieval budget holds across pools and counts publication reads and misses",
+    "public_retrieval_budget_spans_pools":
+        "the public retrieval budget holds across pools and counts misses",
 }
 STRIPPED = ("OPENAI_API_KEY", "CODA_ALLOW_MODEL_CALLS", "GOOGLE_APPLICATION_CREDENTIALS")
 

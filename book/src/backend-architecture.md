@@ -12,7 +12,7 @@ does not establish the complete real-service journey.
 | Duet accounts and authentication | [`identity.rs`](/crates/duet-api/src/identity.rs), [`session.rs`](/crates/duet-api/src/session.rs); [security boundaries](security-posture.md) |
 | Evidence identity, ingestion authority, exact reads and paging | [`evidence.rs`](/crates/duet-api/src/evidence.rs), [`evidence_entity.rs`](/crates/duet-api/src/evidence_entity.rs), [`evidence_routes.rs`](/crates/duet-api/src/evidence_routes.rs), [`evidence_paging.rs`](/crates/duet-api/src/evidence_paging.rs) |
 | Health context and producer grants | [`health_context.rs`](/crates/duet-api/src/health_context.rs), [`producer_routes.rs`](/crates/duet-api/src/producer_routes.rs), [`producer_database.rs`](/crates/duet-api/src/producer_database.rs) |
-| Doctor preparation and publication implementation | [`workspace.rs`](/crates/duet-api/src/workspace.rs), [`doctor_routes.rs`](/crates/duet-api/src/doctor_routes.rs), [`publication.rs`](/crates/duet-api/src/publication.rs); preparation, review and saving are distinct from later publication to physicians outside Coda |
+| For my doctor preparation | [`workspace.rs`](/crates/duet-api/src/workspace.rs), [`doctor_routes.rs`](/crates/duet-api/src/doctor_routes.rs) |
 | Privacy receipts, replay and deletion archive | [Privacy recovery](privacy-recovery.md) |
 | Schema and migrations | [`database.rs`](/crates/duet-api/src/database.rs), [`migrations/`](/crates/duet-api/migrations) |
 | Practice invitations and connection adapter | [Accounts and practice connection](front-door.md) |
@@ -48,10 +48,7 @@ record's source kind, connection and note label are fixed when it is created.
   retained revisions, and remains authoritative.
 
 The <a href="/intent/duet%2Emd">Duet spec</a> (D4) owns For my doctor
-and what it sends to a connected practice. The binary still mounts the publication
-routes in `doctor_routes`, including HTML, PDF and SMART Health Link retrieval. A
-mounted route doesn't put external sharing or PDF download in scope, and it keeps
-its security findings until the route is removed or fixed.
+and what it sends to a connected practice.
 
 Duet must not import the physician `local-product`; the
 [boundaries](/crates/boundaries/src/lib.rs) tests define this boundary.

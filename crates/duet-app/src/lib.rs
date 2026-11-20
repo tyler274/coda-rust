@@ -9,18 +9,10 @@
 mod account;
 #[cfg(target_os = "ios")]
 mod apple_health;
-mod approval;
 mod browser_identity;
-mod export;
-mod preview;
-mod publication;
 mod records;
-mod resolution;
 mod roots;
-mod selection;
 pub use account::{DuetRoot, PatientSession};
-pub use approval::proposal_save;
-pub use preview::{SavedPreview, saved_preview};
 
 use std::cell::Cell;
 use std::rc::Rc;
@@ -33,10 +25,7 @@ use roots::{
     ALLOW_NOTIFICATIONS, CONNECTING, DoctorPage, LIBRARY_EMPTY, LIBRARY_UNAVAILABLE, LibraryKind,
     LibraryRecord, LibraryRoot, OPEN_NOTIFICATION_SETTINGS, TRY_AGAIN, doctor_page, library_root,
 };
-use ui::{
-    ActionRow, Button, ButtonVariant, Disclosure, Icon, IconName, NavigationControl, TabBar,
-    TryAgain,
-};
+use ui::{ActionRow, Button, ButtonVariant, Icon, IconName, NavigationControl, TabBar, TryAgain};
 
 const TABS: [&str; 2] = ["You", "Shared"];
 
@@ -137,29 +126,35 @@ fn optional_text(value: &str) -> Option<String> {
     }
 }
 
+fn is_medication(item: &duet_wire::models::DoctorCollectionItem) -> bool {
+    item.page_entry
+        .as_ref()
+        .and_then(|entry| entry.as_ref())
+        .is_some_and(|entry| {
+            matches!(
+                entry.group,
+                duet_wire::models::doctor_page_entry::Group::RecordedMedications
+                    | duet_wire::models::doctor_page_entry::Group::ConfirmedMedications
+            )
+        })
+}
+
 fn doctor_draft_save(
     collection: &duet_wire::models::DoctorCollection,
-    name: &str,
-    birth: &str,
     note: &str,
-    cover: &str,
     questions: &[String],
     kept: &[uuid::Uuid],
 ) -> duet_wire::models::DoctorPageSave {
-    // Preserve the reviewed ordered selection, including proposal-only members.
-    // The server checks exact membership against generation/proposal identity.
+    // Preserve the reviewed ordered selection; retired demographic/cover fields stay unset.
     let item_ids = kept.to_vec();
     let mut page = collection
         .page
         .as_ref()
         .map(|page| (**page).clone())
         .unwrap_or_default();
-    page.name = Some(optional_text(name));
-    page.date_of_birth = Some(
-        optional_text(birth)
-            .and_then(|text| chrono::NaiveDate::parse_from_str(&text, "%Y-%m-%d").ok()),
-    );
-    page.cover_note = Some(optional_text(cover));
+    page.name = None;
+    page.date_of_birth = None;
+    page.cover_note = None;
     let questions: Vec<String> = questions
         .iter()
         .map(|question| question.trim().to_owned())
@@ -183,11 +178,8 @@ fn field_text(value: &Option<Option<String>>) -> String {
         .unwrap_or_default()
 }
 
-fn doctor_draft_ready(birth: &str, cover: &str, questions: &[String]) -> bool {
-    let birth = birth.trim();
-    let birth_ok = birth.is_empty() || chrono::NaiveDate::parse_from_str(birth, "%Y-%m-%d").is_ok();
-    let questions_ok = questions.iter().all(|question| !question.trim().is_empty());
-    birth_ok && questions_ok && cover.chars().count() <= 500
+fn doctor_draft_ready(questions: &[String]) -> bool {
+    questions.iter().all(|question| !question.trim().is_empty())
 }
 
 #[derive(Clone, Copy, PartialEq)]
@@ -220,13 +212,8 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
     let mut draft_uncertain = use_signal(|| false);
     let mut confirm_discard = use_signal(|| false);
     let mut doctor_editing = use_signal(|| false);
-    let mut proposal_review = use_signal(|| None::<uuid::Uuid>);
-    let mut draft_proposal = use_signal(|| None::<uuid::Uuid>);
     let mut confirmed_medications = use_signal(Vec::<uuid::Uuid>::new);
-    let mut doctor_name = use_signal(String::new);
-    let mut doctor_birth = use_signal(String::new);
     let mut doctor_note = use_signal(String::new);
-    let mut doctor_cover = use_signal(String::new);
     let mut doctor_questions = use_signal(Vec::<String>::new);
     let mut doctor_items = use_signal(Vec::<(uuid::Uuid, String)>::new);
     let mut doctor_kept = use_signal(Vec::<bool>::new);
@@ -244,17 +231,8 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
             .zip(doctor_kept())
             .filter_map(|(item, keep)| keep.then_some(item.0))
             .collect::<Vec<_>>();
-        let mut save = doctor_draft_save(
-            &base,
-            &doctor_name(),
-            &doctor_birth(),
-            &doctor_note(),
-            &doctor_cover(),
-            &doctor_questions(),
-            &kept,
-        );
+        let mut save = doctor_draft_save(&base, &doctor_note(), &doctor_questions(), &kept);
         save.confirmed_medication_ids = Some(confirmed_medications());
-        save.proposal_id = Some(draft_proposal());
         let draft = duet_client::retention::DoctorDraft {
             base,
             save,
@@ -277,26 +255,12 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
         retained.set(recovery.clone());
         if let Ok(duet_client::retention::DraftRecovery::Draft(draft)) = recovery {
             let page = &draft.save.page;
-            doctor_name.set(field_text(&page.name));
-            doctor_birth.set(
-                page.date_of_birth
-                    .as_ref()
-                    .and_then(|d| *d)
-                    .map(|d| d.format("%Y-%m-%d").to_string())
-                    .unwrap_or_default(),
-            );
             doctor_note.set(field_text(&draft.save.note));
-            doctor_cover.set(field_text(&page.cover_note));
             doctor_questions.set(page.questions.clone().unwrap_or_default());
-            let reviewed_items = draft
+            let items = draft
                 .base
-                .proposal
+                .items
                 .as_ref()
-                .and_then(|p| p.as_ref())
-                .filter(|p| Some(p.id) == draft.save.proposal_id.flatten())
-                .map(|p| &p.items)
-                .or(draft.base.items.as_ref());
-            let items = reviewed_items
                 .into_iter()
                 .flatten()
                 .map(|i| (i.id, i.title.clone()))
@@ -311,7 +275,6 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
             doctor.set(Some(draft.base.clone()));
             draft_base.set(Some(draft.base));
             confirmed_medications.set(draft.save.confirmed_medication_ids.unwrap_or_default());
-            draft_proposal.set(draft.save.proposal_id.flatten());
             draft_uncertain.set(draft.uncertain_save);
             doctor_open.set(true);
             doctor_editing.set(true);
@@ -397,9 +360,7 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
     let fresh_url = page_url.clone();
     let fresh_bearer = page_bearer.clone();
     let save_page = move |_| {
-        if saving_page()
-            || !doctor_draft_ready(&doctor_birth(), &doctor_cover(), &doctor_questions())
-        {
+        if saving_page() || !doctor_draft_ready(&doctor_questions()) {
             return;
         }
         let Some(collection) = draft_base() else {
@@ -414,22 +375,13 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
             .zip(doctor_kept())
             .filter_map(|(item, keep)| keep.then_some(item.0))
             .collect::<Vec<_>>();
-        let mut save = doctor_draft_save(
-            &collection,
-            &doctor_name(),
-            &doctor_birth(),
-            &doctor_note(),
-            &doctor_cover(),
-            &doctor_questions(),
-            &kept,
-        );
+        let mut save = doctor_draft_save(&collection, &doctor_note(), &doctor_questions(), &kept);
         save.confirmed_medication_ids = Some(
             confirmed_medications()
                 .into_iter()
                 .filter(|id| save.item_ids.contains(id))
                 .collect(),
         );
-        save.proposal_id = Some(draft_proposal());
         let pending = duet_client::retention::DoctorDraft {
             base: collection,
             save: save.clone(),
@@ -472,113 +424,6 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
                     }
                 }
                 Err(_) => page_failed.set(true),
-            }
-            saving_page.set(false);
-        });
-    };
-    let proposal_owner = patient.retention.clone();
-    let proposal_fence = patient.fence.clone();
-    let proposal_url = export_url.clone();
-    let proposal_token = patient.access_token;
-    let approve_proposal = move |_| {
-        if saving_page() {
-            return;
-        }
-        let Some(collection) = doctor() else {
-            return;
-        };
-        let has_draft = !matches!(retained(), Ok(duet_client::retention::DraftRecovery::Empty));
-        if collection
-            .proposal
-            .as_ref()
-            .and_then(|p| p.as_ref())
-            .map(|p| p.id)
-            != proposal_review()
-        {
-            page_failed.set(true);
-            return;
-        }
-        let save = match proposal_save(&collection, &confirmed_medications(), has_draft) {
-            Ok(save) => save,
-            Err(error) => {
-                retention_error.set(error.into());
-                return;
-            }
-        };
-        let pending = duet_client::retention::DoctorDraft {
-            base: collection,
-            save: save.clone(),
-            uncertain_save: true,
-        };
-        if let Err(error) = proposal_owner.save(&proposal_fence, pending.clone()) {
-            retention_error.set(error);
-            return;
-        }
-        retained.set(Ok(duet_client::retention::DraftRecovery::Draft(Box::new(
-            pending,
-        ))));
-        saving_page.set(true);
-        draft_uncertain.set(true);
-        let owner = proposal_owner.clone();
-        let fence = proposal_fence.clone();
-        let url = proposal_url.clone();
-        spawn(async move {
-            let result = match open_client(url, proposal_token.peek().clone()) {
-                Ok(api) => api.save_doctor_page(save).await,
-                Err(error) => Err(error),
-            };
-            if !owner.session().is_current(&fence) {
-                return;
-            }
-            match result {
-                Ok(saved) => {
-                    doctor.set(Some(saved));
-                    proposal_review.set(None);
-                    draft_uncertain.set(false);
-                    if owner.discard(&fence).is_ok() {
-                        retained.set(Ok(duet_client::retention::DraftRecovery::Empty));
-                    }
-                }
-                Err(_) => page_failed.set(true),
-            }
-            saving_page.set(false);
-        });
-    };
-    let reject_patient = patient.clone();
-    let reject_url = export_url.clone();
-    let reject_proposal = move |_| {
-        if saving_page() {
-            return;
-        }
-        let Some(current) = doctor() else {
-            return;
-        };
-        let Some(id) = proposal_review() else {
-            return;
-        };
-        saving_page.set(true);
-        let session = reject_patient.clone();
-        let url = reject_url.clone();
-        spawn(async move {
-            let result = match open_client(url, session.access_token.peek().clone()) {
-                Ok(api) => {
-                    api.reject_doctor_proposal(id, current.note_generation)
-                        .await
-                }
-                Err(_) => Err(duet_client::doctor::DoctorError::Unauthorized),
-            };
-            if !session.retention.session().is_current(&session.fence) {
-                return;
-            }
-            match result {
-                Ok(collection) => {
-                    doctor.set(Some(collection));
-                    proposal_review.set(None);
-                }
-                Err(e) => {
-                    retention_error.set(e.to_string());
-                    attempt.set(attempt() + 1);
-                }
             }
             saving_page.set(false);
         });
@@ -626,12 +471,6 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
             saving_page.set(false);
         });
     };
-    let doctor_source_url = export_url.clone();
-    let source_blocked = !matches!(retained(), Ok(duet_client::retention::DraftRecovery::Empty))
-        || !matches!(
-            patient.retention.pending_operation(&patient.fence),
-            Ok(None)
-        );
     let fresh_owner = patient.retention.clone();
     let fresh_fence = patient.fence.clone();
     let start_fresh = move |_| {
@@ -649,9 +488,8 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
                     expected_generation: current.note_generation.into(),
                 }
             }
-            _ => {
-                retention_error
-                    .set("Resolve the other pending operation before Start fresh".into());
+            Err(error) => {
+                retention_error.set(error);
                 return;
             }
         };
@@ -662,10 +500,7 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
         let duet_client::doctor::PendingDoctorOperation::Clear {
             operation_id,
             expected_generation,
-        } = operation
-        else {
-            return;
-        };
+        } = operation;
         saving_page.set(true);
         fresh_failed.set(false);
         let base_url = fresh_url.clone();
@@ -722,9 +557,6 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
         });
     };
     rsx! {
-        resolution::OperationRecovery { base_url: doctor_source_url.clone(), on_released: move |_| { attempt.set(attempt() + 1); doctor_open.set(false); } }
-        selection::DeviceSources { base_url: doctor_source_url.clone(), blocked: source_blocked, on_selected: move |collection| { doctor.set(Some(collection)); doctor_open.set(true); }, on_recheck: move |_| attempt.set(attempt() + 1) }
-        selection::DoctorSources { base_url: doctor_source_url, blocked: source_blocked, on_selected: move |collection| { doctor.set(Some(collection)); doctor_open.set(true); } }
         if let Some(Err(error)) = workspace() {
             div { role: "alert",
                 p { "For my doctor: {error}" }
@@ -732,39 +564,6 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
             }
         }
         if doctor().is_some() && !doctor_open() { NavigationControl { onclick: move |_| doctor_open.set(true), "Open For my doctor" } }
-        if let Some(proposal) = doctor().and_then(|c| c.proposal.flatten()) {
-            if proposal_review() != Some(proposal.id) {
-                Button { onclick: move |_| { proposal_review.set(Some(proposal.id)); confirmed_medications.set(Vec::new()); }, "Review proposed doctor page" }
-            } else {
-                section {
-                    h2 { "Proposed page — not saved" }
-                    p { "{field_text(&proposal.page.name)}" }
-                    if let Some(day) = proposal.page.date_of_birth.flatten() { p { "Date of birth: {day}" } }
-                    p { "{proposal.note.clone().unwrap_or_default()}" }
-                    for question in proposal.page.questions.iter().flatten() { p { "{question}" } }
-                    p { "Cover note (not included in PDF): {field_text(&proposal.page.cover_note)}" }
-                    for item in &proposal.items {
-                        article {
-                            p { "{item.title}" }
-                            if let Some(entry) = item.page_entry.as_ref().and_then(|entry| entry.as_ref()) {
-                                for line in &entry.lines { p { "{line}" } }
-                            } else { p { "{item.detail}" } }
-                            if approval::is_medication(item) {
-                                label {
-                                    input { r#type: "checkbox", checked: confirmed_medications().contains(&item.id), onchange: { let id = item.id; move |event: Event<FormData>| { let mut ids = confirmed_medications(); ids.retain(|value| *value != id); if event.checked() { ids.push(id); } confirmed_medications.set(ids); } } }
-                                    "I confirm I take this medication"
-                                }
-                            }
-                        }
-                    }
-                    ActionRow {
-                        Button { variant: ButtonVariant::Primary, disabled: saving_page() || draft_uncertain(), onclick: approve_proposal, "Approve and save reviewed proposal" }
-                        Button { disabled: saving_page() || draft_uncertain(), onclick: reject_proposal, "Reject reviewed proposal" }
-                        Button { onclick: move |_| proposal_review.set(None), "Close review without saving" }
-                    }
-                }
-            }
-        }
         if !retention_error().is_empty() { p { role: "alert", "Draft protection: {retention_error}. Keep this screen open until your page is saved." } }
         if let Err(error) = retained() { p { role: "alert", "Protected draft recovery is unavailable: {error}. No retained draft has been discarded." } }
         if matches!(retained(), Ok(duet_client::retention::DraftRecovery::Damaged)) {
@@ -812,17 +611,15 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
                             }
                         }
                     }
-                    DoctorLetter { collection: doctor(), base_url: export_url.clone() }
                 },
                 DoctorPage::Empty if !doctor_editing() => rsx! {
                     p { class: "empty", "{LIBRARY_EMPTY}" }
-                    DoctorLetter { collection: doctor(), base_url: export_url.clone() }
                 },
                 _ => rsx! {},
             }
             if doctor_editing() && !draft_uncertain() {
                 if let Some(base) = draft_base() {
-                    for item in base.items.iter().flatten().filter(|item| approval::is_medication(item)) {
+                    for item in base.items.iter().flatten().filter(|item| is_medication(item)) {
                         label {
                             input { r#type: "checkbox", checked: confirmed_medications().contains(&item.id), onchange: { let id = item.id; move |event: Event<FormData>| { let mut ids = confirmed_medications(); ids.retain(|value| *value != id); if event.checked() { ids.push(id); } confirmed_medications.set(ids); } } }
                             "I confirm I take {item.title}"
@@ -830,10 +627,7 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
                     }
                 }
                 DoctorEditor {
-                    name: doctor_name,
-                    birth: doctor_birth,
                     note: doctor_note,
-                    cover: doctor_cover,
                     questions: doctor_questions,
                     items: doctor_items(),
                     kept: doctor_kept,
@@ -844,7 +638,7 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
             }
             if !doctor_editing() && confirm_fresh() {
                 p { class: "status-title", "Start fresh?" }
-                p { class: "status-detail", "This clears your words, questions, chosen information and cover note. Save a PDF first if you want a copy." }
+                p { class: "status-detail", "This clears your words, questions, and chosen information." }
                 if fresh_failed() {
                     p { class: "empty", role: "alert", "Duet couldn’t confirm that For my doctor was cleared. Try again." }
                 }
@@ -872,20 +666,11 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
                             };
                             if matches!(retained(), Ok(duet_client::retention::DraftRecovery::Draft(_))) { edit_recovered(()); return; }
                             if matches!(retained(), Ok(duet_client::retention::DraftRecovery::Damaged)) { return; }
-                            confirmed_medications.set(collection.items.iter().flatten().filter(|item| approval::is_medication(item) && item.medication_confirmed == Some(true)).map(|item| item.id).collect());
-                            draft_proposal.set(None);
+                            confirmed_medications.set(collection.items.iter().flatten().filter(|item| is_medication(item) && item.medication_confirmed == Some(true)).map(|item| item.id).collect());
                             draft_base.set(Some(collection.clone()));
                             draft_uncertain.set(false);
                             let page = collection.page.as_ref().map(|page| page.as_ref());
-                            doctor_name.set(page.map(|page| field_text(&page.name)).unwrap_or_default());
-                            doctor_birth.set(
-                                page.and_then(|page| page.date_of_birth.as_ref())
-                                    .and_then(|day| day.as_ref())
-                                    .map(|day| day.format("%Y-%m-%d").to_string())
-                                    .unwrap_or_default(),
-                            );
                             doctor_note.set(field_text(&collection.note));
-                            doctor_cover.set(page.map(|page| field_text(&page.cover_note)).unwrap_or_default());
                             doctor_questions.set(page.and_then(|page| page.questions.clone()).unwrap_or_default());
                             let items = collection
                                 .items
@@ -1006,85 +791,6 @@ fn EvidenceRow(
                 "Delete"
             }
         }
-    }
-}
-
-#[component]
-fn DoctorLetter(
-    collection: Option<duet_wire::models::DoctorCollection>,
-    base_url: String,
-) -> Element {
-    let patient = use_context::<PatientSession>();
-    let mut exporting = use_signal(|| false);
-    let mut export_error = use_signal(String::new);
-    let Some(collection) = collection else {
-        return rsx! {};
-    };
-    let Some(preview) = saved_preview(&collection) else {
-        return rsx! {};
-    };
-    let svg = preview.layout.preview_svg();
-    let full_text = preview.layout.text().to_owned();
-    let publication_url = base_url.clone();
-    let generation = collection.note_generation;
-    let share = move |_| {
-        if exporting() {
-            return;
-        }
-        exporting.set(true);
-        let reviewed = collection.clone();
-        let url = base_url.clone();
-        let session = patient.clone();
-        spawn(async move {
-            let result = async {
-                let api = open_client(url, session.access_token.peek().clone())?;
-                let checked = api.checked_doctor_page(reviewed.note_generation).await?;
-                if !session.retention.session().is_current(&session.fence) {
-                    return Err("Account changed; export cancelled".into());
-                }
-                if checked != reviewed {
-                    return Err(
-                        "The saved page changed. Review the new page before exporting.".into(),
-                    );
-                }
-                let preview = saved_preview(&checked).ok_or("No approved page")?;
-                if preview.incomplete {
-                    return Err("Exact source review required".into());
-                }
-                let expected = preview
-                    .layout
-                    .pdf()
-                    .map_err(|_| "The full page cannot be exported faithfully")?;
-                let bytes = api.doctor_pdf().await.map_err(|e| e.to_string())?;
-                if !session.retention.session().is_current(&session.fence) {
-                    return Err("Account changed; export cancelled".into());
-                }
-                if bytes != expected {
-                    return Err(
-                        "The server PDF differs from the reviewed page. Reload before sharing."
-                            .into(),
-                    );
-                }
-                export::present_pdf(&bytes)
-            }
-            .await;
-            if !session.retention.session().is_current(&session.fence) {
-                return;
-            }
-            export_error.set(result.err().unwrap_or_default());
-            exporting.set(false);
-        });
-    };
-    rsx! {
-        p { class: "card-title", "Saved page preview" }
-        {rsx! { publication::PublicationControls { key: "publication-{generation}", base_url: publication_url, generation } }}
-        Button { disabled: exporting() || preview.incomplete || !preview.layout.fits(), onclick: share, "Check and share PDF" }
-        if !export_error().is_empty() { p { role: "alert", "{export_error}" } }
-        // Only our glyph-path renderer supplies this markup; patient text never becomes raw HTML.
-        div { class: "doctor-preview", dangerous_inner_html: "{svg}" }
-        Disclosure { title: "Read complete page text", detail: true, pre { style: "white-space: pre-wrap", "{full_text}" } }
-        if !preview.layout.fits() { p { role: "alert", "The complete page cannot be exported faithfully on one page. Your saved words remain unchanged; shorten the page before exporting." } }
-        if preview.incomplete { p { role: "alert", "Some selected information needs exact-source review. Export is blocked until it is checked." } }
     }
 }
 
@@ -1386,10 +1092,7 @@ fn YouTab(
 
 #[component]
 fn DoctorEditor(
-    name: Signal<String>,
-    birth: Signal<String>,
     note: Signal<String>,
-    cover: Signal<String>,
     questions: Signal<Vec<String>>,
     items: Vec<(uuid::Uuid, String)>,
     kept: Signal<Vec<bool>>,
@@ -1397,28 +1100,13 @@ fn DoctorEditor(
     failed: Signal<bool>,
     on_save: EventHandler,
 ) -> Element {
-    let ready = doctor_draft_ready(&birth(), &cover(), &questions());
+    let ready = doctor_draft_ready(&questions());
     let can_add = questions().len() < 5;
     rsx! {
-        p { class: "status-detail", "Name" }
-        input {
-            class: "field duet-field",
-            r#type: "text",
-            aria_label: "Name",
-            value: "{name}",
-            oninput: move |event| name.set(event.value()),
-        }
-        p { class: "status-detail", "Date of birth" }
-        input {
-            class: "field duet-field",
-            r#type: "text",
-            aria_label: "Date of birth",
-            value: "{birth}",
-            oninput: move |event| birth.set(event.value()),
-        }
         p { class: "status-detail", "What I want to discuss" }
         textarea {
             class: "field duet-field",
+            aria_label: "What I want to discuss",
             value: "{note}",
             oninput: move |event| note.set(event.value()),
         }
@@ -1435,12 +1123,6 @@ fn DoctorEditor(
                 },
                 "Add a question"
             }
-        }
-        p { class: "status-detail", "Cover note" }
-        textarea {
-            class: "field duet-field",
-            value: "{cover}",
-            oninput: move |event| cover.set(event.value()),
         }
         for (index, item) in items.iter().enumerate() {
             KeepChoice { index, title: item.1.clone(), kept }

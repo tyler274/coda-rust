@@ -25,7 +25,6 @@ The design corpus links the mockups, flow sheets and prototypes under
 | --- | --- |
 | [`duet-app::roots`](/crates/duet-app/src/roots.rs) | Tab roots, current copy and navigation |
 | [`duet-app::account`](/crates/duet-app/src/account.rs), [`duet-app`](/crates/duet-app/src/lib.rs) | Standalone account entry, You and Shared |
-| [`duet-page`](/crates/duet-page/src/lib.rs) | Existing doctor-page layout; retaining this crate does not qualify later browser sharing or restore PDF acceptance |
 | [`duet-health`](/crates/duet-health/src/lib.rs), [`duet-notify`](/crates/duet-notify/src/lib.rs) | Native health and notification adapters; verify on installed clients under the owning outcomes |
 
 [Release](release.md) owns platform checks. A rendered screen or sample fixture

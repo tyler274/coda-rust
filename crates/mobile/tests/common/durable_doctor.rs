@@ -7,7 +7,6 @@ use duet_api::{
     evidence::EvidenceStore,
     identity::{IdentityStore, IdentityVerifier, VerifiedIdentity},
     privacy::{FileJournal, PrivacyStore},
-    publication::PublicationStore,
     workspace::WorkspaceStore,
 };
 use sqlx::{ConnectOptions, Connection};
@@ -159,20 +158,12 @@ async fn backend_process() {
     let listener = tokio::net::TcpListener::bind(base.strip_prefix("http://").unwrap())
         .await
         .unwrap();
-    let publications = PublicationStore::new(
-        database.clone(),
-        base.clone(),
-        format!("{base}/viewer"),
-        [42; 32],
-    )
-    .unwrap();
     let routes = duet_api::durable::router(state.clone())
         .merge(duet_api::evidence_routes::router(state.clone()))
         .merge(duet_api::doctor_routes::router(
             duet_api::doctor_routes::DoctorState {
                 durable: state,
                 workspace: workspace.clone(),
-                publications,
             },
         ));
     let app =
@@ -181,14 +172,7 @@ async fn backend_process() {
             let site = site.clone();
             async move {
                 use tower::Service;
-                if request.uri().path() == "/independent-reader" {
-                    return axum::http::Response::builder().header("content-type", "text/html").body(axum::body::Body::from("<!doctype html><title>Independent SHL reader</title><p>Independent reader</p>")).unwrap();
-                }
-                if request.uri().path().starts_with("/api/")
-                    || request.uri().path().starts_with("/shared/")
-                    || request.uri().path().starts_with("/shl/")
-                    || request.uri().path().starts_with("/shl-file/")
-                {
+                if request.uri().path().starts_with("/api/") {
                     routes.call(request).await.unwrap()
                 } else {
                     static_file(&site, request.uri().path(), "")
@@ -259,15 +243,11 @@ impl Drop for BackendProcess {
     }
 }
 
-#[expect(
-    clippy::disallowed_methods,
-    reason = "stages and counts rows as the database owner, outside the API under proof"
-)]
 async fn run_browser_checks(
     base: &str,
     workspace: &WorkspaceStore,
     account: &duet_api::identity::AccountContext,
-    owner_url: &str,
+    _owner_url: &str,
     server: &mut BackendProcess,
 ) {
     let mut patient = Browser::launch();
@@ -277,385 +257,78 @@ async fn run_browser_checks(
     patient.wait_for("Open For my doctor");
     click_text(&mut patient, "Open For my doctor");
     patient.click("button[aria-label='Edit page']");
-    patient.type_into("input[aria-label='Name']", "Synthetic Ada");
+    let editor_text = patient.body_text().unwrap();
+    for retired in ["Name", "Date of birth", "Cover note"] {
+        assert!(
+            !editor_text.contains(retired),
+            "retired field {retired} shown:\n{editor_text}"
+        );
+    }
     patient.click("button[aria-label='Add a question']");
     wait_for_selector(&mut patient, "input[aria-label='Question']");
     patient.type_into("input[aria-label='Question']", "What changed this week?");
     patient.click("button[aria-label='Save page']");
-    patient.wait_for("Saved page preview");
+    patient.wait_for("What changed this week?");
     let saved = workspace.read(account).await.unwrap();
-    assert_eq!(saved["page"]["name"], "Synthetic Ada");
+    assert_eq!(saved["page"]["questions"][0], "What changed this week?");
+    let shown_text = patient.body_text().unwrap();
+    for retired in [
+        "Saved page preview",
+        "Check and share PDF",
+        "Publish reviewed page…",
+        "Review proposed doctor page",
+    ] {
+        assert!(
+            !shown_text.contains(retired),
+            "retired control {retired} shown:\n{shown_text}"
+        );
+    }
+
+    // Kill the actual Axum process, then rebind the same origin and verify durable state + retired routes.
+    server.restart().await;
     patient.text_until(&format!("{base}/?mode=client"), "Shared");
     patient.click("nav.tabs button:nth-of-type(2)");
     patient.wait_for("Open For my doctor");
     click_text(&mut patient, "Open For my doctor");
-    patient.wait_for("Saved page preview");
-    click_text(&mut patient, "Read complete page text");
-    patient.wait_for("Synthetic Ada");
-    // Observe the normal browser download boundary without writing PHI to disk.
-    patient.page().evaluate("(() => { const original = HTMLAnchorElement.prototype.click; HTMLAnchorElement.prototype.click = function() { if (this.download === 'for-my-doctor.pdf') { window.__doctorDownload = this.download; return; } return original.call(this); }; return true; })()");
-    click_text(&mut patient, "Check and share PDF");
-    let deadline = std::time::Instant::now() + Duration::from_secs(15);
-    loop {
-        if patient
-            .page()
-            .evaluate("window.__doctorDownload || ''")
-            .as_str()
-            == Some("for-my-doctor.pdf")
-        {
-            break;
-        }
-        assert!(
-            std::time::Instant::now() < deadline,
-            "PDF export never reached download: {:?}",
-            patient.body_text()
-        );
-        std::thread::sleep(Duration::from_millis(100));
-    }
-    patient.wait_for("Publish reviewed page…");
-    click_text(&mut patient, "Publish reviewed page…");
-    click_text(&mut patient, "Confirm publish");
-    patient.wait_for("Revoke link…");
-    // This proof kills the backend between reads; do not reuse sockets owned
-    // by the old process when asserting durable revocation after restart.
+    patient.wait_for("What changed this week?");
+
     let http = reqwest::Client::builder()
         .pool_max_idle_per_host(0)
         .build()
         .unwrap();
-    let status: serde_json::Value = http
-        .get(format!("{base}/api/doctor-collection/share-link"))
-        .bearer_auth(TOKEN)
-        .send()
-        .await
-        .unwrap()
-        .error_for_status()
-        .unwrap()
-        .json()
-        .await
-        .unwrap();
-    let link = status["web_url"].as_str().expect("published web URL");
-    let original_pdf = http
-        .get(format!("{link}/pdf"))
-        .send()
-        .await
-        .unwrap()
-        .error_for_status()
-        .unwrap()
-        .bytes()
-        .await
-        .unwrap();
-    // Editing the workspace must not silently replace the approved publication.
-    patient.click("button[aria-label='Edit page']");
-    patient.type_into("input[aria-label='Name']", "Later patient wording");
-    patient.click("button[aria-label='Save page']");
-    patient.wait_for("Saved page preview");
-    assert_eq!(
-        workspace.read(account).await.unwrap()["page"]["name"],
-        "Later patient wording"
-    );
-    assert_eq!(
-        http.get(format!("{link}/pdf"))
-            .send()
-            .await
-            .unwrap()
-            .bytes()
-            .await
-            .unwrap(),
-        original_pdf
-    );
-    // Kill the actual Axum process after approval/edit, then rebind the same origin.
-    server.restart().await;
-    assert_eq!(
-        http.get(format!("{link}/pdf"))
-            .send()
-            .await
-            .unwrap()
-            .bytes()
-            .await
-            .unwrap(),
-        original_pdf
-    );
-    patient.text_until(&format!("{base}/?mode=client"), "Shared");
-    patient.click("nav.tabs button:nth-of-type(2)");
-    patient.wait_for("Open For my doctor");
-    click_text(&mut patient, "Open For my doctor");
-    patient.wait_for("Revoke link…");
-    let mut doctor = Browser::launch();
-    let text = doctor.text_until(link, "Synthetic Ada");
-    assert!(text.contains("What changed this week?"));
-    // The public HTML is intentionally sandboxed. Use a separate no-login reader origin page,
-    // not a weakening of the publication CSP, to exercise the independent decoder.
-    doctor.text_until(&format!("{base}/independent-reader"), "Independent reader");
-    // A separate browser decrypts using WebCrypto, independently of Rust's JWE implementation.
-    let shl = status["shl_url"].as_str().unwrap();
-    let expression = format!(
-        r#"(async () => {{
-        const decode = s => Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
-        const link = JSON.parse(new TextDecoder().decode(decode({shl:?}.split('#shlink:/')[1])));
-        const manifestResponse = await fetch(link.url, {{method:'POST', headers:{{'Content-Type':'application/json'}}, body:JSON.stringify({{recipient:'Synthetic doctor'}})}});
-        if (!manifestResponse.ok) throw new Error('manifest ' + manifestResponse.status);
-        const manifest = await manifestResponse.json();
-        const file = manifest.files[0];
-        const parts = (await (await fetch(file.location)).text()).split('.');
-        const header = JSON.parse(new TextDecoder().decode(decode(parts[0])));
-        if (parts.length !== 5 || parts[1] !== '' || header.alg !== 'dir' || header.enc !== 'A256GCM') throw new Error('JWE header');
-        const key = await crypto.subtle.importKey('raw', decode(link.key), 'AES-GCM', false, ['decrypt']);
-        const encrypted = new Uint8Array([...decode(parts[3]), ...decode(parts[4])]);
-        const clear = await crypto.subtle.decrypt({{name:'AES-GCM', iv:decode(parts[2]), additionalData:new TextEncoder().encode(parts[0]), tagLength:128}}, key, encrypted);
-        const resource = JSON.parse(new TextDecoder().decode(clear));
-        const attachment = resource.content[0].attachment;
-        const pdf = decode(attachment.data);
-        const publicPdf = new Uint8Array(await (await fetch({link:?} + '/pdf')).arrayBuffer());
-        return {{kind:resource.resourceType, mime:attachment.contentType, same:pdf.length === publicPdf.length && pdf.every((b,i) => b === publicPdf[i]), file:file.location}};
-    }})()"#
-    );
-    let decoded = doctor.page().call_session(
-        "Runtime.evaluate",
-        serde_json::json!({"expression": expression, "awaitPromise":true, "returnByValue":true}),
-    );
-    assert!(
-        decoded.pointer("/result/exceptionDetails").is_none(),
-        "independent SHL decode: {decoded}"
-    );
-    let decoded = &decoded["result"]["result"]["value"];
-    assert_eq!(decoded["kind"], "DocumentReference");
-    assert_eq!(decoded["mime"], "application/pdf");
-    assert_eq!(decoded["same"], true);
-    let file_url = decoded["file"].as_str().unwrap().to_owned();
-    assert_eq!(
-        http.get(format!("{base}/api/doctor-collection"))
-            .send()
-            .await
-            .unwrap()
-            .status(),
-        401
-    );
-    click_text(&mut patient, "Revoke link…");
-    click_text(&mut patient, "Confirm revoke");
-    patient.wait_for("This publication was revoked.");
-    assert!(!http.get(link).send().await.unwrap().status().is_success());
-    assert!(
-        !http
-            .get(&file_url)
-            .send()
-            .await
-            .unwrap()
-            .status()
-            .is_success(),
-        "file dereference must recheck revoke after manifest retrieval"
-    );
-    server.restart().await;
-    assert!(!http.get(link).send().await.unwrap().status().is_success());
-    assert!(
-        !http
-            .get(&file_url)
-            .send()
-            .await
-            .unwrap()
-            .status()
-            .is_success()
-    );
-    // Publish another generation, retrieve its manifest, then advance only the
-    // disposable database expiry (not wall-clock or production policy).
-    let current = workspace.read(account).await.unwrap();
-    let expired: serde_json::Value = http.post(format!("{base}/api/doctor-collection/share-link"))
-        .bearer_auth(TOKEN).header("Idempotency-Key", Uuid::new_v4().to_string())
-        .json(&serde_json::json!({"expected_generation":current["note_generation"],"expires_in_seconds":60,"operation_id":Uuid::new_v4()}))
-        .send().await.unwrap().error_for_status().unwrap().json().await.unwrap();
-    let expired_web = expired["web_url"].as_str().unwrap();
-    doctor.text_until(expired_web, "Later patient wording");
-    doctor.text_until(&format!("{base}/independent-reader"), "Independent reader");
-    let expired_shl = expired["shl_url"].as_str().unwrap();
-    let manifest_url = doctor.page().evaluate(&format!("JSON.parse(atob({expired_shl:?}.split('#shlink:/')[1].replace(/-/g,'+').replace(/_/g,'/'))).url"));
-    let manifest_url = manifest_url.as_str().unwrap();
-    let manifest: serde_json::Value = http
-        .post(manifest_url)
-        .json(&serde_json::json!({"recipient":"Synthetic doctor"}))
-        .send()
-        .await
-        .unwrap()
-        .error_for_status()
-        .unwrap()
-        .json()
-        .await
-        .unwrap();
-    let expired_file = manifest["files"][0]["location"].as_str().unwrap();
-    let mut expiry_owner = sqlx::PgConnection::connect(owner_url).await.unwrap();
-    sqlx::query("update duet_publications set expires_at=now()-interval '1 second' where id=$1")
-        .bind(expired["id"].as_str().unwrap().parse::<Uuid>().unwrap())
-        .execute(&mut expiry_owner)
-        .await
-        .unwrap();
-    server.restart().await;
-    let result = doctor.page().call_session("Runtime.evaluate", serde_json::json!({"expression":format!("Promise.all([fetch({expired_web:?}),fetch({expired_web:?}+'/pdf'),fetch({expired_file:?}),fetch({manifest_url:?},{{method:'POST',headers:{{'Content-Type':'application/json'}},body:JSON.stringify({{recipient:'Synthetic doctor'}})}})].map(async r => (await r).status))"),"awaitPromise":true,"returnByValue":true}));
-    let statuses = result["result"]["result"]["value"]
-        .as_array()
-        .expect("expiry browser fetch results");
-    assert_eq!(statuses.len(), 4);
-    assert!(
-        statuses
-            .iter()
-            .all(|s| s.as_u64().is_some_and(|n| n == 404 || n == 410)),
-        "expired capabilities: {result}"
-    );
-    drop(expiry_owner);
-    // Stage a proposal through the real workspace owner; the patient reviews it.
-    let mut owner = sqlx::PgConnection::connect(owner_url).await.unwrap();
-    sqlx::query("update users set intelligence_enabled=true,luna_consent_decision='accepted',luna_consent_version='2026-09-24',terms_version='2026-09-23' where id=$1")
-        .bind(account.account_id)
-        .execute(&mut owner)
-        .await
-        .unwrap();
-    let staging = duet_api::identity::AccountContext {
-        permission_revision: sqlx::query_scalar(
-            "select intelligence_control_revision from users where id=$1",
-        )
-        .bind(account.account_id)
-        .fetch_one(&mut owner)
-        .await
-        .unwrap(),
-        ..account.clone()
-    };
-    let current = workspace.read(account).await.unwrap();
-    let publication_count: i64 = sqlx::query_scalar("select count(*) from duet_publications")
-        .fetch_one(&mut owner)
-        .await
-        .unwrap();
-    let run = Uuid::new_v4();
-    let mut page = current["page"].clone();
-    page["name"] = serde_json::json!("Explicitly approved proposal");
-    page["questions"]
-        .as_array_mut()
-        .unwrap()
-        .push(serde_json::json!("Review this proposal?"));
-    let proposal = &serde_json::json!({"id":Uuid::new_v4(),"run_id":run,"message_id":run,"base_generation":current["note_generation"],"note":current["note"],"items":current["items"],"page":page});
-    workspace.stage_proposal(&staging, proposal).await.unwrap();
-    assert_eq!(
-        proposal["page"]["questions"],
-        serde_json::json!(["What changed this week?", "Review this proposal?"])
-    );
-    assert_eq!(
-        sqlx::query_scalar::<_, i64>(
-            "select count(*) from duet_doctor_proposals where user_id=$1 and run_id=$2"
-        )
-        .bind(account.account_id)
-        .bind(run)
-        .fetch_one(&mut owner)
-        .await
-        .unwrap(),
-        1
-    );
-    let staged = workspace.read(account).await.unwrap();
-    assert_eq!(staged["proposal"], *proposal);
-    for key in ["note_generation", "page", "items", "note"] {
-        assert_eq!(staged[key], current[key], "staging must not save {key}");
+    for retired_url in [
+        format!("{base}/api/doctor-collection/pdf"),
+        format!("{base}/api/doctor-collection/preview"),
+        format!("{base}/api/doctor-collection/share-link"),
+        format!("{base}/shared/for-my-doctor/retired-token"),
+        format!("{base}/shared/for-my-doctor/retired-token/pdf"),
+    ] {
+        assert_eq!(
+            http.get(&retired_url)
+                .bearer_auth(TOKEN)
+                .send()
+                .await
+                .unwrap()
+                .status(),
+            404,
+            "{retired_url} must be retired"
+        );
     }
-    assert_eq!(
-        sqlx::query_scalar::<_, i64>("select count(*) from duet_publications")
-            .fetch_one(&mut owner)
-            .await
-            .unwrap(),
-        publication_count
-    );
-    patient.text_until(&format!("{base}/?mode=client"), "Shared");
-    patient.click("nav.tabs button:nth-of-type(2)");
-    patient.wait_for("Review proposed doctor page");
-    click_text(&mut patient, "Review proposed doctor page");
-    patient.wait_for("Proposed page — not saved");
-    patient.wait_for("Explicitly approved proposal");
-    patient.wait_for("What changed this week?");
-    patient.wait_for("Review this proposal?");
-    assert_eq!(
-        workspace.read(account).await.unwrap()["note_generation"],
-        current["note_generation"]
-    );
-    assert_eq!(
-        workspace.read(account).await.unwrap()["page"]["name"],
-        "Later patient wording"
-    );
-    click_text(&mut patient, "Approve and save reviewed proposal");
-    wait_until(&mut patient, |text| {
-        !text.contains("Proposed page — not saved")
-    });
-    click_text(&mut patient, "Open For my doctor");
-    patient.wait_for("Saved page preview");
-    assert_eq!(
-        workspace.read(account).await.unwrap()["page"]["name"],
-        "Explicitly approved proposal"
-    );
-    let approved = workspace.read(account).await.unwrap();
-    assert_eq!(
-        approved["note_generation"].as_i64().unwrap(),
-        current["note_generation"].as_i64().unwrap() + 1
-    );
-    assert!(approved["proposal"].is_null());
-    assert_eq!(approved["page"], proposal["page"]);
-    assert_eq!(approved["items"], current["items"]);
-    assert_eq!(approved["note"], current["note"]);
-    assert_eq!(
-        sqlx::query_scalar::<_, i64>("select count(*) from duet_publications")
-            .fetch_one(&mut owner)
-            .await
-            .unwrap(),
-        publication_count,
-        "approval is not publication"
-    );
-    // Reload from the server: the approved proposal is now the saved page, not
-    // a browser-local preview, and both the existing and new question survive.
-    patient.text_until(&format!("{base}/?mode=client"), "Shared");
-    patient.click("nav.tabs button:nth-of-type(2)");
-    patient.wait_for("Open For my doctor");
-    assert!(
-        !patient
-            .body_text()
-            .unwrap()
-            .contains("Review proposed doctor page")
-    );
-    click_text(&mut patient, "Open For my doctor");
-    patient.wait_for("Saved page preview");
-    click_text(&mut patient, "Read complete page text");
-    patient.wait_for("Explicitly approved proposal");
-    patient.wait_for("What changed this week?");
-    patient.wait_for("Review this proposal?");
-    assert!(
-        !patient
-            .body_text()
-            .unwrap()
-            .contains("Proposed page — not saved")
-    );
-    assert_eq!(workspace.read(account).await.unwrap(), approved);
-    // Oversize content saves successfully but remains unexportable and unpublishable.
-    patient.click("button[aria-label='Edit page']");
-    patient.type_into(
-        "input[aria-label='Question']",
-        &"An intentionally long full question. ".repeat(600),
-    );
-    patient.click("button[aria-label='Save page']");
-    patient.wait_for("The complete page cannot be exported faithfully on one page.");
-    assert_eq!(patient.page().evaluate("[...document.querySelectorAll('button')].find(b => b.textContent === 'Check and share PDF').disabled"), serde_json::json!(true));
-    assert!(
-        !http
-            .get(format!("{base}/api/doctor-collection/pdf"))
-            .bearer_auth(TOKEN)
-            .send()
-            .await
-            .unwrap()
-            .status()
-            .is_success()
-    );
+
     // Two editors: a stale browser save cannot overwrite a newer patient-approved generation.
     patient.click("button[aria-label='Edit page']");
-    patient.type_into("input[aria-label='Name']", "Stale browser wording");
+    wait_for_selector(&mut patient, "input[aria-label='Question']");
+    patient.type_into("input[aria-label='Question']", "Stale browser question");
     let current = workspace.read(account).await.unwrap();
     let response = http.put(format!("{base}/api/doctor-collection/page")).bearer_auth(TOKEN)
-        .json(&serde_json::json!({"expected_generation":current["note_generation"], "item_ids":[], "page":{"name":"Newer approved wording","questions":["Current question"]}}))
+        .json(&serde_json::json!({"expected_generation":current["note_generation"], "item_ids":[], "page":{"questions":["Newer approved question"]}}))
         .send().await.unwrap();
     assert!(response.status().is_success());
     patient.click("button[aria-label='Save page']");
     patient.wait_for("The last save may have succeeded.");
     assert_eq!(
-        workspace.read(account).await.unwrap()["page"]["name"],
-        "Newer approved wording"
+        workspace.read(account).await.unwrap()["page"]["questions"][0],
+        "Newer approved question"
     );
     assert!(
         patient
@@ -663,7 +336,5 @@ async fn run_browser_checks(
             .unwrap()
             .contains("Your exact draft is retained")
     );
-    drop(owner);
     drop(patient);
-    drop(doctor);
 }

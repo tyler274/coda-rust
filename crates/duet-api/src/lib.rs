@@ -1,4 +1,4 @@
-//! Duet-owned account, privacy, evidence, workspace and publication services.
+//! Duet-owned account, privacy, evidence and workspace services.
 //! `main.rs` composes the durable route families and recovery workers.
 //! Book: `book/src/backend-architecture.md`.
 #![deny(missing_docs)]
@@ -54,11 +54,6 @@ mod privacy_entity;
 )]
 pub mod producer_database;
 pub mod producer_routes;
-#[expect(
-    clippy::disallowed_methods,
-    reason = "converting raw SQL to the typed database API"
-)]
-pub mod publication;
 pub mod push;
 mod push_entity;
 pub mod session;

@@ -1900,7 +1900,6 @@ mod tests {
         evidence::{EvidenceMutation, EvidenceStore},
         identity::{IdentityStore, IdentityVerifier, VerifiedIdentity},
         producer_database::{ProducerKind, grant},
-        publication::{PublicationStore, PublishRequest},
         workspace::WorkspaceStore,
     };
     use duet_wire::models::{
@@ -2251,13 +2250,6 @@ mod tests {
         };
         let evidence = EvidenceStore::new(fx.db.clone());
         let workspace = WorkspaceStore::new(fx.db.clone());
-        let publications = PublicationStore::new(
-            fx.db.clone(),
-            "https://duet.example".into(),
-            "https://viewer.example/".into(),
-            [9; 32],
-        )
-        .unwrap();
         let addr = evidence
             .ingest(
                 &fx.a,
@@ -2301,15 +2293,13 @@ mod tests {
             .await
             .unwrap();
         let generation = saved["note_generation"].as_i64().unwrap();
-        let pub_view = publications
-            .publish(
-                &fx.a,
-                &PublishRequest {
-                    operation_id: Uuid::new_v4(),
-                    expected_generation: generation,
-                    expires_in_seconds: 3600,
-                },
-            )
+        let pub_id = Uuid::new_v4();
+        sqlx::query("insert into duet_publications(id,user_id,operation_id,request,generation,token_hash,shl_hash,protected_capabilities,snapshot,pdf,digest,expires_at) values($1,$2,$3,'{}',$4,'th-page','sh-page','\\x00','{}','\\x00','d1',now()+interval '1 hour')")
+            .bind(pub_id)
+            .bind(fx.a.account_id)
+            .bind(Uuid::new_v4())
+            .bind(generation)
+            .execute(&mut fx.owner)
             .await
             .unwrap();
 
@@ -2340,7 +2330,7 @@ mod tests {
         .unwrap();
         let revoked: bool =
             sqlx::query_scalar("select revoked_at is not null from duet_publications where id=$1")
-                .bind(pub_view.id)
+                .bind(pub_id)
                 .fetch_one(&mut fx.owner)
                 .await
                 .unwrap();

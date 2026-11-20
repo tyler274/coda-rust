@@ -1,9 +1,8 @@
 //! Suite 2: mobile Duet journeys, with separate stub and durable-service proofs.
 //!
-//! `durable_doctor` uses isolated PostgreSQL, real durable API routes, compiled
-//! patient UI and an independent unauthenticated WebCrypto SHL reader. Its
-//! identity is synthetic and proposals are staged directly by the real owner;
-//! it does not qualify hosted login or live model generation.
+//! `durable_doctor` uses isolated PostgreSQL, real durable API routes, and the
+//! compiled patient UI. Its identity is synthetic; it does not qualify hosted
+//! login or live model generation.
 //!
 //! The client mode talks to `duet-stub` mounted in the same process under
 //! `/api`: the You and Shared tabs render their live data, and For my doctor
@@ -70,7 +69,7 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
             .evaluate("Object.keys(localStorage).filter(k => k !== 'coda-mode')"),
         serde_json::json!([])
     );
-    // For my doctor, in Shared, lays the saved page out with the letter layout.
+    // For my doctor, in Shared, edits discussion notes and questions without PDF/demographics.
     browser.click(r#"nav.tabs button:nth-of-type(2)"#);
     browser.wait_for("Open For my doctor");
     assert_eq!(
@@ -82,16 +81,21 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
     browser.wait_for("Ask about sleep");
     browser.click(r#"button[aria-label="Edit page"]"#);
     browser.wait_for("Add a question");
-    browser.type_into(r#"input[aria-label="Name"]"#, "Ada Lovelace");
-    browser.type_into(r#"input[aria-label="Date of birth"]"#, "1990-04-02");
+    let editor_text = browser.body_text().unwrap();
+    for retired in ["Name", "Date of birth", "Cover note"] {
+        assert!(
+            !editor_text.contains(retired),
+            "retired field {retired} shown:\n{editor_text}"
+        );
+    }
     browser.click(r#"button[aria-label="Add a question"]"#);
     wait_for_selector(&mut browser, r#"input[aria-label="Question"]"#);
     browser.type_into(r#"input[aria-label="Question"]"#, "What changed this week?");
     browser.click(r#"button[aria-label="Save page"]"#);
-    let text = browser.wait_for("Saved page preview");
+    let text = browser.wait_for("What changed this week?");
     assert!(
-        text.contains("What changed this week?"),
-        "the doctor page did not show the letter layout:\n{text}"
+        !text.contains("Saved page preview") && !text.contains("Check and share PDF"),
+        "retired PDF/preview controls shown:\n{text}"
     );
     let saved: serde_json::Value = reqwest::get(format!("{base}/api/doctor-collection"))
         .await
@@ -99,8 +103,6 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
         .json()
         .await
         .unwrap();
-    assert_eq!(saved["page"]["name"], "Ada Lovelace");
-    assert_eq!(saved["page"]["date_of_birth"], "1990-04-02");
     assert_eq!(saved["page"]["questions"][0], "What changed this week?");
     browser.click(r#"button[aria-label="Close page"]"#);
     browser.wait_for("Open For my doctor");
@@ -289,16 +291,20 @@ async fn shared_tries_a_failed_workspace_read_again() {
     browser.wait_for("Ask about sleep");
     browser.click(r#"button[aria-label="Edit page"]"#);
     browser.wait_for("Add a question");
-    browser.type_into(r#"input[aria-label="Name"]"#, "Ada Lovelace");
+    browser.type_into(
+        r#"textarea[aria-label="What I want to discuss"]"#,
+        "Discuss sleep and morning readings.",
+    );
     browser.click(r#"button[aria-label="Save page"]"#);
-    browser.wait_for("Saved page preview");
+    browser.wait_for("Discuss sleep and morning readings.");
     let saved: serde_json::Value = reqwest::get(format!("{base}/api/doctor-collection"))
         .await
         .unwrap()
         .json()
         .await
         .unwrap();
-    assert_eq!(saved["page"]["name"], "Ada Lovelace");
+    assert_eq!(saved["note"], "Discuss sleep and morning readings.");
+    assert!(saved["page"]["name"].is_null());
     server.abort();
 }
 

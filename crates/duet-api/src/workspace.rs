@@ -224,28 +224,10 @@ impl WorkspaceStore {
         if before["note_generation"].as_i64() != Some(i64::from(request.expected_generation)) {
             return Err(ApiError::Conflict("doctor workspace changed"));
         }
-        let proposal = request.proposal_id.flatten();
-        let mut candidates = before["items"].as_array().cloned().unwrap_or_default();
-        if let Some(id) = proposal {
-            if before["proposal"]["id"].as_str() != Some(&id.to_string()) {
-                return Err(ApiError::Conflict("proposal was superseded or rejected"));
-            }
-            let p: Value = sqlx::query_scalar(
-                "select proposal from duet_doctor_proposals where user_id=$1 and id=$2 and state='pending'",
-            )
-            .bind(c.account_id)
-            .bind(id)
-            .fetch_optional(&mut *tx)
-            .await?
-            .ok_or(ApiError::Conflict("proposal absent"))?;
-            if p["base_generation"].as_i64() != Some(i64::from(request.expected_generation)) {
-                return Err(ApiError::Conflict("proposal is stale"));
-            }
-            candidates = p["items"]
-                .as_array()
-                .cloned()
-                .ok_or(ApiError::Conflict("invalid proposal membership"))?;
+        if request.proposal_id.flatten().is_some() {
+            return Err(ApiError::Conflict("proposals retired"));
         }
+        let candidates = before["items"].as_array().cloned().unwrap_or_default();
         let ids: std::collections::HashSet<_> = request.item_ids.iter().copied().collect();
         if ids.len() != request.item_ids.len() {
             return Err(ApiError::Unprocessable("duplicate selected item"));
@@ -322,99 +304,11 @@ impl WorkspaceStore {
             .await?;
         }
         sqlx::query("update users set doctor_note=$2,doctor_page=$3,doctor_note_generation=doctor_note_generation+1,doctor_page_updated_at=now(),doctor_proposal=null where id=$1").bind(c.account_id).bind(note).bind(json!(request.page)).execute(&mut *tx).await?;
-        sqlx::query("update duet_doctor_proposals set state=case when id=$2 then 'approved' else 'superseded' end where user_id=$1 and state='pending'").bind(c.account_id).bind(proposal).execute(&mut *tx).await?;
+        sqlx::query("update duet_doctor_proposals set state='superseded' where user_id=$1 and state='pending'").bind(c.account_id).execute(&mut *tx).await?;
         let result = collection(&mut tx, c.account_id).await?;
         sqlx::query("insert into duet_doctor_saves(user_id,expected_generation,request,result) values($1,$2,$3,$4)").bind(c.account_id).bind(i64::from(request.expected_generation)).bind(value).bind(&result).execute(&mut *tx).await?;
         tx.commit().await?;
         Ok(result)
-    }
-    /// Reject only the visible proposal, preserving all approved wording and generation.
-    pub async fn reject_proposal(
-        &self,
-        c: &AccountContext,
-        id: Uuid,
-        generation: i64,
-    ) -> Result<Value, ApiError> {
-        let mut tx = self.database.begin(c.account_id).await?;
-        check_current(&mut tx, c, false).await?;
-        let current = collection(&mut tx, c.account_id).await?;
-        if current["note_generation"].as_i64() != Some(generation) {
-            return Err(ApiError::Conflict("workspace changed"));
-        }
-        if current["proposal"]["id"].as_str() == Some(&id.to_string()) {
-            sqlx::query("update duet_doctor_proposals set state='rejected' where user_id=$1 and id=$2 and state='pending'").bind(c.account_id).bind(id).execute(&mut *tx).await?;
-            sqlx::query("update users set doctor_proposal=null where id=$1")
-                .bind(c.account_id)
-                .execute(&mut *tx)
-                .await?;
-        } else {
-            let rejected:bool=sqlx::query_scalar("select exists(select 1 from duet_doctor_proposals where user_id=$1 and id=$2 and state='rejected')").bind(c.account_id).bind(id).fetch_one(&mut *tx).await?;
-            if !rejected {
-                return Err(ApiError::Conflict("proposal changed"));
-            }
-        }
-        let result = collection(&mut tx, c.account_id).await?;
-        tx.commit().await?;
-        Ok(result)
-    }
-    /// Stage an accepted-work proposal, never called by a public route. Validates exact sources and preserves the same run identity.
-    pub async fn stage_proposal(
-        &self,
-        c: &AccountContext,
-        proposal: &Value,
-    ) -> Result<Value, ApiError> {
-        let id: Uuid = serde_json::from_value(proposal["id"].clone())
-            .map_err(|_| ApiError::Unprocessable("proposal id required"))?;
-        let run: Uuid = serde_json::from_value(proposal["run_id"].clone())
-            .map_err(|_| ApiError::Unprocessable("accepted run id required"))?;
-        let mut tx = self.database.begin(c.account_id).await?;
-        check_current(&mut tx, c, true).await?;
-        if let Some(existing) = sqlx::query_scalar::<_, Value>(
-            "select proposal from duet_doctor_proposals where user_id=$1 and run_id=$2",
-        )
-        .bind(c.account_id)
-        .bind(run)
-        .fetch_optional(&mut *tx)
-        .await?
-        {
-            if existing != *proposal {
-                return Err(ApiError::Conflict(
-                    "accepted run already staged different proposal",
-                ));
-            }
-            return Ok(existing);
-        }
-        let current = collection(&mut tx, c.account_id).await?;
-        if current["note_generation"] != proposal["base_generation"] {
-            return Err(ApiError::Conflict("proposal base changed"));
-        }
-        for item in proposal["items"]
-            .as_array()
-            .ok_or(ApiError::Unprocessable("proposal items required"))?
-        {
-            validate_item(&mut tx, c.account_id, item).await?;
-        }
-        sqlx::query("update duet_doctor_proposals set state='superseded' where user_id=$1 and state='pending'").bind(c.account_id).execute(&mut *tx).await?;
-        sqlx::query("insert into duet_doctor_proposals(user_id,id,run_id,proposal) values($1,$2,$3,$4) on conflict(user_id,run_id) do nothing").bind(c.account_id).bind(id).bind(run).bind(proposal).execute(&mut *tx).await?;
-        let stored: Value = sqlx::query_scalar(
-            "select proposal from duet_doctor_proposals where user_id=$1 and run_id=$2",
-        )
-        .bind(c.account_id)
-        .bind(run)
-        .fetch_one(&mut *tx)
-        .await?;
-        if stored != *proposal {
-            return Err(ApiError::Conflict(
-                "accepted run already staged different proposal",
-            ));
-        }
-        sqlx::query("update users set doctor_proposal=$2 where id=$1")
-            .bind(c.account_id)
-            .bind(proposal)
-            .execute(&mut *tx)
-            .await?;
-        tx.commit().await?;
-        Ok(stored)
     }
 }
 /// Build the existing collection shape under the account mutation lock.
@@ -422,7 +316,7 @@ pub async fn collection(
     tx: &mut Transaction<'_, Postgres>,
     account: Uuid,
 ) -> Result<Value, ApiError> {
-    let row=sqlx::query("select doctor_note,doctor_note_generation,doctor_page,doctor_proposal,doctor_page_updated_at from users where id=$1").bind(account).fetch_optional(&mut **tx).await?.ok_or(ApiError::AbsentAccount)?;
+    let row=sqlx::query("select doctor_note,doctor_note_generation,doctor_page,doctor_page_updated_at from users where id=$1").bind(account).fetch_optional(&mut **tx).await?.ok_or(ApiError::AbsentAccount)?;
     let rows=sqlx::query("select to_jsonb(i) as item from doctor_collection_items i where user_id=$1 order by position,saved_at,id").bind(account).fetch_all(&mut **tx).await?;
     let mut items = Vec::new();
     for row in rows {
@@ -434,7 +328,7 @@ pub async fn collection(
         items.push(item);
     }
     Ok(
-        json!({"items":items,"note":row.get::<Option<String>,_>("doctor_note"),"note_generation":row.get::<i64,_>("doctor_note_generation"),"page":row.get::<Value,_>("doctor_page"),"proposal":row.get::<Option<Value>,_>("doctor_proposal"),"page_updated_at":row.get::<chrono::DateTime<Utc>,_>("doctor_page_updated_at")}),
+        json!({"items":items,"note":row.get::<Option<String>,_>("doctor_note"),"note_generation":row.get::<i64,_>("doctor_note_generation"),"page":row.get::<Value,_>("doctor_page"),"proposal":Value::Null,"page_updated_at":row.get::<chrono::DateTime<Utc>,_>("doctor_page_updated_at")}),
     )
 }
 /// Original read-only preparation envelope for older clients, derived only from approved saved state.
@@ -538,12 +432,34 @@ async fn insert_item(
  .bind(serde_json::from_value::<Uuid>(item["id"].clone()).map_err(|_|ApiError::Conflict("invalid item"))?).bind(account).bind(item["kind"].as_str().unwrap_or("fact")).bind(item["source_id"].as_str().unwrap_or("")).bind(item["title"].as_str().unwrap_or("")).bind(item["detail"].as_str().unwrap_or("")).bind(item.get("evidence").cloned().unwrap_or(json!([]))).bind(item["position"].as_i64().unwrap_or(0) as i32).bind(item.get("record").filter(|v|!v.is_null())).bind(item.get("fact_snapshot").filter(|v|!v.is_null())).bind(item["fact_snapshot_id"].as_str().and_then(|s|s.parse::<Uuid>().ok())).bind(&item["page_entry"]).bind(item["medication_confirmed"].as_bool().unwrap_or(false)).execute(&mut **tx).await?;
     Ok(())
 }
-/// Literal all-field projection: no clinical relevance filter, discarded unknown fields, or summary substitution.
+fn is_reference_range_key(key: &str) -> bool {
+    let normalized: String = key
+        .chars()
+        .filter(char::is_ascii_alphanumeric)
+        .map(|c| c.to_ascii_lowercase())
+        .collect();
+    matches!(
+        normalized.as_str(),
+        "referencerange"
+            | "referenceranges"
+            | "refrange"
+            | "refranges"
+            | "normalrange"
+            | "normalranges"
+            | "printedreferencerange"
+            | "labreferencerange"
+    )
+}
+
+/// Literal record projection, excluding printed lab reference ranges per safety rules.
 pub fn literal_entry(payload: &Value, device: bool) -> Value {
     fn flatten(prefix: &str, value: &Value, out: &mut Vec<String>) {
         match value {
             Value::Object(map) => {
                 for (k, v) in map {
+                    if is_reference_range_key(k) {
+                        continue;
+                    }
                     flatten(
                         &if prefix.is_empty() {
                             k.clone()
@@ -583,47 +499,46 @@ pub fn literal_entry(payload: &Value, device: bool) -> Value {
             .is_some_and(|s| s.starts_with("Medication"));
     json!({"group":if device{"devices"}else if medication{"recorded_medications"}else{"records"},"title":title,"lines":lines})
 }
-/// Render only the explicitly selected approved collection; cover note is deliberately excluded.
-pub fn approved(collection: &Value) -> duet_page::ApprovedPage {
-    use duet_page::{ApprovedPage, EvidenceGroup, PageEntry};
-    let page = &collection["page"];
-    ApprovedPage {
-        name: page["name"].as_str().map(str::to_owned),
-        date_of_birth: page["date_of_birth"].as_str().map(str::to_owned),
-        prepared_date: collection["page_updated_at"]
-            .as_str()
-            .map(|s| s.chars().take(10).collect()),
-        concern: collection["note"].as_str().map(str::to_owned),
-        questions: page["questions"]
+
+#[cfg(test)]
+mod tests {
+    use super::literal_entry;
+    use serde_json::json;
+
+    #[test]
+    fn literal_entry_excludes_lab_printed_reference_ranges_and_keeps_values() {
+        let lab = json!({
+            "category": "lab",
+            "display_name": "Potassium",
+            "value": "5.4",
+            "unit": "mmol/L",
+            "recorded_at": "2026-10-01T14:30:00Z",
+            "source_label": "Regional Lab",
+            "referenceRange": [{"low": {"value": 3.5}, "high": {"value": 5.0}, "text": "3.5-5.0 mmol/L"}],
+            "clinical_record": {
+                "resource_type": "Observation",
+                "reference_range": "3.5 - 5.0 mmol/L",
+                "normal_range": {"low": 3.5, "high": 5.0}
+            }
+        });
+        let entry = literal_entry(&lab, false);
+        let joined = entry["lines"]
             .as_array()
-            .into_iter()
-            .flatten()
-            .filter_map(Value::as_str)
-            .map(str::to_owned)
-            .collect(),
-        entries: collection["items"]
-            .as_array()
-            .into_iter()
-            .flatten()
-            .map(|i| {
-                let e = &i["page_entry"];
-                PageEntry {
-                    group: match e["group"].as_str() {
-                        Some("devices") => EvidenceGroup::Devices,
-                        Some("confirmed_medications") => EvidenceGroup::ConfirmedMedications,
-                        Some("recorded_medications") => EvidenceGroup::RecordedMedications,
-                        _ => EvidenceGroup::Records,
-                    },
-                    title: e["title"].as_str().unwrap_or("").to_owned(),
-                    lines: e["lines"]
-                        .as_array()
-                        .into_iter()
-                        .flatten()
-                        .filter_map(Value::as_str)
-                        .map(str::to_owned)
-                        .collect(),
-                }
-            })
-            .collect(),
+            .unwrap()
+            .iter()
+            .filter_map(|v| v.as_str())
+            .collect::<Vec<_>>()
+            .join("\n");
+        assert!(joined.contains("value: 5.4"), "missing lab value: {joined}");
+        assert!(
+            joined.contains("unit: mmol/L"),
+            "missing lab unit: {joined}"
+        );
+        assert!(
+            !joined.contains("3.5")
+                && !joined.contains("reference")
+                && !joined.contains("normal_range"),
+            "lab printed reference range must never appear in literal_entry: {joined}"
+        );
     }
 }
