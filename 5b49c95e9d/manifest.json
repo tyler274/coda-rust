@@ -1,0 +1,95 @@
+{
+  "branch": "feat-cod69-cod5-ingress-and-dabney-origin",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC2",
+      "label": "Workspace gates: fmt, shell syntax, book links, cargo deny, host+wasm clippy, boundaries",
+      "kind": "run",
+      "revision": "ca72746cbdd338a462a3b60057405e57e5c70aaa",
+      "dirty": false,
+      "recorded": "2026-11-20T10:09:02+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo fmt --all --check\nbash -n scripts/build-pages-site.sh\nbash scripts/check-book-links.sh\ncargo deny check\ncargo clippy --locked --workspace --all-targets -- -D warnings\ncargo clippy --locked -p physician-app -p duet-app -p mobile -p ui-gallery -p extension-popup --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web,extension-popup/web -- -D warnings\ncargo test --locked -p boundaries\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-Workspace-gates-fmt-shell-syntax-book-links-carg.log"
+      ],
+      "seconds": 99.4,
+      "exit": 0,
+      "ok": true,
+      "superseded": "addressed PR #147 review findings (multi-header X-Forwarded-For, K_SERVICE/CODA_HOSTED/APP_ENV loopback enforcement, /api/auth/email-change/* tier)"
+    },
+    {
+      "id": 2,
+      "claim": "AC1",
+      "label": "HTTP ingress guard and dabney.moe retargeting: coda-http, duet-api, physician-sample, public-site (incl. Chromium export E2E)",
+      "kind": "run",
+      "revision": "ca72746cbdd338a462a3b60057405e57e5c70aaa",
+      "dirty": false,
+      "recorded": "2026-11-20T10:10:42+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo test --locked -p coda-http\ncargo test --locked -p duet-api --lib\ncargo test --locked -p physician-sample --lib\ncargo test --locked -p public-site --lib --tests\ncargo test --locked -p public-site --test site -- --ignored\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-HTTP-ingress-guard-and-dabney.moe-retargeting-co.log"
+      ],
+      "seconds": 352.1,
+      "exit": 0,
+      "ok": true,
+      "superseded": "addressed PR #147 review findings (multi-header X-Forwarded-For, K_SERVICE/CODA_HOSTED/APP_ENV loopback enforcement, /api/auth/email-change/* tier)"
+    },
+    {
+      "id": 3,
+      "claim": "AC2",
+      "label": "Workspace gates: fmt, shell syntax, book links, cargo deny, host+wasm clippy, boundaries",
+      "kind": "run",
+      "revision": "5b49c95e9d02b0ea10b22ea2171c537c84ff3fd9",
+      "dirty": false,
+      "recorded": "2026-11-20T10:31:35+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo fmt --all --check\nbash -n scripts/build-pages-site.sh\nbash scripts/check-book-links.sh\ncargo deny check\ncargo clippy --locked --workspace --all-targets -- -D warnings\ncargo clippy --locked -p physician-app -p duet-app -p mobile -p ui-gallery -p extension-popup --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web,extension-popup/web -- -D warnings\ncargo test --locked -p boundaries\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-Workspace-gates-fmt-shell-syntax-book-links-carg.log"
+      ],
+      "seconds": 134.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC1",
+      "label": "HTTP ingress guard and dabney.moe retargeting: coda-http, duet-api, physician-sample, public-site (incl. Chromium export E2E)",
+      "kind": "run",
+      "revision": "5b49c95e9d02b0ea10b22ea2171c537c84ff3fd9",
+      "dirty": false,
+      "recorded": "2026-11-20T10:33:50+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\nset -euo pipefail\ncargo test --locked -p coda-http\ncargo test --locked -p duet-api --lib\ncargo test --locked -p physician-sample --lib\ncargo test --locked -p public-site --lib --tests\ncargo test --locked -p public-site --test site -- --ignored\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-HTTP-ingress-guard-and-dabney.moe-retargeting-co.log"
+      ],
+      "seconds": 300.6,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
