@@ -12,7 +12,7 @@ pkgs.mkShell {
     dioxus-cli
     openapi-generator-cli
     nodejs_22
-    # Model-backed browser checks use PStack statechart's pinned TLC and Java, fetched by mise.
+    # Model-backed browser checks use the statechart skill's pinned TLC and Java.
     mise
     python314
     uv
