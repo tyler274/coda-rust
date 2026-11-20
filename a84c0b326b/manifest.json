@@ -27,7 +27,7 @@
       "expect_matched": true,
       "ok": true,
       "kept": {
-        "revision": "65685b6f9c8c7e66d0f3c894c22877537acd2681",
+        "revision": "a84c0b326b463d4f83a02bfc7669fe13092d4f03",
         "reason": "deliberately before the fix: literal_entry flattened referenceRange"
       }
     },
@@ -171,8 +171,8 @@
       "exit": 0,
       "ok": true,
       "kept": {
-        "revision": "65685b6f9c8c7e66d0f3c894c22877537acd2681",
-        "reason": "Rebase onto dd5dab3b9c touched only Cargo.lock and crates/duet-api/{Cargo.toml,src/lib.rs,src/main.rs}; mobile browser/duet_journey/mode unchanged from f591cb7188"
+        "revision": "a84c0b326b463d4f83a02bfc7669fe13092d4f03",
+        "reason": "Only scripts/scenarios.py edited after f591cb7188/65685b6f9c; mobile browser/duet_journey/mode unchanged"
       }
     },
     {
@@ -195,7 +195,11 @@
       ],
       "seconds": 350.1,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "kept": {
+        "revision": "a84c0b326b463d4f83a02bfc7669fe13092d4f03",
+        "reason": "Only scripts/scenarios.py D1_TESTS key updated after 65685b6f9c; Rust/SQL/book sources unchanged"
+      }
     },
     {
       "id": 9,
@@ -222,7 +226,11 @@
       ],
       "seconds": 138.1,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "kept": {
+        "revision": "a84c0b326b463d4f83a02bfc7669fe13092d4f03",
+        "reason": "Only scripts/scenarios.py D1_TESTS key updated after 65685b6f9c; Rust/SQL/book sources unchanged"
+      }
     },
     {
       "id": 10,
@@ -244,7 +252,11 @@
       ],
       "seconds": 116.0,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "kept": {
+        "revision": "a84c0b326b463d4f83a02bfc7669fe13092d4f03",
+        "reason": "Only scripts/scenarios.py D1_TESTS key updated after 65685b6f9c; Rust/SQL/book sources unchanged"
+      }
     },
     {
       "id": 11,
@@ -265,6 +277,33 @@
         "11-duet-api-Postgres-suites-and-mobile-durable_d2-a.log"
       ],
       "seconds": 121.7,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "a84c0b326b463d4f83a02bfc7669fe13092d4f03",
+        "reason": "Only scripts/scenarios.py D1_TESTS key updated after 65685b6f9c; Rust/SQL/book sources unchanged"
+      }
+    },
+    {
+      "id": 12,
+      "claim": "AC5",
+      "label": "Scenario runner D1_TESTS and receipt unit tests (test_ci_scenarios.py)",
+      "kind": "run",
+      "revision": "a84c0b326b463d4f83a02bfc7669fe13092d4f03",
+      "dirty": false,
+      "recorded": "2026-11-20T04:15:46+00:00",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "scripts/test_ci_scenarios.py"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "12-Scenario-runner-D1_TESTS-and-receipt-unit-tests-.log"
+      ],
+      "seconds": 0.2,
       "exit": 0,
       "ok": true
     }
