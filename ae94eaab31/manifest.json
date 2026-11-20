@@ -1,0 +1,222 @@
+{
+  "branch": "feat-dev-check-ci-parity",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "COD-68-4-fmt-scoped-and-ci-stages",
+      "label": "syntax, scoped modes, fmt (rust/sql/tofu), clippy, boundaries, cargo-deny, rustdoc, and lightweight",
+      "kind": "run",
+      "revision": "5fd494529eebbe5fbb9ec99cd375d91bd6a0378e",
+      "dirty": false,
+      "recorded": "2026-11-20T10:08:18+00:00",
+      "command": [
+        "bash",
+        "-e",
+        "-c",
+        "\n      bash -n scripts/dev-check.sh .githooks/pre-commit\n      bash scripts/dev-check.sh --help\n      bash scripts/dev-check.sh --pre-commit\n      CODA_FAST_PRECOMMIT=1 bash .githooks/pre-commit\n      bash scripts/dev-check.sh --base origin/main\n      cargo fmt --all --check\n      python3 scripts/check-sql.py\n      for d in infra/gcp/nix-cache infra/gcp/shared-mail infra/gcp/public-site infra/gcp/observability infra/gcp/physician-runtime infra/gcp/rust-environments; do\n        tofu fmt -check -recursive \"$d\"\n      done\n      cargo clippy --workspace --all-targets --quiet -- -D warnings\n      cargo clippy -p physician-app -p duet-app -p mobile -p ui-gallery -p extension-popup --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web,extension-popup/web --quiet -- -D warnings\n      cargo test --locked -p boundaries\n      cargo deny check\n      cargo doc --no-deps --workspace\n      (eval \"$(sed -n \"/^ensure_ci_python()/,/^}/p\" scripts/dev-check.sh)\"; eval \"$(sed -n \"/^run_lightweight_checks()/,/^}/p\" scripts/dev-check.sh)\"; root=$(git rev-parse --show-toplevel); run_lightweight_checks)\n    "
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-syntax-scoped-modes-fmt-rust-sql-tofu-clippy-bou.log"
+      ],
+      "seconds": 455.2,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "ae94eaab31c0b5274f42d75c11e8a4e25e6422c0",
+        "reason": "only change in ae94eaab31 is wrapping run_formatting_checks and run_tofu_fmt_checks in errexit subshells; all CI, Postgres, and lightweight checks unchanged"
+      }
+    },
+    {
+      "id": 2,
+      "claim": "COD-68-4-dev-check-ci",
+      "label": "dev-check --ci end-to-end",
+      "kind": "run",
+      "revision": "5fd494529eebbe5fbb9ec99cd375d91bd6a0378e",
+      "dirty": false,
+      "recorded": "2026-11-20T10:19:54+00:00",
+      "command": [
+        "bash",
+        "scripts/dev-check.sh",
+        "--ci"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-dev-check---ci-end-to-end.log"
+      ],
+      "seconds": 1819.6,
+      "exit": 101,
+      "ok": false,
+      "superseded": "superseded earlier contested --ci (2) and non-CI 55442 --all (4, 5) runs with clean standalone --ci pass (6)"
+    },
+    {
+      "id": 3,
+      "claim": "COD-68-4-dev-check-postgres",
+      "label": "dev-check --postgres end-to-end",
+      "kind": "run",
+      "revision": "5fd494529eebbe5fbb9ec99cd375d91bd6a0378e",
+      "dirty": false,
+      "recorded": "2026-11-20T10:50:46+00:00",
+      "command": [
+        "bash",
+        "scripts/dev-check.sh",
+        "--postgres"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-dev-check---postgres-end-to-end.log"
+      ],
+      "seconds": 887.7,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "ae94eaab31c0b5274f42d75c11e8a4e25e6422c0",
+        "reason": "only change in ae94eaab31 is wrapping run_formatting_checks and run_tofu_fmt_checks in errexit subshells; all CI, Postgres, and lightweight checks unchanged"
+      }
+    },
+    {
+      "id": 4,
+      "claim": "COD-68-4-dev-check-all",
+      "label": "dev-check --all non-CI pg_base unset path",
+      "kind": "run",
+      "revision": "5fd494529eebbe5fbb9ec99cd375d91bd6a0378e",
+      "dirty": false,
+      "recorded": "2026-11-20T11:05:34+00:00",
+      "command": [
+        "bash",
+        "scripts/dev-check.sh",
+        "--all"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-dev-check---all-non-CI-pg_base-unset-path.log"
+      ],
+      "seconds": 519.1,
+      "exit": 101,
+      "ok": false,
+      "superseded": "superseded earlier contested --ci (2) and non-CI 55442 --all (4, 5) runs with clean standalone --ci pass (6)"
+    },
+    {
+      "id": 5,
+      "claim": "COD-68-4-dev-check-all",
+      "label": "dev-check --all non-CI pg_base unset path",
+      "kind": "run",
+      "revision": "5fd494529eebbe5fbb9ec99cd375d91bd6a0378e",
+      "dirty": false,
+      "recorded": "2026-11-20T11:15:53+00:00",
+      "command": [
+        "bash",
+        "scripts/dev-check.sh",
+        "--all"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-dev-check---all-non-CI-pg_base-unset-path.log"
+      ],
+      "seconds": 511.8,
+      "exit": 101,
+      "ok": false,
+      "superseded": "superseded earlier contested --ci (2) and non-CI 55442 --all (4, 5) runs with clean standalone --ci pass (6)"
+    },
+    {
+      "id": 6,
+      "claim": "COD-68-4-dev-check-ci",
+      "label": "dev-check --ci end-to-end",
+      "kind": "run",
+      "revision": "5fd494529eebbe5fbb9ec99cd375d91bd6a0378e",
+      "dirty": false,
+      "recorded": "2026-11-20T11:24:59+00:00",
+      "command": [
+        "bash",
+        "scripts/dev-check.sh",
+        "--ci"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-dev-check---ci-end-to-end.log"
+      ],
+      "seconds": 1310.3,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "ae94eaab31c0b5274f42d75c11e8a4e25e6422c0",
+        "reason": "only change in ae94eaab31 is wrapping run_formatting_checks and run_tofu_fmt_checks in errexit subshells; all CI, Postgres, and lightweight checks unchanged"
+      }
+    },
+    {
+      "id": 7,
+      "claim": "COD-68-4-fmt-fail-closed",
+      "label": "syntax, scoped modes, real fmt, and fail-closed run_stage negative checks",
+      "kind": "run",
+      "revision": "ae94eaab31c0b5274f42d75c11e8a4e25e6422c0",
+      "dirty": false,
+      "recorded": "2026-11-20T11:53:41+00:00",
+      "command": [
+        "bash",
+        "-e",
+        "-c",
+        "\n      bash -n scripts/dev-check.sh .githooks/pre-commit\n      bash scripts/dev-check.sh --help\n      bash scripts/dev-check.sh --pre-commit\n      bash scripts/dev-check.sh --base origin/main\n\n      eval \"$(sed -n \"/^tofu_fmt_roots=(/,/^)/p\" scripts/dev-check.sh)\"\n      eval \"$(sed -n \"/^run_tofu_fmt_checks()/,/^}/p\" scripts/dev-check.sh)\"\n      eval \"$(sed -n \"/^run_formatting_checks()/,/^}/p\" scripts/dev-check.sh)\"\n      eval \"$(sed -n \"/^stage_names=(/,/^overall_rc=0/p\" scripts/dev-check.sh)\"\n      eval \"$(sed -n \"/^run_stage()/,/^}/p\" scripts/dev-check.sh)\"\n\n      # 1. Positive real check through run_stage\n      run_stage \"fmt\" run_formatting_checks 1\n      [ \"${stage_statuses[0]}\" = \"PASS\" ]\n\n      # 2. Negative: cargo fmt fails before passing python3 and tofu\n      (\n        stage_names=(); stage_statuses=(); stage_durations=(); overall_rc=0\n        cargo() { return 42; }\n        python3() { return 0; }\n        tofu() { return 0; }\n        set +e\n        run_stage \"fmt\" run_formatting_checks 1\n        rc=$?\n        set -e\n        [ \"$rc\" -eq 42 ] && [ \"${stage_statuses[0]}\" = \"FAIL(42)\" ]\n      )\n\n      # 3. Negative: check-sql.py fails before passing tofu\n      (\n        stage_names=(); stage_statuses=(); stage_durations=(); overall_rc=0\n        cargo() { return 0; }\n        python3() { return 17; }\n        tofu() { return 0; }\n        set +e\n        run_stage \"fmt\" run_formatting_checks 1\n        rc=$?\n        set -e\n        [ \"$rc\" -eq 17 ] && [ \"${stage_statuses[0]}\" = \"FAIL(17)\" ]\n      )\n\n      # 4. Negative: first OpenTofu root fails while later roots pass\n      (\n        stage_names=(); stage_statuses=(); stage_durations=(); overall_rc=0\n        cargo() { return 0; }\n        python3() { return 0; }\n        tofu() {\n          for arg in \"$@\"; do\n            [ \"$arg\" = \"infra/gcp/nix-cache\" ] && return 23\n          done\n          return 0\n        }\n        set +e\n        run_stage \"fmt\" run_formatting_checks 1\n        rc=$?\n        run_tofu_fmt_checks\n        tofu_rc=$?\n        set -e\n        [ \"$rc\" -eq 23 ] && [ \"${stage_statuses[0]}\" = \"FAIL(23)\" ] && [ \"$tofu_rc\" -eq 23 ]\n      )\n      echo \"ALL_FAIL_CLOSED_CHECKS_PASSED\"\n    "
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "07-syntax-scoped-modes-real-fmt-and-fail-closed-run.log"
+      ],
+      "seconds": 226.9,
+      "exit": 42,
+      "ok": false,
+      "superseded": "test harness fixed to invoke run_stage inside fresh bash -e -c rather than under ||"
+    },
+    {
+      "id": 8,
+      "claim": "COD-68-4-fmt-fail-closed",
+      "label": "syntax, scoped modes, real fmt, and fail-closed run_stage negative checks",
+      "kind": "run",
+      "revision": "ae94eaab31c0b5274f42d75c11e8a4e25e6422c0",
+      "dirty": false,
+      "recorded": "2026-11-20T11:58:14+00:00",
+      "command": [
+        "bash",
+        "-e",
+        "-c",
+        "\n      bash -n scripts/dev-check.sh .githooks/pre-commit\n      bash scripts/dev-check.sh --help\n      bash scripts/dev-check.sh --pre-commit\n      bash scripts/dev-check.sh --base origin/main\n\n      eval \"$(sed -n \"/^tofu_fmt_roots=(/,/^)/p\" scripts/dev-check.sh)\"\n      eval \"$(sed -n \"/^run_tofu_fmt_checks()/,/^}/p\" scripts/dev-check.sh)\"\n      eval \"$(sed -n \"/^run_formatting_checks()/,/^}/p\" scripts/dev-check.sh)\"\n      eval \"$(sed -n \"/^stage_names=(/,/^overall_rc=0/p\" scripts/dev-check.sh)\"\n      eval \"$(sed -n \"/^run_stage()/,/^}/p\" scripts/dev-check.sh)\"\n\n      # 1. Positive real check through run_stage\n      run_stage \"fmt\" run_formatting_checks 1\n      [ \"${stage_statuses[0]}\" = \"PASS\" ]\n\n      # 2. Negative: cargo fmt fails before passing python3 and tofu\n      (\n        stage_names=(); stage_statuses=(); stage_durations=(); overall_rc=0\n        cargo() { return 42; }\n        python3() { return 0; }\n        tofu() { return 0; }\n        rc=0\n        run_stage \"fmt\" run_formatting_checks 1 || rc=$?\n        [ \"$rc\" -eq 42 ] && [ \"${stage_statuses[0]}\" = \"FAIL(42)\" ]\n      )\n\n      # 3. Negative: check-sql.py fails before passing tofu\n      (\n        stage_names=(); stage_statuses=(); stage_durations=(); overall_rc=0\n        cargo() { return 0; }\n        python3() { return 17; }\n        tofu() { return 0; }\n        rc=0\n        run_stage \"fmt\" run_formatting_checks 1 || rc=$?\n        [ \"$rc\" -eq 17 ] && [ \"${stage_statuses[0]}\" = \"FAIL(17)\" ]\n      )\n\n      # 4. Negative: first OpenTofu root fails while later roots pass\n      (\n        stage_names=(); stage_statuses=(); stage_durations=(); overall_rc=0\n        cargo() { return 0; }\n        python3() { return 0; }\n        tofu() {\n          for arg in \"$@\"; do\n            [ \"$arg\" = \"infra/gcp/nix-cache\" ] && return 23\n          done\n          return 0\n        }\n        rc=0\n        run_stage \"fmt\" run_formatting_checks 1 || rc=$?\n        tofu_rc=0\n        run_tofu_fmt_checks || tofu_rc=$?\n        [ \"$rc\" -eq 23 ] && [ \"${stage_statuses[0]}\" = \"FAIL(23)\" ] && [ \"$tofu_rc\" -eq 23 ]\n      )\n      echo \"ALL_FAIL_CLOSED_CHECKS_PASSED\"\n    "
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "08-syntax-scoped-modes-real-fmt-and-fail-closed-run.log"
+      ],
+      "seconds": 227.5,
+      "exit": 1,
+      "ok": false,
+      "superseded": "test harness fixed to invoke run_stage inside fresh bash -e -c rather than under ||"
+    },
+    {
+      "id": 9,
+      "claim": "COD-68-4-fmt-fail-closed",
+      "label": "syntax, scoped modes, real fmt, and fail-closed run_stage negative checks",
+      "kind": "run",
+      "revision": "ae94eaab31c0b5274f42d75c11e8a4e25e6422c0",
+      "dirty": false,
+      "recorded": "2026-11-20T12:03:02+00:00",
+      "command": [
+        "bash",
+        "-e"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "09-syntax-scoped-modes-real-fmt-and-fail-closed-run.log"
+      ],
+      "seconds": 226.9,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}

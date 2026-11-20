@@ -1,0 +1,17 @@
+# Fast crate-scoped formatting, Clippy, and unit test runner for local iteration.
+# Defaults to modified crates (working tree, or HEAD~1..HEAD when clean).
+# Pass --base <ref>, --all, --pre-commit (staged index only, skipping cargo test),
+# --ci (full local CI pass against an isolated disposable Postgres cluster),
+# --postgres (disposable Postgres suites only, combinable with --ci/--browser), or
+# --browser (Chromium qualification, or combined with --ci/--postgres).
+Checked 10 authored SQL files with pg_format version 5.11
+dev-check: no changed files; formatting ok.
+Checked 10 authored SQL files with pg_format version 5.11
+dev-check: no Rust crates changed; formatting ok.
+
+==> [dev-check] fmt
+Checked 10 authored SQL files with pg_format version 5.11
+expected=42 got=42
+expected=17 got=17
+expected=23 got=23
+ALL_FAIL_CLOSED_CHECKS_PASSED
