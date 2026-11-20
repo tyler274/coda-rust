@@ -89,9 +89,10 @@ try {
   await evaluate(`[...document.querySelectorAll('button')].find(b => b.innerText.trim() === 'Send').click()`);
   await until(`document.body.innerText.includes('From SQLite chart search across') && document.querySelectorAll('.message-sources button').length > 0`, 'SQLite chat answer + citation');
   await evaluate(`document.querySelector('.message-sources button').click()`);
-  await until(`!!document.querySelector('.reader.citation-inspection')`, 'citation reader open');
+  await until(`!!document.querySelector('aside.source-reading-pane')`, 'citation reader open');
   await snap('04-demo-chat-sql-citation');
-  await evaluate(`document.querySelector('.reader button')?.click()`);
+  await evaluate(`document.querySelector('aside.source-reading-pane button.source-pane-close')?.click()`);
+  await until(`!document.querySelector('aside.source-reading-pane')`, 'citation reader closed');
 
   await call('Page.reload', {});
   await until(`document.body.innerText.includes('Gary Kowalczyk')`, 'reloaded Today');
