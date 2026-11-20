@@ -11,10 +11,34 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 
-/** Notification permission for `duet-notify`. A remote token is not created here. */
+/** Notification permission, cached FCM token bridge, and sign-out alert cleanup for `duet-notify`. */
 object NotificationBridge {
     private const val prefsName = "coda.duet.notification"
     private const val askedKey = "coda.duet.notification.asked"
+    private const val tokenKey = "coda.duet.notification.fcm_token"
+
+    /** Called by the FirebaseMessagingService when Android issues or rotates an FCM token. */
+    @JvmStatic
+    fun storePushToken(context: Context, token: String) {
+        val trimmed = token.trim()
+        if (trimmed.isEmpty()) return
+        prefs(context).edit().putString(tokenKey, trimmed).apply()
+    }
+
+    @JvmStatic
+    fun pushToken(context: Context): String =
+        prefs(context).getString(tokenKey, "")?.trim().orEmpty()
+
+    @JvmStatic
+    fun clearOnSignOut(context: Context): String = try {
+        val hadToken = pushToken(context).isNotEmpty()
+        prefs(context).edit().remove(tokenKey).apply()
+        NotificationManagerCompat.from(context).cancelAll()
+        if (hadToken) "cleared_all" else "cleared_alerts_only"
+    } catch (error: Throwable) {
+        android.util.Log.e("DuetNotify", "sign-out notification cleanup failed", error)
+        ""
+    }
 
     @JvmStatic
     fun status(context: Context): String = try {

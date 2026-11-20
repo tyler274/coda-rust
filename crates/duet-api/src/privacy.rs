@@ -666,9 +666,7 @@ impl LegacyReceipt {
                     .map_err(|_| unavailable())?;
                 Ok(ValidatedLegacyOp::Retired)
             }
-            "conversation_forget" | "conversation_forget_restore" | "genome_withdraw" => {
-                Ok(ValidatedLegacyOp::Retired)
-            }
+            "conversation_forget" | "conversation_forget_restore" => Ok(ValidatedLegacyOp::Retired),
             _ => Err(ApiError::Unavailable(
                 "legacy receipt operation requires its scoped migration owner",
             )),
@@ -1178,6 +1176,7 @@ async fn apply(
                     .into_query(),
             )
             .await?;
+            let _ = crate::push::revoke_devices_before(tx, r.account_id, r.occurred_at).await?;
         }
         Restriction::DoctorNoteDelete => {
             if r.scope_id != r.account_id

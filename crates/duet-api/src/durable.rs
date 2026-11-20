@@ -43,15 +43,14 @@ impl DurableState {
             .await
     }
 }
-/// Production router. Legacy process-global shares and unauthenticated mutations are deliberately absent.
+/// Production router. Parked legacy routes (`/today-stats`, `/luna-consent`) are quarantined
+/// out of default production serving and live in [`parked_legacy_router`].
 pub fn router(state: DurableState) -> Router {
     Router::new()
         .route("/api/auth/account", get(account).put(ensure))
         .route("/api/auth/account/context", get(context))
         .route("/api/apple-health/generation", get(apple_health_generation))
         .route("/api/auth/account/terms", put(terms))
-        .route("/api/auth/account/today-stats", put(stats))
-        .route("/api/auth/account/luna-consent", put(luna))
         .route("/api/auth/privacy-restrictions", post(restrict))
         .route("/api/canonical-evidence", post(ingest).get(snapshot))
         .route("/api/canonical-evidence/exact", post(exact))
@@ -61,6 +60,15 @@ pub fn router(state: DurableState) -> Router {
                 MAX_EVIDENCE_BATCH_BYTES,
             )),
         )
+        .with_state(state)
+}
+
+/// Quarantined parked legacy account routes (`/today-stats`, `/luna-consent`).
+/// Not mounted by default; enabled only when `DUET_ENABLE_PARKED_ROUTES=1`.
+pub fn parked_legacy_router(state: DurableState) -> Router {
+    Router::new()
+        .route("/api/auth/account/today-stats", put(stats))
+        .route("/api/auth/account/luna-consent", put(luna))
         .with_state(state)
 }
 async fn state_in(

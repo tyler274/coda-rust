@@ -4,7 +4,10 @@
 //! coarse error class. They never carry error text, account or command
 //! identifiers, or conversation content.
 
-use crate::{ApiError, portals::PortalService, privacy::PrivacyStore};
+use crate::{
+    ApiError, assistant_harness::AssistantFoundationStore, database::AccountDatabase,
+    portals::PortalService, privacy::PrivacyStore,
+};
 use tracing::Instrument;
 
 /// Error class for failures reported by the database driver.
@@ -12,6 +15,7 @@ pub const DATABASE: &str = "database";
 
 const PRIVACY_RECOVERY_FAILED: &str = "duet.privacy_recovery.failed";
 const PORTAL_REFRESH_FAILED: &str = "duet.portal_refresh.failed";
+const MEMORY_RETENTION_FAILED: &str = "duet.memory_retention.failed";
 
 /// Periodically runs independent daily refreshes for due non-disconnected portal connections.
 pub async fn refresh_portals(service: PortalService) {
@@ -58,6 +62,36 @@ async fn privacy_sweep(recovery: &PrivacyStore) {
     for account in accounts {
         if let Err(e) = recovery.recover(account).await {
             failed(PRIVACY_RECOVERY_FAILED, "recover", api_error_class(&e));
+        }
+    }
+}
+
+/// Prunes superseded private memory versions older than 30 days on a periodic sweep.
+pub async fn prune_expired_memory(assistant: AssistantFoundationStore, database: AccountDatabase) {
+    let mut interval = tokio::time::interval(std::time::Duration::from_secs(300));
+    loop {
+        interval.tick().await;
+        memory_retention_sweep(&assistant, &database)
+            .instrument(tracing::info_span!(
+                "duet.memory_retention.sweep",
+                otel.status_code = tracing::field::Empty
+            ))
+            .await;
+    }
+}
+
+async fn memory_retention_sweep(assistant: &AssistantFoundationStore, database: &AccountDatabase) {
+    let accounts = match database.accounts_with_expired_memory().await {
+        Ok(accounts) => accounts,
+        Err(_) => {
+            failed(MEMORY_RETENTION_FAILED, "due", DATABASE);
+            return;
+        }
+    };
+    let now = chrono::Utc::now();
+    for account in accounts {
+        if let Err(e) = assistant.prune_expired_memory_versions(account, now).await {
+            failed(MEMORY_RETENTION_FAILED, "prune", api_error_class(&e));
         }
     }
 }

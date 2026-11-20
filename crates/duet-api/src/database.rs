@@ -93,6 +93,10 @@ const MIGRATIONS: &[(&str, &str)] = &[
         "0019_portals_and_health_connect",
         include_str!("../migrations/0019_portals_and_health_connect.sql"),
     ),
+    (
+        "0020_push_and_memory_retention",
+        include_str!("../migrations/0020_push_and_memory_retention.sql"),
+    ),
 ];
 
 fn refused(message: &str) -> sqlx::Error {
@@ -169,6 +173,8 @@ pub async fn migrate(migration_url: &str, runtime_role: &str) -> Result<(), sqlx
          grant usage, select on sequence public.canonical_evidence_revisions_revision_seq to {role}; \
          grant select,insert,update on public.duet_model_calls to {role}; \
          grant select,insert,update,delete on public.duet_conversations,public.duet_commands,public.duet_execution_records,public.duet_tool_effects,public.duet_private_memory,public.duet_conversation_events,public.duet_command_steers to {role}; \
+         grant select,insert,update,delete on public.duet_push_devices,public.duet_push_deliveries,public.duet_private_memory_versions,public.duet_ai_preferences,public.duet_harness_runs to {role}; \
+         grant select on public.duet_memory_retention_due to {role}; \
          grant usage,select on sequence public.duet_execution_records_ordinal_seq, public.duet_conversation_events_sequence_seq to {role}; \
          grant select on public.duet_pending_commands,public.health_contexts,public.follow_ups,public.insight_cycles,public.duet_follow_up_origins,public.duet_follow_up_occurrences,public.duet_follow_up_settings to {role}; \
          grant select on public.duet_legacy_privacy_accounts to {role}; \
@@ -329,6 +335,15 @@ impl AccountDatabase {
         )
         .bind(overdue_before)
         .bind(limit.clamp(1, 512))
+        .fetch_all(&self.pool)
+        .await
+    }
+
+    /// Bounded retention directory contains account identifiers only, never private memory content.
+    pub async fn accounts_with_expired_memory(&self) -> Result<Vec<Uuid>, sqlx::Error> {
+        sqlx::query_scalar(
+            "select user_id from public.duet_memory_retention_due order by user_id limit 64",
+        )
         .fetch_all(&self.pool)
         .await
     }

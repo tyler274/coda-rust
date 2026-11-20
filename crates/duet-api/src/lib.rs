@@ -7,6 +7,8 @@
     reason = "converting to errors that keep their cause"
 )]
 
+mod assistant_entity;
+pub mod assistant_harness;
 pub mod background;
 #[expect(
     clippy::disallowed_methods,
@@ -57,6 +59,8 @@ pub mod producer_routes;
     reason = "converting raw SQL to the typed database API"
 )]
 pub mod publication;
+pub mod push;
+mod push_entity;
 pub mod session;
 pub mod site;
 #[expect(
