@@ -1,0 +1,1025 @@
+
+==> [dev-check] fmt
+Checked 10 authored SQL files with pg_format version 5.11
+
+==> [dev-check] postgres-cluster
+dev-check: disposable Postgres ready on 127.0.0.1:43705 (/tmp/nix-shell.oCtNuV/coda-pg.XHFRyi)
+
+==> [dev-check] postgres-suites
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.79s
+  Executable unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/duet_api-122296b18cba71be)
+  Executable tests/database_foundation.rs (/tmp/coda-target-jobs/debug/deps/database_foundation-42b669fc73df6080)
+  Executable unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/front_door-33acb917f9738b2f)
+  Executable tests/identity.rs (/tmp/coda-target-jobs/debug/deps/identity-db4baf06ec225552)
+  Executable tests/luna_journal.rs (/tmp/coda-target-jobs/debug/deps/luna_journal-e829f89cc8566abd)
+  Executable tests/migrations.rs (/tmp/coda-target-jobs/debug/deps/migrations-49cef404278ef017)
+  Executable tests/postgres.rs (/tmp/coda-target-jobs/debug/deps/postgres-67000d95c68f0766)
+  Executable unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/local_product-3593a2ba4940c9b8)
+  Executable tests/attachments.rs (/tmp/coda-target-jobs/debug/deps/attachments-a1a19756ccf61366)
+  Executable tests/cancelled_read.rs (/tmp/coda-target-jobs/debug/deps/cancelled_read-e914ff63421f0e33)
+  Executable tests/chat_finish.rs (/tmp/coda-target-jobs/debug/deps/chat_finish-1301339359321582)
+  Executable tests/citation_layouts_postgres.rs (/tmp/coda-target-jobs/debug/deps/citation_layouts_postgres-960ff5d1bdb0c692)
+  Executable tests/concerns_postgres.rs (/tmp/coda-target-jobs/debug/deps/concerns_postgres-44c29236327dd155)
+  Executable tests/connected_care_and_filtered_chat.rs (/tmp/coda-target-jobs/debug/deps/connected_care_and_filtered_chat-51e7c8b22eb0a60a)
+  Executable tests/follow_ups_postgres.rs (/tmp/coda-target-jobs/debug/deps/follow_ups_postgres-7ec611d2a66d8148)
+  Executable tests/initial_understanding_postgres.rs (/tmp/coda-target-jobs/debug/deps/initial_understanding_postgres-ea24d2b79ca459a4)
+  Executable tests/link_correction_postgres.rs (/tmp/coda-target-jobs/debug/deps/link_correction_postgres-8c8aa4c2564a8b25)
+  Executable tests/message_followup_dispatch_reviews.rs (/tmp/coda-target-jobs/debug/deps/message_followup_dispatch_reviews-34a109d7ba60c0df)
+  Executable tests/message_review_recipe.rs (/tmp/coda-target-jobs/debug/deps/message_review_recipe-83eac49711a4f100)
+  Executable tests/patient_reviews_postgres.rs (/tmp/coda-target-jobs/debug/deps/patient_reviews_postgres-79e0b39c8a950df2)
+  Executable tests/physician_chat_mid_answer_arrivals.rs (/tmp/coda-target-jobs/debug/deps/physician_chat_mid_answer_arrivals-fb4a0a6d3057e666)
+  Executable tests/physician_chat_recipe.rs (/tmp/coda-target-jobs/debug/deps/physician_chat_recipe-1bcbc9fd23029b23)
+  Executable tests/physician_run_recovery.rs (/tmp/coda-target-jobs/debug/deps/physician_run_recovery-b3522886f64778a2)
+  Executable tests/practice_jobs_dispatch.rs (/tmp/coda-target-jobs/debug/deps/practice_jobs_dispatch-dcc86ff75083f3f6)
+  Executable tests/practice_schedule_postgres.rs (/tmp/coda-target-jobs/debug/deps/practice_schedule_postgres-3cec93178abc443e)
+  Executable tests/reply_proposals.rs (/tmp/coda-target-jobs/debug/deps/reply_proposals-798392f5e58261c0)
+  Executable tests/runtime_postgres.rs (/tmp/coda-target-jobs/debug/deps/runtime_postgres-2dda559f37c14318)
+  Executable tests/runtime_publication.rs (/tmp/coda-target-jobs/debug/deps/runtime_publication-04203253e5fdc220)
+  Executable tests/runtime_quota.rs (/tmp/coda-target-jobs/debug/deps/runtime_quota-17e6713b6fa161e1)
+  Executable tests/runtime_recovery.rs (/tmp/coda-target-jobs/debug/deps/runtime_recovery-a3eb9bb7458d22e6)
+  Executable tests/source_refresh_postgres.rs (/tmp/coda-target-jobs/debug/deps/source_refresh_postgres-6f7ebed1989eed55)
+  Executable tests/spruce_matching.rs (/tmp/coda-target-jobs/debug/deps/spruce_matching-1d6935348ed415aa)
+  Executable tests/today_updates_messages_followups.rs (/tmp/coda-target-jobs/debug/deps/today_updates_messages_followups-0ed840ca84842793)
+  Executable tests/today_updates_postgres.rs (/tmp/coda-target-jobs/debug/deps/today_updates_postgres-c2f3fbaf3f0c99ad)
+  Executable tests/visit_briefings_postgres.rs (/tmp/coda-target-jobs/debug/deps/visit_briefings_postgres-ae2c3a7b772d0e61)
+  Executable tests/withdrawal_postgres.rs (/tmp/coda-target-jobs/debug/deps/withdrawal_postgres-08061b8a7dca019a)
+  Executable unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/physician_auth-2df0145cc2dd792a)
+  Executable tests/migrations.rs (/tmp/coda-target-jobs/debug/deps/migrations-6243f295abe89690)
+  Executable tests/postgres.rs (/tmp/coda-target-jobs/debug/deps/postgres-b475472b539768fc)
+  Executable unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/physician_bus-1ff79efe7f386b55)
+  Executable tests/redis.rs (/tmp/coda-target-jobs/debug/deps/redis-64720d4ac2dc8de2)
+  Executable unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/physician_sample-5477c6929acffc62)
+  Executable unittests src/bin/physician-worker.rs (/tmp/coda-target-jobs/debug/deps/physician_worker-0139a817845a1aa0)
+  Executable tests/chat_draft.rs (/tmp/coda-target-jobs/debug/deps/chat_draft-b296141bad8c6e33)
+  Executable tests/fanout.rs (/tmp/coda-target-jobs/debug/deps/fanout-e95b05ddc9e17096)
+  Executable tests/feedback.rs (/tmp/coda-target-jobs/debug/deps/feedback-fed23be16af9486f)
+  Executable tests/front_door_postgres.rs (/tmp/coda-target-jobs/debug/deps/front_door_postgres-a6dd7721dfe1765f)
+  Executable tests/instance_loss.rs (/tmp/coda-target-jobs/debug/deps/instance_loss-19df754dd0112cb0)
+  Executable tests/migrations_postgres.rs (/tmp/coda-target-jobs/debug/deps/migrations_postgres-762edac0cdea9471)
+  Executable tests/pool_budget.rs (/tmp/coda-target-jobs/debug/deps/pool_budget-ae7dfc9facc0a467)
+  Executable tests/reply_revision.rs (/tmp/coda-target-jobs/debug/deps/reply_revision-26fb4f6c514776de)
+  Executable tests/source_check_and_reconnect.rs (/tmp/coda-target-jobs/debug/deps/source_check_and_reconnect-48cc1962cbc94689)
+  Executable tests/staff_practice_accounts.rs (/tmp/coda-target-jobs/debug/deps/staff_practice_accounts-687b8e43760c4133)
+  Executable tests/stop.rs (/tmp/coda-target-jobs/debug/deps/stop-ad28b037d705afc9)
+  Executable tests/try_again.rs (/tmp/coda-target-jobs/debug/deps/try_again-7a34ce841816373c)
+  Executable tests/worker.rs (/tmp/coda-target-jobs/debug/deps/worker-cee5b927eb9f8a58)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.52s
+     Running tests/migrations.rs (/tmp/coda-target-jobs/debug/deps/migrations-49cef404278ef017)
+
+running 1 test
+test fresh_legacy_and_co_resident ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+     Running tests/migrations.rs (/tmp/coda-target-jobs/debug/deps/migrations-6243f295abe89690)
+
+running 4 tests
+test names_are_stable_and_distinct ... ok
+test old_thirty_day_sessions_become_twelve_hours_and_updates_do_not_notify ... ok
+test postgres_fresh_upgrade_and_partial_schema_regressions ... ok
+test postgres_store_connects ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.64s
+     Running tests/migrations_postgres.rs (/tmp/coda-target-jobs/debug/deps/migrations_postgres-762edac0cdea9471)
+
+running 1 test
+test fresh_chains_and_shared_database_are_idempotent ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.52s
+     Running tests/postgres.rs (/tmp/coda-target-jobs/debug/deps/postgres-67000d95c68f0766)
+
+running 10 tests
+test the_memory_store_answers_the_same_contract ... ok
+test an_invitation_redeems_once_without_expiry_and_creates_connection ... ok
+test a_sign_in_token_verifies_once_and_mints_non_expiring_session ... ok
+test concurrent_invitation_redemption_consumes_once_and_connects_one_account ... ok
+test connected_accounts_lists_the_practice_s_active_rows ... ok
+test concurrent_sign_in_consumes_one_token_and_mints_one_session ... ok
+test multi_practice_connections_reuse_existing_account_and_reinvite_after_ending ... ok
+front-door migrations applied
+test postgres_leave_discharge_and_account_delete_preserve_ended_and_fail_closed ... ok
+front-door migrations applied
+test runtime_connection_leaves_schema_untouched_and_migration_job_reruns ... ok
+test a_database_migrated_under_the_shared_table_keeps_its_init ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+
+     Running tests/postgres.rs (/tmp/coda-target-jobs/debug/deps/postgres-b475472b539768fc)
+
+running 23 tests
+test a_practice_keeps_the_clock_it_was_created_with ... ok
+test an_invitation_redeems_once_and_a_raced_second_redeem_finds_nothing ... ok
+test postgres_create_account_rejects_attribute_mismatch_and_handles_concurrent_races ... ok
+test a_practice_read_from_a_lost_database_is_unavailable_not_empty ... ok
+test activity_inside_twelve_hours_keeps_the_session ... ok
+test duplicate_physician_ids_keep_the_earliest_account_and_its_panel ... ok
+test a_dead_sessions_note_does_not_move_expires_at ... ok
+test repeated_identity_calls_do_not_move_expires_at ... ok
+test a_sign_in_token_verifies_once_and_mints_one_session ... ok
+test a_cached_read_drops_when_another_replica_writes ... ok
+test deactivation_fences_held_sessions_and_removal_deletes_them ... ok
+test a_burst_of_notes_inside_one_quantum_persists_one_extension ... ok
+test practice_patients_resolve_clinic_demographic_and_persist_cadence_in_postgres ... ok
+test ensure_account_seeds_once_and_never_undoes_an_admin_change ... ok
+test a_patient_whose_practice_could_not_be_read_stays_with_that_practice ... ok
+test membership_denies_by_default_and_round_trips ... ok
+test panel_assignment_requires_admin_permission_in_the_same_practice ... ok
+test a_fixed_session_needs_the_exact_identity_and_ends_however_much_it_is_used ... ok
+test failed_revocations_do_not_acknowledge_or_change_access ... ok
+physician-auth migrations applied
+test continuous_activity_is_refused_seven_days_after_sign_in ... ok
+test distinct_preview_accounts_resolve_their_own_admin_flag_and_panel ... ok
+test concurrent_sign_in_consumes_one_token_and_mints_one_session ... ok
+physician-auth migrations applied
+test runtime_connection_leaves_schema_untouched_and_migration_job_reruns ... ok
+
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.39s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.67s
+     Running tests/front_door_postgres.rs (/tmp/coda-target-jobs/debug/deps/front_door_postgres-a6dd7721dfe1765f)
+
+running 2 tests
+test an_existing_account_signs_in_again_without_redeeming ... ok
+test the_practice_invite_redeems_once_on_postgres ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.57s
+     Running tests/identity.rs (/tmp/coda-target-jobs/debug/deps/identity-db4baf06ec225552)
+
+running 1 test
+test durable_identity_revocation_permissions_and_account_isolation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.55s
+     Running tests/luna_journal.rs (/tmp/coda-target-jobs/debug/deps/luna_journal-e829f89cc8566abd)
+
+running 1 test
+test transactional_withdrawal_delivery_restart_replay_and_isolation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.56s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.63s
+     Running tests/database_foundation.rs (/tmp/coda-target-jobs/debug/deps/database_foundation-dcd72acb56c40f47)
+
+running 1 test
+test fresh_and_upgrade_keep_identity_and_enforce_account_scope ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.38s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.66s
+     Running unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/duet_api-122296b18cba71be)
+
+running 1 test
+test privacy_archive::tests::gcs_transport_and_postgres_recovery_reconcile_same_receipt_after_restart ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 54 filtered out; finished in 0.09s
+
+     Running unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/front_door-33acb917f9738b2f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 20 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/local_product-3593a2ba4940c9b8)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 224 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/physician_auth-2df0145cc2dd792a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 41 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/physician_bus-1ff79efe7f386b55)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/physician_sample-5477c6929acffc62)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 109 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.71s
+     Running unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/duet_api-122296b18cba71be)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 55 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/front_door-33acb917f9738b2f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 20 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/local_product-3593a2ba4940c9b8)
+
+running 107 tests
+test runtime::tests::a_backend_ended_mid_statement_is_a_lost_connection ... ok
+test runtime::tests::a_failure_on_a_steered_attempt_leaves_the_newer_messages_allowance_whole ... ok
+test runtime::tests::a_limit_on_a_steered_attempt_leaves_the_newer_message_pending ... ok
+test runtime::tests::a_missing_table_is_the_only_failure_that_names_the_schema ... ok
+test runtime::tests::chat_drafts_save_under_a_revision_fence_for_one_physician ... ok
+test runtime::tests::chat_list_orders_by_activity_before_its_limit ... ok
+test runtime::tests::chats_list_one_physicians_workspace_by_latest_activity ... ok
+test runtime::tests::concurrent_commands_and_claims_serialize_on_the_composite_conversation_key ... ok
+test runtime::tests::corrupt_conversation_rolls_back_receipt_and_conflicts_never_overwrite_it ... ok
+test runtime::tests::currency_is_read_only_and_renewal_touches_only_the_current_chat_attempt ... ok
+test runtime::tests::deleted_history_source_is_absent_from_chords_records_and_successor_request ... ok
+test runtime::tests::engine_failure_stays_leased_until_the_lease_expires ... ok
+test runtime::tests::expired_attempt_recovery_preserves_accepted_work_and_evidence ... ok
+test runtime::tests::expired_worker_lease_is_redispatched_by_the_database_clock ... ok
+test runtime::tests::feedback_tests::each_rating_stays_on_its_own_response_across_a_fresh_store ... ok
+test runtime::tests::feedback_tests::each_save_replaces_the_rating_and_the_details ... ok
+test runtime::tests::feedback_tests::evaluation_reads_every_row_with_its_response_and_text ... ok
+test runtime::tests::feedback_tests::only_an_authorized_save_on_a_response_of_the_chat_writes ... ok
+test runtime::tests::memory_edit_tests::a_chat_run_edits_its_own_patients_memory ... ok
+test runtime::tests::memory_edit_tests::a_delete_takes_the_file_out_of_the_list_and_an_append_brings_it_back ... ok
+test runtime::tests::memory_edit_tests::a_path_to_a_log_day_or_no_memory_file_is_refused ... ok
+test runtime::tests::memory_edit_tests::a_replace_that_differs_by_a_quote_or_a_dash_is_left_out_and_the_other_edit_saves ... ok
+test runtime::tests::memory_edit_tests::a_spaced_capitalised_page_id_saves_and_reads_back_under_its_normal_path ... ok
+test runtime::tests::memory_edit_tests::a_write_saves_the_edits_that_apply_and_names_each_edit_left_out ... ok
+test runtime::tests::memory_edit_tests::a_write_where_no_edit_applies_saves_no_version ... ok
+test runtime::tests::memory_edit_tests::the_line_as_read_with_its_bullet_names_its_place_and_a_shared_tag_names_both_lines ... ok
+test runtime::tests::memory_edit_tests::the_one_tool_edits_each_kind_of_file_and_gives_one_result ... ok
+test runtime::tests::memory_tests::a_call_saves_one_version_when_an_edit_applied_and_none_when_none_did ... ok
+test runtime::tests::memory_tests::a_chat_host_answers_a_saved_notes_outcome_and_adds_nothing ... ok
+test runtime::tests::memory_tests::a_chat_note_is_its_words_and_its_result_gives_its_number_and_day ... ok
+test runtime::tests::memory_tests::a_conversation_starts_with_only_its_own_patients_memory ... ok
+test runtime::tests::memory_tests::a_conversation_starts_with_the_summary_the_direction_and_the_newest_notes ... ok
+test runtime::tests::memory_tests::a_deleted_file_leaves_the_list_and_search_keeps_its_versions_and_comes_back_with_a_create ... ok
+test runtime::tests::memory_tests::a_deleted_summary_leaves_the_memory_a_conversation_starts_with ... ok
+test runtime::tests::memory_tests::a_note_keeps_its_stamp_across_a_new_connection_and_a_repeat_adds_nothing ... ok
+test runtime::tests::memory_tests::a_note_keeps_the_quote_it_was_given ... ok
+test runtime::tests::memory_tests::a_notes_origin_is_the_newest_message_of_its_steered_work ... ok
+test runtime::tests::memory_tests::a_patient_with_no_summary_direction_or_note_starts_with_no_memory ... ok
+test runtime::tests::memory_tests::a_summary_over_its_start_budget_is_cut_at_a_line_end_and_points_to_the_rest ... ok
+test runtime::tests::memory_tests::a_write_applies_to_the_current_file_two_at_once_both_land_and_earlier_versions_stay_readable ... ok
+test runtime::tests::memory_tests::another_practice_or_patient_reads_and_writes_nothing_of_this_patient ... ok
+test runtime::tests::memory_tests::memory_as_a_conversation_started_leaves_out_what_was_saved_after_it ... ok
+test runtime::tests::memory_tests::notes_added_at_the_same_time_each_take_a_place_and_one_call_saves_one_note ... ok
+test runtime::tests::memory_tests::notes_over_their_start_budget_load_newest_first_whole_with_the_count_and_days_of_the_rest ... ok
+test runtime::tests::memory_tests::physician_correction_note_is_cited_with_message_provenance_and_never_approves_earlier_reading ... ok
+test runtime::tests::memory_tests::physician_memory_view_exposes_only_summary_and_direction_and_edits_save_notes_folded_by_rounds ... ok
+test runtime::tests::memory_tests::reply_feedback_for_evaluation_exports_instructions_draft_edits_and_copies ... ok
+test runtime::tests::memory_tests::search_matches_every_word_of_a_line_in_each_file_that_exists_and_the_log ... ok
+test runtime::tests::migration_tests::a_second_migrate_records_nothing_new ... ok
+test runtime::tests::migration_tests::conversation_activity_migration_backfills_later_of_open_and_last_activity ... ok
+test runtime::tests::migration_tests::leftover_runtime_tables_fail_the_migration_and_record_nothing ... ok
+test runtime::tests::migration_tests::physician_newest_twenty_five_conversations_plan_uses_activity_index ... ok
+test runtime::tests::migration_tests::sending_message_and_publishing_reply_both_advance_activity_column_and_order ... ok
+test runtime::tests::migration_tests::source_pull_missing_candidates_migration_refuses_down_rollback ... ok
+test runtime::tests::old_receipts_reduce_to_a_digest_that_still_answers_duplicates ... ok
+test runtime::tests::pending_keyset_orders_all_scope_keys_and_filters_terminal_and_live_work ... ok
+test runtime::tests::queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners ... ok
+test runtime::tests::queue_signals_count_due_and_failed_work_and_age_the_oldest ... ok
+test runtime::tests::read_snapshot::successive_chat_work_reuses_frozen_recipe_and_package ... ok
+test runtime::tests::repeated_failures_end_the_input_as_failed_until_resume_or_new_input ... ok
+test runtime::tests::reply_tests::a_replaced_revision_attempt_has_lost_the_work_at_every_write_fence ... ok
+test runtime::tests::reply_tests::a_save_then_a_new_instruction_withdraws_the_running_attempt_and_the_instruction_runs_next ... ok
+test runtime::tests::reply_tests::a_saved_draft_withdraws_the_revision_at_every_write_fence ... ok
+test runtime::tests::reply_tests::authorized_opening_is_idempotent_scoped_and_fenced_by_authority ... ok
+test runtime::tests::reply_tests::earlier_revisions_read_in_archive_order_not_key_order ... ok
+test runtime::tests::reply_tests::held_revision_saves_one_limit_outcome_with_its_visible_status ... ok
+test runtime::tests::reply_tests::late_evidence_for_an_archived_attempt_joins_its_history_and_never_publishes ... ok
+test runtime::tests::reply_tests::reply_acceptance_is_scoped_idempotent_and_claimed_once ... ok
+test runtime::tests::reply_tests::reply_history_keeps_completed_attempts_append_only ... ok
+test runtime::tests::reply_tests::reply_publication_requires_evidence_authority_and_current_revision ... ok
+test runtime::tests::reply_tests::revision_billing_record_atomically_ends_automatic_recovery ... ok
+test runtime::tests::response_tests::each_published_reply_keeps_its_response_id_across_a_fresh_store ... ok
+test runtime::tests::response_tests::each_saved_message_keeps_the_database_clock_of_its_own_save ... ok
+test runtime::tests::response_tests::try_again_refuses_another_physician_or_practice ... ok
+test runtime::tests::rounds_tests::a_conversation_after_a_finished_run_starts_with_only_the_notes_saved_since_it_started ... ok
+test runtime::tests::rounds_tests::a_conversation_that_started_before_a_run_finished_keeps_its_message ... ok
+test runtime::tests::rounds_tests::a_finished_run_saves_one_rounds_mark_that_its_log_day_shows_in_time_order ... ok
+test runtime::tests::rounds_tests::a_note_saved_while_a_run_is_under_way_is_new_to_the_next_conversation_and_the_next_rounds ... ok
+test runtime::tests::rounds_tests::a_run_a_limit_stops_ends_not_finished_and_keeps_what_it_saved ... ok
+test runtime::tests::rounds_tests::a_run_opens_with_its_memory_then_when_rounds_last_finished_today_and_the_notes_since ... ok
+test runtime::tests::rounds_tests::a_run_that_folds_notes_into_a_page_the_direction_and_the_summary_ends_finished ... ok
+test runtime::tests::rounds_tests::a_run_whose_provider_fails_after_an_edit_keeps_the_edit_and_the_next_run_sees_the_same_notes ... ok
+test runtime::tests::rounds_tests::a_run_with_nothing_new_changes_no_file_but_logs_its_mark_and_cannot_add_a_note ... ok
+test runtime::tests::source_tests::a_chart_delivery_is_one_version_and_retains_missing_records ... ok
+test runtime::tests::source_tests::a_chart_delivery_says_what_the_source_holds_now ... ok
+test runtime::tests::source_tests::a_correction_replaces_the_pinned_revision_and_keeps_the_old_one_on_record ... ok
+test runtime::tests::source_tests::a_later_pull_replaces_only_that_sources_last_pull ... ok
+test runtime::tests::source_tests::a_record_comes_back_with_its_type_dates_and_readable_parts ... ok
+test runtime::tests::source_tests::a_record_missing_from_a_later_pull_stays_saved_and_is_recorded_missing ... ok
+test runtime::tests::source_tests::a_source_arriving_mid_revision_must_be_read_before_publication ... ok
+test runtime::tests::source_tests::a_source_change_after_a_lost_revision_reaches_the_model_before_its_saved_finish ... ok
+test runtime::tests::source_tests::concurrent_conflicting_revisions_cannot_redefine_identity ... ok
+test runtime::tests::source_tests::currency_is_read_only_and_renewal_touches_only_the_current_revision_attempt ... ok
+test runtime::tests::source_tests::filed_fhir_record_envelope_round_trips_through_postgres_unchanged ... ok
+test runtime::tests::source_tests::heartbeat_renewal_does_not_deadlock_when_fenced_delivery_waits_on_database_lock ... ok
+test runtime::tests::source_tests::ingestion_racing_a_commit_is_caught_or_lands_after_it_never_lost ... ok
+test runtime::tests::source_tests::ingestion_waits_for_a_commit_holding_the_source_lock ... ok
+test runtime::tests::source_tests::restart_imports_do_not_rollback_corrections_or_restore_withdrawals ... ok
+test runtime::tests::source_tests::retained_model_context_requires_new_sources_after_a_no_dispatch_successor ... ok
+test runtime::tests::source_tests::retries_pin_the_newest_sources_and_duplicates_keep_the_original_pin ... ok
+test runtime::tests::source_tests::source_identity_conflicts_are_refused_throughout_history ... ok
+test runtime::tests::source_tests::table_filed_delivery_reconciles_legacy_unprefixed_aliases_and_keeps_omitted_legacy_records ... ok
+test runtime::tests::source_tests::unchanged_imports_keep_the_version_and_changes_append ... ok
+test runtime::tests::stop_holds_the_named_work_until_resume_and_refuses_a_late_commit ... ok
+test runtime::tests::stop_then_a_new_message_withdraws_the_running_attempt_and_the_message_runs_next ... ok
+test runtime::tests::stop_withdraws_the_running_attempt_and_a_new_message_supersedes_it ... ok
+test runtime::tests::try_again_resumes_only_the_named_failed_run_and_never_completed_work ... ok
+
+test result: ok. 107 passed; 0 failed; 0 ignored; 0 measured; 117 filtered out; finished in 52.00s
+
+     Running unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/physician_auth-2df0145cc2dd792a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 41 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/physician_bus-1ff79efe7f386b55)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/coda-target-jobs/debug/deps/physician_sample-5477c6929acffc62)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 109 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.55s
+     Running tests/runtime_postgres.rs (/tmp/coda-target-jobs/debug/deps/runtime_postgres-2dda559f37c14318)
+
+running 15 tests
+test a_read_recorded_after_a_steer_is_retained_by_the_successor ... ok
+test a_starting_fresh_window_can_open_an_earlier_runs_note ... ok
+test a_steered_run_that_reaches_its_limit_keeps_the_partial_answer ... ok
+test accepted_input_ids_survive_interruption_and_identical_message_text ... ok
+test archive_restore_busy_refusal_and_auto_unarchive_in_postgres ... ok
+test durable_acceptance_dedup_tenants_successor_and_engine_commit ... ok
+test event_ack_stop_steering_and_late_candidate_fences ... ok
+test exhausted_provider_credit_holds_chat_atomically_before_worker_settlement ... ok
+test explicit_retry_keeps_fresh_allowance_and_original_input_across_two_claims ... ok
+test first_final_without_a_result_rearms_the_exact_admitted_recipe ... ok
+test history_cursor_pages_preserve_exact_authored_messages ... ok
+test reclaimed_hosted_chat_cannot_reset_the_request_limit ... ok
+test resume_after_stop_does_not_replay_an_unpublished_answer_as_visible ... ok
+test successor_publishes_retained_paid_answer_without_redispatch_or_duplicate_partial ... ok
+test successor_replaces_the_abandoned_draft_and_reuses_the_confirmed_read ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 23.28s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.57s
+waiting for server to start.... done
+server started
+     Running isolated restart (/tmp/coda-target-jobs/debug/deps/runtime_postgres-2dda559f37c14318)
+
+running 1 test
+waiting for server to shut down.... done
+server stopped
+waiting for server to start.... done
+server started
+test database_crash_restart_retains_acknowledged_command_and_event ... ok
+
+successes:
+
+successes:
+    database_crash_restart_retains_acknowledged_command_and_event
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.47s
+
+waiting for server to shut down.... done
+server stopped
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.59s
+     Running tests/runtime_publication.rs (/tmp/coda-target-jobs/debug/deps/runtime_publication-04203253e5fdc220)
+
+running 3 tests
+test a_terminal_turn_without_a_lone_finish_is_refused_and_publishes_nothing ... ok
+test only_the_finished_answer_is_published ... ok
+test publication_wins_revocation_or_expires_while_holding_authority ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.96s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.52s
+     Running tests/runtime_recovery.rs (/tmp/coda-target-jobs/debug/deps/runtime_recovery-a3eb9bb7458d22e6)
+
+running 2 tests
+test auth_revocation_and_publication_use_conflicting_real_row_locks ... ok
+test restart_dispatches_original_session_without_new_input_and_holds_stop ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.12s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.56s
+     Running tests/runtime_quota.rs (/tmp/coda-target-jobs/debug/deps/runtime_quota-17e6713b6fa161e1)
+
+running 1 test
+test provider_cooldown_is_shared_monotonic_and_survives_reconnection ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.05s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.56s
+     Running tests/chat_finish.rs (/tmp/coda-target-jobs/debug/deps/chat_finish-1301339359321582)
+
+running 26 tests
+test a_complete_finish_saves_marks_places_and_basis ... ok
+test a_description_of_a_cited_source_is_saved_with_its_version ... ok
+test a_finish_at_the_run_limit_keeps_text_only ... ok
+test a_finish_without_its_parts_or_alone_is_refused_every_time ... ok
+test a_label_no_read_gave_is_refused_by_name_and_a_quote_never_is ... ok
+test a_label_read_before_a_fresh_window_is_saved_without_a_place ... ok
+test a_label_whose_read_returned_no_record_is_refused_by_name ... ok
+test a_label_with_no_quote_is_saved_as_a_citation_of_its_version ... ok
+test a_labelled_read_stays_inside_max_result_bytes ... ok
+test a_passage_keeps_its_record_label ... ok
+test a_provider_block_after_a_refused_finish_saves_nothing ... ok
+test a_quote_saves_every_place_its_words_occur ... ok
+test a_quote_with_a_changed_letter_or_case_is_saved_without_a_place ... ok
+test a_record_from_a_source_that_is_not_fhir_is_cited_by_its_version_and_place ... ok
+test a_restart_between_refused_finishes_gives_the_same_decision ... ok
+test a_steer_keeps_labels_and_refusals_of_the_work ... ok
+test cites_none_is_read_only_when_no_label_is_written ... ok
+test hint_other_is_cited_from_its_persisted_native_record_with_read_limits ... ok
+test marks_and_quotes_of_other_counts_each_take_every_quote ... ok
+test one_mark_holds_every_quote_of_its_label ... ok
+test one_quote_serves_every_mark_of_its_label ... ok
+test only_the_first_description_of_a_cited_source_is_kept ... ok
+test read_results_carry_labels ... ok
+test spacing_and_invisible_characters_never_count_in_a_quote ... ok
+test stop_before_an_accepted_finish_saves_nothing ... ok
+test the_third_finish_saves_valid_marks_and_drops_the_bad_one ... ok
+
+test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 14.51s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.54s
+     Running tests/cancelled_read.rs (/tmp/coda-target-jobs/debug/deps/cancelled_read-e914ff63421f0e33)
+
+running 2 tests
+test a_cancelled_display_read_keeps_no_later_write_uncommitted ... ok
+test a_cancelled_display_read_leaves_the_next_read_working ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.56s
+     Running tests/concerns_postgres.rs (/tmp/coda-target-jobs/debug/deps/concerns_postgres-44c29236327dd155)
+
+running 3 tests
+test once_only_commands_and_unauthorized_physicians_cannot_read_or_change_concerns ... ok
+test raise_revise_and_retire_through_concern_tool_survives_restart_and_populates_updates ... ok
+test shared_patient_done_clears_concern_for_both_physicians_and_saves_evaluation_feedback ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.43s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.54s
+     Running tests/practice_jobs_dispatch.rs (/tmp/coda-target-jobs/debug/deps/practice_jobs_dispatch-dcc86ff75083f3f6)
+
+running 13 tests
+test assignment_skills_are_preloaded_at_start_and_recorded_on_run_record ... ok
+test baseline_chart_registered_patient_skips_first_review_until_records_change_or_periodic_due ... ok
+test direct_push_delivery_respects_active_retry_backoff_dispatch_after ... ok
+test existing_stop_and_resume_controls_hold_and_resume_practice_run_on_background_lane ... ok
+test operator_endpoints_read_and_update_cadence_and_failed_check_isolates_per_patient ... ok
+test operator_sets_practice_cadence_for_existing_and_new_patients ... ok
+test practice_job_recipe_keeps_clean_model_text_and_valid_skill_tools ... ok
+test practice_job_runs_without_physician_session_reads_only_practice_chart_and_saves_result ... ok
+test practice_run_refuses_physician_actions_and_attributes_effects_to_practice_and_job ... ok
+test single_cadence_owner_unaffected_by_billing_and_duet_connection_changes ... ok
+test stop_between_source_check_and_review_start_then_replay_creates_one_review_request ... ok
+test unavailable_practice_patients_fails_dispatch_reads_and_wakeups_instead_of_reading_empty ... ok
+test wakeup_evaluates_unchanged_changed_and_periodic_reviews_with_daily_weekly_defaults ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.12s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.55s
+     Running tests/source_refresh_postgres.rs (/tmp/coda-target-jobs/debug/deps/source_refresh_postgres-6f7ebed1989eed55)
+
+running 4 tests
+test ac1_refresh_tool_refreshes_right_patient_and_source_and_later_read_returns_new_versions ... ok
+test ac2_mixed_source_refresh_names_both_records_failure_status_and_keeps_last_good_records ... ok
+test ac3_retry_after_interrupted_source_check_saves_each_result_once_and_rechecks_patient_access ... ok
+test refresh_tool_and_job_recipe_have_clean_model_text ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.78s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.56s
+     Running tests/practice_schedule_postgres.rs (/tmp/coda-target-jobs/debug/deps/practice_schedule_postgres-3cec93178abc443e)
+
+running 5 tests
+test ac1_matches_linked_patients_keeps_unmatched_visible_and_never_adds_to_roster ... ok
+test ac2_reschedule_and_cancel_update_saved_versions_with_idempotent_replay ... ok
+test ac2_restart_mid_read_and_mid_transaction_loses_and_duplicates_nothing ... ok
+test ac3_failed_read_keeps_last_good_schedule_and_time_and_first_failure_is_unavailable ... ok
+test ac3_partial_read_keeps_delivered_and_prior_visits_and_names_what_failed ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.55s
+     Running tests/physician_run_recovery.rs (/tmp/coda-target-jobs/debug/deps/physician_run_recovery-b3522886f64778a2)
+
+running 10 tests
+test ac1_chat_mid_run_restart_reconciles_saved_effects_and_unknown_calls_into_one_reply ... ok
+test ac1_practice_job_mid_run_restart_resumes_in_new_attempt_with_one_result_and_no_repeated_effects ... ok
+test ac2_effects_commit_before_reply_and_run_commits_before_acknowledgment ... ok
+test ac2_storage_failure_after_model_call_reuses_paid_output_in_run_and_across_attempts ... ok
+test ac3_concurrent_chat_and_background_job_run_simultaneously_without_interference ... ok
+test ac3_context_change_draft_edit_and_lost_access_block_stale_output ... ok
+test ac3_steering_drains_started_tool_skips_unstarted_discards_draft_and_blocks_stale_output ... ok
+test ac3_stop_cancels_without_waiting_for_running_tool_while_interruption_stays_auto_recoverable ... ok
+test ac4_source_failure_and_mid_refresh_interruption_leave_chat_and_job_recoverable ... ok
+test ac4_used_up_credits_lost_access_and_retryable_interruption_read_distinctly ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.31s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.53s
+     Running tests/patient_reviews_postgres.rs (/tmp/coda-target-jobs/debug/deps/patient_reviews_postgres-79e0b39c8a950df2)
+
+running 12 tests
+test clinical_cases_urgent_abnormal_nonurgent_change_conflicting_sources_and_normal_quiet_review ... ok
+test corrected_evidence_revises_outputs_missing_sources_stay_explicit_limits_and_medication_stays_unapproved_consideration ... ok
+test dispatch_changed_periodic_and_physician_reviews_reach_model_with_recipe_and_discoverable_capabilities ... ok
+test mid_run_record_correction_blocks_old_version_and_interrupted_action_is_not_repeated ... ok
+test new_review_supersedes_incomplete_review_withdrawn_records_fence_recovery_and_completed_sources_baseline_tracks_mid_run_refresh ... ok
+test patient_review_recipe_and_tools_have_clean_model_text_and_valid_skill_tool_references ... ok
+test periodic_reassessment_respects_prior_decisions_avoids_duplicate_alerts_and_updates_memory_only_when_warranted ... ok
+test practice_authority_enforced_on_reads_and_stop_atomic_rearm_steering_fences_and_understanding_tool_boundary ... ok
+test provider_blocked_hold_preserves_refusal_and_reason_instead_of_stopped ... ok
+test real_tool_operations_persist_across_restart_and_quiet_saves_nothing_to_do ... ok
+test saved_review_records_metadata_keeps_unknown_usage_unknown_and_feeds_later_review_reads ... ok
+test stop_holds_across_restart_resume_and_try_again_refresh_evidence_and_new_input_access_loss_or_correction_block_stale_completion ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 16.90s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.54s
+     Running tests/visit_briefings_postgres.rs (/tmp/coda-target-jobs/debug/deps/visit_briefings_postgres-ae2c3a7b772d0e61)
+
+running 12 tests
+test ac1_five_synthetic_visits_select_which_to_prepare_and_when_with_grounded_reasons ... ok
+test ac2_save_and_reopen_briefing_across_restart_with_citations_orientation_and_visit_time_binding ... ok
+test ac3_cancelled_or_moved_visit_ends_unfinished_work_and_retains_completed_briefing_as_history ... ok
+test ac3_failed_refresh_missing_and_conflicting_evidence_preserve_records_and_refuse_accepted_care ... ok
+test ac3_mid_run_record_change_refuses_stale_completion_and_brings_current_evidence_back ... ok
+test ac4_no_preparation_starts_after_visit_ends_and_exhausted_retries_show_could_not_finish ... ok
+test ac5_scheduled_wakeup_prepares_tomorrow_visit_over_responses_http_and_recovers_interrupted_run_once ... ok
+test ac6_visit_concern_lifecycle_distinguishes_none_ordinary_today_and_urgent_now ... ok
+test closed_prior_concern_refusal_and_selection_scope_isolation ... ok
+test later_input_after_ready_briefing_never_reselects_or_rewrites_briefing ... ok
+test mid_run_withdrawal_recorrection_reselection_and_wake_idempotence ... ok
+test pre_preparation_checks_sources_before_starting_and_failed_refresh_does_not_block ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.61s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.56s
+     Running tests/today_updates_postgres.rs (/tmp/coda-target-jobs/debug/deps/today_updates_postgres-c2f3fbaf3f0c99ad)
+
+running 5 tests
+test ac1_every_producer_kind_reaches_the_right_list_collapses_unhandled_per_patient_and_hands_off_on_done ... ok
+test ac2_seen_state_is_saved_per_physician_survives_restart_and_changed_item_returns_as_new_with_what_changed ... ok
+test ac3_physician_sees_only_authorized_patients_including_after_access_changes ... ok
+test ac4_majority_source_failure_two_of_three_reports_practice_outage ... ok
+test ac4_partial_producer_failure_practice_source_outage_collapse_and_empty_completeness_rule ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.34s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.55s
+     Running tests/spruce_matching.rs (/tmp/coda-target-jobs/debug/deps/spruce_matching-1d6935348ed415aa)
+
+running 10 tests
+test fifteen_minute_fallback_join_siblings_leave_unlinked_channel_lifecycle_moves_isolation_and_review_inputs ... ok
+test live_fake_spruce_sync_handles_attachments_transients_revocation_and_outbound ... ok
+test live_openai_spruce_matching_smoke_when_authorized ... ok
+test matching_recipe_model_text_is_hygienic_and_excludes_all_chart_and_physician_tools ... ok
+test matching_recipe_runs_on_background_lane_records_provenance_and_handles_synthetic_cases_and_this_is_a_patient ... ok
+test rule_4_auto_links_only_on_uncontradicted_unique_identity_and_enforces_access_without_scores ... ok
+test spruce_release_fence_halts_filing_on_rollback_until_explicit_resolution ... ok
+test urgent_unmatched_message_stays_unlinked_cannot_read_charts_and_confirm_replay_emits_one_review ... ok
+test wrong_patient_undo_allows_any_authorized_physician ... ok
+test wrong_patient_undo_boundaries_access_redaction_multi_participant_recovery_no_match_and_event_replay ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.54s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.57s
+     Running tests/reply_proposals.rs (/tmp/coda-target-jobs/debug/deps/reply_proposals-798392f5e58261c0)
+
+running 9 tests
+test ac1_saves_proposal_basis_verified_citations_and_survives_restart_without_duplicate ... ok
+test ac2_fences_stale_conversation_and_source_reads_and_runs_selected_draft_revision ... ok
+test ac3_practice_message_partial_closures_both_singletons_automatic_refusal_history_and_concerns ... ok
+test ac4_moves_withhold_reply_fence_old_work_retire_not_patient_concerns_and_handle_disconnect ... ok
+test ac5_ask_coda_edge_cases_empty_thread_active_review_handoff_and_answered_only_thread ... ok
+test ac5_no_reply_would_help_ask_coda_waiting_or_queuing_undo_window_and_copy_attribution ... ok
+test ac6_two_physicians_isolated_drafts_update_offer_named_senders_late_older_msg_and_access ... ok
+test ac7_deduplicates_wakes_and_restart_requires_full_reread_without_duplicate_review ... ok
+test citations_code21_basis_and_limitations_never_appears_in_draft_text_or_copied_reply ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 1.31s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.55s
+     Running tests/follow_ups_postgres.rs (/tmp/coda-target-jobs/debug/deps/follow_ups_postgres-7ec611d2a66d8148)
+
+running 11 tests
+test create_through_tool_change_through_operation_restart_and_once_only_idempotency ... ok
+test p5_ac1_unified_stop_holds_running_review_and_resume_releases_both ... ok
+test p5_ac2_exhausted_followup_review_marks_cannot_restart_and_done_refuses_silent_dismiss ... ok
+test p5_ac3_starting_contexts_include_active_and_cancelled_and_block_unjustified_recreation ... ok
+test p5_ac4_chat_follow_up_tools_list_stop_resume_review_now_and_change_supersedes_old_review ... ok
+test p5_ac5_concern_done_and_conversation_archive_leave_active_follow_ups_untouched ... ok
+test production_patient_review_and_physician_chat_hosts_offer_and_execute_follow_up_tool ... ok
+test removing_wrong_patient_message_holds_back_derived_follow_ups_and_pending_actions_without_touching_unrelated_follow_ups ... ok
+test review_outcomes_commit_durability_probe_and_unauthorized_physician_refusal ... ok
+test stop_holds_follow_up_and_resume_or_review_now_marks_current_version_due ... ok
+test terminal_follow_ups_never_reopen_and_cannot_restart_offers_physician_choices_without_auto_restart ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 2.81s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.55s
+     Running tests/withdrawal_postgres.rs (/tmp/coda-target-jobs/debug/deps/withdrawal_postgres-08061b8a7dca019a)
+
+running 3 tests
+test ac1_and_ac2_wrong_patient_withdrawal_marks_memory_and_summary_entered_in_error_preserves_audit_and_fences_late_or_replayed_writes ... ok
+test ac3_starting_contexts_exclude_withdrawn_memory_and_summary_and_record_withdrawal_boundary_including_when_only_revision_withdrawn ... ok
+test ac4_wrong_patient_withdrawal_holds_back_affected_concerns_fences_stale_runs_and_preserves_unrelated_concerns_and_audit ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 3.15s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.52s
+     Running tests/attachments.rs (/tmp/coda-target-jobs/debug/deps/attachments-a1a19756ccf61366)
+
+running 1 test
+test corrected_document_in_postgres_creates_new_version_while_existing_citations_reopen_exact_v1_page ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 9 filtered out; finished in 1.10s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.67s
+     Running tests/staff_practice_accounts.rs (/tmp/coda-target-jobs/debug/deps/staff_practice_accounts-687b8e43760c4133)
+
+running 6 tests
+test new_practice_starts_with_zero_patients_and_enforces_strict_cross_practice_isolation ... ok
+test practice_time_zone_and_account_conflict_guards_hold_across_routes ... ok
+test source_setup_persists_across_postgres_restarts_and_gates_simulation_to_synthetic_practices ... ok
+test staff_creates_deactivates_and_reactivates_physician_with_immediate_session_revocation ... ok
+test staff_creates_synthetic_practice_and_invited_physician_completes_hosted_sign_in ... ok
+test staff_routes_fail_closed_when_unset_short_or_unauthorized ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.05s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.63s
+     Running tests/source_check_and_reconnect.rs (/tmp/coda-target-jobs/debug/deps/source_check_and_reconnect-48cc1962cbc94689)
+
+running 8 tests
+test check_and_reconnect_flow_preserves_last_good_read_and_collapses_practice_outage_over_http ... ok
+test check_and_reconnect_routes_propagate_enrollment_failures_as_500_and_repair_on_retry ... ok
+test local_proof_mode_endpoint_is_absent_when_local_proof_is_disabled ... ok
+test newly_linked_pull_less_source_standing_projects_on_identified_workspace_without_enrolling_unidentified ... ok
+test off_panel_colleague_sees_practice_outage_without_patient_failure_strings_and_reconnect_command_is_idempotent ... ok
+test post_connections_reconnect_requires_key_replays_after_500_and_deduplicates_across_instances ... ok
+test pre_checkpoint_interrupted_reconnect_recovers_original_receipt_across_fresh_synthetic_charts_instance ... ok
+test spruce_source_setup_delegates_to_runtime_and_surfaces_rollback_halt ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.99s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.55s
+     Running tests/link_correction_postgres.rs (/tmp/coda-target-jobs/debug/deps/link_correction_postgres-8c8aa4c2564a8b25)
+
+running 8 tests
+test ac1_patient_access_enforced_on_link_move_undo_and_direct_reads ... ok
+test ac2_move_immediately_withholds_sources_saved_outputs_and_exact_citations_dedupes_commands_and_marks_entered_in_error_without_deletion ... ok
+test ac3_undo_window_returns_to_first_patient_includes_mid_window_arrivals_chains_moves_and_cancels_on_move_back ... ok
+test ac4_failed_removal_leaves_correction_unfinished_unavailable_with_reason_blocks_restoration_and_recovers_without_duplicate_reviews ... ok
+test ac5_standing_move_withdraws_memory_understanding_concerns_follow_ups_withholds_reply_preserves_draft_identity_and_handled_messages_and_not_a_patient_closes_reply_and_concern ... ok
+test link_correction_types_and_withholding_notices_preserve_causes_and_clean_model_text ... ok
+test round1_unified_spruce_settlement_inflight_chat_doc_page_and_summary_concern_withholding ... ok
+test today_updates_and_item_reopen_fence_wrong_patient_artifacts_and_tombstones_across_undo_and_settled ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.10s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.56s
+     Running tests/message_followup_dispatch_reviews.rs (/tmp/coda-target-jobs/debug/deps/message_followup_dispatch_reviews-34a109d7ba60c0df)
+
+running 10 tests
+test direct_spruce_receiver_handoff_admits_message_review_without_duplicate_wake_and_classifies_senders ... ok
+test due_follow_up_starts_one_review_of_current_version_while_held_completed_cancelled_start_none ... ok
+test end_to_end_sse_dispatch_executes_message_followup_and_combined_reviews_once_and_saves_reply_drafts ... ok
+test lab_correction_retires_stale_ready_reply_preserving_physician_draft ... ok
+test linked_message_and_record_change_coalesce_into_single_review ... ok
+test linked_message_arrival_starts_one_review_with_reason_message ... ok
+test message_and_follow_up_review_recipe_and_tools_have_clean_model_text ... ok
+test reply_review_fence_releases_on_quiet_completion_and_preserves_non_patient_wakes_on_supersession ... ok
+test stop_holds_follow_up_review_across_restart_and_worker_replay ... ok
+test stopped_follow_up_review_remains_held_when_later_patient_inputs_admit_new_review ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.37s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.55s
+     Running tests/message_review_recipe.rs (/tmp/coda-target-jobs/debug/deps/message_review_recipe-83eac49711a4f100)
+
+running 15 tests
+test ac1_linked_message_and_coalesced_result_runs_on_background_lane_with_preloads_and_discoveries ... ok
+test ac2_multimodal_photo_paged_pdf_fax_unreadable_limit_and_medication_refresh_discipline ... ok
+test ac3_four_clinical_cases_routine_nonurgent_concern_urgent_emergency_and_no_reply ... ok
+test ac4_longitudinal_memory_and_follow_up_updates_carry_into_later_run_preserving_siblings_and_no_change ... ok
+test ac5_physician_reply_revision_reconsiders_moved_sources_preserves_concurrent_physician_edit_and_fences_tools ... ok
+test ac6_already_handled_automatic_vs_real_partial_closures_ask_coda_copy_and_close_orthogonality ... ok
+test ac7_end_to_end_synthetic_spruce_webhook_match_link_review_surfaces_evidence_reopen_and_later_update ... ok
+test live_chart_reread_enforced_for_lab_values_and_no_reply_would_help ... ok
+test live_openai_message_review_smoke ... ignored, requires CODA_ALLOW_MODEL_CALLS=1, live OPENAI_API_KEY, and PHYSICIAN_RUNTIME_TEST_DATABASE_URL
+test message_review_sanitizes_untrusted_channel_text_without_altering_clinical_thresholds ... ok
+test recipe_and_reply_revision_guidance_are_clean_and_enforce_tool_boundaries ... ok
+test round1_failed_or_held_default_review_id_restarts_cleanly_on_retry ... ok
+test round1_mid_run_conversation_and_source_updates_keep_product_message_id_and_clear_refused_staged_submission ... ok
+test round1_reply_revision_includes_linked_conversation_reconsiders_new_messages_and_records_tool_names ... ok
+test round1_withdrawn_wrong_patient_candidates_excluded_from_message_review_and_reply_revision ... ok
+
+test result: ok. 14 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 21.03s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.57s
+     Running tests/today_updates_messages_followups.rs (/tmp/coda-target-jobs/debug/deps/today_updates_messages_followups-0ed840ca84842793)
+
+running 3 tests
+test channel_sender_display_disconnected_done_with_open_concern_and_message_seen_snapshots ... ok
+test each_message_and_follow_up_kind_reaches_the_right_list_with_item_open_and_done ... ok
+test practice_message_does_not_clear_reply_row_until_both_reply_and_concern_are_handled ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.45s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.53s
+     Running tests/citation_layouts_postgres.rs (/tmp/coda-target-jobs/debug/deps/citation_layouts_postgres-960ff5d1bdb0c692)
+
+running 1 test
+test citation_layouts_persist_validate_and_drive_readback_without_dropping_or_synthesizing ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.54s
+     Running tests/connected_care_and_filtered_chat.rs (/tmp/coda-target-jobs/debug/deps/connected_care_and_filtered_chat-51e7c8b22eb0a60a)
+
+running 5 tests
+test cod61_cod62_origin_ehr_duplicates_and_post_join_correction_fences ... ok
+test cod62_x4_1_departing_physician_panel_reassignment_preserves_connection_and_sync ... ok
+test connected_care_consent_join_rejoin_and_for_my_doctor_flow ... ok
+test cross_practice_connected_care_collision_refuses_foreign_chart_writes ... ok
+test filtered_mail_chat_tools_list_isolate_and_restore_patient_messages ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.54s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.59s
+     Running unittests src/bin/physician-worker.rs (/tmp/coda-target-jobs/debug/deps/physician_worker-0139a817845a1aa0)
+
+running 2 tests
+test revision::tests::a_revision_host_answers_a_saved_notes_outcome_and_adds_nothing ... ok
+test tests::developer_plan_refuses_a_workspace_with_sources_outside_the_synthetic_practice ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 31 filtered out; finished in 0.10s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.40s
+     Running tests/redis.rs (/tmp/coda-target-jobs/debug/deps/redis-64720d4ac2dc8de2)
+
+running 4 tests
+test fast_restart_within_heartbeat_resyncs_from_reconnect_path ... ok
+test frozen_server_resyncs_from_heartbeat_path ... ok
+test independent_instances_auth_fanout_restart_resync_and_invalid_payload ... ok
+test tls_custom_ca_auth_and_untrusted_certificate_rejection ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.65s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.62s
+     Running tests/fanout.rs (/tmp/coda-target-jobs/debug/deps/fanout-e95b05ddc9e17096)
+
+running 1 test
+test cross_instance_turn_is_visible_on_the_other_sse_stream_and_valkey_restart_resyncs ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.54s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.63s
+     Running tests/worker.rs (/tmp/coda-target-jobs/debug/deps/worker-cee5b927eb9f8a58)
+
+running 25 tests
+test a_due_revision_is_claimed_while_chat_turns_keep_arriving ... ok
+test a_failed_attempt_is_retried_and_links_to_the_accepting_request ... ok
+test a_hosted_worker_starts_without_push_identity_settings ... ok
+test a_lease_that_runs_out_unannounced_is_taken_at_its_end_not_at_the_next_poll ... ok
+test a_recovered_run_sends_the_memory_it_first_sent ... ok
+test a_rehearsal_turn_configured_to_fail_fails_once_and_message_markers_are_ignored ... ok
+test a_reply_revision_reads_memory_and_its_notes_come_from_the_instruction ... ok
+test a_request_the_provider_rejects_holds_the_turn_and_is_not_sent_again ... ok
+test a_scripted_finish_cites_the_record_the_worker_read ... ok
+test a_worker_whose_listener_is_gone_claims_accepted_work_within_the_poll_interval ... ok
+test concurrent_turns_on_one_worker_run_side_by_side ... ok
+test content_reaches_langfuse_and_never_the_operations_backend ... ignored, starts Langfuse and the collector in Docker
+test every_request_of_a_chat_opens_with_the_memory_it_started_with ... ok
+test failed_attempts_wait_longer_each_time ... ok
+test hearing_of_settled_work_again_runs_the_fixed_provider_once ... ok
+test hosting_cancels_a_chat_whose_claim_has_been_replaced ... ok
+test memory_tools_run_through_the_worker_and_notes_keep_their_quotes ... ok
+test origin_follows_the_practice_of_the_claimed_turn ... ok
+test revoking_panel_does_not_cancel_practice_job ... ok
+test revoking_panel_mid_turn_cancels_chat_attempt_promptly ... ok
+test skill_reads_run_through_the_worker_and_only_the_answer_is_published ... ok
+test the_fifth_failure_ends_the_turn_and_nothing_starts_it_again ... ok
+test the_worker_serves_no_work_route ... ok
+test work_resumed_after_a_stopped_worker_died_is_taken_at_its_lease_end ... ok
+test work_that_becomes_due_unannounced_is_found_by_the_poll ... ok
+
+test result: ok. 24 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 113.40s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.62s
+     Running tests/try_again.rs (/tmp/coda-target-jobs/debug/deps/try_again-7a34ce841816373c)
+
+running 1 test
+test a_turn_that_gave_up_shows_couldnt_finish_and_try_again_gets_the_reply ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.61s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.65s
+     Running tests/pool_budget.rs (/tmp/coda-target-jobs/debug/deps/pool_budget-ae7dfc9facc0a467)
+
+running 3 tests
+test a_site_without_connections_does_not_ask_for_the_migration_job ... ok
+test each_process_holds_one_bounded_pool ... ok
+test the_worker_says_whether_the_pool_ran_out_or_the_query_failed ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 33.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.70s
+     Running tests/stop.rs (/tmp/coda-target-jobs/debug/deps/stop-ad28b037d705afc9)
+
+running 1 test
+test stop_holds_across_restart_and_again_after_resume_until_a_newer_message ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.56s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.61s
+     Running tests/chat_draft.rs (/tmp/coda-target-jobs/debug/deps/chat_draft-b296141bad8c6e33)
+
+running 2 tests
+test chat_draft_saves_on_one_site_and_reads_on_the_other ... ok
+test retry_names_the_shown_revision_and_a_clear_never_erases_newer_text ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.36s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.66s
+     Running tests/feedback.rs (/tmp/coda-target-jobs/debug/deps/feedback-fed23be16af9486f)
+
+running 5 tests
+test feedback_stays_on_its_response_and_with_its_author ... ok
+test staff_feedback_export_includes_physician_reply_draft_edits ... ignored, requires explicit local Postgres
+test staff_read_feedback_includes_concern_done_evaluation ... ok
+test staff_read_feedback_with_its_response_and_author ... ok
+test unreadable_feedback_keeps_the_conversation ... ok
+
+test result: ok. 4 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 16.02s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.66s
+     Running tests/reply_revision.rs (/tmp/coda-target-jobs/debug/deps/reply_revision-26fb4f6c514776de)
+
+running 10 tests
+test a_failed_revision_retries_over_http_as_a_linked_run ... ok
+test a_second_revision_opens_with_the_memory_the_reply_started_with ... ok
+test duplicate_acceptance_and_worker_retry_keep_one_input_and_pinned_sources ... ok
+test missing_and_other_physician_drafts_are_not_created_or_exposed ... ok
+test physician_save_cancels_an_in_flight_revision_and_preserves_the_edit ... ok
+test revision_capabilities_survive_a_window_and_worker_replacement_between_attempts ... ok
+test synthetic_reply_opening_refuses_other_physicians_and_revoked_authority ... ok
+test the_synthetic_reply_opens_once_and_revises_from_the_displayed_revision ... ok
+test the_synthetic_reply_revises_in_the_browser_across_two_sites ... ignored, browser qualification on the scale stack; run explicitly with --ignored
+test the_synthetic_switch_off_opens_no_reply_work ... ok
+
+test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 85.92s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.67s
+     Running tests/instance_loss.rs (/tmp/coda-target-jobs/debug/deps/instance_loss-19df754dd0112cb0)
+
+running 6 tests
+test a_turn_accepted_by_a_dead_site_instance_with_no_worker_is_finished_by_a_later_worker ... ok
+test a_turn_longer_than_its_lease_is_kept_by_the_worker_that_renews_it ... ok
+test a_turn_whose_worker_is_killed_is_taken_by_another_worker_when_its_lease_runs_out ... ok
+test a_turn_whose_worker_is_killed_is_taken_within_the_hosted_lease ... ignored, takes about a minute: waits out the hosted 60 s lease
+test a_turn_whose_worker_is_told_to_stop_is_taken_by_another_worker_at_once ... ok
+test exhausted_leases_fail_the_turn_and_announce_it ... ok
+
+test result: ok. 5 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 26.41s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.55s
+     Running tests/physician_chat_recipe.rs (/tmp/coda-target-jobs/debug/deps/physician_chat_recipe-1bcbc9fd23029b23)
+
+running 9 tests
+test chat_operations_execute_persist_refuse_failed_saves_and_enforce_workspace_access ... ok
+test chat_receives_initial_understanding_triggers_revision_on_refresh_and_updates_patient_summary ... ok
+test interrupted_chat_attempt_reconciles_saved_memory_and_concern_receipts_without_unknown_or_reexecution ... ok
+test later_conversation_uses_earlier_memory_correction_and_retrieves_earlier_work ... ok
+test live_chart_reread_enforced_in_physician_chat_when_configured ... ok
+test missing_unreadable_and_unavailable_evidence_produce_distinct_named_limits_without_overclaiming ... ok
+test prompt_injection_inside_retrieved_ehr_record_stays_evidence_and_triggers_no_override_calls ... ok
+test synthetic_patient_end_to_end_question_saves_answer_and_opens_citations ... ok
+test synthetic_patient_question_starts_chat_recipe_small_and_discovers_skills_and_tools ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.82s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.58s
+     Running tests/physician_chat_mid_answer_arrivals.rs (/tmp/coda-target-jobs/debug/deps/physician_chat_mid_answer_arrivals-fb4a0a6d3057e666)
+
+running 5 tests
+test added_records_mid_answer_notify_model_and_let_model_judge_whether_to_open_them ... ok
+test corrected_result_mid_answer_refuses_finish_rereads_and_unchanged_chat_uses_no_extra_request ... ok
+test mid_answer_correction_across_crash_recovery_refuses_replayed_candidate_and_rereads ... ok
+test record_arriving_while_no_answer_runs_starts_nothing ... ok
+test withdrawn_records_mid_answer_require_rereading_relied_record_for_both_withdrawal_shapes ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.95s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.56s
+     Running tests/initial_understanding_postgres.rs (/tmp/coda-target-jobs/debug/deps/initial_understanding_postgres-ea24d2b79ca459a4)
+
+running 7 tests
+test ac1_new_patient_link_starts_intended_assignment_with_model_settings_guidance_and_capabilities ... ok
+test ac2_synthetic_chart_saves_verified_memory_and_summary_with_material_gaps_and_duet_only_scope ... ok
+test ac3_later_source_and_chat_correction_update_same_patient_and_inform_subsequent_question ... ok
+test ac4_failed_first_attempt_retries_before_failed_standing_and_idempotency_prevents_duplicates ... ok
+test ac5_physician_projections_enforce_panel_access_and_exclude_private_operating_index ... ok
+test recipe_instructions_tools_and_skill_catalog_pass_model_text_audit ... ok
+test stale_work_source_version_is_refused_with_revision_conflict ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.33s
+
+   Compiling either v1.19.0
+   Compiling tokio v1.54.1
+   Compiling thiserror v2.0.21
+   Compiling memchr v2.8.3
+   Compiling chrono v0.4.45
+   Compiling uuid v1.29.2
+   Compiling rand v0.10.4
+   Compiling typenum v1.20.1
+   Compiling itertools v0.14.0
+   Compiling aho-corasick v1.1.5
+   Compiling generic-array v0.14.7
+   Compiling block-buffer v0.10.4
+   Compiling crypto-common v0.1.7
+   Compiling regex-automata v0.4.18
+   Compiling digest v0.10.7
+   Compiling prost-derive v0.14.6
+   Compiling sha2 v0.10.9
+   Compiling dioxus-router-macro v0.7.10
+   Compiling regex v1.13.1
+   Compiling pluralizer v0.5.0
+   Compiling sea-orm-macros v2.0.4
+   Compiling hyper v1.12.0
+   Compiling tower v0.5.3
+   Compiling tokio-stream v0.1.19
+   Compiling tokio-rustls v0.26.6
+   Compiling tokio-util v0.7.20
+   Compiling opentelemetry_sdk v0.33.1
+   Compiling lettre v0.11.24
+   Compiling sqlx-core v0.9.0
+   Compiling tower-http v0.6.11
+   Compiling fred v10.1.0
+   Compiling hyper-util v0.1.21
+   Compiling hyper-rustls v0.27.10
+   Compiling axum v0.8.9
+   Compiling reqwest v0.13.5
+   Compiling reqwest v0.12.28
+   Compiling sea-query-derive v1.0.0
+   Compiling sqlx-postgres v0.9.0
+   Compiling opentelemetry-http v0.33.1
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/http)
+   Compiling harness v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/harness)
+   Compiling prost v0.14.6
+   Compiling dioxus-router v0.7.10
+   Compiling spruce v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/spruce)
+   Compiling gmail v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/gmail)
+   Compiling opentelemetry-proto v0.33.1
+   Compiling dioxus v0.7.10
+   Compiling public-site v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/public-site)
+   Compiling opentelemetry-otlp v0.33.1
+   Compiling telemetry v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/telemetry)
+   Compiling sqlx v0.9.0
+   Compiling sea-query v1.0.2
+   Compiling physician-bus v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/physician-bus)
+   Compiling sea-query-sqlx v0.9.1
+   Compiling sea-schema v0.18.1
+   Compiling sea-orm v2.0.4
+   Compiling sea-orm-migration v2.0.4
+   Compiling front-door v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/front-door)
+   Compiling physician-auth v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/physician-auth)
+   Compiling local-product v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/local-product)
+   Compiling physician-sample v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 50s
+     Running tests/queue_trace.rs (/tmp/coda-target-jobs/debug/deps/queue_trace-40c2db296496c318)
+
+running 1 test
+test the_worker_attempt_links_to_the_request_that_accepted_the_turn ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.83s
+
+
+Stage                    Result   Duration
+------------------------ ------   --------
+fmt                      PASS     1m16s
+postgres-cluster         PASS     0s
+postgres-suites          PASS     13m31s
+------------------------ ------   --------
+TOTAL                    PASS     14m48s
