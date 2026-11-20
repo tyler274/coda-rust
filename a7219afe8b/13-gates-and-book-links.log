@@ -1,0 +1,115 @@
+Checked 10 authored SQL files with pg_format version 5.11
+ INFO Book building has started
+ INFO Running the html backend
+ INFO HTML book written to `/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/book/../target/book`
+notice: submodules/coda-app is not checked out; links into it are not checked
+notice: submodules/coda-agents is not checked out; links into it are not checked
+notice: submodules/Coda-Computer-Use is not checked out; links into it are not checked
+notice: submodules/coda-gym is not checked out; links into it are not checked
+📝 Summary
+---------------------
+🔍 Total.........1476
+🔗 Unique.........506
+✅ Successful....1451
+⏳ Timeouts.........0
+🔀 Redirected.......0
+👻 Excluded........25
+❓ Unknown..........0
+🚫 Errors...........0
+⛔ Unsupported......0
+
+.PASS P1 step: observed
+.PASS P1 step: observed
+FAIL P1 step: observed
+.PASS P1 step: observed
+..usage: scenarios.py [-h] [--only ONLY] [--require-complete]
+                    [--evidence EVIDENCE]
+scenarios.py: error: --only selected no journeys; available: P1, D1, L1
+.PASS L1 measure: rate=16.67
+.FAIL D1 cargo test exit: cargo test --locked -p duet-api --test database_foundation --test public_budget -- --test-threads=1 exited 101
+PASS D1 fresh_and_upgrade_keep_identity_and_enforce_account_scope: ok: fresh and upgraded schema keep identity; one account cannot read another's rows
+PASS D1 public_retrieval_budget_spans_pools_and_publication: ok: the public retrieval budget holds across pools and counts publication reads and misses
+..EFFFF.F......................
+======================================================================
+ERROR: test_ci_scope (unittest.loader._FailedTest.test_ci_scope)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_ci_scope
+Traceback (most recent call last):
+  File "/nix/store/lb41b0anx1f98y9y5s9mdv97gjgsq740-python3-3.14.7/lib/python3.14/unittest/loader.py", line 433, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/nix/store/lb41b0anx1f98y9y5s9mdv97gjgsq740-python3-3.14.7/lib/python3.14/unittest/loader.py", line 374, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/scripts/test_ci_scope.py", line 12, in <module>
+    import yaml
+ModuleNotFoundError: No module named 'yaml'
+
+
+======================================================================
+FAIL: test_discovery_must_resolve_to_canonical_skill (test_ci_skills.SkillChecks.test_discovery_must_resolve_to_canonical_skill)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/scripts/test_ci_skills.py", line 50, in test_discovery_must_resolve_to_canonical_skill
+    self.check(False, "must link")
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/scripts/test_ci_skills.py", line 32, in check
+    self.assertIn(detail, result.stderr)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'must link' not found in 'Traceback (most recent call last):\n  File "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/scripts/check_engineering_skills.py", line 11, in <module>\n    import yaml\nModuleNotFoundError: No module named \'yaml\'\n'
+
+======================================================================
+FAIL: test_invalid_metadata_fails (test_ci_skills.SkillChecks.test_invalid_metadata_fails) (reason='frontmatter')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/scripts/test_ci_skills.py", line 45, in test_invalid_metadata_fails
+    self.check(False, reason)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/scripts/test_ci_skills.py", line 32, in check
+    self.assertIn(detail, result.stderr)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'frontmatter' not found in 'Traceback (most recent call last):\n  File "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/scripts/check_engineering_skills.py", line 11, in <module>\n    import yaml\nModuleNotFoundError: No module named \'yaml\'\n'
+
+======================================================================
+FAIL: test_invalid_metadata_fails (test_ci_skills.SkillChecks.test_invalid_metadata_fails) (reason='description')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/scripts/test_ci_skills.py", line 45, in test_invalid_metadata_fails
+    self.check(False, reason)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/scripts/test_ci_skills.py", line 32, in check
+    self.assertIn(detail, result.stderr)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'description' not found in 'Traceback (most recent call last):\n  File "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/scripts/check_engineering_skills.py", line 11, in <module>\n    import yaml\nModuleNotFoundError: No module named \'yaml\'\n'
+
+======================================================================
+FAIL: test_invalid_metadata_fails (test_ci_skills.SkillChecks.test_invalid_metadata_fails) (reason='parsing')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/scripts/test_ci_skills.py", line 45, in test_invalid_metadata_fails
+    self.check(False, reason)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/scripts/test_ci_skills.py", line 32, in check
+    self.assertIn(detail, result.stderr)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'parsing' not found in 'Traceback (most recent call last):\n  File "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/scripts/check_engineering_skills.py", line 11, in <module>\n    import yaml\nModuleNotFoundError: No module named \'yaml\'\n'
+
+======================================================================
+FAIL: test_portable_skill_and_script_are_validated_without_execution (test_ci_skills.SkillChecks.test_portable_skill_and_script_are_validated_without_execution)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/scripts/test_ci_skills.py", line 36, in test_portable_skill_and_script_are_validated_without_execution
+    self.check(True)
+    ~~~~~~~~~~^^^^^^
+  File "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/scripts/test_ci_skills.py", line 30, in check
+    self.assertEqual(result.returncode == 0, success, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False != True : Traceback (most recent call last):
+  File "/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/scripts/check_engineering_skills.py", line 11, in <module>
+    import yaml
+ModuleNotFoundError: No module named 'yaml'
+
+
+----------------------------------------------------------------------
+Ran 36 tests in 0.518s
+
+FAILED (failures=5, errors=1)

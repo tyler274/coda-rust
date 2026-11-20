@@ -214,7 +214,8 @@
       ],
       "seconds": 88.3,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "Replaced by post-rebase verification at a7219afe8bcd41f6c05fa00c798c92e842dfb41e"
     },
     {
       "id": 11,
@@ -236,7 +237,8 @@
       ],
       "seconds": 34.0,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "Replaced by post-rebase verification at a7219afe8bcd41f6c05fa00c798c92e842dfb41e"
     },
     {
       "id": 12,
@@ -257,6 +259,77 @@
         "12-chromium-wasm-mobile-journeys.log"
       ],
       "seconds": 140.6,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "a7219afe8bcd41f6c05fa00c798c92e842dfb41e",
+        "reason": "mobile and frontend crates unchanged during origin/main rebase"
+      }
+    },
+    {
+      "id": 13,
+      "claim": "COD-55-56-57-gates",
+      "label": "gates-and-book-links",
+      "kind": "run",
+      "revision": "a7219afe8bcd41f6c05fa00c798c92e842dfb41e",
+      "dirty": false,
+      "recorded": "2026-11-20T04:23:49+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo fmt --all --check && python3 scripts/check-sql.py && bash scripts/check-book-links.sh && python3 -m unittest discover -s scripts -p 'test_ci_*.py' && cargo test -p boundaries && cargo clippy --workspace --all-targets --locked -- -D warnings && cargo clippy --target wasm32-unknown-unknown -p duet-app -p physician-app -p ui -p duet-client -p duet-health --locked -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "13-gates-and-book-links.log"
+      ],
+      "seconds": 91.1,
+      "exit": 1,
+      "ok": false,
+      "superseded": "Replaced by post-rebase verification at a7219afe8bcd41f6c05fa00c798c92e842dfb41e"
+    },
+    {
+      "id": 14,
+      "claim": "COD-55-56-57-gates",
+      "label": "gates-and-book-links",
+      "kind": "run",
+      "revision": "a7219afe8bcd41f6c05fa00c798c92e842dfb41e",
+      "dirty": false,
+      "recorded": "2026-11-20T04:25:57+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo fmt --all --check && python3 scripts/check-sql.py && bash scripts/check-book-links.sh && python3 -m unittest scripts/test_ci_scenarios.py && cargo test -p boundaries && cargo clippy --workspace --all-targets --locked -- -D warnings && cargo clippy --target wasm32-unknown-unknown -p duet-app -p physician-app -p ui -p duet-client -p duet-health --locked -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "14-gates-and-book-links.log"
+      ],
+      "seconds": 142.0,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 15,
+      "claim": "COD-55-56-57-crates",
+      "label": "duet-api-client-app-public-site-android",
+      "kind": "run",
+      "revision": "a7219afe8bcd41f6c05fa00c798c92e842dfb41e",
+      "dirty": false,
+      "recorded": "2026-11-20T04:28:19+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "cargo test -p duet-api && cargo test -p duet-client && cargo test -p duet-app && cargo test -p public-site && cargo test -p android"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "15-duet-api-client-app-public-site-android.log"
+      ],
+      "seconds": 184.3,
       "exit": 0,
       "ok": true
     }
