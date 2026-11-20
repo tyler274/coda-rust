@@ -27,7 +27,7 @@
       "expect_matched": true,
       "ok": true,
       "kept": {
-        "revision": "f591cb71881d01f4f52a7da7d6fe5a4dbd0483b7",
+        "revision": "65685b6f9c8c7e66d0f3c894c22877537acd2681",
         "reason": "deliberately before the fix: literal_entry flattened referenceRange"
       }
     },
@@ -51,7 +51,8 @@
       ],
       "seconds": 175.3,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "Re-verified at rebased HEAD on origin/main dd5dab3b9c"
     },
     {
       "id": 3,
@@ -76,7 +77,8 @@
       ],
       "seconds": 27.1,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "Re-verified at rebased HEAD on origin/main dd5dab3b9c"
     },
     {
       "id": 4,
@@ -121,7 +123,8 @@
       ],
       "seconds": 7.5,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "Re-verified at rebased HEAD on origin/main dd5dab3b9c"
     },
     {
       "id": 6,
@@ -143,7 +146,8 @@
       ],
       "seconds": 52.2,
       "exit": 0,
-      "ok": true
+      "ok": true,
+      "superseded": "Re-verified at rebased HEAD on origin/main dd5dab3b9c"
     },
     {
       "id": 7,
@@ -164,6 +168,103 @@
         "07-Chromium-disposable-PostgreSQL-mobile-browser-du.log"
       ],
       "seconds": 208.9,
+      "exit": 0,
+      "ok": true,
+      "kept": {
+        "revision": "65685b6f9c8c7e66d0f3c894c22877537acd2681",
+        "reason": "Rebase onto dd5dab3b9c touched only Cargo.lock and crates/duet-api/{Cargo.toml,src/lib.rs,src/main.rs}; mobile browser/duet_journey/mode unchanged from f591cb7188"
+      }
+    },
+    {
+      "id": 8,
+      "claim": "AC5",
+      "label": "Workspace gates: fmt, sql, book links, deny, host+wasm clippy, boundaries, openapi contract (post-rebase)",
+      "kind": "run",
+      "revision": "65685b6f9c8c7e66d0f3c894c22877537acd2681",
+      "dirty": false,
+      "recorded": "2026-11-20T03:54:12+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail; cargo fmt --all --check; python3 scripts/check-sql.py; bash scripts/check-book-links.sh; cargo deny check; cargo clippy --locked -j 4 --workspace --all-targets -- -D warnings; cargo clippy --locked -j 4 -p physician-app -p duet-app -p mobile -p ui-gallery -p extension-popup --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web,extension-popup/web -- -D warnings; cargo test --locked -j 4 -p boundaries; python3 -m unittest discover -s crates/duet-api/tests -p openapi_contract.py"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "08-Workspace-gates-fmt-sql-book-links-deny-host-was.log"
+      ],
+      "seconds": 350.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 9,
+      "claim": "AC1",
+      "label": "duet-api unit tests incl. lab printed reference range exclusion (post-rebase)",
+      "kind": "run",
+      "revision": "65685b6f9c8c7e66d0f3c894c22877537acd2681",
+      "dirty": false,
+      "recorded": "2026-11-20T04:00:02+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-j",
+        "4",
+        "-p",
+        "duet-api",
+        "--lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "09-duet-api-unit-tests-incl.-lab-printed-reference-.log"
+      ],
+      "seconds": 138.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 10,
+      "claim": "AC2",
+      "label": "duet-client, duet-app, and mobile --lib unit suites (post-rebase)",
+      "kind": "run",
+      "revision": "65685b6f9c8c7e66d0f3c894c22877537acd2681",
+      "dirty": false,
+      "recorded": "2026-11-20T04:02:20+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail; cargo test --locked -j 4 -p duet-client; cargo test --locked -j 4 -p duet-app; cargo test --locked -j 4 -p mobile --lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "10-duet-client-duet-app-and-mobile---lib-unit-suite.log"
+      ],
+      "seconds": 116.0,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 11,
+      "claim": "AC3",
+      "label": "duet-api Postgres suites and mobile durable_d2 against isolated disposable PostgreSQL (post-rebase)",
+      "kind": "run",
+      "revision": "65685b6f9c8c7e66d0f3c894c22877537acd2681",
+      "dirty": false,
+      "recorded": "2026-11-20T04:04:17+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail; cargo test --locked -j 4 -p duet-api --lib --test database_foundation --test durable_owners --test evidence_cohort --test fresh_producers --test health_context_producer --test hosting --test phone_outbox --test public_budget --test sql_layout --test push_harness_and_memory_retention -- --test-threads=1; cargo test --locked -j 4 -p mobile --test duet_journey -- --test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "11-duet-api-Postgres-suites-and-mobile-durable_d2-a.log"
+      ],
+      "seconds": 121.7,
       "exit": 0,
       "ok": true
     }
