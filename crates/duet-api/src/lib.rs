@@ -30,6 +30,8 @@ mod evidence_entity;
 pub mod evidence_paging;
 pub mod evidence_routes;
 mod follow_up_entity;
+pub mod for_my_doctor;
+pub mod for_my_doctor_entity;
 #[expect(
     clippy::disallowed_methods,
     reason = "converting raw SQL to the typed database API"

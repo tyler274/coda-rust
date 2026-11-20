@@ -1310,6 +1310,7 @@ async fn remove(
             .into_query(),
     )
     .await?;
+    crate::for_my_doctor::reconcile_marks_in_tx(tx, account_id, Utc::now()).await?;
     Ok(AddressedRecordRevision::new(
         mutation.canonical_record_id,
         mutation.entity,

@@ -503,6 +503,101 @@ impl RetentionOwner {
             })
             .transpose()
     }
+    /// Cache the latest `For my doctor` workspace snapshot for offline display.
+    pub fn save_for_my_doctor_cache(
+        &self,
+        fence: &SessionFence,
+        state: &crate::for_my_doctor::ForMyDoctorState,
+    ) -> Result<(), String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        let bytes = serde_json::to_vec(state).map_err(|_| "Cannot encode For my doctor state")?;
+        self.store
+            .write(&key("for-my-doctor-cache", fence.owner()), &bytes)
+    }
+    /// Load cached `For my doctor` workspace snapshot (`None` when absent).
+    pub fn load_for_my_doctor_cache(
+        &self,
+        fence: &SessionFence,
+    ) -> Result<Option<crate::for_my_doctor::ForMyDoctorState>, String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        self.store
+            .read(&key("for-my-doctor-cache", fence.owner()))?
+            .map(|bytes| {
+                serde_json::from_slice(&bytes)
+                    .map_err(|_| "Cached For my doctor state is damaged".to_owned())
+            })
+            .transpose()
+    }
+    /// Persist a pending `For my doctor` send + `share_key` across `"Couldn't confirm the send"` retries.
+    pub fn save_pending_doctor_send(
+        &self,
+        fence: &SessionFence,
+        pending: &crate::for_my_doctor::PendingDoctorSend,
+    ) -> Result<(), String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        let bytes = serde_json::to_vec(pending).map_err(|_| "Cannot encode pending send")?;
+        self.store
+            .write(&key("for-my-doctor-pending-send", fence.owner()), &bytes)
+    }
+    /// Load any unconfirmed `For my doctor` send held for `"Try again"` or `COD-51`.
+    pub fn load_pending_doctor_send(
+        &self,
+        fence: &SessionFence,
+    ) -> Result<Option<crate::for_my_doctor::PendingDoctorSend>, String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        self.store
+            .read(&key("for-my-doctor-pending-send", fence.owner()))?
+            .map(|bytes| {
+                serde_json::from_slice(&bytes)
+                    .map_err(|_| "Pending For my doctor send is damaged".to_owned())
+            })
+            .transpose()
+    }
+    /// Clear the pending `For my doctor` send once confirmed or dismissed.
+    pub fn clear_pending_doctor_send(&self, fence: &SessionFence) -> Result<(), String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        self.store
+            .remove(&key("for-my-doctor-pending-send", fence.owner()))
+    }
+    /// Persist unsaved `For my doctor` free-text note edits across reload/offline (`Rule 9`).
+    pub fn save_doctor_note_draft(
+        &self,
+        fence: &SessionFence,
+        draft: &crate::for_my_doctor::RetainedDoctorNoteDraft,
+    ) -> Result<(), String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        let bytes = serde_json::to_vec(draft).map_err(|_| "Cannot encode unsaved note draft")?;
+        self.store
+            .write(&key("for-my-doctor-note-draft", fence.owner()), &bytes)
+    }
+    /// Load any retained unsaved `For my doctor` note draft (`Rule 9`).
+    pub fn load_doctor_note_draft(
+        &self,
+        fence: &SessionFence,
+    ) -> Result<Option<crate::for_my_doctor::RetainedDoctorNoteDraft>, String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        self.store
+            .read(&key("for-my-doctor-note-draft", fence.owner()))?
+            .map(|bytes| {
+                serde_json::from_slice(&bytes)
+                    .map_err(|_| "Saved For my doctor note draft is damaged".to_owned())
+            })
+            .transpose()
+    }
+    /// Clear the retained unsaved `For my doctor` note draft after save succeeds or user discards.
+    pub fn clear_doctor_note_draft(&self, fence: &SessionFence) -> Result<(), String> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)?;
+        self.store
+            .remove(&key("for-my-doctor-note-draft", fence.owner()))
+    }
     /// Persist or clear a pending practice invitation token/code across sign-in handoff.
     pub fn set_pending_invite(&self, invite: Option<&str>) -> Result<(), String> {
         match invite.map(str::trim).filter(|s| !s.is_empty()) {
@@ -842,6 +937,10 @@ impl RetentionOwner {
         self.store.remove(&key("account-state", owner))?;
         self.store.remove(&key("you-cache", owner))?;
         self.store.remove(&key("shared-cache", owner))?;
+        self.store.remove(&key("for-my-doctor-cache", owner))?;
+        self.store
+            .remove(&key("for-my-doctor-pending-send", owner))?;
+        self.store.remove(&key("for-my-doctor-note-draft", owner))?;
         self.store.remove(&key("active-tab", owner))?;
         self.store.remove(&key("appearance", owner))?;
         self.store.remove(&key("pending-account-delete", owner))?;

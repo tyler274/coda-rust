@@ -19,6 +19,7 @@ use uuid::Uuid;
 use crate::{
     ApiError,
     database::{AccountDatabase, orm},
+    for_my_doctor_entity::{mark as fmd_mark, note as fmd_note, send as fmd_send},
     identity::{AccessLevel, AccountContext, check_current},
 };
 
@@ -296,6 +297,8 @@ pub struct AccountExport {
     pub device_snapshots: Vec<ExportedDeviceSnapshot>,
     /// Current saved `For my doctor` page and selected items.
     pub doctor_page: ExportedDoctorPage,
+    /// `For my doctor` marked items, free-text notes, and committed sends.
+    pub for_my_doctor: ExportedForMyDoctor,
     /// Connected or disconnected portal accounts (metadata only, never OAuth tokens).
     pub portal_connections: Vec<ExportedPortalConnection>,
     /// Assistant conversations and turn records.
@@ -529,6 +532,78 @@ pub struct ExportedPrivateMemory {
     pub content: Value,
 }
 
+/// Exported `For my doctor` marked item, free-text note, or committed send collection.
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+pub struct ExportedForMyDoctor {
+    /// Currently marked records, values, readings, and trends in `To send`.
+    pub marks: Vec<ExportedForMyDoctorMark>,
+    /// Current unsent notes in `To send`.
+    pub notes: Vec<ExportedForMyDoctorNote>,
+    /// Committed sends and their frozen record/note snapshots.
+    pub sends: Vec<ExportedForMyDoctorSend>,
+}
+
+/// Exported `For my doctor` mark.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct ExportedForMyDoctorMark {
+    /// Mark ID.
+    pub id: Uuid,
+    /// Stable target key.
+    pub target_key: String,
+    /// Target kind (`record`, `value`, `reading`, or `trend`).
+    pub target_kind: String,
+    /// Linked canonical record ID, if any.
+    pub record_id: Option<Uuid>,
+    /// Mark title.
+    pub title: String,
+    /// Concise summary without lab reference ranges.
+    pub summary_text: String,
+    /// Viewed range label, when marking a trend.
+    pub range_label: Option<String>,
+    /// Source label.
+    pub source_label: Option<String>,
+    /// Last updated timestamp.
+    pub updated_at: DateTime<Utc>,
+}
+
+/// Exported `For my doctor` note.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ExportedForMyDoctorNote {
+    /// Note ID.
+    pub id: Uuid,
+    /// Note text.
+    pub body: String,
+    /// Linked record ID, if started from an open record.
+    pub linked_record_id: Option<Uuid>,
+    /// Linked record title, if any.
+    pub linked_record_title: Option<String>,
+    /// Last updated timestamp.
+    pub updated_at: DateTime<Utc>,
+}
+
+/// Exported committed `For my doctor` send.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct ExportedForMyDoctorSend {
+    /// Send ID.
+    pub id: Uuid,
+    /// Target practice ID.
+    pub practice_id: String,
+    /// Target practice name.
+    pub practice_name: String,
+    /// Title shown in `Sent`.
+    pub title: String,
+    /// Summary shown in `Sent`.
+    pub summary_text: String,
+    /// Frozen snapshot of records and notes.
+    pub snapshot: Value,
+    /// Standing (`sent` or `received`).
+    pub standing: String,
+    /// Timestamp sent.
+    pub sent_at: DateTime<Utc>,
+    /// Timestamp received by the care team, if picked up.
+    pub received_at: Option<DateTime<Utc>>,
+}
+
 /// Exported privacy restriction receipt metadata.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ExportedPrivacyReceipt {
@@ -688,6 +763,36 @@ pub async fn build_export(
     )
     .await?;
 
+    let fmd_marks = orm::models::<fmd_mark::Model>(
+        &mut tx,
+        &fmd_mark::Entity::find()
+            .filter(fmd_mark::Column::UserId.eq(context.account_id))
+            .order_by_asc(fmd_mark::Column::MarkedAt)
+            .order_by_asc(fmd_mark::Column::Id)
+            .into_query(),
+    )
+    .await?;
+
+    let fmd_notes = orm::models::<fmd_note::Model>(
+        &mut tx,
+        &fmd_note::Entity::find()
+            .filter(fmd_note::Column::UserId.eq(context.account_id))
+            .order_by_asc(fmd_note::Column::CreatedAt)
+            .order_by_asc(fmd_note::Column::Id)
+            .into_query(),
+    )
+    .await?;
+
+    let fmd_sends = orm::models::<fmd_send::Model>(
+        &mut tx,
+        &fmd_send::Entity::find()
+            .filter(fmd_send::Column::UserId.eq(context.account_id))
+            .order_by_asc(fmd_send::Column::SentAt)
+            .order_by_asc(fmd_send::Column::Id)
+            .into_query(),
+    )
+    .await?;
+
     tx.commit().await?;
 
     Ok(AccountExport {
@@ -773,6 +878,46 @@ pub async fn build_export(
                     position: row.position,
                     page_entry: row.page_entry,
                     medication_confirmed: row.medication_confirmed,
+                })
+                .collect(),
+        },
+        for_my_doctor: ExportedForMyDoctor {
+            marks: fmd_marks
+                .into_iter()
+                .map(|row| ExportedForMyDoctorMark {
+                    id: row.id,
+                    target_key: row.target_key,
+                    target_kind: format!("{:?}", row.target_kind).to_lowercase(),
+                    record_id: row.record_id,
+                    title: row.title,
+                    summary_text: row.summary_text,
+                    range_label: row.range_label,
+                    source_label: row.source_label,
+                    updated_at: row.updated_at,
+                })
+                .collect(),
+            notes: fmd_notes
+                .into_iter()
+                .map(|row| ExportedForMyDoctorNote {
+                    id: row.id,
+                    body: row.body,
+                    linked_record_id: row.linked_record_id,
+                    linked_record_title: row.linked_record_title,
+                    updated_at: row.updated_at,
+                })
+                .collect(),
+            sends: fmd_sends
+                .into_iter()
+                .map(|row| ExportedForMyDoctorSend {
+                    id: row.id,
+                    practice_id: row.practice_id,
+                    practice_name: row.practice_name,
+                    title: row.title,
+                    summary_text: row.summary_text,
+                    snapshot: row.snapshot,
+                    standing: format!("{:?}", row.standing).to_lowercase(),
+                    sent_at: row.sent_at,
+                    received_at: row.received_at,
                 })
                 .collect(),
         },

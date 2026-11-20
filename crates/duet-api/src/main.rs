@@ -221,11 +221,35 @@ async fn main() {
             },
         )
     });
+    let for_my_doctor_transport: Option<
+        Arc<dyn duet_api::for_my_doctor::ForMyDoctorFrontDoorTransport>,
+    > = if let Ok(front_door_url) = env::var("FRONT_DOOR_URL") {
+        Some(Arc::new(
+            duet_api::for_my_doctor::HttpFrontDoorShareTransport::new(&front_door_url)
+                .expect("front-door URL for for-my-doctor"),
+        ))
+    } else {
+        front_door.clone().map(|store| {
+            Arc::new(duet_api::for_my_doctor::DirectFrontDoorShareTransport::new(
+                store,
+                Arc::new(|| chrono::Utc::now().timestamp().max(0) as u64),
+            )) as Arc<dyn duet_api::for_my_doctor::ForMyDoctorFrontDoorTransport>
+        })
+    };
+    let for_my_doctor_router =
+        duet_api::for_my_doctor::router(duet_api::for_my_doctor::ForMyDoctorState {
+            durable: state.clone(),
+            store: duet_api::for_my_doctor::ForMyDoctorStore::new(
+                database.clone(),
+                for_my_doctor_transport,
+            ),
+        });
     let mut app = router(state.clone())
         .merge(duet_api::evidence_routes::router(state.clone()))
         .merge(duet_api::push::router(push_state))
         .merge(duet_api::assistant_harness::router(assistant_state))
         .merge(duet_api::doctor_routes::router(doctor))
+        .merge(for_my_doctor_router)
         .merge(producer_router)
         .merge(portal_router);
     if let Some(connected_care_router) = connected_care_router {

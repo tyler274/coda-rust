@@ -47,6 +47,21 @@ mod front_door_mapping {
     impl ActiveModelBehavior for ActiveModel {}
 }
 
+/// Looks up the `front-door` account ID mapped to a Duet account inside an open account transaction.
+pub(crate) async fn front_door_account_id(
+    tx: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+    user_id: Uuid,
+) -> Result<Option<Uuid>, ApiError> {
+    let mapped = orm::model::<front_door_mapping::Model>(
+        tx,
+        &front_door_mapping::Entity::find()
+            .filter(front_door_mapping::Column::UserId.eq(user_id))
+            .into_query(),
+    )
+    .await?;
+    Ok(mapped.map(|row| row.front_door_account_id))
+}
+
 /// HTTP header carrying the patient's active `front-door` session token for sync routes.
 pub const FRONT_DOOR_SESSION_HEADER: &str = "x-front-door-session";
 

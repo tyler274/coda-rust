@@ -19,9 +19,9 @@ use std::sync::{Arc, Mutex};
 
 use axum::Json;
 use axum::Router;
-use axum::extract::State;
+use axum::extract::{Path, State};
 use axum::http::StatusCode;
-use axum::routing::{get, post, put};
+use axum::routing::{delete, get, post, put};
 use duet_wire::models::canonical_record_revision::Entity as RevisionEntity;
 use duet_wire::models::evidence_item::{Entity as ItemEntity, Operation};
 use duet_wire::models::evidence_library_entry::Entity as LibraryEntity;
@@ -44,6 +44,43 @@ pub struct Store {
     removed_evidence: Vec<String>,
     corrections: Vec<EvidenceItem>,
     doctor: Option<DoctorCollection>,
+    for_my_doctor: ForMyDoctorStubState,
+}
+
+#[derive(Clone, Debug, serde::Serialize, serde::Deserialize)]
+struct ForMyDoctorStubState {
+    #[serde(default)]
+    marks: Vec<serde_json::Value>,
+    #[serde(default)]
+    notes: Vec<serde_json::Value>,
+    #[serde(default)]
+    sends: Vec<serde_json::Value>,
+    #[serde(default)]
+    notices: Vec<serde_json::Value>,
+    #[serde(default = "default_stub_practices")]
+    practices: Vec<serde_json::Value>,
+}
+
+fn default_stub_practices() -> Vec<serde_json::Value> {
+    vec![serde_json::json!({
+        "practice_id": "stub-practice",
+        "practice_name": "Northside Primary Care",
+        "patient_id": "pt-stub-1",
+        "status": "connected",
+        "connected_at": 1_763_200_000u64,
+    })]
+}
+
+impl Default for ForMyDoctorStubState {
+    fn default() -> Self {
+        Self {
+            marks: Vec::new(),
+            notes: Vec::new(),
+            sends: Vec::new(),
+            notices: Vec::new(),
+            practices: default_stub_practices(),
+        }
+    }
 }
 
 #[derive(serde::Serialize, serde::Deserialize, Default)]
@@ -54,6 +91,8 @@ struct Writes {
     #[serde(default)]
     corrections: Vec<EvidenceItem>,
     doctor: Option<DoctorCollection>,
+    #[serde(default)]
+    for_my_doctor: ForMyDoctorStubState,
 }
 
 impl Store {
@@ -74,7 +113,28 @@ impl Store {
             removed_evidence: writes.removed_evidence,
             corrections: writes.corrections,
             doctor: writes.doctor,
+            for_my_doctor: writes.for_my_doctor,
         })
+    }
+
+    /// Replaces the practice connections exposed on `GET /api/for-my-doctor`.
+    pub fn set_for_my_doctor_practices(&mut self, practices: Vec<serde_json::Value>) {
+        self.for_my_doctor.practices = practices;
+        let _ = self.save_writes();
+    }
+
+    /// Marks one stub send as picked up (`Received by the care team`).
+    pub fn mark_for_my_doctor_send_received(&mut self, share_key: &str, received_at: &str) {
+        if let Some(send) = self
+            .for_my_doctor
+            .sends
+            .iter_mut()
+            .find(|s| s["share_key"].as_str() == Some(share_key))
+        {
+            send["status"] = serde_json::json!("received");
+            send["received_at"] = serde_json::json!(received_at);
+            let _ = self.save_writes();
+        }
     }
 
     pub(crate) fn save_writes(&self) -> Result<(), String> {
@@ -85,6 +145,7 @@ impl Store {
                 removed_evidence: self.removed_evidence.clone(),
                 corrections: self.corrections.clone(),
                 doctor: self.doctor.clone(),
+                for_my_doctor: self.for_my_doctor.clone(),
             },
         )
     }
@@ -118,6 +179,19 @@ pub fn router(store: Arc<Mutex<Store>>) -> Router {
         .route("/api/evidence", post(ingest))
         .route("/api/doctor-collection", get(doctor).delete(clear_doctor))
         .route("/api/doctor-collection/page", put(save_doctor))
+        .route("/api/for-my-doctor", get(fmd_state))
+        .route("/api/for-my-doctor/marks", put(fmd_mark).delete(fmd_unmark))
+        .route("/api/for-my-doctor/marks/{id}", delete(fmd_unmark_by_id))
+        .route("/api/for-my-doctor/notes", post(fmd_create_note))
+        .route(
+            "/api/for-my-doctor/notes/{id}",
+            put(fmd_update_note).delete(fmd_delete_note),
+        )
+        .route(
+            "/api/for-my-doctor/notices/{id}/dismiss",
+            post(fmd_dismiss_notice),
+        )
+        .route("/api/for-my-doctor/send", post(fmd_send))
         .with_state(store)
 }
 
@@ -501,6 +575,340 @@ async fn browse(
     out.removed_count = Some(0);
     out.next_cursor = (end < records.len()).then(|| end.to_string());
     Ok(Json(out))
+}
+
+async fn fmd_state(State(store): State<Arc<Mutex<Store>>>) -> Json<serde_json::Value> {
+    let store = store.lock().unwrap_or_else(|poison| poison.into_inner());
+    Json(serde_json::json!({
+        "marks": store.for_my_doctor.marks,
+        "notes": store.for_my_doctor.notes,
+        "sends": store.for_my_doctor.sends,
+        "notices": store.for_my_doctor.notices,
+        "practices": store.for_my_doctor.practices,
+    }))
+}
+
+async fn fmd_mark(
+    State(store): State<Arc<Mutex<Store>>>,
+    Json(req): Json<serde_json::Value>,
+) -> Json<serde_json::Value> {
+    let mut store = store.lock().unwrap_or_else(|poison| poison.into_inner());
+    let now = chrono::Utc::now().to_rfc3339();
+    let target_key = req["target_key"].as_str().unwrap_or_default().to_owned();
+    let summary_text = req["summary_text"]
+        .as_str()
+        .unwrap_or_default()
+        .lines()
+        .filter(|l| !l.to_ascii_lowercase().contains("reference range"))
+        .collect::<Vec<_>>()
+        .join(" · ");
+    let mark = if let Some(existing) = store
+        .for_my_doctor
+        .marks
+        .iter_mut()
+        .find(|m| m["target_key"].as_str() == Some(target_key.as_str()))
+    {
+        existing["title"] = req["title"].clone();
+        existing["summary_text"] = serde_json::json!(summary_text);
+        existing["range_label"] = req["range_label"].clone();
+        existing["source_label"] = req["source_label"].clone();
+        existing["updated_at"] = serde_json::json!(now);
+        existing.clone()
+    } else {
+        let entry = serde_json::json!({
+            "id": uuid::Uuid::new_v4(),
+            "target_kind": req["target_kind"],
+            "target_key": target_key,
+            "record_id": req["record_id"],
+            "entity": req["entity"],
+            "record_revision": 1,
+            "marked_revision": 1,
+            "title": req["title"],
+            "summary_text": summary_text,
+            "range_label": req["range_label"],
+            "source_label": req["source_label"],
+            "source_corrected": false,
+            "correction_date": null,
+            "payload": req.get("payload").cloned().unwrap_or_else(|| serde_json::json!({})),
+            "marked_at": now,
+            "updated_at": now,
+        });
+        store.for_my_doctor.marks.push(entry.clone());
+        entry
+    };
+    let _ = store.save_writes();
+    Json(mark)
+}
+
+async fn fmd_unmark(
+    State(store): State<Arc<Mutex<Store>>>,
+    Json(req): Json<serde_json::Value>,
+) -> StatusCode {
+    let mut store = store.lock().unwrap_or_else(|poison| poison.into_inner());
+    let key = req["target_key"].as_str().unwrap_or_default();
+    store
+        .for_my_doctor
+        .marks
+        .retain(|m| m["target_key"].as_str() != Some(key));
+    let _ = store.save_writes();
+    StatusCode::NO_CONTENT
+}
+
+async fn fmd_unmark_by_id(
+    State(store): State<Arc<Mutex<Store>>>,
+    Path(id): Path<uuid::Uuid>,
+) -> StatusCode {
+    let mut store = store.lock().unwrap_or_else(|poison| poison.into_inner());
+    let id_str = id.to_string();
+    store
+        .for_my_doctor
+        .marks
+        .retain(|m| m["id"].as_str() != Some(id_str.as_str()));
+    let _ = store.save_writes();
+    StatusCode::NO_CONTENT
+}
+
+async fn fmd_create_note(
+    State(store): State<Arc<Mutex<Store>>>,
+    Json(req): Json<serde_json::Value>,
+) -> Json<serde_json::Value> {
+    let mut store = store.lock().unwrap_or_else(|poison| poison.into_inner());
+    let id = req["id"]
+        .as_str()
+        .map(str::to_owned)
+        .unwrap_or_else(|| uuid::Uuid::new_v4().to_string());
+    if let Some(existing) = store
+        .for_my_doctor
+        .notes
+        .iter()
+        .find(|n| n["id"].as_str() == Some(id.as_str()))
+    {
+        return Json(existing.clone());
+    }
+    let now = chrono::Utc::now().to_rfc3339();
+    let note = serde_json::json!({
+        "id": id,
+        "body": req["body"],
+        "linked_record_id": req["linked_record_id"],
+        "linked_record_title": req["linked_record_title"],
+        "linked_entity": req["linked_entity"],
+        "version": 1,
+        "created_at": now,
+        "updated_at": now,
+    });
+    store.for_my_doctor.notes.insert(0, note.clone());
+    let _ = store.save_writes();
+    Json(note)
+}
+
+async fn fmd_update_note(
+    State(store): State<Arc<Mutex<Store>>>,
+    Path(id): Path<uuid::Uuid>,
+    Json(req): Json<serde_json::Value>,
+) -> Result<Json<serde_json::Value>, (StatusCode, Json<serde_json::Value>)> {
+    let mut store = store.lock().unwrap_or_else(|poison| poison.into_inner());
+    let id_str = id.to_string();
+    let expected = req["expected_version"].as_i64().unwrap_or(0);
+    let Some(existing) = store
+        .for_my_doctor
+        .notes
+        .iter_mut()
+        .find(|n| n["id"].as_str() == Some(id_str.as_str()))
+    else {
+        return Err((
+            StatusCode::NOT_FOUND,
+            Json(serde_json::json!({ "code": "not_found" })),
+        ));
+    };
+    let current_ver = existing["version"].as_i64().unwrap_or(1);
+    if current_ver != expected {
+        return Err((
+            StatusCode::CONFLICT,
+            Json(serde_json::json!({
+                "code": "version_conflict",
+                "detail": "Note was edited on another device.",
+                "latest": existing.clone(),
+            })),
+        ));
+    }
+    existing["body"] = req["body"].clone();
+    existing["version"] = serde_json::json!(current_ver + 1);
+    existing["updated_at"] = serde_json::json!(chrono::Utc::now().to_rfc3339());
+    let updated = existing.clone();
+    let _ = store.save_writes();
+    Ok(Json(updated))
+}
+
+async fn fmd_delete_note(
+    State(store): State<Arc<Mutex<Store>>>,
+    Path(id): Path<uuid::Uuid>,
+) -> StatusCode {
+    let mut store = store.lock().unwrap_or_else(|poison| poison.into_inner());
+    let id_str = id.to_string();
+    store
+        .for_my_doctor
+        .notes
+        .retain(|n| n["id"].as_str() != Some(id_str.as_str()));
+    let _ = store.save_writes();
+    StatusCode::NO_CONTENT
+}
+
+async fn fmd_dismiss_notice(
+    State(store): State<Arc<Mutex<Store>>>,
+    Path(id): Path<uuid::Uuid>,
+) -> StatusCode {
+    let mut store = store.lock().unwrap_or_else(|poison| poison.into_inner());
+    let id_str = id.to_string();
+    store
+        .for_my_doctor
+        .notices
+        .retain(|n| n["id"].as_str() != Some(id_str.as_str()));
+    let _ = store.save_writes();
+    StatusCode::NO_CONTENT
+}
+
+async fn fmd_send(
+    State(store): State<Arc<Mutex<Store>>>,
+    Json(req): Json<serde_json::Value>,
+) -> Result<Json<serde_json::Value>, (StatusCode, Json<serde_json::Value>)> {
+    let mut store = store.lock().unwrap_or_else(|poison| poison.into_inner());
+    let share_key = req["share_key"].as_str().unwrap_or_default().to_owned();
+    if let Some(existing) = store
+        .for_my_doctor
+        .sends
+        .iter()
+        .find(|s| s["share_key"].as_str() == Some(share_key.as_str()))
+    {
+        return Ok(Json(existing.clone()));
+    }
+    if req["disclosure_accepted"].as_bool() != Some(true) {
+        return Err((
+            StatusCode::UNPROCESSABLE_ENTITY,
+            Json(serde_json::json!({ "detail": "Confirm the disclosure before sending." })),
+        ));
+    }
+    let practice_id = req["practice_id"].as_str().unwrap_or_default().to_owned();
+    let connected = store.for_my_doctor.practices.iter().any(|p| {
+        p["practice_id"].as_str() == Some(practice_id.as_str())
+            && p["status"].as_str() == Some("connected")
+    });
+    if !connected {
+        return Err((
+            StatusCode::CONFLICT,
+            Json(serde_json::json!({
+                "code": "connection_ended",
+                "detail": "This practice connection ended.",
+            })),
+        ));
+    }
+    let mark_ids: Vec<String> = req["selected_mark_ids"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .filter_map(|v| v.as_str().map(str::to_owned))
+        .collect();
+    let note_ids: Vec<String> = req["selected_note_ids"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .filter_map(|v| v.as_str().map(str::to_owned))
+        .collect();
+
+    let mut records = Vec::new();
+    for m in &store.for_my_doctor.marks {
+        if m["id"]
+            .as_str()
+            .is_some_and(|id| mark_ids.iter().any(|picked| picked == id))
+        {
+            records.push(serde_json::json!({
+                "record_id": m["record_id"],
+                "title": m["title"],
+                "summary_text": m["summary_text"],
+                "source_label": m["source_label"],
+                "version": m["record_revision"],
+                "correction_date": m["correction_date"],
+                "range_label": m["range_label"],
+            }));
+        }
+    }
+    if let Some(ad_hoc) = req.get("ad_hoc_record").filter(|v| !v.is_null()) {
+        records.push(serde_json::json!({
+            "record_id": ad_hoc["record_id"],
+            "title": ad_hoc["title"],
+            "summary_text": ad_hoc["summary_text"],
+            "source_label": ad_hoc["source_label"],
+            "version": null,
+            "correction_date": null,
+            "range_label": null,
+        }));
+    }
+    let mut notes = Vec::new();
+    for n in &store.for_my_doctor.notes {
+        if n["id"]
+            .as_str()
+            .is_some_and(|id| note_ids.iter().any(|picked| picked == id))
+        {
+            notes.push(serde_json::json!({
+                "id": n["id"],
+                "body": n["body"],
+                "linked_record_title": n["linked_record_title"],
+            }));
+        }
+    }
+    let title = records
+        .first()
+        .and_then(|r| r["title"].as_str())
+        .or_else(|| {
+            notes
+                .first()
+                .and_then(|n| n["linked_record_title"].as_str().or(Some("Patient note")))
+        })
+        .unwrap_or("For my doctor")
+        .to_owned();
+    let summary_text = records
+        .iter()
+        .map(|r| {
+            format!(
+                "{}: {}",
+                r["title"].as_str().unwrap_or(""),
+                r["summary_text"].as_str().unwrap_or("")
+            )
+        })
+        .chain(
+            notes
+                .iter()
+                .map(|n| n["body"].as_str().unwrap_or("").to_owned()),
+        )
+        .collect::<Vec<_>>()
+        .join("\n");
+    let now = chrono::Utc::now().to_rfc3339();
+    let send = serde_json::json!({
+        "id": uuid::Uuid::new_v4(),
+        "share_key": share_key,
+        "practice_id": practice_id,
+        "practice_name": req["practice_name"],
+        "patient_id": req["patient_id"],
+        "title": title,
+        "summary_text": summary_text,
+        "records": records,
+        "notes": notes,
+        "status": "sent",
+        "sent_at": now,
+        "connection_ended_at": null,
+    });
+    store.for_my_doctor.marks.retain(|m| {
+        !m["id"]
+            .as_str()
+            .is_some_and(|id| mark_ids.iter().any(|p| p == id))
+    });
+    store.for_my_doctor.notes.retain(|n| {
+        !n["id"]
+            .as_str()
+            .is_some_and(|id| note_ids.iter().any(|p| p == id))
+    });
+    store.for_my_doctor.sends.insert(0, send.clone());
+    let _ = store.save_writes();
+    Ok(Json(send))
 }
 #[cfg(test)]
 mod tests {

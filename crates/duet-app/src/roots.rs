@@ -1,6 +1,7 @@
 //! Root states for the two Duet tabs. Sentences are the ones the iPhone app shows.
 
 use duet_client::EvidenceLibraryPage;
+#[cfg(test)]
 use duet_wire::models::{DoctorCollection, DoctorCollectionItem};
 
 pub const CONNECTING: &str = "Connecting…";
@@ -11,6 +12,7 @@ pub const TRY_AGAIN: &str = "Try again";
 pub const ALLOW_NOTIFICATIONS: &str = "Allow notifications";
 pub const OPEN_NOTIFICATION_SETTINGS: &str = "Open iPhone Settings";
 
+#[cfg(test)]
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum DoctorPage {
     /// The collection loaded and has nothing to list.
@@ -19,6 +21,7 @@ pub enum DoctorPage {
     Lines(Vec<DoctorLine>),
 }
 
+#[cfg(test)]
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct DoctorLine {
     pub title: String,
@@ -26,6 +29,7 @@ pub struct DoctorLine {
 }
 
 /// The lines a loaded For my doctor collection already contains.
+#[cfg(test)]
 pub fn doctor_page(collection: &DoctorCollection) -> DoctorPage {
     let mut entries = item_entries(collection.items.as_deref().unwrap_or(&[]));
     if let Some(note) = supplied(&collection.note) {
@@ -53,6 +57,7 @@ pub fn doctor_page(collection: &DoctorCollection) -> DoctorPage {
     }
 }
 
+#[cfg(test)]
 fn item_entries(items: &[DoctorCollectionItem]) -> Vec<DoctorLine> {
     items
         .iter()
@@ -66,6 +71,7 @@ fn item_entries(items: &[DoctorCollectionItem]) -> Vec<DoctorLine> {
         .collect()
 }
 
+#[cfg(test)]
 fn nonempty(text: &str) -> Option<String> {
     let text = text.trim();
     if text.is_empty() {

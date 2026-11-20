@@ -101,6 +101,10 @@ const MIGRATIONS: &[(&str, &str)] = &[
         "0021_email_auth_sessions_preferences",
         include_str!("../migrations/0021_email_auth_sessions_preferences.sql"),
     ),
+    (
+        "0022_for_my_doctor",
+        include_str!("../migrations/0022_for_my_doctor.sql"),
+    ),
 ];
 
 fn refused(message: &str) -> sqlx::Error {
@@ -174,6 +178,7 @@ pub async fn migrate(migration_url: &str, runtime_role: &str) -> Result<(), sqlx
          grant select on public.duet_identity_directory, public.duet_privacy_pending_accounts, public.duet_publication_directory, public.duet_restore_gate, public.duet_unsupported_receipts to {role}; \
          grant select,insert on public.duet_deleted_identities to {role}; \
          grant select,insert,update,delete on public.doctor_collection_items,public.duet_doctor_proposals,public.duet_doctor_saves,public.duet_device_snapshots,public.duet_publications to {role}; \
+         grant select,insert,update,delete on public.duet_for_my_doctor_marks,public.duet_for_my_doctor_notes,public.duet_for_my_doctor_sends,public.duet_for_my_doctor_notices to {role}; \
          grant usage, select on sequence public.canonical_evidence_revisions_revision_seq to {role}; \
          grant select,insert,update on public.duet_model_calls to {role}; \
          grant select,insert,update,delete on public.duet_conversations,public.duet_commands,public.duet_execution_records,public.duet_tool_effects,public.duet_private_memory,public.duet_conversation_events,public.duet_command_steers to {role}; \

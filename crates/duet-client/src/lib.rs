@@ -18,6 +18,7 @@ pub use duet_health::{
     unsupported_health_connect_notice,
 };
 pub mod doctor;
+pub mod for_my_doctor;
 pub mod health_upload;
 pub mod identity;
 pub mod portals;

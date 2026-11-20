@@ -3,7 +3,14 @@
 //! unit, date or interval with its zone, a plain source, and a source-declared
 //! status.
 use dioxus::prelude::*;
-use duet_wire::models::{EvidenceBrowseRecord, evidence_browse_record::Status as BrowseStatus};
+use duet_client::for_my_doctor::{MarkForDoctorRequest, MarkTargetKind, RecordFamily};
+use duet_wire::models::{
+    EvidenceBrowseRecord, canonical_source_address::Entity as BrowseEntity,
+    evidence_browse_record::Status as BrowseStatus,
+};
+use ui::ActionRow;
+
+use crate::for_my_doctor::{MarkToggleButton, record_target_key};
 
 /// Shown when a record has no declared date. Never replaced by an import time.
 pub const DATE_UNKNOWN: &str = "Date unknown";
@@ -247,12 +254,47 @@ pub fn RecordBrowser(base_url: String, bearer: String, reload: Signal<u32>) -> E
                     for record in state.records.clone() {
                         {
                             let id = record.address.canonical_record_id;
+                            let id_str = id.to_string();
+                            let target_key = record_target_key(&id_str);
                             let lines = record_lines(&record);
                             let title = record.title.clone();
+                            let can_mark = record.status != BrowseStatus::RemovedBySource;
+                            let entity = match record.address.entity {
+                                BrowseEntity::HealthEvidence => RecordFamily::HealthEvidence,
+                                BrowseEntity::ClinicalNote => RecordFamily::ClinicalNote,
+                            };
+                            let mark_req = MarkForDoctorRequest {
+                                target_kind: MarkTargetKind::Record,
+                                target_key: target_key.clone(),
+                                record_id: Some(id),
+                                entity: Some(entity),
+                                title: title.clone(),
+                                summary_text: match (record.value.as_deref(), record.unit.as_deref()) {
+                                    (Some(v), Some(u)) => format!("{v} {u}"),
+                                    (Some(v), None) => v.to_owned(),
+                                    _ => String::new(),
+                                },
+                                range_label: None,
+                                source_label: source_from_record(&record),
+                                payload: serde_json::json!({
+                                    "date": record.date,
+                                    "source_status": record.source_status,
+                                }),
+                            };
                             rsx! {
                                 article { class: "record-row", "data-record": "{id}",
                                     p { class: "card-text", "{title}" }
                                     for line in lines { p { class: "record-meta", "{line}" } }
+                                    if can_mark {
+                                        ActionRow {
+                                            MarkToggleButton {
+                                                target_key,
+                                                request: mark_req,
+                                                base_url: base_url.clone(),
+                                                bearer: bearer.clone(),
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
