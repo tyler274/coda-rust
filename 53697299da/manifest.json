@@ -1,0 +1,120 @@
+{
+  "branch": "feat-cod80-public-site-mobile-and-dark-contrast",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "COD-80-rust-clippy-routes-stylesheets",
+      "label": "fmt, clippy, boundaries, and public-site tests",
+      "kind": "run",
+      "revision": "53697299da944e8a5789ffb022517869947f066f",
+      "dirty": false,
+      "recorded": "2026-11-21T06:06:02+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail; cargo fmt --all -- --check && cargo clippy --locked -p public-site --all-targets -- -D warnings && cargo test --locked -p boundaries && cargo test --locked -p public-site --lib --tests"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-fmt-clippy-boundaries-and-public-site-tests.log"
+      ],
+      "seconds": 99.2,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "COD-80-chromium-mobile-dark-demo",
+      "label": "public-site Chromium site suite (desktop, dark, mobile, demo E2E)",
+      "kind": "run",
+      "revision": "53697299da944e8a5789ffb022517869947f066f",
+      "dirty": false,
+      "recorded": "2026-11-21T06:07:42+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "public-site",
+        "--test",
+        "site",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-public-site-Chromium-site-suite-desktop-dark-mob.log"
+      ],
+      "seconds": 113.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "COD-80-screenshots",
+      "label": "Mobile dark demo homepage (390x844)",
+      "kind": "screenshot",
+      "revision": "53697299da944e8a5789ffb022517869947f066f",
+      "dirty": false,
+      "recorded": "2026-11-21T06:10:11+00:00",
+      "files": [
+        "03-00-mobile-dark-demo-home.png"
+      ],
+      "source": "target/verification/public-site-shots/00-mobile-dark-demo-home.png",
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "COD-80-screenshots",
+      "label": "Desktop dark mode (1440x1000)",
+      "kind": "screenshot",
+      "revision": "53697299da944e8a5789ffb022517869947f066f",
+      "dirty": false,
+      "recorded": "2026-11-21T06:10:11+00:00",
+      "files": [
+        "04-dark.png"
+      ],
+      "source": "target/verification/public-site-shots/dark.png",
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "COD-80-screenshots",
+      "label": "Mobile light mode (390x844)",
+      "kind": "screenshot",
+      "revision": "53697299da944e8a5789ffb022517869947f066f",
+      "dirty": false,
+      "recorded": "2026-11-21T06:10:11+00:00",
+      "files": [
+        "05-mobile.png"
+      ],
+      "source": "target/verification/public-site-shots/mobile.png",
+      "ok": true
+    },
+    {
+      "id": 6,
+      "claim": "COD-80-subpath-export",
+      "label": "public-site --export-dir --base-path /coda --physician-demo",
+      "kind": "run",
+      "revision": "53697299da944e8a5789ffb022517869947f066f",
+      "dirty": false,
+      "recorded": "2026-11-21T06:10:11+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail; rm -rf /tmp/test-pages-export && cargo run --locked -p public-site --bin public-site -- --export-dir /tmp/test-pages-export --base-path /coda --origin https://dabney.moe --physician-demo && grep -q \"href=\\\"/coda/physician/\\\"\" /tmp/test-pages-export/index.html && grep -q \"href=\\\"/coda/book/\\\"\" /tmp/test-pages-export/index.html && rm -rf /tmp/test-pages-export"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-public-site---export-dir---base-path-coda---phys.log"
+      ],
+      "seconds": 14.7,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}

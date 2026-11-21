@@ -1,0 +1,53 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.81s
+     Running tests/site.rs (/tmp/coda-target-jobs/debug/deps/site-3e4a02d5470e6739)
+
+running 3 tests
+test desktop_mobile_motion_reduced_motion_and_static_fallback ... Screenshot: /home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/target/verification/public-site-shots/desktop.png
+desktop: content, assets, overflow, navigation and motion passed
+Screenshot: /home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/target/verification/public-site-shots/dark.png
+dark: content, assets, overflow, navigation and motion passed
+Screenshot: /home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/target/verification/public-site-shots/mobile.png
+mobile: content, assets, overflow, navigation and motion passed
+Screenshot: /home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/target/verification/public-site-shots/reduced.png
+reduced: content, assets, overflow, navigation and motion passed
+Screenshot: /home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/target/verification/public-site-shots/no-script.png
+no-script: content, assets, overflow, navigation and motion passed
+ok
+test exported_subpath_browser_sql_demo_e2e ...     Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.46
+   Compiling rustls-webpki v0.103.16
+   Compiling tokio-rustls v0.26.6
+   Compiling hyper-rustls v0.27.10
+   Compiling reqwest v0.12.28
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/http)
+   Compiling public-site v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/public-site)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 16.94s
+     Running `/tmp/coda-target-jobs/debug/public-site --export-dir /tmp/nix-shell.5qc9yk/coda-public-site-demo-export-2280122/coda-rust --base-path /coda-rust --origin 'https://tyler274.github.io/coda-rust' --physician-demo`
+ INFO Book building has started
+ INFO Running the html backend
+ INFO HTML book written to `/tmp/nix-shell.5qc9yk/coda-public-site-demo-export-2280122/coda-rust/book`
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.32s
+     Running `/tmp/coda-target-jobs/debug/seed_demo_db --units /home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/patients/units --out /tmp/nix-shell.5qc9yk/coda-public-site-demo-export-2280122/coda-rust/physician/demo.sqlite --limit 60`
+Seeded 39 patients into /tmp/nix-shell.5qc9yk/coda-public-site-demo-export-2280122/coda-rust/physician/demo.sqlite
+    Finished `release` profile [optimized] target(s) in 2.10s
+Browser SQLite Chords demo E2E passed with 0 errors and 0 HTTP failures.
+ok
+test exported_subpath_site_serves_zero_404s_and_renders_in_chromium ...  INFO Book building has started
+ INFO Running the html backend
+ INFO HTML book written to `/tmp/nix-shell.5qc9yk/coda-public-site-browser-export-2280122/coda-rust/book`
+Screenshot: /home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/target/verification/public-site-shots/coda-rust-desktop.png
+desktop: content, assets, overflow, navigation and motion passed
+Screenshot: /home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/target/verification/public-site-shots/coda-rust-dark.png
+dark: content, assets, overflow, navigation and motion passed
+Screenshot: /home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/target/verification/public-site-shots/coda-rust-mobile.png
+mobile: content, assets, overflow, navigation and motion passed
+Screenshot: /home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/target/verification/public-site-shots/coda-rust-reduced.png
+reduced: content, assets, overflow, navigation and motion passed
+Screenshot: /home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/target/verification/public-site-shots/coda-rust-no-script.png
+no-script: content, assets, overflow, navigation and motion passed
+ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 111.16s
+
