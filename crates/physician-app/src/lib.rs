@@ -643,6 +643,89 @@ pub(crate) fn refusal(error: &physician_client::HttpError) -> Option<Refusal> {
     })
 }
 
+/// Connection standing for the optional static/live demo entrypoint.
+#[derive(Debug, Clone, PartialEq, Eq)]
+enum DemoConnectionState {
+    Probing,
+    LiveHarness,
+    LocalFallback,
+    BudgetExhausted { detail: String },
+}
+
+impl DemoConnectionState {
+    fn status_label(&self) -> &'static str {
+        match self {
+            Self::Probing | Self::LocalFallback => "Local chart preview",
+            Self::LiveHarness => "Live harness",
+            Self::BudgetExhausted { .. } => "Live turn limit reached",
+        }
+    }
+
+    fn budget_detail(&self) -> Option<&str> {
+        match self {
+            Self::BudgetExhausted { detail } => Some(detail.as_str()),
+            Self::Probing | Self::LiveHarness | Self::LocalFallback => None,
+        }
+    }
+}
+
+#[derive(Clone, Copy, PartialEq)]
+pub(crate) struct DemoRuntime {
+    base_url: Signal<String>,
+    #[cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
+    db_url: Signal<Option<String>>,
+    state: Signal<DemoConnectionState>,
+}
+
+impl DemoRuntime {
+    fn activate_local_fallback(mut self, mut session: SessionState) {
+        #[cfg(target_arch = "wasm32")]
+        if let Some(db_url) = self.db_url.peek().clone() {
+            session.client.set(PhysicianClient::demo_sqlite(db_url));
+            self.state.set(DemoConnectionState::LocalFallback);
+            *session.taken.write() += 1;
+            return;
+        }
+        #[cfg(not(target_arch = "wasm32"))]
+        let _ = &mut session;
+        self.state.set(DemoConnectionState::LocalFallback);
+    }
+
+    async fn reset(mut self, mut session: SessionState) {
+        let current = session.client.peek().clone();
+        if current.is_demo() {
+            if current.demo_reset().await.is_ok() {
+                self.state.set(DemoConnectionState::LocalFallback);
+                *session.taken.write() += 1;
+            }
+            return;
+        }
+        let next = PhysicianClient::new(self.base_url.peek().clone());
+        match next.start_demo_session().await {
+            Ok(_) => {
+                session.client.set(next);
+                self.state.set(DemoConnectionState::LiveHarness);
+                *session.taken.write() += 1;
+            }
+            Err(err) => {
+                if let Some(detail) = PhysicianClient::demo_budget_message(&err) {
+                    self.state
+                        .set(DemoConnectionState::BudgetExhausted { detail });
+                } else {
+                    self.activate_local_fallback(session);
+                }
+            }
+        }
+    }
+}
+
+pub(crate) fn is_demo_mode(client: &PhysicianClient) -> bool {
+    client.is_demo()
+        || try_consume_context::<Option<DemoRuntime>>()
+            .flatten()
+            .is_some()
+}
+
 /// The tab's sign-in state, owned by [`PhysicianRoot`] and changed only here.
 /// Every change names the bearer it is about, because a request can finish
 /// after this browser has moved on to a newer session.
@@ -676,6 +759,8 @@ pub(crate) struct SessionState {
     sign_in_link: Signal<Option<SignInLink>>,
     /// The practice removed this physician's access; the sign-in page says so.
     removed: Signal<bool>,
+    /// Present only when mounted through the static/live demo entrypoint.
+    demo: Option<DemoRuntime>,
 }
 
 impl SessionState {
@@ -773,6 +858,10 @@ impl SessionState {
     /// Removed access signs out and says "No access to this practice".
     pub(crate) fn refused(mut self, refusal: Refusal, shown: bool, presented: Option<String>) {
         if self.bearer() != presented {
+            return;
+        }
+        if let Some(demo) = self.demo {
+            demo.activate_local_fallback(self);
             return;
         }
         let presented = presented.as_deref();
@@ -918,6 +1007,15 @@ pub fn PhysicianRoot(
     let held_link = use_signal(|| (open_patient.clone(), open_chat.clone()));
     let mut removed = use_signal(|| false);
     let mut sign_in_link = use_signal(|| sign_in);
+    let demo_base_url = use_signal(|| base_url.clone());
+    let demo_db_url = use_signal(|| demo_db.clone());
+    let demo_state = use_signal(|| DemoConnectionState::Probing);
+    let demo_runtime = demo_active.then_some(DemoRuntime {
+        base_url: demo_base_url,
+        db_url: demo_db_url,
+        state: demo_state,
+    });
+    use_context_provider(|| demo_runtime);
     // The bearer session rides the client, so one client is built once.
     let client = use_signal(|| {
         #[cfg(target_arch = "wasm32")]
@@ -946,7 +1044,30 @@ pub fn PhysicianRoot(
         held_link,
         sign_in_link,
         removed,
+        demo: demo_runtime,
     };
+    #[cfg(target_arch = "wasm32")]
+    use_hook(move || {
+        if let Some(runtime) = demo_runtime {
+            dioxus::core::spawn(async move {
+                let probe = PhysicianClient::new(runtime.base_url.peek().clone());
+                match probe.start_demo_session().await {
+                    Ok(_) => {
+                        let mut client_sig = client;
+                        client_sig.set(probe);
+                        let mut st = runtime.state;
+                        st.set(DemoConnectionState::LiveHarness);
+                        let mut taken_sig = taken;
+                        *taken_sig.write() += 1;
+                    }
+                    Err(_) => {
+                        let mut st = runtime.state;
+                        st.set(DemoConnectionState::LocalFallback);
+                    }
+                }
+            });
+        }
+    });
     // Other tabs' sign-in news arrives outside the Dioxus runtime, so it
     // re-enters this scope before touching the session.
     #[cfg(target_arch = "wasm32")]
@@ -954,7 +1075,9 @@ pub fn PhysicianRoot(
         let runtime = dioxus::core::Runtime::current();
         let scope = dioxus::core::current_scope_id();
         std::rc::Rc::new(tabs::listen(move || {
-            runtime.in_scope(scope, || session.catch_up());
+            if !demo_active {
+                runtime.in_scope(scope, || session.catch_up());
+            }
         }))
     });
     if !signed_in() {
@@ -2951,7 +3074,23 @@ fn PhysicianShell(
     };
     let drawer_open = drawer() == Drawer::Open;
     let screen_hidden = screen_cover().is_hidden();
+    let demo_runtime = session.demo;
+    let clear_demo_command_notices = move || {
+        send_slot.clear_refusal();
+        resume_slot.clear_refusal();
+        reply_slot.clear_refusal();
+        chat_resume_slot.clear_refusal();
+    };
     let reset_demo = Callback::new(move |()| {
+        clear_demo_command_notices();
+        if let Some(demo) = demo_runtime {
+            spawn(async move {
+                demo.reset(session).await;
+                reading.set(None);
+                drawer.set(Drawer::Dismissed);
+            });
+            return;
+        }
         let demo_client = client.read().clone();
         spawn(async move {
             if demo_client.demo_reset().await.is_ok() {
@@ -2963,6 +3102,25 @@ fn PhysicianShell(
             }
         });
     });
+    let use_local_preview = Callback::new(move |()| {
+        clear_demo_command_notices();
+        if let Some(demo) = demo_runtime {
+            demo.activate_local_fallback(session);
+            reading.set(None);
+            drawer.set(Drawer::Dismissed);
+        }
+    });
+    let demo_display_state = demo_runtime
+        .map(|demo| demo.state.read().clone())
+        .or_else(|| {
+            client
+                .read()
+                .is_demo()
+                .then_some(DemoConnectionState::LocalFallback)
+        });
+    let demo_sidebar_state = demo_display_state.clone();
+    let demo_guide_state =
+        demo_display_state.filter(|state| !demo_bar_dismissed() || state.budget_detail().is_some());
     let toggle_appearance = move |_| {
         let next = appearance().toggle();
         ui::set_appearance(APPEARANCE_STORAGE_KEY, next);
@@ -3284,8 +3442,16 @@ fn PhysicianShell(
                         if !whoami_name().is_empty() {
                             span { class: "sidebar-physician", "{whoami_name}" }
                         }
-                        if client.read().is_demo() {
-                            StatePill { "SQLite demo" }
+                        if let Some(state) = demo_sidebar_state {
+                            StatePill { "{state.status_label()}" }
+                            if state.budget_detail().is_some() {
+                                Button {
+                                    variant: ButtonVariant::Secondary,
+                                    aria_label: "Use local chart preview",
+                                    onclick: move |_| use_local_preview.call(()),
+                                    "Use local chart preview"
+                                }
+                            }
                             Button {
                                 variant: ButtonVariant::Quiet,
                                 aria_label: "Reset demo database",
@@ -3343,7 +3509,7 @@ fn PhysicianShell(
                             Icon { name: IconName::Keyboard }
                             "Keyboard shortcuts"
                         }
-                        if !client.read().is_demo() {
+                        if demo_runtime.is_none() && !client.read().is_demo() {
                             invitations::ColleagueInviteTrigger {
                                 client,
                                 session,
@@ -3635,12 +3801,13 @@ fn PhysicianShell(
                             },
                             resume_notice: resume_slot.notice(client),
                             demo_guide: rsx! {
-                                if client.read().is_demo() && !demo_bar_dismissed() {
+                                if let Some(demo_state) = demo_guide_state {
                                     div {
                                         class: "demo-quick-bar",
                                         role: "region",
                                         aria_label: "Interactive demo guide",
                                         span { class: "demo-quick-label", "Demo" }
+                                        StatePill { "{demo_state.status_label()}" }
                                         Button {
                                             variant: ButtonVariant::Secondary,
                                             compact: true,
@@ -3664,12 +3831,23 @@ fn PhysicianShell(
                                             onclick: move |_| reset_demo.call(()),
                                             "Reset demo"
                                         }
-                                        Button {
-                                            variant: ButtonVariant::Quiet,
-                                            compact: true,
-                                            aria_label: "Dismiss demo guide",
-                                            onclick: move |_| demo_bar_dismissed.set(true),
-                                            "Dismiss"
+                                        if let Some(detail) = demo_state.budget_detail() {
+                                            Button {
+                                                variant: ButtonVariant::Secondary,
+                                                compact: true,
+                                                aria_label: "Demo: Use local chart preview",
+                                                onclick: move |_| use_local_preview.call(()),
+                                                "Use local chart preview"
+                                            }
+                                            p { class: "demo-budget-detail", "{detail}" }
+                                        } else {
+                                            Button {
+                                                variant: ButtonVariant::Quiet,
+                                                compact: true,
+                                                aria_label: "Dismiss demo guide",
+                                                onclick: move |_| demo_bar_dismissed.set(true),
+                                                "Dismiss"
+                                            }
                                         }
                                     }
                                 }
@@ -4452,6 +4630,7 @@ impl Command {
 enum Answer {
     Accepted(serde_json::Value),
     Refused(String),
+    BudgetExhausted(String),
     /// No answer arrived, so whether it took is unknown.
     Unconfirmed,
 }
@@ -4461,22 +4640,29 @@ fn answer(result: &Result<serde_json::Value, physician_client::HttpError>) -> An
         Ok(value) => command_rejection(value)
             .map_or_else(|| Answer::Accepted(value.clone()), Answer::Refused),
         // The server answered and said no: a refusal, with its reason when given.
-        Err(physician_client::HttpError::Status { status, body })
-            if (400..500).contains(status) && !matches!(status, 408 | 429) =>
-        {
-            let value = serde_json::from_str::<serde_json::Value>(body).unwrap_or_default();
-            Answer::Refused(
-                command_rejection(&value)
-                    .or_else(|| {
-                        value
-                            .get("detail")
-                            .and_then(serde_json::Value::as_str)
-                            .map(str::to_owned)
-                    })
-                    .unwrap_or_else(|| COMMAND_REFUSED.to_owned()),
-            )
+        Err(err) => {
+            if let Some(detail) = PhysicianClient::demo_budget_message(err) {
+                return Answer::BudgetExhausted(detail);
+            }
+            if let physician_client::HttpError::Status { status, body } = err
+                && (400..500).contains(status)
+                && !matches!(status, 408 | 429)
+            {
+                let value = serde_json::from_str::<serde_json::Value>(body).unwrap_or_default();
+                Answer::Refused(
+                    command_rejection(&value)
+                        .or_else(|| {
+                            value
+                                .get("detail")
+                                .and_then(serde_json::Value::as_str)
+                                .map(str::to_owned)
+                        })
+                        .unwrap_or_else(|| COMMAND_REFUSED.to_owned()),
+                )
+            } else {
+                Answer::Unconfirmed
+            }
         }
-        Err(_) => Answer::Unconfirmed,
     }
 }
 
@@ -4769,6 +4955,7 @@ impl CommandSlot {
             return;
         }
         let start_gen = *self.generation.peek();
+        let demo_runtime = try_consume_context::<Option<DemoRuntime>>().flatten();
         let target = command_target(&command);
         self.last.set(Some((command.clone(), then, refused)));
         self.stage.set(CommandStage::Sending);
@@ -4781,6 +4968,7 @@ impl CommandSlot {
                 && self
                     .persistence
                     .is_none_or(|p| p.matches_live_target(target.as_ref()));
+            let is_budget = matches!(answer, Answer::BudgetExhausted(_));
             match answer {
                 Answer::Accepted(value) => {
                     if let Some(p) = self.persistence {
@@ -4792,9 +4980,14 @@ impl CommandSlot {
                     }
                     then.call(value);
                 }
-                Answer::Refused(reason) => {
+                Answer::BudgetExhausted(reason) | Answer::Refused(reason) => {
                     if let Some(p) = self.persistence {
                         p.clear(&command);
+                    }
+                    if is_budget && let Some(mut runtime) = demo_runtime {
+                        runtime.state.set(DemoConnectionState::BudgetExhausted {
+                            detail: reason.clone(),
+                        });
                     }
                     if still_current {
                         self.stage.set(CommandStage::Refused(reason));
@@ -4814,6 +5007,12 @@ impl CommandSlot {
                 }
             }
         });
+    }
+
+    fn clear_refusal(mut self) {
+        if matches!(*self.stage.peek(), CommandStage::Refused(_)) {
+            self.stage.set(CommandStage::Idle);
+        }
     }
 
     /// Like `run`, for a command that could not be put together: its reason shows as a refusal.
@@ -4853,7 +5052,7 @@ impl CommandSlot {
 
 #[cfg(test)]
 mod command_answer_tests {
-    use super::{Answer, COMMAND_REFUSED, answer};
+    use super::{Answer, COMMAND_REFUSED, DemoConnectionState, answer};
     use physician_client::HttpError;
 
     #[test]
@@ -4880,6 +5079,13 @@ mod command_answer_tests {
             answer(&Err(status(409, ""))),
             Answer::Refused(COMMAND_REFUSED.into())
         );
+        assert_eq!(
+            answer(&Err(status(
+                429,
+                r#"{"code":"demo_turn_budget_exhausted","detail":"Turn limit reached for this session."}"#
+            ))),
+            Answer::BudgetExhausted("Turn limit reached for this session.".into())
+        );
         // No answer, or one that says nothing about the command: unknown.
         for unknown in [status(503, ""), status(429, ""), status(408, "")] {
             assert_eq!(answer(&Err(unknown)), Answer::Unconfirmed);
@@ -4888,6 +5094,27 @@ mod command_answer_tests {
             answer(&Err(HttpError::Transport("reset".into()))),
             Answer::Unconfirmed
         );
+    }
+
+    #[test]
+    fn demo_connection_state_labels_are_explicit() {
+        assert_eq!(
+            DemoConnectionState::Probing.status_label(),
+            "Local chart preview"
+        );
+        assert_eq!(
+            DemoConnectionState::LocalFallback.status_label(),
+            "Local chart preview"
+        );
+        assert_eq!(
+            DemoConnectionState::LiveHarness.status_label(),
+            "Live harness"
+        );
+        let exhausted = DemoConnectionState::BudgetExhausted {
+            detail: "Limit reached".into(),
+        };
+        assert_eq!(exhausted.status_label(), "Live turn limit reached");
+        assert_eq!(exhausted.budget_detail(), Some("Limit reached"));
     }
 }
 

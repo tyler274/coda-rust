@@ -35,6 +35,8 @@ try {
 
   let next = 0;
   const pending = new Map(), errors = [], failures = [];
+  let probedDemoSession = false;
+  let allowMockBudget429 = false;
   socket.onmessage = ({data}) => {
     const msg = JSON.parse(data);
     if (msg.id && pending.has(msg.id)) {
@@ -43,7 +45,14 @@ try {
     }
     if (msg.method === 'Runtime.exceptionThrown') errors.push(msg.params.exceptionDetails);
     if (msg.method === 'Network.responseReceived' && msg.params.response.url.startsWith(origin) && msg.params.response.status >= 400) {
-      failures.push({url: msg.params.response.url, status: msg.params.response.status});
+      const {url, status} = msg.params.response;
+      if (status === 404 && url.endsWith('/auth/demo-session')) {
+        probedDemoSession = true;
+      } else if (allowMockBudget429 && status === 429 && url.endsWith('/auth/demo-session')) {
+        // Intentional simulated live turn budget exhaustion check below.
+      } else {
+        failures.push({url, status});
+      }
     }
   };
   const call = (method, params = {}) => new Promise((resolve, reject) => { const id = ++next; pending.set(id, {resolve, reject}); socket.send(JSON.stringify({id, method, params})); });
@@ -134,7 +143,8 @@ try {
   await snap('01-public-home-demo-cta');
 
   await evaluate(`document.querySelector('.hero-cta-row a.btn').click()`);
-  await until(`location.pathname.includes('/physician') && document.body.innerText.includes('Gary Kowalczyk') && document.body.innerText.includes('Reset demo') && !document.body.innerText.includes('No visits remaining today')`, 'demo Today + Schedule');
+  await until(`location.pathname.includes('/physician') && document.body.innerText.includes('Gary Kowalczyk') && document.querySelector('.demo-quick-bar')?.innerText.includes('Local chart preview') && document.body.innerText.includes('Reset demo') && !document.body.innerText.includes('No visits remaining today')`, 'demo Today + Schedule + Local chart preview pill');
+  assert.equal(probedDemoSession, true, 'Demo startup must probe POST /auth/demo-session before falling back');
   await assertNoLoadErrors('initial Today');
   await snap('02-demo-today');
 
@@ -178,9 +188,11 @@ try {
 
   await setInput('textarea', 'HTMLTextAreaElement', 'What is his latest LDL and atorvastatin dose?');
   await evaluate(`[...document.querySelectorAll('button')].find(b => b.innerText.trim() === 'Send').click()`);
-  await until(`document.body.innerText.includes('From SQLite chart search across') && document.querySelectorAll('.answer-words button.citation-chip').length > 0`, 'SQLite chat answer + inline citation chip');
+  await until(`document.body.innerText.includes('From SQLite chart search across') && document.querySelectorAll('.answer-words button.citation-chip').length > 0 && document.body.innerText.includes('Basis and limitations')`, 'SQLite chat answer + inline citation chip + Basis and limitations');
   await evaluate(`document.querySelector('.answer-words button.citation-chip').click()`);
-  await until(`!!document.querySelector('aside.source-reading-pane')`, 'citation reader open via cited_source');
+  await until(`!!document.querySelector('aside.source-reading-pane') && (document.querySelector('aside.source-reading-pane .source-pane-content')?.innerText.trim().length || 0) > 20`, 'citation reader open via cited_source with non-empty source prose');
+  const paneText = await evaluate(`document.querySelector('aside.source-reading-pane')?.innerText || ''`);
+  assert(!paneText.includes("Couldn't load this") && !paneText.includes("Couldn’t load this"), `citation pane showed load error: ${paneText}`);
   await assertNoLoadErrors('chat cited_source');
   await snap('04-demo-chat-sql-citation');
   await evaluate(`document.querySelector('aside.source-reading-pane button.source-pane-close')?.click()`);
@@ -219,6 +231,138 @@ try {
   await until(`document.body.innerText.includes('6 need you')`, 'Reset restored 6 Today items');
   await assertNoLoadErrors('After reset');
   await snap('05-demo-after-reset');
+
+  // Verify /coda/physician/ resolves API calls to /coda/physician/api/*, transitions
+  // to "Live harness" + Bearer Valkey SSE stream when POST /auth/demo-session answers 200,
+  // hides Sign out / Invite colleague, and honestly falls back when turn limit is hit.
+  let liveSessionCalls = 0;
+  let sseAuthHeader = '';
+  let budgetExhaustNextSession = false;
+  const jsonHeaders = [
+    {name: 'content-type', value: 'application/json'},
+    {name: 'cache-control', value: 'no-store'},
+  ];
+  const fulfillJson = (requestId, status, obj) => call('Fetch.fulfillRequest', {
+    requestId,
+    responseCode: status,
+    responseHeaders: jsonHeaders,
+    body: Buffer.from(JSON.stringify(obj)).toString('base64'),
+  });
+  const handleFetchPaused = async ({requestId, request}) => {
+    const u = new URL(request.url);
+    const apiPrefix = '/coda/physician/api';
+    if (!u.pathname.startsWith(apiPrefix)) {
+      const targetPath = u.pathname.replace('/coda/physician', `${basePath}/physician`);
+      await call('Fetch.continueRequest', {requestId, url: `${origin}${targetPath}${u.search}`});
+      return;
+    }
+    const route = u.pathname.slice(apiPrefix.length);
+    if (route === '/auth/demo-session' && request.method === 'POST') {
+      liveSessionCalls += 1;
+      if (budgetExhaustNextSession) {
+        await fulfillJson(requestId, 429, {
+          code: 'demo_turn_budget_exhausted',
+          detail: 'Live demo turn budget reached for this visitor.',
+        });
+      } else {
+        await fulfillJson(requestId, 200, {
+          session: 'mock-live-demo-1',
+          physician_id: 'phys-demo-hannah',
+          practice_id: 'coda-demo-practice',
+          ends_at: 1800000000,
+        });
+      }
+    } else if (route === '/auth/whoami') {
+      await fulfillJson(requestId, 200, {
+        physician_id: 'phys-demo-hannah',
+        practice_id: 'coda-demo-practice',
+        email: 'hannah@coda-demo.example',
+        display_name: 'Dr. Hannah Alvarez',
+        admin: false,
+        practice_accounts: [],
+      });
+    } else if (route === '/health') {
+      await fulfillJson(requestId, 200, {status: 'ok', retrying: [], held_by_newer_release: []});
+    } else if (route === '/today') {
+      await fulfillJson(requestId, 200, {
+        date: '2026-11-21',
+        time_zone: 'America/New_York',
+        rows: [],
+        as_of: 0,
+        connections: [],
+        seen: [],
+        also_reviewed: 0,
+        practice_outages: [],
+      });
+    } else if (route === '/patient-workspaces') {
+      await fulfillJson(requestId, 200, {patients: []});
+    } else if (route === '/practice-day') {
+      await fulfillJson(requestId, 200, {
+        current_time: '2026-11-21T09:00:00-05:00',
+        time_zone: 'America/New_York',
+        source_state: {state: 'connected'},
+        visits: [],
+      });
+    } else if (route === '/recent-conversations') {
+      await fulfillJson(requestId, 200, {conversations: []});
+    } else if (route === '/updates') {
+      await fulfillJson(requestId, 200, {
+        active_runs: [],
+        rows: [],
+        today_items: [],
+        reviewed_nothing_for_you: [],
+        earlier_days: [],
+      });
+    } else if (route === '/patient-workspaces/events') {
+      sseAuthHeader = request.headers.authorization || request.headers.Authorization || '';
+      await call('Fetch.fulfillRequest', {
+        requestId,
+        responseCode: 200,
+        responseHeaders: [
+          {name: 'content-type', value: 'text/event-stream'},
+          {name: 'cache-control', value: 'no-store'},
+        ],
+        body: Buffer.from(': connected\n\n').toString('base64'),
+      });
+    } else {
+      await fulfillJson(requestId, 200, {});
+    }
+  };
+  socket.addEventListener('message', ({data}) => {
+    const msg = JSON.parse(data);
+    if (msg.method === 'Fetch.requestPaused') {
+      handleFetchPaused(msg.params).catch(err => errors.push({message: String(err)}));
+    }
+  });
+  await call('Fetch.enable', {patterns: [{urlPattern: `${origin}/coda/physician*`}]});
+  const navLive = await call('Page.navigate', {url: `${origin}/coda/physician/`});
+  assert(!navLive.errorText, navLive.errorText);
+  await until(
+    `document.querySelector('.demo-quick-bar')?.innerText.includes('Live harness') && document.body.innerText.includes('Dr. Hannah Alvarez')`,
+    '/coda/physician/ switches to Live harness when POST /coda/physician/api/auth/demo-session succeeds',
+  );
+  for (let i = 0; i < 100 && sseAuthHeader !== 'Bearer mock-live-demo-1'; i++) await delay(100);
+  assert.equal(liveSessionCalls, 1, 'Expected /coda/physician/api/auth/demo-session probe');
+  assert.equal(sseAuthHeader, 'Bearer mock-live-demo-1', 'Expected SSE /coda/physician/api/patient-workspaces/events with live Bearer');
+  const liveBody = await evaluate(`document.body.innerText`);
+  assert(!liveBody.includes('Sign out'), 'Live demo must hide Sign out');
+  assert(!liveBody.includes('Invite colleague'), 'Live demo must hide Invite colleague');
+  await assertNoLoadErrors('Live harness subpath mock');
+
+  // Verify honest budget-exhausted state + local SQLite fallback switchover button.
+  allowMockBudget429 = true;
+  budgetExhaustNextSession = true;
+  await clickBtn('Reset demo');
+  await until(
+    `document.querySelector('.demo-quick-bar')?.innerText.includes('Live turn limit reached') && document.body.innerText.includes('Live demo turn budget reached for this visitor.') && document.body.innerText.includes('Use local chart preview')`,
+    '429 demo_turn_budget_exhausted shows Live turn limit reached and Use local chart preview',
+  );
+  await clickBtn('Use local chart preview');
+  await until(
+    `document.querySelector('.demo-quick-bar')?.innerText.includes('Local chart preview') && document.body.innerText.includes('Gary Kowalczyk') && document.body.innerText.includes('6 need you')`,
+    'Use local chart preview switches back to DemoStore cleanly',
+  );
+  await call('Fetch.disable');
 
   assert.deepEqual(errors, [], `Runtime exceptions: ${JSON.stringify(errors)}`);
   assert.deepEqual(failures, [], `HTTP >= 400: ${JSON.stringify(failures)}`);

@@ -1606,6 +1606,20 @@ pub struct VerifyResponse {
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The demo session route's answer: the live harness bearer session and metadata.
+pub struct DemoSessionResponse {
+    /// The bearer session to present on every live demo read and command.
+    pub session: String,
+    /// The `physician_id` value.
+    pub physician_id: String,
+    /// The `practice_id` value.
+    pub practice_id: String,
+    /// Optional unix timestamp when the live demo session expires.
+    #[serde(default)]
+    pub ends_at: u64,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 /// One active physician account in the caller's practice, for panel assignment.
 pub struct PracticeAccountSummary {
     /// The `physician_id` value.
