@@ -10,8 +10,8 @@ projects = {
 organization_id      = "301140270943"
 billing_account      = "01691B-49BADA-F3D54D"
 region               = "us-east1"
-iap_group            = "gcp-engineering@codahealth.ai"
-state_admin_members  = ["group:gcp-engineering@codahealth.ai"]
+iap_group            = "gcp-engineering@dabney.moe"
+state_admin_members  = ["group:gcp-engineering@dabney.moe"]
 github_repository_id = "1462179920"
 github_owner_id      = "4147075"
 
@@ -95,7 +95,7 @@ physician_simulation_practices = ["coda-rehearsal-practice"]
 # physician's IAP with POST /auth/rehearsal; it reaches only the rehearsal panel.
 physician_rehearsal_enabled = true
 # Operators who run those drills, each named on their own.
-physician_rehearsal_signers = ["user:tyler@codahealth.ai"]
+physician_rehearsal_signers = ["user:tp@dabney.moe"]
 
 images = {
   # Initial digests only; later releases own the image field.
@@ -125,7 +125,7 @@ doppler_token_versions = {
 migration_environment = {
   physician = {
     CODA_HOSTED_PROFILE        = "staging-preview"
-    PHYSICIAN_STAGING_ACCOUNTS = "dev@codahealth.ai|Dev|admin,tyler@codahealth.ai|Tyler|admin,physician@codahealth.test|Staging Physician|admin,ops@codahealth.ai|Ops|admin,eli@codahealth.ai|Eli|admin"
+    PHYSICIAN_STAGING_ACCOUNTS = "dev@codahealth.ai|Dev|admin,tyler@codahealth.ai|Tyler|admin,physician@codahealth.test|Staging Physician|admin,ops@codahealth.ai|Ops|admin,eli@codahealth.ai|Eli|admin,tp@dabney.moe|Tyler|admin"
   }
 }
 runtime_environment = {

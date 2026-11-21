@@ -60,7 +60,7 @@ resource "google_cloud_run_v2_service" "mail_relay" {
       }
       env {
         name  = "MAIL_FROM"
-        value = "signin@codahealth.ai"
+        value = "signin@dabney.moe"
       }
       env {
         name  = "MAIL_LISTEN_ADDR"

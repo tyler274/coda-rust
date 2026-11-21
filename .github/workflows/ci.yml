@@ -1070,7 +1070,7 @@ jobs:
       cancel-in-progress: false
     environment:
       name: staging
-      url: https://staging.codahealth.ai
+      url: https://staging.coda.dabney.moe
     permissions:
       contents: read
       id-token: write
@@ -1201,7 +1201,7 @@ jobs:
           jq -e '[.status.traffic[] | select(.latestRevision == true) | .percent] | add == 100' <<<"$service" >/dev/null \
             || { echo "::error::the latest revision does not serve all traffic"; exit 1; }
           url=$(jq -r '.status.url' <<<"$service")
-          for target in "$url/" "$url/health" "https://staging.codahealth.ai/"; do
+          for target in "$url/" "$url/health" "https://staging.coda.dabney.moe/"; do
             location=$(curl -sS -o /dev/null -w '%{http_code} %{redirect_url}' "$target")
             case "$location" in
               "302 https://accounts.google.com/"*) echo "$target -> Google sign-in" ;;

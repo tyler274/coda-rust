@@ -13,13 +13,13 @@ operator from reviewed saved plans:
 | Root | Owns | State |
 | --- | --- | --- |
 | [`rust-environments`](/infra/gcp/rust-environments) | Behind `observability_cluster_enabled`: the private observability Autopilot cluster on `rust-private`, its subnet and secondary ranges, and the reserved internal gateway address. Behind `observability_relay_image`: the IAP-protected `observability-relay` Cloud Run service, its `rust-relay` Direct VPC egress subnet and the reserved address of the Grafana internal load balancer. Behind `observability_enabled`: the collector sidecars on the Cloud Run services and their telemetry environment, including `CODA_TELEMETRY_BACKEND` from its `telemetry_backend`, which must match the `observability` root's. | `rust-environments/stg` |
-| <a href="/infra/gcp/observability/README%2Emd"><code>observability</code></a> | Inside that cluster: the OpenTelemetry gateway collector and its internal load balancer, one operations backend chosen by `telemetry_backend` (the Datadog Agent and monitors with, off by default, the project-scoped Datadog GCP integration; or self-hosted Tempo, Loki, Prometheus and Grafana with, off by default, a Cloud Monitoring datasource), the `otlphttp/langfuse` exporter to the Langfuse HIPAA cloud project at `langfuse_host`, Grafana's internal load balancer, which admits only the relay subnet so people reach Grafana only at `staging.codahealth.ai/grafana/` through public-site, and the Doppler operator. It reads the cluster and network through variables fed from `rust-environments` outputs and manages neither. Staging only. | `observability/stg` in the same state bucket |
+| <a href="/infra/gcp/observability/README%2Emd"><code>observability</code></a> | Inside that cluster: the OpenTelemetry gateway collector and its internal load balancer, one operations backend chosen by `telemetry_backend` (the Datadog Agent and monitors with, off by default, the project-scoped Datadog GCP integration; or self-hosted Tempo, Loki, Prometheus and Grafana with, off by default, a Cloud Monitoring datasource), the `otlphttp/langfuse` exporter to the Langfuse HIPAA cloud project at `langfuse_host`, Grafana's internal load balancer, which admits only the relay subnet so people reach Grafana only at `staging.coda.dabney.moe/grafana/` through public-site, and the Doppler operator. It reads the cluster and network through variables fed from `rust-environments` outputs and manages neither. Staging only. | `observability/stg` in the same state bucket |
 
 [Observability](observability.md) describes the per-signal paths and the
 content policy.
 
 Grafana shows telemetry that can carry PHI, so people reach it only through
-Google IAP, and IAP admits only `group:gcp-engineering@codahealth.ai` plus the
+Google IAP, and IAP admits only `group:gcp-engineering@dabney.moe` plus the
 named service accounts a route needs to hop between services. It is not granted
 to `allUsers`, `allAuthenticatedUsers`, a `domain:` or a single `user:`, and it
 has no listener that skips IAP. Langfuse is the hosted HIPAA cloud project, under
@@ -191,11 +191,11 @@ transport. The Workspace relay option uses these values in
 
 ```text
 PHYSICIAN_MAIL_TRANSPORT=smtp-relay
-PHYSICIAN_MAIL_FROM=signin@codahealth.ai
-PHYSICIAN_PUBLIC_ORIGIN=https://staging.codahealth.ai/physician
+PHYSICIAN_MAIL_FROM=signin@dabney.moe
+PHYSICIAN_PUBLIC_ORIGIN=https://staging.coda.dabney.moe/physician
 ```
 
-The sender is `Coda Health <signin@codahealth.ai>`. It requires no mailbox, Gmail
+The sender is `Coda Health <signin@dabney.moe>`. It requires no mailbox, Gmail
 settings change, OAuth grant, or SMTP password. Delivery connects to
 `smtp-relay.gmail.com:587` with mandatory STARTTLS. A configured but invalid
 transport stays in mailed mode: the sign-in API does not return the token.
@@ -626,7 +626,7 @@ To turn scaling on:
    be on `main` with a successful `Deploy staging` job. Skills/docs-only pushes skip
    that job, so overall CI success is not deployment evidence. The plan refuses to
    run without a digest in `images.physician.worker`.
-2. **Decide who applies.** The plan creates bindings `group:gcp-engineering@codahealth.ai`
+2. **Decide who applies.** The plan creates bindings `group:gcp-engineering@dabney.moe`
    cannot write: the worker's project-level Cloud SQL and Monitoring metric-writer
    roles. Apply as the project Owner, or grant engineering Project IAM Admin
    conditioned on
@@ -694,7 +694,7 @@ Cloud Run service, a runtime identity with no application-data roles, and a
 service-scoped invoker binding. `enable_physician_smtp_relay` must already be enabled:
 the adapter uses that existing network, subnet and NAT address, preserving the
 Workspace IP allowlist. It needs no Doppler token. Runtime settings are
-`MAIL_FROM=signin@codahealth.ai`, `MAIL_NOTIFICATION_FROM=notifications@codahealth.ai`
+`MAIL_FROM=signin@dabney.moe`, `MAIL_NOTIFICATION_FROM=notifications@dabney.moe`
 (the binary default), and `MAIL_LISTEN_ADDR=0.0.0.0:8080`.
 
 For Gym staging, the named caller is
