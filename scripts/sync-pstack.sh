@@ -4,7 +4,8 @@ set -euo pipefail
 
 upstream=${1:?usage: sync-pstack.sh /path/to/cursor-plugins}
 revision=$(git -C "$upstream" log -1 --format=%H HEAD -- pstack/skills ':!pstack/skills/statechart/scripts/test')
-mapfile -t skills < <(git -C "$upstream" ls-tree --name-only "$revision" pstack/skills/ | xargs -n1 basename | sort)
+# poteto-help links to the plugin's own docs and README, which live outside pstack/skills.
+mapfile -t skills < <(git -C "$upstream" ls-tree --name-only "$revision" pstack/skills/ | xargs -n1 basename | grep -vx poteto-help | sort)
 test "${#skills[@]}" -gt 0
 paths=("${skills[@]/#/pstack/skills/}")
 snapshot=$(mktemp -d)
