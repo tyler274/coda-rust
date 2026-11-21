@@ -354,6 +354,37 @@ class ResultTests(unittest.TestCase):
             ran["sandbox"]["result"] = "success"
             self.check(ran, False)
 
+    def test_sandbox_summary_reports_actual_results_without_claiming_vm_proof(self):
+        steps = self.jobs["result"]["steps"]
+        summary = next(step for step in steps
+                       if step.get("name") == "Report sandbox qualification coverage")
+        self.assertEqual(summary["if"], "always()")
+        self.assertEqual(summary["env"], {
+            "SANDBOX_SELECTED": "${{ needs.scope.outputs.sandbox }}",
+            "SANDBOX_RESULT": "${{ needs.sandbox.result }}",
+        })
+        cases = [("true", state) for state in ("success", "failure", "cancelled", "skipped")]
+        cases += [("false", "skipped"), ("", "")]
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "summary"
+            for selected, state in cases:
+                with self.subTest(selected=selected, state=state):
+                    output.write_text("")
+                    env = dict(os.environ, SANDBOX_SELECTED=selected, SANDBOX_RESULT=state,
+                               GITHUB_STEP_SUMMARY=str(output), GITHUB_SERVER_URL="https://github.com",
+                               GITHUB_REPOSITORY="tyler274/coda-rust", GITHUB_SHA="a" * 40)
+                    result = subprocess.run(["bash", "-e", "-o", "pipefail", "-c", summary["run"]],
+                                            env=env, capture_output=True, text=True)
+                    self.assertEqual(result.returncode, 0, result.stderr)
+                    text = output.read_text()
+                    self.assertIn(f"job selected: `{selected or 'unavailable'}`", text)
+                    self.assertIn(f"job result: `{state or 'unavailable'}`", text)
+                    self.assertIn("VM runtime qualification: not run by this workflow", text)
+                    self.assertIn("including manual dispatch", text)
+                    self.assertIn("Neither `agent-sandbox` nor `coda-firecracker` is executed", text)
+                    self.assertIn("https://github.com/tyler274/coda-rust/blob/" + "a" * 40, text)
+                    self.assertNotIn("passed", text)
+
     def test_gate_covers_every_validation_job_and_deployment_consumes_gate(self):
         # This is a workflow topology contract, not a copy of the job inventory.
         # The cache publisher follows images and must not delay the gate.

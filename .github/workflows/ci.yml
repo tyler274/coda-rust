@@ -119,6 +119,22 @@ jobs:
         env:
           CI_NEEDS: ${{ toJSON(needs) }}
         run: python3 scripts/ci_scope.py result
+      - name: Report sandbox qualification coverage
+        if: always()
+        env:
+          SANDBOX_SELECTED: ${{ needs.scope.outputs.sandbox }}
+          SANDBOX_RESULT: ${{ needs.sandbox.result }}
+        run: |
+          # Markdown backticks below are literal, not shell command substitutions.
+          # shellcheck disable=SC2016
+          {
+            printf '%s\n' '## Sandbox qualification coverage'
+            printf '\n- Dedicated sandbox job selected: `%s`.\n' "${SANDBOX_SELECTED:-unavailable}"
+            printf '\n- Dedicated sandbox job result: `%s`.\n' "${SANDBOX_RESULT:-unavailable}"
+            printf '\n%s\n' 'The dedicated job covers package build, cargo tests, Clippy, formatting, coda-carry and the CI guest-system build. A skipped job provides no dedicated sandbox proof for this run.'
+            printf '\n%s\n' '**VM runtime qualification: not run by this workflow**, including manual dispatch. Neither `agent-sandbox` nor `coda-firecracker` is executed; building the guest does not prove VM runtime behavior.'
+            printf '\nRun the existing host checks on a trusted KVM-capable sandbox host (nested KVM for Firecracker): [sandbox checks](%s/%s/blob/%s/crates/workspace-tools/sandbox/README.md#checks).\n' "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_SHA"
+          } >> "$GITHUB_STEP_SUMMARY"
       - name: Graph validation job timings
         if: always()
         continue-on-error: true
