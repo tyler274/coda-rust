@@ -29,7 +29,7 @@ jobs:
       cancel-in-progress: false
     environment:
       name: production
-      url: https://codahealth.ai
+      url: https://coda.dabney.moe
     permissions:
       actions: read
       contents: read
@@ -159,7 +159,7 @@ jobs:
           ip=$(nix develop .#release --command tofu -chdir="$ROOT" output -raw load_balancer_ip)
           # --resolve pins each hostname to this load balancer with normal SNI and
           # certificate checks, before or after the DNS cutover.
-          for host in codahealth.ai www.codahealth.ai; do
+          for host in coda.dabney.moe www.coda.dabney.moe; do
             pin=(--resolve "${host}:443:${ip}" --resolve "${host}:80:${ip}")
             health=$(curl -sS --fail "${pin[@]}" "https://${host}/api/health")
             jq -e --arg sha "$RELEASE_SHA" '.env == "production" and .release_sha == $sha' <<<"$health" >/dev/null \
