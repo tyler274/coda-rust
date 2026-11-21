@@ -9,15 +9,50 @@ use std::{
 
 const USAGE: &str = "discord inspect --backup PATH\ndiscord search --backup PATH [--author ID] [--text TEXT]\nSearch explicitly prints matching archived messages; inspect prints counts only.";
 
+#[derive(Debug, thiserror::Error)]
+#[error("Discord ID must be a nonzero canonical unsigned integer string")]
+struct InvalidId;
+
+fn validate_id(value: String) -> Result<String, InvalidId> {
+    match value.parse::<u64>() {
+        Ok(number) if number != 0 && number.to_string() == value => Ok(value),
+        _ => Err(InvalidId),
+    }
+}
+
+macro_rules! discord_id {
+    ($name:ident) => {
+        #[derive(Deserialize, serde::Serialize, PartialEq, Eq)]
+        #[serde(try_from = "String", into = "String")]
+        #[derive(Clone)]
+        struct $name(String);
+
+        impl TryFrom<String> for $name {
+            type Error = InvalidId;
+            fn try_from(value: String) -> Result<Self, Self::Error> {
+                validate_id(value).map(Self)
+            }
+        }
+        impl From<$name> for String {
+            fn from(value: $name) -> Self {
+                value.0
+            }
+        }
+    };
+}
+discord_id!(AuthorId);
+discord_id!(MessageId);
+discord_id!(ChannelId);
+
 #[derive(Deserialize)]
 struct Author {
-    id: String,
+    id: AuthorId,
 }
 
 #[derive(Deserialize)]
 struct Message {
-    id: String,
-    channel_id: String,
+    id: MessageId,
+    channel_id: ChannelId,
     author: Author,
     timestamp: String,
     content: String,
@@ -52,7 +87,11 @@ pub fn from_args(args: &[String]) -> Result<(), Failure> {
     if command == "search" && author.is_none() && text.is_none() {
         return Err(Failure::new(2, "search requires --author or --text"));
     }
-    let count = scan(Path::new(backup), author, text, |message| {
+    let author = author
+        .map(|value| AuthorId::try_from(value.to_owned()))
+        .transpose()
+        .map_err(|error| Failure::with_source(2, "invalid author ID", error))?;
+    let count = scan(Path::new(backup), author.as_ref(), text, |message| {
         if command == "search" {
             // JSON escapes control characters in untrusted archived text.
             println!(
@@ -73,7 +112,7 @@ pub fn from_args(args: &[String]) -> Result<(), Failure> {
 
 fn scan(
     path: &Path,
-    author: Option<&str>,
+    author: Option<&AuthorId>,
     text: Option<&str>,
     mut matched: impl FnMut(&Message),
 ) -> Result<u64, Failure> {
@@ -90,7 +129,7 @@ fn scan(
                 error,
             )
         })?;
-        if author.is_none_or(|id| message.author.id == id)
+        if author.is_none_or(|id| &message.author.id == id)
             && text.is_none_or(|query| message.content.contains(query))
         {
             matched(&message);
