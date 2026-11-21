@@ -84,11 +84,11 @@ earlier implementation authority.
 Use the developer's configured connections and repository setup. Preserve
 unrelated work and report access or proof gaps honestly. External publication,
 messages, merges, deployment, and destructive actions retain the user's approval
-requirements. A PR review request authorizes the independent reviewer's own
-assessment and follow-up publications through the reviewer GitHub App on the
-selected PRs, without per-comment approval, as defined by `review-pr`. This
-exception does not cover author responses, other messages, or merges. Local
-review before a PR exists remains internal.
+requirements. The swarm's reviewers own pull-request review, and their verdicts
+are the review of record. The `review-pr` skill gives an operator an independent
+assessment, returned in chat with its retained draft; posting that draft on a PR
+is an external publication under the rule above. Local review before a PR
+exists remains internal.
 
 Report the actual revision or local change, evidence, and remaining limits;
 successful checks or a merge alone do not establish the intended outcome.

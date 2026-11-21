@@ -5,59 +5,28 @@ batch. Any editor, terminal, or agent host can select either installed CLI.
 The first conversation is
 fresh; follow-ups resume its exact reviewer, never the coding session.
 
-## Setup for Dabney.moe
+## Setup
 
 Use the repository's `.agents/skills/review-pr` directory. The `.claude/skills`
 entry links to that same skill; a separate personal copy may be older. Install
-Python 3.10+, GitHub CLI (`gh`), Doppler CLI, OpenSSL, and the reviewer CLI you
-intend to use (`codex` or `claude`), with their executables on PATH. The live
-workflow was verified with Codex CLI 0.163.0 and Claude Code 2.1.310; an older CLI
-must support the flags used by the launcher.
+Python 3.10+, GitHub CLI (`gh`), and the reviewer CLI you intend to use (`codex`
+or `claude`), with their executables on PATH. The live workflow was verified with
+Codex CLI 0.163.0 and Claude Code 2.1.310; an older CLI must support the flags
+used by the launcher.
 
-Authenticate with your own accounts:
+Authenticate with your own accounts: `gh auth login`, then `codex login` or
+`claude auth login` for the selected reviewer engine. Your GitHub account needs
+read access to `tyler274/coda-rust`.
 
-```bash
-gh auth login
-doppler login
-```
+This repository carries no reviewer GitHub App: there is no `--github-app-config`
+to pass and no secret to fetch. The reviewer's `publish` tool therefore refuses,
+and a run finishes as `publication_unverified` with its draft retained under the
+run's `publications/`. That is the expected finish; the operator reads the draft
+and `review.md` back from there.
 
-Sign in to the selected reviewer engine with `codex login` or `claude auth login`.
-Your GitHub account needs read access to `tyler274/coda-rust`. Your Doppler
-account needs access to `CODA_PR_REVIEWER_PRIVATE_KEY` in project `coda-rust`,
-config `dev`; request that access from a Doppler administrator if it is missing.
-Having repository access alone does not grant secret access.
-
-The shared [reviewer-app.json](../reviewer-app.json) contains the Coda PR Reviewer
-App ID, installation ID, and the command that retrieves its existing key from
-Doppler. These are non-secret settings. Use this file directly; do not create a
-personal copy or put a private key or token in the checkout. Publication uses
-`coda-pr-reviewer[bot]`, independently of the GitHub account used for reads. The
-App must be installed on `tyler274/coda-rust` for publication to succeed; the
-recorded installation came from Coda Health and has not been verified against
-this repository.
-
-Verify key retrieval without displaying or saving the key. Replace the checkout
-path below with your own:
-
-```bash
-python3 - /absolute/path/to/coda-rust/.agents/skills/review-pr/reviewer-app.json <<'PYTHON'
-import json
-from pathlib import Path
-import subprocess
-import sys
-
-config = json.loads(Path(sys.argv[1]).read_text())
-result = subprocess.run(config["private_key_command"], capture_output=True)
-if result.returncode or not result.stdout.strip():
-    raise SystemExit("Reviewer key unavailable; check Doppler login and access.")
-print("Reviewer key is accessible; no secret value was displayed or saved.")
-PYTHON
-```
-
-Then use the invocation below with `--dry-run` to check PR access and prepare the
-reviewer command without starting a model or posting anything. A dry-run does not
-verify model login or live publication. Omit `--dry-run` only when requesting an
-actual review, which includes reviewer-bot publication.
+Use the invocation below with `--dry-run` to check PR access and prepare the
+reviewer command without starting a model. Omit `--dry-run` only when requesting
+an actual review.
 
 ## Invoke
 
@@ -68,7 +37,6 @@ Use absolute paths to this repository's script and a trusted workspace. Replace
 python3 /absolute/path/to/coda-rust/.agents/skills/review-pr/scripts/run_review.py \
   --pr https://github.com/OWNER/REPO/pull/123 \
   --workspace /absolute/path/to/trusted/workspace \
-  --github-app-config /absolute/path/to/coda-rust/.agents/skills/review-pr/reviewer-app.json \
   --engine codex --model gpt-6-astra --effort xhigh
 ```
 
@@ -98,10 +66,10 @@ workspace when needed; do not launch in a downloaded contributor-controlled
 folder merely to load its settings or hooks. Both engines retain their normal
 authentication and applicable configuration. CLI isolation and permissions are
 not identical. Both receive the same local reviewer MCP server for direct
-target-repository reads, publication drafting, and reviewer-owned bot publication. The
-config file contains App and installation IDs plus a command that retrieves the
-private key; it contains no private key or token. Its path is inherited by
-follow-ups. Do not put credential values in run artifacts or model prompts.
+target-repository reads and publication drafting. `--github-app-config` exists
+for a repository with a reviewer App; this one passes none, so the server's
+`publish` refuses and the draft stays in the run. Do not put credential values
+in run artifacts or model prompts.
 
 `--dry-run` reads the PRs and prepares the request without starting a model.
 Python 3.10+, authenticated `gh`, and the selected CLI must be on PATH.
@@ -118,11 +86,11 @@ refreshes its system prompt/tool descriptions on each invocation while preservin
 the saved conversation, uses JSON output and disabled permission prompts, and exposes
 only Read/Glob/Grep plus the reviewer MCP tools; follow-ups add
 `--resume <saved-id>`. Source remains read-only. Within the scoped reviewer MCP
-server, `reviewer.publish` is its only remote write capability. It publishes the
-reviewer's own saved draft on a selected PR under the user's standing review
-authorization; there is no separate approval turn. Codex retains its applicable
-configuration and is instructed to use no other connector for publication; its
-read-only shell sandbox does not by itself establish global tool isolation.
+server, `reviewer.publish` is its only remote write capability, and without App
+credentials it refuses; the reviewer's saved draft is the deliverable. Codex
+retains its applicable configuration and is instructed to use no other connector
+for publication; its read-only shell sandbox does not by itself establish global
+tool isolation.
 
 Run through the host's background execution and consume completion delivery.
 A terminal user can run directly and collect the result when the process exits.
@@ -146,8 +114,8 @@ automatic fresh-session fallback.
 - Exit 3: a report exists, but direct reviewer access was not demonstrated
   (`access_unverified`), a target changed (`stale`), or its current state could not
   be established (`freshness_unverified`), or a target lacks a verified publication
-  (`publication_unverified`). These finished runs can be resumed after resolving
-  the reported gap.
+  (`publication_unverified`, the normal finish in this repository). These finished
+  runs can be resumed.
 
 Launcher tests with CLI stand-ins verify transport, not model judgment or live
 session restoration. Keep those proof boundaries explicit.
@@ -158,25 +126,16 @@ session restoration. Keep those proof boundaries explicit.
 - [Claude programmatic execution](https://code.claude.com/docs/en/headless)
 - [Claude permissions](https://code.claude.com/docs/en/permissions)
 
-## Reviewer-owned publication
+## Drafts
 
-The user's PR review request authorizes the reviewer to publish its own reviews,
-inline findings, and follow-up replies on the selected PRs without per-comment
-approval. The reviewer calls `prepare_publication`, then `publish` in the same turn.
-The launcher supplies this standing exception on fresh and resumed turns; it does
-not authorize author responses, unrelated messages, thread resolution, or merges.
+The reviewer saves its assessment with `prepare_publication` as a draft under the
+current run's `publications/`, bound to the run and the reviewed revision. The
+`publish` tool accepts only such a draft with a matching content digest and
+refuses a changed or closed PR, a changed draft, an out-of-scope target, or
+missing App credentials; this repository has no App, so it refuses, and the draft
+and `review.md` are what the operator reads back. A verified readback, where an
+App exists, is recorded in `github_publications`; a draft or attempted write is
+not a receipt.
 
-Drafts live under the current run's `publications/`. The publisher accepts only a
-saved draft from that run with a matching content digest. It refuses a changed or
-closed PR, a changed draft, an out-of-scope target, or missing App credentials.
-A verified readback is recorded in `github_publications`; a draft or attempted write
-is not a receipt. The receipt links to its owning `run.json`, which records the
-returned native session ID when the CLI finishes. On a resumed run, the receipt
-also includes the already-known reviewer session ID.
-
-An uncertain attempt stops before another write so GitHub state can be reconciled.
-Do not start a new run or prepare a replacement to bypass that uncertainty. After
-resolving a publication failure, resume the same reviewer using `--resume-from` and
-supply the concrete reconciliation evidence. The reviewer re-reads the target and
-prepares any needed publication itself. Later code and discussion follow-ups use
-that same session as well.
+Resume the same reviewer with `--resume-from` for corrections and follow-ups; it
+re-reads the target and prepares a new draft itself.
