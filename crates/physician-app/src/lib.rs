@@ -54,28 +54,29 @@ use shell::{
     AppendedRosterPages, CONVERSATION_EMPTY, ChatView, ConnectedSourceStanding, Drawer, KeyInput,
     NavCommand, PAST_WORK_EMPTY, ProjectedStepKind, ProjectedSteps, REPLY_ASK, REPLY_CLOSED_NOTICE,
     REPLY_COPY, REPLY_NO_NEEDED, REPLY_REVISION_STALE, REPLY_TELL_CODA, RESUME, ReadView,
-    ReplyReviewAction, RosterContinuation, STOP, SourceChip, SynopsisPiece, TODAY_LOADING,
-    TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine,
-    TodayView, WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, WorkspaceRecordsState,
-    active_now_concern, answer_to, chat_view, chip_name, connection_lines, demographic_card_view,
-    format_context_time, format_local_date, format_waited, keyboard_command, message_pieces,
-    need_you_words, panel_target, past_work_copy, project_steps, read_view, reply_channel_label,
-    reply_review_actions, reply_revision_words, reply_urgency_words, resolve_roster_view, row_icon,
-    row_tone, schedule_empty_copy, shows_today_schedule, source_lines, summary_times,
-    synopsis_pieces, today_lines, today_view, work_end_reason, work_heading,
-    workspace_records_state,
+    ReplyReviewAction, RosterContinuation, STOP, ScreenCover, SourceChip, SynopsisPiece,
+    TODAY_LOADING, TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN,
+    TodayLine, TodayView, WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE,
+    WorkspaceRecordsState, active_now_concern, answer_to, chat_view, chip_name, connection_lines,
+    demographic_card_view, format_context_time, format_local_date, format_waited, keyboard_command,
+    message_pieces, need_you_words, panel_target, past_work_copy, project_steps, read_view,
+    reply_channel_label, reply_review_actions, reply_revision_words, reply_urgency_words,
+    resolve_roster_view, row_icon, row_tone, schedule_empty_copy, shows_today_schedule,
+    source_lines, summary_times, synopsis_pieces, today_lines, today_view, work_end_reason,
+    work_heading, workspace_records_state,
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
 use status::{CommandNotice, CommandStage, ReadNotice, ReadStage};
 use ui::{
-    ActionRow, Author, Button, ButtonVariant, Card, Count, DateField, DateKind, Dialog,
+    ActionRow, Appearance, Author, Button, ButtonVariant, Card, Count, DateField, DateKind, Dialog,
     DraftConflict, EmptyLine, Icon, IconName, LiveDot, NavigationControl, NavigationRow, Orb,
     OrbState, PageTitle, ProgressBar, StatePill, StatusLine, TextField, TextKind, Tone,
     WorkingMark,
 };
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
+const APPEARANCE_STORAGE_KEY: &str = "coda.physician.theme";
 const UPDATES_EMPTY: &str = "Nothing from Coda yet today.";
 const PAST_WORK_LOADING: &str = "Loading past work…";
 const PAST_WORK_UNAVAILABLE: &str = "Coda couldn’t load past work.";
@@ -1106,6 +1107,41 @@ fn PhysicianShell(
     let mut connections_open = use_signal(|| false);
     let mut connections_source =
         use_signal(|| None::<physician_wire::source_setup::SupportedSourceWire>);
+    let mut screen_cover = use_signal(|| ScreenCover::Shown);
+    let mut demo_bar_dismissed = use_signal(|| false);
+    let mut appearance = use_signal(|| Appearance::Light);
+    let mut root_element = use_signal(|| None::<std::rc::Rc<MountedData>>);
+    let hide_screen = Callback::new(move |()| {
+        drawer.set(Drawer::Closed);
+        screen_cover.set(ScreenCover::Hidden);
+    });
+    let show_screen = Callback::new(move |()| {
+        screen_cover.set(ScreenCover::Shown);
+        if let Some(el) = root_element.peek().clone() {
+            spawn(async move {
+                let _ = el.set_focus(true).await;
+            });
+        }
+    });
+    use_effect(move || {
+        spawn(async move {
+            if let Ok(found) = ui::read_appearance(APPEARANCE_STORAGE_KEY).answer().await {
+                appearance.set(found);
+            }
+        });
+        let listening = ui::watch_cover_shortcut();
+        spawn(async move {
+            while let Ok(pressed) = listening.next().await {
+                if pressed {
+                    if screen_cover.peek().is_hidden() {
+                        show_screen.call(());
+                    } else {
+                        hide_screen.call(());
+                    }
+                }
+            }
+        });
+    });
     // Focus goes into the drawer as it opens, and back to the menu when it's dismissed, or once a
     // dialog opened from it closes, since that dialog returns focus to the hidden row it came from.
     use_effect(move || {
@@ -2904,9 +2940,32 @@ fn PhysicianShell(
         }
     };
     let drawer_open = drawer() == Drawer::Open;
+    let screen_hidden = screen_cover().is_hidden();
+    let reset_demo = Callback::new(move |()| {
+        let demo_client = client.read().clone();
+        spawn(async move {
+            if demo_client.demo_reset().await.is_ok() {
+                *today_attempt.write() += 1;
+                *workspace_attempt.write() += 1;
+                *snapshot_attempt.write() += 1;
+                reading.set(None);
+                drawer.set(Drawer::Dismissed);
+            }
+        });
+    });
+    let toggle_appearance = move |_| {
+        let next = appearance().toggle();
+        ui::set_appearance(APPEARANCE_STORAGE_KEY, next);
+        appearance.set(next);
+    };
     let shell_class = format!(
-        "glass-app{}{}{}",
+        "glass-app{}{}{}{}",
         if app_collapsed() { " is-collapsed" } else { "" },
+        if screen_hidden {
+            " is-screen-hidden"
+        } else {
+            ""
+        },
         if drawer_open { " has-open-sidebar" } else { "" },
         if sidebar_collapsed() {
             " has-collapsed-sidebar"
@@ -2916,7 +2975,9 @@ fn PhysicianShell(
     );
     rsx! {
         ui::Stylesheet { app: SHELL_STYLES }
-        if app_collapsed() {
+        div {
+            class: "physician-shell-root",
+        if app_collapsed() && !screen_hidden {
             CodaOrbDock {
                 urgent: active_now.clone(),
                 active_runs: active_runs.clone(),
@@ -2931,9 +2992,11 @@ fn PhysicianShell(
         }
         div {
             class: "{shell_class}",
-            aria_hidden: if app_collapsed() { "true" } else { "false" },
+            "inert": (app_collapsed() || screen_hidden).then_some("true"),
+            aria_hidden: if app_collapsed() || screen_hidden { "true" } else { "false" },
             // Tab stays on the drawer's own controls while it is open.
-            tabindex: if drawer_open { "-1" } else { "0" },
+            tabindex: if drawer_open || screen_hidden { "-1" } else { "0" },
+            onmounted: move |event: MountedEvent| root_element.set(Some(event.data())),
             onkeydown: move |event| {
                 let key = event.key().to_string();
                 // The page behind an open drawer answers no keys; Escape closes the drawer.
@@ -2976,6 +3039,13 @@ fn PhysicianShell(
                 match command {
                     NavCommand::Search => open_search_dialog(),
                     NavCommand::Shortcuts => shortcuts_open.set(true),
+                    NavCommand::ToggleScreenCover => {
+                        if screen_cover.peek().is_hidden() {
+                            show_screen.call(());
+                        } else {
+                            hide_screen.call(());
+                        }
+                    }
                     NavCommand::Next => {
                         moved.set(true);
                         let last = targets.len().saturating_sub(1) as i32;
@@ -3209,18 +3279,7 @@ fn PhysicianShell(
                             Button {
                                 variant: ButtonVariant::Quiet,
                                 aria_label: "Reset demo database",
-                                onclick: move |_| {
-                                    let demo_client = client.read().clone();
-                                    spawn(async move {
-                                        if demo_client.demo_reset().await.is_ok() {
-                                            *today_attempt.write() += 1;
-                                            *workspace_attempt.write() += 1;
-                                            *snapshot_attempt.write() += 1;
-                                            reading.set(None);
-                                            drawer.set(Drawer::Dismissed);
-                                        }
-                                    });
-                                },
+                                onclick: move |_| reset_demo.call(()),
                                 "Reset demo"
                             }
                         }
@@ -3234,6 +3293,35 @@ fn PhysicianShell(
                                 },
                                 Icon { name: IconName::Users }
                                 "{CONNECTIONS}"
+                            }
+                        }
+                        Button {
+                            variant: ButtonVariant::Quiet,
+                            aria_label: "Hide screen",
+                            onclick: move |_| hide_screen.call(()),
+                            Icon { name: IconName::Lock }
+                            "Hide screen"
+                            kbd { class: "key-hint", "⌘⇧L" }
+                        }
+                        Button {
+                            variant: ButtonVariant::Quiet,
+                            aria_label: if appearance().is_dark() {
+                                "Switch to light theme"
+                            } else {
+                                "Switch to dark theme"
+                            },
+                            onclick: toggle_appearance,
+                            Icon {
+                                name: if appearance().is_dark() {
+                                    IconName::Sun
+                                } else {
+                                    IconName::Moon
+                                },
+                            }
+                            if appearance().is_dark() {
+                                "Light theme"
+                            } else {
+                                "Dark theme"
                             }
                         }
                         Button {
@@ -3287,6 +3375,42 @@ fn PhysicianShell(
                         onmounted: move |event: MountedEvent| drawer_menu.set(Some(event.data())),
                         onclick: move |_| drawer.set(Drawer::Open),
                         Icon { name: IconName::Menu }
+                    }
+                    div { class: "stage-quick-actions",
+                        Button {
+                            variant: ButtonVariant::Quiet,
+                            compact: true,
+                            class: "stage-quick-btn",
+                            aria_label: "Quick Today",
+                            onclick: move |_| {
+                                open_briefing.set(None);
+                                place.set(Place::Today);
+                                drawer.set(Drawer::Closed);
+                            },
+                            Icon { name: IconName::Home }
+                            span { "Today" }
+                        }
+                        Button {
+                            variant: ButtonVariant::Quiet,
+                            compact: true,
+                            class: "stage-quick-btn",
+                            aria_label: "Quick find patient",
+                            onclick: move |_| {
+                                drawer.set(Drawer::Closed);
+                                open_search_dialog();
+                            },
+                            Icon { name: IconName::Search }
+                            span { "Find" }
+                        }
+                        Button {
+                            variant: ButtonVariant::Quiet,
+                            compact: true,
+                            class: "stage-quick-btn",
+                            aria_label: "Quick hide screen",
+                            onclick: move |_| hide_screen.call(()),
+                            Icon { name: IconName::Lock }
+                            span { "Hide" }
+                        }
                     }
                     Button {
                         variant: ButtonVariant::Quiet,
@@ -3500,6 +3624,46 @@ fn PhysicianShell(
                                 }
                             },
                             resume_notice: resume_slot.notice(client),
+                            demo_guide: rsx! {
+                                if client.read().is_demo() && !demo_bar_dismissed() {
+                                    div {
+                                        class: "demo-quick-bar",
+                                        role: "region",
+                                        aria_label: "Interactive demo guide",
+                                        span { class: "demo-quick-label", "Demo" }
+                                        Button {
+                                            variant: ButtonVariant::Secondary,
+                                            compact: true,
+                                            aria_label: "Demo: Find patient",
+                                            onclick: move |_| open_search_dialog(),
+                                            Icon { name: IconName::Search }
+                                            "Find patient"
+                                        }
+                                        Button {
+                                            variant: ButtonVariant::Secondary,
+                                            compact: true,
+                                            aria_label: "Demo: Hide screen",
+                                            onclick: move |_| hide_screen.call(()),
+                                            Icon { name: IconName::Lock }
+                                            "Hide screen"
+                                        }
+                                        Button {
+                                            variant: ButtonVariant::Quiet,
+                                            compact: true,
+                                            aria_label: "Demo: Reset demo",
+                                            onclick: move |_| reset_demo.call(()),
+                                            "Reset demo"
+                                        }
+                                        Button {
+                                            variant: ButtonVariant::Quiet,
+                                            compact: true,
+                                            aria_label: "Dismiss demo guide",
+                                            onclick: move |_| demo_bar_dismissed.set(true),
+                                            "Dismiss"
+                                        }
+                                    }
+                                }
+                            },
                         }
                     },
                     Place::Updates => rsx! {
@@ -4001,7 +4165,7 @@ fn PhysicianShell(
                 }
             }
         }
-        if search_open() {
+        if !screen_hidden && search_open() {
             SearchDialog {
                 query: query(),
                 state: search_state.clone(),
@@ -4038,10 +4202,10 @@ fn PhysicianShell(
                 on_editing: move |value: bool| editing.set(value),
             }
         }
-        if shortcuts_open() {
+        if !screen_hidden && shortcuts_open() {
             ShortcutsDialog { on_close: move |_| shortcuts_open.set(false) }
         }
-        if connections_open() {
+        if !screen_hidden && connections_open() {
             if practice_sources {
                 source_setup::PracticeSourcesDialog {
                     client,
@@ -4067,20 +4231,23 @@ fn PhysicianShell(
                 }
             }
         }
-        if let Some(open) = reading().filter(|_| {
-            !clinical_dialogs_blocked(
-                place(),
-                selected.read().as_deref(),
-                gone.read().as_deref(),
-                cached_workspace.as_ref(),
-            )
-        }) {
+        if !screen_hidden
+            && let Some(open) = reading().filter(|_| {
+                !clinical_dialogs_blocked(
+                    place(),
+                    selected.read().as_deref(),
+                    gone.read().as_deref(),
+                    cached_workspace.as_ref(),
+                )
+            })
+        {
             ReaderDialog {
                 reading: open,
                 on_close: move |_| reading.set(None),
             }
         }
-        if past_work_open()
+        if !screen_hidden
+            && past_work_open()
             && place() == Place::Workspace
             && !clinical_dialogs_blocked(
                 place(),
@@ -4164,6 +4331,36 @@ fn PhysicianShell(
                 },
                 on_close: move |_| past_work_open.set(false),
             }
+        }
+        if screen_hidden {
+            section {
+                class: "privacy-cover",
+                role: "region",
+                aria_label: "Screen hidden",
+                img {
+                    class: "coda-logo privacy-cover-logo",
+                    src: "./assets/coda-health-logo-transparent.png",
+                    alt: "Coda Health",
+                }
+                h1 { class: "privacy-cover-title", "Screen hidden" }
+                p {
+                    class: "privacy-cover-detail",
+                    "Active work and unsent drafts stay in place."
+                }
+                Button {
+                    variant: ButtonVariant::Primary,
+                    class: "privacy-cover-show",
+                    onmounted: move |event: MountedEvent| {
+                        let el = event.data();
+                        spawn(async move {
+                            let _ = el.set_focus(true).await;
+                        });
+                    },
+                    onclick: move |_| show_screen.call(()),
+                    "Show screen"
+                }
+            }
+        }
         }
     }
 }
@@ -5448,6 +5645,7 @@ fn TodaySurface(
     on_activate_visit: EventHandler<ScheduleVisitRow>,
     on_resume: EventHandler<TodayLine>,
     resume_notice: Element,
+    demo_guide: Element,
 ) -> Element {
     let _ = on_open_patient;
     let words = need_you_words(need_you);
@@ -5483,6 +5681,7 @@ fn TodaySurface(
                     Count { value: need_you, words }
                 }
             }
+            {demo_guide}
             div { class: if scheduled { "today-layout has-schedule" } else { "today-layout" },
                 section { class: "today-main", aria_label: "Needs you",
                     source_setup::TodaySourceConnections {
@@ -7297,6 +7496,7 @@ fn ShortcutsDialog(on_close: EventHandler) -> Element {
                 div { class: "shortcut", span { "Send next after Coda's reply" } kbd { "⌘ Enter / Ctrl + Enter" } }
                 div { class: "shortcut", span { "Close the current preview or dialog" } kbd { "Esc" } }
                 div { class: "shortcut", span { "Hold to record; release to transcribe" } kbd { "Ctrl+Shift+Space" } }
+                div { class: "shortcut", span { "Hide or show screen" } kbd { "⌘⇧L / Ctrl+Shift+L" } }
                 p { class: "dialog-note", "Navigation shortcuts pause while you are typing. Dictation works in text fields while this tab has focus." }
         }
     }

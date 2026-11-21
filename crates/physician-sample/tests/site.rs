@@ -6922,3 +6922,203 @@ async fn p1_citations_panel_archive_discuss_dictation_and_finder() {
         tokio::time::sleep(Duration::from_millis(40)).await;
     }
 }
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn privacy_cover_dark_appearance_and_mobile_toolbar() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    let server = serve_chat_browser(&site, scale::FIXED_TEXT).await;
+    let base = format!("http://{}/", server.address);
+    let patient_url = format!("{base}?patient=pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e");
+
+    let mut tab = Tab::open(&patient_url);
+    tab.browser.watch_page_errors();
+    tab.set_viewport(1280, 800, false);
+    tab.wait_for_text("Work email", Duration::from_secs(20));
+    tab.request_sign_in("physician@codahealth.test");
+    tab.wait_for_text("Mary Louis", Duration::from_secs(20));
+
+    // Type an unsent draft so we can prove Hide screen keeps drafts alive underneath.
+    tab.click("button.sidebar-new-conversation");
+    tab.wait_for_text(
+        "What would you like Coda to review?",
+        Duration::from_secs(10),
+    );
+    tab.type_composer("Draft assessment for Mary");
+
+    let send_ctrl_shift_l = |t: &mut Tab| {
+        for kind in ["keyDown", "keyUp"] {
+            t.call(
+                "Input.dispatchKeyEvent",
+                serde_json::json!({
+                    "type": kind,
+                    "key": "L",
+                    "code": "KeyL",
+                    "windowsVirtualKeyCode": 76,
+                    "nativeVirtualKeyCode": 76,
+                    "modifiers": 10
+                }),
+            );
+        }
+    };
+
+    // Press Ctrl+Shift+L while editing inside the composer -> covers screen without losing draft.
+    tab.step("focusEnd", serde_json::json!(["textarea.composer-input"]));
+    send_ctrl_shift_l(&mut tab);
+    tab.wait_for_text("Screen hidden", Duration::from_secs(10));
+    let covered_text = tab
+        .eval("document.body.innerText")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        covered_text.contains("Screen hidden")
+            && covered_text.contains("Show screen")
+            && !covered_text.contains("Mary Louis")
+            && !covered_text.contains("Draft assessment for Mary"),
+        "privacy cover leaked patient text or draft:\n{covered_text}"
+    );
+    assert_eq!(
+        tab.eval("Boolean(document.querySelector('.glass-app[inert]'))"),
+        serde_json::json!(true),
+        ".glass-app must be inert while hidden"
+    );
+
+    // Press Ctrl+Shift+L again -> restores patient workspace and exact unsent draft.
+    send_ctrl_shift_l(&mut tab);
+    tab.wait_for_text("Mary Louis", Duration::from_secs(10));
+    assert_eq!(
+        tab.eval("Boolean(document.querySelector('.privacy-cover'))"),
+        serde_json::json!(false)
+    );
+    assert_eq!(
+        tab.composer().0,
+        "Draft assessment for Mary",
+        "unsent draft lost across Hide/Show screen"
+    );
+
+    // Hide while Find patient modal is open -> dialog is suppressed until Show screen.
+    tab.click(r#"button[aria-label="Find patient"]"#);
+    tab.wait_for_text("Find patient", Duration::from_secs(10));
+    assert_eq!(
+        tab.eval("Boolean(document.querySelector('dialog[open]'))"),
+        serde_json::json!(true)
+    );
+    send_ctrl_shift_l(&mut tab);
+    tab.wait_for_text("Screen hidden", Duration::from_secs(10));
+    assert_eq!(
+        tab.eval("Boolean(document.querySelector('dialog[open]'))"),
+        serde_json::json!(false),
+        "open dialog leaked over privacy cover"
+    );
+    tab.click("button.privacy-cover-show");
+    let modal_restored = Instant::now() + Duration::from_secs(10);
+    while tab.eval("Boolean(document.querySelector('dialog[open]'))") != serde_json::json!(true) {
+        assert!(
+            Instant::now() < modal_restored,
+            "Find patient dialog did not reopen after Show screen"
+        );
+        tokio::time::sleep(Duration::from_millis(40)).await;
+    }
+    tab.click(r#"dialog[open] button[aria-label="Close"]"#);
+
+    // Dark theme toggle persists across full reload without overwriting external sets.
+    tab.click(r#"button[aria-label="Switch to dark theme"]"#);
+    let dark_wait = Instant::now() + Duration::from_secs(5);
+    while tab.eval("document.documentElement.dataset.theme") != serde_json::json!("dark") {
+        assert!(
+            Instant::now() < dark_wait,
+            "dark theme toggle did not update data-theme"
+        );
+        tokio::time::sleep(Duration::from_millis(40)).await;
+    }
+    assert_eq!(
+        tab.eval("localStorage.getItem('coda.physician.theme')"),
+        serde_json::json!("dark")
+    );
+    tab.navigate(&patient_url);
+    tab.wait_for_text("Mary Louis", Duration::from_secs(20));
+    assert_eq!(
+        tab.eval("document.documentElement.dataset.theme"),
+        serde_json::json!("dark"),
+        "dark theme did not persist across reload"
+    );
+    tab.click(r#"button[aria-label="Switch to light theme"]"#);
+    let light_wait = Instant::now() + Duration::from_secs(5);
+    while tab.eval("document.documentElement.dataset.theme") != serde_json::json!("light") {
+        assert!(
+            Instant::now() < light_wait,
+            "light theme toggle did not restore data-theme"
+        );
+        tokio::time::sleep(Duration::from_millis(40)).await;
+    }
+
+    // Narrow mobile viewport (390x844): 1-tap >= 44px toolbar actions & zero overflow.
+    tab.set_viewport(390, 844, false);
+    let mobile_layout = tab.eval(
+        r#"(() => {
+            const labels = ['Quick Today', 'Quick find patient', 'Quick hide screen'];
+            const rects = labels.map((label) => {
+                const el = document.querySelector(`button[aria-label="${label}"]`);
+                if (!el) return { label, missing: true };
+                const r = el.getBoundingClientRect();
+                return { label, width: r.width, height: r.height };
+            });
+            const scroller = document.scrollingElement;
+            return {
+                overflow: scroller.scrollWidth - scroller.clientWidth,
+                rects,
+            };
+        })()"#,
+    );
+    assert!(
+        mobile_layout["overflow"].as_f64().is_some_and(|v| v <= 0.0),
+        "mobile toolbar caused horizontal overflow: {mobile_layout}"
+    );
+    for rect in mobile_layout["rects"].as_array().unwrap() {
+        assert!(
+            rect["height"].as_f64().unwrap_or(0.0) >= 44.0
+                && rect["width"].as_f64().unwrap_or(0.0) >= 44.0,
+            "mobile quick button smaller than 44x44px: {rect}"
+        );
+    }
+
+    tab.click(r#"button[aria-label="Quick hide screen"]"#);
+    tab.wait_for_text("Screen hidden", Duration::from_secs(10));
+    let show_rect = tab.eval(
+        "(() => { const r = document.querySelector('button.privacy-cover-show')?.getBoundingClientRect(); return r ? { width: r.width, height: r.height } : null; })()",
+    );
+    assert!(
+        show_rect["height"].as_f64().unwrap_or(0.0) >= 48.0,
+        "Show screen CTA height < 48px: {show_rect}"
+    );
+    tab.click("button.privacy-cover-show");
+    tab.wait_for_text("Mary Louis", Duration::from_secs(10));
+
+    tab.click(r#"button[aria-label="Quick find patient"]"#);
+    let quick_search = Instant::now() + Duration::from_secs(10);
+    while tab.eval("Boolean(document.querySelector('dialog[open] .search-field'))")
+        != serde_json::json!(true)
+    {
+        assert!(
+            Instant::now() < quick_search,
+            "Quick find patient did not open SearchDialog in 1 tap"
+        );
+        tokio::time::sleep(Duration::from_millis(40)).await;
+    }
+    tab.click(r#"dialog[open] button[aria-label="Close"]"#);
+
+    tab.click(r#"button[aria-label="Quick Today"]"#);
+    tab.wait_for_text("Today", Duration::from_secs(10));
+    let js_errors: Vec<String> = tab
+        .browser
+        .take_page_errors()
+        .into_iter()
+        .filter(|err| !err.contains("401 (Unauthorized)"))
+        .collect();
+    assert!(
+        js_errors.is_empty(),
+        "unexpected JS page errors: {js_errors:?}"
+    );
+}

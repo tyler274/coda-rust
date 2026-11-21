@@ -1,5 +1,6 @@
 html, body { margin: 0; height: 100%; background: var(--surface); color: var(--ink); font: var(--type-body-md); }
 #main { height: 100%; }
+.physician-shell-root { height: 100%; }
 .glass-app {
   display: grid;
   grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
@@ -8,6 +9,7 @@ html, body { margin: 0; height: 100%; background: var(--surface); color: var(--i
   background: var(--surface);
 }
 .glass-app.is-collapsed { display: none; }
+.glass-app.is-screen-hidden { visibility: hidden; pointer-events: none; }
 /* Collapsing to the rail belongs to windows that hold the sidebar beside the page. */
 @media (width >= 56.25rem) {
   .glass-app.has-collapsed-sidebar { grid-template-columns: var(--sidebar-rail-width) minmax(0, 1fr); }
@@ -112,7 +114,7 @@ html, body { margin: 0; height: 100%; background: var(--surface); color: var(--i
   .glass-stage:has(.stage-body.has-open-source) .stage-minimize { visibility: hidden; pointer-events: none; }
 }
 .glass-toolbar { display: contents; }
-.glass-toolbar .stage-menu, .glass-sidebar .sidebar-close, .glass-sidebar-backdrop { display: none; }
+.glass-toolbar .stage-menu, .glass-toolbar .stage-quick-actions, .glass-sidebar .sidebar-close, .glass-sidebar-backdrop { display: none; }
 /* Where the window can't hold the sidebar beside a page, the sidebar is a drawer over it. Closed, the drawer is hidden
    from focus and assistive technology as well as from sight. Anything that sticks or scrolls to the stage's top stops
    under the toolbar. */
@@ -164,20 +166,65 @@ html, body { margin: 0; height: 100%; background: var(--surface); color: var(--i
   }
   .glass-stage .schedule-rail { top: var(--toolbar-height); }
   .glass-toolbar {
+    --control-height: var(--target);
+    --control-min-height: var(--target);
+    --control-compact-height: var(--target);
+    --control-quiet-padding-inline: var(--space-2);
     position: sticky;
     z-index: 1;
     top: 0;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--space-2);
+    gap: var(--space-1);
     box-sizing: border-box;
     min-height: var(--toolbar-height);
-    padding-inline: var(--space-2);
+    padding: env(safe-area-inset-top, 0px) max(var(--space-2), env(safe-area-inset-right, 0px)) 0 max(var(--space-2), env(safe-area-inset-left, 0px));
     background: var(--surface);
   }
   .glass-toolbar .stage-menu { display: inline-flex; }
-  .stage-minimize { position: static; }
+  .glass-toolbar .stage-quick-actions { display: flex; align-items: center; gap: var(--space-1); min-width: 0; }
+  .stage-minimize { position: static; margin-inline-start: auto; }
+  .sidebar-content { padding-bottom: max(var(--space-3), env(safe-area-inset-bottom, 0px)); }
+}
+
+.privacy-cover {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-3);
+  padding: max(var(--space-6), env(safe-area-inset-top, 0px)) max(var(--space-5), env(safe-area-inset-right, 0px)) max(var(--space-6), env(safe-area-inset-bottom, 0px)) max(var(--space-5), env(safe-area-inset-left, 0px));
+  background: var(--surface);
+  color: var(--ink);
+  text-align: center;
+  --control-min-height: 48px;
+}
+.privacy-cover-logo { height: calc(var(--logo-height) * 1.25); }
+.privacy-cover-title { margin: 0; color: var(--ink); font: var(--type-headline-md); }
+.privacy-cover-detail { margin: 0; max-width: 28rem; color: var(--muted); font: var(--type-body-md); }
+
+.demo-quick-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  border: var(--hairline) solid var(--outline-variant);
+  background: var(--surface-low);
+  --control-min-height: var(--target);
+  --control-compact-height: var(--target);
+}
+.demo-quick-label { margin-inline-end: var(--space-1); color: var(--muted); font: var(--type-label-md); }
+
+@media (prefers-contrast: more) {
+  .glass-sidebar { border-right-color: var(--outline); }
+  .sidebar-footer { border-top-color: var(--outline); }
+  .sidebar-rule { background: var(--outline); }
+  .today-list, .demo-quick-bar { border: var(--hairline) solid var(--outline); }
 }
 .reading-workspace { box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; height: 100%; min-height: 0; padding: var(--space-3) var(--page-gutter) var(--space-4); }
 .today-heading { display: flex; align-items: center; gap: var(--space-2); padding-bottom: var(--space-section); }

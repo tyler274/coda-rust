@@ -243,6 +243,47 @@ pub fn cancel_dictation() {
     fire("cancelDictation", json!([]));
 }
 
+/// The page appearance chosen for the surface (`light` or `dark`).
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum Appearance {
+    /// Light neutrals on the bright canvas.
+    #[default]
+    Light,
+    /// Dark neutrals on `data-theme="dark"`.
+    Dark,
+}
+
+impl Appearance {
+    /// Switches between light and dark appearance.
+    pub fn toggle(self) -> Self {
+        match self {
+            Self::Light => Self::Dark,
+            Self::Dark => Self::Light,
+        }
+    }
+
+    /// Whether the appearance is currently dark.
+    pub fn is_dark(self) -> bool {
+        matches!(self, Self::Dark)
+    }
+}
+
+/// Reads the active appearance (`light` or `dark`) from `storage_key`, `data-theme`, or system preference.
+pub fn read_appearance(storage_key: &str) -> Asked<Appearance> {
+    ask("readAppearance", json!([storage_key]))
+}
+
+/// Sets `data-theme` on the root element and persists `appearance` under `storage_key`.
+pub fn set_appearance(storage_key: &str, appearance: Appearance) {
+    fire("setAppearance", json!([storage_key, appearance]));
+}
+
+/// Listens in the window capture phase for `⌘⇧L` / `Ctrl+Shift+L`, reporting each press until dropped.
+pub fn watch_cover_shortcut() -> Listening<bool> {
+    listen("watchCoverShortcut", json!([]))
+}
+
 /// Event streamed while dictation listens on the browser microphone.
 #[derive(Clone, Debug, Deserialize, PartialEq)]
 #[serde(tag = "kind", rename_all = "lowercase")]

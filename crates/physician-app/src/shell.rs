@@ -900,6 +900,23 @@ pub enum Drawer {
     Dismissed,
 }
 
+/// Whether the physician shell is currently obscured by the shoulder-surfing cover.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub enum ScreenCover {
+    /// Normal workspace and patient views are visible.
+    #[default]
+    Shown,
+    /// Patient names, records, conversations, and dialogs are covered behind `.privacy-cover`.
+    Hidden,
+}
+
+impl ScreenCover {
+    /// Whether the cover is currently hiding patient data.
+    pub fn is_hidden(self) -> bool {
+        matches!(self, Self::Hidden)
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum NavCommand {
     Search,
@@ -907,6 +924,7 @@ pub enum NavCommand {
     Next,
     Previous,
     Activate,
+    ToggleScreenCover,
 }
 
 #[expect(
@@ -924,12 +942,16 @@ pub struct KeyInput {
     pub item_focused: bool,
 }
 
-/// The same search, move, open, and shortcut keys as the React shell.
+/// The same search, move, open, and shortcut keys as the React shell, plus screen cover toggle.
 pub fn keyboard_command(input: &KeyInput) -> Option<NavCommand> {
+    let key = input.key.to_lowercase();
+    // Privacy lock remains available even while composing or inside a modal dialog.
+    if !input.alt && input.shift && (input.meta || input.ctrl) && key == "l" {
+        return Some(NavCommand::ToggleScreenCover);
+    }
     if input.editing || input.modal {
         return None;
     }
-    let key = input.key.to_lowercase();
     if !input.alt && !input.shift && (input.meta || input.ctrl) && key == "k" {
         return Some(NavCommand::Search);
     }
@@ -2072,6 +2094,45 @@ mod tests {
                 alt: false,
                 shift: false,
                 editing: true,
+                modal: false,
+                item_focused: false,
+            }),
+            None
+        );
+        assert_eq!(
+            keyboard_command(&KeyInput {
+                key: "L".to_owned(),
+                meta: false,
+                ctrl: true,
+                alt: false,
+                shift: true,
+                editing: true,
+                modal: true,
+                item_focused: false,
+            }),
+            Some(NavCommand::ToggleScreenCover)
+        );
+        assert_eq!(
+            keyboard_command(&KeyInput {
+                key: "l".to_owned(),
+                meta: true,
+                ctrl: false,
+                alt: false,
+                shift: true,
+                editing: false,
+                modal: true,
+                item_focused: false,
+            }),
+            Some(NavCommand::ToggleScreenCover)
+        );
+        assert_eq!(
+            keyboard_command(&KeyInput {
+                key: "l".to_owned(),
+                meta: false,
+                ctrl: true,
+                alt: false,
+                shift: false,
+                editing: false,
                 modal: false,
                 item_focused: false,
             }),

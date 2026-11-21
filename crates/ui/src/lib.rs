@@ -61,8 +61,9 @@ pub use motion::Stylesheet;
 pub use overlays::{ContextMenu, Menu, MenuItem, MenuSection, Tooltip};
 pub use prose::{Prose, ProseNames, ProsePart};
 pub use script::{
-    Asked, DictationAudio, DictationHeard, DictationTrigger, Listening, Unheard, cancel_dictation,
-    start_dictation, stop_dictation,
+    Appearance, Asked, DictationAudio, DictationHeard, DictationTrigger, Listening, Unheard,
+    cancel_dictation, read_appearance, set_appearance, start_dictation, stop_dictation,
+    watch_cover_shortcut,
 };
 pub use sources::{
     CitationPreview, CitedAt, CitedField, CitedPlace, ExpandSource, FieldGroup, FieldValue,

@@ -85,6 +85,8 @@ The day's schedule sits in a collapsible pane beside the list. Below the rows, o
 
 **Stop and Resume.** Stop holds exactly the work it names, across restarts, until Resume. Infrastructure interruptions aren't Stops; they recover on their own.
 
+**Hide screen.** The physician can hide the screen at any time with Hide screen or `⌘⇧L` / `Ctrl+Shift+L`. An opaque cover replaces every patient name, record, conversation, and open dialog while active work, live updates, and unsent drafts continue in place underneath until Show screen.
+
 ## Journeys
 
 ### P1. Ask about a patient, with evidence
