@@ -8,9 +8,11 @@ fresh; follow-ups resume its exact reviewer, never the coding session.
 ## Setup
 
 Use the repository's `.agents/skills/review-pr` directory. The `.claude/skills`
-entry links to that same skill; a separate personal copy may be older. Install
-Python 3.10+, GitHub CLI (`gh`), and the reviewer CLI you intend to use (`codex`
-or `claude`), with their executables on PATH. The live workflow was verified with
+entry links to that same skill; a separate personal copy may be older. Run it in
+the [dev shell](../../../../AGENTS.md#dev-shell), which supplies Python, OpenSSL
+and both reviewer CLIs (`codex` and `claude`). The GitHub CLI (`gh`) must also be
+on PATH; report it as missing rather than installing it on the host. The live
+workflow was verified with
 Codex CLI 0.163.0 and Claude Code 2.1.310; an older CLI must support the flags
 used by the launcher.
 
@@ -110,7 +112,11 @@ failed results never become completed reviews, and failures do not trigger an
 automatic fresh-session fallback.
 
 - Exit 0: prepared in dry-run mode, or completed; this is not an approval.
-- Exit 1: failed; inspect the recorded error and logs before retrying.
+- Exit 1: failed; inspect the recorded error and logs before retrying. A failed
+  run cannot be resumed, even when its reviewer session started: `--resume-from`
+  refuses it. Resolve the cause, then resume the last finished run of that
+  reviewer, or start a fresh review with the earlier findings in its context when
+  no finished run exists.
 - Exit 3: a report exists, but direct reviewer access was not demonstrated
   (`access_unverified`), a target changed (`stale`), or its current state could not
   be established (`freshness_unverified`), or a target lacks a verified publication

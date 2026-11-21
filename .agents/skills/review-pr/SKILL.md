@@ -79,7 +79,8 @@ the `review-pr` reviewer's assessment at the inspected revision. The
 
 The author or coordinating agent prepares responses to findings with correction
 commits and proof, reasoned disagreement, or the remaining decision. Resume the
-reviewer to assess corrections. Keep new findings distinct. A clean verdict or
+reviewer, from its last finished run, to assess corrections; a failed run cannot
+be resumed. Keep new findings distinct. A clean verdict or
 merge alone does not settle a finding or prove deployment.
 
 Use [write-pr](../write-pr/SKILL.md) to refresh the explanation after material
