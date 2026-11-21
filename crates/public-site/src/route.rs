@@ -139,13 +139,13 @@ impl Route {
     ) -> PageMeta {
         let (title, description) = match self {
             Self::Home {} => (site::HOME_TITLE.to_owned(), "Coda is a physician-directed AI care team that handles what happens between visits.".to_owned()),
-            Self::Duet {} => ("Duet".into(), "Duet helps you bring your health information together, notice what matters, and prepare for conversations with your doctor.".into()),
+            Self::Duet {} => ("Duet".into(), "Duet brings together your health records on iPhone and Android, keeps each source faithful in You, and lets you prepare For my doctor for your connected Coda practice.".into()),
             Self::DuetPrivacy {} => ("Duet Privacy Policy".into(), "How Duet handles the health information and sources you choose to connect.".into()),
             Self::DuetPrivacyArchive { version } => match legal.version(Archive::DuetPrivacy, version) {
                 Some(entry) => (format!("Duet Privacy Policy, last updated {}", entry.last_updated), "An earlier version of the Privacy Policy for Duet by Coda Health.".into()),
                 None => return Self::NotFound { segments: Vec::new() }.meta_for(legal, origin, base_path),
             },
-            Self::DuetTerms {} => ("Duet Terms of Service".into(), "Terms of Service for Duet, Coda Health's patient-facing iPhone app.".into()),
+            Self::DuetTerms {} => ("Duet Terms of Service".into(), "Terms of Service for Duet, Coda Health's patient-facing iPhone and Android app.".into()),
             Self::DuetTermsArchive { version } => match legal.version(Archive::DuetTerms, version).and_then(|entry| entry.version.as_deref()) {
                 Some(accepted) => (format!("Duet Terms of Service, version {accepted}"), format!("Version {accepted} of the Terms of Service for Duet by Coda Health.")),
                 None => return Self::NotFound { segments: Vec::new() }.meta_for(legal, origin, base_path),
