@@ -1108,19 +1108,30 @@ fn PhysicianShell(
     let mut connections_source =
         use_signal(|| None::<physician_wire::source_setup::SupportedSourceWire>);
     let mut screen_cover = use_signal(|| ScreenCover::Shown);
+    use_context_provider(|| screen_cover);
     let mut demo_bar_dismissed = use_signal(|| false);
     let mut appearance = use_signal(|| Appearance::Light);
     let mut root_element = use_signal(|| None::<std::rc::Rc<MountedData>>);
+    let mut was_screen_hidden = use_signal(|| false);
     let hide_screen = Callback::new(move |()| {
         drawer.set(Drawer::Closed);
+        ui::dismiss_open_popovers();
         screen_cover.set(ScreenCover::Hidden);
     });
     let show_screen = Callback::new(move |()| {
         screen_cover.set(ScreenCover::Shown);
-        if let Some(el) = root_element.peek().clone() {
-            spawn(async move {
-                let _ = el.set_focus(true).await;
-            });
+    });
+    use_effect(move || {
+        if screen_cover().is_hidden() {
+            was_screen_hidden.set(true);
+            ui::dismiss_open_popovers();
+        } else if *was_screen_hidden.peek() {
+            was_screen_hidden.set(false);
+            if let Some(el) = root_element.peek().clone() {
+                spawn(async move {
+                    let _ = el.set_focus(true).await;
+                });
+            }
         }
     });
     use_effect(move || {
@@ -4363,6 +4374,11 @@ fn PhysicianShell(
         }
         }
     }
+}
+
+/// Whether any descendant component should suppress top-layer `<dialog>` modals behind `.privacy-cover`.
+pub(crate) fn is_screen_hidden() -> bool {
+    try_consume_context::<Signal<ScreenCover>>().is_some_and(|cover| cover().is_hidden())
 }
 
 /// Whether the open patient workspace currently forbids clinical dialogs

@@ -7023,6 +7023,137 @@ async fn privacy_cover_dark_appearance_and_mobile_toolbar() {
     }
     tab.click(r#"dialog[open] button[aria-label="Close"]"#);
 
+    // Hide while an in-tree dialog + top-layer body popover (e.g. context lift / citation) are open:
+    // `.glass-app` uses `display: none` and `dismissOpenPopovers` closes every `:popover-open` layer.
+    tab.click("button[data-invite-patient]");
+    let invite_open = Instant::now() + Duration::from_secs(10);
+    while tab.eval("Boolean(document.querySelector('dialog[open]')?.checkVisibility())")
+        != serde_json::json!(true)
+    {
+        assert!(
+            Instant::now() < invite_open,
+            "in-tree Invite patient dialog did not open"
+        );
+        tokio::time::sleep(Duration::from_millis(40)).await;
+    }
+    assert_eq!(
+        tab.eval(
+            r#"(() => {
+                const layer = window.codaLift ??= Object.assign(document.createElement('div'), { className: 'context-lift', popover: 'manual' });
+                layer.textContent = 'SECRET_POPOVER_PHI';
+                if (!layer.isConnected) document.body.append(layer);
+                layer.showPopover();
+                return document.querySelectorAll(':popover-open').length >= 1;
+            })()"#,
+        ),
+        serde_json::json!(true)
+    );
+    send_ctrl_shift_l(&mut tab);
+    tab.wait_for_text("Screen hidden", Duration::from_secs(10));
+    assert_eq!(
+        tab.eval("getComputedStyle(document.querySelector('.glass-app')).display"),
+        serde_json::json!("none"),
+        ".glass-app must use display:none while hidden so visibility:visible children cannot leak"
+    );
+    assert_eq!(
+        tab.eval("document.querySelectorAll(':popover-open').length"),
+        serde_json::json!(0),
+        "top-layer popovers leaked above .privacy-cover"
+    );
+    assert_eq!(
+        tab.eval("Boolean(document.querySelector('dialog[open]')?.checkVisibility())"),
+        serde_json::json!(false),
+        "in-tree dialog remained visible while .glass-app is hidden"
+    );
+    let after_popover_cover = tab
+        .eval("document.body.innerText")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        !after_popover_cover.contains("SECRET_POPOVER_PHI")
+            && !after_popover_cover.contains("Mary Louis"),
+        "covered body leaked popover or patient PHI:\n{after_popover_cover}"
+    );
+    tab.click("button.privacy-cover-show");
+    let invite_restored = Instant::now() + Duration::from_secs(10);
+    while tab.eval("Boolean(document.querySelector('dialog[open]')?.checkVisibility())")
+        != serde_json::json!(true)
+    {
+        assert!(
+            Instant::now() < invite_restored,
+            "in-tree Invite patient dialog did not return after Show screen"
+        );
+        tokio::time::sleep(Duration::from_millis(40)).await;
+    }
+    tab.click(r#"dialog[open] button[aria-label="Close"]"#);
+
+    // Hide while an in-tree dialog (PatientInvitePanel) + top-layer body popover (codaLift) are open:
+    // zero `dialog[open]` / `:popover-open` survive, `.glass-app` is `display: none`, and `Show screen`
+    // stays clickable and restores the in-tree dialog intact.
+    tab.click("button[data-invite-patient]");
+    let invite_open = Instant::now() + Duration::from_secs(10);
+    while tab.eval("Boolean(document.querySelector('dialog[open][data-invite-patient-dialog], dialog[open] [data-invite-patient-dialog]'))")
+        != serde_json::json!(true)
+    {
+        assert!(
+            Instant::now() < invite_open,
+            "in-tree Invite patient dialog did not open"
+        );
+        tokio::time::sleep(Duration::from_millis(40)).await;
+    }
+    assert_eq!(
+        tab.eval(
+            r#"(() => {
+                const layer = window.codaLift ??= Object.assign(document.createElement('div'), { className: 'context-lift', popover: 'manual' });
+                layer.textContent = 'SECRET_POPOVER_PHI';
+                if (!layer.isConnected) document.body.append(layer);
+                layer.showPopover();
+                return document.querySelectorAll(':popover-open').length >= 1;
+            })()"#,
+        ),
+        serde_json::json!(true)
+    );
+    send_ctrl_shift_l(&mut tab);
+    tab.wait_for_text("Screen hidden", Duration::from_secs(10));
+    assert_eq!(
+        tab.eval("getComputedStyle(document.querySelector('.glass-app')).display"),
+        serde_json::json!("none"),
+        ".glass-app must use display:none while hidden"
+    );
+    assert_eq!(
+        tab.eval("document.querySelectorAll('dialog[open]').length"),
+        serde_json::json!(0),
+        "in-tree showModal dialog remained in top layer and would inert Show screen"
+    );
+    assert_eq!(
+        tab.eval("document.querySelectorAll(':popover-open').length"),
+        serde_json::json!(0),
+        "top-layer popovers leaked above .privacy-cover"
+    );
+    let after_popover_cover = tab
+        .eval("document.body.innerText")
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        !after_popover_cover.contains("SECRET_POPOVER_PHI")
+            && !after_popover_cover.contains("Mary Louis"),
+        "covered body leaked popover or patient PHI:\n{after_popover_cover}"
+    );
+    tab.click("button.privacy-cover-show");
+    let invite_restored = Instant::now() + Duration::from_secs(10);
+    while tab.eval("Boolean(document.querySelector('dialog[open] [data-invite-patient-dialog]'))")
+        != serde_json::json!(true)
+    {
+        assert!(
+            Instant::now() < invite_restored,
+            "in-tree Invite patient dialog did not return after Show screen"
+        );
+        tokio::time::sleep(Duration::from_millis(40)).await;
+    }
+    tab.click(r#"dialog[open] button[aria-label="Close"]"#);
+
     // Dark theme toggle persists across full reload without overwriting external sets.
     tab.click(r#"button[aria-label="Switch to dark theme"]"#);
     let dark_wait = Instant::now() + Duration::from_secs(5);

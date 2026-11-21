@@ -279,6 +279,11 @@ pub fn set_appearance(storage_key: &str, appearance: Appearance) {
     fire("setAppearance", json!([storage_key, appearance]));
 }
 
+/// Closes every open top-layer popover (lifted context-menu rows, menus, tooltips, citation popovers).
+pub fn dismiss_open_popovers() {
+    fire("dismissOpenPopovers", json!([]));
+}
+
 /// Listens in the window capture phase for `⌘⇧L` / `Ctrl+Shift+L`, reporting each press until dropped.
 pub fn watch_cover_shortcut() -> Listening<bool> {
     listen("watchCoverShortcut", json!([]))
