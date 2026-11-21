@@ -1,0 +1,140 @@
+{
+  "branch": "cod-83-public-demo-harness",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "fmt, check-sql, host+wasm32 clippy, boundaries, and unit tests",
+      "kind": "run",
+      "revision": "5347192c7891e36f5ea3b46b0a9fc2ffd966eaaa",
+      "dirty": false,
+      "recorded": "2026-11-21T14:01:15+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\n  set -euo pipefail\n  cargo fmt --all -- --check\n  python3 scripts/check-sql.py\n  cargo clippy --locked -p coda-http -p physician-sample -p boundaries --all-targets -- -D warnings\n  cargo clippy --locked --target wasm32-unknown-unknown -p physician-app -- -D warnings\n  cargo test --locked -p boundaries\n  cargo test --locked -p coda-http ingress\n  cargo test --locked -p physician-sample --lib demo_session\n  cargo test --locked -p physician-sample --lib hosting\n  cargo test --locked -p physician-sample --lib traced_ingress_guard_enforces_8mib_body_limit_and_exempts_health\n  cargo test --locked -p physician-sample --bin physician-worker worker_config_marks_public_demo_and_registers_demo_practice\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-fmt-check-sql-host-wasm32-clippy-boundaries-and-.log"
+      ],
+      "seconds": 230.8,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-verified on bdca5d0cf7 after @audit-l1 fixes"
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "demo_scale_harness, fanout, and worker synthetic source boundary on Postgres+Valkey",
+      "kind": "run",
+      "revision": "5347192c7891e36f5ea3b46b0a9fc2ffd966eaaa",
+      "dirty": false,
+      "recorded": "2026-11-21T14:05:06+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\n  set -euo pipefail\n  cargo test --locked -p physician-sample --test demo_scale_harness\n  cargo test --locked -p physician-sample --test fanout\n  cargo test --locked -p physician-sample --bin physician-worker developer_plan_refuses_a_workspace_with_sources_outside_the_synthetic_practice -- --ignored\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-demo_scale_harness-fanout-and-worker-synthetic-s.log"
+      ],
+      "seconds": 75.5,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-verified on bdca5d0cf7 after @audit-l1 fixes"
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "physician-sample Chromium browser suites (sign_in_states + site)",
+      "kind": "run",
+      "revision": "5347192c7891e36f5ea3b46b0a9fc2ffd966eaaa",
+      "dirty": false,
+      "recorded": "2026-11-21T14:06:22+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\n  set -euo pipefail\n  cargo test --locked -p physician-sample --test sign_in_states -- --ignored --test-threads=1\n  cargo test --locked -p physician-sample --test site -- --ignored --test-threads=1\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-physician-sample-Chromium-browser-suites-sign_in.log"
+      ],
+      "seconds": 366.9,
+      "exit": 0,
+      "ok": true,
+      "superseded": "re-verified on bdca5d0cf7 after @audit-l1 fixes"
+    },
+    {
+      "id": 4,
+      "claim": "AC1",
+      "label": "fmt, check-sql, host+wasm32 clippy, boundaries, and unit tests",
+      "kind": "run",
+      "revision": "bdca5d0cfeb46757e4f8ae03081794d9b794b47d",
+      "dirty": false,
+      "recorded": "2026-11-21T14:32:57+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\n  set -euo pipefail\n  cargo fmt --all -- --check\n  python3 scripts/check-sql.py\n  cargo clippy --locked -p coda-http -p physician-sample -p boundaries --all-targets -- -D warnings\n  cargo clippy --locked --target wasm32-unknown-unknown -p physician-app -- -D warnings\n  cargo test --locked -p boundaries\n  cargo test --locked -p coda-http ingress\n  cargo test --locked -p physician-sample --lib demo_session\n  cargo test --locked -p physician-sample --lib hosting\n  cargo test --locked -p physician-sample --lib traced_ingress_guard_enforces_8mib_body_limit_and_exempts_health\n  cargo test --locked -p physician-sample --bin physician-worker worker_config_marks_public_demo_and_registers_demo_practice\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-fmt-check-sql-host-wasm32-clippy-boundaries-and-.log"
+      ],
+      "seconds": 195.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "AC2",
+      "label": "demo_scale_harness, fanout, and worker synthetic source boundary on Postgres+Valkey",
+      "kind": "run",
+      "revision": "bdca5d0cfeb46757e4f8ae03081794d9b794b47d",
+      "dirty": false,
+      "recorded": "2026-11-21T14:36:13+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\n  set -euo pipefail\n  cargo test --locked -p physician-sample --test demo_scale_harness\n  cargo test --locked -p physician-sample --test fanout\n  cargo test --locked -p physician-sample --bin physician-worker developer_plan_refuses_a_workspace_with_sources_outside_the_synthetic_practice -- --ignored\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-demo_scale_harness-fanout-and-worker-synthetic-s.log"
+      ],
+      "seconds": 76.3,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 6,
+      "claim": "AC3",
+      "label": "physician-sample Chromium browser suites (sign_in_states + site)",
+      "kind": "run",
+      "revision": "bdca5d0cfeb46757e4f8ae03081794d9b794b47d",
+      "dirty": false,
+      "recorded": "2026-11-21T14:37:29+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\n  set -euo pipefail\n  cargo test --locked -p physician-sample --test sign_in_states -- --ignored --test-threads=1\n  cargo test --locked -p physician-sample --test site -- --ignored --test-threads=1\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-physician-sample-Chromium-browser-suites-sign_in.log"
+      ],
+      "seconds": 334.9,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
