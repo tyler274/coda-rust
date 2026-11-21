@@ -5,7 +5,7 @@ batch. Any editor, terminal, or agent host can select either installed CLI.
 The first conversation is
 fresh; follow-ups resume its exact reviewer, never the coding session.
 
-## Setup for Coda Health
+## Setup for Dabney.moe
 
 Use the repository's `.agents/skills/review-pr` directory. The `.claude/skills`
 entry links to that same skill; a separate personal copy may be older. Install
@@ -22,7 +22,7 @@ doppler login
 ```
 
 Sign in to the selected reviewer engine with `codex login` or `claude auth login`.
-Your GitHub account needs read access to `Coda-Health/coda-rust`. Your Doppler
+Your GitHub account needs read access to `tyler274/coda-rust`. Your Doppler
 account needs access to `CODA_PR_REVIEWER_PRIVATE_KEY` in project `coda-rust`,
 config `dev`; request that access from a Doppler administrator if it is missing.
 Having repository access alone does not grant secret access.
@@ -31,8 +31,10 @@ The shared [reviewer-app.json](../reviewer-app.json) contains the Coda PR Review
 App ID, installation ID, and the command that retrieves its existing key from
 Doppler. These are non-secret settings. Use this file directly; do not create a
 personal copy or put a private key or token in the checkout. Publication uses
-`coda-pr-reviewer[bot]`, independently of the GitHub account used for reads. This
-installation is configured for `Coda-Health/coda-rust`.
+`coda-pr-reviewer[bot]`, independently of the GitHub account used for reads. The
+App must be installed on `tyler274/coda-rust` for publication to succeed; the
+recorded installation came from Coda Health and has not been verified against
+this repository.
 
 Verify key retrieval without displaying or saving the key. Replace the checkout
 path below with your own:
