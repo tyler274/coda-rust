@@ -481,3 +481,44 @@ async fn invite_route_redirects_mobile_platforms_and_renders_fallback_deep_link(
     assert!(body.contains("App Store"), "{body}");
     assert!(body.contains("Google Play"), "{body}");
 }
+
+#[tokio::test]
+async fn live_demo_promotes_try_live_demo_in_nav_and_hero() {
+    let config = Config {
+        physician_demo: true,
+        ..Config::default()
+    };
+    let app = router_with_options(
+        prerender(&config).unwrap(),
+        RuntimeConfig::default(),
+        [],
+        Readiness::ready(),
+    );
+    let response = app
+        .oneshot(Request::builder().uri("/").body(Body::empty()).unwrap())
+        .await
+        .unwrap();
+    assert_eq!(response.status(), StatusCode::OK);
+    let html = String::from_utf8(
+        to_bytes(response.into_body(), usize::MAX)
+            .await
+            .unwrap()
+            .to_vec(),
+    )
+    .unwrap();
+    assert!(
+        html.contains("class=\"btn btn-sm\" href=\"/physician/\">Try live demo</a>"),
+        "nav primary pill must link to /physician/ in demo mode"
+    );
+    assert!(
+        html.contains("href=\"/book/\">Book</a>"),
+        "demo nav-links must include Book"
+    );
+    let hero_demo = html
+        .find("class=\"btn\" href=\"/physician/\">Try live demo")
+        .expect("hero primary CTA must link to /physician/ in demo mode");
+    let hero_partner = html
+        .find("class=\"btn btn-secondary\" href=\"mailto:")
+        .expect("hero secondary CTA must link to contact mailto in demo mode");
+    assert!(hero_demo < hero_partner);
+}

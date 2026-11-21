@@ -39,11 +39,21 @@ fn Nav() -> Element {
                     a { href: "/#patients", "For patients" }
                     match link {
                         PhysicianLink::SignIn => rsx! { a { href: "/physician/", "Sign in" } },
-                        PhysicianLink::LiveDemo => rsx! { a { href: "/physician/", "Try live demo" } },
+                        PhysicianLink::LiveDemo => rsx! {
+                            a { href: "/book/", "Book" }
+                            a { href: site::contact_mailto(), "Partner with us" }
+                        },
                         PhysicianLink::None => rsx! {},
                     }
                 }
-                a { class: "btn btn-sm", href: site::contact_mailto(), "Partner with us" }
+                match link {
+                    PhysicianLink::LiveDemo => rsx! {
+                        a { class: "btn btn-sm", href: "/physician/", "Try live demo" }
+                    },
+                    PhysicianLink::SignIn | PhysicianLink::None => rsx! {
+                        a { class: "btn btn-sm", href: site::contact_mailto(), "Partner with us" }
+                    },
+                }
             }
         }
     }

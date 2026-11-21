@@ -68,10 +68,10 @@ try {
     requestAnimationFrame(step);
   })`;
   const screenshots = process.env.PUBLIC_SITE_SCREENSHOTS || join(tmpdir(), 'public-site-screenshots'); mkdirSync(screenshots,{recursive:true});
-  for (const [label,width,height,reduced,scripts] of [['desktop',1440,1000,false,true],['mobile',390,844,false,true],['reduced',390,844,true,true],['no-script',390,844,false,false]]) {
+  for (const [label,width,height,reduced,scripts,colorScheme] of [['desktop',1440,1000,false,true,'light'],['dark',1440,1000,false,true,'dark'],['mobile',390,844,false,true,'light'],['reduced',390,844,true,true,'light'],['no-script',390,844,false,false,'light']]) {
     errors.length=0; failures.length=0;
     await call('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:width<600});
-    await call('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:reduced?'reduce':'no-preference'}]});
+    await call('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:reduced?'reduce':'no-preference'},{name:'prefers-color-scheme',value:colorScheme}]});
     await call('Emulation.setScriptExecutionDisabled',{value:!scripts});
     await navigate('/');
     assert.equal(await evaluate(`document.readyState === 'complete' && !!document.querySelector('#heroStage')`),true);
@@ -81,11 +81,21 @@ try {
       assert(await evaluate(`document.querySelector('.frame-hero .art').style.backgroundImage.startsWith('url("data:image/svg+xml')`),`${label}: unpainted landscape`);
       assert(await evaluate(`/^[\\d.]+$/.test(document.querySelector('.stage-wrap').style.getPropertyValue('--s'))`),`${label}: unscaled stage`);
     }
-    const page = await evaluate(`({text:document.body.innerText, overflow:document.documentElement.scrollWidth > innerWidth, images:[...document.images].filter(i=>!i.complete||i.naturalWidth===0).map(i=>i.src), heading:getComputedStyle(document.querySelector('h1')).opacity, viewport:innerWidth})`);
+    const page = await evaluate(`({text:document.body.innerText, overflow:document.documentElement.scrollWidth > innerWidth, images:[...document.images].filter(i=>!i.complete||i.naturalWidth===0).map(i=>i.src), heading:getComputedStyle(document.querySelector('h1')).opacity, viewport:innerWidth, bg:getComputedStyle(document.body).backgroundColor, ink:getComputedStyle(document.body).color, navLinksDisplay:getComputedStyle(document.querySelector('.nav-links')).display, navCtaHeight:document.querySelector('.nav a.btn-sm').getBoundingClientRect().height, navCtaTop:document.querySelector('.nav a.btn-sm').getBoundingClientRect().top, navLinksTop:document.querySelector('.nav-links').getBoundingClientRect().top, heroBtnHeight:document.querySelector('.hero-cta-row a.btn').getBoundingClientRect().height})`);
     assert(page.text.includes('Coda handles what happens between visits.') && page.text.includes('A physician-directed AI care team.') && page.text.includes('Consumer Health Data Privacy Policy'),label);
     assert.equal(page.overflow,false,`${label}: horizontal overflow at ${page.viewport}`);
     assert.deepEqual(page.images,[],`${label}: broken images`);
     assert.equal(page.heading,'1',`${label}: invisible heading`);
+    if (colorScheme === 'dark') {
+      assert.equal(page.bg, 'rgb(11, 17, 14)', `${label}: expected dark body background`);
+      assert.equal(page.ink, 'rgb(242, 246, 243)', `${label}: expected high-contrast light ink`);
+    }
+    if (width <= 640) {
+      assert.notEqual(page.navLinksDisplay, 'none', `${label}: mobile nav-links must stay accessible`);
+      assert(page.navCtaHeight >= 44, `${label}: mobile nav CTA height ${page.navCtaHeight} < 44`);
+      assert(page.navCtaTop < page.navLinksTop, `${label}: mobile nav CTA must sit on row 1 above nav-links`);
+      assert(page.heroBtnHeight >= 44, `${label}: mobile hero CTA height ${page.heroBtnHeight} < 44`);
+    }
     if (reduced) {
       assert.equal(await evaluate(staticContent),true,`${label}: complete static hero`);
       const still = await evaluate(snapshot);
