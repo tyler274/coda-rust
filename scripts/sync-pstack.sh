@@ -3,10 +3,10 @@
 set -euo pipefail
 
 upstream=${1:?usage: sync-pstack.sh /path/to/cursor-plugins}
-skills=(statechart create-verification-skill maintain-verification-skill
-        create-formal-verification-skill maintain-formal-verification-skill)
+revision=$(git -C "$upstream" log -1 --format=%H HEAD -- pstack/skills ':!pstack/skills/statechart/scripts/test')
+mapfile -t skills < <(git -C "$upstream" ls-tree --name-only "$revision" pstack/skills/ | xargs -n1 basename | sort)
+test "${#skills[@]}" -gt 0
 paths=("${skills[@]/#/pstack/skills/}")
-revision=$(git -C "$upstream" log -1 --format=%H HEAD -- "${paths[@]}" ':!pstack/skills/statechart/scripts/test')
 snapshot=$(mktemp -d)
 trap 'rm -rf "$snapshot"' EXIT
 git -C "$upstream" archive "$revision" pstack/LICENSE "${paths[@]}" | tar -x -C "$snapshot"
@@ -18,10 +18,11 @@ done
 rm -rf "$snapshot/pstack/skills/statechart/scripts/test"
 for skill in "${skills[@]}"; do
   rsync -a --delete "$snapshot/pstack/skills/$skill/" ".agents/skills/$skill/"
+  test -e ".claude/skills/$skill" || ln -s "../../.agents/skills/$skill" ".claude/skills/$skill"
 done
 
-if [[ -z $(git status --porcelain -- "${skills[@]/#/.agents/skills/}") ]]; then
-  echo "PStack verification skills are current."
+if [[ -z $(git status --porcelain -- "${skills[@]/#/.agents/skills/}" "${skills[@]/#/.claude/skills/}") ]]; then
+  echo "PStack skills are current."
   exit 0
 fi
 
