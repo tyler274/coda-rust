@@ -64,7 +64,7 @@ renders the same startup pages, `404.html`, `sitemap.xml`, `robots.txt`, `.nojek
 and hashed/raw assets to disk for subpath hosting such as `https://dabney.moe/coda/`
 or GitHub Pages (with the architecture book and WASM SQLite physician demo built
 alongside by [`scripts/build-pages-site.sh`](/scripts/build-pages-site.sh) with
-`ORIGIN` defaulting to `https://dabney.moe`).
+`ORIGIN` defaulting to `https://dabney.moe`). When [`physician-app`](/crates/physician-app/src/lib.rs) runs with `PHYSICIAN_DEMO_DB="./demo.sqlite"`, it boots live-first against the configured API base (`/coda/physician/api` on `/coda/physician/` or a loopback `?api=` override): it probes `POST /auth/demo-session`, switches to `Live harness` with an ephemeral in-memory Bearer session and Valkey SSE updates when available (hiding `Sign out` and invitation controls, and showing `Live turn limit reached` with `Use local chart preview` on `429 demo_turn_budget_exhausted`), and falls back to `Local chart preview` over browser-side `sql.js` + IndexedDB ([`physician-demo-db`](/crates/physician-demo-db/src/lib.rs)) whenever no live backend answers or the visitor chooses local preview.
 
 Legal documents are data. Each current document is one record in
 `data/<document>.json` holding every word of it: heading, title, intro, date and

@@ -351,6 +351,7 @@ Coda's Chrome extension acts only as the signed-in physician, never takes the ph
 - Dictation into the composer.
 - The clinical library with semantic retrieval: a documented, tag-defined PMC set that includes reviews and case reports.
 - A Filtered list of mail the linking pass judged not to be from a patient, with "This is a patient" to restore it, and the same through plain words in chat.
+- A zero-sign-in synthetic public demo with isolated per-visitor demo sessions, synthetic-only source boundaries, and bounded turn budgets, falling back to browser-local synthetic SQLite chart preview when no live harness backend is reachable or a visitor hits the live turn cap.
 
 How it is built today:
 
