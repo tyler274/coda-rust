@@ -15,11 +15,20 @@ macro_rules! define_tables {
 define_tables!(
     Patients { WorkspaceId, DisplayName, Mrn, BirthDate, WorkspaceJson };
     SourceRecords { Id, WorkspaceId, RecordGroup, Title, RecordedAt, Body, SourceLabel };
-    TodayItems { ItemId, WorkspaceId, Urgency, WaitingSince, Kind, RowJson, Done };
+    TodayItems { ItemId, WorkspaceId, Urgency, WaitingSince, Kind, RowJson, Done, Seen };
     PracticeVisits { Id, StartsAt, PayloadJson };
-    UpdatesFeed { Id, WorkspaceId, PayloadJson, CreatedAt };
+    UpdatesFeed { Id, WorkspaceId, Bucket, CreatedAt, PayloadJson };
     Chats { ChatId, WorkspaceId, Title, CreatedAt, SnapshotJson };
     Drafts { WorkspaceId, ChatId, Revision, Text };
+    Briefings { BriefingId, WorkspaceId, PayloadJson };
+    FollowUps { FollowUpId, WorkspaceId, Standing, UpdatedAt, PayloadJson };
+    SpruceReplies { ConversationId, WorkspaceId, WaitingSince, PayloadJson };
+    SpruceMatchQueue { MessageId, ConversationId, Bucket, WaitingSince, PayloadJson };
+    PatientReviews { ReviewId, WorkspaceId, UpdatedAt, PayloadJson };
+    PracticeConnections { SourceId, PracticeId, PayloadJson };
+    PatientMemory { WorkspaceId, NoteSeq, PayloadJson };
+    PanelMembership { Key, PhysicianId, WorkspaceId, Allowed };
+    Invitations { Key, Kind, WorkspaceId, PayloadJson };
 );
 
 fn col_text<C: Iden + 'static>(col: C, pk: bool) -> ColumnDef {
@@ -62,6 +71,7 @@ pub fn schema_ddl() -> Vec<String> {
         today.col(col_text(*c, i == 0));
     }
     today.col(col_int(TodayItems::Done));
+    today.col(col_int(TodayItems::Seen));
 
     let mut drafts = Table::create();
     drafts
@@ -73,6 +83,14 @@ pub fn schema_ddl() -> Vec<String> {
         .col(col_text(Drafts::Text, false))
         .primary_key(Index::create().col(Drafts::WorkspaceId).col(Drafts::ChatId));
 
+    let mut memory = Table::create();
+    memory
+        .table(PatientMemory::Table)
+        .if_not_exists()
+        .col(col_text(PatientMemory::WorkspaceId, true))
+        .col(col_int(PatientMemory::NoteSeq))
+        .col(col_text(PatientMemory::PayloadJson, false));
+
     vec![
         text_table(Patients::Table, Patients::COLS),
         text_table(SourceRecords::Table, SourceRecords::COLS),
@@ -82,5 +100,14 @@ pub fn schema_ddl() -> Vec<String> {
         text_table(UpdatesFeed::Table, UpdatesFeed::COLS),
         text_table(Chats::Table, Chats::COLS),
         drafts.build(SqliteQueryBuilder),
+        text_table(Briefings::Table, Briefings::COLS),
+        text_table(FollowUps::Table, FollowUps::COLS),
+        text_table(SpruceReplies::Table, SpruceReplies::COLS),
+        text_table(SpruceMatchQueue::Table, SpruceMatchQueue::COLS),
+        text_table(PatientReviews::Table, PatientReviews::COLS),
+        text_table(PracticeConnections::Table, PracticeConnections::COLS),
+        memory.build(SqliteQueryBuilder),
+        text_table(PanelMembership::Table, PanelMembership::COLS),
+        text_table(Invitations::Table, Invitations::COLS),
     ]
 }

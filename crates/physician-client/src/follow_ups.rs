@@ -16,6 +16,7 @@ impl PhysicianClient {
         &self,
         patient_workspace_id: &str,
     ) -> Result<PatientFollowUpsResponseWire, HttpError> {
+        crate::try_demo!(self, s => s.patient_follow_ups(patient_workspace_id));
         self.get(&format!(
             "/patient-workspaces/{}/follow-ups",
             path_escape(patient_workspace_id)
@@ -31,6 +32,10 @@ impl PhysicianClient {
         due_date: &str,
         idempotency_key: &str,
     ) -> Result<FollowUpMutationResponseWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.create_follow_up(patient_workspace_id, summary, due_date, idempotency_key)
+        );
         let body = CreateFollowUpBody {
             summary: summary.to_owned(),
             due_date: due_date.to_owned(),
@@ -53,6 +58,10 @@ impl PhysicianClient {
         follow_up_id: &str,
         body: &UpdateFollowUpBody,
     ) -> Result<FollowUpMutationResponseWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.update_follow_up(patient_workspace_id, follow_up_id, body)
+        );
         self.put(
             &format!(
                 "/patient-workspaces/{}/follow-ups/{}",
@@ -71,6 +80,10 @@ impl PhysicianClient {
         follow_up_id: &str,
         idempotency_key: &str,
     ) -> Result<FollowUpMutationResponseWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.review_follow_up_now(patient_workspace_id, follow_up_id, idempotency_key)
+        );
         let body = FollowUpActionCommandBody {
             idempotency_key: idempotency_key.to_owned(),
         };
@@ -93,6 +106,10 @@ impl PhysicianClient {
         reason: Option<String>,
         idempotency_key: &str,
     ) -> Result<FollowUpMutationResponseWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.stop_follow_up(patient_workspace_id, follow_up_id, reason.clone(), idempotency_key)
+        );
         let body = StopFollowUpBody {
             reason,
             physician_time_zone: None,
@@ -119,6 +136,16 @@ impl PhysicianClient {
         physician_time_zone: &str,
         idempotency_key: &str,
     ) -> Result<FollowUpMutationResponseWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.stop_and_discuss_follow_up(
+                patient_workspace_id,
+                follow_up_id,
+                reason.clone(),
+                physician_time_zone,
+                idempotency_key
+            )
+        );
         let body = StopFollowUpBody {
             reason,
             physician_time_zone: Some(physician_time_zone.to_owned()),
@@ -142,6 +169,10 @@ impl PhysicianClient {
         follow_up_id: &str,
         idempotency_key: &str,
     ) -> Result<FollowUpMutationResponseWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.resume_follow_up(patient_workspace_id, follow_up_id, idempotency_key)
+        );
         let body = FollowUpActionCommandBody {
             idempotency_key: idempotency_key.to_owned(),
         };
@@ -164,6 +195,10 @@ impl PhysicianClient {
         resolution: &str,
         idempotency_key: &str,
     ) -> Result<FollowUpMutationResponseWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.complete_follow_up(patient_workspace_id, follow_up_id, resolution, idempotency_key)
+        );
         let body = SettleFollowUpBody {
             note: resolution.to_owned(),
             idempotency_key: idempotency_key.to_owned(),
@@ -187,6 +222,10 @@ impl PhysicianClient {
         reason: &str,
         idempotency_key: &str,
     ) -> Result<FollowUpMutationResponseWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.cancel_follow_up(patient_workspace_id, follow_up_id, reason, idempotency_key)
+        );
         let body = SettleFollowUpBody {
             note: reason.to_owned(),
             idempotency_key: idempotency_key.to_owned(),
@@ -210,6 +249,15 @@ impl PhysicianClient {
         resolution: CannotRestartResolutionWire,
         idempotency_key: &str,
     ) -> Result<FollowUpMutationResponseWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.resolve_cannot_restart_follow_up(
+                patient_workspace_id,
+                follow_up_id,
+                resolution.clone(),
+                idempotency_key
+            )
+        );
         let body = ResolveCannotRestartBody {
             resolution,
             idempotency_key: idempotency_key.to_owned(),

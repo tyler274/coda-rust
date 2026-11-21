@@ -13,6 +13,7 @@ impl PhysicianClient {
         &self,
         workspace_id: &str,
     ) -> Result<WorkspaceBriefingsResponse, HttpError> {
+        crate::try_demo!(self, s => s.workspace_briefings(workspace_id));
         self.get(&format!(
             "/patient-workspaces/{}/briefings",
             query_escape(workspace_id)
@@ -26,6 +27,7 @@ impl PhysicianClient {
         workspace_id: &str,
         briefing_id: &str,
     ) -> Result<VisitBriefingResponse, HttpError> {
+        crate::try_demo!(self, s => s.visit_briefing(workspace_id, briefing_id));
         self.get(&format!(
             "/patient-workspaces/{}/briefings/{}",
             query_escape(workspace_id),
@@ -36,6 +38,7 @@ impl PhysicianClient {
 
     /// Requests a live refresh of the practice's calendar schedule and returns the resulting practice day.
     pub async fn refresh_practice_day(&self) -> Result<PracticeDayResponse, HttpError> {
+        crate::try_demo!(self, s => s.refresh_practice_day());
         self.post("/practice-day/refresh", &serde_json::json!({}))
             .await
     }

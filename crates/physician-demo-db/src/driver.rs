@@ -1,8 +1,8 @@
 //! SQLite execution driver for native (`rusqlite`) and browser (`sql.js`) targets.
 
 use sea_query::{
-    Expr, ExprTrait, Iden, InsertStatement, Query, SelectStatement, SimpleExpr, SqliteQueryBuilder,
-    UpdateStatement, Value, Values,
+    DeleteStatement, Expr, ExprTrait, Iden, InsertStatement, Query, SelectStatement, SimpleExpr,
+    SqliteQueryBuilder, UpdateStatement, Value, Values,
 };
 use serde_json::Value as JsonValue;
 use std::collections::BTreeMap;
@@ -38,6 +38,9 @@ pub enum DbError {
     /// Invalid command payload sent to the demo store.
     #[error("{0}")]
     InvalidCommand(String),
+    /// Optimistic version or state conflict preventing mutation.
+    #[error("{0}")]
+    Conflict(String),
 }
 
 /// Typed SQL parameter converted from `sea_query::Value`.
@@ -319,6 +322,26 @@ impl SqliteDriver {
     pub fn update(&self, query: &UpdateStatement) -> Result<(), DbError> {
         let (sql, values) = query.build(SqliteQueryBuilder);
         self.backend.exec_raw(&sql, &bind_values(values))
+    }
+
+    /// Executes a `sea-query` `DELETE` statement.
+    pub fn delete(&self, query: &DeleteStatement) -> Result<(), DbError> {
+        let (sql, values) = query.build(SqliteQueryBuilder);
+        self.backend.exec_raw(&sql, &bind_values(values))
+    }
+
+    /// Deletes rows from `table` matching all equality `conds`.
+    pub fn delete_where<T: Iden + 'static, K: Iden + Copy + 'static>(
+        &self,
+        table: T,
+        conds: &[(K, &str)],
+    ) -> Result<(), DbError> {
+        let mut q = Query::delete();
+        q.from_table(table);
+        for (k, v) in conds {
+            q.and_where(Expr::col(*k).eq(*v));
+        }
+        self.delete(&q)
     }
 
     /// Selects `cols` from `table` matching all equality `conds`.

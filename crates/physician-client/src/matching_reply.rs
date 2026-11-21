@@ -17,6 +17,7 @@ use crate::{HttpError, PhysicianClient, path_escape};
 impl PhysicianClient {
     /// Reads `Messages to match` and unreadable Spruce channel deliveries (`GET /spruce-matching/messages`).
     pub async fn messages_to_match(&self) -> Result<MessagesToMatchResponseWire, HttpError> {
+        crate::try_demo!(self, s => s.messages_to_match());
         self.get("/spruce-matching/messages").await
     }
 
@@ -24,6 +25,7 @@ impl PhysicianClient {
     pub async fn filtered_spruce_messages(
         &self,
     ) -> Result<FilteredMessagesResponseWire, HttpError> {
+        crate::try_demo!(self, s => s.filtered_spruce_messages());
         self.get("/spruce-matching/filtered").await
     }
 
@@ -35,6 +37,15 @@ impl PhysicianClient {
         sender_policy: SenderConfirmationPolicyWire,
         idempotency_key: &str,
     ) -> Result<ConfirmMessageLinkResponseWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.confirm_spruce_message_link(
+                message_id,
+                patient_workspace_id,
+                sender_policy,
+                idempotency_key
+            )
+        );
         let body = ConfirmMessageLinkBody {
             patient_workspace_id: patient_workspace_id.to_owned(),
             sender_policy,
@@ -56,6 +67,10 @@ impl PhysicianClient {
         message_id: &str,
         idempotency_key: &str,
     ) -> Result<MatchingMessageStatusResponseWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.leave_spruce_message_unlinked(message_id, idempotency_key)
+        );
         let body = MatchingActionCommandBody {
             idempotency_key: idempotency_key.to_owned(),
         };
@@ -75,6 +90,10 @@ impl PhysicianClient {
         message_id: &str,
         idempotency_key: &str,
     ) -> Result<ThisIsAPatientOutcomeWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.mark_spruce_message_as_patient(message_id, idempotency_key)
+        );
         let body = MatchingActionCommandBody {
             idempotency_key: idempotency_key.to_owned(),
         };
@@ -94,6 +113,10 @@ impl PhysicianClient {
         message_id: &str,
         idempotency_key: &str,
     ) -> Result<MatchingMessageStatusResponseWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.mark_unreadable_spruce_message_done(message_id, idempotency_key)
+        );
         let body = MatchingActionCommandBody {
             idempotency_key: idempotency_key.to_owned(),
         };
@@ -112,6 +135,7 @@ impl PhysicianClient {
         &self,
         patient_workspace_id: &str,
     ) -> Result<PatientReplyListResponseWire, HttpError> {
+        crate::try_demo!(self, s => s.patient_spruce_replies(patient_workspace_id));
         self.get(&format!(
             "/patient-workspaces/{}/spruce-replies",
             path_escape(patient_workspace_id)
@@ -125,6 +149,10 @@ impl PhysicianClient {
         patient_workspace_id: &str,
         conversation_id: &str,
     ) -> Result<PatientReplyConversationWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.patient_spruce_reply(patient_workspace_id, conversation_id)
+        );
         self.get(&format!(
             "/patient-workspaces/{}/spruce-replies/{}",
             path_escape(patient_workspace_id),
@@ -141,6 +169,15 @@ impl PhysicianClient {
         expected_base: ExpectedDraftBaseWire,
         text: &str,
     ) -> Result<PatientReplyConversationWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.save_reply_proposal_draft(
+                patient_workspace_id,
+                conversation_id,
+                expected_base,
+                text
+            )
+        );
         let body = SaveReplyProposalDraftBody {
             expected_base,
             text: text.to_owned(),
@@ -163,6 +200,10 @@ impl PhysicianClient {
         conversation_id: &str,
         body: &RequestReplyProposalRevisionBody,
     ) -> Result<PatientReplyConversationWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.request_reply_proposal_revision(patient_workspace_id, conversation_id, body)
+        );
         self.post(
             &format!(
                 "/patient-workspaces/{}/spruce-replies/{}/revise",
@@ -182,6 +223,15 @@ impl PhysicianClient {
         expected_draft_revision: u64,
         idempotency_key: &str,
     ) -> Result<PatientReplyConversationWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.restore_my_reply_version(
+                patient_workspace_id,
+                conversation_id,
+                expected_draft_revision,
+                idempotency_key
+            )
+        );
         let body = RestoreMyReplyVersionBody {
             expected_draft_revision,
             idempotency_key: idempotency_key.to_owned(),
@@ -206,6 +256,16 @@ impl PhysicianClient {
         expected_proposal_version: u64,
         idempotency_key: &str,
     ) -> Result<PatientReplyConversationWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.choose_coda_reply_update(
+                patient_workspace_id,
+                conversation_id,
+                expected_draft_revision,
+                expected_proposal_version,
+                idempotency_key
+            )
+        );
         let body = ChooseCodaReplyUpdateBody {
             expected_draft_revision,
             expected_proposal_version,
@@ -230,6 +290,15 @@ impl PhysicianClient {
         expected_base: ExpectedDraftBaseWire,
         idempotency_key: &str,
     ) -> Result<CopyReplyResponseWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.copy_spruce_reply(
+                patient_workspace_id,
+                conversation_id,
+                expected_base,
+                idempotency_key
+            )
+        );
         let body = CopyReplyBody {
             expected_base,
             idempotency_key: idempotency_key.to_owned(),
@@ -253,6 +322,15 @@ impl PhysicianClient {
         expected_proposal_version: u64,
         idempotency_key: &str,
     ) -> Result<PatientReplyConversationWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.close_reply_no_reply_needed(
+                patient_workspace_id,
+                conversation_id,
+                expected_proposal_version,
+                idempotency_key
+            )
+        );
         let body = NoReplyNeededBody {
             expected_proposal_version,
             idempotency_key: idempotency_key.to_owned(),
@@ -275,6 +353,14 @@ impl PhysicianClient {
         conversation_id: &str,
         idempotency_key: &str,
     ) -> Result<PatientReplyConversationWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.undo_close_no_reply_needed(
+                patient_workspace_id,
+                conversation_id,
+                idempotency_key
+            )
+        );
         let body = ReplyCommandKeyBody {
             idempotency_key: idempotency_key.to_owned(),
         };
@@ -296,6 +382,10 @@ impl PhysicianClient {
         conversation_id: &str,
         idempotency_key: &str,
     ) -> Result<PatientReplyConversationWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.ask_coda_to_reply(patient_workspace_id, conversation_id, idempotency_key)
+        );
         let body = ReplyCommandKeyBody {
             idempotency_key: idempotency_key.to_owned(),
         };
@@ -319,6 +409,16 @@ impl PhysicianClient {
         undo_window_seconds: Option<i64>,
         idempotency_key: &str,
     ) -> Result<PatientReplyConversationWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.move_spruce_conversation(
+                patient_workspace_id,
+                conversation_id,
+                destination.clone(),
+                undo_window_seconds,
+                idempotency_key
+            )
+        );
         let body = MoveSpruceConversationBody {
             destination,
             undo_window_seconds,
@@ -342,6 +442,14 @@ impl PhysicianClient {
         conversation_id: &str,
         idempotency_key: &str,
     ) -> Result<PatientReplyConversationWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.undo_spruce_conversation_move(
+                patient_workspace_id,
+                conversation_id,
+                idempotency_key
+            )
+        );
         let body = ReplyCommandKeyBody {
             idempotency_key: idempotency_key.to_owned(),
         };
@@ -363,6 +471,10 @@ impl PhysicianClient {
         conversation_id: &str,
         body: &DisconnectedReplyDoneBody,
     ) -> Result<PatientReplyConversationWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.mark_disconnected_reply_done(patient_workspace_id, conversation_id, body)
+        );
         self.post(
             &format!(
                 "/patient-workspaces/{}/spruce-replies/{}/disconnected-done",

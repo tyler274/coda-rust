@@ -18,6 +18,10 @@ impl PhysicianClient {
         item_id: &str,
         idempotency_key: &str,
     ) -> Result<ItemWorkEvidenceWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.open_today_update_item(patient_workspace_id, item_id, idempotency_key)
+        );
         let body = OpenTodayUpdateItemBody {
             patient_workspace_id: patient_workspace_id.to_owned(),
             item_id: item_id.to_owned(),
@@ -34,6 +38,10 @@ impl PhysicianClient {
         version_id: &str,
         idempotency_key: &str,
     ) -> Result<TodayDoneResponseWire, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.mark_today_item_done(patient_workspace_id, item_id, version_id, idempotency_key)
+        );
         let body = MarkTodayDoneBody {
             patient_workspace_id: patient_workspace_id.to_owned(),
             item_id: item_id.to_owned(),

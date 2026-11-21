@@ -2,10 +2,15 @@
 #![deny(missing_docs)]
 
 pub mod driver;
+pub mod follow_ups;
+pub mod reviews_memory;
 pub(crate) mod schema;
 #[cfg(not(target_arch = "wasm32"))]
 pub mod seed;
+pub mod sources_admin;
+pub mod spruce;
 pub mod store;
+pub mod updates_briefings;
 
 pub use driver::{DbError, SqliteDriver};
 pub use store::{DemoSourceRecord, DemoStore, DraftSaveOutcome};
