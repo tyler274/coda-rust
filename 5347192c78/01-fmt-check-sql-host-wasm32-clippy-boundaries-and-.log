@@ -1,0 +1,122 @@
+Checked 10 authored SQL files with pg_format version 5.11
+    Checking coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/http)
+    Checking physician-sample v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/physician-sample)
+    Checking public-site v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/public-site)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 8.42s
+    Checking physician-demo-db v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/physician-demo-db)
+    Checking physician-client v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/physician-client)
+    Checking physician-app v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/physician-app)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 7.17s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.26s
+     Running unittests src/lib.rs (/tmp/coda-target-concerns/debug/deps/boundaries-94cce9dbaff1c954)
+
+running 25 tests
+test tests::shipping_clients_stay_until_the_rust_journeys_match ... ok
+test shared_ui::a_whole_test_file_counts_nothing ... ok
+test shared_ui::counts_css_rules_naming_control_elements ... ok
+test shared_ui::a_matching_count_passes ... ok
+test shared_ui::a_count_going_down_says_to_lower_the_number ... ok
+test shared_ui::a_count_reaching_zero_says_to_remove_the_entry ... ok
+test tests::duet_screens_do_not_read_device_health_directly ... ok
+test shared_ui::a_new_file_counts_as_going_up_from_zero ... ok
+test shared_ui::a_count_going_up_says_to_use_the_shared_component_or_add_an_exception ... ok
+test shared_ui::counts_card_classes_set_apart_by_escaped_whitespace ... ok
+test shared_ui::every_table_entry_has_one_row_and_a_reason ... ok
+test shared_ui::counts_card_markup_by_class_family_once_per_element ... ok
+test shared_ui::counts_css_rules_naming_library_classes ... ok
+test shared_ui::counts_rsx_held_in_other_macros_and_nested_rsx ... ok
+test shared_ui::ignores_comments_strings_and_lookalikes ... ok
+test shared_ui::counts_each_raw_control_inside_rsx ... ok
+test tests::apps_do_not_import_each_others_clinical_crates ... ok
+test tests::the_clinical_library_is_product_neutral ... ok
+test tests::gmail_and_spruce_are_product_neutral ... ok
+test shared_ui::ignores_test_code_but_not_code_kept_out_of_tests ... ok
+test shared_ui::the_check_reads_the_real_library ... ok
+test tests::every_ui_behaviour_is_run_as_its_kind ... ok
+test tests::shared_harness_is_product_neutral_and_has_no_product_store ... ok
+test tests::the_ui_library_runs_its_browser_behaviour_without_eval ... ok
+test shared_ui::the_apps_match_the_shared_ui_table ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.78s
+
+   Doc-tests boundaries
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/http)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.88s
+     Running unittests src/lib.rs (/tmp/coda-target-concerns/debug/deps/coda_http-e4a1c43fafed5f63)
+
+running 5 tests
+test ingress::tests::route_classification_separates_health_auth_and_public ... ok
+test ingress::tests::hosted_environment_markers_enforce_loopback_quotas ... ok
+test ingress::tests::forwarded_for_ignores_spoofed_leftmost_ip_and_canonicalizes_v4_mapped_v6 ... ok
+test ingress::tests::strict_rate_limit_enforces_tier_quotas_recovers_after_window_and_bounds_memory ... ok
+test ingress::tests::middleware_returns_429_retry_after_and_413_payload_too_large ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.00s
+
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/http)
+   Compiling public-site v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/public-site)
+   Compiling physician-sample v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 00s
+     Running unittests src/lib.rs (/tmp/coda-target-concerns/debug/deps/physician_sample-eb706d506fd75f0f)
+
+running 4 tests
+test demo_session::tests::turn_budget_enforces_session_ip_hourly_and_daily_caps_without_leaking_counts ... ok
+test demo_session::tests::turn_budget_respects_rightmost_trusted_proxy_ip ... ok
+test demo_session::tests::demo_budget_exhausted_response_sets_429_retry_after_and_code ... ok
+test demo_session::tests::demo_session_route_mints_isolated_sessions_only_when_mounted ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 113 filtered out; finished in 0.08s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.17s
+     Running unittests src/lib.rs (/tmp/coda-target-concerns/debug/deps/physician_sample-eb706d506fd75f0f)
+
+running 23 tests
+test hosting::tests::local_runs_start_without_any_profile ... ok
+test hosting::tests::hosted_local_stack_refuses_even_with_complete_profile ... ok
+test hosting::tests::a_false_cloud_marker_is_still_hosted ... ok
+test hosting::tests::production_and_other_profiles_refuse_even_when_complete ... ok
+test hosting::tests::readiness_fails_closed_without_live_stores ... ok
+test hosting::tests::public_demo_profile_validates_in_stg_or_demo_and_refuses_in_prd ... ok
+test hosting::tests::synthetic_charts_load_only_under_the_preview_profile ... ok
+test hosting::tests::staging_physician_ids_are_stable_and_distinct_per_email ... ok
+test hosting::tests::service_account_email_normalizes_and_rejects_non_service_principals ... ok
+test hosting::tests::staging_preview_is_the_only_hosted_profile ... ok
+test hosting::tests::the_rehearsal_sign_in_needs_both_settings_and_the_preview_profile ... ok
+test hosting::tests::staging_accounts_refuse_outside_the_preview_profile_and_bad_entries ... ok
+test hosting::tests::staging_accounts_parse_under_the_preview_profile ... ok
+test hosting::tests::a_pool_timeout_does_not_suggest_the_migration_job ... ok
+test hosting::tests::public_demo_registers_demo_practice_in_simulation_practices ... ok
+test hosting::tests::simulation_practices_parse_only_under_the_preview_profile ... ok
+test hosting::tests::origin_follows_the_practice_and_scenarios_need_a_rehearsal_practice ... ok
+test hosting::tests::clinical_library_config_enforces_https_in_hosted_runs_and_loopback_locally ... ok
+test hosting::tests::only_a_configured_rehearsal_practice_fails_and_no_message_markers_exist ... ok
+test hosting::tests::rehearsal_failure_policy_parses_and_enforces_staging_only_harness_control ... ok
+test hosting::tests::clinical_library_down_or_refused_never_masquerades_as_nothing_found ... ok
+test hosting::tests::clinical_library_search_and_exact_read_authenticate_and_preserve_passage_metadata ... ok
+test hosting::tests::clinical_library_enforces_excerpt_rights_unit_id_and_sha256_integrity ... ok
+
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 94 filtered out; finished in 0.03s
+
+    Blocking waiting for file lock on package cache
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.24s
+     Running unittests src/lib.rs (/tmp/coda-target-concerns/debug/deps/physician_sample-eb706d506fd75f0f)
+
+running 1 test
+test tests::traced_ingress_guard_enforces_8mib_body_limit_and_exempts_health ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 116 filtered out; finished in 0.01s
+
+   Compiling physician-sample v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-concerns-library-ec46c93f/crates/physician-sample)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 45.97s
+     Running unittests src/bin/physician-worker.rs (/tmp/coda-target-concerns/debug/deps/physician_worker-479d4b3030052580)
+
+running 1 test
+test tests::worker_config_marks_public_demo_and_registers_demo_practice ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 33 filtered out; finished in 0.01s
+
