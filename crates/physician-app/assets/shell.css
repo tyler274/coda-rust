@@ -9,7 +9,7 @@ html, body { margin: 0; height: 100%; background: var(--surface); color: var(--i
   background: var(--surface);
 }
 .glass-app.is-collapsed { display: none; }
-.glass-app.is-screen-hidden { visibility: hidden; pointer-events: none; }
+.glass-app.is-screen-hidden { display: none; }
 /* Collapsing to the rail belongs to windows that hold the sidebar beside the page. */
 @media (width >= 56.25rem) {
   .glass-app.has-collapsed-sidebar { grid-template-columns: var(--sidebar-rail-width) minmax(0, 1fr); }

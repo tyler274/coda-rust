@@ -230,8 +230,10 @@ fn PatientPickerDialog(
     let show_sender_policy = matches!(purpose, PatientPickerPurpose::MatchMessage { .. });
 
     let roster_val = roster.read().clone();
+    let screen_hidden = crate::is_screen_hidden();
 
     rsx! {
+        if !screen_hidden {
         Dialog {
             title,
             close_label: "Close",
@@ -331,6 +333,7 @@ fn PatientPickerDialog(
                     }
                 }
             }
+        }
         }
     }
 }

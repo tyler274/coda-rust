@@ -230,7 +230,7 @@ pub(crate) fn PatientInvitePanel(
             },
             "{trigger_label}"
         }
-        if open() {
+        if open() && !crate::is_screen_hidden() {
             Dialog {
                 close_label: "Close",
                 title: "Duet connection",
@@ -433,7 +433,7 @@ pub(crate) fn ColleagueInviteTrigger(
             },
             "Invite colleague"
         }
-        if open() {
+        if open() && !crate::is_screen_hidden() {
             Dialog {
                 close_label: "Close",
                 title: "Invite colleague",

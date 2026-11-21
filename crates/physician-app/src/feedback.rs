@@ -525,7 +525,9 @@ fn DetailsDialog(response: Key, read: Option<ResponseFeedback>, state: State) ->
             send(feedback, save);
         }
     };
+    let screen_hidden = crate::is_screen_hidden();
     rsx! {
+        if !screen_hidden {
         Dialog {
             class: "feedback-details",
             title: DETAILS_TITLE,
@@ -567,6 +569,7 @@ fn DetailsDialog(response: Key, read: Option<ResponseFeedback>, state: State) ->
                     "{SAVE_DETAILS}"
                 }
             }
+        }
         }
     }
 }
