@@ -1,0 +1,57 @@
+{
+  "branch": "cod-84-demo-passage-citations",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "fmt, host+wasm32 clippy, physician-demo-db, physician-client, and boundaries",
+      "kind": "run",
+      "revision": "6989996c78317d92855a48c5acf76008322c6cf5",
+      "dirty": false,
+      "recorded": "2026-11-21T13:21:37+00:00",
+      "command": [
+        "bash",
+        "-lc",
+        "cargo fmt --all -- --check && cargo clippy --locked -p physician-demo-db --all-targets -- -D warnings && cargo clippy --locked -p physician-demo-db --lib --target wasm32-unknown-unknown -- -D warnings && cargo test --locked -p physician-demo-db && cargo test --locked -p physician-client && cargo test --locked -p boundaries"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-fmt-host-wasm32-clippy-physician-demo-db-physici.log"
+      ],
+      "seconds": 111.3,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "Chromium SQLite demo E2E (public-site --test site)",
+      "kind": "run",
+      "revision": "6989996c78317d92855a48c5acf76008322c6cf5",
+      "dirty": false,
+      "recorded": "2026-11-21T13:23:29+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "public-site",
+        "--test",
+        "site",
+        "exported_subpath_browser_sql_demo_e2e",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-Chromium-SQLite-demo-E2E-public-site---test-site.log"
+      ],
+      "seconds": 110.7,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
