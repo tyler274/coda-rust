@@ -1,0 +1,83 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.11s
+     Running tests/site.rs (/tmp/coda-target-jobs/debug/deps/site-3e4a02d5470e6739)
+
+running 3 tests
+test desktop_mobile_motion_reduced_motion_and_static_fallback ... Screenshot: /tmp/nix-shell.SwXaOp/public-site-screenshots/desktop.png
+desktop: content, assets, overflow, navigation and motion passed
+Screenshot: /tmp/nix-shell.SwXaOp/public-site-screenshots/dark.png
+dark: content, assets, overflow, navigation and motion passed
+Screenshot: /tmp/nix-shell.SwXaOp/public-site-screenshots/mobile.png
+mobile: content, assets, overflow, navigation and motion passed
+Screenshot: /tmp/nix-shell.SwXaOp/public-site-screenshots/reduced.png
+reduced: content, assets, overflow, navigation and motion passed
+Screenshot: /tmp/nix-shell.SwXaOp/public-site-screenshots/no-script.png
+no-script: content, assets, overflow, navigation and motion passed
+ok
+test exported_subpath_browser_sql_demo_e2e ...    Compiling ring v0.17.14
+   Compiling rustls v0.23.46
+   Compiling rustls-webpki v0.103.16
+   Compiling tokio-rustls v0.26.6
+   Compiling hyper-rustls v0.27.10
+   Compiling reqwest v0.12.28
+   Compiling coda-http v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/http)
+   Compiling public-site v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/public-site)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 17.46s
+     Running `/tmp/coda-target-jobs/debug/public-site --export-dir /tmp/nix-shell.SwXaOp/coda-public-site-demo-export-215699/coda-rust --base-path /coda-rust --origin 'https://tyler274.github.io/coda-rust' --physician-demo`
+ INFO Book building has started
+ INFO Running the html backend
+ INFO HTML book written to `/tmp/nix-shell.SwXaOp/coda-public-site-demo-export-215699/coda-rust/book`
+   Compiling proc-macro2 v1.0.107
+   Compiling ahash v0.8.12
+   Compiling once_cell v1.21.4
+   Compiling memchr v2.8.3
+   Compiling heck v0.4.1
+   Compiling smallvec v1.16.3
+   Compiling fallible-streaming-iterator v0.1.9
+   Compiling fallible-iterator v0.3.0
+   Compiling cc v1.8.0
+   Compiling zerocopy v0.8.63
+   Compiling serde_core v1.0.229
+   Compiling quote v1.0.47
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+   Compiling libsqlite3-sys v0.30.1
+   Compiling serde_json v1.0.154
+   Compiling thiserror-impl v2.0.21
+   Compiling serde_derive v1.0.229
+   Compiling darling_core v0.20.11
+   Compiling darling_macro v0.20.11
+   Compiling hashbrown v0.14.5
+   Compiling hashlink v0.9.1
+   Compiling thiserror v2.0.21
+   Compiling serde v1.0.229
+   Compiling physician-wire v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/physician-wire)
+   Compiling darling v0.20.11
+   Compiling sea-query-derive v1.0.0
+   Compiling sea-query v1.0.2
+   Compiling rusqlite v0.32.1
+   Compiling physician-demo-db v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/physician-demo-db)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 24.00s
+     Running `/tmp/coda-target-jobs/debug/seed_demo_db --units /home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/patients/units --out /tmp/nix-shell.SwXaOp/coda-public-site-demo-export-215699/coda-rust/physician/demo.sqlite --limit 60`
+Seeded 39 patients into /tmp/nix-shell.SwXaOp/coda-public-site-demo-export-215699/coda-rust/physician/demo.sqlite
+   Compiling ui v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/ui)
+   Compiling physician-app v0.1.0 (/home/luluco/.gemini/antigravity/worktrees/30ac6807-0cd9-4f81-9105-755ab520fd18/swarm-jobs-dispatch-f3d95d8e/crates/physician-app)
+    Finished `release` profile [optimized] target(s) in 21.67s
+Browser SQLite Chords demo E2E passed with 0 errors and 0 HTTP failures.
+ok
+test exported_subpath_site_serves_zero_404s_and_renders_in_chromium ...  INFO Book building has started
+ INFO Running the html backend
+ INFO HTML book written to `/tmp/nix-shell.SwXaOp/coda-public-site-browser-export-215699/coda-rust/book`
+Screenshot: /tmp/nix-shell.SwXaOp/public-site-screenshots/coda-rust-desktop.png
+desktop: content, assets, overflow, navigation and motion passed
+Screenshot: /tmp/nix-shell.SwXaOp/public-site-screenshots/coda-rust-dark.png
+dark: content, assets, overflow, navigation and motion passed
+Screenshot: /tmp/nix-shell.SwXaOp/public-site-screenshots/coda-rust-mobile.png
+mobile: content, assets, overflow, navigation and motion passed
+Screenshot: /tmp/nix-shell.SwXaOp/public-site-screenshots/coda-rust-reduced.png
+reduced: content, assets, overflow, navigation and motion passed
+Screenshot: /tmp/nix-shell.SwXaOp/public-site-screenshots/coda-rust-no-script.png
+no-script: content, assets, overflow, navigation and motion passed
+ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 156.70s
+
