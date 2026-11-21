@@ -522,3 +522,92 @@ async fn live_demo_promotes_try_live_demo_in_nav_and_hero() {
         .expect("hero secondary CTA must link to contact mailto in demo mode");
     assert!(hero_demo < hero_partner);
 }
+
+#[tokio::test]
+async fn duet_page_and_terms_meta_reflect_settled_mvp_spec() {
+    let app = router_with_options(
+        prerender(&Config::default()).unwrap(),
+        RuntimeConfig::default(),
+        [],
+        Readiness::ready(),
+    );
+    let duet_res = app
+        .clone()
+        .oneshot(Request::builder().uri("/duet").body(Body::empty()).unwrap())
+        .await
+        .unwrap();
+    assert_eq!(duet_res.status(), StatusCode::OK);
+    let duet_html = String::from_utf8(
+        to_bytes(duet_res.into_body(), usize::MAX)
+            .await
+            .unwrap()
+            .to_vec(),
+    )
+    .unwrap();
+    for expected in [
+        "iPhone &#38; Android",
+        "Health Connect",
+        "For my doctor",
+        "You",
+    ] {
+        assert!(
+            duet_html.contains(expected),
+            "/duet must contain {expected}"
+        );
+    }
+    for stale in ["iPhone share sheet", "If you allow AI"] {
+        assert!(
+            !duet_html.contains(stale),
+            "/duet must not contain stale pre-MVP copy {stale}"
+        );
+    }
+
+    let terms_res = app
+        .clone()
+        .oneshot(
+            Request::builder()
+                .uri("/duet/terms")
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(terms_res.status(), StatusCode::OK);
+    let terms_html = String::from_utf8(
+        to_bytes(terms_res.into_body(), usize::MAX)
+            .await
+            .unwrap()
+            .to_vec(),
+    )
+    .unwrap();
+    assert!(
+        terms_html.contains("patient-facing iPhone and Android app"),
+        "/duet/terms meta must name iPhone and Android"
+    );
+
+    let demo_app = router_with_options(
+        prerender(&Config {
+            physician_demo: true,
+            ..Config::default()
+        })
+        .unwrap(),
+        RuntimeConfig::default(),
+        [],
+        Readiness::ready(),
+    );
+    let demo_duet = demo_app
+        .oneshot(Request::builder().uri("/duet").body(Body::empty()).unwrap())
+        .await
+        .unwrap();
+    let demo_html = String::from_utf8(
+        to_bytes(demo_duet.into_body(), usize::MAX)
+            .await
+            .unwrap()
+            .to_vec(),
+    )
+    .unwrap();
+    assert!(
+        demo_html.contains("Try Chords clinician demo"),
+        "demo /duet must link to Chords demo"
+    );
+}

@@ -1,21 +1,23 @@
 use super::brand::{Product, ProductLockup};
 use super::phones::Phones;
+use crate::{Config, PhysicianLink};
 use dioxus::prelude::*;
 
 #[component]
 pub fn Duet() -> Element {
+    let demo = use_context::<Config>().physician_link() == PhysicianLink::LiveDemo;
     let principles = [
         (
             "Bring your health together",
-            "Connect Apple Health and one or more Epic MyChart organizations when you choose. Duet preserves where information came from and never writes back to those sources.",
+            "Connect Apple Health on iPhone, Health Connect on Android, and Epic MyChart or Oracle Health organizations when you choose. Duet preserves exact source provenance and never writes back to those sources.",
         ),
         (
-            "Notice the few things that matter",
-            "If you allow AI, Duet can show changes and patterns from your health information, with the source available for you to review.",
+            "Your records, kept faithful",
+            "Browse labs, measurements, medications, and visits in You with exact values, dates, and per-source trends you can inspect directly from the original record.",
         ),
         (
-            "Carry the useful parts into care",
-            "Save an insight, add what you want to discuss, review the prepared summary, and share it through the iPhone share sheet when you are ready.",
+            "For my doctor, in your own words",
+            "Mark any record, value, reading, or trend in one tap, add notes in For my doctor, and send them to your connected Coda practice when you choose.",
         ),
     ];
     rsx! {
@@ -24,8 +26,16 @@ pub fn Duet() -> Element {
                 ProductLockup { product: Product::Duet, hero: true }
                 p { class: "kicker rv", style: "--d:0.03s", "Your health, in context" }
                 h1 { class: "rv", style: "--d:0.06s", "A clearer picture of you." }
-                p { class: "lede rv", style: "--d:0.12s", "Duet brings together the health information you choose, notices a few supported patterns, and helps you prepare the useful parts for a conversation with your doctor." }
-                p { class: "hero-meta micro rv", style: "--d:0.18s", "iPhone · U.S. adults 18+ · Free · No advertising" }
+                p { class: "lede rv", style: "--d:0.12s", "Duet brings together the health records and readings you choose, keeps every source faithful in You, and lets you mark records and write notes in For my doctor for your connected practice." }
+                p { class: "hero-meta micro rv", style: "--d:0.18s", "iPhone & Android · U.S. adults 18+ · Free · No advertising" }
+                if demo {
+                    div { class: "hero-cta rv", style: "--d:0.22s",
+                        div { class: "hero-cta-row",
+                            a { class: "btn", href: "/physician/", "Try Chords clinician demo" }
+                            a { class: "btn btn-secondary", href: "/#patients", "See Connected Care" }
+                        }
+                    }
+                }
             }
         }
         section { class: "sec sec-tight", div { class: "wrap", Phones {} } }
