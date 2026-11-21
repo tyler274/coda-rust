@@ -50,7 +50,7 @@ pub(crate) fn PatientInvitePanel(
     let mut error = use_signal(|| None::<String>);
     let mut confirmation = use_signal(|| None::<String>);
 
-    if client.read().is_demo() || workspace_id.trim().is_empty() {
+    if crate::is_demo_mode(&client.read()) || workspace_id.trim().is_empty() {
         return rsx! {};
     }
 
@@ -369,7 +369,7 @@ pub(crate) fn ColleagueInviteTrigger(
     let mut error = use_signal(|| None::<String>);
     let mut confirmation = use_signal(|| None::<String>);
 
-    if client.read().is_demo() {
+    if crate::is_demo_mode(&client.read()) {
         return rsx! {};
     }
 

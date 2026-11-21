@@ -108,9 +108,11 @@ fn resolve_api_base(
         return url.to_owned();
     }
     if let Some((origin, path)) = page {
-        // Only the declared mount is special, not arbitrary prefixes such as /physicians.
+        // Only declared mounts are special, not arbitrary prefixes such as /physicians.
         let prefix = if path == "/physician" || path.starts_with("/physician/") {
             "/physician"
+        } else if path == "/coda/physician" || path.starts_with("/coda/physician/") {
+            "/coda/physician/api"
         } else {
             ""
         };
@@ -220,7 +222,24 @@ mod tests {
                 "https://coda.test/physician"
             );
         }
-        for path in ["/", "/index.html", "/physicians", "/physician-other/"] {
+        for path in [
+            "/coda/physician",
+            "/coda/physician/",
+            "/coda/physician/index.html",
+        ] {
+            assert_eq!(
+                resolve_api_base(None, None, Some(("https://dabney.moe", path))),
+                "https://dabney.moe/coda/physician/api"
+            );
+        }
+        for path in [
+            "/",
+            "/index.html",
+            "/physicians",
+            "/physician-other/",
+            "/coda",
+            "/coda/physicians",
+        ] {
             assert_eq!(
                 resolve_api_base(None, None, Some(("https://coda.test", path))),
                 "https://coda.test"

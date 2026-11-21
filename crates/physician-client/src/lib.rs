@@ -28,13 +28,14 @@ pub mod today_updates;
 pub use http::HttpError;
 use physician_wire::{
     CancelInvitationResponse, ChatSnapshotResponse, CitedSourceResponse,
-    ColleagueInvitationResponse, DictationRequest, DictationResponse, HealthResponse,
-    InviteColleagueRequest, InvitePatientRequest, PanelAssignmentResponse, PastWorkResponse,
-    PatientInvitationActionRequest, PatientInvitationResponse, PatientMemoryResponse,
-    PatientSearchResponse, PatientWorkspaceResponse, PatientWorkspacesResponse, PhysicianDraft,
-    PracticeDayResponse, RecentConversationsResponse, ReplyDraftWire, ResponseFeedback, ResponseId,
-    SaveFeedback, SavePhysicianMemoryEditRequest, SavePhysicianMemoryEditResponse, SignInResponse,
-    TodayListResponse, UpdatesResponse, VerifyResponse, WhoamiResponse,
+    ColleagueInvitationResponse, DemoSessionResponse, DictationRequest, DictationResponse,
+    HealthResponse, InviteColleagueRequest, InvitePatientRequest, PanelAssignmentResponse,
+    PastWorkResponse, PatientInvitationActionRequest, PatientInvitationResponse,
+    PatientMemoryResponse, PatientSearchResponse, PatientWorkspaceResponse,
+    PatientWorkspacesResponse, PhysicianDraft, PracticeDayResponse, RecentConversationsResponse,
+    ReplyDraftWire, ResponseFeedback, ResponseId, SaveFeedback, SavePhysicianMemoryEditRequest,
+    SavePhysicianMemoryEditResponse, SignInResponse, TodayListResponse, UpdatesResponse,
+    VerifyResponse, WhoamiResponse,
 };
 use std::sync::Arc;
 
@@ -370,6 +371,46 @@ impl PhysicianClient {
             .await;
         self.session.clear_if(session);
         result.map(|_| ())
+    }
+
+    /// Mints an isolated live demo session via `POST /auth/demo-session`
+    /// with a short 3s probe timeout so static or offline hosts fall back quickly.
+    pub async fn start_demo_session(&self) -> Result<DemoSessionResponse, http::HttpError> {
+        let started: DemoSessionResponse = self
+            .post_as(
+                None,
+                "/auth/demo-session",
+                &serde_json::json!({}),
+                Some(std::time::Duration::from_secs(3)),
+            )
+            .await?;
+        self.session.set(started.session.clone());
+        Ok(started)
+    }
+
+    /// Extracts the human-facing detail when a live demo command failed due
+    /// to a `429` `demo_turn_budget_exhausted` error body.
+    pub fn demo_budget_message(error: &http::HttpError) -> Option<String> {
+        #[derive(serde::Deserialize)]
+        struct BudgetBody {
+            code: String,
+            #[serde(default)]
+            detail: String,
+        }
+        let http::HttpError::Status { status: 429, body } = error else {
+            return None;
+        };
+        let parsed: BudgetBody = serde_json::from_str(body).ok()?;
+        if parsed.code == "demo_turn_budget_exhausted" {
+            let trimmed = parsed.detail.trim();
+            Some(if trimmed.is_empty() {
+                "The public live demo turn limit has been reached.".to_owned()
+            } else {
+                trimmed.to_owned()
+            })
+        } else {
+            None
+        }
     }
 
     /// Reads the session's physician when the held session still resolves.
@@ -1658,5 +1699,101 @@ mod tests {
                 .len(),
             1
         );
+    }
+
+    #[tokio::test]
+    async fn start_demo_session_sets_bearer_and_reads_live_routes() {
+        use axum::response::IntoResponse as _;
+
+        let app = axum::Router::new()
+            .route(
+                "/auth/demo-session",
+                axum::routing::post(|| async {
+                    axum::Json(serde_json::json!({
+                        "session": "demo-live-session-1",
+                        "physician_id": "phys-demo-hannah",
+                        "practice_id": "coda-demo-practice",
+                        "ends_at": 1_800_000_000u64,
+                    }))
+                }),
+            )
+            .route(
+                "/auth/whoami",
+                axum::routing::get(|headers: axum::http::HeaderMap| async move {
+                    if headers
+                        .get(axum::http::header::AUTHORIZATION)
+                        .and_then(|v| v.to_str().ok())
+                        == Some("Bearer demo-live-session-1")
+                    {
+                        axum::Json(serde_json::json!({
+                            "physician_id": "phys-demo-hannah",
+                            "practice_id": "coda-demo-practice",
+                            "display_name": "Dr. Hannah Alvarez",
+                        }))
+                        .into_response()
+                    } else {
+                        axum::http::StatusCode::UNAUTHORIZED.into_response()
+                    }
+                }),
+            );
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let address = listener.local_addr().unwrap();
+        tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+
+        let client = PhysicianClient::new(format!("http://{address}"));
+        let started = client.start_demo_session().await.unwrap();
+        assert_eq!(started.session, "demo-live-session-1");
+        assert_eq!(started.practice_id, "coda-demo-practice");
+        assert_eq!(started.ends_at, 1_800_000_000);
+        assert_eq!(
+            client.session().get().as_deref(),
+            Some("demo-live-session-1")
+        );
+        assert_eq!(
+            client.whoami().await.unwrap().display_name,
+            "Dr. Hannah Alvarez"
+        );
+    }
+
+    #[test]
+    fn demo_budget_message_parses_only_429_exhausted_code() {
+        let exhausted = http::HttpError::Status {
+            status: 429,
+            body: serde_json::json!({
+                "code": "demo_turn_budget_exhausted",
+                "detail": "Live demo turn budget reached for this visitor."
+            })
+            .to_string(),
+        };
+        assert_eq!(
+            PhysicianClient::demo_budget_message(&exhausted).as_deref(),
+            Some("Live demo turn budget reached for this visitor.")
+        );
+
+        let generic_429 = http::HttpError::Status {
+            status: 429,
+            body: "rate limited".to_owned(),
+        };
+        assert_eq!(PhysicianClient::demo_budget_message(&generic_429), None);
+
+        let wrong_code = http::HttpError::Status {
+            status: 429,
+            body: serde_json::json!({
+                "code": "rate_limited",
+                "detail": "Try again later"
+            })
+            .to_string(),
+        };
+        assert_eq!(PhysicianClient::demo_budget_message(&wrong_code), None);
+
+        let status_503 = http::HttpError::Status {
+            status: 503,
+            body: serde_json::json!({
+                "code": "demo_turn_budget_exhausted",
+                "detail": "Wrong status"
+            })
+            .to_string(),
+        };
+        assert_eq!(PhysicianClient::demo_budget_message(&status_503), None);
     }
 }
