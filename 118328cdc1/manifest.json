@@ -1,0 +1,265 @@
+{
+  "branch": "cod-86-e2e-demo-scale-browser",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "cargo fmt --check",
+      "kind": "run",
+      "revision": "118328cdc135b94119523238ffe2da10d05457aa",
+      "dirty": false,
+      "recorded": "2026-11-21T15:26:14+00:00",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-cargo-fmt---check.log"
+      ],
+      "seconds": 78.9,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC1",
+      "label": "check-book-links",
+      "kind": "run",
+      "revision": "118328cdc135b94119523238ffe2da10d05457aa",
+      "dirty": false,
+      "recorded": "2026-11-21T15:27:33+00:00",
+      "command": [
+        "bash",
+        "scripts/check-book-links.sh"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-check-book-links.log"
+      ],
+      "seconds": 2.3,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC1",
+      "label": "check-sql",
+      "kind": "run",
+      "revision": "118328cdc135b94119523238ffe2da10d05457aa",
+      "dirty": false,
+      "recorded": "2026-11-21T15:27:36+00:00",
+      "command": [
+        "python3",
+        "scripts/check-sql.py"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-check-sql.log"
+      ],
+      "seconds": 3.2,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC1",
+      "label": "clippy host physician-sample",
+      "kind": "run",
+      "revision": "118328cdc135b94119523238ffe2da10d05457aa",
+      "dirty": false,
+      "recorded": "2026-11-21T15:27:39+00:00",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "physician-sample",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-clippy-host-physician-sample.log"
+      ],
+      "seconds": 3.4,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 5,
+      "claim": "AC1",
+      "label": "clippy wasm32 physician-app",
+      "kind": "run",
+      "revision": "118328cdc135b94119523238ffe2da10d05457aa",
+      "dirty": false,
+      "recorded": "2026-11-21T15:27:43+00:00",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "physician-app",
+        "--target",
+        "wasm32-unknown-unknown",
+        "--features",
+        "physician-app/web",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-clippy-wasm32-physician-app.log"
+      ],
+      "seconds": 2.4,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 6,
+      "claim": "AC1",
+      "label": "boundaries",
+      "kind": "run",
+      "revision": "118328cdc135b94119523238ffe2da10d05457aa",
+      "dirty": false,
+      "recorded": "2026-11-21T15:27:45+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "boundaries"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-boundaries.log"
+      ],
+      "seconds": 2.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 7,
+      "claim": "AC1",
+      "label": "physician-sample lib tests",
+      "kind": "run",
+      "revision": "118328cdc135b94119523238ffe2da10d05457aa",
+      "dirty": false,
+      "recorded": "2026-11-21T15:27:48+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-sample",
+        "--lib"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "07-physician-sample-lib-tests.log"
+      ],
+      "seconds": 3.5,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 8,
+      "claim": "AC2",
+      "label": "demo_scale_harness",
+      "kind": "run",
+      "revision": "118328cdc135b94119523238ffe2da10d05457aa",
+      "dirty": false,
+      "recorded": "2026-11-21T15:27:52+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-sample",
+        "--test",
+        "demo_scale_harness",
+        "--",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "08-demo_scale_harness.log"
+      ],
+      "seconds": 27.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 9,
+      "claim": "AC2",
+      "label": "demo_live_browser (Chromium + scale + Valkey + SQLite fallback)",
+      "kind": "run",
+      "revision": "118328cdc135b94119523238ffe2da10d05457aa",
+      "dirty": false,
+      "recorded": "2026-11-21T15:28:19+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-sample",
+        "--test",
+        "demo_live_browser",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "09-demo_live_browser-Chromium-scale-Valkey-SQLite-f.log"
+      ],
+      "seconds": 41.1,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 10,
+      "claim": "AC3",
+      "label": "physician-sample site browser suite",
+      "kind": "run",
+      "revision": "118328cdc135b94119523238ffe2da10d05457aa",
+      "dirty": false,
+      "recorded": "2026-11-21T15:29:01+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "10-physician-sample-site-browser-suite.log"
+      ],
+      "seconds": 301.6,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
