@@ -1,0 +1,185 @@
+{
+  "branch": "feat-cod81-demo-sqlite-full-parity",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1",
+      "label": "Host & wasm32 Clippy + SQL format + boundaries/demo-db/client/app unit tests",
+      "kind": "run",
+      "revision": "2834f3c969eeb8d48dda46310e56914c9b4df00b",
+      "dirty": false,
+      "recorded": "2026-11-21T10:44:00+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "\n  set -euo pipefail\n  python3 scripts/check-sql.py\n  cargo clippy --locked -p physician-demo-db -p physician-client -p physician-app --all-targets -- -D warnings\n  cargo clippy --locked -p physician-demo-db -p physician-client -p physician-app --target wasm32-unknown-unknown -- -D warnings\n  cargo test --locked -p boundaries -p physician-demo-db -p physician-client -p physician-app\n"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-Host-wasm32-Clippy-SQL-format-boundaries-demo-db.log"
+      ],
+      "seconds": 24.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC2",
+      "label": "public-site real Chromium SQLite demo E2E (0 errors, 0 HTTP>=400)",
+      "kind": "run",
+      "revision": "2834f3c969eeb8d48dda46310e56914c9b4df00b",
+      "dirty": false,
+      "recorded": "2026-11-21T10:44:25+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-j",
+        "4",
+        "-p",
+        "public-site",
+        "--test",
+        "site",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-public-site-real-Chromium-SQLite-demo-E2E-0-erro.log"
+      ],
+      "seconds": 126.8,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3",
+      "label": "physician-sample real Chromium suite against disposable Postgres",
+      "kind": "run",
+      "revision": "2834f3c969eeb8d48dda46310e56914c9b4df00b",
+      "dirty": false,
+      "recorded": "2026-11-21T10:46:32+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-j",
+        "4",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-physician-sample-real-Chromium-suite-against-dis.log"
+      ],
+      "seconds": 242.2,
+      "exit": 101,
+      "ok": false,
+      "superseded": "Re-ran AC3 with isolated jemalloc valkey-server shim"
+    },
+    {
+      "id": 4,
+      "claim": "AC3",
+      "label": "physician-sample real Chromium suite against disposable Postgres",
+      "kind": "run",
+      "revision": "2834f3c969eeb8d48dda46310e56914c9b4df00b",
+      "dirty": false,
+      "recorded": "2026-11-21T11:24:28+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-j",
+        "4",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-physician-sample-real-Chromium-suite-against-dis.log"
+      ],
+      "seconds": 174.7,
+      "exit": 101,
+      "ok": false,
+      "superseded": "Re-ran AC3 with isolated jemalloc valkey-server shim"
+    },
+    {
+      "id": 5,
+      "claim": "AC3",
+      "label": "physician-sample real Chromium suite against disposable Postgres",
+      "kind": "run",
+      "revision": "2834f3c969eeb8d48dda46310e56914c9b4df00b",
+      "dirty": false,
+      "recorded": "2026-11-21T11:30:38+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-j",
+        "4",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "05-physician-sample-real-Chromium-suite-against-dis.log"
+      ],
+      "seconds": 214.5,
+      "exit": 101,
+      "ok": false,
+      "superseded": "Re-ran AC3 with isolated jemalloc valkey-server shim"
+    },
+    {
+      "id": 6,
+      "claim": "AC3",
+      "label": "physician-sample real Chromium suite against disposable Postgres",
+      "kind": "run",
+      "revision": "2834f3c969eeb8d48dda46310e56914c9b4df00b",
+      "dirty": false,
+      "recorded": "2026-11-21T11:34:54+00:00",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-j",
+        "4",
+        "-p",
+        "physician-sample",
+        "--test",
+        "site",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "06-physician-sample-real-Chromium-suite-against-dis.log"
+      ],
+      "seconds": 257.3,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
