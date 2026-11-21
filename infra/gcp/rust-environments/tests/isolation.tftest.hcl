@@ -114,8 +114,8 @@ run "foundations_only" {
     error_message = "Each product/role must have a distinct identity and bootstrap secret."
   }
   assert {
-    condition     = strcontains(local.oidc_condition, "assertion.environment == 'staging'") && strcontains(local.oidc_condition, "assertion.repository_id == '100000001'") && strcontains(local.oidc_condition, "assertion.repository_owner_id == '100000002'") && strcontains(local.oidc_condition, "assertion.ref == 'refs/heads/main'") && strcontains(local.oidc_condition, "assertion.event_name == 'push'")
-    error_message = "Staging OIDC must check immutable owner/repo IDs, main ref and push environment."
+    condition     = strcontains(local.oidc_condition, "assertion.repository == 'tyler274/coda-rust'") && strcontains(local.oidc_condition, "assertion.environment == 'staging'") && strcontains(local.oidc_condition, "assertion.repository_id == '100000001'") && strcontains(local.oidc_condition, "assertion.repository_owner_id == '100000002'") && strcontains(local.oidc_condition, "assertion.ref == 'refs/heads/main'") && strcontains(local.oidc_condition, "assertion.event_name == 'push'")
+    error_message = "Staging OIDC must check tyler274/coda-rust, immutable owner/repo IDs, main ref and push environment."
   }
   assert {
     condition     = length(google_service_account_iam_member.release_act_as) == 0
@@ -187,7 +187,7 @@ run "production_identity" {
   }
   variables { environment = "prd" }
   assert {
-    condition     = google_project.environment.project_id == "test-rust-prd-only" && google_storage_bucket.state.name == "test-rust-prd-state-only" && local.github_subject == "repo:Coda-Health@100000002/coda-rust@100000001:environment:production" && strcontains(local.oidc_condition, "assertion.event_name == 'workflow_dispatch'") && !strcontains(local.oidc_condition, "'staging'")
+    condition     = google_project.environment.project_id == "test-rust-prd-only" && google_storage_bucket.state.name == "test-rust-prd-state-only" && local.github_subject == "repo:tyler274@100000002/coda-rust@100000001:environment:production" && strcontains(local.oidc_condition, "assertion.event_name == 'workflow_dispatch'") && !strcontains(local.oidc_condition, "'staging'")
     error_message = "Production must never admit staging identity or automatic push releases."
   }
 }

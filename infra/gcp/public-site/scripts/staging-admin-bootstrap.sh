@@ -64,9 +64,9 @@ CI_SA="${CI_SA_ID}@${PROJECT_ID}.iam.gserviceaccount.com"
 
 WIF_POOL="${WIF_POOL:-github-actions}"
 WIF_PROVIDER="${WIF_PROVIDER:-github-oidc}"
-WIF_REPOSITORY="${WIF_REPOSITORY:-Coda-Health/coda-rust}"
-WIF_REPOSITORY_ID="${WIF_REPOSITORY_ID:-1412706552}"
-WIF_OWNER_ID="${WIF_OWNER_ID:-306538119}"
+WIF_REPOSITORY="${WIF_REPOSITORY:-tyler274/coda-rust}"
+WIF_REPOSITORY_ID="${WIF_REPOSITORY_ID:-1462179920}"
+WIF_OWNER_ID="${WIF_OWNER_ID:-4147075}"
 WIF_REF="${WIF_REF:-refs/heads/main}"
 WIF_ENVIRONMENT="${WIF_ENVIRONMENT:-staging}"
 
@@ -379,7 +379,7 @@ WIF_CONDITION="assertion.repository == '${WIF_REPOSITORY}' && assertion.reposito
 WIF_MAPPING="google.subject=assertion.sub,attribute.repository=assertion.repository,attribute.repository_id=assertion.repository_id,attribute.repository_owner_id=assertion.repository_owner_id,attribute.ref=assertion.ref,attribute.environment=assertion.environment"
 POOL_NAME="projects/${PROJECT_NUMBER}/locations/global/workloadIdentityPools/${WIF_POOL}"
 # The repository opts into GitHub's immutable subject claim, which carries the
-# owner and repository IDs: repo:Coda-Health@306538119/coda-rust@1412706552:...
+# owner and repository IDs: repo:tyler274@4147075/coda-rust@1462179920:...
 WIF_SUBJECT="repo:${WIF_REPOSITORY%%/*}@${WIF_OWNER_ID}/${WIF_REPOSITORY#*/}@${WIF_REPOSITORY_ID}:environment:${WIF_ENVIRONMENT}"
 
 step "Create WIF pool ${WIF_POOL} and GitHub OIDC provider ${WIF_PROVIDER}"

@@ -49,9 +49,9 @@ readonly CI_SA="${CI_SA_ID}@${PROJECT_ID}.iam.gserviceaccount.com"
 
 readonly WIF_POOL="github-actions"
 readonly WIF_PROVIDER="github-oidc"
-readonly WIF_REPOSITORY="Coda-Health/coda-rust"
-readonly WIF_REPOSITORY_ID="1412706552"
-readonly WIF_OWNER_ID="306538119"
+readonly WIF_REPOSITORY="tyler274/coda-rust"
+readonly WIF_REPOSITORY_ID="1462179920"
+readonly WIF_OWNER_ID="4147075"
 readonly WIF_REF="refs/heads/main"
 readonly WIF_ENVIRONMENT="production"
 

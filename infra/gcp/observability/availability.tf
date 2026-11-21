@@ -49,7 +49,7 @@ resource "datadog_monitor" "availability" {
     {{#is_recovery}}${each.key} recovered after two consecutive successful probes.{{/is_recovery}}
     Inspect the fixed outcome label to distinguish target failure, timeout/refusal and probe authentication failure. A redirect is not readiness. Ingestion allowance is ${var.availability_evaluation_delay_seconds}s plus evaluator delay; qualify observed timing before enabling.
     Check the availability-probe Cloud Run job and service readiness, not clinical endpoints. Missing execution is owned by the independent Cloud Monitoring heartbeat watchdog.
-    Runbook: https://github.com/Coda-Health/coda-rust/blob/main/book/src/observability.md
+    Runbook: https://github.com/tyler274/coda-rust/blob/main/book/src/observability.md
     ${var.alert_notify}
   EOT
   tags         = ["service:${each.key}", "env:${local.dd_env}", "team:coda", "signal:authenticated-readiness"]
