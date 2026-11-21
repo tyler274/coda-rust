@@ -183,7 +183,7 @@ let
         ] ++ lib.optional (role == "runtime") "PORT=8080" ++ environment;
         Labels = {
           "org.opencontainers.image.revision" = revision;
-          "org.opencontainers.image.source" = "https://github.com/Coda-Health/coda-rust";
+          "org.opencontainers.image.source" = "https://github.com/tyler274/coda-rust";
           # Packaging current applications is NOT the durable hosted runtime gate.
           "com.coda.runtime-readiness" = "packaging-only-not-staging-ready";
           "com.coda.role" = role;

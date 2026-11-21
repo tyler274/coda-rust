@@ -277,8 +277,8 @@ in
 
     with subtest("dev tools: direnv, GitHub remotes rewritten to HTTPS"):
         agent("command -v direnv")
-        rewritten = agent("git ls-remote --get-url git@github.com:Coda-Health/coda-rust.git").strip()
-        assert rewritten == "https://github.com/Coda-Health/coda-rust.git", rewritten
+        rewritten = agent("git ls-remote --get-url git@github.com:tyler274/coda-rust.git").strip()
+        assert rewritten == "https://github.com/tyler274/coda-rust.git", rewritten
 
     github_token = "${githubToken}"
     doppler_token = "${dopplerToken}"
