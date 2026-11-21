@@ -150,6 +150,12 @@ opens or refreshes one review PR (or a tracking issue with a compare link when r
 settings disable Actions PR creation) when these five imported skills change.
 [CI setup](../book/src/release.md#continuous-integration) covers publication.
 
+Claude Code also gets the whole PStack plugin: [`.claude/settings.json`](../.claude/settings.json)
+declares the `cursor-plugins` marketplace and enables `pstack@cursor-plugins`, so Claude Code
+offers to install it when the repository is opened. Its skills appear as `pstack:<name>`, with
+`pstack:statechart` the same code as the vendored `statechart`. Codex and CI use the vendored
+copies above and need no plugin.
+
 A verify skill the create skills write goes where [Verify skills](#verify-skills) says, not in
 `.cursor/skills/`. It refers to `statechart` by name and copies none of its commands, options or
 paths, which change between PStack releases.
