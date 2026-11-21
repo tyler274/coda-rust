@@ -1,0 +1,71 @@
+{
+  "branch": "feat-cod75-gcp-wif-identity",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC1: git grep Coda-Health/ shows only the kept external repo/submodule references and zero coda-rust legacy IDs in infra/gcp",
+      "label": "",
+      "kind": "run",
+      "revision": "643be60b6db6305b8de212d28b6eac438fbca8ba",
+      "dirty": false,
+      "recorded": "2026-11-21T04:35:20+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "git grep -n \"Coda-Health/\" && ! git grep -n -E \"Coda-Health/coda-rust|Coda-Health@|1412706552|306538119\" infra/gcp/"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-bash.log"
+      ],
+      "seconds": 0.2,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC3a: offline tofu fmt -check and tofu test across rust-environments (61), public-site (31), and observability (77)",
+      "label": "",
+      "kind": "run",
+      "revision": "643be60b6db6305b8de212d28b6eac438fbca8ba",
+      "dirty": false,
+      "recorded": "2026-11-21T04:35:21+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail; tofu fmt -check -recursive infra/gcp; for d in infra/gcp/rust-environments infra/gcp/public-site infra/gcp/observability; do (cd \"$d\" && tofu init -backend=false -input=false -lockfile=readonly >/dev/null && tofu test); done"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-bash.log"
+      ],
+      "seconds": 43.6,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC3b: rust-environments Python contract tests (19/19) and public-site admin bootstrap --print WIF condition/subject",
+      "label": "",
+      "kind": "run",
+      "revision": "643be60b6db6305b8de212d28b6eac438fbca8ba",
+      "dirty": false,
+      "recorded": "2026-11-21T04:36:04+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail; python3 -m unittest discover -s infra/gcp/rust-environments/tests -p \"*.py\" -v; bash infra/gcp/public-site/scripts/production-admin-bootstrap.sh --print; bash infra/gcp/public-site/scripts/staging-admin-bootstrap.sh --print"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-bash.log"
+      ],
+      "seconds": 1.4,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}

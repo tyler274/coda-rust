@@ -1,0 +1,163 @@
+test_billing_remains_outside_engineering_state (check_contract.Contract.test_billing_remains_outside_engineering_state) ... ok
+test_no_secret_values_or_public_access (check_contract.Contract.test_no_secret_values_or_public_access) ... ok
+test_physician_scale_is_physician_only (check_contract.Contract.test_physician_scale_is_physician_only) ... ok
+test_proxy_access_has_one_physician_only_owner (check_contract.Contract.test_proxy_access_has_one_physician_only_owner) ... ok
+test_proxy_bootstrap_rejects_production_before_cloud_calls (check_contract.Contract.test_proxy_bootstrap_rejects_production_before_cloud_calls) ... ok
+test_public_proxy_preserves_service_only_release_authority (check_contract.Contract.test_public_proxy_preserves_service_only_release_authority) ... ok
+test_redis_auth_never_leaves_sensitive_output (check_contract.Contract.test_redis_auth_never_leaves_sensitive_output) ... ok
+test_release_drift_scope (check_contract.Contract.test_release_drift_scope) ... ok
+test_release_targets_the_product_container_by_name (check_contract.Contract.test_release_targets_the_product_container_by_name) ... ok
+test_single_isolated_root (check_contract.Contract.test_single_isolated_root) ... ok
+test_staging_schedule_and_clinical_library_contract (check_contract.Contract.test_staging_schedule_and_clinical_library_contract) ... ok
+test_worker_is_internal_and_invoked_only_by_the_probe (check_contract.Contract.test_worker_is_internal_and_invoked_only_by_the_probe) ... ok
+test_connection_caps (test_sql_grants.SqlGrants.test_connection_caps) ... ok
+test_function_execution_is_not_public_by_default (test_sql_grants.SqlGrants.test_function_execution_is_not_public_by_default) ... ok
+test_migrator_can_assume_runtime_without_inheriting (test_sql_grants.SqlGrants.test_migrator_can_assume_runtime_without_inheriting) ... ok
+test_no_database_or_role_administration (test_sql_grants.SqlGrants.test_no_database_or_role_administration) ... ok
+test_refuses_elevated_principal (test_sql_grants.SqlGrants.test_refuses_elevated_principal) ... ok
+test_rerun (test_sql_grants.SqlGrants.test_rerun) ... ok
+test_runtime_dml_without_ddl (test_sql_grants.SqlGrants.test_runtime_dml_without_ddl) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 1.186s
+
+OK
+
+==> Preflight: coda-health-prod (720954567292), region us-east1
+    --print: no gcloud calls are made; every create step is shown.
+
+==> Enable required APIs (idempotent)
++ gcloud --project=coda-health-prod services enable serviceusage.googleapis.com cloudresourcemanager.googleapis.com iam.googleapis.com iamcredentials.googleapis.com sts.googleapis.com run.googleapis.com compute.googleapis.com certificatemanager.googleapis.com artifactregistry.googleapis.com
+
+==> Create the production OpenTofu state bucket gs://coda-health-prod-public-site-tofu-state-us-east1
++ gcloud --project=coda-health-prod storage buckets create gs://coda-health-prod-public-site-tofu-state-us-east1 --location=us-east1 --default-storage-class=STANDARD --uniform-bucket-level-access --public-access-prevention
++ gcloud --project=coda-health-prod storage buckets update gs://coda-health-prod-public-site-tofu-state-us-east1 --versioning --uniform-bucket-level-access --public-access-prevention
+
+==> Create the private public-site repository in us-east1
++ gcloud --project=coda-health-prod artifacts repositories create public-site --location=us-east1 --repository-format=docker --mode=standard-repository --immutable-tags --description=public-site\ images\ promoted\ from\ staging\,\ digest-pinned\ and\ immutable --labels=app=public-site\,env=production
++ gcloud --project=coda-health-prod artifacts repositories update public-site --location=us-east1 --immutable-tags
++ gcloud --project=coda-health-prod artifacts repositories set-cleanup-policies public-site --location=us-east1 --policy=/tmp/nix-shell.DzZFsd/tmp.UIqL90Ifny
++ gcloud --project=coda-health-prod artifacts repositories get-iam-policy public-site --location=us-east1 --flatten=bindings[].members --format=value(bindings.members)
+    (refuses to continue if public-site lists allUsers or allAuthenticatedUsers)
+    Same-project Cloud Run pulls use the Cloud Run service agent (roles/run.serviceAgent).
+
+==> Create CI promotion service account public-site-prod-deployer@coda-health-prod.iam.gserviceaccount.com
++ gcloud --project=coda-health-prod iam service-accounts create public-site-prod-deployer --display-name=public-site\ production\ promotion --description=GitHub\ Actions\ \(WIF\)\ promotion\ for\ infra/gcp/public-site\ production.\ No\ keys.
+
+==> Resource-scoped roles for the CI promotion account (before first apply)
++ gcloud --project=coda-health-prod storage buckets add-iam-policy-binding gs://coda-health-prod-public-site-tofu-state-us-east1 --member=serviceAccount:public-site-prod-deployer@coda-health-prod.iam.gserviceaccount.com --role=roles/storage.objectAdmin --condition=None
++ gcloud --project=coda-health-prod artifacts repositories add-iam-policy-binding public-site --location=us-east1 --member=serviceAccount:public-site-prod-deployer@coda-health-prod.iam.gserviceaccount.com --role=roles/artifactregistry.writer --condition=None
++ gcloud --project=coda-health-staging artifacts repositories add-iam-policy-binding public-site --location=us-east1 --member=serviceAccount:public-site-prod-deployer@coda-health-prod.iam.gserviceaccount.com --role=roles/artifactregistry.reader --condition=None
++ gcloud --project=coda-health-prod projects add-iam-policy-binding coda-health-prod --member=serviceAccount:public-site-prod-deployer@coda-health-prod.iam.gserviceaccount.com --role=roles/run.viewer --condition=None
++ gcloud --project=coda-health-prod projects add-iam-policy-binding coda-health-prod --member=serviceAccount:public-site-prod-deployer@coda-health-prod.iam.gserviceaccount.com --role=roles/compute.viewer --condition=None
++ gcloud --project=coda-health-prod projects add-iam-policy-binding coda-health-prod --member=serviceAccount:public-site-prod-deployer@coda-health-prod.iam.gserviceaccount.com --role=roles/certificatemanager.viewer --condition=None
+
+==> CDN cache invalidation for the CI promotion account
++ gcloud --project=coda-health-prod iam roles create publicSiteCdnInvalidator --title=public-site\ CDN\ invalidation --description=Invalidate\ Cloud\ CDN\ caches\ only. --permissions=compute.urlMaps.invalidateCache --stage=GA
++ gcloud --project=coda-health-prod projects add-iam-policy-binding coda-health-prod --member=serviceAccount:public-site-prod-deployer@coda-health-prod.iam.gserviceaccount.com --role=projects/coda-health-prod/roles/publicSiteCdnInvalidator --condition=None
+
+==> Service-scoped roles for the CI promotion account (need the first apply)
++ gcloud --project=coda-health-prod iam service-accounts add-iam-policy-binding public-site-production@coda-health-prod.iam.gserviceaccount.com --member=serviceAccount:public-site-prod-deployer@coda-health-prod.iam.gserviceaccount.com --role=roles/iam.serviceAccountUser --condition=None
++ gcloud --project=coda-health-prod artifacts repositories add-iam-policy-binding public-site --location=us-east1 --member=serviceAccount:public-site-production@coda-health-prod.iam.gserviceaccount.com --role=roles/artifactregistry.reader --condition=None
++ gcloud --project=coda-health-prod run services add-iam-policy-binding public-site-production --region=us-east1 --member=serviceAccount:public-site-prod-deployer@coda-health-prod.iam.gserviceaccount.com --role=roles/run.admin --condition=None
+    No compute, certificate or IAM admin roles: promotion cannot change the load balancer, TLS or identities; it can only clear the CDN.
+
+==> Create WIF pool github-actions and GitHub OIDC provider github-oidc
++ gcloud --project=coda-health-prod iam workload-identity-pools create github-actions --location=global --display-name=GitHub\ Actions --description=GitHub\ Actions\ OIDC\ for\ tyler274/coda-rust
++ gcloud --project=coda-health-prod iam workload-identity-pools providers create-oidc github-oidc --location=global --workload-identity-pool=github-actions --display-name=GitHub\ tyler274/coda-rust --issuer-uri=https://token.actions.githubusercontent.com --attribute-mapping=google.subject=assertion.sub\,attribute.repository=assertion.repository\,attribute.repository_id=assertion.repository_id\,attribute.repository_owner_id=assertion.repository_owner_id\,attribute.ref=assertion.ref\,attribute.environment=assertion.environment --attribute-condition=assertion.repository\ ==\ \'tyler274/coda-rust\'\ \&\&\ assertion.repository_id\ ==\ \'1462179920\'\ \&\&\ assertion.repository_owner_id\ ==\ \'4147075\'\ \&\&\ assertion.ref\ ==\ \'refs/heads/main\'\ \&\&\ assertion.environment\ ==\ \'production\'
+
+==> Allow only repo:tyler274@4147075/coda-rust@1462179920:environment:production to impersonate public-site-prod-deployer@coda-health-prod.iam.gserviceaccount.com
++ gcloud --project=coda-health-prod iam service-accounts add-iam-policy-binding public-site-prod-deployer@coda-health-prod.iam.gserviceaccount.com --role=roles/iam.workloadIdentityUser --condition=None --member=principal://iam.googleapis.com/projects/720954567292/locations/global/workloadIdentityPools/github-actions/subject/repo:tyler274@4147075/coda-rust@1462179920:environment:production
+    Workflow auth: workload_identity_provider=projects/720954567292/locations/global/workloadIdentityPools/github-actions/providers/github-oidc
+                 service_account=public-site-prod-deployer@coda-health-prod.iam.gserviceaccount.com (job must use environment: production on refs/heads/main)
+    In GitHub, limit the production environment to main; it needs no reviewer.
+
+==> Done. Next: the first apply from a reviewed saved plan (book: Production state and deployment).
+
+==> Preflight: coda-health-staging (134570912572), region us-east1
+    --print: no gcloud calls are made; every create step is shown.
+
+==> Enable required APIs (idempotent)
++ gcloud --project=coda-health-staging services enable serviceusage.googleapis.com cloudresourcemanager.googleapis.com iam.googleapis.com iamcredentials.googleapis.com sts.googleapis.com run.googleapis.com iap.googleapis.com artifactregistry.googleapis.com storage.googleapis.com
+    The IAP service agent service-134570912572@gcp-sa-iap.iam.gserviceaccount.com already exists.
+
+==> Create the staging OpenTofu state bucket gs://coda-health-staging-tofu-state-us-east1
++ gcloud --project=coda-health-staging storage buckets create gs://coda-health-staging-tofu-state-us-east1 --location=us-east1 --default-storage-class=STANDARD --uniform-bucket-level-access --public-access-prevention
++ gcloud --project=coda-health-staging storage buckets update gs://coda-health-staging-tofu-state-us-east1 --versioning --uniform-bucket-level-access --public-access-prevention
+
+==> Create private Artifact Registry repositories in us-east1 (Google-managed encryption)
++ gcloud --project=coda-health-staging artifacts repositories create public-site --location=us-east1 --repository-format=docker --mode=standard-repository --immutable-tags --description=public-site\ images\,\ digest-pinned\ and\ immutable --labels=app=public-site\,env=staging
++ gcloud --project=coda-health-staging artifacts repositories update public-site --location=us-east1 --immutable-tags
+    cleanup policy file:
+      [
+        {"name": "delete-untagged-after-seven-days", "action": {"type": "Delete"},
+         "condition": {"tagState": "untagged", "olderThan": "7d"}},
+        {"name": "keep-recent-10", "action": {"type": "Keep"},
+         "mostRecentVersions": {"keepCount": 10}}
+      ]
++ gcloud --project=coda-health-staging artifacts repositories set-cleanup-policies public-site --location=us-east1 --policy=/tmp/nix-shell.DzZFsd/tmp.kLXlWU21i3
++ gcloud --project=coda-health-staging artifacts repositories create public-site-dockerhub --location=us-east1 --repository-format=docker --mode=remote-repository --remote-docker-repo=docker-hub --remote-repo-config-desc=Docker\ Hub\ \(unauthenticated\) --description=Pull-through\ cache\ of\ Docker\ Hub\ for\ public-site\ builds --labels=app=public-site\,env=staging
++ gcloud --project=coda-health-staging artifacts repositories create public-site-base --location=us-east1 --repository-format=docker --mode=standard-repository --immutable-tags --description=Digest-pinned\ copies\ of\ public-site\ base\ images --labels=app=public-site\,env=staging
++ gcloud --project=coda-health-staging artifacts repositories update public-site-base --location=us-east1 --immutable-tags
+
+==> Refuse public repositories (allUsers / allAuthenticatedUsers)
++ gcloud --project=coda-health-staging artifacts repositories get-iam-policy public-site --location=us-east1 --flatten=bindings[].members --format=value(bindings.members)
+    (refuses to continue if public-site lists allUsers or allAuthenticatedUsers)
++ gcloud --project=coda-health-staging artifacts repositories get-iam-policy public-site-dockerhub --location=us-east1 --flatten=bindings[].members --format=value(bindings.members)
+    (refuses to continue if public-site-dockerhub lists allUsers or allAuthenticatedUsers)
++ gcloud --project=coda-health-staging artifacts repositories get-iam-policy public-site-base --location=us-east1 --flatten=bindings[].members --format=value(bindings.members)
+    (refuses to continue if public-site-base lists allUsers or allAuthenticatedUsers)
+
+==> Repository-scoped readers
++ gcloud --project=coda-health-staging artifacts repositories add-iam-policy-binding public-site-dockerhub --location=us-east1 --member=group:gcp-engineering@codahealth.ai --role=roles/artifactregistry.reader --condition=None
++ gcloud --project=coda-health-staging artifacts repositories add-iam-policy-binding public-site-base --location=us-east1 --member=group:gcp-engineering@codahealth.ai --role=roles/artifactregistry.reader --condition=None
+    If service-134570912572@serverless-robot-prod.iam.gserviceaccount.com lacks roles/run.serviceAgent on the project, it gets
+    roles/artifactregistry.reader on public-site only:
++ gcloud --project=coda-health-staging artifacts repositories add-iam-policy-binding public-site --location=us-east1 --member=serviceAccount:service-134570912572@serverless-robot-prod.iam.gserviceaccount.com --role=roles/artifactregistry.reader --condition=None
+
+==> Create CI deployer service account public-site-ci-deployer@coda-health-staging.iam.gserviceaccount.com
++ gcloud --project=coda-health-staging iam service-accounts create public-site-ci-deployer --display-name=public-site\ staging\ CI\ deployer --description=GitHub\ Actions\ \(WIF\)\ deployer\ for\ infra/gcp/public-site\ staging.\ No\ keys.
+
+==> Resource-scoped roles for the CI deployer (before first apply)
++ gcloud --project=coda-health-staging storage buckets add-iam-policy-binding gs://coda-health-staging-tofu-state-us-east1 --member=serviceAccount:public-site-ci-deployer@coda-health-staging.iam.gserviceaccount.com --role=roles/storage.objectAdmin --condition=None
++ gcloud --project=coda-health-staging artifacts repositories add-iam-policy-binding public-site --location=us-east1 --member=serviceAccount:public-site-ci-deployer@coda-health-staging.iam.gserviceaccount.com --role=roles/artifactregistry.writer --condition=None
++ gcloud --project=coda-health-staging artifacts repositories add-iam-policy-binding public-site-dockerhub --location=us-east1 --member=serviceAccount:public-site-ci-deployer@coda-health-staging.iam.gserviceaccount.com --role=roles/artifactregistry.reader --condition=None
++ gcloud --project=coda-health-staging artifacts repositories add-iam-policy-binding public-site-base --location=us-east1 --member=serviceAccount:public-site-ci-deployer@coda-health-staging.iam.gserviceaccount.com --role=roles/artifactregistry.reader --condition=None
++ gcloud --project=coda-health-staging projects add-iam-policy-binding coda-health-staging --member=serviceAccount:public-site-ci-deployer@coda-health-staging.iam.gserviceaccount.com --role=roles/run.viewer --condition=None
+
+==> Service-scoped roles for the CI deployer (need the first apply)
++ gcloud --project=coda-health-staging iam service-accounts add-iam-policy-binding public-site-staging@coda-health-staging.iam.gserviceaccount.com --member=serviceAccount:public-site-ci-deployer@coda-health-staging.iam.gserviceaccount.com --role=roles/iam.serviceAccountUser --condition=None
++ gcloud --project=coda-health-staging artifacts repositories add-iam-policy-binding public-site --location=us-east1 --member=serviceAccount:public-site-staging@coda-health-staging.iam.gserviceaccount.com --role=roles/artifactregistry.reader --condition=None
++ gcloud --project=coda-health-staging run services add-iam-policy-binding public-site-staging --region=us-east1 --member=serviceAccount:public-site-ci-deployer@coda-health-staging.iam.gserviceaccount.com --role=roles/run.admin --condition=None
++ gcloud --project=coda-health-staging iap web add-iam-policy-binding --resource-type=cloud-run --service=public-site-staging --region=us-east1 --member=serviceAccount:public-site-ci-deployer@coda-health-staging.iam.gserviceaccount.com --role=roles/iap.admin --condition=None
+    No run.invoker or iap.httpsResourceAccessor is granted: CI gets no website access.
+    No iam.serviceAccountAdmin: CI never creates or edits the runtime SA.
+
+==> Create WIF pool github-actions and GitHub OIDC provider github-oidc
++ gcloud --project=coda-health-staging iam workload-identity-pools create github-actions --location=global --display-name=GitHub\ Actions --description=GitHub\ Actions\ OIDC\ for\ tyler274/coda-rust
++ gcloud --project=coda-health-staging iam workload-identity-pools providers create-oidc github-oidc --location=global --workload-identity-pool=github-actions --display-name=GitHub\ tyler274/coda-rust --issuer-uri=https://token.actions.githubusercontent.com --attribute-mapping=google.subject=assertion.sub\,attribute.repository=assertion.repository\,attribute.repository_id=assertion.repository_id\,attribute.repository_owner_id=assertion.repository_owner_id\,attribute.ref=assertion.ref\,attribute.environment=assertion.environment --attribute-condition=assertion.repository\ ==\ \'tyler274/coda-rust\'\ \&\&\ assertion.repository_id\ ==\ \'1462179920\'\ \&\&\ assertion.repository_owner_id\ ==\ \'4147075\'\ \&\&\ assertion.ref\ ==\ \'refs/heads/main\'\ \&\&\ assertion.environment\ ==\ \'staging\'
+
+==> Allow only repo:tyler274@4147075/coda-rust@1462179920:environment:staging to impersonate public-site-ci-deployer@coda-health-staging.iam.gserviceaccount.com
++ gcloud --project=coda-health-staging iam service-accounts add-iam-policy-binding public-site-ci-deployer@coda-health-staging.iam.gserviceaccount.com --role=roles/iam.workloadIdentityUser --condition=None --member=principal://iam.googleapis.com/projects/134570912572/locations/global/workloadIdentityPools/github-actions/subject/repo:tyler274@4147075/coda-rust@1462179920:environment:staging
+    Workflow auth: workload_identity_provider=projects/134570912572/locations/global/workloadIdentityPools/github-actions/providers/github-oidc
+                 service_account=public-site-ci-deployer@coda-health-staging.iam.gserviceaccount.com (job must use environment: staging on refs/heads/main)
+
+==> Authenticate docker to us-east1-docker.pkg.dev (writes a credential helper entry, no secret)
++ gcloud auth configure-docker us-east1-docker.pkg.dev --quiet
+
+==> Copy gcr.io/distroless/static-debian12:nonroot into public-site-base by digest
++ docker buildx imagetools create --prefer-index=false --tag us-east1-docker.pkg.dev/coda-health-staging/public-site-base/distroless/static-debian12:nonroot-afa5c872c891 gcr.io/distroless/static-debian12@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
++ gcloud --project=coda-health-staging artifacts docker images describe us-east1-docker.pkg.dev/coda-health-staging/public-site-base/distroless/static-debian12@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab --format=value\(image_summary.digest\)
+
+==> Check the Docker Hub cache serves library/rust@sha256:606fd313a0f4...
++ docker buildx imagetools inspect us-east1-docker.pkg.dev/coda-health-staging/public-site-dockerhub/library/rust@sha256:606fd313a0f49743ee2a7bd49a0914bab7deedb12791f3a846a34a4711db7ed2
+
+==> Re-check that no repository is public
++ gcloud --project=coda-health-staging artifacts repositories get-iam-policy public-site --location=us-east1 --flatten=bindings[].members --format=value(bindings.members)
+    (refuses to continue if public-site lists allUsers or allAuthenticatedUsers)
++ gcloud --project=coda-health-staging artifacts repositories get-iam-policy public-site-dockerhub --location=us-east1 --flatten=bindings[].members --format=value(bindings.members)
+    (refuses to continue if public-site-dockerhub lists allUsers or allAuthenticatedUsers)
++ gcloud --project=coda-health-staging artifacts repositories get-iam-policy public-site-base --location=us-east1 --flatten=bindings[].members --format=value(bindings.members)
+    (refuses to continue if public-site-base lists allUsers or allAuthenticatedUsers)
+
+==> Done. Next: the deployer runs tofu init/plan/apply (book: Staging state and deployment).

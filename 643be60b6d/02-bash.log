@@ -1,0 +1,188 @@
+tests/backup_policy.tftest.hcl... [32mpass[0m[0m
+  run "foundations_create_no_backup_metrics_or_alerts"... [32mpass[0m[0m
+  run "staging_backup_policy_and_alerts"... [32mpass[0m[0m
+  run "dedicated_backup_alert_channels_override_watchdog"... [32mpass[0m[0m
+  run "production_backup_policy_and_alerts"... [32mpass[0m[0m
+  run "reject_non_us_backup_location"... [32mpass[0m[0m
+  run "reject_single_region_backup_location"... [32mpass[0m[0m
+  run "reject_non_us_database_region"... [32mpass[0m[0m
+  run "reject_invalid_backup_alert_channel"... [32mpass[0m[0m
+  run "reject_production_databases_without_backup_alert_channels"... [32mpass[0m[0m
+  run "reject_production_databases_with_backup_alerts_disabled"... [32mpass[0m[0m
+tests/isolation.tftest.hcl... [32mpass[0m[0m
+  run "foundations_need_no_database_passwords"... [32mpass[0m[0m
+  run "reject_missing_database_passwords"... [32mpass[0m[0m
+  run "reject_partial_database_passwords"... [32mpass[0m[0m
+  run "reject_blank_database_password"... [32mpass[0m[0m
+  run "reject_known_bootstrap_password"... [32mpass[0m[0m
+  run "foundations_only"... [32mpass[0m[0m
+  run "single_environment_bootstrap"... [32mpass[0m[0m
+  run "reject_duplicate_projects"... [32mpass[0m[0m
+  run "reject_prod_activation"... [32mpass[0m[0m
+  run "reject_public_proxy_invoker"... [32mpass[0m[0m
+  run "reject_group_proxy_invoker"... [32mpass[0m[0m
+  run "production_identity"... [32mpass[0m[0m
+  run "private_product_databases"... [32mpass[0m[0m
+  run "reject_unapproved_runtime"... [32mpass[0m[0m
+  run "active_staging_contract"... [32mpass[0m[0m
+  run "reject_migration_bootstrap_override"... [32mpass[0m[0m
+  run "physician_relay_routing"... [32mpass[0m[0m
+  run "physician_scale_gate_off"... [32mpass[0m[0m
+  run "physician_scale_ineffective_without_workloads"... [32mpass[0m[0m
+  run "physician_scale_requires_worker_image"... [32mpass[0m[0m
+  run "reject_runtime_override_of_scale_settings"... [32mpass[0m[0m
+  run "physician_scale_active"... [32mpass[0m[0m
+[33m╷[0m[0m
+[33m│[0m [0m[1m[33mWarning: [0m[0m[1mMultiple `override_resource` blocks for the same address[0m
+[33m│[0m [0m
+[33m│[0m [0m[0m  on tests/isolation.tftest.hcl line 20, in override_resource:
+[33m│[0m [0m  20:   target = [4mgoogle_project_service_identity.iap[0m[0m
+[33m│[0m [0m
+[33m│[0m [0m`google_project_service_identity.iap` is overridden in both global file and
+[33m│[0m [0mlocal run blocks. The declaration in global file block will be ignored.
+[33m╵[0m[0m
+  run "observability_default_off"... [32mpass[0m[0m
+  run "reject_observability_without_cluster"... [32mpass[0m[0m
+  run "reject_relay_without_cluster"... [32mpass[0m[0m
+  run "reject_unpinned_relay_image"... [32mpass[0m[0m
+  run "reject_group_observability_proxy_invoker"... [32mpass[0m[0m
+  run "reject_runtime_override_of_telemetry_env"... [32mpass[0m[0m
+  run "reject_runtime_override_of_telemetry_backend"... [32mpass[0m[0m
+  run "reject_unknown_telemetry_backend"... [32mpass[0m[0m
+  run "reject_unknown_telemetry_content"... [32mpass[0m[0m
+  run "reject_production_simulation_practices"... [32mpass[0m[0m
+  run "reject_malformed_simulation_practice"... [32mpass[0m[0m
+  run "reject_production_rehearsal_sign_in"... [32mpass[0m[0m
+  run "reject_rehearsal_sign_in_without_a_rehearsal_practice"... [32mpass[0m[0m
+  run "reject_a_group_as_rehearsal_signer"... [32mpass[0m[0m
+  run "rehearsal_is_off_by_default"... [32mpass[0m[0m
+  run "reject_runtime_override_of_rehearsal_principal"... [32mpass[0m[0m
+  run "reject_runtime_override_of_simulation_practices"... [32mpass[0m[0m
+  run "reject_production_observability_cluster"... [32mpass[0m[0m
+  run "reject_unpinned_sidecar_image"... [32mpass[0m[0m
+  run "observability_cluster_only"... [32mpass[0m[0m
+  run "observability_active"... [32mpass[0m[0m
+  run "observability_grafana_backend"... [32mpass[0m[0m
+  run "reject_schedule_without_scale_or_channels"... [32mpass[0m[0m
+  run "reject_invalid_schedule_cron"... [32mpass[0m[0m
+  run "reject_production_schedule_without_dedicated_approval"... [32mpass[0m[0m
+  run "reject_non_cloud_run_clinical_library_url"... [32mpass[0m[0m
+  run "reject_runtime_override_of_schedule_or_clinical_library_env"... [32mpass[0m[0m
+  run "reject_duet_clinical_library_env"... [32mpass[0m[0m
+  run "physician_schedule_and_clinical_library_staging"... [32mpass[0m[0m
+
+[32mSuccess![0m[0m 61 passed, 0 failed.
+tests/deployment.tftest.hcl... [32mpass[0m[0m
+  run "staging_proxy_uses_own_identity"... [32mpass[0m[0m
+  run "no_upstream_means_no_physician_entry"... [32mpass[0m[0m
+  run "observability_mounts_use_the_relay_and_own_identity"... [32mpass[0m[0m
+  run "no_relay_means_no_observability_mounts"... [32mpass[0m[0m
+  run "reject_a_relay_url_with_a_path"... [32mpass[0m[0m
+  run "reject_a_production_relay"... [32mpass[0m[0m
+  run "reject_upstream_credentials"... [32mpass[0m[0m
+  run "reject_upstream_path"... [32mpass[0m[0m
+  run "reject_upstream_query"... [32mpass[0m[0m
+  run "staging_origin_is_protected"... [32mpass[0m[0m
+  run "staging_url_is_protected_service_uri"... [32mpass[0m[0m
+  run "production_respects_origin_cache_headers"... [32mpass[0m[0m
+  run "audience_tracks_service_inputs"... [32mpass[0m[0m
+  run "reject_production_without_domains"... [32mpass[0m[0m
+  run "reject_domain_with_scheme_or_wildcard"... [32mpass[0m[0m
+  run "reject_project_id_as_project_number"... [32mpass[0m[0m
+  run "reject_zero_project_number"... [32mpass[0m[0m
+  run "reject_domain_access"... [32mpass[0m[0m
+  run "reject_non_group_principal"... [32mpass[0m[0m
+  run "reject_mutable_image"... [32mpass[0m[0m
+  run "staging_image_comes_from_private_repository"... [32mpass[0m[0m
+  run "reject_shared_coda_agents_repository"... [32mpass[0m[0m
+  run "reject_public_docker_hub_image"... [32mpass[0m[0m
+  run "reject_public_gcr_image"... [32mpass[0m[0m
+  run "reject_base_image_cache_repository"... [32mpass[0m[0m
+  run "reject_other_project_repository"... [32mpass[0m[0m
+  run "reject_lookalike_registry_host"... [32mpass[0m[0m
+  run "reject_private_repository_tag_without_digest"... [32mpass[0m[0m
+  run "reject_unknown_environment"... [32mpass[0m[0m
+  run "reject_excessive_concurrency"... [32mpass[0m[0m
+  run "reject_inverted_scaling"... [32mpass[0m[0m
+
+[32mSuccess![0m[0m 31 passed, 0 failed.
+tests/observability.tftest.hcl... [32mpass[0m[0m
+  run "native_cloud_rules_use_real_source_and_scoped_inventory"... [32mpass[0m[0m
+  run "native_cloud_rules_are_removed_when_disabled"... [32mpass[0m[0m
+  run "the_collector_stays_cluster_private"... [32mpass[0m[0m
+  run "langfuse_is_the_cloud_project"... [32mpass[0m[0m
+  run "reject_a_langfuse_host_that_is_not_an_https_origin"... [32mpass[0m[0m
+  run "reject_a_langfuse_host_with_a_path"... [32mpass[0m[0m
+  run "the_gateway_runs_without_langfuse"... [32mpass[0m[0m
+  run "ops_pipeline_deletes_content_keys"... [32mpass[0m[0m
+  run "the_gateway_overlay_keeps_the_privacy_steps"... [32mpass[0m[0m
+  run "the_gateway_is_internal_and_source_restricted"... [32mpass[0m[0m
+  run "reject_an_open_gateway_range"... [32mpass[0m[0m
+  run "reject_public_gateway_address"... [32mpass[0m[0m
+  run "reject_public_gateway_source"... [32mpass[0m[0m
+  run "reject_a_non_service_account_caller"... [32mpass[0m[0m
+  run "reject_production"... [32mpass[0m[0m
+  run "content_defaults_to_none"... [32mpass[0m[0m
+  run "gcp_integration_is_off_by_default"... [32mpass[0m[0m
+  run "gcp_integration_is_project_scoped_and_keyless"... [32mpass[0m[0m
+  run "reject_disabling_cloud_run_metrics"... [32mpass[0m[0m
+  run "reject_an_unknown_content_policy"... [32mpass[0m[0m
+  run "reject_content_without_langfuse"... [32mpass[0m[0m
+  run "content_with_langfuse_reaches_services"... [32mpass[0m[0m
+  run "secrets_come_only_from_doppler"... [32mpass[0m[0m
+  run "monitors_notify_the_alert_handle"... [32mpass[0m[0m
+  run "reject_container_memory_ratio_out_of_range"... [32mpass[0m[0m
+  run "monitors_default_off"... [32mpass[0m[0m
+  run "qualification_monitor_stays_off_when_service_monitors_are_on"... [32mpass[0m[0m
+  run "qualification_monitor_uses_readiness_thresholds"... [32mpass[0m[0m
+  run "reject_qualification_monitor_without_alert_handle"... [32mpass[0m[0m
+  run "reject_qualification_monitor_under_grafana"... [32mpass[0m[0m
+  run "chat_failure_monitor_has_its_own_gate"... [32mpass[0m[0m
+  run "reject_chat_failure_monitor_without_alert_handle"... [32mpass[0m[0m
+  run "reject_chat_failure_monitor_under_grafana"... [32mpass[0m[0m
+  run "reject_unconfirmed_alert_route"... [32mpass[0m[0m
+  run "runtime_never_gets_management_credentials"... [32mpass[0m[0m
+  run "datadog_is_the_default_backend"... [32mpass[0m[0m
+  run "grafana_backend_replaces_datadog"... [32mpass[0m[0m
+  run "grafana_stack_is_cluster_private_and_bounded"... [32mpass[0m[0m
+  run "grafana_stays_on_port_forward_by_default"... [32mpass[0m[0m
+  run "staging_proxy_serves_grafana_under_its_prefix"... [32mpass[0m[0m
+  run "staging_proxy_under_datadog_exposes_nothing"... [32mpass[0m[0m
+  run "reject_a_staging_proxy_origin_with_a_path"... [32mpass[0m[0m
+  run "reject_a_backend_service_audience"... [32mpass[0m[0m
+  run "reject_load_balancers_open_to_the_cloud_run_subnet"... [32mpass[0m[0m
+  run "reject_public_load_balancer_addresses"... [32mpass[0m[0m
+  run "reject_load_balancers_without_the_sub_paths"... [32mpass[0m[0m
+  run "grafana_synthetic_rule_is_labeled_and_operational_rules_stay_shadow"... [32mpass[0m[0m
+  run "grafana_retention_is_configurable"... [32mpass[0m[0m
+  run "grafana_cloud_monitoring_is_read_only_workload_identity"... [32mpass[0m[0m
+  run "concurrent_backends_remain_independent_and_shadow"... [32mpass[0m[0m
+  run "reject_an_unknown_backend"... [32mpass[0m[0m
+  run "reject_datadog_gcp_integration_under_grafana"... [32mpass[0m[0m
+  run "reject_datadog_monitors_under_grafana"... [32mpass[0m[0m
+  run "reject_cloud_monitoring_under_datadog"... [32mpass[0m[0m
+  run "reject_grafana_thresholds_that_differ_from_the_rules"... [32mpass[0m[0m
+  run "dependency_rules_are_opt_in_even_with_existing_monitors"... [32mpass[0m[0m
+  run "cloud_sql_monitors_have_their_own_gate"... [32mpass[0m[0m
+  run "dependency_gate_requires_an_alert_handle"... [32mpass[0m[0m
+  run "dependency_scopes_carry_this_environment"... [32mpass[0m[0m
+  run "dependency_signals_require_their_heartbeat"... [32mpass[0m[0m
+  run "redis_pressure_requires_its_heartbeat"... [32mpass[0m[0m
+  run "worker_queue_scopes_require_global_location_import"... [32mpass[0m[0m
+  run "dependency_missing_data_and_idle_contract"... [32mpass[0m[0m
+  run "reject_unscoped_dependency_series"... [32mpass[0m[0m
+  run "collector_collection_is_independent_of_monitor_activation"... [32mpass[0m[0m
+  run "collector_export_and_workload_contracts"... [32mpass[0m[0m
+  run "gcp_dependency_opt_in_stays_scoped"... [32mpass[0m[0m
+  run "reject_unknown_gcp_dependency_namespace"... [32mpass[0m[0m
+  run "autopilot_workloads_declare_admission_defaults"... [32mpass[0m[0m
+  run "dependency_collection_requires_the_integration"... [32mpass[0m[0m
+  run "new_collection_defaults_remain_off"... [32mpass[0m[0m
+  run "reject_grafana_latency_thresholds_that_differ_from_the_rules"... [32mpass[0m[0m
+  run "langfuse_monitors_watch_only_the_langfuse_exporter"... [32mpass[0m[0m
+  run "langfuse_monitors_default_off"... [32mpass[0m[0m
+  run "reject_langfuse_monitors_without_the_scrape"... [32mpass[0m[0m
+  run "reject_langfuse_monitors_without_langfuse"... [32mpass[0m[0m
+  run "reject_langfuse_monitors_under_grafana"... [32mpass[0m[0m
+
+[32mSuccess![0m[0m 77 passed, 0 failed.

@@ -1,0 +1,8 @@
+.gitmodules:3:	url = git@github.com:Coda-Health/coda-app.git
+.gitmodules:6:	url = git@github.com:Coda-Health/coda-agents.git
+.gitmodules:9:	url = git@github.com:Coda-Health/Coda-Computer-Use.git
+.gitmodules:12:	url = git@github.com:Coda-Health/coda-gym.git
+README.md:17:Agent VM and sandbox recipes live in [Coda Open-Inspect](https://github.com/Coda-Health/coda-open-inspect/tree/main/deploy).
+README.md:90:[Coda Open-Inspect](https://github.com/Coda-Health/coda-open-inspect/tree/main/packages/sandbox-images).
+crates/workspace-tools/sandbox/README.md:108:With `container.modelProxy.enable`, both send their requests to a model proxy on the host instead, and no account sign-in enters the container. The proxy is [Coda's ungate](https://github.com/Coda-Health/ungate): it keeps the Claude and ChatGPT sign-ins as an account pool, passes Claude Code's `/v1/messages` and Codex's `/v1/responses` through to them, and records usage per client key. Run it on the host listening on `hostAddress` as well as loopback (its `HOST` takes a comma-separated list, and it binds `hostAddress` once the container's interface exists), on `container.modelProxy.port`, 47821 by default. Mint a client key for the container in its dashboard, then store it:
+infra/gcp/shared-mail/README.md:60:[SMTP cutover procedure](https://github.com/Coda-Health/coda-gym/blob/main/authoring/web/infra/README.md#shared-smtp-delivery-and-cutover).
