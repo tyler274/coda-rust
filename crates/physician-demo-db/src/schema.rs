@@ -14,7 +14,19 @@ macro_rules! define_tables {
 
 define_tables!(
     Patients { WorkspaceId, DisplayName, Mrn, BirthDate, WorkspaceJson };
-    SourceRecords { Id, WorkspaceId, RecordGroup, Title, RecordedAt, Body, SourceLabel };
+    SourceRecords {
+        Id,
+        WorkspaceId,
+        RecordGroup,
+        Title,
+        RecordedAt,
+        Body,
+        SourceLabel,
+        ReadablePartsJson,
+        FieldsJson,
+        RecordStatus,
+        RawContentJson
+    };
     TodayItems { ItemId, WorkspaceId, Urgency, WaitingSince, Kind, RowJson, Done, Seen };
     PracticeVisits { Id, StartsAt, PayloadJson };
     UpdatesFeed { Id, WorkspaceId, Bucket, CreatedAt, PayloadJson };
