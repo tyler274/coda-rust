@@ -1215,6 +1215,19 @@ async fn authorize_practice_patient<T: serde::de::DeserializeOwned>(
 /// 404, so the roster's existence stays unknown outside the practice. Proof
 /// mode returns the link token and short code. Hosted mode mails them and
 /// drops them from JSON.
+fn forbid_public_demo_invite(practice_id: &str) -> Option<Response> {
+    if practice_id == crate::demo_session::DEMO_PRACTICE_ID {
+        return Some(
+            (
+                StatusCode::FORBIDDEN,
+                Json(json!({ "detail": "Public demo sessions cannot manage invitations." })),
+            )
+                .into_response(),
+        );
+    }
+    None
+}
+
 async fn invite(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Response {
     let (caller, physician_name, body) =
         match authorize_practice_patient::<InviteBody>(&auth, request, |body| {
@@ -1225,6 +1238,9 @@ async fn invite(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Respon
             Ok(ok) => ok,
             Err(response) => return *response,
         };
+    if let Some(denied) = forbid_public_demo_invite(&caller.practice_id) {
+        return denied;
+    }
     let Ok(pulls) = auth
         .patients
         .pulls(std::slice::from_ref(&body.patient_workspace_id))
@@ -1269,6 +1285,9 @@ async fn resend_invite(State(auth): State<Arc<Auth>>, request: Request<Body>) ->
             Ok(ok) => ok,
             Err(response) => return *response,
         };
+    if let Some(denied) = forbid_public_demo_invite(&caller.practice_id) {
+        return denied;
+    }
     let patient = RosterPatient {
         practice_id: caller.practice_id.clone(),
         patient_id: body.patient_workspace_id.clone(),
@@ -1291,6 +1310,9 @@ async fn cancel_invite(State(auth): State<Arc<Auth>>, request: Request<Body>) ->
             Ok(ok) => ok,
             Err(response) => return *response,
         };
+    if let Some(denied) = forbid_public_demo_invite(&caller.practice_id) {
+        return denied;
+    }
     let patient = RosterPatient {
         practice_id: caller.practice_id.clone(),
         patient_id: body.patient_workspace_id.clone(),
@@ -1324,6 +1346,9 @@ async fn invite_colleague(State(auth): State<Arc<Auth>>, request: Request<Body>)
     let Ok(caller) = resolve(&auth, token).await else {
         return StatusCode::UNAUTHORIZED.into_response();
     };
+    if let Some(denied) = forbid_public_demo_invite(&caller.practice_id) {
+        return denied;
+    }
     let caller_active = auth
         .store
         .account_by_identity(&caller)
@@ -1641,6 +1666,7 @@ pub async fn authed_router(base: axum::Router) -> axum::Router {
         mail,
         None,
         staff,
+        None,
         forbid_simulation,
     )
     .await
@@ -1655,7 +1681,9 @@ pub async fn authed_router(base: axum::Router) -> axum::Router {
 /// `memory_patients`.
 ///
 /// `rehearsal` adds `POST /auth/rehearsal` ([`crate::rehearsal::sign_in_routes`]),
-/// and only behind required sign-in: with open auth there is no session to mint.
+/// and `demo_session` adds `POST /auth/demo-session`
+/// ([`crate::demo_session::sign_in_routes`]), only behind required sign-in: with
+/// open auth there is no session to mint.
 #[expect(
     clippy::too_many_arguments,
     reason = "process router composition wiring"
@@ -1669,6 +1697,7 @@ pub(crate) async fn authed_router_configured(
     mail: crate::gmail::Delivery,
     rehearsal: Option<crate::hosting::RehearsalSignIn>,
     staff: Option<crate::hosting::StaffSetupAuth>,
+    demo_session: Option<crate::demo_session::DemoSessionConfig>,
     forbid_simulation: bool,
 ) -> axum::Router {
     let mode = if required {
@@ -1707,6 +1736,13 @@ pub(crate) async fn authed_router_configured(
                 Some(staff_auth) => {
                     base.merge(crate::staff_setup::routes(Arc::clone(&auth), staff_auth))
                 }
+                None => base,
+            };
+            let base = match demo_session {
+                Some(config) => base.merge(crate::demo_session::sign_in_routes(
+                    Arc::clone(&auth),
+                    config,
+                )),
                 None => base,
             };
             required_router(base, auth)

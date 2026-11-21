@@ -25,7 +25,7 @@ pub(super) async fn deliver(
     delivery: &Delivery,
     stop: watch::Receiver<bool>,
 ) -> Next {
-    if super::WorkerAuthority::of(&worker.model)
+    if super::WorkerAuthority::for_worker(worker)
         .check_store_source_boundary(&worker.store, &delivery.scope)
         .await
         .is_err()
@@ -547,6 +547,7 @@ mod tests {
             .unwrap(),
             skills: None,
             connected_care_health: Default::default(),
+            source_boundary: crate::SourceBoundary::Any,
         };
         let (_stop_tx, stop_rx) = watch::channel(false);
 
@@ -845,6 +846,7 @@ mod tests {
             .unwrap(),
             skills: None,
             connected_care_health: Default::default(),
+            source_boundary: crate::SourceBoundary::Any,
         });
         let app = router(Arc::clone(&worker));
 
@@ -1344,6 +1346,7 @@ mod tests {
                         source: calendar,
                     }),
                     elation: None,
+                    source_boundary: crate::SourceBoundary::Any,
                 },
             }),
             clinical_library: None,
@@ -1368,6 +1371,7 @@ mod tests {
             .unwrap(),
             skills: None,
             connected_care_health: Default::default(),
+            source_boundary: crate::SourceBoundary::Any,
         });
         let app = router(Arc::clone(&worker));
 
@@ -1591,6 +1595,7 @@ mod tests {
                     skills_dir: None,
                     calendar: None,
                     elation: None,
+                    source_boundary: crate::SourceBoundary::Any,
                 },
             }),
             clinical_library: None,
@@ -1615,6 +1620,7 @@ mod tests {
             .unwrap(),
             skills: Some(skills),
             connected_care_health: Default::default(),
+            source_boundary: crate::SourceBoundary::Any,
         };
 
         worker.poll_connected_care().await;

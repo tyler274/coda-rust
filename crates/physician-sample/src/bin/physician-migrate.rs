@@ -41,8 +41,10 @@ use physician_sample::STAGING_PRACTICE_ID;
 use physician_sample::chart_load::{
     load_synthetic_practice, load_synthetic_practice_with_understanding,
 };
+use physician_sample::demo_session::{DEMO_PRACTICE_ID, seed_demo_practice};
 use physician_sample::hosting::{
-    SimulationPractices, StagingAccount, staging_accounts, staging_physician_id, synthetic_charts,
+    SimulationPractices, StagingAccount, is_public_demo, staging_accounts, staging_physician_id,
+    synthetic_charts,
 };
 use physician_sample::rehearsal::{REHEARSAL_PRACTICE_ID, seed_rehearsal_practice};
 use sea_orm::{ConnectOptions, Database, DatabaseConnection, DbErr};
@@ -138,13 +140,19 @@ async fn main() {
             std::process::exit(1);
         }
     };
-    if let Err(error) = migrate(&url, &accounts, rehearsal).await {
+    let public_demo = is_public_demo(|key| std::env::var(key).ok());
+    if let Err(error) = migrate(&url, &accounts, rehearsal, public_demo).await {
         eprintln!("physician migrations failed: {error}");
         std::process::exit(1);
     }
 }
 
-async fn migrate(url: &str, accounts: &[StagingAccount], rehearsal: bool) -> Result<(), String> {
+async fn migrate(
+    url: &str,
+    accounts: &[StagingAccount],
+    rehearsal: bool,
+    public_demo: bool,
+) -> Result<(), String> {
     let db = migration_connection(url)
         .await
         .map_err(|error| format!("physician database connection: {error}"))?;
@@ -190,6 +198,10 @@ async fn migrate(url: &str, accounts: &[StagingAccount], rehearsal: bool) -> Res
     if rehearsal {
         seed_rehearsal_practice(&auth, &runtime, now).await?;
         println!("rehearsal practice {REHEARSAL_PRACTICE_ID} seeded");
+    }
+    if public_demo {
+        seed_demo_practice(&auth, &runtime, now).await?;
+        println!("public demo practice {DEMO_PRACTICE_ID} seeded");
     }
     Ok(())
 }

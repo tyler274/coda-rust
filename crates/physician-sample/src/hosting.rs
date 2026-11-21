@@ -7,8 +7,14 @@
 //! other combination refuse to start. The profile serves the synthetic practice
 //! behind IAP; it is not a clinical-data qualification.
 
-/// The only hosted profile this binary will start under.
+/// The hosted profile serving the staging rehearsal practice behind IAP.
 pub const STAGING_PROFILE: &str = "staging-preview";
+
+/// The hosted profile serving the zero-sign-in synthetic public demo.
+pub const PUBLIC_DEMO_PROFILE: &str = "public-demo";
+
+/// Local opt-in marker enabling [`PUBLIC_DEMO_PROFILE`] behavior outside hosted runs.
+pub const PUBLIC_DEMO_ENV: &str = "PHYSICIAN_PUBLIC_DEMO";
 
 /// Whether this process is a hosted revision.
 ///
@@ -23,7 +29,26 @@ pub fn is_staging_preview(get: impl Fn(&str) -> Option<String>) -> bool {
     get("CODA_HOSTED_PROFILE").as_deref() == Some(STAGING_PROFILE)
 }
 
-/// Refuses hosted execution unless the staging-preview profile is complete.
+/// Whether this process runs the `public-demo` profile.
+///
+/// Hosted runs require `CODA_HOSTED_PROFILE=public-demo` (and never activate in
+/// `prd`/`production`). Local runs activate via `PHYSICIAN_PUBLIC_DEMO=1` or
+/// `CODA_HOSTED_PROFILE=public-demo`.
+pub fn is_public_demo(get: impl Fn(&str) -> Option<String>) -> bool {
+    if matches!(
+        get("CODA_ENVIRONMENT").as_deref().map(str::trim),
+        Some("prd" | "production")
+    ) {
+        return false;
+    }
+    let profile = get("CODA_HOSTED_PROFILE");
+    if profile.as_deref().map(str::trim) == Some(PUBLIC_DEMO_PROFILE) {
+        return true;
+    }
+    !is_hosted(&get) && get(PUBLIC_DEMO_ENV).as_deref().map(str::trim) == Some("1")
+}
+
+/// Refuses hosted execution unless the `staging-preview` or `public-demo` profile is complete.
 pub fn validate_startup(get: impl Fn(&str) -> Option<String>) -> Result<(), String> {
     if !is_hosted(&get) {
         return Ok(());
@@ -39,8 +64,10 @@ pub fn validate_startup(get: impl Fn(&str) -> Option<String>) -> Result<(), Stri
     let environment = get("CODA_ENVIRONMENT").unwrap_or_default();
     let auth = get("PHYSICIAN_AUTH").unwrap_or_default();
     let database = get("PHYSICIAN_DATABASE_URL").unwrap_or_default();
-    if environment == "stg"
-        && is_staging_preview(&get)
+    let staging_complete = environment == "stg" && is_staging_preview(&get);
+    let public_demo_complete = matches!(environment.as_str(), "stg" | "demo")
+        && get("CODA_HOSTED_PROFILE").as_deref().map(str::trim) == Some(PUBLIC_DEMO_PROFILE);
+    if (staging_complete || public_demo_complete)
         && auth == "required"
         && !database.trim().is_empty()
     {
@@ -50,7 +77,7 @@ pub fn validate_startup(get: impl Fn(&str) -> Option<String>) -> Result<(), Stri
         return Ok(());
     }
     Err(format!(
-        "Physician hosted activation is not qualified: hosted runs require CODA_ENVIRONMENT=stg, CODA_HOSTED_PROFILE={STAGING_PROFILE}, PHYSICIAN_AUTH=required and PHYSICIAN_DATABASE_URL; production and every other profile refuse to start"
+        "Physician hosted activation is not qualified: hosted runs require (CODA_ENVIRONMENT=stg with CODA_HOSTED_PROFILE={STAGING_PROFILE}) or (CODA_ENVIRONMENT=stg|demo with CODA_HOSTED_PROFILE={PUBLIC_DEMO_PROFILE}), PHYSICIAN_AUTH=required, and PHYSICIAN_DATABASE_URL; production and every other profile refuse to start"
     ))
 }
 
@@ -291,8 +318,10 @@ pub struct SimulationPractices {
 impl SimulationPractices {
     /// Reads `PHYSICIAN_SIMULATION_PRACTICES` and optional
     /// `PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS`, refusing either outside the
-    /// staging-preview profile.
+    /// staging-preview profile, and automatically registering
+    /// [`crate::demo_session::DEMO_PRACTICE_ID`] when [`is_public_demo`] holds.
     pub fn from_env(get: impl Fn(&str) -> Option<String>) -> Result<Self, String> {
+        let public_demo = is_public_demo(&get);
         let list = get("PHYSICIAN_SIMULATION_PRACTICES").unwrap_or_default();
         let raw_failures = get(PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS_ENV).unwrap_or_default();
         if list.trim().is_empty() {
@@ -301,6 +330,9 @@ impl SimulationPractices {
                     "{PHYSICIAN_REHEARSAL_FAIL_ATTEMPTS_ENV} requires PHYSICIAN_SIMULATION_PRACTICES under CODA_HOSTED_PROFILE={STAGING_PROFILE}"
                 ));
             }
+            if public_demo {
+                return Ok(Self::of([crate::demo_session::DEMO_PRACTICE_ID]));
+            }
             return Ok(Self::default());
         }
         if get("CODA_HOSTED_PROFILE").as_deref() != Some(STAGING_PROFILE) {
@@ -308,12 +340,15 @@ impl SimulationPractices {
                 "PHYSICIAN_SIMULATION_PRACTICES is only honoured under CODA_HOSTED_PROFILE={STAGING_PROFILE}"
             ));
         }
-        let practices: std::collections::BTreeSet<String> = list
+        let mut practices: std::collections::BTreeSet<String> = list
             .split(',')
             .map(str::trim)
             .filter(|practice| !practice.is_empty())
             .map(str::to_owned)
             .collect();
+        if public_demo {
+            practices.insert(crate::demo_session::DEMO_PRACTICE_ID.to_owned());
+        }
         let rehearsed_failures = if raw_failures.trim().is_empty() {
             RehearsalFailurePolicy::default()
         } else {
@@ -2322,6 +2357,100 @@ mod tests {
             validate_startup(|name| (name == "K_SERVICE").then(|| "false".to_owned())).is_err()
         );
         assert!(validate_startup(|name| (name == "CODA_HOSTED").then(|| "0".to_owned())).is_err());
+    }
+
+    #[test]
+    fn public_demo_profile_validates_in_stg_or_demo_and_refuses_in_prd() {
+        for environment in ["stg", "demo"] {
+            assert!(
+                hosted(&[
+                    ("CODA_ENVIRONMENT", environment),
+                    ("CODA_HOSTED_PROFILE", PUBLIC_DEMO_PROFILE),
+                    ("PHYSICIAN_AUTH", "required"),
+                    ("PHYSICIAN_DATABASE_URL", "postgres://db/physician"),
+                ])
+                .is_ok(),
+                "{environment} should allow {PUBLIC_DEMO_PROFILE}"
+            );
+        }
+        for (environment, profile) in [
+            ("prd", PUBLIC_DEMO_PROFILE),
+            ("production", PUBLIC_DEMO_PROFILE),
+            ("dev", PUBLIC_DEMO_PROFILE),
+            ("", PUBLIC_DEMO_PROFILE),
+        ] {
+            assert!(
+                hosted(&[
+                    ("CODA_ENVIRONMENT", environment),
+                    ("CODA_HOSTED_PROFILE", profile),
+                    ("PHYSICIAN_AUTH", "required"),
+                    ("PHYSICIAN_DATABASE_URL", "postgres://db/physician"),
+                ])
+                .is_err(),
+                "{environment}/{profile} must refuse"
+            );
+        }
+        assert!(
+            hosted(&[
+                ("CODA_ENVIRONMENT", "stg"),
+                ("CODA_HOSTED_PROFILE", PUBLIC_DEMO_PROFILE),
+                ("PHYSICIAN_AUTH", "open"),
+                ("PHYSICIAN_DATABASE_URL", "postgres://db/physician"),
+            ])
+            .is_err()
+        );
+        assert!(
+            hosted(&[
+                ("CODA_ENVIRONMENT", "demo"),
+                ("CODA_HOSTED_PROFILE", PUBLIC_DEMO_PROFILE),
+                ("PHYSICIAN_AUTH", "required"),
+                ("CODA_STAGING_SYNTHETIC_CONTROL", "enabled"),
+                ("PHYSICIAN_SYNTHETIC_CHARTS", "/tmp/charts"),
+                ("PHYSICIAN_DATABASE_URL", "postgres://db/physician"),
+            ])
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn public_demo_registers_demo_practice_in_simulation_practices() {
+        use telemetry::genai::Origin;
+
+        let local = SimulationPractices::from_env(|key| match key {
+            "PHYSICIAN_PUBLIC_DEMO" => Some("1".to_owned()),
+            _ => None,
+        })
+        .expect("local public demo");
+        assert!(local.contains(crate::demo_session::DEMO_PRACTICE_ID));
+        assert_eq!(
+            local.origin(crate::demo_session::DEMO_PRACTICE_ID, None),
+            (Origin::Simulation, None)
+        );
+
+        let hosted_demo = SimulationPractices::from_env(|key| match key {
+            "K_SERVICE" => Some("physician".to_owned()),
+            "CODA_HOSTED_PROFILE" => Some(PUBLIC_DEMO_PROFILE.to_owned()),
+            _ => None,
+        })
+        .expect("hosted public demo");
+        assert!(hosted_demo.contains(crate::demo_session::DEMO_PRACTICE_ID));
+
+        let hosted_without_profile = SimulationPractices::from_env(|key| match key {
+            "K_SERVICE" => Some("physician".to_owned()),
+            "PHYSICIAN_PUBLIC_DEMO" => Some("1".to_owned()),
+            _ => None,
+        })
+        .expect("hosted without profile");
+        assert!(!hosted_without_profile.contains(crate::demo_session::DEMO_PRACTICE_ID));
+
+        let prd_blocked = SimulationPractices::from_env(|key| match key {
+            "CODA_ENVIRONMENT" => Some("prd".to_owned()),
+            "CODA_HOSTED_PROFILE" => Some(PUBLIC_DEMO_PROFILE.to_owned()),
+            "PHYSICIAN_PUBLIC_DEMO" => Some("1".to_owned()),
+            _ => None,
+        })
+        .expect("prd blocked");
+        assert!(!prd_blocked.contains(crate::demo_session::DEMO_PRACTICE_ID));
     }
 
     #[tokio::test]

@@ -3,12 +3,13 @@
 
 use std::collections::BTreeMap;
 use std::convert::Infallible;
+use std::net::SocketAddr;
 use std::sync::Arc;
 use std::time::Duration;
 
 use axum::Json;
-use axum::extract::{Extension, Path, State};
-use axum::http::StatusCode;
+use axum::extract::{ConnectInfo, Extension, Path, State};
+use axum::http::{HeaderMap, StatusCode};
 use axum::response::sse::{self, Sse};
 use axum::response::{IntoResponse, Response};
 use futures_util::{Stream, StreamExt, stream};
@@ -26,14 +27,20 @@ pub(crate) struct Live {
     pub(crate) bus: Arc<dyn Bus>,
     pub(crate) chat: Arc<crate::durable::DurableChat>,
     synthetic_reply: Option<String>,
+    pub(crate) demo_budget: Arc<crate::demo_session::DemoTurnBudget>,
 }
 
 impl Live {
-    pub(crate) fn new(bus: Arc<dyn Bus>, chat: Arc<crate::durable::DurableChat>) -> Arc<Self> {
+    pub(crate) fn with_demo_budget(
+        bus: Arc<dyn Bus>,
+        chat: Arc<crate::durable::DurableChat>,
+        demo_budget: Arc<crate::demo_session::DemoTurnBudget>,
+    ) -> Arc<Self> {
         Arc::new(Self {
             bus,
             chat,
             synthetic_reply: synthetic_reply_from_env(),
+            demo_budget,
         })
     }
 
@@ -256,8 +263,11 @@ pub(crate) async fn submit(
     State(live): State<Arc<Live>>,
     auth_ctx: Option<Extension<AuthContext>>,
     sample_feed: Option<Extension<Arc<crate::SampleFeed>>>,
+    headers: HeaderMap,
+    peer: Option<Extension<ConnectInfo<SocketAddr>>>,
     body: axum::body::Bytes,
 ) -> Response {
+    let peer_addr = peer.map(|Extension(ConnectInfo(addr))| addr);
     let Ok(body) = serde_json::from_slice::<CommandBody>(&body) else {
         return rejected_submit();
     };
@@ -276,10 +286,17 @@ pub(crate) async fn submit(
         return decide_recommendation_durable(live, auth_ctx, body).await;
     }
     if body.kind == "reply.revise" {
-        return revise(live, auth_ctx.map(|Extension(ctx)| ctx), body).await;
+        return revise(
+            live,
+            auth_ctx.map(|Extension(ctx)| ctx),
+            body,
+            headers,
+            peer_addr,
+        )
+        .await;
     }
     if body.kind == "work.resume" {
-        return resume_durable(live, auth_ctx, body).await;
+        return resume_durable(live, auth_ctx, body, headers, peer_addr).await;
     }
     if body.kind == "work.stop" {
         return stop_durable(live, auth_ctx, body).await;
@@ -291,7 +308,7 @@ pub(crate) async fn submit(
         return queue_withdraw_durable(live, auth_ctx, body).await;
     }
     if body.kind == "message.queue_send_now" {
-        return queue_send_now_durable(live, auth_ctx, body).await;
+        return queue_send_now_durable(live, auth_ctx, body, headers, peer_addr).await;
     }
     if body.kind == "conversation.archive" {
         return archive_durable(live, auth_ctx, body).await;
@@ -324,7 +341,7 @@ pub(crate) async fn submit(
     let Some(idempotency_key) = body.idempotency_key.filter(|key| !key.trim().is_empty()) else {
         return rejected_submit();
     };
-    accept_durable(live, auth_ctx, payload, idempotency_key).await
+    accept_durable(live, auth_ctx, payload, idempotency_key, headers, peer_addr).await
 }
 
 /// Saved conversations and reply work in one authorized patient workspace.
@@ -372,7 +389,13 @@ pub(crate) async fn past_work(
     Json(json!({ "items": wire_items })).into_response()
 }
 
-async fn revise(live: Arc<Live>, ctx: Option<AuthContext>, body: CommandBody) -> Response {
+async fn revise(
+    live: Arc<Live>,
+    ctx: Option<AuthContext>,
+    body: CommandBody,
+    headers: HeaderMap,
+    peer_addr: Option<SocketAddr>,
+) -> Response {
     let Some(ctx) = ctx else {
         return StatusCode::UNAUTHORIZED.into_response();
     };
@@ -382,7 +405,7 @@ async fn revise(live: Arc<Live>, ctx: Option<AuthContext>, body: CommandBody) ->
     let Some(payload) = body.payload else {
         return rejected_submit();
     };
-    crate::reply::accept_durable(&live, &ctx, &id, payload).await
+    crate::reply::accept_durable(&live, &ctx, &id, payload, &headers, peer_addr).await
 }
 
 /// The turns recorded for this chat.
@@ -440,6 +463,8 @@ async fn accept_durable(
     auth_ctx: Option<Extension<AuthContext>>,
     payload: SubmitPayload,
     idempotency_key: String,
+    headers: HeaderMap,
+    peer_addr: Option<SocketAddr>,
 ) -> Response {
     let chat = &live.chat;
     let Some(Extension(ctx)) = auth_ctx else {
@@ -454,6 +479,12 @@ async fn accept_durable(
     let Ok(scenario) = chat.admit_scenario(&scope.practice, payload.scenario) else {
         return rejected_scenario();
     };
+    if let Err(exhausted) = live
+        .demo_budget
+        .check_and_record(&ctx.identity, &headers, peer_addr)
+    {
+        return crate::demo_session::demo_budget_exhausted_response(exhausted);
+    }
     let delivery = payload.delivery;
     let input = local_product::runtime::Input {
         key: idempotency_key,
@@ -711,6 +742,8 @@ async fn resume_durable(
     live: Arc<Live>,
     auth_ctx: Option<Extension<AuthContext>>,
     body: CommandBody,
+    headers: HeaderMap,
+    peer_addr: Option<SocketAddr>,
 ) -> Response {
     let chat = &live.chat;
     let Some(Extension(ctx)) = auth_ctx else {
@@ -731,6 +764,12 @@ async fn resume_durable(
         workspace: payload.patient_workspace_id.clone(),
         chat: payload.chat_id.clone(),
     };
+    if let Err(exhausted) = live
+        .demo_budget
+        .check_and_record(&ctx.identity, &headers, peer_addr)
+    {
+        return crate::demo_session::demo_budget_exhausted_response(exhausted);
+    }
     let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
     match chat
         .resume(
@@ -1322,6 +1361,8 @@ async fn queue_send_now_durable(
     live: Arc<Live>,
     auth_ctx: Option<Extension<AuthContext>>,
     body: CommandBody,
+    headers: HeaderMap,
+    peer_addr: Option<SocketAddr>,
 ) -> Response {
     let Some(Extension(ctx)) = auth_ctx else {
         return StatusCode::UNAUTHORIZED.into_response();
@@ -1341,6 +1382,12 @@ async fn queue_send_now_durable(
         workspace: payload.patient_workspace_id.clone(),
         chat: payload.chat_id.clone(),
     };
+    if let Err(exhausted) = live
+        .demo_budget
+        .check_and_record(&ctx.identity, &headers, peer_addr)
+    {
+        return crate::demo_session::demo_budget_exhausted_response(exhausted);
+    }
     let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
     let result = live
         .chat

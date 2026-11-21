@@ -600,6 +600,14 @@ mod tests {
             RateLimitTier::AuthSensitive
         );
         assert_eq!(
+            RateLimitTier::classify("/auth/demo-session"),
+            RateLimitTier::AuthSensitive
+        );
+        assert_eq!(
+            RateLimitTier::classify("/physician/auth/demo-session"),
+            RateLimitTier::AuthSensitive
+        );
+        assert_eq!(
             RateLimitTier::classify("/api/auth/email/start"),
             RateLimitTier::AuthSensitive
         );
