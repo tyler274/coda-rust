@@ -51,10 +51,10 @@ telemetry_content = "full"
 # Monitor creation has a separate datadog_monitors_enabled authorization gate.
 alert_notify = "@slack-Coda_Health-engineering-observability"
 
-# Grafana under https://staging.codahealth.ai/grafana/ (README.md, "Staging
+# Grafana under https://staging.coda.dabney.moe/grafana/ (README.md, "Staging
 # proxy"). observability_web is rendered from rust-environments'
 # observability_relay output.
 staging_proxy = {
-  origin       = "https://staging.codahealth.ai"
+  origin       = "https://staging.coda.dabney.moe"
   iap_audience = "/projects/134570912572/locations/us-east1/services/public-site-staging"
 }

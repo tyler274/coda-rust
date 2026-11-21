@@ -265,7 +265,7 @@ identity's image access is explicit and limited to that repository. OpenTofu
 rejects any `image` outside `REGION-docker.pkg.dev/PROJECT_ID/public-site/` that
 is not digest-pinned (see [Checks](#checks)).
 
-**Local builds.** Engineers in `gcp-engineering@codahealth.ai` read the two
+**Local builds.** Engineers in `gcp-engineering@dabney.moe` read the two
 base-image repositories. Authenticate Docker once through gcloud's credential
 helper; no key file or password is involved:
 
@@ -311,14 +311,14 @@ no load balancer:
   an authoritative binding on this service only. There is no `allUsers` grant,
   and CI or deployer identities get no implicit website access.
 - The only `roles/iap.httpsResourceAccessor` member is
-  `group:gcp-engineering@codahealth.ai` (variable `iap_group`). This is also an
+  `group:gcp-engineering@dabney.moe` (variable `iap_group`). This is also an
   authoritative binding on this service only, not a project or domain grant.
 - `PUBLIC_SITE_IAP_AUDIENCE` comes from `project_number`, `region` and the service
   name, and it is set directly on the container. The output
   `iap_audience` exposes the same value.
 - `staging_domain` optionally maps a verified hostname to this same service.
-  `env/staging.tfvars` sets it to `staging.codahealth.ai`. Cloud Run manages TLS;
-  the Cloudflare `staging` record is a DNS-only CNAME to `ghs.googlehosted.com`, as
+  `env/staging.tfvars` sets it to `staging.coda.dabney.moe`. Cloud Run manages TLS;
+  the Cloudflare `staging.coda` record is a DNS-only CNAME to `ghs.googlehosted.com`, as
   `staging_domain_records` returns. Native IAP remains the access owner on both
   hostnames.
 
@@ -492,11 +492,11 @@ branch to deploy, which matches the provider's attribute condition. The job:
    that saved plan.
 4. Requires the latest revision to be Ready, serve 100% of traffic and report
    the new digest. It also requires anonymous requests to the run.app homepage
-   and `/health` and to `staging.codahealth.ai` to redirect to Google sign-in.
+   and `/health` and to `staging.coda.dabney.moe` to redirect to Google sign-in.
 
 CI and deployment identities have no website-access grant, so the job checks only
 that anonymous requests are sent to sign-in; an authenticated render is a manual
-check by a member of `gcp-engineering@codahealth.ai`.
+check by a member of `gcp-engineering@dabney.moe`.
 
 `env/staging.tfvars` keeps the last operator-reviewed digest; a local plan run
 from it after a CI deploy shows the image going back. Pass the current digest
@@ -526,12 +526,12 @@ After a first apply, rerun the bootstrap so CI gets its service-scoped roles. A 
 staging environment is live only when a member of the engineering group is allowed,
 a nonmember denied, an unauthenticated direct `run.app` request redirected to
 sign-in, and no protected content served from a cache, on both
-`staging.codahealth.ai` and the `run.app` URL.
+`staging.coda.dabney.moe` and the `run.app` URL.
 
 ## Production state and deployment
 
-Production serves the image staging tested, without sign-in, at `codahealth.ai`
-and `www.codahealth.ai` from `coda-health-prod`. Operator applies and DNS changes
+Production serves the image staging tested, without sign-in, at `coda.dabney.moe`
+and `www.coda.dabney.moe` from `coda-health-prod`. Operator applies and DNS changes
 require explicit operator authorization.
 
 - **State.** `backend/production.gcs.tfbackend` selects a dedicated state bucket,
@@ -542,8 +542,8 @@ require explicit operator authorization.
   project and number, and `domains`. It sets no `physician_app_url`, so production
   has no Sign in link and no `/physician/` mount. `image` and `release_sha` are
   supplied per release: the digest staging tested and its commit.
-- **DNS.** In the `codahealth.ai` Cloudflare zone, `codahealth.ai` and
-  `www.codahealth.ai` are DNS-only A records to the root's `load_balancer_ip`. The
+- **DNS.** In the `dabney.moe` Cloudflare zone, `coda.dabney.moe` and
+  `www.coda.dabney.moe` are DNS-only A records to the root's `load_balancer_ip`. The
   `_acme-challenge` CNAMEs from `certificate_dns_records` stay in place: Certificate
   Manager renews the certificate through them. The zone's other records belong to
   other owners.
@@ -582,7 +582,7 @@ repository can promote a commit staging already built and tested. It:
 4. applies the saved plan and checks the Ready revision serves the digest with all
    traffic;
 5. clears the CDN and waits for it to finish;
-6. pins `codahealth.ai` and `www.codahealth.ai` to the load balancer IP with
+6. pins `coda.dabney.moe` and `www.coda.dabney.moe` to the load balancer IP with
    `curl --resolve` and checks each: `/api/health` reports production and the SHA,
    the homepage sends production's HSTS and offers no Sign in, `/physician/today` is
    404, and plain HTTP answers 308 to the same HTTPS URL.

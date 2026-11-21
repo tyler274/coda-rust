@@ -7,4 +7,4 @@ project_id     = "coda-health-prod"
 project_number = "720954567292"
 region         = "us-east1"
 environment    = "production"
-domains        = ["codahealth.ai", "www.codahealth.ai"]
+domains        = ["coda.dabney.moe", "www.coda.dabney.moe"]

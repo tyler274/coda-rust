@@ -23,7 +23,7 @@ run "staging_proxy_uses_own_identity" {
     error_message = "SSE needs a bounded 300s service timeout."
   }
   assert {
-    condition     = google_cloud_run_v2_service.site.iap_enabled && !google_cloud_run_v2_service.site.invoker_iam_disabled && google_iap_web_cloud_run_service_iam_binding.team[0].members == toset(["group:gcp-engineering@codahealth.ai"])
+    condition     = google_cloud_run_v2_service.site.iap_enabled && !google_cloud_run_v2_service.site.invoker_iam_disabled && google_iap_web_cloud_run_service_iam_binding.team[0].members == toset(["group:gcp-engineering@dabney.moe"])
     error_message = "Proxying must not weaken the public staging IAP gate."
   }
 }
@@ -68,7 +68,7 @@ run "reject_a_production_relay" {
   command = plan
   variables {
     environment             = "production"
-    domains                 = ["codahealth.ai"]
+    domains                 = ["coda.dabney.moe"]
     physician_app_url       = null
     observability_relay_url = "https://observability-relay.example.test"
   }
@@ -109,7 +109,7 @@ run "staging_origin_is_protected" {
     error_message = "IAP invocation must be scoped to this Cloud Run service, not the project."
   }
   assert {
-    condition     = length(google_iap_web_cloud_run_service_iam_binding.team) == 1 && google_iap_web_cloud_run_service_iam_binding.team[0].role == "roles/iap.httpsResourceAccessor" && google_iap_web_cloud_run_service_iam_binding.team[0].members == toset(["group:gcp-engineering@codahealth.ai"])
+    condition     = length(google_iap_web_cloud_run_service_iam_binding.team) == 1 && google_iap_web_cloud_run_service_iam_binding.team[0].role == "roles/iap.httpsResourceAccessor" && google_iap_web_cloud_run_service_iam_binding.team[0].members == toset(["group:gcp-engineering@dabney.moe"])
     error_message = "The authoritative staging accessor binding must contain only the engineering Google Group."
   }
   assert {
@@ -167,7 +167,7 @@ run "production_respects_origin_cache_headers" {
   }
   variables {
     environment       = "production"
-    domains           = ["codahealth.ai", "www.codahealth.ai"]
+    domains           = ["coda.dabney.moe", "www.coda.dabney.moe"]
     physician_app_url = null
   }
   assert {
@@ -191,7 +191,7 @@ run "production_respects_origin_cache_headers" {
     error_message = "Production must retain its reserved IP and HTTPS/TLS frontend."
   }
   assert {
-    condition     = google_certificate_manager_certificate.site[0].managed[0].domains == tolist(["codahealth.ai", "www.codahealth.ai"]) && length(google_certificate_manager_certificate.site[0].managed[0].dns_authorizations) == 2 && google_certificate_manager_dns_authorization.site["www.codahealth.ai"].domain == "www.codahealth.ai" && google_certificate_manager_certificate_map_entry.site["codahealth.ai"].hostname == "codahealth.ai" && google_certificate_manager_certificate_map_entry.site["www.codahealth.ai"].hostname == "www.codahealth.ai"
+    condition     = google_certificate_manager_certificate.site[0].managed[0].domains == tolist(["coda.dabney.moe", "www.coda.dabney.moe"]) && length(google_certificate_manager_certificate.site[0].managed[0].dns_authorizations) == 2 && google_certificate_manager_dns_authorization.site["www.coda.dabney.moe"].domain == "www.coda.dabney.moe" && google_certificate_manager_certificate_map_entry.site["coda.dabney.moe"].hostname == "coda.dabney.moe" && google_certificate_manager_certificate_map_entry.site["www.coda.dabney.moe"].hostname == "www.coda.dabney.moe"
     error_message = "Apex and www must share one DNS-authorized managed certificate, each with its own map entry."
   }
   assert {
@@ -232,7 +232,7 @@ run "reject_domain_with_scheme_or_wildcard" {
   command = plan
   variables {
     environment = "production"
-    domains     = ["https://codahealth.ai", "*.codahealth.ai"]
+    domains     = ["https://coda.dabney.moe", "*.coda.dabney.moe"]
   }
   expect_failures = [var.domains]
 }
@@ -256,7 +256,7 @@ run "reject_zero_project_number" {
 run "reject_domain_access" {
   command = plan
   variables {
-    iap_group = "codahealth.ai"
+    iap_group = "dabney.moe"
   }
   expect_failures = [var.iap_group]
 }

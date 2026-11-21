@@ -88,7 +88,7 @@ jobs:
           SQLJS_ARCHIVE: /tmp/sqljs-wasm.zip
         run: |
           export BASE_PATH="${BASE_PATH:-/}"
-          export ORIGIN="${BASE_URL:-https://codahealth.ai}"
+          export ORIGIN="${BASE_URL:-https://coda.dabney.moe}"
           export OUT_DIR="$PWD/_site"
           bash scripts/build-pages-site.sh
       - name: Upload Pages artifact

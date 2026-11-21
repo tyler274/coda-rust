@@ -51,7 +51,7 @@ DOCKERHUB_REPOSITORY="${DOCKERHUB_REPOSITORY:-public-site-dockerhub}" # remote, 
 BASE_REPOSITORY="${BASE_REPOSITORY:-public-site-base}"           # standard, immutable tags
 SITE_KEEP_COUNT="${SITE_KEEP_COUNT:-10}"
 # Readers of the two base-image repositories (local image builds).
-BUILDER_GROUP="${BUILDER_GROUP:-gcp-engineering@codahealth.ai}"
+BUILDER_GROUP="${BUILDER_GROUP:-gcp-engineering@dabney.moe}"
 
 # Base images, by digest. Must match the FROM lines in crates/public-site/Dockerfile.
 RUST_DIGEST="sha256:606fd313a0f49743ee2a7bd49a0914bab7deedb12791f3a846a34a4711db7ed2" # rust:1.95.0-alpine3.23
@@ -70,8 +70,8 @@ WIF_OWNER_ID="${WIF_OWNER_ID:-4147075}"
 WIF_REF="${WIF_REF:-refs/heads/main}"
 WIF_ENVIRONMENT="${WIF_ENVIRONMENT:-staging}"
 
-IAP_GROUP="${IAP_GROUP:-gcp-engineering@codahealth.ai}"
-DEPLOYER_USER="${DEPLOYER_USER:-tyler@codahealth.ai}"
+IAP_GROUP="${IAP_GROUP:-gcp-engineering@dabney.moe}"
+DEPLOYER_USER="${DEPLOYER_USER:-tp@dabney.moe}"
 GRANT_HOURS="${GRANT_HOURS:-24}"
 
 APIS=(
