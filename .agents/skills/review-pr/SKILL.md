@@ -32,7 +32,7 @@ original coding conversation is useful context, not a mandatory dependency.
 
 Read [CLI execution](references/cli-execution.md) and use
 [run_review.py](scripts/run_review.py), passing every target with `--pr URL`.
-For Coda Health, pass the shared [reviewer-app.json](reviewer-app.json) with
+For Dabney.moe, pass the shared [reviewer-app.json](reviewer-app.json) with
 `--github-app-config`, using the invoking developer's own tools and Doppler access.
 Related PRs remain context unless selected as targets. Defaults are Codex
 `gpt-6-astra` at `xhigh`, or Claude `opus` with its default effort when selected.
