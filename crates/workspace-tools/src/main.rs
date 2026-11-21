@@ -12,6 +12,7 @@
 //! cargo run -p workspace-tools -- observability-drill probe --output-dir DIR
 //! ```
 
+mod discord;
 mod doppler;
 mod failure;
 mod migrations;
@@ -56,6 +57,7 @@ fn dispatch() -> Result<(), Failure> {
         .map_or((None, &[][..]), |(head, tail)| (Some(head.as_str()), tail));
     match command {
         Some("generate-duet-wire") => wire::from_args(rest),
+        Some("discord") => discord::from_args(rest),
         Some("install-doppler") => doppler::from_args(rest),
         Some("apply-migrations") => migrations::from_args(rest),
         Some("pg-docker") => pg_docker::from_args(rest),
