@@ -119,6 +119,10 @@ resource "google_cloud_run_v2_service" "mail" {
         value = "signin@codahealth.ai"
       }
       env {
+        name  = "MAIL_NOTIFICATION_FROM"
+        value = "notifications@codahealth.ai"
+      }
+      env {
         name  = "MAIL_LISTEN_ADDR"
         value = "0.0.0.0:8080"
       }
