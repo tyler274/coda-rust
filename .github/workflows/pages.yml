@@ -91,6 +91,16 @@ jobs:
           export ORIGIN="${BASE_URL:-https://coda.dabney.moe}"
           export OUT_DIR="$PWD/_site"
           bash scripts/build-pages-site.sh
+      - name: Verify the Pages-only statement and domain boundary
+        run: python3 crates/public-site/tests/test_pages_statement.py
+      - name: Include the approved personal statement on its designated domain only
+        env:
+          BASE_URL: ${{ steps.pages.outputs.base_url }}
+        run: |
+          if [[ "$BASE_URL" == "https://coda.dabney.moe" || "$BASE_URL" == "http://coda.dabney.moe" ]]; then
+            install -D -m 644 crates/public-site/pages-only/personal-clarification/index.html \
+              _site/personal-clarification/index.html
+          fi
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
