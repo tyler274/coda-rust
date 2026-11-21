@@ -85,7 +85,13 @@ pub fn ProductLockup(
                 }
                 match product.wordmark(hero) {
                     Wordmark::Sized { src, width, height } => rsx! {
-                        img { alt: product.name(), height: "{height}", src, width: "{width}" }
+                        img {
+                            alt: product.name(),
+                            class: "product-wordmark-sized",
+                            height: "{height}",
+                            src,
+                            width: "{width}",
+                        }
                     },
                     Wordmark::Styled { src, width, height } => rsx! {
                         img {

@@ -57,15 +57,59 @@ try {
   const setInput = (sel, proto, val) => evaluate(`(() => { const el = document.querySelector(${JSON.stringify(sel)}); Object.getOwnPropertyDescriptor(${proto}.prototype, 'value').set.call(el, ${JSON.stringify(val)}); el.dispatchEvent(new Event('input', {bubbles: true})); })()`);
 
   await call('Page.enable'); await call('Runtime.enable'); await call('Network.enable');
+
+  // Mobile 390x844 dark-venue + one-handed demo entry checks on exported --physician-demo site.
+  await call('Emulation.setDeviceMetricsOverride', {width: 390, height: 844, deviceScaleFactor: 1, mobile: true});
+  await call('Emulation.setEmulatedMedia', {features: [{name: 'prefers-color-scheme', value: 'dark'}]});
+  const navMobile = await call('Page.navigate', {url: origin + withBase('/')});
+  assert(!navMobile.errorText, navMobile.errorText);
+  await until(`document.readyState === 'complete' && document.body.innerText.includes('Try live demo') && getComputedStyle(document.querySelector('h1')).opacity === '1'`, 'mobile demo homepage CTA');
+  const mobileMetrics = await evaluate(`(() => {
+    const navCta = document.querySelector('.nav a.btn-sm');
+    const navLinks = document.querySelector('.nav-links');
+    const heroCta = document.querySelector('.hero-cta-row a.btn');
+    const navRect = navCta.getBoundingClientRect();
+    const linksRect = navLinks.getBoundingClientRect();
+    const heroRect = heroCta.getBoundingClientRect();
+    const links = [...document.querySelectorAll('.nav-links a')].map(a => ({text: a.textContent.trim(), href: a.getAttribute('href'), h: a.getBoundingClientRect().height}));
+    return {
+      overflow: document.documentElement.scrollWidth > window.innerWidth,
+      bg: getComputedStyle(document.body).backgroundColor,
+      ink: getComputedStyle(document.body).color,
+      navHref: navCta.getAttribute('href'),
+      navTop: navRect.top,
+      navBottom: navRect.bottom,
+      navHeight: navRect.height,
+      linksTop: linksRect.top,
+      heroHref: heroCta.getAttribute('href'),
+      heroText: heroCta.textContent.trim(),
+      heroTop: heroRect.top,
+      heroBottom: heroRect.bottom,
+      heroHeight: heroRect.height,
+      links,
+    };
+  })()`);
+  assert.equal(mobileMetrics.overflow, false, 'mobile demo homepage must not overflow horizontally');
+  assert.equal(mobileMetrics.bg, 'rgb(11, 17, 14)', 'dark mode background must be rgb(11, 17, 14)');
+  assert.equal(mobileMetrics.ink, 'rgb(242, 246, 243)', 'dark mode ink must be rgb(242, 246, 243)');
+  assert.equal(mobileMetrics.navHref, withBase('/physician/'));
+  assert(mobileMetrics.navTop >= 0 && mobileMetrics.navBottom <= 844 && mobileMetrics.navHeight >= 44 && mobileMetrics.navTop < mobileMetrics.linksTop, `mobile nav demo CTA must sit on row 1 above nav-links with >=44px target: ${JSON.stringify(mobileMetrics)}`);
+  assert.equal(mobileMetrics.heroHref, withBase('/physician/'));
+  assert(mobileMetrics.heroText.includes('Try live demo'), mobileMetrics.heroText);
+  assert(mobileMetrics.heroTop >= 0 && mobileMetrics.heroBottom <= 844 && mobileMetrics.heroHeight >= 44, `mobile hero demo CTA must fit above fold with >=44px target: ${JSON.stringify(mobileMetrics)}`);
+  assert(mobileMetrics.links.some(l => l.text === 'Book' && l.h >= 44), `mobile nav-links must show Book >=44px: ${JSON.stringify(mobileMetrics.links)}`);
+  await snap('00-mobile-dark-demo-home');
+
   await call('Emulation.setDeviceMetricsOverride', {width: 1440, height: 960, deviceScaleFactor: 1, mobile: false});
+  await call('Emulation.setEmulatedMedia', {features: [{name: 'prefers-color-scheme', value: 'light'}]});
 
   const navHome = await call('Page.navigate', {url: origin + withBase('/')});
   assert(!navHome.errorText, navHome.errorText);
   await until(`document.readyState === 'complete' && document.body.innerText.includes('Try live demo') && getComputedStyle(document.querySelector('h1')).opacity === '1'`, 'homepage CTA');
-  assert.equal(await evaluate(`document.querySelector('a.btn-secondary')?.getAttribute('href') || ''`), withBase('/physician/'));
+  assert.equal(await evaluate(`document.querySelector('.hero-cta-row a.btn')?.getAttribute('href') || ''`), withBase('/physician/'));
   await snap('01-public-home-demo-cta');
 
-  await evaluate(`document.querySelector('a.btn-secondary').click()`);
+  await evaluate(`document.querySelector('.hero-cta-row a.btn').click()`);
   await until(`location.pathname.includes('/physician') && document.body.innerText.includes('Gary Kowalczyk') && document.body.innerText.includes('Reset demo') && !document.body.innerText.includes('No visits remaining today')`, 'demo Today + Schedule');
   await snap('02-demo-today');
 

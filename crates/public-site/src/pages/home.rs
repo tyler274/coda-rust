@@ -13,13 +13,18 @@ pub fn Home() -> Element {
                 p { class: "lede rv", style: "--d:.12s", "A physician-directed AI care team." }
                 div { class: "hero-cta rv", style: "--d:.18s",
                     div { class: "hero-cta-row",
-                        a { class: "btn", href: site::contact_mailto(),
-                            "Partner with us "
-                            icons::arrow_right {}
-                        }
                         if demo {
-                            a { class: "btn btn-secondary", href: "/physician/",
+                            a { class: "btn", href: "/physician/",
                                 "Try live demo "
+                                icons::arrow_right {}
+                            }
+                            a { class: "btn btn-secondary", href: site::contact_mailto(),
+                                "Partner with us "
+                                icons::arrow_right {}
+                            }
+                        } else {
+                            a { class: "btn", href: site::contact_mailto(),
+                                "Partner with us "
                                 icons::arrow_right {}
                             }
                         }
