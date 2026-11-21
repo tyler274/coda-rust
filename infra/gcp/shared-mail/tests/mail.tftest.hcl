@@ -21,6 +21,10 @@ run "production_delivery_boundary" {
     condition     = google_cloud_run_v2_service.mail[0].template[0].vpc_access[0].egress == "ALL_TRAFFIC" && google_compute_router_nat.mail.nat_ip_allocate_option == "MANUAL_ONLY" && length(google_compute_router_nat.mail.nat_ips) == 1
     error_message = "SMTP must leave through the single Workspace-allowlisted static address."
   }
+  assert {
+    condition     = { for env in google_cloud_run_v2_service.mail[0].template[0].containers[0].env : env.name => env.value if startswith(env.name, "MAIL_") && endswith(env.name, "FROM") } == { MAIL_FROM = "signin@codahealth.ai", MAIL_NOTIFICATION_FROM = "notifications@codahealth.ai" }
+    error_message = "Production mail must send from codahealth.ai, not the binary's default senders."
+  }
 }
 
 run "reject_staging_image" {

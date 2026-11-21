@@ -63,6 +63,10 @@ resource "google_cloud_run_v2_service" "mail_relay" {
         value = "signin@dabney.moe"
       }
       env {
+        name  = "MAIL_NOTIFICATION_FROM"
+        value = "notifications@dabney.moe"
+      }
+      env {
         name  = "MAIL_LISTEN_ADDR"
         value = "0.0.0.0:8080"
       }

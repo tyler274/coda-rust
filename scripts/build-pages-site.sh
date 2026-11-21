@@ -6,7 +6,7 @@ cd "$root"
 
 out_dir="${OUT_DIR:-$root/_site}"
 base_path="${BASE_PATH:-/}"
-origin="${ORIGIN:-https://dabney.moe}"
+origin="${ORIGIN:-https://coda.dabney.moe}"
 book_url="/book/"
 if [ "$base_path" != "/" ]; then
   book_url="${base_path%/}/book/"

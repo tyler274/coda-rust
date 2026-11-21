@@ -694,8 +694,8 @@ Cloud Run service, a runtime identity with no application-data roles, and a
 service-scoped invoker binding. `enable_physician_smtp_relay` must already be enabled:
 the adapter uses that existing network, subnet and NAT address, preserving the
 Workspace IP allowlist. It needs no Doppler token. Runtime settings are
-`MAIL_FROM=signin@dabney.moe`, `MAIL_NOTIFICATION_FROM=notifications@dabney.moe`
-(the binary default), and `MAIL_LISTEN_ADDR=0.0.0.0:8080`.
+`MAIL_FROM=signin@dabney.moe`, `MAIL_NOTIFICATION_FROM=notifications@dabney.moe`,
+and `MAIL_LISTEN_ADDR=0.0.0.0:8080`.
 
 For Gym staging, the named caller is
 `serviceAccount:workspace-web-staging@coda-gym.iam.gserviceaccount.com`.
