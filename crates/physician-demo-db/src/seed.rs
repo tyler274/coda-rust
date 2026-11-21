@@ -32,12 +32,13 @@ use physician_wire::source_setup::{
 };
 use physician_wire::today_updates::{SeenStandingWire, UpdateItemKindWire, UpdateItemWire};
 use physician_wire::{
-    AutomationRun, ChatSnapshot, CitationDestination, CitationTargetKind, ClinicalSegment,
-    ConnectedSource, ConnectionStatusWire, FollowUp, MedicalRecordNumber, MemoryDocumentWire,
-    MessageSegment, PatientIdentity, PatientLinkWire, PatientMemoryResponse, PatientSynopsis,
-    PatientWorkspaceResponse, RecordGroup, SexOrGender, SnapshotFeedback, SourceConnectionState,
-    SourcePresentation, SourcePreviewContent, SourceSnapshot, WorkPurpose,
-    WorkspaceMedicationRecommendation, WorkspaceMembership, WorkspacePlanItem, WorkspaceReply,
+    AutomationRun, ChatSnapshot, CitationDestination, CitationTargetKind, CitedFieldWire,
+    CitedTextPartWire, ClinicalSegment, ConnectedSource, ConnectionStatusWire, FollowUp,
+    MedicalRecordNumber, MemoryDocumentWire, MessageSegment, PatientIdentity, PatientLinkWire,
+    PatientMemoryResponse, PatientSynopsis, PatientWorkspaceResponse, RecordGroup, SexOrGender,
+    SnapshotFeedback, SourceConnectionState, SourcePresentation, SourcePreviewContent,
+    SourceSnapshot, WorkPurpose, WorkspaceMedicationRecommendation, WorkspaceMembership,
+    WorkspacePlanItem, WorkspaceReply,
 };
 use serde_json::{Value, json};
 use std::collections::{BTreeMap, BTreeSet};
@@ -60,7 +61,18 @@ pub enum SeedError {
     Json(#[from] serde_json::Error),
 }
 
-type ExtractedRecord = (String, &'static str, String, String, String);
+struct ExtractedRecord {
+    id: String,
+    group: &'static str,
+    title: String,
+    recorded_at: String,
+    body: String,
+    source_label: String,
+    readable_parts: Vec<CitedTextPartWire>,
+    fields: Vec<CitedFieldWire>,
+    record_status: String,
+    raw_content: Option<String>,
+}
 
 /// Seeds `store` from `units_dir`, prioritizing pilot units (`unit-2013`, `unit-2188`, `unit-2797`).
 pub fn seed_from_units_dir(
@@ -125,18 +137,22 @@ fn insert_patient_unit(
     );
     let display_name = format!("{given} {family}");
     let records = extract_source_records(ws_id, patient);
-    for (id, group, title, dt, body) in &records {
+    for rec in &records {
         store.driver().insert_row(
             SourceRecords::Table,
             SourceRecords::COLS,
             [
-                id.as_str().into(),
+                rec.id.as_str().into(),
                 ws_id.into(),
-                (*group).into(),
-                title.as_str().into(),
-                dt.as_str().into(),
-                body.as_str().into(),
-                "Practice EHR".into(),
+                rec.group.into(),
+                rec.title.as_str().into(),
+                rec.recorded_at.as_str().into(),
+                rec.body.as_str().into(),
+                rec.source_label.as_str().into(),
+                serde_json::to_string(&rec.readable_parts)?.as_str().into(),
+                serde_json::to_string(&rec.fields)?.as_str().into(),
+                rec.record_status.as_str().into(),
+                rec.raw_content.as_deref().unwrap_or("").into(),
             ],
         )?;
     }
@@ -276,115 +292,500 @@ fn date_prefix(raw: Option<&str>, fb: &str) -> String {
         .into()
 }
 
+fn pretty_raw(val: &Value) -> Option<String> {
+    serde_json::to_string_pretty(val).ok()
+}
+
+fn split_paragraph_parts(first_label: Option<String>, body: &str) -> Vec<CitedTextPartWire> {
+    let mut parts = Vec::new();
+    for para in body.split("\n\n").map(str::trim).filter(|p| !p.is_empty()) {
+        let label = if parts.is_empty() {
+            first_label.clone()
+        } else {
+            None
+        };
+        parts.push(CitedTextPartWire {
+            label,
+            text: para.to_owned(),
+        });
+    }
+    if parts.is_empty() && !body.trim().is_empty() {
+        parts.push(CitedTextPartWire {
+            label: first_label,
+            text: body.trim().to_owned(),
+        });
+    }
+    parts
+}
+
+fn format_lab_range(range: Option<&Value>) -> (Option<String>, Option<f64>, Option<f64>) {
+    let Some(val) = range else {
+        return (None, None, None);
+    };
+    if let Some(s) = val.as_str().map(str::trim).filter(|s| !s.is_empty()) {
+        return (Some(s.to_owned()), None, None);
+    }
+    let Some(obj) = val.as_object() else {
+        return (None, None, None);
+    };
+    let low = obj.get("low").and_then(Value::as_f64);
+    let high = obj.get("high").and_then(Value::as_f64);
+    let formatted = match (low, high) {
+        (Some(lo), Some(hi)) => Some(format!("{lo}–{hi}")),
+        (None, Some(hi)) => Some(format!("<= {hi}")),
+        (Some(lo), None) => Some(format!(">= {lo}")),
+        (None, None) => None,
+    };
+    (formatted, low, high)
+}
+
+fn format_json_scalar(val: Option<&Value>) -> Option<(String, Option<f64>)> {
+    let v = val?;
+    match v {
+        Value::Null => None,
+        Value::Number(n) => Some((n.to_string(), n.as_f64())),
+        Value::Bool(b) => Some((b.to_string(), None)),
+        Value::String(s) => {
+            let trimmed = s.trim();
+            (!trimmed.is_empty()).then(|| (trimmed.to_owned(), trimmed.parse::<f64>().ok()))
+        }
+        _ => None,
+    }
+}
+
+fn lab_abnormality_status(
+    numeric: Option<f64>,
+    low: Option<f64>,
+    high: Option<f64>,
+    text_val: Option<&str>,
+) -> Option<String> {
+    if let Some(n) = numeric {
+        if let Some(hi) = high
+            && n > hi
+        {
+            return Some("High".into());
+        }
+        if let Some(lo) = low
+            && n < lo
+        {
+            return Some("Low".into());
+        }
+        if low.is_some() || high.is_some() {
+            return Some("Normal".into());
+        }
+    }
+    let raw = text_val?.trim();
+    if raw.eq_ignore_ascii_case("elevated")
+        || raw.eq_ignore_ascii_case("high")
+        || raw.eq_ignore_ascii_case("low")
+        || raw.eq_ignore_ascii_case("positive")
+        || raw.eq_ignore_ascii_case("reactive")
+    {
+        return Some(raw.to_owned());
+    }
+    None
+}
+
+fn extract_document_record(
+    ws_id: &str,
+    ei: usize,
+    di: usize,
+    dt: &str,
+    d: &Value,
+) -> Option<ExtractedRecord> {
+    let body = jstr(d, "body").trim();
+    if body.is_empty() {
+        return None;
+    }
+    let kind = jnonempty(d, "type", "Clinical Note");
+    let title = jnonempty(d, "title", kind);
+    let grp = if kind.to_lowercase().contains("outside") {
+        "documents"
+    } else {
+        "notes"
+    };
+    let source_label = if grp == "documents" {
+        "Outside Records"
+    } else {
+        "Practice EHR"
+    };
+    let author = jstr(d, "author").trim();
+    let header = match (!kind.eq_ignore_ascii_case(title), !author.is_empty()) {
+        (true, true) => Some(format!("{kind} · {author}")),
+        (true, false) => Some(kind.to_owned()),
+        (false, true) => Some(author.to_owned()),
+        (false, false) => None,
+    };
+    Some(ExtractedRecord {
+        id: format!("{ws_id}-doc-{ei}-{di}"),
+        group: grp,
+        title: title.into(),
+        recorded_at: date_prefix(d.get("date").and_then(Value::as_str), dt),
+        body: body.into(),
+        source_label: source_label.into(),
+        readable_parts: split_paragraph_parts(header, body),
+        fields: Vec::new(),
+        record_status: "final".into(),
+        raw_content: pretty_raw(d),
+    })
+}
+
+fn extract_condition_record(
+    ws_id: &str,
+    ei: usize,
+    dt: &str,
+    reason: &str,
+    conds: &[Value],
+) -> Option<ExtractedRecord> {
+    if conds.is_empty() {
+        return None;
+    }
+    let mut lines = Vec::with_capacity(conds.len());
+    let mut fields = Vec::with_capacity(conds.len());
+    for (ci, c) in conds.iter().enumerate() {
+        let label = jstr(c, "label");
+        let action = jnonempty(c, "action", "recorded");
+        let note = jstr(c, "note").trim();
+        let icd10 = jstr(c, "icd10").trim();
+        let onset = jstr(c, "onset").trim();
+        lines.push(if note.is_empty() {
+            format!("{label} ({action})")
+        } else {
+            format!("{label} ({action}) — {note}")
+        });
+        let value = if !note.is_empty() {
+            note.to_owned()
+        } else if !onset.is_empty() {
+            format!("Onset {onset}")
+        } else {
+            action.to_owned()
+        };
+        let status = if icd10.is_empty() {
+            action.to_owned()
+        } else {
+            format!("{action} · ICD-10 {icd10}")
+        };
+        fields.push(CitedFieldWire {
+            key: format!("cond-{ei}-{ci}"),
+            name: label.to_owned(),
+            value,
+            unit: None,
+            range: None,
+            status: Some(status),
+        });
+    }
+    let body = lines.join("\n");
+    let onset = conds
+        .first()
+        .and_then(|c| c.get("onset").and_then(Value::as_str))
+        .unwrap_or(dt);
+    Some(ExtractedRecord {
+        id: format!("{ws_id}-prob-{ei}"),
+        group: "problems",
+        title: format!("Diagnoses — {reason}"),
+        recorded_at: onset.into(),
+        readable_parts: vec![CitedTextPartWire {
+            label: Some("Diagnoses".into()),
+            text: body.clone(),
+        }],
+        body,
+        source_label: "Practice EHR".into(),
+        fields,
+        record_status: "final".into(),
+        raw_content: pretty_raw(&json!({ "conditions": conds })),
+    })
+}
+
+fn extract_medication_record(
+    ws_id: &str,
+    ei: usize,
+    dt: &str,
+    ev_id: &str,
+    meds: &[Value],
+) -> Option<ExtractedRecord> {
+    if meds.is_empty() {
+        return None;
+    }
+    let mut lines = Vec::with_capacity(meds.len());
+    let mut fields = Vec::with_capacity(meds.len());
+    for (mi, m) in meds.iter().enumerate() {
+        let drug = jnonempty(m, "drug", jstr(m, "drug_text"));
+        let action = jnonempty(m, "action", "active");
+        let sig = jstr(m, "sig").trim();
+        let med_reason = jstr(m, "reason").trim();
+        let line = if med_reason.is_empty() {
+            format!("{drug} [{action}]: {sig}")
+        } else {
+            format!("{drug} [{action}]: {sig} ({med_reason})")
+        };
+        lines.push(line);
+        let dose_summary = m.get("dose").and_then(Value::as_object).and_then(|d| {
+            let val = format_json_scalar(d.get("value")).map(|(s, _)| s)?;
+            let unit = d.get("unit").and_then(Value::as_str).unwrap_or("").trim();
+            Some(if unit.is_empty() {
+                val
+            } else {
+                format!("{val} {unit}")
+            })
+        });
+        let value = if !sig.is_empty() {
+            sig.to_owned()
+        } else {
+            dose_summary.unwrap_or_else(|| action.to_owned())
+        };
+        let status = if med_reason.is_empty() {
+            action.to_owned()
+        } else {
+            format!("{action} · {med_reason}")
+        };
+        fields.push(CitedFieldWire {
+            key: format!("med-{ei}-{mi}"),
+            name: drug.to_owned(),
+            value,
+            unit: None,
+            range: None,
+            status: Some(status),
+        });
+    }
+    let body = lines.join("\n");
+    Some(ExtractedRecord {
+        id: format!("{ws_id}-med-{ei}"),
+        group: "medications",
+        title: format!("Medications ({ev_id})"),
+        recorded_at: dt.into(),
+        readable_parts: vec![CitedTextPartWire {
+            label: Some("Medication list".into()),
+            text: body.clone(),
+        }],
+        body,
+        source_label: "Practice EHR".into(),
+        fields,
+        record_status: "final".into(),
+        raw_content: pretty_raw(&json!({ "medications": meds })),
+    })
+}
+
+fn extract_lab_record(
+    ws_id: &str,
+    ei: usize,
+    li: usize,
+    dt: &str,
+    lab: &Value,
+) -> Option<ExtractedRecord> {
+    let results = jarr(lab, "results");
+    if results.is_empty() {
+        return None;
+    }
+    let mut lines = Vec::with_capacity(results.len());
+    let mut fields = Vec::with_capacity(results.len());
+    for (ri, r) in results.iter().enumerate() {
+        let test = jnonempty(r, "test", "Lab test");
+        let text_val = r.get("text").and_then(Value::as_str).map(str::trim);
+        let (display_val, numeric_val) = format_json_scalar(r.get("value"))
+            .or_else(|| {
+                text_val
+                    .filter(|s| !s.is_empty())
+                    .map(|s| (s.to_owned(), None))
+            })
+            .unwrap_or_else(|| ("Not supplied".into(), None));
+        let unit = r
+            .get("unit")
+            .and_then(Value::as_str)
+            .map(str::trim)
+            .filter(|s| !s.is_empty())
+            .map(str::to_owned);
+        let (range_str, low, high) = format_lab_range(r.get("range"));
+        let status = lab_abnormality_status(numeric_val, low, high, text_val);
+        let line = match &unit {
+            Some(u) => format!("{test}: {display_val} {u}"),
+            None => format!("{test}: {display_val}"),
+        };
+        lines.push(line);
+        fields.push(CitedFieldWire {
+            key: format!("lab-{ei}-{li}-{ri}"),
+            name: test.to_owned(),
+            value: display_val,
+            unit,
+            range: range_str,
+            status,
+        });
+    }
+    let body = lines.join("\n");
+    Some(ExtractedRecord {
+        id: format!("{ws_id}-lab-{ei}-{li}"),
+        group: "results",
+        title: jnonempty(lab, "panel", "Laboratory results").into(),
+        recorded_at: date_prefix(lab.get("collected").and_then(Value::as_str), dt),
+        readable_parts: vec![CitedTextPartWire {
+            label: Some("Results".into()),
+            text: body.clone(),
+        }],
+        body,
+        source_label: "Practice EHR".into(),
+        fields,
+        record_status: "final".into(),
+        raw_content: pretty_raw(lab),
+    })
+}
+
+fn extract_report_record(
+    ws_id: &str,
+    ei: usize,
+    ri: usize,
+    dt: &str,
+    r: &Value,
+) -> Option<ExtractedRecord> {
+    let (text, conc) = (jstr(r, "text").trim(), jstr(r, "conclusion").trim());
+    if text.is_empty() && conc.is_empty() {
+        return None;
+    }
+    let mut readable_parts = Vec::new();
+    let body = if conc.is_empty() {
+        readable_parts.push(CitedTextPartWire {
+            label: Some("Findings".into()),
+            text: text.into(),
+        });
+        text.into()
+    } else if text.is_empty() {
+        readable_parts.push(CitedTextPartWire {
+            label: Some("Conclusion".into()),
+            text: conc.into(),
+        });
+        format!("Conclusion: {conc}")
+    } else {
+        readable_parts.push(CitedTextPartWire {
+            label: Some("Findings".into()),
+            text: text.into(),
+        });
+        readable_parts.push(CitedTextPartWire {
+            label: Some("Conclusion".into()),
+            text: conc.into(),
+        });
+        format!("{text}\n\nConclusion: {conc}")
+    };
+    Some(ExtractedRecord {
+        id: format!("{ws_id}-rep-{ei}-{ri}"),
+        group: "results",
+        title: jnonempty(r, "study", "Diagnostic report").into(),
+        recorded_at: date_prefix(r.get("performed").and_then(Value::as_str), dt),
+        body,
+        source_label: "Practice EHR".into(),
+        readable_parts,
+        fields: Vec::new(),
+        record_status: "final".into(),
+        raw_content: pretty_raw(r),
+    })
+}
+
+fn extract_vitals_record(
+    ws_id: &str,
+    ei: usize,
+    dt: &str,
+    reason: &str,
+    v: &Value,
+) -> Option<ExtractedRecord> {
+    let bp = v.get("bp").and_then(Value::as_array)?;
+    if bp.len() < 2 {
+        return None;
+    }
+    let sys = bp[0].as_i64();
+    let dia = bp[1].as_i64();
+    let mut fields = vec![CitedFieldWire {
+        key: format!("vit-{ei}-bp"),
+        name: "Blood pressure".into(),
+        value: format!("{}/{}", bp[0], bp[1]),
+        unit: Some("mmHg".into()),
+        range: Some("< 120/80".into()),
+        status: match (sys, dia) {
+            (Some(s), Some(d)) if s >= 130 || d >= 80 => Some("Elevated".into()),
+            (Some(_), Some(_)) => Some("Normal".into()),
+            _ => None,
+        },
+    }];
+    let mut summary_parts = vec![format!("BP {}/{} mmHg", bp[0], bp[1])];
+    if let Some(hr) = v.get("hr").and_then(Value::as_i64) {
+        summary_parts.push(format!("HR {hr} bpm"));
+        fields.push(CitedFieldWire {
+            key: format!("vit-{ei}-hr"),
+            name: "Heart rate".into(),
+            value: hr.to_string(),
+            unit: Some("bpm".into()),
+            range: Some("60–100".into()),
+            status: Some(
+                if !(60..=100).contains(&hr) {
+                    if hr > 100 { "High" } else { "Low" }
+                } else {
+                    "Normal"
+                }
+                .into(),
+            ),
+        });
+    }
+    for (json_key, field_key, label, unit) in [
+        ("temp_c", "temp", "Temperature", "°C"),
+        ("spo2", "spo2", "Oxygen saturation", "%"),
+        ("rr", "rr", "Respiratory rate", "/min"),
+        ("weight_kg", "wt", "Weight", "kg"),
+        ("height_cm", "ht", "Height", "cm"),
+    ] {
+        if let Some((val, _)) = format_json_scalar(v.get(json_key)) {
+            summary_parts.push(format!("{label} {val} {unit}"));
+            fields.push(CitedFieldWire {
+                key: format!("vit-{ei}-{field_key}"),
+                name: label.into(),
+                value: val,
+                unit: Some(unit.into()),
+                range: None,
+                status: None,
+            });
+        }
+    }
+    let body = summary_parts.join(", ");
+    Some(ExtractedRecord {
+        id: format!("{ws_id}-vit-{ei}"),
+        group: "vitals",
+        title: format!("Vitals ({reason})"),
+        recorded_at: dt.into(),
+        readable_parts: vec![CitedTextPartWire {
+            label: Some("Vital signs".into()),
+            text: body.clone(),
+        }],
+        body,
+        source_label: "Practice EHR".into(),
+        fields,
+        record_status: "final".into(),
+        raw_content: pretty_raw(v),
+    })
+}
+
 fn extract_source_records(ws_id: &str, patient: &Value) -> Vec<ExtractedRecord> {
     let mut out = Vec::new();
     for (ei, ev) in jarr(patient, "events").iter().enumerate() {
         let dt = date_prefix(ev.get("start").and_then(Value::as_str), "2024-01-01");
         let reason = jnonempty(ev, "reason", "Clinical contact");
         for (di, d) in jarr(ev, "documents").iter().enumerate() {
-            let body = jstr(d, "body").trim();
-            if body.is_empty() {
-                continue;
+            if let Some(rec) = extract_document_record(ws_id, ei, di, &dt, d) {
+                out.push(rec);
             }
-            let kind = jnonempty(d, "type", "Clinical Note");
-            let grp = if kind.to_lowercase().contains("outside") {
-                "documents"
-            } else {
-                "notes"
-            };
-            out.push((
-                format!("{ws_id}-doc-{ei}-{di}"),
-                grp,
-                jnonempty(d, "title", kind).into(),
-                date_prefix(d.get("date").and_then(Value::as_str), &dt),
-                body.into(),
-            ));
         }
-        let conds = jarr(ev, "conditions");
-        if !conds.is_empty() {
-            let body = conds
-                .iter()
-                .map(|c| {
-                    format!(
-                        "{} ({})",
-                        jstr(c, "label"),
-                        jnonempty(c, "action", "recorded")
-                    )
-                })
-                .collect::<Vec<_>>()
-                .join("\n");
-            let onset = conds
-                .first()
-                .and_then(|c| c.get("onset").and_then(Value::as_str))
-                .unwrap_or(&dt);
-            out.push((
-                format!("{ws_id}-prob-{ei}"),
-                "problems",
-                format!("Diagnoses — {reason}"),
-                onset.into(),
-                body,
-            ));
+        if let Some(rec) = extract_condition_record(ws_id, ei, &dt, reason, jarr(ev, "conditions"))
+        {
+            out.push(rec);
         }
-        let meds = jarr(ev, "medications");
-        if !meds.is_empty() {
-            let body = meds
-                .iter()
-                .map(|m| {
-                    format!(
-                        "{} [{}]: {} ({})",
-                        jnonempty(m, "drug", jstr(m, "drug_text")),
-                        jstr(m, "action"),
-                        jstr(m, "sig"),
-                        jstr(m, "reason")
-                    )
-                })
-                .collect::<Vec<_>>()
-                .join("\n");
-            out.push((
-                format!("{ws_id}-med-{ei}"),
-                "medications",
-                format!("Medications ({})", jstr(ev, "id")),
-                dt.clone(),
-                body,
-            ));
+        if let Some(rec) =
+            extract_medication_record(ws_id, ei, &dt, jstr(ev, "id"), jarr(ev, "medications"))
+        {
+            out.push(rec);
         }
         for (li, lab) in jarr(ev, "labs").iter().enumerate() {
-            let body = jarr(lab, "results")
-                .iter()
-                .map(|r| {
-                    format!(
-                        "{}: {}",
-                        jstr(r, "test"),
-                        r.get("value").unwrap_or(&Value::Null)
-                    )
-                })
-                .collect::<Vec<_>>()
-                .join(", ");
-            out.push((
-                format!("{ws_id}-lab-{ei}-{li}"),
-                "results",
-                jnonempty(lab, "panel", "Laboratory results").into(),
-                date_prefix(lab.get("collected").and_then(Value::as_str), &dt),
-                body,
-            ));
+            if let Some(rec) = extract_lab_record(ws_id, ei, li, &dt, lab) {
+                out.push(rec);
+            }
         }
         for (ri, r) in jarr(ev, "reports").iter().enumerate() {
-            let (text, conc) = (jstr(r, "text").trim(), jstr(r, "conclusion").trim());
-            if text.is_empty() && conc.is_empty() {
-                continue;
+            if let Some(rec) = extract_report_record(ws_id, ei, ri, &dt, r) {
+                out.push(rec);
             }
-            let body = if conc.is_empty() {
-                text.into()
-            } else {
-                format!("{text}\n\nConclusion: {conc}")
-            };
-            out.push((
-                format!("{ws_id}-rep-{ei}-{ri}"),
-                "results",
-                jnonempty(r, "study", "Diagnostic report").into(),
-                date_prefix(r.get("performed").and_then(Value::as_str), &dt),
-                body,
-            ));
         }
         let vit = ev.get("vitals").unwrap_or(&Value::Null);
         let v_obj = match vit {
@@ -393,21 +794,9 @@ fn extract_source_records(ws_id: &str, patient: &Value) -> Vec<ExtractedRecord> 
             _ => None,
         };
         if let Some(v) = v_obj
-            && let Some(bp) = v.get("bp").and_then(Value::as_array)
-            && bp.len() >= 2
+            && let Some(rec) = extract_vitals_record(ws_id, ei, &dt, reason, v)
         {
-            let hr = v
-                .get("hr")
-                .and_then(Value::as_i64)
-                .map(|n| format!(", HR {n}"))
-                .unwrap_or_default();
-            out.push((
-                format!("{ws_id}-vit-{ei}"),
-                "vitals",
-                format!("Vitals ({reason})"),
-                dt,
-                format!("BP {}/{}{}", bp[0], bp[1], hr),
-            ));
+            out.push(rec);
         }
     }
     out
@@ -417,22 +806,22 @@ fn build_synopsis(ws_id: &str, summary: &str, records: &[ExtractedRecord]) -> Ve
     let mut segs = vec![ClinicalSegment::Text {
         text: format!("{} ", summary.trim()),
     }];
-    for (id, _, title, dt, body) in records.iter().rev().take(2) {
+    for rec in records.iter().rev().take(2) {
         segs.push(ClinicalSegment::Citation {
             state: "resolved".into(),
-            display_label: Some(title.clone()),
+            display_label: Some(rec.title.clone()),
             source: Some("ehr".into()),
             source_id: Some(ws_id.into()),
-            handle: Some(id.clone()),
+            handle: Some(rec.id.clone()),
             source_presentation: Some(SourcePresentation {
                 content: Some(SourcePreviewContent {
-                    text: body.clone(),
-                    as_of: dt.clone(),
+                    text: rec.body.clone(),
+                    as_of: rec.recorded_at.clone(),
                 }),
             }),
             destination: Some(CitationDestination {
                 kind: "source_native".into(),
-                source_label: Some("Practice EHR".into()),
+                source_label: Some(rec.source_label.clone()),
                 uri: None,
             }),
         });
@@ -500,15 +889,18 @@ fn build_recommendations(ws_id: &str, idx: usize) -> Vec<WorkspaceMedicationReco
 }
 
 fn to_demo_record(ws_id: &str, rec: &ExtractedRecord) -> DemoSourceRecord {
-    let (id, group, title, dt, body) = rec;
     DemoSourceRecord {
-        id: id.clone(),
+        id: rec.id.clone(),
         workspace_id: ws_id.to_owned(),
-        group: (*group).to_owned(),
-        title: title.clone(),
-        recorded_at: dt.clone(),
-        body: body.clone(),
-        source_label: "Practice EHR".to_owned(),
+        group: rec.group.to_owned(),
+        title: rec.title.clone(),
+        recorded_at: rec.recorded_at.clone(),
+        body: rec.body.clone(),
+        source_label: rec.source_label.clone(),
+        readable_parts: rec.readable_parts.clone(),
+        fields: rec.fields.clone(),
+        record_status: rec.record_status.clone(),
+        raw_content: rec.raw_content.clone(),
     }
 }
 
@@ -1043,24 +1435,51 @@ fn seed_visit_briefing(
 ) -> Result<(), SeedError> {
     let mut sources = BTreeMap::new();
     let mut cite_seg = Vec::new();
+    let mut basis_segments = vec![MessageSegment::Text {
+        text: "Prepared from saved browser SQLite chart records".into(),
+    }];
     if let Some(rec) = records.last() {
         let key = format!("b1-{ws_id}");
         let cited = build_cited_source(&key, 1, rec);
+        let label = format!("{} ({})", rec.title, rec.recorded_at);
+        let target = if cited.quote.is_empty() {
+            CitationTargetKind::WholeRecord
+        } else {
+            CitationTargetKind::Passage
+        };
+        let quote = cited.quote.clone();
         cite_seg.push(MessageSegment::Text {
             text: format!("{} ", summary.trim()),
         });
         cite_seg.push(MessageSegment::Citation {
             source_key: key.clone(),
             number: 1,
-            label: format!("{} ({})", rec.title, rec.recorded_at),
-            quote: cited.quote.clone(),
-            target: CitationTargetKind::WholeRecord,
+            label: label.clone(),
+            quote: quote.clone(),
+            target,
+        });
+        basis_segments.push(MessageSegment::Text {
+            text: format!(": {label} "),
+        });
+        basis_segments.push(MessageSegment::Citation {
+            source_key: key.clone(),
+            number: 1,
+            label,
+            quote,
+            target,
+        });
+        basis_segments.push(MessageSegment::Text {
+            text: format!(
+                ". Currency & scope: reflects synthetic EHR fixtures documented through {}.",
+                rec.recorded_at
+            ),
         });
         sources.insert(key, cited);
     } else {
         cite_seg.push(MessageSegment::Text {
             text: summary.trim().to_owned(),
         });
+        basis_segments.push(MessageSegment::Text { text: ".".into() });
     }
     let briefing = VisitBriefingWire {
         briefing_id: briefing_id.to_owned(),
@@ -1099,9 +1518,7 @@ fn seed_visit_briefing(
             ],
             uncertainty: None,
         }],
-        basis_segments: vec![MessageSegment::Text {
-            text: "Prepared from saved browser SQLite records.".into(),
-        }],
+        basis_segments,
         sources,
     };
     store.driver().insert_row(

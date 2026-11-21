@@ -7,14 +7,16 @@ use crate::schema::{
 };
 use physician_wire::{
     AnswerState, AttemptId, ChatSnapshot, ChatSnapshotResponse, CitationOrigin, CitationTargetKind,
-    CitedSourceWire, DateRole, Exchange, ExchangeSteps, Found, HealthCapabilities, HealthResponse,
-    HistoryWorkOutcome, MessageKey, MessageSegment, PatientSearchResponse, PatientSearchRow,
-    PatientWorkspaceResponse, PatientWorkspaceSummary, PatientWorkspacesResponse, PhysicianDraft,
-    PhysicianMessage, PracticeAccountSummary, PracticeDayResponse, PracticeSourceState,
-    RecentConversation, RecentConversationsResponse, RecordAbout, RecordDate, RecordGroup,
-    RecordRead, ReplyDraftWire, ResponseFeedback, ResponseId, SaveFeedback, SavedAt, SearchPage,
-    SnapshotFeedback, SourceVersion, Step, StepState, TodayConnection, TodayListResponse, TodayRow,
-    UpdatesResponse, WhoamiResponse, WorkItemId, WorkspaceChat, WorkspacePlanItem,
+    CitedFieldWire, CitedSourceWire, CitedTextPartWire, DateRole, Exchange, ExchangeSteps, Found,
+    HealthCapabilities, HealthResponse, HistoryWorkOutcome, MemoryEditTarget, MessageKey,
+    MessageSegment, PatientSearchResponse, PatientSearchRow, PatientWorkspaceResponse,
+    PatientWorkspaceSummary, PatientWorkspacesResponse, PhysicianDraft, PhysicianMessage,
+    PracticeAccountSummary, PracticeDayResponse, PracticeSourceState, RecentConversation,
+    RecentConversationsResponse, RecordAbout, RecordDate, RecordGroup, RecordRead, ReplyDraftWire,
+    ResponseFeedback, ResponseId, SaveFeedback, SavePhysicianMemoryEditRequest, SavedAt,
+    SearchPage, SnapshotFeedback, SourceVersion, Step, StepState, TodayConnection,
+    TodayListResponse, TodayRow, UpdatesResponse, WhoamiResponse, WorkItemId, WorkResumeTarget,
+    WorkspaceChat, WorkspacePlanItem,
     today_updates::{EarlierDayUpdatesWire, ItemCitationWire, SeenStandingWire, UpdateItemWire},
 };
 use sea_query::{Cond, Expr, ExprTrait, OnConflict, Order, Query, SelectStatement};
@@ -48,6 +50,14 @@ pub struct DemoSourceRecord {
     pub body: String,
     /// Source label shown in inspection provenance.
     pub source_label: String,
+    /// Structured readable sections in reading order.
+    pub readable_parts: Vec<CitedTextPartWire>,
+    /// Structured clinical fields (labs, vitals, medications, conditions).
+    pub fields: Vec<CitedFieldWire>,
+    /// Clinical verification status (e.g. `"final"`).
+    pub record_status: String,
+    /// Pretty-printed raw fixture JSON for Technical details disclosure.
+    pub raw_content: Option<String>,
 }
 
 /// Result of attempting an optimistic-concurrency composer draft save.
@@ -57,6 +67,14 @@ pub enum DraftSaveOutcome {
     Saved(PhysicianDraft),
     /// A newer revision already existed; nothing was overwritten.
     Conflict(PhysicianDraft),
+}
+
+struct ChatWorkMatch {
+    chat_id: String,
+    title: String,
+    created_at: String,
+    snap: ChatSnapshot,
+    exchange_idx: usize,
 }
 
 /// SQLite-backed store powering the interactive browser demo and native host tests.
@@ -603,7 +621,8 @@ impl DemoStore {
             "reply.close" => self.handle_reply_close(payload).await,
             "reply.revise" => self.handle_reply_revise(payload).await,
             "concern.done" | "work.done" => self.handle_item_done(payload),
-            "work.stop" | "work.resume" => Ok(serde_json::json!({ "ok": true })),
+            "work.stop" => self.handle_work_stop(payload).await,
+            "work.resume" => self.handle_work_resume(payload).await,
             _ => Err(DbError::InvalidCommand(format!(
                 "unsupported demo command `{kind}`"
             ))),
@@ -640,9 +659,10 @@ impl DemoStore {
             return Ok(serde_json::json!({ "ok": true, "chat_id": chat_id }));
         }
         self.append_chart_exchange(&ws_id, &chat_id, &mut snap, is_new, (key, question, ts))
+            .await
     }
 
-    fn append_chart_exchange(
+    async fn append_chart_exchange(
         &self,
         ws_id: &str,
         chat_id: &str,
@@ -653,24 +673,17 @@ impl DemoStore {
         let (key, question, ts) = msg;
         let terms = extract_search_terms(&question);
         let matched = self.search_patient_records(ws_id, &terms)?;
+        let saved_memory_note = self
+            .record_memory_note_if_requested(ws_id, &question)
+            .await?;
         let seq = next_seq();
-        let reads: Vec<_> = matched
-            .iter()
-            .map(|r| {
-                (
-                    r.id.clone(),
-                    parse_record_group(&r.group),
-                    r.title.clone(),
-                    r.recorded_at.clone(),
-                )
-            })
-            .collect();
+        let reads = chart_reads_from(&matched);
         let (answer_text, segments, basis, cited_map) =
             synthesize_chart_answer_with_citations(&question, &matched, "c");
         for (k, v) in cited_map {
             snap.sources.insert(k, v);
         }
-        snap.transcript.push(build_exchange_with_segments(
+        let mut ex = build_exchange_with_segments(
             "demo",
             &seq.to_string(),
             (key, question.clone(), ts),
@@ -678,7 +691,9 @@ impl DemoStore {
             &reads,
             false,
             (answer_text, segments, basis),
-        ));
+        );
+        append_follow_up_and_memory_steps(&mut ex.steps, !is_new, saved_memory_note);
+        snap.transcript.push(ex);
         let title = if is_new {
             truncate_title(&question)
         } else {
@@ -687,6 +702,259 @@ impl DemoStore {
         };
         self.upsert_chat_snapshot(ws_id, chat_id, &title, DEMO_NOW, snap)?;
         Ok(serde_json::json!({ "ok": true, "chat_id": chat_id }))
+    }
+
+    async fn record_memory_note_if_requested(
+        &self,
+        ws_id: &str,
+        question: &str,
+    ) -> Result<bool, DbError> {
+        if !question_requests_memory_note(question) {
+            return Ok(false);
+        }
+        let current = self.patient_memory(ws_id).await?;
+        let prior = current
+            .direction
+            .as_ref()
+            .map(|doc| doc.markdown.trim())
+            .filter(|text| !text.is_empty())
+            .unwrap_or("");
+        let note = question.trim();
+        let updated = if prior.is_empty() {
+            note.to_owned()
+        } else if prior.contains(note) {
+            prior.to_owned()
+        } else {
+            format!("{prior}\n\n- {note}")
+        };
+        self.save_patient_memory_edit(
+            ws_id,
+            &SavePhysicianMemoryEditRequest {
+                target: MemoryEditTarget::Direction,
+                text: updated,
+                idempotency_key: format!("mem-note-{}", next_seq()),
+            },
+        )
+        .await?;
+        Ok(true)
+    }
+
+    async fn handle_work_stop(
+        &self,
+        payload: &serde_json::Value,
+    ) -> Result<serde_json::Value, DbError> {
+        let ws_id = required_str(payload, "patient_workspace_id")?;
+        let chat_id = required_str(payload, "chat_id")?;
+        let requested_work = payload
+            .get("work_item_id")
+            .and_then(serde_json::Value::as_str)
+            .filter(|s| !s.trim().is_empty());
+        let Some((title, created_at, mut snap)) = self.load_chat_row(&ws_id, &chat_id)? else {
+            return Ok(command_rejected("Coda couldn’t stop that work."));
+        };
+        let target_idx = match requested_work {
+            Some(work_id) => snap
+                .transcript
+                .iter()
+                .position(|ex| ex.work_item_id.0 == work_id),
+            None => snap
+                .transcript
+                .iter()
+                .rposition(|ex| matches!(ex.answer, AnswerState::Working { .. }))
+                .or_else(|| snap.transcript.len().checked_sub(1)),
+        };
+        let Some(idx) = target_idx else {
+            return Ok(command_rejected("Coda couldn’t stop that work."));
+        };
+        let ex = &mut snap.transcript[idx];
+        if !matches!(
+            ex.answer,
+            AnswerState::Working { .. } | AnswerState::Finished { .. }
+        ) {
+            return Ok(command_rejected("Coda couldn’t stop that work."));
+        }
+        mark_running_steps_stopped(&mut ex.steps);
+        let run_id = format!("run-stopped-{}", next_seq());
+        let work_item_id = ex.work_item_id.clone();
+        ex.answer = AnswerState::Stopped {
+            resume: Some(WorkResumeTarget {
+                work_item_id: work_item_id.clone(),
+                expected_run_id: run_id.clone(),
+            }),
+        };
+        let returned_messages: Vec<String> = snap.queued.drain(..).map(|q| q.text).collect();
+        self.upsert_chat_snapshot(&ws_id, &chat_id, &title, &created_at, &snap)?;
+        Ok(serde_json::json!({
+            "outcome": "accepted",
+            "patient_workspace_id": ws_id,
+            "chat_id": chat_id,
+            "work_item_id": work_item_id,
+            "expected_run_id": run_id,
+            "returned_messages": returned_messages,
+        }))
+    }
+
+    async fn handle_work_resume(
+        &self,
+        payload: &serde_json::Value,
+    ) -> Result<serde_json::Value, DbError> {
+        let ws_id = required_str(payload, "patient_workspace_id")?;
+        let work_item_id = required_str(payload, "work_item_id")?;
+        let expected_run_id = payload
+            .get("expected_run_id")
+            .and_then(serde_json::Value::as_str);
+        let requested_chat = payload
+            .get("chat_id")
+            .and_then(serde_json::Value::as_str)
+            .filter(|s| !s.trim().is_empty());
+        let Some(ChatWorkMatch {
+            chat_id,
+            title,
+            created_at,
+            mut snap,
+            exchange_idx: idx,
+        }) = self.find_chat_work_exchange(&ws_id, requested_chat, &work_item_id)?
+        else {
+            return Ok(command_rejected("Coda couldn’t resume that work."));
+        };
+        let resume_target = match &snap.transcript[idx].answer {
+            AnswerState::Stopped { resume } => resume.as_ref(),
+            AnswerState::CutOff { try_again } | AnswerState::CouldntFinish { try_again } => {
+                try_again.as_ref()
+            }
+            AnswerState::Working { .. } | AnswerState::Finished { .. } => None,
+        };
+        let Some(target) = resume_target else {
+            return Ok(command_rejected("Coda couldn’t resume that work."));
+        };
+        if let Some(expected) = expected_run_id
+            && target.expected_run_id != expected
+        {
+            return Ok(command_rejected("Coda couldn’t resume that work."));
+        }
+        let question = snap.transcript[idx]
+            .messages
+            .iter()
+            .map(|m| m.text.as_str())
+            .collect::<Vec<_>>()
+            .join("\n");
+        let terms = extract_search_terms(&question);
+        let matched = self.search_patient_records(&ws_id, &terms)?;
+        let saved_memory_note = self
+            .record_memory_note_if_requested(&ws_id, &question)
+            .await?;
+        let reads = chart_reads_from(&matched);
+        let (answer_text, segments, basis, cited_map) =
+            synthesize_chart_answer_with_citations(&question, &matched, "res");
+        for (k, v) in cited_map {
+            snap.sources.insert(k, v);
+        }
+        let seq = next_seq();
+        let finished_at = SavedAt(
+            snap.transcript[idx]
+                .messages
+                .last()
+                .map_or(DEMO_BASE_UNIX, |m| m.saved_at.0)
+                + 2,
+        );
+        let rebuilt = build_exchange_with_segments(
+            "res",
+            &seq.to_string(),
+            (String::new(), question, finished_at.0 - 2),
+            &terms.join(" "),
+            &reads,
+            false,
+            (answer_text, segments, basis),
+        );
+        let ex = &mut snap.transcript[idx];
+        ex.steps = rebuilt.steps;
+        append_follow_up_and_memory_steps(&mut ex.steps, idx > 0, saved_memory_note);
+        ex.answer = rebuilt.answer;
+        self.upsert_chat_snapshot(&ws_id, &chat_id, &title, &created_at, &snap)?;
+        Ok(serde_json::json!({
+            "outcome": "accepted",
+            "patient_workspace_id": ws_id,
+            "chat_id": chat_id,
+            "work_item_id": work_item_id,
+        }))
+    }
+
+    fn load_chat_row(
+        &self,
+        ws_id: &str,
+        chat_id: &str,
+    ) -> Result<Option<(String, String, ChatSnapshot)>, DbError> {
+        let rows = self.driver.select_where(
+            Chats::Table,
+            &[Chats::Title, Chats::CreatedAt, Chats::SnapshotJson],
+            &[(Chats::WorkspaceId, ws_id), (Chats::ChatId, chat_id)],
+        )?;
+        let Some(row) = rows.first() else {
+            return Ok(None);
+        };
+        Ok(Some((
+            row.get_str("title")?,
+            row.get_str("created_at")?,
+            serde_json::from_str(&row.get_str("snapshot_json")?)?,
+        )))
+    }
+
+    fn find_chat_work_exchange(
+        &self,
+        ws_id: &str,
+        chat_id: Option<&str>,
+        work_item_id: &str,
+    ) -> Result<Option<ChatWorkMatch>, DbError> {
+        if let Some(cid) = chat_id {
+            let Some((title, created_at, snap)) = self.load_chat_row(ws_id, cid)? else {
+                return Ok(None);
+            };
+            let Some(exchange_idx) = snap
+                .transcript
+                .iter()
+                .position(|ex| ex.work_item_id.0 == work_item_id)
+            else {
+                return Ok(None);
+            };
+            return Ok(Some(ChatWorkMatch {
+                chat_id: cid.to_owned(),
+                title,
+                created_at,
+                snap,
+                exchange_idx,
+            }));
+        }
+        let q = Query::select()
+            .columns([
+                Chats::ChatId,
+                Chats::Title,
+                Chats::CreatedAt,
+                Chats::SnapshotJson,
+            ])
+            .from(Chats::Table)
+            .and_where(Expr::col(Chats::WorkspaceId).eq(ws_id))
+            .order_by(Chats::CreatedAt, Order::Desc)
+            .to_owned();
+        for row in self.driver.select(&q)? {
+            let cid = row.get_str("chat_id")?;
+            let title = row.get_str("title")?;
+            let created_at = row.get_str("created_at")?;
+            let snap: ChatSnapshot = serde_json::from_str(&row.get_str("snapshot_json")?)?;
+            if let Some(exchange_idx) = snap
+                .transcript
+                .iter()
+                .position(|ex| ex.work_item_id.0 == work_item_id)
+            {
+                return Ok(Some(ChatWorkMatch {
+                    chat_id: cid,
+                    title,
+                    created_at,
+                    snap,
+                    exchange_idx,
+                }));
+            }
+        }
+        Ok(None)
     }
 
     async fn handle_queue_edit(
@@ -768,7 +1036,8 @@ impl DemoStore {
             &mut snap,
             is_new,
             (queued.id.0, queued.text, queued.saved_at.0),
-        )?;
+        )
+        .await?;
         Ok(serde_json::json!({
             "outcome": "accepted",
             "patient_workspace_id": ws_id,
@@ -860,7 +1129,8 @@ impl DemoStore {
         ws_id: &str,
         terms: &[String],
     ) -> Result<Vec<DemoSourceRecord>, DbError> {
-        for active in [terms, &[][..]] {
+        let expanded = expand_search_terms(terms);
+        for active in [expanded.as_slice(), &[][..]] {
             let mut stmt = Query::select();
             stmt.columns(SourceRecords::COLS.iter().copied())
                 .from(SourceRecords::Table)
@@ -872,6 +1142,7 @@ impl DemoStore {
                     any_term = any_term
                         .add(Expr::col(SourceRecords::Title).like(&pat))
                         .add(Expr::col(SourceRecords::Body).like(&pat))
+                        .add(Expr::col(SourceRecords::FieldsJson).like(&pat))
                         .add(Expr::col(SourceRecords::RecordGroup).like(&pat));
                 }
                 stmt.cond_where(any_term);
@@ -1117,6 +1388,90 @@ impl DemoStore {
 
 pub(crate) type ChartRead = (String, RecordGroup, String, String);
 
+pub(crate) fn chart_reads_from(records: &[DemoSourceRecord]) -> Vec<ChartRead> {
+    records
+        .iter()
+        .map(|r| {
+            (
+                r.id.clone(),
+                parse_record_group(&r.group),
+                r.title.clone(),
+                r.recorded_at.clone(),
+            )
+        })
+        .collect()
+}
+
+fn command_rejected(message: &str) -> serde_json::Value {
+    serde_json::json!({
+        "outcome": "rejected",
+        "message": message,
+    })
+}
+
+fn question_requests_memory_note(question: &str) -> bool {
+    let lower = question.to_ascii_lowercase();
+    [
+        "remember",
+        "memory note",
+        "note to chart",
+        "save a note",
+        "save note",
+        "add note",
+        "keep in mind",
+        "document that",
+    ]
+    .iter()
+    .any(|cue| lower.contains(cue))
+}
+
+fn append_follow_up_and_memory_steps(
+    steps: &mut ExchangeSteps,
+    read_conversation: bool,
+    saved_memory_note: bool,
+) {
+    let ExchangeSteps::Read(items) = steps else {
+        return;
+    };
+    if read_conversation {
+        items.push(Step::ReadConversation {
+            state: StepState::Returned { result: () },
+        });
+    }
+    if saved_memory_note {
+        items.push(Step::SavedMemoryNote {
+            state: StepState::Returned { result: () },
+        });
+    }
+}
+
+fn mark_running_steps_stopped(steps: &mut ExchangeSteps) {
+    let ExchangeSteps::Read(items) = steps else {
+        return;
+    };
+    for step in items {
+        match step {
+            Step::SearchedChart { state, .. } => {
+                if matches!(state, StepState::Running) {
+                    *state = StepState::Stopped;
+                }
+            }
+            Step::ReadRecords { state, .. } => {
+                if matches!(state, StepState::Running) {
+                    *state = StepState::Stopped;
+                }
+            }
+            Step::ReadConversation { state }
+            | Step::SavedMemoryNote { state }
+            | Step::EditedMemory { state } => {
+                if matches!(state, StepState::Running) {
+                    *state = StepState::Stopped;
+                }
+            }
+        }
+    }
+}
+
 pub(crate) fn build_exchange_with_segments(
     prefix: &str,
     suffix: &str,
@@ -1190,17 +1545,146 @@ pub(crate) fn build_exchange_with_segments(
     }
 }
 
+/// Picks the most relevant verbatim contiguous slice (`&body[start..end]`) of `body`
+/// for `terms`, falling back to the first clinically substantive line/sentence.
+/// Never crosses newlines so every returned quote matches both `rec.body` and any
+/// matching single-section `CitedTextPartWire` verbatim.
+pub(crate) fn extract_verbatim_passage(body: &str, terms: &[String]) -> String {
+    let candidates = collect_passage_candidates(body);
+    let Some(best) = candidates
+        .iter()
+        .enumerate()
+        .max_by_key(|(idx, slice)| {
+            let hits = term_match_score(slice, terms);
+            let substantive = usize::from(slice.chars().count() >= 12);
+            (hits, substantive, usize::MAX - *idx)
+        })
+        .map(|(_, slice)| *slice)
+    else {
+        return first_trimmed_line(body).to_owned();
+    };
+    best.to_owned()
+}
+
+fn collect_passage_candidates(body: &str) -> Vec<&str> {
+    let mut out = Vec::new();
+    let mut line_start = 0usize;
+    for (idx, ch) in body.char_indices() {
+        if ch == '\n' {
+            push_line_sentences(&body[line_start..idx], &mut out);
+            line_start = idx + 1;
+        }
+    }
+    if line_start < body.len() {
+        push_line_sentences(&body[line_start..], &mut out);
+    }
+    out
+}
+
+fn push_line_sentences<'a>(raw_line: &'a str, out: &mut Vec<&'a str>) {
+    let mut trimmed = raw_line.trim();
+    if trimmed.is_empty() {
+        return;
+    }
+    if let Some(rest) = trimmed.strip_prefix("Conclusion:") {
+        let after = rest.trim_start();
+        if !after.is_empty() {
+            trimmed = after;
+        }
+    }
+    let mut seg_start = 0usize;
+    let mut prev_punct = false;
+    for (idx, ch) in trimmed.char_indices() {
+        if prev_punct && ch.is_whitespace() {
+            push_bounded_span(trimmed[seg_start..idx].trim(), out);
+            seg_start = idx + ch.len_utf8();
+        }
+        prev_punct = matches!(ch, '.' | '!' | '?');
+    }
+    if seg_start < trimmed.len() {
+        push_bounded_span(trimmed[seg_start..].trim(), out);
+    }
+}
+
+fn push_bounded_span<'a>(span: &'a str, out: &mut Vec<&'a str>) {
+    if span.is_empty() {
+        return;
+    }
+    const MAX_PASSAGE_BYTES: usize = 220;
+    if span.len() <= MAX_PASSAGE_BYTES {
+        out.push(span);
+        return;
+    }
+    let mut cut = 0usize;
+    for (idx, ch) in span.char_indices() {
+        if idx > MAX_PASSAGE_BYTES {
+            break;
+        }
+        if ch.is_whitespace() && idx >= 40 {
+            cut = idx;
+        }
+    }
+    let clipped = if cut > 0 {
+        span[..cut].trim_end()
+    } else {
+        let end = span
+            .char_indices()
+            .take_while(|(idx, _)| *idx <= MAX_PASSAGE_BYTES)
+            .last()
+            .map(|(idx, ch)| idx + ch.len_utf8())
+            .unwrap_or(span.len());
+        span[..end].trim_end()
+    };
+    if !clipped.is_empty() {
+        out.push(clipped);
+    }
+}
+
+fn first_trimmed_line(body: &str) -> &str {
+    body.lines()
+        .map(str::trim)
+        .find(|line| !line.is_empty())
+        .unwrap_or("")
+}
+
+fn term_match_score(candidate: &str, terms: &[String]) -> usize {
+    if terms.is_empty() {
+        return 0;
+    }
+    let lower = candidate.to_ascii_lowercase();
+    terms
+        .iter()
+        .filter(|term| {
+            let t = term.as_str();
+            lower.contains(t)
+                || match t {
+                    "ldl" => lower.contains("low density lipoprotein"),
+                    "hdl" => lower.contains("high density lipoprotein"),
+                    "a1c" => lower.contains("hemoglobin a1c"),
+                    "blood" | "pressure" | "bp" => lower.contains("bp "),
+                    "heart" | "hr" => lower.contains("hr "),
+                    "egfr" => lower.contains("glomerular filtration"),
+                    _ => false,
+                }
+        })
+        .count()
+}
+
 pub(crate) fn build_cited_source(
     key: &str,
     number: usize,
     rec: &DemoSourceRecord,
 ) -> CitedSourceWire {
-    let quote: String = rec
-        .body
-        .split_whitespace()
-        .take(24)
-        .collect::<Vec<_>>()
-        .join(" ");
+    let quote = extract_verbatim_passage(&rec.body, &[]);
+    build_cited_source_with_quote(key, number, rec, quote)
+}
+
+pub(crate) fn build_cited_source_with_quote(
+    key: &str,
+    number: usize,
+    rec: &DemoSourceRecord,
+    quote: String,
+) -> CitedSourceWire {
     CitedSourceWire {
         source_key: key.to_owned(),
         number,
@@ -1208,24 +1692,19 @@ pub(crate) fn build_cited_source(
         title: rec.title.clone(),
         record_type: Some(rec.group.clone()),
         recorded_at: Some(rec.recorded_at.clone()),
-        record_status: Some("final".into()),
+        record_status: (!rec.record_status.trim().is_empty()).then(|| rec.record_status.clone()),
         quote,
         body: rec.body.clone(),
-        readable_parts: Vec::new(),
-        fields: Vec::new(),
-        raw_content: None,
+        readable_parts: rec.readable_parts.clone(),
+        fields: rec.fields.clone(),
+        raw_content: rec.raw_content.clone(),
         external_url: None,
         origin: CitationOrigin::SourceRecord,
     }
 }
 
 pub(crate) fn build_item_citation(rec: &DemoSourceRecord) -> ItemCitationWire {
-    let excerpt: String = rec
-        .body
-        .split_whitespace()
-        .take(24)
-        .collect::<Vec<_>>()
-        .join(" ");
+    let excerpt = extract_verbatim_passage(&rec.body, &[]);
     ItemCitationWire {
         candidate_id: rec.id.clone(),
         revision: "1".into(),
@@ -1260,6 +1739,7 @@ pub(crate) fn synthesize_chart_answer_with_citations(
             BTreeMap::new(),
         );
     }
+    let terms = extract_search_terms(question);
     let mut text = format!(
         "From SQLite chart search across {} record(s):\n\n",
         records.len()
@@ -1271,41 +1751,73 @@ pub(crate) fn synthesize_chart_answer_with_citations(
         ),
     }];
     let mut sources = BTreeMap::new();
+    let mut basis_cites = Vec::new();
     for (idx, rec) in records.iter().enumerate() {
         let number = idx + 1;
         let key = format!("{key_prefix}{}-{}", next_seq(), number);
-        let excerpt: String = rec
-            .body
-            .split_whitespace()
-            .take(30)
-            .collect::<Vec<_>>()
-            .join(" ");
-        text.push_str(&format!(
-            "[{number}] {} ({}) — {}...\n\n",
-            rec.title, rec.recorded_at, excerpt
-        ));
+        let quote = extract_verbatim_passage(&rec.body, &terms);
+        let target = if quote.is_empty() {
+            CitationTargetKind::WholeRecord
+        } else {
+            CitationTargetKind::Passage
+        };
+        let label = format!("{} ({})", rec.title, rec.recorded_at);
+        text.push_str(&format!("[{number}] {label} — \"{quote}\"\n\n"));
         if idx > 0 {
             segments.push(MessageSegment::Text { text: " ".into() });
         }
         segments.push(MessageSegment::Text {
-            text: format!("{} ({}): {excerpt}", rec.title, rec.recorded_at),
+            text: format!("{label}: \"{quote}\""),
         });
-        let cited = build_cited_source(&key, number, rec);
+        let cited = build_cited_source_with_quote(&key, number, rec, quote.clone());
         segments.push(MessageSegment::Citation {
             source_key: key.clone(),
             number,
-            label: format!("{} ({})", rec.title, rec.recorded_at),
+            label: label.clone(),
             quote: cited.quote.clone(),
-            target: CitationTargetKind::WholeRecord,
+            target,
         });
+        basis_cites.push((
+            key.clone(),
+            number,
+            label,
+            cited.quote.clone(),
+            target,
+            rec.recorded_at.as_str(),
+        ));
         sources.insert(key, cited);
     }
-    let basis = vec![MessageSegment::Text {
+    let latest_date = basis_cites
+        .iter()
+        .map(|(_, _, _, _, _, dt)| *dt)
+        .max()
+        .unwrap_or(DEMO_DATE);
+    let mut basis = vec![MessageSegment::Text {
         text: format!(
-            "Grounded directly in {} chart record(s) saved in the browser SQLite database.",
+            "Grounded directly in {} SQLite chart record(s) (",
             records.len()
         ),
     }];
+    for (idx, (key, number, label, quote, target, _)) in basis_cites.into_iter().enumerate() {
+        if idx > 0 {
+            basis.push(MessageSegment::Text { text: ", ".into() });
+        }
+        basis.push(MessageSegment::Text {
+            text: format!("{label} "),
+        });
+        basis.push(MessageSegment::Citation {
+            source_key: key,
+            number,
+            label,
+            quote,
+            target,
+        });
+    }
+    basis.push(MessageSegment::Text {
+        text: format!(
+            "). Currency & scope: reflects synthetic EHR fixtures documented through {latest_date}; excludes unrecorded clinical changes or portal messages outside the seeded chart."
+        ),
+    });
     (text.trim_end().into(), segments, basis, sources)
 }
 
@@ -1382,6 +1894,21 @@ pub(crate) fn required_str(
 }
 
 fn decode_source_record(row: &SqlRow) -> Result<DemoSourceRecord, DbError> {
+    let readable_parts_json = row.get_str("readable_parts_json")?;
+    let readable_parts = if readable_parts_json.trim().is_empty() {
+        Vec::new()
+    } else {
+        serde_json::from_str(&readable_parts_json)?
+    };
+    let fields_json = row.get_str("fields_json")?;
+    let fields = if fields_json.trim().is_empty() {
+        Vec::new()
+    } else {
+        serde_json::from_str(&fields_json)?
+    };
+    let record_status = row.get_str("record_status")?;
+    let raw_str = row.get_str("raw_content_json")?;
+    let raw_content = (!raw_str.trim().is_empty()).then_some(raw_str);
     Ok(DemoSourceRecord {
         id: row.get_str("id")?,
         workspace_id: row.get_str("workspace_id")?,
@@ -1390,6 +1917,10 @@ fn decode_source_record(row: &SqlRow) -> Result<DemoSourceRecord, DbError> {
         recorded_at: row.get_str("recorded_at")?,
         body: row.get_str("body")?,
         source_label: row.get_str("source_label")?,
+        readable_parts,
+        fields,
+        record_status,
+        raw_content,
     })
 }
 
@@ -1400,10 +1931,13 @@ fn extract_search_terms(question: &str) -> Vec<String> {
         "been", "how", "any", "all", "can", "show", "tell", "check", "latest", "recent", "patient",
         "chart", "please",
     ];
+    const SHORT_CLINICAL: &[&str] = &["bp", "hr", "rr"];
     let mut terms = Vec::new();
     for raw in question.split(|c: char| !c.is_alphanumeric() && c != '-') {
         let w = raw.trim().to_ascii_lowercase();
-        if w.len() >= 3 && !STOP.contains(&w.as_str()) && !terms.contains(&w) {
+        let keep =
+            (w.len() >= 3 && !STOP.contains(&w.as_str())) || SHORT_CLINICAL.contains(&w.as_str());
+        if keep && !terms.contains(&w) {
             terms.push(w);
         }
         if terms.len() >= 6 {
@@ -1411,6 +1945,26 @@ fn extract_search_terms(question: &str) -> Vec<String> {
         }
     }
     terms
+}
+
+fn expand_search_terms(terms: &[String]) -> Vec<String> {
+    let mut out = terms.to_vec();
+    for t in terms {
+        let alias = match t.as_str() {
+            "ldl" => Some("low density lipoprotein"),
+            "hdl" => Some("high density lipoprotein"),
+            "a1c" => Some("hemoglobin a1c"),
+            "egfr" => Some("glomerular filtration"),
+            "pressure" => Some("blood pressure"),
+            _ => None,
+        };
+        if let Some(a) = alias
+            && !out.iter().any(|existing| existing == a)
+        {
+            out.push(a.to_owned());
+        }
+    }
+    out
 }
 
 fn truncate_title(question: &str) -> String {
