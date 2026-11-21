@@ -11,13 +11,17 @@ const USAGE: &str = "discord inspect --backup PATH\ndiscord search --backup PATH
 
 #[derive(Debug, thiserror::Error)]
 #[error("Discord ID must be a nonzero canonical unsigned integer string")]
-struct InvalidId;
+enum InvalidId {
+    Parse(#[source] std::num::ParseIntError),
+    NonCanonical,
+}
 
 fn validate_id(value: String) -> Result<String, InvalidId> {
-    match value.parse::<u64>() {
-        Ok(number) if number != 0 && number.to_string() == value => Ok(value),
-        _ => Err(InvalidId),
+    let number = value.parse::<u64>().map_err(InvalidId::Parse)?;
+    if number == 0 || number.to_string() != value {
+        return Err(InvalidId::NonCanonical);
     }
+    Ok(value)
 }
 
 macro_rules! discord_id {
