@@ -19,7 +19,7 @@ from test_release import fixture, SHA, DIGEST
 
 def configuration():
     return {
-        "repository": "Coda-Health/coda-rust", "workflow_path": ".github/workflows/ci.yml",
+        "repository": "tyler274/coda-rust", "workflow_path": ".github/workflows/ci.yml",
         "required_job_ids": ["10", "20"], "runtime_artifact": "runtime-123-1",
         "compatibility_artifact": "schema-123-1", "previous_artifact": "healthy-122-1",
         "previous_run_id": "122-1", "deploy_configuration": "release",
@@ -105,7 +105,7 @@ class AdapterTests(unittest.TestCase):
         self.process.responses = self.run_responses() + [{"run_attempt": 1}, {"object": {"sha": "b" * 40}}]
         result = self.runner.call("guard", lease="123-1", sha=SHA)
         self.assertEqual(result, {"lease_valid": True, "main_sha": "b" * 40})
-        self.assertIn("repos/Coda-Health/coda-rust/git/ref/heads/main", self.process.calls[-1][0])
+        self.assertIn("repos/tyler274/coda-rust/git/ref/heads/main", self.process.calls[-1][0])
 
     def test_guard_rejects_superseded_attempt(self):
         self.runner.active = True

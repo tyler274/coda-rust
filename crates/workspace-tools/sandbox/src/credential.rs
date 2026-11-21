@@ -119,7 +119,7 @@ mod tests {
     #[test]
     fn github_https_is_ours_with_unknown_keys_ignored() {
         let q = query(
-            "capability[]=authtype\nprotocol=https\nhost=github.com\npath=Coda-Health/coda-rust.git\nwwwauth[]=Basic realm=\"GitHub\"\n\n",
+            "capability[]=authtype\nprotocol=https\nhost=github.com\npath=tyler274/coda-rust.git\nwwwauth[]=Basic realm=\"GitHub\"\n\n",
         );
         assert_eq!(q.protocol.as_deref(), Some("https"));
         assert_eq!(q.host.as_deref(), Some("github.com"));

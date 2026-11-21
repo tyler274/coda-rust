@@ -64,7 +64,7 @@ Host git refuses trees the agent wrote (they belong to another UID). Do not mark
 
 ### Agent sandbox credentials
 
-No token sits in a file. The container's tokens live in your desktop keyring (the Secret Service, which KDE's wallet serves and PAM unlocks at login), and the token broker hands them out one request at a time. Create a fine-grained GitHub token limited to `Coda-Health/coda-rust` with **Contents: read and write** and **Pull requests: read and write**, and a read-only Doppler service token for `coda-rust`'s `dev` config. Store each once, as yourself:
+No token sits in a file. The container's tokens live in your desktop keyring (the Secret Service, which KDE's wallet serves and PAM unlocks at login), and the token broker hands them out one request at a time. Create a fine-grained GitHub token limited to `tyler274/coda-rust` with **Contents: read and write** and **Pull requests: read and write**, and a read-only Doppler service token for `coda-rust`'s `dev` config. Store each once, as yourself:
 
 ```bash
 coda-sandbox broker store github-agent   # paste at the hidden prompt, then Enter

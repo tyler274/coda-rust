@@ -4,7 +4,7 @@ Input JSON: {environment: Environment fields, candidate: Candidate fields,
 commands: {repository, workflow_path, required_job_ids, runtime_artifact,
 compatibility_artifact, previous_artifact, deploy_configuration,
 verifier_configuration, smoke_configuration, smoke_command, receipt_path}}.
-`repository` is Coda-Health/coda-rust; workflow_path is .github/workflows/ci.yml.
+`repository` is tyler274/coda-rust; workflow_path is .github/workflows/ci.yml.
 Job IDs are numeric GitHub job database IDs for this attempt, NOT display names.
 required_job_ids must contain every prerequisite job (including aggregate ci and
 cargo-deny); Candidate.checks values map the six proof families onto these IDs.
@@ -204,7 +204,7 @@ class CloudRunner:
         self.context = os.environ if context is None else context
         self.http = http
         self.repository = config["repository"]
-        require(self.repository == "Coda-Health/coda-rust", "Unexpected repository")
+        require(self.repository == "tyler274/coda-rust", "Unexpected repository")
         require(config["workflow_path"] == ".github/workflows/ci.yml", "Unexpected workflow")
         for key in ("deploy_configuration", "verifier_configuration", "smoke_configuration"):
             require(bool(re.fullmatch(r"[a-z][a-z0-9-]*", config[key])), "Explicit gcloud configurations required")
