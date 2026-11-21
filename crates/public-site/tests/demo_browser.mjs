@@ -50,11 +50,35 @@ try {
   const evaluate = async expression => { const r = await call('Runtime.evaluate', {expression, returnByValue: true, awaitPromise: true}); assert(!r.exceptionDetails, JSON.stringify(r)); return r.result.value; };
   const until = async (expr, desc = expr) => {
     for (let i = 0; i < 200; i++) { if (await evaluate(expr)) return; await delay(100); }
-    throw new Error(`Timed out waiting for: ${desc}\nBody:\n${await evaluate('document.body?.innerText.slice(0, 600) || ""')}`);
+    const diag = await evaluate(`JSON.stringify({
+      hasRecs: document.body?.innerText.includes('Undecided medication recommendations'),
+      hasSql: document.body?.innerText.includes('From SQLite chart search across'),
+      hasStop: !!document.querySelector('[data-follow-up-stop]'),
+      hasResume: !!document.querySelector('[data-follow-up-resume]'),
+      tail: document.body?.innerText.slice(-900) || ""
+    })`);
+    throw new Error(`Timed out waiting for: ${desc}\nDiag:\n${diag}`);
   };
   const snap = async name => writeFileSync(join(screenshots, `${name}.png`), Buffer.from((await call('Page.captureScreenshot', {format: 'png'})).data, 'base64'));
   const clickBtn = text => evaluate(`[...document.querySelectorAll('button')].find(b => b.innerText.includes(${JSON.stringify(text)})).click()`);
   const setInput = (sel, proto, val) => evaluate(`(() => { const el = document.querySelector(${JSON.stringify(sel)}); Object.getOwnPropertyDescriptor(${proto}.prototype, 'value').set.call(el, ${JSON.stringify(val)}); el.dispatchEvent(new Event('input', {bubbles: true})); })()`);
+  const assertNoLoadErrors = async step => {
+    const body = await evaluate('document.body?.innerText || ""');
+    for (const bad of [
+      'HTTP client requested on demo transport',
+      'Coda couldn’t load',
+      'Coda couldn’t refresh',
+      'Coda couldn’t open',
+      'Coda couldn’t confirm',
+      'Coda couldn’t save',
+      'Coda couldn’t start',
+      'Coda couldn’t mark',
+      'couldn’t load',
+      "couldn't load",
+    ]) {
+      assert(!body.includes(bad), `${step}: unexpected load/transport error ${JSON.stringify(bad)} in:\n${body.slice(0, 800)}`);
+    }
+  };
 
   await call('Page.enable'); await call('Runtime.enable'); await call('Network.enable');
 
@@ -111,6 +135,7 @@ try {
 
   await evaluate(`document.querySelector('.hero-cta-row a.btn').click()`);
   await until(`location.pathname.includes('/physician') && document.body.innerText.includes('Gary Kowalczyk') && document.body.innerText.includes('Reset demo') && !document.body.innerText.includes('No visits remaining today')`, 'demo Today + Schedule');
+  await assertNoLoadErrors('initial Today');
   await snap('02-demo-today');
 
   await clickBtn('Find patient');
@@ -119,32 +144,80 @@ try {
   await until(`document.body.innerText.includes('Kristen Marchetti')`, 'SQLite search match');
   await evaluate(`[...document.querySelectorAll('dialog button')].find(b => b.innerText.includes('Kristen Marchetti')).click()`);
   await until(`document.body.innerText.includes('Kristen Marchetti') && document.body.innerText.includes('Patient summary')`, 'Kristen Marchetti workspace');
+  await assertNoLoadErrors('search Kristen Marchetti');
   await snap('03-demo-search-workspace');
 
   await clickBtn('Today');
   await until(`document.body.innerText.includes('Gary Kowalczyk') && document.body.innerText.includes('6 need you')`, 'back on Today');
-  await clickBtn('Gary Kowalczyk');
-  await until(`document.body.innerText.includes('High-intensity statin review')`, 'Gary Kowalczyk workspace');
+
+  // Clear one Today item via Done (6 -> 5) keeping Gary Kowalczyk open to test item.open next.
+  await evaluate(`(() => { const btns = [...document.querySelectorAll('[data-today-done]')]; btns[btns.length - 1].click(); })()`);
+  await until(`document.body.innerText.includes('5 need you')`, 'Today Done decrements count 6 -> 5');
+  await assertNoLoadErrors('Today Done');
+
+  // Click Gary Kowalczyk's .today-row-open directly to test live open_today_update_item + evidence + workspace load.
+  await evaluate(`document.querySelector('[data-today-item="today-unit-2013"] .today-row-open').click()`);
+  await until(`document.body.innerText.includes('High-intensity statin review') && !!document.querySelector('[data-work-evidence]')`, 'open_today_update_item opens evidence and Gary Kowalczyk workspace');
+  await assertNoLoadErrors('open_today_update_item');
 
   await evaluate(`document.querySelector('[data-decide-recommendation]').click()`);
   await until(`document.body.innerText.includes('Active plan') && !document.body.innerText.includes('Undecided medication recommendations')`, 'recommendation approved');
 
+  // Exercise Follow-ups mutation (Stop -> Held) on Gary Kowalczyk's patient page.
+  await until(`!!document.querySelector('[data-follow-up-stop]')`, 'Follow-up Stop button');
+  await evaluate(`document.querySelector('[data-follow-up-stop]').click()`);
+  await until(`document.body.innerText.includes('Held') && !!document.querySelector('[data-follow-up-resume]')`, 'Follow-up transitioned to Held');
+  await assertNoLoadErrors('Follow-up stop');
+
+  // Exercise Past work dialog on Gary Kowalczyk's patient page.
+  await evaluate(`document.querySelector('button.past-work-button').click()`);
+  await until(`!!document.querySelector('dialog.past-work-dialog') && document.querySelector('dialog.past-work-dialog').innerText.includes('Pre-visit chart brief')`, 'Past work dialog loaded');
+  await assertNoLoadErrors('Past work');
+  await evaluate(`document.querySelector('dialog.past-work-dialog button[aria-label="Close"]').click()`);
+  await until(`!document.querySelector('dialog.past-work-dialog')`, 'Past work dialog closed');
+
   await setInput('textarea', 'HTMLTextAreaElement', 'What is his latest LDL and atorvastatin dose?');
   await evaluate(`[...document.querySelectorAll('button')].find(b => b.innerText.trim() === 'Send').click()`);
-  await until(`document.body.innerText.includes('From SQLite chart search across') && document.querySelectorAll('.message-sources button').length > 0`, 'SQLite chat answer + citation');
-  await evaluate(`document.querySelector('.message-sources button').click()`);
-  await until(`!!document.querySelector('aside.source-reading-pane')`, 'citation reader open');
+  await until(`document.body.innerText.includes('From SQLite chart search across') && document.querySelectorAll('.answer-words button.citation-chip').length > 0`, 'SQLite chat answer + inline citation chip');
+  await evaluate(`document.querySelector('.answer-words button.citation-chip').click()`);
+  await until(`!!document.querySelector('aside.source-reading-pane')`, 'citation reader open via cited_source');
+  await assertNoLoadErrors('chat cited_source');
   await snap('04-demo-chat-sql-citation');
   await evaluate(`document.querySelector('aside.source-reading-pane button.source-pane-close')?.click()`);
   await until(`!document.querySelector('aside.source-reading-pane')`, 'citation reader closed');
 
+  // Open a Schedule visit briefing from the right rail.
+  await evaluate(`document.querySelector('.schedule-visit').click()`);
+  await until(`!!document.querySelector('nav.briefing-nav') && document.body.innerText.includes('Prepared')`, 'Schedule visit briefing loaded');
+  await assertNoLoadErrors('Schedule visit briefing');
+
+  // Open Updates and open one update item.
+  await clickBtn('Updates');
+  await until(`document.querySelectorAll('.tu-updates-group').length > 0 && document.querySelectorAll('.today-row-open').length > 0`, 'Updates groups loaded');
+  await evaluate(`document.querySelector('.today-row-open').click()`);
+  await until(`document.body.innerText.includes('Patient summary')`, 'Updates row opened patient work');
+  await assertNoLoadErrors('Updates item open');
+
+  // Return to Today and open the Spruce drafted reply row.
+  await clickBtn('Today');
+  await until(`!!document.querySelector('[data-today-review-reply]')`, 'Today Review reply row present');
+  await evaluate(`document.querySelector('[data-today-review-reply]').click()`);
+  await until(`!!document.querySelector('[data-spruce-reply-card]')`, 'Spruce reply card opened');
+  await assertNoLoadErrors('Spruce reply card');
+
   await call('Page.reload', {});
-  await until(`document.body.innerText.includes('Gary Kowalczyk')`, 'reloaded Today');
-  await clickBtn('Gary Kowalczyk');
-  await until(`document.body.innerText.includes('From SQLite chart search across') && !document.body.innerText.includes('Undecided medication recommendations')`, 'IndexedDB persistence verified');
+  await until(`document.body.innerText.includes('Reset demo') && document.body.innerText.includes('Today')`, 'reloaded app shell');
+  await clickBtn('Today');
+  await until(`document.body.innerText.includes('Gary Kowalczyk') && document.body.innerText.includes('5 need you')`, 'reloaded Today preserved 5 items');
+  await evaluate(`document.querySelector('[data-today-item="today-unit-2013"] .today-row-open').click()`);
+  await until(`document.body.innerText.includes('From SQLite chart search across') && !document.body.innerText.includes('Undecided medication recommendations') && !!document.querySelector('[data-follow-up-resume]')`, 'IndexedDB persistence verified across Today Done, chat, plan, and Follow-ups');
+  await assertNoLoadErrors('Reload persistence');
 
   await clickBtn('Reset demo');
-  await until(`document.body.innerText.includes('Undecided medication recommendations') && !document.body.innerText.includes('From SQLite chart search across')`, 'Reset restored baseline');
+  await until(`document.body.innerText.includes('Undecided medication recommendations') && !document.body.innerText.includes('What is his latest LDL and atorvastatin dose?') && !!document.querySelector('[data-follow-up-stop]')`, 'Reset restored workspace and follow-ups');
+  await clickBtn('Today');
+  await until(`document.body.innerText.includes('6 need you')`, 'Reset restored 6 Today items');
+  await assertNoLoadErrors('After reset');
   await snap('05-demo-after-reset');
 
   assert.deepEqual(errors, [], `Runtime exceptions: ${JSON.stringify(errors)}`);

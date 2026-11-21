@@ -2596,8 +2596,7 @@ fn PhysicianShell(
         let can_fetch_chat_source = matches!(current_place, Place::Workspace)
             && current_ws.is_some()
             && current_chat.is_some()
-            && source_key.is_some()
-            && !api.is_demo();
+            && source_key.is_some();
         if can_fetch_chat_source
             && let (Some(ws_id), Some(chat_id), Some(key)) = (current_ws, current_chat, source_key)
         {

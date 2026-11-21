@@ -2,6 +2,22 @@
 //! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
 
+#[cfg(any(target_arch = "wasm32", test))]
+macro_rules! try_demo {
+    ($self:ident, $store:ident => $call:expr) => {
+        if let crate::ClientTransport::Demo($store) = &$self.transport {
+            return $call.await.map_err(crate::demo_error);
+        }
+    };
+}
+
+#[cfg(not(any(target_arch = "wasm32", test)))]
+macro_rules! try_demo {
+    ($self:ident, $store:ident => $call:expr) => {};
+}
+
+pub(crate) use try_demo;
+
 pub mod briefings;
 pub mod follow_ups;
 pub mod matching_reply;
@@ -118,20 +134,6 @@ impl PartialEq for PhysicianClient {
             && self.session == other.session
             && self.is_demo() == other.is_demo()
     }
-}
-
-#[cfg(any(target_arch = "wasm32", test))]
-macro_rules! try_demo {
-    ($self:ident, $store:ident => $call:expr) => {
-        if let ClientTransport::Demo($store) = &$self.transport {
-            return $call.await.map_err(demo_error);
-        }
-    };
-}
-
-#[cfg(not(any(target_arch = "wasm32", test)))]
-macro_rules! try_demo {
-    ($self:ident, $store:ident => $call:expr) => {};
 }
 
 impl PhysicianClient {
@@ -389,6 +391,7 @@ impl PhysicianClient {
         patient_workspace_id: &str,
         allowed: bool,
     ) -> Result<PanelAssignmentResponse, http::HttpError> {
+        try_demo!(self, s => s.assign_panel(physician_id, patient_workspace_id, allowed));
         if !allowed {
             return self.remove_panel(physician_id, patient_workspace_id).await;
         }
@@ -409,6 +412,7 @@ impl PhysicianClient {
         physician_id: &str,
         patient_workspace_id: &str,
     ) -> Result<PanelAssignmentResponse, http::HttpError> {
+        try_demo!(self, s => s.assign_panel(physician_id, patient_workspace_id, false));
         self.delete(&format!(
             "/auth/panels/{}/{}",
             query_escape(physician_id),
@@ -422,6 +426,7 @@ impl PhysicianClient {
         &self,
         request: &InvitePatientRequest,
     ) -> Result<PatientInvitationResponse, http::HttpError> {
+        try_demo!(self, s => s.invite_patient(request));
         self.post("/auth/invitations", request).await
     }
 
@@ -430,6 +435,7 @@ impl PhysicianClient {
         &self,
         patient_workspace_id: &str,
     ) -> Result<PatientInvitationResponse, http::HttpError> {
+        try_demo!(self, s => s.resend_patient_invitation(patient_workspace_id));
         self.post(
             "/auth/invitations/resend",
             &PatientInvitationActionRequest {
@@ -444,6 +450,7 @@ impl PhysicianClient {
         &self,
         patient_workspace_id: &str,
     ) -> Result<CancelInvitationResponse, http::HttpError> {
+        try_demo!(self, s => s.cancel_patient_invitation(patient_workspace_id));
         self.post(
             "/auth/invitations/cancel",
             &PatientInvitationActionRequest {
@@ -458,6 +465,7 @@ impl PhysicianClient {
         &self,
         request: &InviteColleagueRequest,
     ) -> Result<ColleagueInvitationResponse, http::HttpError> {
+        try_demo!(self, s => s.invite_colleague(request));
         self.post("/auth/colleagues/invitations", request).await
     }
 
@@ -522,15 +530,7 @@ impl PhysicianClient {
         &self,
         workspace_id: &str,
     ) -> Result<PatientMemoryResponse, http::HttpError> {
-        #[cfg(any(target_arch = "wasm32", test))]
-        if matches!(self.transport, ClientTransport::Demo(_)) {
-            return Ok(PatientMemoryResponse {
-                patient_workspace_id: workspace_id.to_owned(),
-                durable: false,
-                summary: None,
-                direction: None,
-            });
-        }
+        try_demo!(self, s => s.patient_memory(workspace_id));
         self.get(&format!(
             "/patient-workspaces/{}/memory",
             path_escape(workspace_id)
@@ -545,13 +545,7 @@ impl PhysicianClient {
         workspace_id: &str,
         request: &SavePhysicianMemoryEditRequest,
     ) -> Result<SavePhysicianMemoryEditResponse, http::HttpError> {
-        #[cfg(any(target_arch = "wasm32", test))]
-        if matches!(self.transport, ClientTransport::Demo(_)) {
-            return Err(http::HttpError::Status {
-                status: 503,
-                body: "Patient memory edits require the live server.".to_owned(),
-            });
-        }
+        try_demo!(self, s => s.save_patient_memory_edit(workspace_id, request));
         self.post(
             &format!("/patient-workspaces/{}/memory", path_escape(workspace_id)),
             request,
@@ -681,6 +675,13 @@ impl PhysicianClient {
         &self,
         request: &DictationRequest,
     ) -> Result<DictationResponse, http::HttpError> {
+        #[cfg(any(target_arch = "wasm32", test))]
+        if matches!(self.transport, ClientTransport::Demo(_)) {
+            return Err(http::HttpError::Status {
+                status: 503,
+                body: "Audio dictation requires the live server.".to_owned(),
+            });
+        }
         self.post("/dictation", request).await
     }
 
@@ -691,6 +692,7 @@ impl PhysicianClient {
         chat_id: &str,
         source_key: &str,
     ) -> Result<CitedSourceResponse, http::HttpError> {
+        try_demo!(self, s => s.cited_source(workspace_id, chat_id, source_key));
         let encoded_key = query_escape(source_key);
         self.get(&format!(
             "/patient-workspaces/{workspace_id}/chats/{chat_id}/sources/{encoded_key}"
@@ -738,6 +740,7 @@ impl PhysicianClient {
 
     /// Reads saved conversations and past work for one authorized patient workspace.
     pub async fn past_work(&self, id: &str) -> Result<PastWorkResponse, http::HttpError> {
+        try_demo!(self, s => s.past_work(id));
         self.get(&format!("/patient-workspaces/{id}/past-work"))
             .await
     }
@@ -775,6 +778,10 @@ fn demo_error(err: DbError) -> http::HttpError {
         },
         DbError::InvalidCommand(_) => http::HttpError::Status {
             status: 400,
+            body: err.to_string(),
+        },
+        DbError::Conflict(_) => http::HttpError::Status {
+            status: 409,
             body: err.to_string(),
         },
         other => http::HttpError::Transport(other.to_string()),
@@ -1187,5 +1194,469 @@ mod tests {
             .await
             .unwrap();
         assert_eq!(snap.snapshot.transcript.len(), 2);
+    }
+
+    #[tokio::test]
+    async fn demo_transport_supports_every_physician_app_endpoint_and_reset() {
+        use physician_wire::follow_ups::{CannotRestartResolutionWire, FollowUpStandingWire};
+        use physician_wire::matching_reply::{
+            ExpectedDraftBaseWire, MoveDestinationWire, PatientReplyConversationWire,
+            RequestReplyProposalRevisionBody, SenderConfirmationPolicyWire,
+        };
+        use physician_wire::reviews::{
+            PatientReviewStateWire, ReviewControlActionWire, ReviewControlRequest,
+            ReviewControlResponse,
+        };
+        use physician_wire::source_setup::{
+            ConnectSourceBody, RequestAssistedSetupBody, SimulateSourceEventBody,
+            SourceConnectionMethodWire, SupportedSourceWire,
+        };
+        use physician_wire::today_updates::TodayDoneOutcomeWire;
+        use physician_wire::{MemoryEditTarget, SavePhysicianMemoryEditRequest};
+
+        let ns = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        let dir =
+            std::env::temp_dir().join(format!("coda-demo-client-all-{}-{ns}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let (seed_path, active_path) = (dir.join("seed.sqlite"), dir.join("active.sqlite"));
+        let seed_store = physician_demo_db::DemoStore::new(
+            physician_demo_db::SqliteDriver::open_file(&seed_path).unwrap(),
+        );
+        let units = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../patients/units");
+        assert_eq!(
+            physician_demo_db::seed::seed_from_units_dir(&seed_store, &units, 6).unwrap(),
+            6
+        );
+        drop(seed_store);
+        std::fs::copy(&seed_path, &active_path).unwrap();
+        let driver = physician_demo_db::SqliteDriver::open_file(&active_path).unwrap();
+        driver.bind_reset_files(seed_path, active_path);
+        let client = PhysicianClient::demo_store(physician_demo_db::DemoStore::new(driver));
+
+        // Health & Today / Updates
+        let health = client.health().await.unwrap();
+        assert!(health.capabilities.unwrap().practice_sources);
+        let today = client.today().await.unwrap();
+        assert_eq!(today.rows.len(), 6);
+        assert_eq!(today.messages_to_match_count, 1);
+
+        let opened = client
+            .open_today_update_item("unit-2013", "today-unit-2013", "open-1")
+            .await
+            .unwrap();
+        assert_eq!(opened.linked_chat_id.as_deref(), Some("chat-unit-2013-1"));
+        assert!(!opened.citations.is_empty());
+        assert!(
+            client
+                .today()
+                .await
+                .unwrap()
+                .seen
+                .contains(&"today-unit-2013".to_owned())
+        );
+
+        let done = client
+            .mark_today_item_done("unit-2013", "today-unit-2013", &opened.version_id, "done-1")
+            .await
+            .unwrap();
+        assert_eq!(done.outcome, TodayDoneOutcomeWire::Accepted);
+        assert_eq!(client.today().await.unwrap().rows.len(), 5);
+
+        let updates = client.updates().await.unwrap();
+        assert!(!updates.today_items.is_empty());
+        assert!(!updates.earlier_days.is_empty());
+
+        // Briefings & Schedule refresh
+        let pday = client.refresh_practice_day().await.unwrap();
+        assert_eq!(pday.visits.len(), 6);
+        let briefings = client.workspace_briefings("unit-2013").await.unwrap();
+        assert_eq!(briefings.briefings.len(), 1);
+        let briefing = client
+            .visit_briefing("unit-2013", &briefings.briefings[0].briefing_id)
+            .await
+            .unwrap();
+        assert!(!briefing.briefing.sources.is_empty());
+
+        // Past work, Chat citations, Archive/Restore, Discussion, Queue commands
+        let pw = client.past_work("unit-2013").await.unwrap();
+        assert!(!pw.items.is_empty());
+        let snap = client
+            .chat_snapshot("unit-2013", "chat-unit-2013-1")
+            .await
+            .unwrap();
+        let source_key = snap.snapshot.sources.keys().next().unwrap().clone();
+        let cited = client
+            .cited_source("unit-2013", "chat-unit-2013-1", &source_key)
+            .await
+            .unwrap();
+        assert!(!cited.source.body.is_empty());
+
+        let arch = client
+            .command(&serde_json::json!({
+                "type": "conversation.archive",
+                "idempotency_key": "arch-1",
+                "payload": { "patient_workspace_id": "unit-2013", "chat_id": "chat-unit-2013-1" }
+            }))
+            .await
+            .unwrap();
+        assert_eq!(arch["outcome"], "accepted");
+        assert!(client.workspace("unit-2013").await.unwrap().chats[0].archived);
+        let rest = client
+            .command(&serde_json::json!({
+                "type": "conversation.restore",
+                "idempotency_key": "rest-1",
+                "payload": { "patient_workspace_id": "unit-2013", "chat_id": "chat-unit-2013-1" }
+            }))
+            .await
+            .unwrap();
+        assert_eq!(rest["outcome"], "accepted");
+        assert!(!client.workspace("unit-2013").await.unwrap().chats[0].archived);
+
+        let disc = client
+            .command(&serde_json::json!({
+                "type": "discussion.open",
+                "idempotency_key": "disc-1",
+                "payload": { "patient_workspace_id": "unit-2013", "chat_id": "chat-disc-1" }
+            }))
+            .await
+            .unwrap();
+        assert_eq!(disc["outcome"], "accepted");
+
+        client
+            .command(&serde_json::json!({
+                "type": "message.submit",
+                "idempotency_key": "q-msg-1",
+                "payload": {
+                    "patient_workspace_id": "unit-2013",
+                    "chat_id": "chat-disc-1",
+                    "text": "Queued test",
+                    "delivery": "send_next"
+                }
+            }))
+            .await
+            .unwrap();
+        let qedit = client
+            .command(&serde_json::json!({
+                "type": "message.queue_edit",
+                "idempotency_key": "qe-1",
+                "payload": { "patient_workspace_id": "unit-2013", "chat_id": "chat-disc-1", "message_id": "q-msg-1", "text": "Edited queued test" }
+            }))
+            .await
+            .unwrap();
+        assert_eq!(qedit["outcome"], "accepted");
+        let qsend = client
+            .command(&serde_json::json!({
+                "type": "message.queue_send_now",
+                "idempotency_key": "qs-1",
+                "payload": { "patient_workspace_id": "unit-2013", "chat_id": "chat-disc-1", "message_id": "q-msg-1" }
+            }))
+            .await
+            .unwrap();
+        assert_eq!(qsend["outcome"], "accepted");
+
+        // Follow-ups lifecycle
+        let fus = client.patient_follow_ups("unit-2013").await.unwrap();
+        assert!(fus.durable);
+        assert_eq!(fus.follow_ups.len(), 1);
+        let created = client
+            .create_follow_up("unit-2013", "Check potassium", "2026-09-10", "fu-c-1")
+            .await
+            .unwrap();
+        let fid = created.follow_up.follow_up_id.clone();
+        let stopped = client
+            .stop_and_discuss_follow_up(
+                "unit-2013",
+                &fid,
+                Some("Discuss".into()),
+                "America/New_York",
+                "fu-sd-1",
+            )
+            .await
+            .unwrap();
+        assert!(stopped.discuss_chat_id.is_some());
+        let resumed = client
+            .resume_follow_up("unit-2013", &fid, "fu-res-1")
+            .await
+            .unwrap();
+        assert!(matches!(
+            resumed.follow_up.standing,
+            FollowUpStandingWire::Scheduled { .. }
+        ));
+        let reviewed = client
+            .review_follow_up_now("unit-2013", &fid, "fu-rn-1")
+            .await
+            .unwrap();
+        assert!(reviewed.review_started);
+        let resolved = client
+            .resolve_cannot_restart_follow_up(
+                "unit-2013",
+                &fid,
+                CannotRestartResolutionWire::Complete {
+                    resolution: "Reviewed".into(),
+                },
+                "fu-done-1",
+            )
+            .await
+            .unwrap();
+        assert!(matches!(
+            resolved.follow_up.standing,
+            FollowUpStandingWire::Completed { .. }
+        ));
+
+        // Spruce Replies + Matching + Filtered
+        let match_list = client.messages_to_match().await.unwrap();
+        assert_eq!(match_list.messages.len(), 1);
+        assert_eq!(match_list.filtered_count, 1);
+        assert!(
+            !client
+                .filtered_spruce_messages()
+                .await
+                .unwrap()
+                .messages
+                .is_empty()
+        );
+        client
+            .mark_spruce_message_as_patient("msg-filt-1", "sp-f-1")
+            .await
+            .unwrap();
+        client
+            .confirm_spruce_message_link(
+                "msg-match-1",
+                "unit-2013",
+                SenderConfirmationPolicyWire::ConversationOnly,
+                "sp-c-1",
+            )
+            .await
+            .unwrap();
+
+        let replies = client.patient_spruce_replies("unit-2188").await.unwrap();
+        assert_eq!(replies.conversations.len(), 1);
+        let saved_reply = client
+            .save_reply_proposal_draft(
+                "unit-2188",
+                "conv-unit-2188-1",
+                ExpectedDraftBaseWire::ProposalVersion { version: 1 },
+                "Physician edited draft.",
+            )
+            .await
+            .unwrap();
+        assert!(matches!(
+            saved_reply,
+            PatientReplyConversationWire::OpenCard(_)
+        ));
+        let revised_reply = client
+            .request_reply_proposal_revision(
+                "unit-2188",
+                "conv-unit-2188-1",
+                &RequestReplyProposalRevisionBody {
+                    expected_base: ExpectedDraftBaseWire::PhysicianDraftRevision { revision: 1 },
+                    current_text: "Physician edited draft.".into(),
+                    instruction: "Make warmer".into(),
+                    physician_time_zone: "America/New_York".into(),
+                    idempotency_key: "rev-1".into(),
+                },
+            )
+            .await
+            .unwrap();
+        assert!(matches!(
+            revised_reply,
+            PatientReplyConversationWire::OpenCard(_)
+        ));
+        let restored_reply = client
+            .restore_my_reply_version("unit-2188", "conv-unit-2188-1", 2, "rest-ver-1")
+            .await
+            .unwrap();
+        assert!(matches!(
+            restored_reply,
+            PatientReplyConversationWire::OpenCard(_)
+        ));
+        let copied = client
+            .copy_spruce_reply(
+                "unit-2188",
+                "conv-unit-2188-1",
+                ExpectedDraftBaseWire::PhysicianDraftRevision { revision: 3 },
+                "copy-1",
+            )
+            .await
+            .unwrap();
+        assert_eq!(copied.copied_text, "Physician edited draft.");
+        let closed = client
+            .close_reply_no_reply_needed("unit-2188", "conv-unit-2188-1", 1, "nrn-1")
+            .await
+            .unwrap();
+        assert!(matches!(
+            closed,
+            PatientReplyConversationWire::ClosedUndoBanner { .. }
+        ));
+        let reopened = client
+            .undo_close_no_reply_needed("unit-2188", "conv-unit-2188-1", "undo-nrn-1")
+            .await
+            .unwrap();
+        assert!(matches!(
+            reopened,
+            PatientReplyConversationWire::OpenCard(_)
+        ));
+        let moved = client
+            .move_spruce_conversation(
+                "unit-2188",
+                "conv-unit-2188-1",
+                MoveDestinationWire::AnotherPatient {
+                    patient_workspace_id: "unit-2013".into(),
+                },
+                Some(30),
+                "mv-1",
+            )
+            .await
+            .unwrap();
+        assert!(matches!(moved, PatientReplyConversationWire::OpenCard(_)));
+        client
+            .undo_spruce_conversation_move("unit-2188", "conv-unit-2188-1", "mv-undo-1")
+            .await
+            .unwrap();
+
+        // Patient Reviews + Memory + Connections + Roster Admin + Dictate 503
+        let reviews = client.patient_reviews("unit-2013").await.unwrap();
+        assert_eq!(reviews.reviews.len(), 2);
+        let held_rev = reviews
+            .reviews
+            .iter()
+            .find(|r| r.review_id.ends_with("-held"))
+            .unwrap();
+        let ctrl = client
+            .control_patient_review(
+                "unit-2013",
+                &ReviewControlRequest {
+                    review_id: held_rev.review_id.clone(),
+                    version: held_rev.version.clone(),
+                    action: ReviewControlActionWire::TryAgain,
+                    idempotency_key: "ctrl-1".into(),
+                },
+            )
+            .await
+            .unwrap();
+        match ctrl {
+            ReviewControlResponse::Accepted { review } => {
+                assert!(matches!(
+                    review.state,
+                    PatientReviewStateWire::Running { .. }
+                ));
+            }
+            other => panic!("expected accepted review control, got {other:?}"),
+        }
+
+        let mem = client.patient_memory("unit-2013").await.unwrap();
+        assert!(mem.durable);
+        let mem_saved = client
+            .save_patient_memory_edit(
+                "unit-2013",
+                &SavePhysicianMemoryEditRequest {
+                    target: MemoryEditTarget::Direction,
+                    text: "Recheck lipid panel in 6 weeks.".into(),
+                    idempotency_key: "mem-1".into(),
+                },
+            )
+            .await
+            .unwrap();
+        assert_eq!(mem_saved.note_number, "N1");
+
+        let conns = client.connections().await.unwrap();
+        assert_eq!(conns.sources.len(), 3);
+        client
+            .connect_source(
+                SupportedSourceWire::Hint,
+                &ConnectSourceBody {
+                    method: SourceConnectionMethodWire::SimulatedPractice,
+                    account_label: "Clinic".into(),
+                    secret_or_code: None,
+                    prerequisites_confirmed: true,
+                },
+            )
+            .await
+            .unwrap();
+        client
+            .refresh_source(SupportedSourceWire::Hint)
+            .await
+            .unwrap();
+        client
+            .request_assisted_setup(
+                SupportedSourceWire::ElationFhir,
+                &RequestAssistedSetupBody {
+                    contact_email: "admin@clinic.example".into(),
+                    notes: None,
+                },
+            )
+            .await
+            .unwrap();
+        client
+            .simulate_source_event(
+                SupportedSourceWire::Spruce,
+                &SimulateSourceEventBody::RevokedGrant {
+                    reason: "Token expired".into(),
+                },
+            )
+            .await
+            .unwrap();
+        client
+            .reconnect_source(
+                SupportedSourceWire::Spruce,
+                &ConnectSourceBody {
+                    method: SourceConnectionMethodWire::SimulatedPractice,
+                    account_label: "Spruce Demo".into(),
+                    secret_or_code: None,
+                    prerequisites_confirmed: true,
+                },
+            )
+            .await
+            .unwrap();
+
+        let panel = client
+            .assign_panel("phys-demo-hannah", "unit-2013", true)
+            .await
+            .unwrap();
+        assert!(panel.allowed);
+        let inv = client
+            .invite_patient(&physician_wire::InvitePatientRequest {
+                patient_workspace_id: "unit-2013".into(),
+                email: "gary@example.com".into(),
+                display_name: "Gary Kowalczyk".into(),
+            })
+            .await
+            .unwrap();
+        assert_eq!(inv.status, "invited");
+        client.cancel_patient_invitation("unit-2013").await.unwrap();
+        client
+            .invite_colleague(&physician_wire::InviteColleagueRequest {
+                email: "colleague@example.com".into(),
+                display_name: "Dr. Sam Lee".into(),
+            })
+            .await
+            .unwrap();
+
+        let dict_err = client
+            .dictate(&physician_wire::DictationRequest::default())
+            .await
+            .unwrap_err();
+        assert!(matches!(
+            dict_err,
+            http::HttpError::Status { status: 503, .. }
+        ));
+
+        // Reset restores pristine seeded state cleanly.
+        client.demo_reset().await.unwrap();
+        let reset_today = client.today().await.unwrap();
+        assert_eq!(reset_today.rows.len(), 6);
+        assert!(reset_today.seen.is_empty());
+        assert_eq!(
+            client
+                .patient_follow_ups("unit-2013")
+                .await
+                .unwrap()
+                .follow_ups
+                .len(),
+            1
+        );
     }
 }

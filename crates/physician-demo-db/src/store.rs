@@ -2,28 +2,32 @@
 
 use crate::driver::{DbError, SqlRow, SqliteDriver};
 use crate::schema::{
-    Chats, Drafts, Patients, PracticeVisits, SourceRecords, TodayItems, UpdatesFeed, schema_ddl,
+    Chats, Drafts, Patients, PracticeVisits, SourceRecords, SpruceMatchQueue, TodayItems,
+    UpdatesFeed, schema_ddl,
 };
 use physician_wire::{
-    AnswerState, AttemptId, ChatSnapshot, ChatSnapshotResponse, DateRole, Exchange, ExchangeSteps,
-    Found, HealthCapabilities, HealthResponse, MessageKey, PatientSearchResponse, PatientSearchRow,
+    AnswerState, AttemptId, ChatSnapshot, ChatSnapshotResponse, CitationOrigin, CitationTargetKind,
+    CitedSourceWire, DateRole, Exchange, ExchangeSteps, Found, HealthCapabilities, HealthResponse,
+    HistoryWorkOutcome, MessageKey, MessageSegment, PatientSearchResponse, PatientSearchRow,
     PatientWorkspaceResponse, PatientWorkspaceSummary, PatientWorkspacesResponse, PhysicianDraft,
     PhysicianMessage, PracticeAccountSummary, PracticeDayResponse, PracticeSourceState,
     RecentConversation, RecentConversationsResponse, RecordAbout, RecordDate, RecordGroup,
     RecordRead, ReplyDraftWire, ResponseFeedback, ResponseId, SaveFeedback, SavedAt, SearchPage,
-    SnapshotFeedback, SourceVersion, Step, StepState, TodayConnection, TodayListResponse,
+    SnapshotFeedback, SourceVersion, Step, StepState, TodayConnection, TodayListResponse, TodayRow,
     UpdatesResponse, WhoamiResponse, WorkItemId, WorkspaceChat, WorkspacePlanItem,
+    today_updates::{EarlierDayUpdatesWire, ItemCitationWire, SeenStandingWire, UpdateItemWire},
 };
 use sea_query::{Cond, Expr, ExprTrait, OnConflict, Order, Query, SelectStatement};
+use std::collections::BTreeMap;
 use std::sync::atomic::{AtomicU64, Ordering};
 
-const DEMO_DATE: &str = "2026-08-27";
+pub(crate) const DEMO_DATE: &str = "2026-08-27";
 pub(crate) const DEMO_NOW: &str = "2026-08-27T19:00:00.000Z";
 pub(crate) const DEMO_ZONE: &str = "America/New_York";
-const DEMO_BASE_UNIX: i64 = 1_787_857_200;
+pub(crate) const DEMO_BASE_UNIX: i64 = 1_787_857_200;
 static SEQUENCE: AtomicU64 = AtomicU64::new(1);
 
-fn next_seq() -> u64 {
+pub(crate) fn next_seq() -> u64 {
     SEQUENCE.fetch_add(1, Ordering::Relaxed)
 }
 
@@ -58,7 +62,7 @@ pub enum DraftSaveOutcome {
 /// SQLite-backed store powering the interactive browser demo and native host tests.
 #[derive(Debug, Clone)]
 pub struct DemoStore {
-    driver: SqliteDriver,
+    pub(crate) driver: SqliteDriver,
 }
 
 impl DemoStore {
@@ -104,7 +108,7 @@ impl DemoStore {
             held_by_newer_release: Vec::new(),
             capabilities: Some(HealthCapabilities {
                 connection_accounts: false,
-                practice_sources: false,
+                practice_sources: true,
             }),
         }
     }
@@ -139,7 +143,7 @@ impl DemoStore {
 
     async fn today_filtered(&self, ws: Option<&str>) -> Result<TodayListResponse, DbError> {
         let mut q = Query::select();
-        q.column(TodayItems::RowJson)
+        q.columns([TodayItems::RowJson, TodayItems::Seen])
             .from(TodayItems::Table)
             .and_where(Expr::col(TodayItems::Done).eq(0));
         if let Some(id) = ws {
@@ -147,9 +151,42 @@ impl DemoStore {
         }
         q.order_by(TodayItems::Urgency, Order::Asc)
             .order_by(TodayItems::WaitingSince, Order::Desc);
-        let rows = self
-            .map_select(&q, |r| Ok(serde_json::from_str(&r.get_str("row_json")?)?))
+        let decoded: Vec<(TodayRow, bool)> = self
+            .map_select(&q, |r| {
+                let row: TodayRow = serde_json::from_str(&r.get_str("row_json")?)?;
+                let seen_flag = r.get_i64("seen")? != 0 || row.seen;
+                Ok((row, seen_flag))
+            })
             .await?;
+        let mut rows = Vec::with_capacity(decoded.len());
+        let mut seen = Vec::new();
+        for (mut row, is_seen) in decoded {
+            if is_seen {
+                row.seen = true;
+                if row.standing.is_none() || matches!(row.standing, Some(SeenStandingWire::Unseen))
+                {
+                    row.standing = Some(SeenStandingWire::Seen {
+                        seen_at: DEMO_NOW.into(),
+                    });
+                }
+                seen.push(row.item_id.clone());
+            }
+            rows.push(row);
+        }
+        let unmatched_q = Query::select()
+            .column(SpruceMatchQueue::MessageId)
+            .from(SpruceMatchQueue::Table)
+            .and_where(Expr::col(SpruceMatchQueue::Bucket).eq("unmatched"))
+            .to_owned();
+        let messages_to_match_count = self.driver.select(&unmatched_q)?.len();
+
+        let quiet_q = Query::select()
+            .column(UpdatesFeed::Id)
+            .from(UpdatesFeed::Table)
+            .and_where(Expr::col(UpdatesFeed::Bucket).eq("quiet"))
+            .to_owned();
+        let also_reviewed = self.driver.select(&quiet_q)?.len();
+
         let connections = ["spruce", "gmail"]
             .into_iter()
             .map(|c| TodayConnection {
@@ -166,14 +203,14 @@ impl DemoStore {
             date: DEMO_DATE.into(),
             time_zone: Some(DEMO_ZONE.into()),
             rows,
-            seen: Vec::new(),
+            seen,
             as_of: 1,
             connections,
             incomplete: Some(false),
-            also_reviewed: 0,
+            also_reviewed,
             practice_outages: Vec::new(),
             failed_parts: Vec::new(),
-            messages_to_match_count: 0,
+            messages_to_match_count,
             may_be_missing_someone: false,
         })
     }
@@ -238,23 +275,26 @@ impl DemoStore {
             .column((Chats::Table, Chats::WorkspaceId))
             .column((Chats::Table, Chats::Title))
             .column((Chats::Table, Chats::CreatedAt))
+            .column((Chats::Table, Chats::SnapshotJson))
             .column((Patients::Table, Patients::DisplayName))
             .from(Chats::Table)
             .inner_join(Patients::Table, join)
             .order_by((Chats::Table, Chats::CreatedAt), Order::Desc)
-            .limit(8)
+            .limit(12)
             .to_owned();
         let conversations = self
             .map_select(&q, |r| {
+                let snap: ChatSnapshot = serde_json::from_str(&r.get_str("snapshot_json")?)?;
+                let (summary, outcome) = summarize_snapshot(&snap);
                 Ok(RecentConversation {
                     chat_id: Some(r.get_str("chat_id")?),
                     patient_workspace_id: Some(r.get_str("workspace_id")?),
                     title: Some(r.get_str("title")?),
-                    summary: None,
-                    outcome: None,
+                    summary,
+                    outcome,
                     patient_display_name: Some(r.get_str("display_name")?),
                     updated_at: Some(r.get_str("created_at")?),
-                    archived: false,
+                    archived: snap.archived,
                 })
             })
             .await?;
@@ -267,21 +307,48 @@ impl DemoStore {
     /// Queries the Updates feed.
     pub async fn updates(&self) -> Result<UpdatesResponse, DbError> {
         let q = Query::select()
-            .column(UpdatesFeed::PayloadJson)
+            .columns([UpdatesFeed::Bucket, UpdatesFeed::PayloadJson])
             .from(UpdatesFeed::Table)
             .order_by(UpdatesFeed::CreatedAt, Order::Desc)
             .to_owned();
-        let rows = self
+        let entries: Vec<(String, serde_json::Value)> = self
             .map_select(&q, |r| {
-                Ok(serde_json::from_str(&r.get_str("payload_json")?)?)
+                Ok((
+                    r.get_str("bucket")?,
+                    serde_json::from_str(&r.get_str("payload_json")?)?,
+                ))
             })
             .await?;
+        let mut today_items = Vec::new();
+        let mut reviewed_nothing_for_you = Vec::new();
+        let mut yesterday_items = Vec::new();
+        let mut legacy_rows = Vec::new();
+        for (bucket, payload) in entries {
+            if let Ok(item) = serde_json::from_value::<UpdateItemWire>(payload.clone()) {
+                match bucket.as_str() {
+                    "quiet" => reviewed_nothing_for_you.push(item),
+                    "yesterday" => yesterday_items.push(item),
+                    _ => today_items.push(item),
+                }
+            } else {
+                legacy_rows.push(payload);
+            }
+        }
+        let earlier_days = if yesterday_items.is_empty() {
+            Vec::new()
+        } else {
+            vec![EarlierDayUpdatesWire {
+                date: "2026-08-26".into(),
+                label: "Yesterday".into(),
+                items: yesterday_items,
+            }]
+        };
         Ok(UpdatesResponse {
             active_runs: Vec::new(),
-            rows,
-            today_items: Vec::new(),
-            reviewed_nothing_for_you: Vec::new(),
-            earlier_days: Vec::new(),
+            rows: legacy_rows,
+            today_items,
+            reviewed_nothing_for_you,
+            earlier_days,
             failed_parts: Vec::new(),
             may_be_missing_someone: false,
         })
@@ -525,6 +592,13 @@ impl DemoStore {
         let payload = body.get("payload").unwrap_or(body);
         match kind.as_str() {
             "message.submit" => self.handle_message_submit(body, payload).await,
+            "message.queue_edit" => self.handle_queue_edit(payload).await,
+            "message.withdraw" => self.handle_queue_withdraw(payload).await,
+            "message.queue_send_now" => self.handle_queue_send_now(body, payload).await,
+            "conversation.archive" => self.handle_conversation_archive(payload, true).await,
+            "conversation.restore" => self.handle_conversation_archive(payload, false).await,
+            "discussion.open" => self.handle_discussion_open(payload).await,
+            "item.open" => self.handle_item_open(payload),
             "plan.decide_recommendation" => self.handle_decide_recommendation(payload).await,
             "reply.close" => self.handle_reply_close(payload).await,
             "reply.revise" => self.handle_reply_revise(payload).await,
@@ -549,10 +623,36 @@ impl DemoStore {
             .and_then(serde_json::Value::as_str)
             .map(str::to_owned)
             .unwrap_or_else(|| format!("msg-{}", next_seq()));
-        let terms = extract_search_terms(&question);
-        let matched = self.search_patient_records(&ws_id, &terms)?;
         let mut snap = self.chat_snapshot(&ws_id, &chat_id).await?.snapshot;
         let is_new = snap.transcript.is_empty();
+        let seq = next_seq();
+        let ts = DEMO_BASE_UNIX + i64::try_from(seq).unwrap_or(1);
+        if payload.get("delivery").and_then(serde_json::Value::as_str) == Some("send_next") {
+            snap.queued.push(physician_wire::QueuedMessageWire {
+                id: MessageKey(key),
+                text: question.clone(),
+                saved_at: SavedAt(ts),
+            });
+            let title = self
+                .existing_chat_title(&ws_id, &chat_id)?
+                .unwrap_or_else(|| truncate_title(&question));
+            self.upsert_chat_snapshot(&ws_id, &chat_id, &title, DEMO_NOW, &snap)?;
+            return Ok(serde_json::json!({ "ok": true, "chat_id": chat_id }));
+        }
+        self.append_chart_exchange(&ws_id, &chat_id, &mut snap, is_new, (key, question, ts))
+    }
+
+    fn append_chart_exchange(
+        &self,
+        ws_id: &str,
+        chat_id: &str,
+        snap: &mut ChatSnapshot,
+        is_new: bool,
+        msg: (String, String, i64),
+    ) -> Result<serde_json::Value, DbError> {
+        let (key, question, ts) = msg;
+        let terms = extract_search_terms(&question);
+        let matched = self.search_patient_records(ws_id, &terms)?;
         let seq = next_seq();
         let reads: Vec<_> = matched
             .iter()
@@ -565,40 +665,194 @@ impl DemoStore {
                 )
             })
             .collect();
-        let ts = DEMO_BASE_UNIX + i64::try_from(seq).unwrap_or(1);
-        snap.transcript.push(build_exchange(
+        let (answer_text, segments, basis, cited_map) =
+            synthesize_chart_answer_with_citations(&question, &matched, "c");
+        for (k, v) in cited_map {
+            snap.sources.insert(k, v);
+        }
+        snap.transcript.push(build_exchange_with_segments(
             "demo",
             &seq.to_string(),
             (key, question.clone(), ts),
             &terms.join(" "),
             &reads,
             false,
-            synthesize_chart_answer(&question, &matched),
+            (answer_text, segments, basis),
         ));
         let title = if is_new {
             truncate_title(&question)
         } else {
-            self.existing_chat_title(&ws_id, &chat_id)?
+            self.existing_chat_title(ws_id, chat_id)?
                 .unwrap_or_else(|| truncate_title(&question))
         };
-        let insert = Query::insert()
-            .into_table(Chats::Table)
-            .columns(Chats::COLS.iter().copied())
-            .values_panic([
-                chat_id.as_str().into(),
-                ws_id.as_str().into(),
-                title.as_str().into(),
-                DEMO_NOW.into(),
-                serde_json::to_string(&snap)?.as_str().into(),
-            ])
-            .on_conflict(
-                OnConflict::column(Chats::ChatId)
-                    .update_column(Chats::SnapshotJson)
-                    .to_owned(),
-            )
-            .to_owned();
-        self.driver.insert(&insert)?;
+        self.upsert_chat_snapshot(ws_id, chat_id, &title, DEMO_NOW, snap)?;
         Ok(serde_json::json!({ "ok": true, "chat_id": chat_id }))
+    }
+
+    async fn handle_queue_edit(
+        &self,
+        payload: &serde_json::Value,
+    ) -> Result<serde_json::Value, DbError> {
+        let ws_id = required_str(payload, "patient_workspace_id")?;
+        let chat_id = required_str(payload, "chat_id")?;
+        let msg_id = required_str(payload, "message_id")?;
+        let text = required_str(payload, "text")?;
+        let mut snap = self.chat_snapshot(&ws_id, &chat_id).await?.snapshot;
+        let Some(item) = snap.queued.iter_mut().find(|q| q.id.0 == msg_id) else {
+            return Ok(serde_json::json!({
+                "outcome": "rejected",
+                "message": "Coda couldn’t update that queued message.",
+            }));
+        };
+        item.text = text;
+        let title = self
+            .existing_chat_title(&ws_id, &chat_id)?
+            .unwrap_or_else(|| "Conversation".into());
+        self.upsert_chat_snapshot(&ws_id, &chat_id, &title, DEMO_NOW, &snap)?;
+        Ok(serde_json::json!({
+            "outcome": "accepted",
+            "patient_workspace_id": ws_id,
+            "chat_id": chat_id,
+            "message_id": msg_id,
+        }))
+    }
+
+    async fn handle_queue_withdraw(
+        &self,
+        payload: &serde_json::Value,
+    ) -> Result<serde_json::Value, DbError> {
+        let ws_id = required_str(payload, "patient_workspace_id")?;
+        let chat_id = required_str(payload, "chat_id")?;
+        let msg_id = required_str(payload, "message_id")?;
+        let mut snap = self.chat_snapshot(&ws_id, &chat_id).await?.snapshot;
+        let before = snap.queued.len();
+        snap.queued.retain(|q| q.id.0 != msg_id);
+        if snap.queued.len() == before {
+            return Ok(serde_json::json!({
+                "outcome": "rejected",
+                "message": "Coda couldn’t remove that queued message.",
+            }));
+        }
+        let title = self
+            .existing_chat_title(&ws_id, &chat_id)?
+            .unwrap_or_else(|| "Conversation".into());
+        self.upsert_chat_snapshot(&ws_id, &chat_id, &title, DEMO_NOW, &snap)?;
+        Ok(serde_json::json!({
+            "outcome": "accepted",
+            "patient_workspace_id": ws_id,
+            "chat_id": chat_id,
+            "message_id": msg_id,
+        }))
+    }
+
+    async fn handle_queue_send_now(
+        &self,
+        _envelope: &serde_json::Value,
+        payload: &serde_json::Value,
+    ) -> Result<serde_json::Value, DbError> {
+        let ws_id = required_str(payload, "patient_workspace_id")?;
+        let chat_id = required_str(payload, "chat_id")?;
+        let msg_id = required_str(payload, "message_id")?;
+        let mut snap = self.chat_snapshot(&ws_id, &chat_id).await?.snapshot;
+        let Some(pos) = snap.queued.iter().position(|q| q.id.0 == msg_id) else {
+            return Ok(serde_json::json!({
+                "outcome": "rejected",
+                "message": "Coda couldn’t send that queued message.",
+            }));
+        };
+        let queued = snap.queued.remove(pos);
+        let is_new = snap.transcript.is_empty();
+        self.append_chart_exchange(
+            &ws_id,
+            &chat_id,
+            &mut snap,
+            is_new,
+            (queued.id.0, queued.text, queued.saved_at.0),
+        )?;
+        Ok(serde_json::json!({
+            "outcome": "accepted",
+            "patient_workspace_id": ws_id,
+            "chat_id": chat_id,
+            "message_id": msg_id,
+        }))
+    }
+
+    async fn handle_conversation_archive(
+        &self,
+        payload: &serde_json::Value,
+        archived: bool,
+    ) -> Result<serde_json::Value, DbError> {
+        let ws_id = required_str(payload, "patient_workspace_id")?;
+        let chat_id = required_str(payload, "chat_id")?;
+        let rows = self.driver.select_where(
+            Chats::Table,
+            &[Chats::Title, Chats::CreatedAt, Chats::SnapshotJson],
+            &[
+                (Chats::WorkspaceId, ws_id.as_str()),
+                (Chats::ChatId, chat_id.as_str()),
+            ],
+        )?;
+        let Some(row) = rows.first() else {
+            return Err(not_found("conversation", &chat_id));
+        };
+        let mut snap: ChatSnapshot = serde_json::from_str(&row.get_str("snapshot_json")?)?;
+        snap.archived = archived;
+        self.upsert_chat_snapshot(
+            &ws_id,
+            &chat_id,
+            &row.get_str("title")?,
+            &row.get_str("created_at")?,
+            &snap,
+        )?;
+        Ok(serde_json::json!({
+            "outcome": "accepted",
+            "patient_workspace_id": ws_id,
+            "chat_id": chat_id,
+        }))
+    }
+
+    async fn handle_discussion_open(
+        &self,
+        payload: &serde_json::Value,
+    ) -> Result<serde_json::Value, DbError> {
+        let ws_id = required_str(payload, "patient_workspace_id")?;
+        let chat_id = required_str(payload, "chat_id")?;
+        let _ = self.load_patient_name(&ws_id)?;
+        let existing = self.driver.select_where(
+            Chats::Table,
+            &[Chats::ChatId],
+            &[
+                (Chats::WorkspaceId, ws_id.as_str()),
+                (Chats::ChatId, chat_id.as_str()),
+            ],
+        )?;
+        if existing.is_empty() {
+            let snap = ChatSnapshot {
+                sources: Default::default(),
+                transcript: Vec::new(),
+                feedback: SnapshotFeedback::Loaded,
+                queued: Vec::new(),
+                archived: false,
+            };
+            self.upsert_chat_snapshot(&ws_id, &chat_id, "Clinical discussion", DEMO_NOW, &snap)?;
+        }
+        Ok(serde_json::json!({
+            "outcome": "accepted",
+            "patient_workspace_id": ws_id,
+            "chat_id": chat_id,
+            "returned_messages": [],
+        }))
+    }
+
+    fn handle_item_open(&self, payload: &serde_json::Value) -> Result<serde_json::Value, DbError> {
+        let ws_id = required_str(payload, "patient_workspace_id")?;
+        let item_id = required_str(payload, "item_id")?;
+        self.mark_today_item_seen(&ws_id, &item_id)?;
+        Ok(serde_json::json!({
+            "outcome": "accepted",
+            "patient_workspace_id": ws_id,
+            "item_id": item_id,
+        }))
     }
 
     fn search_patient_records(
@@ -739,7 +993,12 @@ impl DemoStore {
 
     fn load_workspace_chats(&self, ws_id: &str) -> Result<Vec<WorkspaceChat>, DbError> {
         let q = Query::select()
-            .columns([Chats::ChatId, Chats::Title, Chats::CreatedAt])
+            .columns([
+                Chats::ChatId,
+                Chats::Title,
+                Chats::CreatedAt,
+                Chats::SnapshotJson,
+            ])
             .from(Chats::Table)
             .and_where(Expr::col(Chats::WorkspaceId).eq(ws_id))
             .order_by(Chats::CreatedAt, Order::Desc)
@@ -748,31 +1007,127 @@ impl DemoStore {
             .select(&q)?
             .iter()
             .map(|r| {
+                let snap: ChatSnapshot = serde_json::from_str(&r.get_str("snapshot_json")?)?;
+                let (summary, outcome) = summarize_snapshot(&snap);
                 Ok(WorkspaceChat {
                     chat_id: r.get_str("chat_id")?,
                     title: Some(r.get_str("title")?),
-                    summary: None,
-                    outcome: None,
+                    summary,
+                    outcome,
                     created_at: r.get_str("created_at")?,
-                    archived: false,
+                    archived: snap.archived,
                 })
             })
             .collect()
+    }
+
+    pub(crate) fn load_patient_name(&self, ws_id: &str) -> Result<String, DbError> {
+        let rows = self.driver.select_where(
+            Patients::Table,
+            &[Patients::DisplayName],
+            &[(Patients::WorkspaceId, ws_id)],
+        )?;
+        let row = rows
+            .first()
+            .ok_or_else(|| not_found("patient workspace", ws_id))?;
+        row.get_str("display_name")
+    }
+
+    pub(crate) fn load_patient_records(
+        &self,
+        ws_id: &str,
+    ) -> Result<Vec<DemoSourceRecord>, DbError> {
+        let q = Query::select()
+            .columns(SourceRecords::COLS.iter().copied())
+            .from(SourceRecords::Table)
+            .and_where(Expr::col(SourceRecords::WorkspaceId).eq(ws_id))
+            .order_by(SourceRecords::RecordedAt, Order::Desc)
+            .to_owned();
+        self.driver
+            .select(&q)?
+            .iter()
+            .map(decode_source_record)
+            .collect()
+    }
+
+    pub(crate) fn upsert_chat_snapshot(
+        &self,
+        ws_id: &str,
+        chat_id: &str,
+        title: &str,
+        created_at: &str,
+        snap: &ChatSnapshot,
+    ) -> Result<(), DbError> {
+        let insert = Query::insert()
+            .into_table(Chats::Table)
+            .columns(Chats::COLS.iter().copied())
+            .values_panic([
+                chat_id.into(),
+                ws_id.into(),
+                title.into(),
+                created_at.into(),
+                serde_json::to_string(snap)?.as_str().into(),
+            ])
+            .on_conflict(
+                OnConflict::column(Chats::ChatId)
+                    .update_columns([Chats::Title, Chats::SnapshotJson])
+                    .to_owned(),
+            )
+            .to_owned();
+        self.driver.insert(&insert)
+    }
+
+    pub(crate) fn mark_today_item_seen(&self, ws_id: &str, item_id: &str) -> Result<(), DbError> {
+        let rows = self.driver.select_where(
+            TodayItems::Table,
+            &[TodayItems::RowJson],
+            &[
+                (TodayItems::WorkspaceId, ws_id),
+                (TodayItems::ItemId, item_id),
+            ],
+        )?;
+        if let Some(row) = rows.first() {
+            self.driver.update_where(
+                TodayItems::Table,
+                TodayItems::Seen,
+                1.into(),
+                &[
+                    (TodayItems::WorkspaceId, ws_id),
+                    (TodayItems::ItemId, item_id),
+                ],
+            )?;
+            let mut parsed: TodayRow = serde_json::from_str(&row.get_str("row_json")?)?;
+            parsed.seen = true;
+            parsed.standing = Some(SeenStandingWire::Seen {
+                seen_at: DEMO_NOW.into(),
+            });
+            self.driver.update_where(
+                TodayItems::Table,
+                TodayItems::RowJson,
+                serde_json::to_string(&parsed)?.into(),
+                &[
+                    (TodayItems::WorkspaceId, ws_id),
+                    (TodayItems::ItemId, item_id),
+                ],
+            )?;
+        }
+        Ok(())
     }
 }
 
 pub(crate) type ChartRead = (String, RecordGroup, String, String);
 
-pub(crate) fn build_exchange(
+pub(crate) fn build_exchange_with_segments(
     prefix: &str,
     suffix: &str,
     msg: (String, String, i64),
     query: &str,
     reads: &[ChartRead],
     more: bool,
-    answer_text: String,
+    answer: (String, Vec<MessageSegment>, Vec<MessageSegment>),
 ) -> Exchange {
     let (key, question, ts) = msg;
+    let (answer_text, segments, basis) = answer;
     let steps = if reads.is_empty() && query.is_empty() {
         Vec::new()
     } else {
@@ -827,22 +1182,198 @@ pub(crate) fn build_exchange(
             attempt_id: AttemptId(format!("att-{prefix}-{suffix}")),
             finished_at: SavedAt(ts + 2),
             text: answer_text,
-            segments: Vec::new(),
-            basis: None,
+            segments,
+            basis: (!basis.is_empty()).then_some(basis),
             newer_records: false,
             feedback: None,
         },
     }
 }
 
-fn not_found(kind: &'static str, id: &str) -> DbError {
+pub(crate) fn build_cited_source(
+    key: &str,
+    number: usize,
+    rec: &DemoSourceRecord,
+) -> CitedSourceWire {
+    let quote: String = rec
+        .body
+        .split_whitespace()
+        .take(24)
+        .collect::<Vec<_>>()
+        .join(" ");
+    CitedSourceWire {
+        source_key: key.to_owned(),
+        number,
+        source_label: rec.source_label.clone(),
+        title: rec.title.clone(),
+        record_type: Some(rec.group.clone()),
+        recorded_at: Some(rec.recorded_at.clone()),
+        record_status: Some("final".into()),
+        quote,
+        body: rec.body.clone(),
+        readable_parts: Vec::new(),
+        fields: Vec::new(),
+        raw_content: None,
+        external_url: None,
+        origin: CitationOrigin::SourceRecord,
+    }
+}
+
+pub(crate) fn build_item_citation(rec: &DemoSourceRecord) -> ItemCitationWire {
+    let excerpt: String = rec
+        .body
+        .split_whitespace()
+        .take(24)
+        .collect::<Vec<_>>()
+        .join(" ");
+    ItemCitationWire {
+        candidate_id: rec.id.clone(),
+        revision: "1".into(),
+        source_id: "synthetic-ehr".into(),
+        source_label: rec.source_label.clone(),
+        label: rec.title.clone(),
+        as_of: Some(rec.recorded_at.clone()),
+        excerpt,
+        body: rec.body.clone(),
+        native_uri: None,
+    }
+}
+
+pub(crate) fn synthesize_chart_answer_with_citations(
+    question: &str,
+    records: &[DemoSourceRecord],
+    key_prefix: &str,
+) -> (
+    String,
+    Vec<MessageSegment>,
+    Vec<MessageSegment>,
+    BTreeMap<String, CitedSourceWire>,
+) {
+    if records.is_empty() {
+        let text = format!(
+            "No matching chart records were found in SQLite for \"{question}\". Try asking about medications, labs, blood pressure, or recent visits."
+        );
+        return (
+            text.clone(),
+            vec![MessageSegment::Text { text }],
+            Vec::new(),
+            BTreeMap::new(),
+        );
+    }
+    let mut text = format!(
+        "From SQLite chart search across {} record(s):\n\n",
+        records.len()
+    );
+    let mut segments = vec![MessageSegment::Text {
+        text: format!(
+            "From SQLite chart search across {} record(s): ",
+            records.len()
+        ),
+    }];
+    let mut sources = BTreeMap::new();
+    for (idx, rec) in records.iter().enumerate() {
+        let number = idx + 1;
+        let key = format!("{key_prefix}{}-{}", next_seq(), number);
+        let excerpt: String = rec
+            .body
+            .split_whitespace()
+            .take(30)
+            .collect::<Vec<_>>()
+            .join(" ");
+        text.push_str(&format!(
+            "[{number}] {} ({}) — {}...\n\n",
+            rec.title, rec.recorded_at, excerpt
+        ));
+        if idx > 0 {
+            segments.push(MessageSegment::Text { text: " ".into() });
+        }
+        segments.push(MessageSegment::Text {
+            text: format!("{} ({}): {excerpt}", rec.title, rec.recorded_at),
+        });
+        let cited = build_cited_source(&key, number, rec);
+        segments.push(MessageSegment::Citation {
+            source_key: key.clone(),
+            number,
+            label: format!("{} ({})", rec.title, rec.recorded_at),
+            quote: cited.quote.clone(),
+            target: CitationTargetKind::WholeRecord,
+        });
+        sources.insert(key, cited);
+    }
+    let basis = vec![MessageSegment::Text {
+        text: format!(
+            "Grounded directly in {} chart record(s) saved in the browser SQLite database.",
+            records.len()
+        ),
+    }];
+    (text.trim_end().into(), segments, basis, sources)
+}
+
+pub(crate) fn build_answer_segments_and_sources_for_follow_up(
+    summary: &str,
+    prompt: &str,
+    records: &[DemoSourceRecord],
+) -> (Exchange, BTreeMap<String, CitedSourceWire>) {
+    let seq = next_seq();
+    let reads: Vec<_> = records
+        .iter()
+        .take(2)
+        .map(|r| {
+            (
+                r.id.clone(),
+                parse_record_group(&r.group),
+                r.title.clone(),
+                r.recorded_at.clone(),
+            )
+        })
+        .collect();
+    let (_, segments, basis, sources) =
+        synthesize_chart_answer_with_citations(summary, records.get(..2).unwrap_or(records), "fu");
+    let answer_text = format!(
+        "Paused follow-up \"{summary}\" for review. Ask below to update the plan or restart monitoring."
+    );
+    let ex = build_exchange_with_segments(
+        "fu",
+        &seq.to_string(),
+        (
+            format!("msg-fu-{seq}"),
+            prompt.to_owned(),
+            DEMO_BASE_UNIX + 10,
+        ),
+        summary,
+        &reads,
+        false,
+        (answer_text, segments, basis),
+    );
+    (ex, sources)
+}
+
+fn summarize_snapshot(snap: &ChatSnapshot) -> (Option<String>, Option<HistoryWorkOutcome>) {
+    for ex in snap.transcript.iter().rev() {
+        if let AnswerState::Finished { text, .. } = &ex.answer {
+            let preview = text.lines().next().unwrap_or("").trim();
+            let short = if preview.chars().count() > 110 {
+                format!("{}…", preview.chars().take(109).collect::<String>())
+            } else {
+                preview.to_owned()
+            };
+            return (Some(short), Some(HistoryWorkOutcome::Answered));
+        }
+    }
+    (None, None)
+}
+
+pub(crate) fn not_found(kind: &'static str, id: &str) -> DbError {
     DbError::NotFound {
         kind,
         id: id.into(),
     }
 }
 
-fn required_str(value: &serde_json::Value, key: &'static str) -> Result<String, DbError> {
+pub(crate) fn required_str(
+    value: &serde_json::Value,
+    key: &'static str,
+) -> Result<String, DbError> {
     value
         .get(key)
         .and_then(serde_json::Value::as_str)
@@ -882,34 +1413,6 @@ fn extract_search_terms(question: &str) -> Vec<String> {
     terms
 }
 
-fn synthesize_chart_answer(question: &str, records: &[DemoSourceRecord]) -> String {
-    if records.is_empty() {
-        return format!(
-            "No matching chart records were found in SQLite for \"{question}\". Try asking about medications, labs, blood pressure, or recent visits."
-        );
-    }
-    let mut out = format!(
-        "From SQLite chart search across {} record(s):\n\n",
-        records.len()
-    );
-    for (idx, rec) in records.iter().enumerate() {
-        let excerpt: String = rec
-            .body
-            .split_whitespace()
-            .take(34)
-            .collect::<Vec<_>>()
-            .join(" ");
-        out.push_str(&format!(
-            "[{}] {} ({}) — {}...\n\n",
-            idx + 1,
-            rec.title,
-            rec.recorded_at,
-            excerpt
-        ));
-    }
-    out.trim_end().into()
-}
-
 fn truncate_title(question: &str) -> String {
     let t = question.trim();
     if t.chars().count() <= 44 {
@@ -919,6 +1422,6 @@ fn truncate_title(question: &str) -> String {
     }
 }
 
-fn parse_record_group(raw: &str) -> RecordGroup {
+pub(crate) fn parse_record_group(raw: &str) -> RecordGroup {
     serde_json::from_value(serde_json::Value::String(raw.into())).unwrap_or(RecordGroup::Other)
 }

@@ -12,6 +12,7 @@ impl PhysicianClient {
         &self,
         workspace_id: &str,
     ) -> Result<PatientReviewsResponse, HttpError> {
+        crate::try_demo!(self, s => s.patient_reviews(workspace_id));
         self.get(&format!(
             "/patient-workspaces/{}/reviews",
             query_escape(workspace_id)
@@ -25,6 +26,7 @@ impl PhysicianClient {
         workspace_id: &str,
         review_id: &str,
     ) -> Result<PatientReviewWire, HttpError> {
+        crate::try_demo!(self, s => s.patient_review(workspace_id, review_id));
         self.get(&format!(
             "/patient-workspaces/{}/reviews/{}",
             query_escape(workspace_id),
@@ -44,6 +46,10 @@ impl PhysicianClient {
         workspace_id: &str,
         request: &ReviewControlRequest,
     ) -> Result<ReviewControlResponse, HttpError> {
+        crate::try_demo!(
+            self,
+            s => s.control_patient_review(workspace_id, &request.review_id, request)
+        );
         let path = format!(
             "/patient-workspaces/{}/reviews/{}/control",
             query_escape(workspace_id),
