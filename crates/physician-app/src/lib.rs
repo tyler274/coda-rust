@@ -683,6 +683,7 @@ impl DemoRuntime {
         if let Some(db_url) = self.db_url.peek().clone() {
             session.client.set(PhysicianClient::demo_sqlite(db_url));
             self.state.set(DemoConnectionState::LocalFallback);
+            session.drop_patient_content();
             *session.taken.write() += 1;
             return;
         }
@@ -705,6 +706,7 @@ impl DemoRuntime {
             Ok(_) => {
                 session.client.set(next);
                 self.state.set(DemoConnectionState::LiveHarness);
+                session.drop_patient_content();
                 *session.taken.write() += 1;
             }
             Err(err) => {
@@ -1057,6 +1059,7 @@ pub fn PhysicianRoot(
                         client_sig.set(probe);
                         let mut st = runtime.state;
                         st.set(DemoConnectionState::LiveHarness);
+                        session.drop_patient_content();
                         let mut taken_sig = taken;
                         *taken_sig.write() += 1;
                     }

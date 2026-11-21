@@ -349,18 +349,20 @@ try {
   assert(!liveBody.includes('Invite colleague'), 'Live demo must hide Invite colleague');
   await assertNoLoadErrors('Live harness subpath mock');
 
-  // Verify honest budget-exhausted state + local SQLite fallback switchover button.
+  // Verify switching from a non-Today place via budget fallback / Reset remounts at Today cleanly.
+  await clickBtn('Updates');
+  await until(`document.body.innerText.includes('Nothing needing review') || document.body.innerText.includes('Updates')`, 'navigated to Updates in live harness');
   allowMockBudget429 = true;
   budgetExhaustNextSession = true;
   await clickBtn('Reset demo');
   await until(
-    `document.querySelector('.demo-quick-bar')?.innerText.includes('Live turn limit reached') && document.body.innerText.includes('Live demo turn budget reached for this visitor.') && document.body.innerText.includes('Use local chart preview')`,
-    '429 demo_turn_budget_exhausted shows Live turn limit reached and Use local chart preview',
+    `document.querySelector('.sidebar-footer')?.innerText.includes('Live turn limit reached') && document.querySelector('.sidebar-footer')?.innerText.includes('Use local chart preview')`,
+    '429 demo_turn_budget_exhausted shows Live turn limit reached and Use local chart preview in sidebar',
   );
   await clickBtn('Use local chart preview');
   await until(
     `document.querySelector('.demo-quick-bar')?.innerText.includes('Local chart preview') && document.body.innerText.includes('Gary Kowalczyk') && document.body.innerText.includes('6 need you')`,
-    'Use local chart preview switches back to DemoStore cleanly',
+    'Use local chart preview remounts shell on Today backed by DemoStore cleanly',
   );
   await call('Fetch.disable');
 
