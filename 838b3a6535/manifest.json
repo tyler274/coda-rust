@@ -1,0 +1,93 @@
+{
+  "branch": "feat-cod76-78-dabney-staging-mail-hosts",
+  "entries": [
+    {
+      "id": 1,
+      "claim": "AC-browser: physician-sample Chromium browser qualification suite (--test site -- --ignored --test-threads=1) against disposable Postgres",
+      "label": "",
+      "kind": "run",
+      "revision": "838b3a6535c4ba2f6478e3f310dd194b18e57060",
+      "dirty": false,
+      "recorded": "2026-11-21T05:33:36+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "PHYSICIAN_RUNTIME_TEST_DATABASE_URL=postgres://postgres@127.0.0.1:55439/coda_test cargo test --locked -j 4 -p physician-sample --test site -- --ignored --test-threads=1"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "01-bash.log"
+      ],
+      "seconds": 236.0,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 2,
+      "claim": "AC-infra: tofu fmt -check, offline tofu test (rust-environments, public-site, observability), and rust-environments Python contract tests",
+      "label": "",
+      "kind": "run",
+      "revision": "838b3a6535c4ba2f6478e3f310dd194b18e57060",
+      "dirty": false,
+      "recorded": "2026-11-21T05:37:32+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail; tofu fmt -check -recursive infra/gcp; for d in infra/gcp/rust-environments infra/gcp/public-site infra/gcp/observability; do (cd \"$d\" && tofu init -backend=false -input=false -lockfile=readonly >/dev/null && tofu test); done; python3 -m unittest discover -s infra/gcp/rust-environments/tests -p \"*.py\" -v"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "02-bash.log"
+      ],
+      "seconds": 63.2,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 3,
+      "claim": "AC-workflows-docs: actionlint on workflows and check-book-links.sh across mdBook documentation",
+      "label": "",
+      "kind": "run",
+      "revision": "838b3a6535c4ba2f6478e3f310dd194b18e57060",
+      "dirty": false,
+      "recorded": "2026-11-21T05:38:35+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail; actionlint && bash scripts/check-book-links.sh"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "03-bash.log"
+      ],
+      "seconds": 2.4,
+      "exit": 0,
+      "ok": true
+    },
+    {
+      "id": 4,
+      "claim": "AC-rust: cargo fmt --check, gmail tests, public-site tests, and workspace Clippy -D warnings",
+      "label": "",
+      "kind": "run",
+      "revision": "838b3a6535c4ba2f6478e3f310dd194b18e57060",
+      "dirty": false,
+      "recorded": "2026-11-21T05:38:38+00:00",
+      "command": [
+        "bash",
+        "-c",
+        "set -euo pipefail; cargo fmt --all -- --check && cargo test --locked -j 4 -p gmail && cargo test --locked -j 4 -p public-site --lib --tests && cargo clippy --locked --workspace --all-targets -- -D warnings"
+      ],
+      "expect": null,
+      "expect_fail": false,
+      "files": [
+        "04-bash.log"
+      ],
+      "seconds": 89.0,
+      "exit": 0,
+      "ok": true
+    }
+  ]
+}
