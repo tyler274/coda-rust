@@ -356,3 +356,19 @@
   --elevation-4: 0 4px 8px rgb(var(--ref-shadow) / .4), 0 18px 44px rgb(var(--ref-shadow) / .55);
   --elevation-5: 0 8px 16px rgb(var(--ref-shadow) / .45), 0 26px 72px rgb(var(--ref-shadow) / .6);
 }
+@media (prefers-contrast: more) {
+  :root {
+    --muted: var(--ref-neutral-25);
+    --outline: rgb(16 32 23 / .55);
+    --outline-variant: rgb(16 32 23 / .34);
+    --focus-ring-width: 3px;
+    --focus-ring-color: var(--ink);
+  }
+  :root[data-theme="dark"] {
+    --muted: var(--ref-night-89);
+    --outline: rgb(243 244 246 / .56);
+    --outline-variant: rgb(243 244 246 / .34);
+    --focus-ring-width: 3px;
+    --focus-ring-color: var(--ink);
+  }
+}

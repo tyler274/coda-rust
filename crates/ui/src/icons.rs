@@ -61,11 +61,12 @@ pub enum IconName {
     More,
     Pencil,
     Trash,
+    Lock,
 }
 
 impl IconName {
     /// Every icon in the set.
-    pub const ALL: [IconName; 52] = [
+    pub const ALL: [IconName; 53] = [
         IconName::Alert,
         IconName::Archive,
         IconName::ArrowLeft,
@@ -118,6 +119,7 @@ impl IconName {
         IconName::More,
         IconName::Pencil,
         IconName::Trash,
+        IconName::Lock,
     ];
 
     /// This icon's name in lowercase words joined by hyphens, such as `arrow-left`.
@@ -175,6 +177,7 @@ impl IconName {
             IconName::More => "more",
             IconName::Pencil => "pencil",
             IconName::Trash => "trash",
+            IconName::Lock => "lock",
         }
     }
 }
@@ -357,6 +360,10 @@ fn marks(name: IconName) -> &'static [Mark] {
             Mark::Path("M4 7h16M9 7V4h6v3"),
             Mark::Path("M6 7l1 13h10l1-13"),
             Mark::Path("M10 11v5M14 11v5"),
+        ],
+        IconName::Lock => &[
+            Mark::Rect("5", "11", "14", "10", Some("2")),
+            Mark::Path("M8 11V7a4 4 0 0 1 8 0v4"),
         ],
     }
 }
