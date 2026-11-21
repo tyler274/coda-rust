@@ -1423,8 +1423,7 @@ async fn site_from_env(
                 std::sync::Arc::clone(&bus),
                 SampleFeed::new(),
                 std::sync::Arc::clone(&demo_budget),
-            )
-            .layer(middleware::from_fn(cors)),
+            ),
             Some(chat),
         )
     } else {
@@ -1507,6 +1506,11 @@ async fn site_from_env(
     )
     .await;
     let router = route_readiness(router, readiness);
+    let router = if durable {
+        router.layer(middleware::from_fn(cors))
+    } else {
+        router
+    };
     let compaction = chat.map(|chat| chat.start_compaction());
     Ok((router, compaction))
 }
@@ -2293,7 +2297,9 @@ fn cors_headers(mut response: Response) -> Response {
     );
     headers.insert(
         axum::http::header::ACCESS_CONTROL_ALLOW_HEADERS,
-        HeaderValue::from_static("content-type, authorization, x-coda-pair"),
+        HeaderValue::from_static(
+            "content-type, authorization, cache-control, last-event-id, x-coda-pair",
+        ),
     );
     response
 }
