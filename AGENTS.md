@@ -113,6 +113,15 @@ the user need not name each one. Skills supply methods and judgment within these
 shared development defaults. `.claude/skills` links to them; resolve skill
 references from their real repository paths.
 
+Two kinds of agent share this repository. The Antigravity swarm owns ticketed
+work from start to finish: it authors the change, reviews it, merges it and
+records it in Linear. Operator sessions (Claude Code, Codex, or a developer's
+own shell) own ad-hoc work: repository hygiene, infrastructure, documentation
+and investigations. An operator session that finds ticket-shaped work hands it
+to the swarm by posting on the swarm's board, addressed to its coordinator, and
+does not start it. Neither side edits a branch the other created; a change
+wanted on the other side's branch is a request on its board or in its PR.
+
 ## Where work goes
 
 Work at the owner. Before adding anything, find what already owns it and extend
