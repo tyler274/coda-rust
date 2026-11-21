@@ -776,6 +776,15 @@ async fn review_follow_up_now(
         token: &req_ctx.token,
         now_unix: req_ctx.real_now_unix,
     };
+    let identity = physician_auth::PhysicianIdentity {
+        practice_id: req_ctx.practice_id.clone(),
+        physician_id: req_ctx.physician_id.clone(),
+    };
+    if let Some(response) =
+        crate::demo_session::check_request_demo_budget(extensions, &parts.headers, &identity)
+    {
+        return response;
+    }
 
     let outcome = match store
         .review_follow_up_now_for_physician(&access, &command_key, &follow_up_id, &mut authority)
@@ -1181,6 +1190,15 @@ async fn resume_follow_up(
         token: &req_ctx.token,
         now_unix: req_ctx.real_now_unix,
     };
+    let identity = physician_auth::PhysicianIdentity {
+        practice_id: req_ctx.practice_id.clone(),
+        physician_id: req_ctx.physician_id.clone(),
+    };
+    if let Some(response) =
+        crate::demo_session::check_request_demo_budget(extensions, &parts.headers, &identity)
+    {
+        return response;
+    }
 
     let outcome = match store
         .resume_follow_up_for_physician(&access, &command_key, &follow_up_id, &mut authority)

@@ -18,6 +18,7 @@ pub mod briefings;
 mod care;
 pub mod chart_load;
 mod chat_draft;
+pub mod demo_session;
 mod dictation;
 pub mod durable;
 mod feedback;
@@ -344,8 +345,21 @@ pub fn durable_site_with_feed(
     bus: std::sync::Arc<dyn physician_bus::Bus>,
     feed: std::sync::Arc<SampleFeed>,
 ) -> Router {
+    let demo_budget = std::sync::Arc::new(
+        demo_session::DemoTurnBudget::from_env(|key| env::var(key).ok())
+            .unwrap_or_else(|_| demo_session::DemoTurnBudget::new(Default::default())),
+    );
+    durable_site_with_feed_and_budget(chat, bus, feed, demo_budget)
+}
+
+fn durable_site_with_feed_and_budget(
+    chat: std::sync::Arc<durable::DurableChat>,
+    bus: std::sync::Arc<dyn physician_bus::Bus>,
+    feed: std::sync::Arc<SampleFeed>,
+    demo_budget: std::sync::Arc<demo_session::DemoTurnBudget>,
+) -> Router {
     let runtime_store = chat.store.clone();
-    let live = live::Live::new(std::sync::Arc::clone(&bus), chat);
+    let live = live::Live::with_demo_budget(std::sync::Arc::clone(&bus), chat, demo_budget);
     site()
         .route("/commands", post(live::submit))
         .route(
@@ -596,6 +610,12 @@ where
         .route("/assets/coda-health-logo-transparent.png", get(logo))
         .route("/favicon.svg", get(favicon))
         .fallback(site_file)
+        .layer(axum::Extension(demo_session::FallbackDemoTurnBudget(
+            std::sync::Arc::new(
+                demo_session::DemoTurnBudget::from_env(|key| env::var(key).ok())
+                    .unwrap_or_else(|_| demo_session::DemoTurnBudget::new(Default::default())),
+            ),
+        )))
 }
 
 fn proxied(upstream: String) -> Router {
@@ -1132,6 +1152,14 @@ fn validate_site_env(get: &impl Fn(&str) -> Option<String>) -> Result<(), hostin
     if hosting::StaffSetupAuth::from_env(get)?.is_some() && !required {
         return Err("staff practice setup requires PHYSICIAN_AUTH=required".into());
     }
+    let public_demo = hosting::is_public_demo(get);
+    if public_demo && !required {
+        return Err("public-demo mode requires PHYSICIAN_AUTH=required".into());
+    }
+    if public_demo {
+        let _ = demo_session::DemoSessionConfig::from_env(get)?;
+    }
+    let _ = demo_session::DemoTurnBudgetConfig::from_env(get)?;
     physician_bus::validate_env(get, hosted)?;
     if durable {
         let _ = local_product::physician_chat::PhysicianSkills::configured(
@@ -1250,6 +1278,14 @@ async fn site_from_env(
     if staff.is_some() && !required {
         return Err("staff practice setup requires PHYSICIAN_AUTH=required".into());
     }
+    let public_demo = hosting::is_public_demo(&get);
+    if public_demo && !required {
+        return Err("public-demo mode requires PHYSICIAN_AUTH=required".into());
+    }
+    let demo_session = public_demo
+        .then(|| demo_session::DemoSessionConfig::from_env(&get))
+        .transpose()?;
+    let demo_budget = std::sync::Arc::new(demo_session::DemoTurnBudget::from_env(&get)?);
     let mail = gmail::Delivery::from_env(&get);
     let bus = physician_bus::from_env(&get, hosted)
         .await
@@ -1382,8 +1418,13 @@ async fn site_from_env(
             "physician chat accepts turns into Postgres; this process does not run the model"
         );
         (
-            durable_site(std::sync::Arc::clone(&chat), std::sync::Arc::clone(&bus))
-                .layer(middleware::from_fn(cors)),
+            durable_site_with_feed_and_budget(
+                std::sync::Arc::clone(&chat),
+                std::sync::Arc::clone(&bus),
+                SampleFeed::new(),
+                std::sync::Arc::clone(&demo_budget),
+            )
+            .layer(middleware::from_fn(cors)),
             Some(chat),
         )
     } else {
@@ -1449,6 +1490,7 @@ async fn site_from_env(
     }
     let dictation_backend = dictation::DictationBackend::from_env(&get)?;
     base = base.layer(axum::Extension(dictation_backend));
+    base = base.layer(axum::Extension(demo_budget));
     let postgres = runtime.zip(readiness.as_ref());
     let forbid_simulation = configured(&get, "CODA_ENVIRONMENT").as_deref() == Some("prd");
     let router = auth::authed_router_configured(
@@ -1460,6 +1502,7 @@ async fn site_from_env(
         mail,
         rehearsal,
         staff,
+        demo_session,
         forbid_simulation,
     )
     .await;
@@ -1536,9 +1579,13 @@ fn route_readiness(app: Router, readiness: Option<hosting::Readiness>) -> Router
     )
 }
 
-/// Wraps the whole router in the `http.server` tracing layer.
+/// Default HTTP request body ceiling (`8 MiB`) for physician ingress routes
+/// so dictation audio uploads and command payloads fit while rejecting abuse.
+pub const SAMPLE_MAX_BODY_BYTES: usize = 8 * 1024 * 1024;
+
+/// Wraps the whole router in the `http.server` tracing layer and [`http::ingress::IngressGuard`].
 pub fn traced(router: Router) -> Router {
-    http::ingress::IngressGuard::from_env(http::ingress::DEFAULT_MAX_BODY_BYTES)
+    http::ingress::IngressGuard::from_env(SAMPLE_MAX_BODY_BYTES)
         .protect(router.layer(telemetry::http_layer()))
 }
 
@@ -3157,5 +3204,64 @@ mod tests {
         );
         assert_eq!(stalled_json["configured"], true);
         assert_eq!(stalled_json["standing"], "unavailable");
+    }
+
+    #[tokio::test]
+    async fn traced_ingress_guard_enforces_8mib_body_limit_and_exempts_health() {
+        let app = traced(
+            Router::new()
+                .route("/health", axum::routing::get(|| async { StatusCode::OK }))
+                .route(
+                    "/commands",
+                    post(|body: axum::body::Bytes| async move {
+                        (StatusCode::OK, body.len().to_string())
+                    }),
+                ),
+        );
+
+        let three_mib = vec![b'a'; 3 * 1024 * 1024];
+        let allowed = app
+            .clone()
+            .oneshot(
+                axum::http::Request::builder()
+                    .method("POST")
+                    .uri("/commands")
+                    .header(axum::http::header::CONTENT_LENGTH, three_mib.len())
+                    .body(Body::from(three_mib))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(allowed.status(), StatusCode::OK);
+
+        let too_big_len = SAMPLE_MAX_BODY_BYTES + 1;
+        let rejected = app
+            .clone()
+            .oneshot(
+                axum::http::Request::builder()
+                    .method("POST")
+                    .uri("/commands")
+                    .header(axum::http::header::CONTENT_LENGTH, too_big_len)
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(rejected.status(), StatusCode::PAYLOAD_TOO_LARGE);
+
+        for _ in 0..30 {
+            let health = app
+                .clone()
+                .oneshot(
+                    axum::http::Request::builder()
+                        .method("GET")
+                        .uri("/health")
+                        .body(Body::empty())
+                        .unwrap(),
+                )
+                .await
+                .unwrap();
+            assert_eq!(health.status(), StatusCode::OK);
+        }
     }
 }

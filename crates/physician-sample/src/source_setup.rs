@@ -669,13 +669,32 @@ fn project_source(
     }
 }
 
+async fn forbid_public_demo_mutations(
+    request: Request<Body>,
+    next: axum::middleware::Next,
+) -> Response {
+    if request
+        .extensions()
+        .get::<crate::auth::AuthContext>()
+        .is_some_and(|ctx| ctx.identity.practice_id == crate::demo_session::DEMO_PRACTICE_ID)
+    {
+        return (
+            StatusCode::FORBIDDEN,
+            Json(serde_json::json!({
+                "detail": "Public demo sessions cannot modify practice source connections."
+            })),
+        )
+            .into_response();
+    }
+    next.run(request).await
+}
+
 /// Builds the `/connections` routes attached to `site()`.
 pub(crate) fn routes<S>() -> Router<S>
 where
     S: Clone + Send + Sync + 'static,
 {
-    Router::new()
-        .route("/connections", get(list_connections))
+    let mutations = Router::new()
         .route("/connections/{source_id}/connect", post(connect_source))
         .route(
             "/connections/{source_id}/assist",
@@ -697,6 +716,11 @@ where
             post(resolve_spruce_rollback),
         )
         .route("/connections/{source_id}/simulate", post(simulate_event))
+        .route_layer(axum::middleware::from_fn(forbid_public_demo_mutations));
+
+    Router::new()
+        .route("/connections", get(list_connections))
+        .merge(mutations)
 }
 
 /// Reads structured Today connection notices for `practice_id` when a [`SourceSetupStore`] is present.

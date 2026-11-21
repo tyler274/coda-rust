@@ -986,6 +986,27 @@ enum PaceError {
     },
 }
 
+/// Whether this worker may read any source or is restricted to synthetic charts.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum SourceBoundary {
+    Any,
+    SyntheticOnly,
+}
+
+impl SourceBoundary {
+    fn from_model_and_demo(model: &ModelSource, public_demo: bool) -> Self {
+        if model.synthetic_only() || public_demo {
+            Self::SyntheticOnly
+        } else {
+            Self::Any
+        }
+    }
+
+    fn is_synthetic_only(self) -> bool {
+        matches!(self, Self::SyntheticOnly)
+    }
+}
+
 struct Worker {
     store: Store,
     auth: PostgresAuthStore,
@@ -1004,11 +1025,14 @@ struct Worker {
     skills: Option<local_product::physician_chat::PhysicianSkills>,
     /// Operational health tracker surfacing connected-care sync failures to telemetry/alerts.
     connected_care_health: local_product::runtime::connected_care::ConnectedCareSyncHealth,
+    /// Whether turns and background jobs are restricted to synthetic chart sources.
+    source_boundary: SourceBoundary,
 }
 
 struct WorkerConfig {
     hosted: bool,
     k_service: bool,
+    source_boundary: SourceBoundary,
     listen_addr: String,
     simulation_practices: SimulationPractices,
     clinical_library: Option<hosting::ClinicalLibraryClient>,
@@ -1030,6 +1054,7 @@ impl WorkerConfig {
     fn from_env(get: impl Fn(&str) -> Option<String>) -> Result<Self, hosting::StartupError> {
         let hosted = is_hosted(&get);
         let k_service = get("K_SERVICE").is_some();
+        let public_demo = hosting::is_public_demo(&get);
         let listen_addr = listen_addr(&get);
         let simulation_practices = SimulationPractices::from_env(&get)?;
         let clinical_library = hosting::ClinicalLibraryConfig::from_env(&get)
@@ -1047,6 +1072,7 @@ impl WorkerConfig {
             WakeMode::LiveOnly
         };
         let model = ModelSource::from_env(transport, &get)?;
+        let source_boundary = SourceBoundary::from_model_and_demo(&model, public_demo);
         let skills_dir = configured(&get, "PHYSICIAN_SKILLS_DIR");
         let wake_skills = local_product::physician_chat::PhysicianSkills::configured(
             skills_dir.as_deref(),
@@ -1083,6 +1109,7 @@ impl WorkerConfig {
         Ok(Self {
             hosted,
             k_service,
+            source_boundary,
             listen_addr,
             simulation_practices,
             clinical_library,
@@ -1103,6 +1130,11 @@ impl WorkerConfig {
 }
 
 impl Worker {
+    /// Whether every worker turn and job is restricted to synthetic chart sources.
+    fn synthetic_only(&self) -> bool {
+        self.model.synthetic_only() || self.source_boundary.is_synthetic_only()
+    }
+
     /// The telemetry origin and scenario of a turn in `practice` accepted
     /// with `scenario`. A rehearsal practice's turn is `simulation` with its
     /// scenario; any other turn takes this worker's own origin and no
@@ -1187,6 +1219,7 @@ impl Worker {
                     skills_dir: config.skills_dir.clone(),
                     calendar: config.calendar.clone(),
                     elation,
+                    source_boundary: config.source_boundary,
                 },
             }),
             clinical_library: config.clinical_library.clone(),
@@ -1204,6 +1237,7 @@ impl Worker {
             skills,
             connected_care_health:
                 local_product::runtime::connected_care::ConnectedCareSyncHealth::default(),
+            source_boundary: config.source_boundary,
         })
     }
 
@@ -1685,6 +1719,7 @@ struct VisitPrepWakeHandler {
     skills_dir: Option<String>,
     calendar: Option<PracticeSyntheticCalendar>,
     elation: Option<PracticeElationSource>,
+    source_boundary: SourceBoundary,
 }
 
 #[async_trait::async_trait]
@@ -1745,7 +1780,9 @@ impl WakeHandler for VisitPrepWakeHandler {
             .provider(self.quota.clone())
             .await
             .map_err(WakeError::ModelProvider)?;
-        let authority = WorkerAuthority::of(&self.model);
+        let authority = WorkerAuthority::with_synthetic_only(
+            self.model.synthetic_only() || self.source_boundary.is_synthetic_only(),
+        );
         let real_now = std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
             .map_or(0, |d| d.as_secs());
@@ -2329,12 +2366,23 @@ struct WorkerAuthority {
 
 impl WorkerAuthority {
     /// The worker's authority for runs `model`'s transport makes.
+    #[cfg(test)]
     fn of(model: &ModelSource) -> Self {
+        Self::with_synthetic_only(model.synthetic_only())
+    }
+
+    /// Explicit authority overriding whether only synthetic sources are permitted.
+    fn with_synthetic_only(synthetic_only: bool) -> Self {
         Self {
             inner: RuntimeAuthority,
-            synthetic_only: model.synthetic_only(),
+            synthetic_only,
             spruce: None,
         }
+    }
+
+    /// The worker's authority across both model transport and `public-demo` profile policy.
+    fn for_worker(worker: &Worker) -> Self {
+        Self::with_synthetic_only(worker.synthetic_only())
     }
 
     /// Chat-turn authority carrying practice auth and review dispatch context for filtered-mail tools.
@@ -2354,7 +2402,7 @@ impl WorkerAuthority {
         });
         Self {
             inner: RuntimeAuthority,
-            synthetic_only: worker.model.synthetic_only(),
+            synthetic_only: worker.synthetic_only(),
             spruce: Some(local_product::runtime::SpruceChatContext {
                 auth,
                 review_receiver,
@@ -3103,7 +3151,52 @@ mod tests {
             plan.check_source_boundary(&tx, &scope(&withdrawn)).await,
             refusal
         );
+
+        // Public demo runs enforce the exact same synthetic-only source boundary
+        // even when using the API Responses transport.
+        let demo_authority = WorkerAuthority::with_synthetic_only(true);
+        assert!(
+            demo_authority
+                .check_source_boundary(&tx, &scope(&mixed))
+                .await
+                .is_err()
+        );
+        demo_authority
+            .check_source_boundary(&tx, &scope(&practice))
+            .await
+            .unwrap();
         tx.rollback().await.unwrap();
+    }
+
+    #[test]
+    fn worker_config_marks_public_demo_and_registers_demo_practice() {
+        let config = WorkerConfig::from_env(|key| match key {
+            "K_SERVICE" => Some("physician-worker".to_owned()),
+            "CODA_ENVIRONMENT" => Some("demo".to_owned()),
+            "CODA_HOSTED_PROFILE" => Some(hosting::PUBLIC_DEMO_PROFILE.to_owned()),
+            "PHYSICIAN_AUTH" => Some("required".to_owned()),
+            "PHYSICIAN_DATABASE_URL" => Some("postgres://db/physician".to_owned()),
+            "PHYSICIAN_REDIS_URL" => Some("rediss://127.0.0.1:6379".to_owned()),
+            "PHYSICIAN_REDIS_CA_PEM" => Some("pem".to_owned()),
+            "OPENAI_API_KEY" => Some("demo-key".to_owned()),
+            "CODA_ALLOW_MODEL_CALLS" => Some("1".to_owned()),
+            "CODA_CHAT_MODEL" => Some("gpt-5.4".to_owned()),
+            "CODA_CHAT_EFFORT" => Some("high".to_owned()),
+            "CODA_CHAT_CONTEXT_WINDOW_TOKENS" => Some("272000".to_owned()),
+            "CODA_CHAT_INPUT_LIMIT_TOKENS" => Some("922000".to_owned()),
+            "CODA_BACKGROUND_MODEL" => Some("gpt-5.4".to_owned()),
+            "CODA_BACKGROUND_EFFORT" => Some("medium".to_owned()),
+            "CODA_BACKGROUND_CONTEXT_WINDOW_TOKENS" => Some("272000".to_owned()),
+            "CODA_BACKGROUND_INPUT_LIMIT_TOKENS" => Some("922000".to_owned()),
+            _ => None,
+        })
+        .expect("public-demo worker config");
+        assert_eq!(config.source_boundary, SourceBoundary::SyntheticOnly);
+        assert!(
+            config
+                .simulation_practices
+                .contains(physician_sample::demo_session::DEMO_PRACTICE_ID)
+        );
     }
 
     struct RecordingWakeHandler {
@@ -3958,6 +4051,7 @@ mod tests {
                     source: calendar,
                 }),
                 elation: None,
+                source_boundary: SourceBoundary::Any,
             }),
             clinical_library: None,
         }));

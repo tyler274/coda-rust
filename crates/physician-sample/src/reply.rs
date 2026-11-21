@@ -7,11 +7,12 @@ use crate::{
 use axum::{
     Json,
     extract::{Extension, Path, State},
-    http::StatusCode,
+    http::{HeaderMap, StatusCode},
     response::{IntoResponse, Response},
 };
 use serde::Deserialize;
 use serde_json::{Value, json};
+use std::net::SocketAddr;
 use std::sync::Arc;
 
 fn scope(ctx: &AuthContext, workspace: &str, reply: &str) -> local_product::runtime::Scope {
@@ -127,6 +128,8 @@ pub(crate) async fn accept_durable(
     ctx: &AuthContext,
     id: &str,
     payload: Value,
+    headers: &HeaderMap,
+    peer_addr: Option<SocketAddr>,
 ) -> Response {
     use local_product::runtime::reply::{RevisionAccepted, RevisionInput};
     let Ok(input) = serde_json::from_value::<Revision>(payload) else {
@@ -155,6 +158,12 @@ pub(crate) async fn accept_durable(
     let Ok(scenario) = durable.admit_scenario(&scope.practice, input.scenario) else {
         return crate::live::rejected_scenario();
     };
+    if let Err(exhausted) = live
+        .demo_budget
+        .check_and_record(&ctx.identity, headers, peer_addr)
+    {
+        return crate::demo_session::demo_budget_exhausted_response(exhausted);
+    }
     let revision = RevisionInput {
         key: id.into(),
         expected_revision: input.expected_draft_revision,

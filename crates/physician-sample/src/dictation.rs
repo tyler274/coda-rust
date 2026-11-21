@@ -212,7 +212,11 @@ fn dictation_unavailable() -> Response {
 }
 
 /// Handles `POST /dictation` for the physician UI.
-pub(crate) async fn transcribe_dictation(extensions: Extensions, body: Bytes) -> Response {
+pub(crate) async fn transcribe_dictation(
+    extensions: Extensions,
+    headers: axum::http::HeaderMap,
+    body: Bytes,
+) -> Response {
     let backend = extensions
         .get::<DictationBackend>()
         .cloned()
@@ -239,6 +243,15 @@ pub(crate) async fn transcribe_dictation(extensions: Extensions, body: Bytes) ->
     };
     if audio_bytes.len() < 4 {
         return dictation_unavailable();
+    }
+    if let Some(auth_ctx) = extensions.get::<crate::auth::AuthContext>()
+        && let Some(response) = crate::demo_session::check_request_demo_budget(
+            &extensions,
+            &headers,
+            &auth_ctx.identity,
+        )
+    {
+        return response;
     }
 
     let transcript = match backend {
