@@ -2,11 +2,11 @@ locals {
   github_environment = { dev = "dev", stg = "staging", prd = "production" }[var.environment]
   # The repository uses GitHub's immutable subject claim (use_immutable_subject),
   # so `sub` carries the owner and repository IDs, not just their names.
-  github_subject = "repo:Coda-Health@${var.github_owner_id}/coda-rust@${var.github_repository_id}:environment:${local.github_environment}"
+  github_subject = "repo:tyler274@${var.github_owner_id}/coda-rust@${var.github_repository_id}:environment:${local.github_environment}"
   # Require the environment claim AND subject: a branch-only or PR token cannot
   # impersonate this identity. Immutable IDs defeat repository-name recycling.
   oidc_condition = join(" && ", [
-    "assertion.repository == 'Coda-Health/coda-rust'",
+    "assertion.repository == 'tyler274/coda-rust'",
     "assertion.repository_id == '${var.github_repository_id}'",
     "assertion.repository_owner_id == '${var.github_owner_id}'",
     "assertion.ref == 'refs/heads/main'",

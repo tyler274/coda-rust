@@ -54,7 +54,7 @@ variable "collector_availability_monitor_enabled" {
 }
 
 locals {
-  dependency_runbook = "https://github.com/Coda-Health/coda-rust/blob/main/book/src/observability.md"
+  dependency_runbook = "https://github.com/tyler274/coda-rust/blob/main/book/src/observability.md"
   # The worker signals are gauges each physician-worker instance writes every
   # minute from the Postgres rows that own the work (physician-worker
   # signals.rs). Work is due once its retry delay passes or its lease runs

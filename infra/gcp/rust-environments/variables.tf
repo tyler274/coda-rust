@@ -119,7 +119,7 @@ variable "state_admin_members" {
 
 variable "github_repository_id" {
   type        = string
-  description = "Immutable numeric GitHub ID for Coda-Health/coda-rust, verified by the operator."
+  description = "Immutable numeric GitHub ID for tyler274/coda-rust, verified by the operator."
   validation {
     condition     = can(regex("^[0-9]+$", var.github_repository_id))
     error_message = "Supply the immutable numeric coda-rust repository ID."
@@ -128,7 +128,7 @@ variable "github_repository_id" {
 
 variable "github_owner_id" {
   type        = string
-  description = "Immutable numeric GitHub owner ID for Coda-Health."
+  description = "Immutable numeric GitHub owner ID for tyler274."
   validation {
     condition     = can(regex("^[0-9]+$", var.github_owner_id))
     error_message = "Supply the immutable numeric repository owner ID."

@@ -12,8 +12,8 @@ billing_account      = "01691B-49BADA-F3D54D"
 region               = "us-east1"
 iap_group            = "gcp-engineering@codahealth.ai"
 state_admin_members  = ["group:gcp-engineering@codahealth.ai"]
-github_repository_id = "1412706552"
-github_owner_id      = "306538119"
+github_repository_id = "1462179920"
+github_owner_id      = "4147075"
 
 # The billing administrator owns the project budget outside this state.
 # Staging-preview: two shared-core instances (~$10/month each, always billed).
